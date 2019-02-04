@@ -1,0 +1,36 @@
+-cases [Inweb] 'inweb/Tests/Test Cases'
+
+-recipe [Inweb]
+	set: $INWEB = inweb/Tangled/inweb
+	set: $INTERNAL = Internal
+
+	set: $WEB = $PATH/$CASE.inweb
+	set: $TA = $PATH/_Tangled_Actual/$CASE.txt
+	set: $TI = $PATH/_Tangled_Ideal/$CASE.txt
+	set: $TC = $PATH/_Tangled_Console/$CASE.txt
+	step: $INWEB $WEB -tangle-to $TA >$TC 2>&1
+	or: 'failed inweb' $TC
+	show: $TA
+	match text: $TA $TI
+	or: 'produced the wrong tangled code'
+
+	set: $WA = $PATH/_Woven_Actual/$CASE.html
+	set: $WI = $PATH/_Woven_Ideal/$CASE.html
+	set: $WC = $PATH/_Woven_Console/$CASE.txt
+	step: $INWEB $WEB -weave-to $WA >$WC 2>&1
+	or: 'failed inweb' $WC
+	show: $WA
+	match text: $WA $WI
+	or: 'produced the wrong woven code'
+
+	set: $SA = $PATH/_Scan_Actual/$CASE.txt
+	set: $SI = $PATH/_Scan_Ideal/$CASE.txt
+	step: $INWEB $WEB -scan >$SA 2>&1
+	or: 'failed inweb' $SA
+	show: $SA
+	match text: $SA $SI
+	or: 'produced the wrong scan'
+
+	pass: 'passed'
+
+-end

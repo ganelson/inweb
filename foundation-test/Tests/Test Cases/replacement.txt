@@ -1,0 +1,5 @@
+'Eggs and butter and sugar'	'and' 'or'
+'Eggs and butter and sugar'	'%c' '#'
+'Eggs and butter and sugar'	'%C+' 'word'
+'Eggs and butter and sugar'	'(%C+)' 'word=%0'
+'2012-11-30' '(%d+)-(%d+)-(%d+)' '%2/%1/%0'

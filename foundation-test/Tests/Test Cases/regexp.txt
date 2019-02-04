@@ -1,0 +1,4 @@
+'I'				'I'
+'X'				'%i'
+'XX'			'X+'
+'XX yy   ZZZZ'	'X+ (y+) Z+'

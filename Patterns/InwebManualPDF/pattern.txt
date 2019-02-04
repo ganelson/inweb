@@ -1,0 +1,7 @@
+from TeX
+format = PDF
+abbrevs = no
+numbered = yes
+Booklet Title = A modern system for literate programming
+Author = User Guide
+embed css

@@ -1,0 +1,12 @@
+Setup: Jack and Jill
+Plus:  had a great fall
+Concatenation: Jack and Jill had a great fall
+Setup statically: <   banana bread  is fun   >
+Trimmed: <banana bread  is fun>
+Copied: <Jack and Jill had a great fall>
+Length: 30
+Modified: <JacQ and Jill had a great fall>
+fish eq Fish? 0
+fish ci-eq Fish? 1
+fish ne Fish? 1
+fish ci-ne Fish? 0

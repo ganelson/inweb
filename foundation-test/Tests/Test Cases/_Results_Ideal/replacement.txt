@@ -1,0 +1,5 @@
+Text <Eggs and butter and sugar> pattern <and> replacement <or>: Eggs or butter or sugar (2 replacements)
+Text <Eggs and butter and sugar> pattern <%c> replacement <#>: ######################### (25 replacements)
+Text <Eggs and butter and sugar> pattern <%C+> replacement <word>: word word word word word (5 replacements)
+Text <Eggs and butter and sugar> pattern <(%C+)> replacement <word=%0>: word=Eggs word=and word=butter word=and word=sugar (5 replacements)
+Text <2012-11-30> pattern <(%d+)-(%d+)-(%d+)> replacement <%2/%1/%0>: 30/11/2012 (1 replacement)

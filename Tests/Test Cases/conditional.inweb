@@ -1,0 +1,37 @@
+Title: hellow
+Author: Graham Nelson
+Purpose: A minimal example of a C program written for inweb.
+Language: C
+
+@ =
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+	printf("Hello world!\n");
+}
+
+@ ^"ifdef-PLATFORM_WINDOWS"
+
+@d PEACH 1
+@e A_COM from 1
+@e B_COM
+@e C_COM
+
+=
+#include "nonexistent.h"
+
+typedef struct bong {
+	int f;
+} bong;
+
+void banana(int n) {
+}
+
+@ ^"ifndef-PLATFORM_WINDOWS" ^"ifdef-POSIX"
+
+=
+#include "existent.h"
+
+typedef struct bong {
+	unsigned int f;
+} bong;

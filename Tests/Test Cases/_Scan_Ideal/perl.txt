@@ -1,0 +1,21 @@
+web "perl": 1 section(s) : 3 paragraph(s) : 16 line(s)
+Scan of source lines for '0'
+0000001  SECTION_HEADING.....  Main.
+0000002  PURPOSE_BODY........  
+0000003  PARAGRAPH_START.....  @
+0000004  BEGIN_CODE..........  =
+0000005  CODE_BODY...........  print recolour("Santa likes red and green socks.\n");
+0000006  CODE_BODY...........  
+0000007  PARAGRAPH_START.....  @
+0000008  BEGIN_CODE..........  =
+0000009  CODE_BODY...........  sub recolour {
+0000010  CODE_BODY...........  	my $text = $_[0];
+0000011  CODE_BODY...........  	@<Change the hues@>;
+0000012  CODE_BODY...........  	return $text;
+0000013  CODE_BODY...........  }
+0000014  CODE_BODY...........  
+0000015  PARAGRAPH_START.....  @
+0000016  MACRO_DEFINITION....  @<Change the hues@> =
+0000017  CODE_BODY...........  	$text =~ s/red/blue/;
+0000018  CODE_BODY...........  	$text =~ s/green/purple/;
+0000019  CODE_BODY...........  

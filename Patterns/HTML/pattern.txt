@@ -1,0 +1,4 @@
+format = HTML
+use crumbs.gif
+use inweb.css
+default-range = sections

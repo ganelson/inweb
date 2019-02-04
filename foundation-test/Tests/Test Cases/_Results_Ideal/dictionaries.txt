@@ -1,0 +1,30 @@
+Dictionary:
+    Slot 00: vacant
+    Slot 01: vacant
+Creating new entry <Han>
+Creating new entry <Luke>
+Creating new entry <Leia>
+Creating new entry <Ben>
+Creating new entry <Lando>
+Creating new entry <Jabba>
+Creating new entry <Boba>
+Creating new entry <Admiral>
+Creating new entry <Captain>
+Dictionary:
+    Slot 00: Lando='Calrissian'
+    Slot 01: Han='Solo'
+    Slot 02: vacant
+    Slot 03: vacant
+    Slot 04: Boba='Fett' Captain='Piet'
+    Slot 05: Leia='Organa'
+    Slot 06: Jabba='Hutt' Admiral='Akbar'
+    Slot 07: Luke='Skywalker' Ben='Kenobi'
+Dictionary:
+    Slot 00: vacant
+    Slot 01: vacant
+    Slot 02: vacant
+    Slot 03: vacant
+    Slot 04: vacant vacant
+    Slot 05: vacant
+    Slot 06: vacant vacant
+    Slot 07: vacant vacant

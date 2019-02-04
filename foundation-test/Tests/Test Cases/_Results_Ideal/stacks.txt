@@ -1,0 +1,9 @@
+Top of stack is: 
+Stack is empty
+Top of stack is: Mercury
+Top of stack is: Venus
+Top of stack is: Mercury
+Top of stack is: Earth
+Top of stack is: Mercury
+Top of stack is: 
+Stack is empty

@@ -1,0 +1,10 @@
+# This is the script from which inweb -gitignore will construct a .gitignore.
+
+debug-log.txt
+Woven/
+Tangled/
+!Tangled/*.preform
+Tests/intest-history.txt
+Tests/Transient/
+Tests/hashes.intest
+Tests/_Results_Actual/

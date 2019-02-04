@@ -1,0 +1,201 @@
+<html>
+	<head>
+		<title>inweb 7</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+		<link href="inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+	</head>
+
+	<body>
+		<ul class="crumbs"><li><a href="../webs.html">&#9733;</a></li><li><b>inweb 7</b></li></ul>
+		<p class="purpose">A modern system for literate programming.</p>
+		<hr>
+		<ul class="chapterlist">
+			<li>
+				<p><a name="P"></a><spon class="chaptertitle">Preliminaries</span></p>
+				<p><span class="purpose">This chapter of preliminaries, from the Inweb web, makes up the User Guide for the program.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="P-iti.html"><spon class="sectiontitle">Introduction to Inweb</span></a> -
+						<span class="purpose">What Inweb is, and why it is not CWEB.</span></p>
+					</li>
+					<li>
+						<p><a href="P-wtaw.html"><spon class="sectiontitle">Webs, Tangling and Weaving</span></a> -
+						<span class="purpose">How to use Inweb to weave or tangle a web already written.</span></p>
+					</li>
+					<li>
+						<p><a href="P-htwaw.html"><spon class="sectiontitle">How to Write a Web</span></a> -
+						<span class="purpose">How to mark up code for literate programming.</span></p>
+					</li>
+					<li>
+						<p><a href="P-tid.html"><spon class="sectiontitle">The InC Dialect</span></a> -
+						<span class="purpose">A modest extension of C used by the Inform project.</span></p>
+					</li>
+					<li>
+						<p><a href="P-awwp.html"><spon class="sectiontitle">Advanced Weaving with Patterns</span></a> -
+						<span class="purpose">Customise the booklets woven from a web.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="1"></a><spon class="chaptertitle">Chapter 1: Top Level</span></p>
+				<p><span class="purpose">Dealing with the user, and deciding what is to be done.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="1-bsc.html"><spon class="sectiontitle">Basics</span></a> -
+						<span class="purpose">Some fundamental definitions, mostly setting up for the Foundation module to manage memory for us.</span></p>
+					</li>
+					<li>
+						<p><a href="1-pc.html"><spon class="sectiontitle">Program Control</span></a> -
+						<span class="purpose">The top level, which decides what is to be done and then carries this plan out.</span></p>
+					</li>
+					<li>
+						<p><a href="1-cnf.html"><spon class="sectiontitle">Configuration</span></a> -
+						<span class="purpose">To parse the command line arguments with which inweb was called, and to handle any errors it needs to issue.</span></p>
+					</li>
+					<li>
+						<p><a href="1-ptt.html"><spon class="sectiontitle">Patterns</span></a> -
+						<span class="purpose">Managing weave patterns, which are bundled configuration settings for weaving.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="2"></a><spon class="chaptertitle">Chapter 2: Parsing a Web</span></p>
+				<p><span class="purpose">Reading in the entire text of the web, parsing its structure and looking for identifier names within it.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="2-bd.html"><spon class="sectiontitle">Bibliographic Data</span></a> -
+						<span class="purpose">To manage key-value pairs of bibliographic data, metadata if you like, associated with a given web.</span></p>
+					</li>
+					<li>
+						<p><a href="2-tr.html"><spon class="sectiontitle">The Reader</span></a> -
+						<span class="purpose">To read the Contents section of the web, and through that each of the other sections in turn, and to collate all of this material.</span></p>
+					</li>
+					<li>
+						<p><a href="2-mdl.html"><spon class="sectiontitle">Modules</span></a> -
+						<span class="purpose">To search for included modules, and track dependencies between them.</span></p>
+					</li>
+					<li>
+						<p><a href="2-lc.html"><spon class="sectiontitle">Line Categories</span></a> -
+						<span class="purpose">To store individual lines from webs, and to categorise them according to their meaning.</span></p>
+					</li>
+					<li>
+						<p><a href="2-tp.html"><spon class="sectiontitle">The Parser</span></a> -
+						<span class="purpose">To work through the program read in, assigning each line its category, and noting down other useful information as we go.</span></p>
+					</li>
+					<li>
+						<p><a href="2-pm.html"><spon class="sectiontitle">Paragraph Macros</span></a> -
+						<span class="purpose">To manage the set of named paragraph macros in a section.</span></p>
+					</li>
+					<li>
+						<p><a href="2-tgs.html"><spon class="sectiontitle">Tags</span></a> -
+						<span class="purpose">Thematic tags can be attached to certain paragraphs, some automatically by Inweb, others manually by the author.</span></p>
+					</li>
+					<li>
+						<p><a href="2-ec.html"><spon class="sectiontitle">Enumerated Constants</span></a> -
+						<span class="purpose">To define sequentially numbered values for families of constants.</span></p>
+					</li>
+					<li>
+						<p><a href="2-pn.html"><spon class="sectiontitle">Paragraph Numbering</span></a> -
+						<span class="purpose">To work out paragraph numbers within each section.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="3"></a><spon class="chaptertitle">Chapter 3: Outputs</span></p>
+				<p><span class="purpose">Either weaving part or all of the web into a typeset form for human eyes (or a swarm of many such parts), or tangling the web into an executable program, or analysing the web to provide diagnostics on it.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="3-ta.html"><spon class="sectiontitle">The Analyser</span></a> -
+						<span class="purpose">Here we analyse the code in the web, enabling us to see how functions and data structures are used within the program.</span></p>
+					</li>
+					<li>
+						<p><a href="3-ts.html"><spon class="sectiontitle">The Swarm</span></a> -
+						<span class="purpose">To feed multiple output requests to the weaver, and to present weaver results, and update indexes or contents pages.</span></p>
+					</li>
+					<li>
+						<p><a href="3-ti.html"><spon class="sectiontitle">The Indexer</span></a> -
+						<span class="purpose">To construct indexes of the material woven, following a template.</span></p>
+					</li>
+					<li>
+						<p><a href="3-tw.html"><spon class="sectiontitle">The Weaver</span></a> -
+						<span class="purpose">To weave a portion of the code into instructions for TeX.</span></p>
+					</li>
+					<li>
+						<p><a href="3-tt.html"><spon class="sectiontitle">The Tangler</span></a> -
+						<span class="purpose">To transcribe a version of the text in the web into a form which can be compiled as a program.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="4"></a><spon class="chaptertitle">Chapter 4: Languages</span></p>
+				<p><span class="purpose">Providing support for syntax-colouring and for better organisation of code in different programming languages.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="4-pl.html"><spon class="sectiontitle">Programming Languages</span></a> -
+						<span class="purpose">To characterise the relevant differences in behaviour between the various programming languages supported.</span></p>
+					</li>
+					<li>
+						<p><a href="4-cl.html"><spon class="sectiontitle">C-Like Languages</span></a> -
+						<span class="purpose">To provide special features for the whole C family of languages.</span></p>
+					</li>
+					<li>
+						<p><a href="4-is.html"><spon class="sectiontitle">InC Support</span></a> -
+						<span class="purpose">To support a modest extension of C called InC.</span></p>
+					</li>
+					<li>
+						<p><a href="4-ps.html"><spon class="sectiontitle">Perl Support</span></a> -
+						<span class="purpose">To support webs written in Perl.</span></p>
+					</li>
+					<li>
+						<p><a href="4-is2.html"><spon class="sectiontitle">Inform Support</span></a> -
+						<span class="purpose">To support webs written in Inform 6 or 7.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="5"></a><spon class="chaptertitle">Chapter 5: Formats</span></p>
+				<p><span class="purpose">Weaving to a variety of different human-readable formats.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="5-wf.html"><spon class="sectiontitle">Weave Formats</span></a> -
+						<span class="purpose">To characterise the different weaving output formats (text, typeset, web and so on).</span></p>
+					</li>
+					<li>
+						<p><a href="5-ptf.html"><spon class="sectiontitle">Plain Text Format</span></a> -
+						<span class="purpose">To provide for weaving in plain text format, which is not very interesting, but ought to be available.</span></p>
+					</li>
+					<li>
+						<p><a href="5-tf.html"><spon class="sectiontitle">TeX Format</span></a> -
+						<span class="purpose">To provide for weaving in the standard maths and science typesetting software, TeX.</span></p>
+					</li>
+					<li>
+						<p><a href="5-hf.html"><spon class="sectiontitle">HTML Formats</span></a> -
+						<span class="purpose">To provide for weaving into HTML and into EPUB books.</span></p>
+					</li>
+					<li>
+						<p><a href="5-rtt.html"><spon class="sectiontitle">Running Through TeX</span></a> -
+						<span class="purpose">To post-process a weave by running it through TeX, or one of its variant typesetting programs.</span></p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p><a name="6"></a><spon class="chaptertitle">Chapter 6: Extras</span></p>
+				<p><span class="purpose">Additional features for turning webs into open-source projects.</span></p>
+				<ul class="sectionlist">
+					<li>
+						<p><a href="6-mkf.html"><spon class="sectiontitle">Makefiles</span></a> -
+						<span class="purpose">Constructing a suitable makefile for a simple inweb project.</span></p>
+					</li>
+					<li>
+						<p><a href="6-gs.html"><spon class="sectiontitle">Git Support</span></a> -
+						<span class="purpose">Constructing a suitable gitignore file for a simple inweb project.</span></p>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<hr>
+	</body>
+
+</html>
+

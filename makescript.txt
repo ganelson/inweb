@@ -1,0 +1,113 @@
+# This is a makefile for "inweb". It expects the current working folder to be
+# the one above the one holding this file (unusually), so it's best called
+# with e.g. "make -f inweb/make-inweb.mk".
+
+ME = inweb
+SAFETYCOPY = $(ME)/Tangled/inweb_dev
+
+-include $(ME)/platform-settings.mk
+
+# Making the program:
+
+.PHONY: all
+
+all: $(ME)/platform-settings.mk $(ME)/Tangled/$(ME) $(ME)/Manual.html
+
+$(ME)/platform-settings.mk:
+	$(error must first make macos, make windows, make linux, make unix, or make android)
+
+$(ME)/Tangled/$(ME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
+	$(call make-me)
+
+$(ME)/Manual.html: $(ME)/Contents.w $(ME)/Preliminaries/*.w 
+	$(ME)/Tangled/$(ME) $(ME) -weave P -weave-to $(ME)/Manual.html
+
+.PHONY: force
+force: $(ME)/platform-settings.mk
+	$(call make-me)
+
+.PHONY: macos
+macos: 
+	cp -f $(ME)/Materials/macos-make-settings.mk $(ME)/platform-settings.mk
+	$(call make-me-once-tangled)
+
+.PHONY: windows
+windows: 
+	cp -f $(ME)/Materials/windows-make-settings.mk $(ME)/platform-settings.mk
+	$(call make-me-once-tangled)
+
+.PHONY: linux
+linux: 
+	cp -f $(ME)/Materials/linux-make-settings.mk $(ME)/platform-settings.mk
+	$(call make-me-once-tangled)
+
+.PHONY: unix
+unix: 
+	cp -f $(ME)/Materials/unix-make-settings.mk $(ME)/platform-settings.mk
+	$(call make-me-once-tangled)
+
+.PHONY: android
+android: 
+	cp -f $(ME)/Materials/android-make-settings.mk $(ME)/platform-settings.mk
+	$(call make-me-once-tangled)
+
+.PHONY: initial
+initial: $(ME)/platform-settings.mk
+	$(call make-me-once-tangled)
+
+.PHONY: safe
+safe:
+	$(call make-me-using-safety-copy)
+
+# One of inweb's tasks is to tangle webs: but since inweb is itself a web,
+# that means it can only be compiled using itself. To avoid a logical
+# impossibility, a ready-tangled inweb.c is supplied as part of the Core
+# Inform tarball. The following builds inweb from this:
+
+define make-me-once-tangled
+	$(CC) -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
+	$(LINK) -o $(ME)/Tangled/$(ME) $(ME)/Tangled/$(ME).o $(LINKEROPTS)
+endef
+
+# If inweb exists already, we can compile it using itself like so:
+
+define make-me
+	$(ME)/Tangled/$(ME) $(ME) -tangle
+	$(call make-me-once-tangled)
+endef
+
+# When developing inweb, it's all too easy to break it and therefore to get
+# into a cleft stick: inweb has a bug, so it can't tangle inweb any more, and
+# therefore the bug can't be fixed. To get around this, we maintain a spare
+# copy of the inweb executable which is known to work. "make inwebdev" uses
+# the safety copy of inweb to recompile inweb.
+
+define make-me-using-safety-copy
+	$(SAFETYCOPY) $(ME) -tangle
+	$(call make-me-once-tangled)
+endef
+
+# Testing the program - which requires intest to be installed too.
+
+.PHONY: test
+test:
+	$(INTEST) -from $(ME) all
+
+# Cleaning up:
+
+.PHONY: clean
+clean:
+	$(call clean-up)
+
+.PHONY: purge
+purge:
+	$(call clean-up)
+
+# Note that the tangled inweb.c is not cleaned up: it's needed to bootstrap
+# the use of inweb from a fresh installation where there's no executable
+# inweb yet with which to tangle inweb.c (see below).
+
+define clean-up
+	rm -f $(ME)/Tangled/*.o
+	rm -f $(ME)/Tangled/*.h
+endef

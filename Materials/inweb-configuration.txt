@@ -1,0 +1,13 @@
+# Configuration file for inweb
+
+# The following command is assumed to open a PDF file in the host OS; it
+# works on Mac OS X, at any rate. An inweb weave opens a just-made PDF
+# by default if this is non-null; using the -open or -closed options can
+# toggle this behaviour, though.
+
+open-command = open
+
+# This is the standard Mac OS X location of pdftext, the tool for setting
+# TeX-to-PDF, following installation from the LiveTeX distribution:
+
+pdftex = pdftex

@@ -1,0 +1,18 @@
+Title: perl
+Author: Graham Nelson
+Purpose: A test Perl script for inweb.
+Language: Perl
+
+@ =
+print recolour("Santa likes red and green socks.\n");
+
+@ =
+sub recolour {
+	my $text = $_[0];
+	@<Change the hues@>;
+	return $text;
+}
+
+@<Change the hues@> =
+	$text =~ s/red/blue/;
+	$text =~ s/green/purple/;

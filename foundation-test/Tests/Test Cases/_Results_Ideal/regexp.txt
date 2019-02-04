@@ -1,0 +1,4 @@
+Text <I> pattern <I>: Match
+Text <X> pattern <%i>: Match
+Text <XX> pattern <X+>: Match
+Text <XX yy   ZZZZ> pattern <X+ (y+) Z+>: Match 0=<yy>

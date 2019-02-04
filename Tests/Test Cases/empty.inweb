@@ -1,0 +1,12 @@
+Title: test
+Author: Graham Nelson
+Purpose: A minimal example of a C program written for inweb.
+Language: C
+
+@ Blah. Lorum.
+Ipsum. But |identifier| as well.
+
+	|Green.|
+	|Blue.|
+
+is my essential palette.
