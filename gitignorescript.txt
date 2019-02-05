@@ -1,11 +1,17 @@
-{basics}
-
 # Because inweb needs to be bootstrapped, we unusually preserve the current
 # tangled C file in the repository:
 
 .DS_Store
 Manual.html
-!Tangled/inweb.c
+debug-log.txt
+Woven/
+Tangled/inweb
+Tangled/inweb_dev*
+Tangled/inweb.o
+Tests/intest-history.txt
+Tests/Transient/
+Tests/hashes.intest
+Tests/_Results_Actual/
 platform-settings.mk
 foundation-module/Woven/
 Examples/*.o

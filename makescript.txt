@@ -13,9 +13,6 @@ SAFETYCOPY = $(ME)/Tangled/inweb_dev
 
 all: $(ME)/platform-settings.mk $(ME)/Tangled/$(ME) $(ME)/Manual.html
 
-$(ME)/platform-settings.mk:
-	$(error must first make macos, make windows, make linux, make unix, or make android)
-
 $(ME)/Tangled/$(ME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-me)
 
