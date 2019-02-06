@@ -167,7 +167,7 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 			MW->module_name, MW->module_name, MW->module_name);
 		module *X;
 		LOOP_OVER_LINKED_LIST(X, module, MW->dependencies) {
-			WRITE(" $(%SWEB)/Contents.w $(%SWEB)/Chapter*/*.w $(%SWEB)/Sections/*.w",
+			WRITE(" $(%SWEB)/Contents.w $(%SWEB)/Chapter*/*.w",
 				X->module_name, X->module_name, X->module_name);
 		}
 		WRITE("\n");

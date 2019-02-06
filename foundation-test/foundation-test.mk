@@ -4,10 +4,10 @@
 INTEST = intest/Tangled/intest
 INWEB = inweb/Tangled/inweb
 
-CC = clang -std=c99 -c $(MANYWARNINGS) $(CCOPTS) -g
+CC = clang -std=c99 -c $(MANYWARNINGS) $(CCOPTS) -g 
 INDULGENTCC = clang -std=c99 -c $(FEWERWARNINGS) $(CCOPTS) -g
 
-CCOPTS = -mmacosx-version-min=10.4 -arch i386 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
+CCOPTS = -DPLATFORM_MACOSX=1 -mmacosx-version-min=10.4 -arch i386 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
 
 MANYWARNINGS = -Weverything -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -ferror-limit=1000
 
@@ -27,7 +27,7 @@ ME = inweb/foundation-test
 # which depends on:
 MODULE1 = inweb/foundation-module
 
-$(ME)/Tangled/$(MYNAME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(MODULE1)/Contents.w $(MODULE1)/Chapter*/*.w
+$(ME)/Tangled/$(MYNAME): $(ME)/Contents.w $(ME)/Sections/*.w $(MODULE1)/Contents.w $(MODULE1)/Chapter*/*.w
 	$(call make-me)
 
 .PHONY: force
