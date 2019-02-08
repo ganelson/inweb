@@ -2067,31 +2067,31 @@ filename * Filenames__in_folder(pathname *P, text_stream *file_name) ;
 filename * Filenames__primitive(text_stream *S, int from, int to, pathname *P) ;
 #line 44 "inweb/foundation-module/Chapter 3/Filenames.w"
 filename * Filenames__from_text(text_stream *path) ;
-#line 55 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 60 "inweb/foundation-module/Chapter 3/Filenames.w"
 filename * Filenames__from_text_relative(pathname *from, text_stream *path) ;
-#line 72 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 77 "inweb/foundation-module/Chapter 3/Filenames.w"
 void  Filenames__writer(OUTPUT_STREAM, char *format_string, void *vF) ;
-#line 88 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 93 "inweb/foundation-module/Chapter 3/Filenames.w"
 void  Filenames__to_text_relative(OUTPUT_STREAM, filename *F, pathname *P) ;
-#line 105 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 110 "inweb/foundation-module/Chapter 3/Filenames.w"
 pathname * Filenames__get_path_to(filename *F) ;
-#line 113 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 118 "inweb/foundation-module/Chapter 3/Filenames.w"
 filename * Filenames__without_path(filename *F) ;
-#line 117 "inweb/foundation-module/Chapter 3/Filenames.w"
-text_stream * Filenames__get_leafname(filename *F) ;
 #line 122 "inweb/foundation-module/Chapter 3/Filenames.w"
+text_stream * Filenames__get_leafname(filename *F) ;
+#line 127 "inweb/foundation-module/Chapter 3/Filenames.w"
 void  Filenames__write_unextended_leafname(OUTPUT_STREAM, filename *F) ;
-#line 138 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 143 "inweb/foundation-module/Chapter 3/Filenames.w"
 void  Filenames__write_extension(OUTPUT_STREAM, filename *F) ;
-#line 147 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 152 "inweb/foundation-module/Chapter 3/Filenames.w"
 filename * Filenames__set_extension(filename *F, char *extension) ;
-#line 180 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 185 "inweb/foundation-module/Chapter 3/Filenames.w"
 int  Filenames__guess_format(filename *F) ;
-#line 224 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 229 "inweb/foundation-module/Chapter 3/Filenames.w"
 FILE * Filenames__fopen(filename *F, char *usage) ;
-#line 233 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 238 "inweb/foundation-module/Chapter 3/Filenames.w"
 FILE * Filenames__fopen_caseless(filename *F, char *usage) ;
-#line 248 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 253 "inweb/foundation-module/Chapter 3/Filenames.w"
 int  Filenames__eq(filename *F1, filename *F2) ;
 #line 54 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
 FILE * CIFilingSystem__fopen(const char *path, const char *mode) ;
@@ -6427,7 +6427,12 @@ filename *Filenames__from_text(text_stream *path) {
 		i++;
 	}
 	pathname *P = NULL;
-	if (pos > 0) P = Pathnames__primitive(path, 0, pos, NULL);
+	if (pos >= 0) {
+		TEMPORARY_TEXT(PT);
+		Str__substr(PT, Str__at(path, 0), Str__at(path, pos));
+		P = Pathnames__from_text(PT);
+		DISCARD_TEXT(PT);
+	}
 	return Filenames__primitive(path, pos+1, Str__len(path), P);
 }
 
@@ -6444,7 +6449,7 @@ filename *Filenames__from_text_relative(pathname *from, text_stream *path) {
 	return F;
 }
 
-#line 72 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 77 "inweb/foundation-module/Chapter 3/Filenames.w"
 void Filenames__writer(OUTPUT_STREAM, char *format_string, void *vF) {
 	filename *F = (filename *) vF;
 	if (F == NULL) WRITE("<no file>");
@@ -6458,7 +6463,7 @@ void Filenames__writer(OUTPUT_STREAM, char *format_string, void *vF) {
 	}
 }
 
-#line 88 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 93 "inweb/foundation-module/Chapter 3/Filenames.w"
 void Filenames__to_text_relative(OUTPUT_STREAM, filename *F, pathname *P) {
 	TEMPORARY_TEXT(ft);
 	TEMPORARY_TEXT(pt);
@@ -6473,13 +6478,13 @@ void Filenames__to_text_relative(OUTPUT_STREAM, filename *F, pathname *P) {
 	DISCARD_TEXT(pt);
 }
 
-#line 105 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 110 "inweb/foundation-module/Chapter 3/Filenames.w"
 pathname *Filenames__get_path_to(filename *F) {
 	if (F == NULL) return NULL;
 	return F->pathname_of_location;
 }
 
-#line 113 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 118 "inweb/foundation-module/Chapter 3/Filenames.w"
 filename *Filenames__without_path(filename *F) {
 	return Filenames__in_folder(NULL, F->leafname);
 }
@@ -6497,7 +6502,7 @@ void Filenames__write_unextended_leafname(OUTPUT_STREAM, filename *F) {
 	}
 }
 
-#line 138 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 143 "inweb/foundation-module/Chapter 3/Filenames.w"
 void Filenames__write_extension(OUTPUT_STREAM, filename *F) {
 	int on = FALSE;
 	LOOP_THROUGH_TEXT(pos, F->leafname) {
@@ -6523,7 +6528,7 @@ filename *Filenames__set_extension(filename *F, char *extension) {
 	return N;
 }
 
-#line 180 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 185 "inweb/foundation-module/Chapter 3/Filenames.w"
 int Filenames__guess_format(filename *F) {
 	TEMPORARY_TEXT(EXT);
 	Filenames__write_extension(EXT, F);
@@ -6561,7 +6566,7 @@ int Filenames__guess_format(filename *F) {
 	return verdict;
 }
 
-#line 224 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 229 "inweb/foundation-module/Chapter 3/Filenames.w"
 FILE *Filenames__fopen(filename *F, char *usage) {
 	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
 	TEMPORARY_TEXT(FN);
@@ -6580,7 +6585,7 @@ FILE *Filenames__fopen_caseless(filename *F, char *usage) {
 	return CIFilingSystem__fopen(transcoded_pathname, usage);
 }
 
-#line 248 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 253 "inweb/foundation-module/Chapter 3/Filenames.w"
 int Filenames__eq(filename *F1, filename *F2) {
 	if (F1 == F2) return TRUE;
 	TEMPORARY_TEXT(T1);

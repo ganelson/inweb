@@ -48,7 +48,12 @@ filename *Filenames::from_text(text_stream *path) {
 		i++;
 	}
 	pathname *P = NULL;
-	if (pos > 0) P = Pathnames::primitive(path, 0, pos, NULL);
+	if (pos >= 0) {
+		TEMPORARY_TEXT(PT);
+		Str::substr(PT, Str::at(path, 0), Str::at(path, pos));
+		P = Pathnames::from_text(PT);
+		DISCARD_TEXT(PT);
+	}
 	return Filenames::primitive(path, pos+1, Str::len(path), P);
 }
 
