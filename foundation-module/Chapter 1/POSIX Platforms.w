@@ -30,7 +30,7 @@ operating system, and the other one on Windows.
 #include <limits.h>
 #include <unistd.h>
 
-@h Mac OS X. ^"ifdef-PLATFORM_MACOSX"
+@h Mac OS X. ^"ifdef-PLATFORM_MACOS"
 
 @d PLATFORM_STRING "macos"
 @d SHELL_QUOTE_CHARACTER '\''
@@ -124,16 +124,49 @@ string.
     size_t convert_len = mbstowcs(p, buffer, length);
     if (convert_len == (size_t)-1) @<Fail@>; // wouldn't fit
 
-@<Fail@> =
-	p[0] = '\0';
-	return;
+@ And now the Mac version: ^"ifdef-PLATFORM_MACOS"
+ 
+= (very early code)
+int _NSGetExecutablePath(char* buf, uint32_t* bufsize);
 
-@h Executable location. ^"ifndef-PLATFORM_LINUX"
+void Platform::where_am_i(wchar_t *p, size_t length) {
+    char relative_path[4 * PATH_MAX + 1];
+    char absolute_path[PATH_MAX + 1];
+    size_t convert_len;
+    uint32_t pathsize = sizeof(relative_path);
+    uint32_t tempsize = pathsize;
+
+    /* Get "a path" to the executable */
+    if (_NSGetExecutablePath(relative_path, &tempsize) != 0) @<Fail@>;
+
+    /* Convert to canonical absolute path */
+    if (realpath(relative_path, absolute_path) == NULL) @<Fail@>;
+
+    /* Next, convert the obtained buffer (which is a string in the local
+     * filename encoding, possibly multibyte) to a wide-char string. */
+    convert_len = mbstowcs(p, absolute_path, length);
+    if (convert_len == (size_t)-1) @<Fail@>;
+}
+
+@ For Unix, there's nothing we can generically do. ^"ifdef-PLATFORM_UNIX"
  
 =
 void Platform::where_am_i(wchar_t *p, size_t length) {
-	p[0] = 0;
+	@<Fail@>;
 }
+
+@ On Android, there's no real need for this. ^"ifdef-PLATFORM_ANDROID"
+ 
+=
+void Platform::where_am_i(wchar_t *p, size_t length) {
+	@<Fail@>;
+}
+
+@ All of the above make use of:
+
+@<Fail@> =
+	p[0] = '\0';
+	return;
 
 @h Shell commands.
 
@@ -185,7 +218,7 @@ void Platform::sleep(int seconds) {
 	sleep((unsigned int) seconds);
 }
 
-@h Notifications. ^"ifdef-PLATFORM_MACOSX"
+@h Notifications. ^"ifdef-PLATFORM_MACOS"
 The "submarine" sound is a gloomy thunk; the "bell" is the three-tone rising
 alert noise which iPhones make when they receive texts, but which hackers of a
 certain age will remember as the "I have ripped your music CD now" alert from
@@ -207,7 +240,7 @@ void Platform::notification(text_stream *text, int happy) {
 	DISCARD_TEXT(TEMP)
 }
 
-@ ^"ifndef-PLATFORM_MACOSX"
+@ ^"ifndef-PLATFORM_MACOS"
 
 = 
 void Platform::notification(text_stream *text, int happy) {

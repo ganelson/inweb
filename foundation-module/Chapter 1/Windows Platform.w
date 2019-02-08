@@ -21,7 +21,7 @@ on a POSIX operating system.
 #include <dirent.h>
 #include <errno.h>
 #include <io.h>
-#include "modules/foundation/Headers/win32.h"
+#include <windows.h>
 
 @ A Windows-safe form of |isdigit|. Annoyingly, the C specification allows
 the implementation to have |char| either signed or unsigned. On Windows it's
@@ -72,7 +72,8 @@ just that installation and use of Foundation-built tools is less convenient.)
 
 =
 void Platform::where_am_i(wchar_t *p, size_t length) {
-	p[0] = 0;
+	DWORD result = GetModuleFileNameW(NULL, p, length);	
+	if ((result == 0) || (result == length)) p[0] = 0;
 }
 
 @h Shell commands.

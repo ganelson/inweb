@@ -87,7 +87,8 @@ decides by the following set of rules:
 (a) If the user, at the command line, specified |-at P|, for some path
 |P|, then we use that.
 (b) Otherwise, if the host operating system can indeed tell us where the
-executable is, we use that. This is currently implemented only on Linux.
+executable is, we use that. This is currently implemented only on MacOS,
+Windows and Linux.
 (c) Otherwise, if the environment variable |$INWEB_PATH| exists and is
 non-empty, we use that.
 (d) And if all else fails, we assume that the location is |inweb|, with
