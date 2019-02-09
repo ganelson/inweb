@@ -1011,7 +1011,8 @@ typedef struct dict_entry {
 #line 32 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 typedef struct command_line_switch {
 	int switch_id;
-	struct text_stream *switch_name; /* e.g., |log| */
+	struct text_stream *switch_name; /* e.g., |no-verbose| */
+	struct text_stream *switch_sort_name; /* e.g., |verbose| */
 	struct text_stream *help_text;
 	int valency; /* 1 for bare, 2 for one argument follows */
 	int form; /* one of the |*_CLSF| values above */
@@ -2007,33 +2008,33 @@ void  Errors__at_position_S(text_stream *message, filename *file, int line) ;
 void  Errors__with_file(char *message, filename *F) ;
 #line 169 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__with_text(char *message, text_stream *T) ;
-#line 55 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 56 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 command_line_switch * CommandLine__declare_switch(int id, 	wchar_t *name_literal, int val, wchar_t *help_literal) ;
-#line 61 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 62 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 command_line_switch * CommandLine__declare_switch_f(int id, 	wchar_t *name_literal, int val, wchar_t *help_literal) ;
-#line 70 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 71 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 command_line_switch * CommandLine__declare_switch_p(int id, 	text_stream *name, int val, text_stream *help_literal) ;
-#line 90 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 103 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 command_line_switch * CommandLine__declare_boolean_switch_p(int id, 	wchar_t *name_literal, int val, wchar_t *help_literal, int fnd) ;
-#line 110 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 123 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 command_line_switch * CommandLine__declare_boolean_switch(int id, 	wchar_t *name_literal, int val, wchar_t *help_literal) ;
-#line 115 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
-command_line_switch * CommandLine__declare_boolean_switch_f(int id, 	wchar_t *name_literal, int val, wchar_t *help_literal) ;
-#line 121 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
-void  CommandLine__declare_numerical_switch(int id, 	wchar_t *name_literal, int val, wchar_t *help_literal) ;
 #line 128 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+command_line_switch * CommandLine__declare_boolean_switch_f(int id, 	wchar_t *name_literal, int val, wchar_t *help_literal) ;
+#line 134 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+void  CommandLine__declare_numerical_switch(int id, 	wchar_t *name_literal, int val, wchar_t *help_literal) ;
+#line 141 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__declare_textual_switch(int id, 	wchar_t *name_literal, int val, wchar_t *help_literal) ;
-#line 153 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 166 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__read(int argc, char **argv, void *state, 	void (*f)(int, int, text_stream *, void *), void (*g)(int, text_stream *, void *)) ;
-#line 182 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 195 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__read_pair(text_stream *opt, text_stream *arg, void *state, 	void (*f)(int, int, text_stream *, void *), int *substantive) ;
-#line 207 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 220 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N, 	text_stream *arg, void *state, 	void (*f)(int, int, text_stream *, void *), int *substantive) ;
-#line 283 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 296 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__declare_heading(wchar_t *heading_text_literal) ;
-#line 287 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 300 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__write_help(OUTPUT_STREAM) ;
-#line 325 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 338 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__compare_names(const void *ent1, const void *ent2) ;
 #line 51 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void  Pathnames__start(void) ;
@@ -3181,15 +3182,15 @@ void  HTMLFormat__change_colour(weave_format *self, text_stream *OUT, weave_targ
 void  HTMLFormat__endnote(weave_format *self, text_stream *OUT, weave_target *wv, int end) ;
 #line 510 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__commentary_text(weave_format *self, text_stream *OUT, weave_target *wv, 	text_stream *id) ;
-#line 526 "inweb/Chapter 5/HTML Formats.w"
+#line 531 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__locale(weave_format *self, text_stream *OUT, weave_target *wv, 	paragraph *par1, paragraph *par2) ;
-#line 540 "inweb/Chapter 5/HTML Formats.w"
+#line 545 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__xref(OUTPUT_STREAM, weave_target *wv, paragraph *P, section *from, 	int a_link) ;
-#line 561 "inweb/Chapter 5/HTML Formats.w"
+#line 566 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__tail(weave_format *self, text_stream *OUT, weave_target *wv, 	text_stream *comment) ;
-#line 573 "inweb/Chapter 5/HTML Formats.w"
+#line 578 "inweb/Chapter 5/HTML Formats.w"
 int  HTMLFormat__begin_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) ;
-#line 588 "inweb/Chapter 5/HTML Formats.w"
+#line 593 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__end_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) ;
 #line 22 "inweb/Chapter 5/Running Through TeX.w"
 void  RunningTeX__post_process_weave(weave_target *wv, int open_afterwards, int to_DVI) ;
@@ -5991,12 +5992,12 @@ void Errors__with_text(char *message, text_stream *T) {
 	DISCARD_TEXT(ERM)
 }
 
-#line 42 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 43 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 
-#line 47 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 48 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 dictionary *cls_dictionary = NULL;
 
-#line 55 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 56 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 command_line_switch *CommandLine__declare_switch(int id,
 	wchar_t *name_literal, int val, wchar_t *help_literal) {
 	return CommandLine__declare_switch_p(id,
@@ -6017,6 +6018,18 @@ command_line_switch *CommandLine__declare_switch_p(int id,
 	if (cls_dictionary == NULL) cls_dictionary = Dictionaries__new(16, FALSE);
 	command_line_switch *cls = CREATE(command_line_switch);
 	cls->switch_name = name;
+	
+{
+#line 93 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+	cls->switch_sort_name = Str__duplicate(name);
+	if (Str__begins_with_wide_string(name, L"no-")) {
+		Str__delete_n_characters(cls->switch_sort_name, 3);
+		WRITE_TO(cls->switch_sort_name, "_");
+	}
+
+}
+#line 76 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+;
 	cls->switch_id = id;
 	cls->valency = val;
 	cls->help_text = help_literal;
@@ -6028,7 +6041,7 @@ command_line_switch *CommandLine__declare_switch_p(int id,
 	return cls;
 }
 
-#line 90 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 103 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 command_line_switch *CommandLine__declare_boolean_switch_p(int id,
 	wchar_t *name_literal, int val, wchar_t *help_literal, int fnd) {
 	command_line_switch *cls =
@@ -6074,7 +6087,7 @@ void CommandLine__declare_textual_switch(int id,
 	cls->form = TEXTUAL_CLSF;
 }
 
-#line 153 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 166 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__read(int argc, char **argv, void *state,
 	void (*f)(int, int, text_stream *, void *), void (*g)(int, text_stream *, void *)) {
 	int substantive = FALSE;
@@ -6101,7 +6114,7 @@ int CommandLine__read(int argc, char **argv, void *state,
 	return substantive;
 }
 
-#line 182 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 195 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__read_pair(text_stream *opt, text_stream *arg, void *state,
 	void (*f)(int, int, text_stream *, void *), int *substantive) {
 	TEMPORARY_TEXT(opt_p);
@@ -6124,7 +6137,7 @@ int CommandLine__read_pair(text_stream *opt, text_stream *arg, void *state,
 	return rv;
 }
 
-#line 207 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 220 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 	text_stream *arg, void *state,
 	void (*f)(int, int, text_stream *, void *), int *substantive) {
@@ -6148,12 +6161,12 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 	int innocuous = FALSE;
 	
 {
-#line 237 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 250 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	switch (cls->switch_id) {
 		case CRASH_CLSW: Errors__enter_debugger_mode(); innocuous = TRUE; break;
 		case LOG_CLSW: 
 {
-#line 262 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 275 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	if (Log__get_debug_log_filename() == NULL) {
 		TEMPORARY_TEXT(itn);
 		WRITE_TO(itn, "%s", INTOOL_NAME);
@@ -6165,7 +6178,7 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 	Log__set_aspect_from_command_line(arg, TRUE);
 
 }
-#line 239 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 252 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ; innocuous = TRUE; break;
 		case VERSION_CLSW:
 			PRINT("%s 7 'Escape to Danger' (build 6P91 on 29 December 2018)\n", INTOOL_NAME);
@@ -6189,13 +6202,13 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 	}
 
 }
-#line 228 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 241 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 	if ((innocuous == FALSE) && (substantive)) *substantive = TRUE;
 	return cls->valency;
 }
 
-#line 281 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 294 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 text_stream *cls_heading = NULL;
 
 void CommandLine__declare_heading(wchar_t *heading_text_literal) {
@@ -6219,7 +6232,7 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	int filter = FALSE;
 	
 {
-#line 310 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 323 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	for (int i=0; i<N; i++) {
 		command_line_switch *cls = sorted_table[i];
 		if (cls->foundation_switch != filter) continue;
@@ -6235,13 +6248,13 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	}
 
 }
-#line 302 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 315 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 	WRITE("\n");
 	filter = TRUE;
 	
 {
-#line 310 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 323 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	for (int i=0; i<N; i++) {
 		command_line_switch *cls = sorted_table[i];
 		if (cls->foundation_switch != filter) continue;
@@ -6257,16 +6270,16 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	}
 
 }
-#line 305 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 318 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 	Memory__I7_free(sorted_table, CLS_SORTING_MREASON, N*((int) sizeof(command_line_switch *)));
 }
 
-#line 325 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 338 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__compare_names(const void *ent1, const void *ent2) {
-	text_stream *tx1 = (*((const command_line_switch **) ent1))->switch_name;
-	text_stream *tx2 = (*((const command_line_switch **) ent2))->switch_name;
-	return Str__cmp(tx1, tx2);
+	text_stream *tx1 = (*((const command_line_switch **) ent1))->switch_sort_name;
+	text_stream *tx2 = (*((const command_line_switch **) ent2))->switch_sort_name;
+	return Str__cmp_insensitive(tx1, tx2);
 }
 
 #line 44 "inweb/foundation-module/Chapter 3/Pathnames.w"
@@ -19412,20 +19425,25 @@ void HTMLFormat__endnote(weave_format *self, text_stream *OUT, weave_target *wv,
 #line 510 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__commentary_text(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *id) {
+PRINT("So: %S\n", id);
 	for (int i=0; i < Str__len(id); i++) {
 		if (html_in_para == HTML_OUT) HTMLFormat__p(OUT, "inwebparagraph");
 		if (Str__get_at(id, i) == '&') WRITE("&amp;");
 		else if (Str__get_at(id, i) == '<') WRITE("&lt;");
 		else if (Str__get_at(id, i) == '>') WRITE("&gt;");
-		else if ((Str__get_at(id, i) == ' ') && (Str__get_at(id, i+1) == '-') &&
+		else if ((i == 0) && (Str__get_at(id, i) == '-') &&
+			(Str__get_at(id, i+1) == '-') &&
+			((Str__get_at(id, i+2) == ' ') || (Str__get_at(id, i+2) == 0))) {
+			WRITE("&mdash;"); i++;
+		} else if ((Str__get_at(id, i) == ' ') && (Str__get_at(id, i+1) == '-') &&
 			(Str__get_at(id, i+2) == '-') &&
-			((Str__get_at(id, i+3) == ' ') || (Str__get_at(id, i+3) == 0))) {
+			((Str__get_at(id, i+3) == ' ') || (Str__get_at(id, i+3) == '\n') || (Str__get_at(id, i+3) == 0))) {
 			WRITE(" &mdash;"); i+=2;
 		} else WRITE("%c", Str__get_at(id, i));
 	}
 }
 
-#line 526 "inweb/Chapter 5/HTML Formats.w"
+#line 531 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__locale(weave_format *self, text_stream *OUT, weave_target *wv,
 	paragraph *par1, paragraph *par2) {
 	TEMPORARY_TEXT(TEMP)
@@ -19439,7 +19457,7 @@ void HTMLFormat__locale(weave_format *self, text_stream *OUT, weave_target *wv,
 	HTML__end_link(OUT);
 }
 
-#line 540 "inweb/Chapter 5/HTML Formats.w"
+#line 545 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__xref(OUTPUT_STREAM, weave_target *wv, paragraph *P, section *from,
 	int a_link) {
 	TEMPORARY_TEXT(linkto);
@@ -19460,7 +19478,7 @@ void HTMLFormat__xref(OUTPUT_STREAM, weave_target *wv, paragraph *P, section *fr
 		else PUT(Str__get(pos));
 }
 
-#line 561 "inweb/Chapter 5/HTML Formats.w"
+#line 566 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__tail(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *comment) {
 	HTMLFormat__exit_current_paragraph(OUT);
@@ -19470,7 +19488,7 @@ void HTMLFormat__tail(weave_format *self, text_stream *OUT, weave_target *wv,
 	Indexer__cover_sheet_maker(OUT, wv->weave_web, TL_IS_292, wv, WEAVE_SECOND_HALF);
 }
 
-#line 573 "inweb/Chapter 5/HTML Formats.w"
+#line 578 "inweb/Chapter 5/HTML Formats.w"
 int HTMLFormat__begin_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) {
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "%S", Bibliographic__get_datum(W, TL_IS_293));

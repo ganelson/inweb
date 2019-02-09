@@ -514,9 +514,14 @@ void HTMLFormat::commentary_text(weave_format *self, text_stream *OUT, weave_tar
 		if (Str::get_at(id, i) == '&') WRITE("&amp;");
 		else if (Str::get_at(id, i) == '<') WRITE("&lt;");
 		else if (Str::get_at(id, i) == '>') WRITE("&gt;");
-		else if ((Str::get_at(id, i) == ' ') && (Str::get_at(id, i+1) == '-') &&
+		else if ((i == 0) && (Str::get_at(id, i) == '-') &&
+			(Str::get_at(id, i+1) == '-') &&
+			((Str::get_at(id, i+2) == ' ') || (Str::get_at(id, i+2) == 0))) {
+			WRITE("&mdash;"); i++;
+		} else if ((Str::get_at(id, i) == ' ') && (Str::get_at(id, i+1) == '-') &&
 			(Str::get_at(id, i+2) == '-') &&
-			((Str::get_at(id, i+3) == ' ') || (Str::get_at(id, i+3) == 0))) {
+			((Str::get_at(id, i+3) == ' ') || (Str::get_at(id, i+3) == '\n') ||
+			(Str::get_at(id, i+3) == 0))) {
 			WRITE(" &mdash;"); i+=2;
 		} else WRITE("%c", Str::get_at(id, i));
 	}
