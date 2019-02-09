@@ -19425,7 +19425,6 @@ void HTMLFormat__endnote(weave_format *self, text_stream *OUT, weave_target *wv,
 #line 510 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__commentary_text(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *id) {
-PRINT("So: %S\n", id);
 	for (int i=0; i < Str__len(id); i++) {
 		if (html_in_para == HTML_OUT) HTMLFormat__p(OUT, "inwebparagraph");
 		if (Str__get_at(id, i) == '&') WRITE("&amp;");
@@ -19437,7 +19436,8 @@ PRINT("So: %S\n", id);
 			WRITE("&mdash;"); i++;
 		} else if ((Str__get_at(id, i) == ' ') && (Str__get_at(id, i+1) == '-') &&
 			(Str__get_at(id, i+2) == '-') &&
-			((Str__get_at(id, i+3) == ' ') || (Str__get_at(id, i+3) == '\n') || (Str__get_at(id, i+3) == 0))) {
+			((Str__get_at(id, i+3) == ' ') || (Str__get_at(id, i+3) == '\n') ||
+			(Str__get_at(id, i+3) == 0))) {
 			WRITE(" &mdash;"); i+=2;
 		} else WRITE("%c", Str__get_at(id, i));
 	}
