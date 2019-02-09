@@ -31,7 +31,8 @@ Switches come in five sorts:
 =
 typedef struct command_line_switch {
 	int switch_id;
-	struct text_stream *switch_name; /* e.g., |log| */
+	struct text_stream *switch_name; /* e.g., |no-verbose| */
+	struct text_stream *switch_sort_name; /* e.g., |verbose| */
 	struct text_stream *help_text;
 	int valency; /* 1 for bare, 2 for one argument follows */
 	int form; /* one of the |*_CLSF| values above */
@@ -72,6 +73,7 @@ command_line_switch *CommandLine::declare_switch_p(int id,
 	if (cls_dictionary == NULL) cls_dictionary = Dictionaries::new(16, FALSE);
 	command_line_switch *cls = CREATE(command_line_switch);
 	cls->switch_name = name;
+	@<Make the sorting name@>;
 	cls->switch_id = id;
 	cls->valency = val;
 	cls->help_text = help_literal;
@@ -82,6 +84,17 @@ command_line_switch *CommandLine::declare_switch_p(int id,
 	Dictionaries::write_value(cls_dictionary, cls->switch_name, cls);
 	return cls;
 }
+
+@ When we alphabetically sort switches for the |-help| output, we want to
+file, say, |-no-verbose| immediately after |-verbose|, not back in the N
+section. So the sorting version of |no-verbose| is |verbose_|.
+
+@<Make the sorting name@> =
+	cls->switch_sort_name = Str::duplicate(name);
+	if (Str::begins_with_wide_string(name, L"no-")) {
+		Str::delete_n_characters(cls->switch_sort_name, 3);
+		WRITE_TO(cls->switch_sort_name, "_");
+	}
 
 @ Booleans are automatically created in pairs, e.g., |-destroy-world| and
 |-no-destroy-world|:
@@ -323,7 +336,7 @@ void CommandLine::write_help(OUTPUT_STREAM) {
 
 @ =
 int CommandLine::compare_names(const void *ent1, const void *ent2) {
-	text_stream *tx1 = (*((const command_line_switch **) ent1))->switch_name;
-	text_stream *tx2 = (*((const command_line_switch **) ent2))->switch_name;
-	return Str::cmp(tx1, tx2);
+	text_stream *tx1 = (*((const command_line_switch **) ent1))->switch_sort_name;
+	text_stream *tx2 = (*((const command_line_switch **) ent2))->switch_sort_name;
+	return Str::cmp_insensitive(tx1, tx2);
 }
