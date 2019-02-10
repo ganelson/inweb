@@ -441,11 +441,11 @@ they have the type <code class="display"><span class="extract">structure *</span
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">ntv</span><span class="plain">-</span><span class="element">&gt;ntv_name</span><span class="plain">, </span><span class="identifier">var_given</span><span class="plain">))</span>
                     <span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ntv</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">This one's new, so create a new nonterminal variable</span> <span class="cwebmacronumber">3.1.1.1.2.2</span>&gt;<span class="character">;</span>
-            <span class="character">DISCARD_TEXT(var_given);</span>
-            <span class="character">DISCARD_TEXT(type_given);</span>
-        <span class="character">}</span>
-        <span class="character">DISCARD_TEXT(to_scan);</span>
-        <span class="character">Regexp::dispose_of(&amp;mr);</span>
+            <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">var_given</span><span class="plain">);</span>
+            <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">type_given</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">to_scan</span><span class="plain">);</span>
+        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -478,15 +478,15 @@ has identifier <code class="display"><span class="extract">"kind_ref_NTMV"</span
 
 
 <pre class="displaydefn">
-        <span class="character">ntv = CREATE(nonterminal_variable);</span>
-        <span class="character">ntv-&gt;ntv_name = Str::duplicate(var_given);</span>
-        <span class="character">ntv-&gt;ntv_type = Str::duplicate(type_given);</span>
-        <span class="character">LOOP_THROUGH_TEXT(P, var_given)</span>
-            <span class="character">if ((Str::get(P) == '</span><span class="plain">-</span><span class="character">') || (Str::get(P) == '</span><span class="plain">:</span><span class="character">'))</span>
-                <span class="character">Str::put(P, '</span><span class="identifier">_</span><span class="character">');</span>
-        <span class="character">ntv-&gt;ntv_identifier = Str::new();</span>
-        <span class="character">WRITE_TO(ntv-&gt;ntv_identifier, "%S_NTMV", var_given);</span>
-        <span class="character">ntv-&gt;first_mention = AL;</span>
+        <span class="identifier">ntv</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">nonterminal_variable</span><span class="plain">);</span>
+        <span class="identifier">ntv</span><span class="plain">-</span><span class="element">&gt;ntv_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">var_given</span><span class="plain">);</span>
+        <span class="identifier">ntv</span><span class="plain">-</span><span class="element">&gt;ntv_type</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">type_given</span><span class="plain">);</span>
+        <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">var_given</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="character">'-'</span><span class="plain">) || (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="character">':'</span><span class="plain">))</span>
+                <span class="functiontext">Str::put</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="character">'_'</span><span class="plain">);</span>
+        <span class="identifier">ntv</span><span class="plain">-</span><span class="element">&gt;ntv_identifier</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">ntv</span><span class="plain">-</span><span class="element">&gt;ntv_identifier</span><span class="plain">, </span><span class="string">"%S_NTMV"</span><span class="plain">, </span><span class="identifier">var_given</span><span class="plain">);</span>
+        <span class="identifier">ntv</span><span class="plain">-</span><span class="element">&gt;first_mention</span><span class="plain"> = </span><span class="identifier">AL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1534,7 +1534,7 @@ exists. We watch for it here:
 
 <p class="endnote">The function InCSupport::share_element is used in <a href="#SP1">&#167;1</a>.</p>
 
-<!--End of weave: 993 lines from a web of 20842-->
+<!--End of weave: 993 lines from a web of 20876-->
 	</body>
 </html>
 

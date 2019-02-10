@@ -169,8 +169,8 @@ just that installation and use of Foundation-built tools is less convenient.)
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::where_am_i</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">buffer</span><span class="plain">[</span><span class="identifier">PATH_MAX</span><span class="plain"> + 1];</span>
         &lt;<span class="cwebmacro">Follow the proc filesystem symlink to the real filesystem's file</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="character">;</span>
-        &lt;<span class="cwebmacro">Transcode buffer, which is locale-encoded, into the wide-char buffer</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="character">;</span>
-    <span class="character">}</span>
+        &lt;<span class="cwebmacro">Transcode buffer, which is locale-encoded, into the wide-char buffer</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="plain">;</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -192,9 +192,9 @@ symlinks in <code class="display"><span class="extract">/proc</span></code> are 
 
 
 <pre class="displaydefn">
-        <span class="character">ssize_t link_len = readlink("/proc/self/exe", buffer, PATH_MAX);</span>
-        <span class="character">if (link_len &lt; 0) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="character">; </span>    <span class="comment">unable to find</span>
-        <span class="character">buffer[link_len] = '</span><span class="plain">\0</span><span class="character">';</span>
+        <span class="identifier">ssize_t</span><span class="plain"> </span><span class="identifier">link_len</span><span class="plain"> = </span><span class="identifier">readlink</span><span class="plain">(</span><span class="string">"/proc/self/exe"</span><span class="plain">, </span><span class="identifier">buffer</span><span class="plain">, </span><span class="identifier">PATH_MAX</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">link_len</span><span class="plain"> &lt; 0) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">; </span>    <span class="comment">unable to find</span>
+        <span class="identifier">buffer</span><span class="plain">[</span><span class="identifier">link_len</span><span class="plain">] = </span><span class="character">'\</span><span class="plain">0</span><span class="character">'</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -497,7 +497,7 @@ actually running a one-line AppleScript here.
 </pre>
 <p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
 
-<!--End of weave: 284 lines from a web of 9267-->
+<!--End of weave: 284 lines from a web of 9279-->
 	</body>
 </html>
 

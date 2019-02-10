@@ -40,6 +40,8 @@ directory itself, but its parent. Then type one of the following:
 
 	|$ make -f inweb/inweb.mk macos|
 
+	|$ make -f inweb/inweb.mk macos32|
+
 	|$ make -f inweb/inweb.mk linux|
 
 	|$ make -f inweb/inweb.mk windows|
@@ -50,19 +52,27 @@ directory itself, but its parent. Then type one of the following:
 
 Unix is for any generic version of Unix, non-Linux, non-MacOS: Solaris, for
 example. Android support is currently disabled (though only because its
-build settings are currently missing from the inweb distribution).
+build settings are currently missing from the inweb distribution). The
+older macos32 platform won't build with the MacOS SDK from 10.14 onwards,
+and in any case 32-bit executables won't run from 10.15 onwards: so use
+the default macos unless you need to build for an old version of MacOS.
 
-This does two things: first it copies a platform-specific file of make
-settings -- what compilers to use, what options, and so on -- to become
-the file
+You should see some typical make chatter, ending in a reply such as:
 
-	|inweb/platform-settings.mk|
+	|=== Platform set to 64-bit MacOS. Now: make -f inweb/inweb.mk initial ===|
 
-(That file is not included in the Git repository for Inweb, in order to
-oblige users to type one of the above commands before doing anything else.)
+(All that happened, in fact, was that a platform-specific file of make
+settings -- what compilers to use, what options, and so on -- was copied
+over to become the file |inweb/platform-settings.mk|. This is a file which
+is necessary for Inweb to be fully used, but which is intentionally not
+included in the Git repository for Inweb, in order to oblige users to choose
+a platform before doing anything else.) Anyway, next do as instructed:
+
+	|$ make -f inweb/inweb.mk initial|
+
 With that done, make should go on to compile the Inweb executable, leaving
 you with a working copy of the software. You need never run that
-platform-specific command again: you can simply 
+platform-specific command, or make as |initial|, again: you can simply:
 
 	|$ make -f inweb/inweb.mk|
 

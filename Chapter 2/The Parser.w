@@ -241,13 +241,13 @@ would be "elctrcty", since we don't count "y" as a vowel here.
 	int disnum = 0, collision = FALSE;
 	do {
 		if (disnum++ > 0) {
-			int ldn = 5;
-			if (disnum >= 1000) ldn = 4;
-			else if (disnum >= 100) ldn = 3;
-			else if (disnum >= 10) ldn = 2;
-			else ldn = 1;
+			int ldn = 4;
+			if (disnum >= 1000) ldn = 3;
+			else if (disnum >= 100) ldn = 2;
+			else if (disnum >= 10) ldn = 1;
+			else ldn = 0;
 			Str::clear(S->range);
-			WRITE_TO(S->range, "%S%d", original_range);
+			WRITE_TO(S->range, "%S", original_range);
 			Str::truncate(S->range, Str::len(S->range) - ldn);
 			WRITE_TO(S->range, "%d", disnum);
 		}

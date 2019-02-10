@@ -59,6 +59,7 @@ directory itself, but its parent. Then type one of the following:
 
 <pre class="display">
         <span class="plain">$ make -f inweb/inweb.mk macos</span>
+        <span class="plain">$ make -f inweb/inweb.mk macos32</span>
         <span class="plain">$ make -f inweb/inweb.mk linux</span>
         <span class="plain">$ make -f inweb/inweb.mk windows</span>
         <span class="plain">$ make -f inweb/inweb.mk unix</span>
@@ -67,26 +68,40 @@ directory itself, but its parent. Then type one of the following:
 
 <p class="inwebparagraph">Unix is for any generic version of Unix, non-Linux, non-MacOS: Solaris, for
 example. Android support is currently disabled (though only because its
-build settings are currently missing from the inweb distribution).
+build settings are currently missing from the inweb distribution). The
+older macos32 platform won't build with the MacOS SDK from 10.14 onwards,
+and in any case 32-bit executables won't run from 10.15 onwards: so use
+the default macos unless you need to build for an old version of MacOS.
 </p>
 
-<p class="inwebparagraph">This does two things: first it copies a platform-specific file of make
-settings &mdash; what compilers to use, what options, and so on &mdash; to become
-the file
+<p class="inwebparagraph">You should see some typical make chatter, ending in a reply such as:
 </p>
 
 <p class="inwebparagraph"></p>
 
 
 <pre class="display">
-        <span class="plain">inweb/platform-settings.mk</span>
+        <span class="plain">=== Platform set to 64-bit MacOS. Now: make -f inweb/inweb.mk initial ===</span>
 </pre>
 
-<p class="inwebparagraph">(That file is not included in the Git repository for Inweb, in order to
-oblige users to type one of the above commands before doing anything else.)
-With that done, make should go on to compile the Inweb executable, leaving
+<p class="inwebparagraph">(All that happened, in fact, was that a platform-specific file of make
+settings &mdash; what compilers to use, what options, and so on &mdash; was copied
+over to become the file <code class="display"><span class="extract">inweb/platform-settings.mk</span></code>. This is a file which
+is necessary for Inweb to be fully used, but which is intentionally not
+included in the Git repository for Inweb, in order to oblige users to choose
+a platform before doing anything else.) Anyway, next do as instructed:
+</p>
+
+<p class="inwebparagraph"></p>
+
+
+<pre class="display">
+        <span class="plain">$ make -f inweb/inweb.mk initial</span>
+</pre>
+
+<p class="inwebparagraph">With that done, make should go on to compile the Inweb executable, leaving
 you with a working copy of the software. You need never run that
-platform-specific command again: you can simply
+platform-specific command, or make as <code class="display"><span class="extract">initial</span></code>, again: you can simply:
 </p>
 
 <p class="inwebparagraph"></p>
@@ -238,7 +253,7 @@ with this breakpoint". We do not recommend this.
 <ul class="items"><li>(d) Inweb can be used with much larger programs divided into sections
 and, if desired, chapters.
 </li></ul>
-<!--End of weave: 183 lines from a web of 20842-->
+<!--End of weave: 193 lines from a web of 20876-->
 	</body>
 </html>
 

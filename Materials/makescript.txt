@@ -25,6 +25,13 @@ endef
 test:
 	$(INTEST) -from $(ME) all
 
+# Weaving the web for GitHub Pages:
+
+.PHONY: pages
+pages:
+	mkdir -p $(ME)/docs/$(MYNAME)
+	$(INWEB) $(ME) -weave-docs -weave-into $(ME)/docs/$(MYNAME)
+
 # Cleaning up:
 
 .PHONY: clean

@@ -25,7 +25,7 @@ INDULGENTCC = clang -std=c99 -c $(FEWERWARNINGS) $(CCOPTS) -g
 
 # On Mac OS X, we assume the user has the Developer Tools installed:
 
-CCOPTS = -DPLATFORM_MACOS=1 -mmacosx-version-min=10.6 -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+CCOPTS = -DPLATFORM_MACOS=1 -mmacosx-version-min=10.4 -arch i386 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
 # The strictness of "CC" comes about by enabling all warnings except:
 

@@ -99,11 +99,14 @@ void Main::follow_instructions(inweb_instructions *ins) {
 @ This is a one-off featurette:
 
 @<Translate a makefile@> =
-	if ((ins->prototype_setting) && (ins->makefile_setting))
+	if ((ins->makefile_setting) && (ins->prototype_setting == NULL))
+		ins->prototype_setting = Filenames::from_text(I"makescript.txt");
+	if ((ins->gitignore_setting) && (ins->prototype_setting == NULL))
+		ins->prototype_setting = Filenames::from_text(I"gitignorescript.txt");
+	if (ins->makefile_setting)
 		Makefiles::write(NULL, ins->prototype_setting, ins->makefile_setting);
-	else if ((ins->prototype_setting) && (ins->gitignore_setting))
+	else if (ins->gitignore_setting)
 		Git::write_gitignore(NULL, ins->prototype_setting, ins->gitignore_setting);
-	else Errors::fatal("must specify both -makefile and -prototype");
 
 @ But otherwise we read and fully parse a web, and then do something with it:
 

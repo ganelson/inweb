@@ -131,14 +131,14 @@ structure.
             <span class="identifier">state</span><span class="plain">-</span><span class="element">&gt;halves</span><span class="plain"> |= </span><span class="constant">IN_SECOND_HALF</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Cover Sheet"</span><span class="plain">)) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">include</span><span class="plain">) </span>&lt;<span class="cwebmacro">Weave in the parent pattern's cover sheet</span> <span class="cwebmacronumber">2.1.1</span>&gt;<span class="character">;</span>
-        <span class="character">} else if (Regexp::match(&amp;mr2, command, L"Template (%c*?)")) {</span>
-            <span class="character">if (include) </span>&lt;<span class="cwebmacro">Weave in an index</span> <span class="cwebmacronumber">2.1.2</span>&gt;<span class="character">;</span>
-        <span class="character">} else if (Bibliographic::data_exists(state-&gt;target-&gt;weave_web, command)) {</span>
-            <span class="character">if (include) </span>&lt;<span class="cwebmacro">Weave in the value of this variable name</span> <span class="cwebmacronumber">2.1.3</span>&gt;<span class="character">;</span>
-        <span class="character">} else {</span>
-            <span class="character">if (include) WRITE("%S", command);</span>
-        <span class="character">}</span>
-        <span class="character">Regexp::dispose_of(&amp;mr2);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Template (%c*?)"</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">include</span><span class="plain">) </span>&lt;<span class="cwebmacro">Weave in an index</span> <span class="cwebmacronumber">2.1.2</span>&gt;<span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Bibliographic::data_exists</span><span class="plain">(</span><span class="identifier">state</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">-</span><span class="element">&gt;weave_web</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">include</span><span class="plain">) </span>&lt;<span class="cwebmacro">Weave in the value of this variable name</span> <span class="cwebmacronumber">2.1.3</span>&gt;<span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">include</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -151,16 +151,16 @@ structure.
 
 
 <pre class="displaydefn">
-        <span class="character">if (state-&gt;target-&gt;pattern-&gt;based_on) {</span>
-            <span class="character">weave_pattern *saved = state-&gt;target-&gt;pattern;</span>
-            <span class="character">state-&gt;target-&gt;pattern = state-&gt;target-&gt;pattern-&gt;based_on;</span>
-            <span class="character">Indexer::cover_sheet_maker(OUT, state-&gt;target-&gt;weave_web,</span>
-                <span class="character">I"cover-sheet", state-&gt;target,</span>
-                <span class="character">(state-&gt;halves &amp; (WEAVE_FIRST_HALF + WEAVE_SECOND_HALF)));</span>
-            <span class="character">state-&gt;target-&gt;pattern = saved;</span>
-        <span class="character">} else {</span>
-            <span class="character">Errors::in_text_file("cover sheet recursively includes itself", tfp);</span>
-        <span class="character">}</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">state</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">-</span><span class="element">&gt;pattern</span><span class="plain">-</span><span class="element">&gt;based_on</span><span class="plain">) {</span>
+            <span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">saved</span><span class="plain"> = </span><span class="identifier">state</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">-</span><span class="element">&gt;pattern</span><span class="plain">;</span>
+            <span class="identifier">state</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">-</span><span class="element">&gt;pattern</span><span class="plain"> = </span><span class="identifier">state</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">-</span><span class="element">&gt;pattern</span><span class="plain">-</span><span class="element">&gt;based_on</span><span class="plain">;</span>
+            <span class="functiontext">Indexer::cover_sheet_maker</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">-</span><span class="element">&gt;weave_web</span><span class="plain">,</span>
+                <span class="identifier">I</span><span class="string">"cover-sheet"</span><span class="plain">, </span><span class="identifier">state</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">,</span>
+                <span class="plain">(</span><span class="identifier">state</span><span class="plain">-</span><span class="element">&gt;halves</span><span class="plain"> &amp; (</span><span class="constant">WEAVE_FIRST_HALF</span><span class="plain"> + </span><span class="constant">WEAVE_SECOND_HALF</span><span class="plain">)));</span>
+            <span class="identifier">state</span><span class="plain">-</span><span class="element">&gt;target</span><span class="plain">-</span><span class="element">&gt;pattern</span><span class="plain"> = </span><span class="identifier">saved</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"cover sheet recursively includes itself"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
+        <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -797,7 +797,7 @@ its square-bracketed parts.
 
 <p class="endnote">The function Indexer::copy_CSS appears nowhere else.</p>
 
-<!--End of weave: 522 lines from a web of 20842-->
+<!--End of weave: 522 lines from a web of 20876-->
 	</body>
 </html>
 

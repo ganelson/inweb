@@ -406,13 +406,13 @@ would be "elctrcty", since we don't count "y" as a vowel here.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">disnum</span><span class="plain"> = 0, </span><span class="identifier">collision</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">do</span><span class="plain"> {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">disnum</span><span class="plain">++ &gt; 0) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ldn</span><span class="plain"> = 5;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">disnum</span><span class="plain"> &gt;= 1000) </span><span class="identifier">ldn</span><span class="plain"> = 4;</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">disnum</span><span class="plain"> &gt;= 100) </span><span class="identifier">ldn</span><span class="plain"> = 3;</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">disnum</span><span class="plain"> &gt;= 10) </span><span class="identifier">ldn</span><span class="plain"> = 2;</span>
-                <span class="reserved">else</span><span class="plain"> </span><span class="identifier">ldn</span><span class="plain"> = 1;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ldn</span><span class="plain"> = 4;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">disnum</span><span class="plain"> &gt;= 1000) </span><span class="identifier">ldn</span><span class="plain"> = 3;</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">disnum</span><span class="plain"> &gt;= 100) </span><span class="identifier">ldn</span><span class="plain"> = 2;</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">disnum</span><span class="plain"> &gt;= 10) </span><span class="identifier">ldn</span><span class="plain"> = 1;</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="identifier">ldn</span><span class="plain"> = 0;</span>
                 <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;range</span><span class="plain">);</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;range</span><span class="plain">, </span><span class="string">"%S%d"</span><span class="plain">, </span><span class="identifier">original_range</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;range</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">original_range</span><span class="plain">);</span>
                 <span class="functiontext">Str::truncate</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;range</span><span class="plain">, </span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;range</span><span class="plain">) - </span><span class="identifier">ldn</span><span class="plain">);</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;range</span><span class="plain">, </span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">disnum</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -1087,7 +1087,7 @@ when it comes to Inweb's exit code, so they will halt a make.
 
 <p class="endnote">The function Parser::wrong_version is used in <a href="#SP1_1_1">&#167;1.1.1</a>, <a href="#SP1_1_5">&#167;1.1.5</a>, <a href="#SP1_1_6">&#167;1.1.6</a>, <a href="#SP1_1_6_3">&#167;1.1.6.3</a>, <a href="#SP1_1_6_5_1">&#167;1.1.6.5.1</a>, <a href="#SP1_1_6_5_1_1">&#167;1.1.6.5.1.1</a>, <a href="#SP1_1_6_5_1_2">&#167;1.1.6.5.1.2</a>, <a href="#SP1_1_6_5_1_3">&#167;1.1.6.5.1.3</a>, <a href="#SP1_1_6_5_1_4">&#167;1.1.6.5.1.4</a>, <a href="#SP1_1_6_5_1_5">&#167;1.1.6.5.1.5</a>, 3/tw (<a href="3-tw.html#SP1_3_3_1_2_1">&#167;1.3.3.1.2.1</a>).</p>
 
-<!--End of weave: 702 lines from a web of 20842-->
+<!--End of weave: 702 lines from a web of 20876-->
 	</body>
 </html>
 

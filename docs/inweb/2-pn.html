@@ -139,10 +139,10 @@ other nodes a bit speculatively.
 
 <pre class="displaydefn">
         &lt;<span class="cwebmacro">The parent of a macro definition is the place where it's first used</span> <span class="cwebmacronumber">1.2.1</span>&gt;<span class="character">;</span>
-        &lt;<span class="cwebmacro">Otherwise share the parent of a following paragraph, provided it precedes us</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="character">;</span>
-        &lt;<span class="cwebmacro">Create paragraph number texts</span> <span class="cwebmacronumber">1.2.3</span>&gt;<span class="character">;</span>
-        &lt;<span class="cwebmacro">Number the still parent-less paragraphs consecutively from 1</span> <span class="cwebmacronumber">1.2.4</span>&gt;<span class="character">;</span>
-        &lt;<span class="cwebmacro">Recursively derive the numbers of parented paragraphs from those of their parents</span> <span class="cwebmacronumber">1.2.5</span>&gt;<span class="character">;</span>
+        &lt;<span class="cwebmacro">Otherwise share the parent of a following paragraph, provided it precedes us</span> <span class="cwebmacronumber">1.2.2</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Create paragraph number texts</span> <span class="cwebmacronumber">1.2.3</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Number the still parent-less paragraphs consecutively from 1</span> <span class="cwebmacronumber">1.2.4</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Recursively derive the numbers of parented paragraphs from those of their parents</span> <span class="cwebmacronumber">1.2.5</span>&gt;<span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -155,13 +155,13 @@ other nodes a bit speculatively.
 
 
 <pre class="displaydefn">
-        <span class="character">paragraph *P;</span>
-        <span class="character">LOOP_OVER_LINKED_LIST(P, paragraph, S-&gt;paragraphs)</span>
-            <span class="character">if (P-&gt;defines_macro) {</span>
-                <span class="character">macro_usage *mu =</span>
-                    <span class="character">FIRST_IN_LINKED_LIST(macro_usage, P-&gt;defines_macro-&gt;macro_usages);</span>
-                <span class="character">if (mu) P-&gt;parent_paragraph = mu-&gt;used_in_paragraph;</span>
-            <span class="character">}</span>
+        <span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;paragraphs</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;defines_macro</span><span class="plain">) {</span>
+                <span class="reserved">macro_usage</span><span class="plain"> *</span><span class="identifier">mu</span><span class="plain"> =</span>
+                    <span class="identifier">FIRST_IN_LINKED_LIST</span><span class="plain">(</span><span class="reserved">macro_usage</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;defines_macro</span><span class="plain">-</span><span class="element">&gt;macro_usages</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mu</span><span class="plain">) </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;parent_paragraph</span><span class="plain"> = </span><span class="identifier">mu</span><span class="plain">-</span><span class="element">&gt;used_in_paragraph</span><span class="plain">;</span>
+            <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -270,7 +270,7 @@ chosen by the author, so 2 it is.
 
 <p class="endnote">The function Numbering::settle_paragraph_number is used in <a href="#SP1_2_5">&#167;1.2.5</a>.</p>
 
-<!--End of weave: 161 lines from a web of 20842-->
+<!--End of weave: 161 lines from a web of 20876-->
 	</body>
 </html>
 

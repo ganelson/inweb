@@ -369,7 +369,7 @@ subsequent lines until the next blank.
 
 <p class="endnote">This code is used in <a href="#SP1_3_3_1">&#167;1.3.3.1</a>.</p>
 
-<p class="inwebparagraph"><a id="SP1_3_3_1_5"></a><b>&#167;1.3.3.1.5.  </b>After which we have the Interface &mdash; if we're in Inweb syntax version 1 --
+<p class="inwebparagraph"><a id="SP1_3_3_1_5"></a><b>&#167;1.3.3.1.5.  </b>After which we have the Interface &mdash; if we're in Inweb syntax version 1 &mdash;
 but it weaves nothing:
 </p>
 
@@ -795,6 +795,7 @@ otherwise, they are set flush right.
             <span class="reserved">para_macro</span><span class="plain"> *</span><span class="identifier">pmac</span><span class="plain"> = </span><span class="functiontext">Macros::find_by_name</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1], </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="functiontext">Formats::source_code</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">tab_stops_of_indentation</span><span class="plain">, </span><span class="identifier">prefatory</span><span class="plain">,</span>
                 <span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">colouring</span><span class="plain">, </span><span class="identifier">concluding_comment</span><span class="plain">, (</span><span class="identifier">found</span><span class="plain"> == 0)?</span><span class="constant">TRUE</span><span class="plain">:</span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
+            <span class="functiontext">Languages::reset_syntax_colouring</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;sect_language</span><span class="plain">);</span>
             <span class="identifier">found</span><span class="plain">++;</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">defn</span><span class="plain"> = (</span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;owning_paragraph</span><span class="plain"> == </span><span class="identifier">pmac</span><span class="plain">-</span><span class="element">&gt;defining_paragraph</span><span class="plain">)?</span><span class="constant">TRUE</span><span class="plain">:</span><span class="constant">FALSE</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">defn</span><span class="plain">) </span><span class="identifier">state</span><span class="plain">-</span><span class="element">&gt;in_run_of_definitions</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
@@ -1291,7 +1292,7 @@ marked as <code class="display"><span class="extract">@h</span></code> headings.
 
 <p class="endnote">The function Weaver::weave_table_of_contents is used in <a href="#SP1_3_3_1_3">&#167;1.3.3.1.3</a>, <a href="#SP1_3_3_1_4">&#167;1.3.3.1.4</a>.</p>
 
-<!--End of weave: 821 lines from a web of 20842-->
+<!--End of weave: 822 lines from a web of 20876-->
 	</body>
 </html>
 

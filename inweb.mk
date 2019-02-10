@@ -23,27 +23,32 @@ force: $(ME)/platform-settings.mk
 .PHONY: macos
 macos: 
 	cp -f $(ME)/Materials/macos-make-settings.mk $(ME)/platform-settings.mk
-	$(call make-me-once-tangled)
+	echo "=== Platform set to 64-bit MacOS. Now: make -f inweb/inweb.mk initial ==="
+
+.PHONY: macos32
+macos32:
+	cp -f $(ME)/Materials/macos32-make-settings.mk $(ME)/platform-settings.mk
+	echo "=== Platform set to 32-bit MacOS. Now: make -f inweb/inweb.mk initial ==="
 
 .PHONY: windows
 windows: 
 	cp -f $(ME)/Materials/windows-make-settings.mk $(ME)/platform-settings.mk
-	$(call make-me-once-tangled)
+	echo "=== Platform set to Windows. Now: make -f inweb/inweb.mk initial ==="
 
 .PHONY: linux
 linux: 
 	cp -f $(ME)/Materials/linux-make-settings.mk $(ME)/platform-settings.mk
-	$(call make-me-once-tangled)
+	echo "=== Platform set to Linux. Now: make -f inweb/inweb.mk initial ==="
 
 .PHONY: unix
 unix: 
 	cp -f $(ME)/Materials/unix-make-settings.mk $(ME)/platform-settings.mk
-	$(call make-me-once-tangled)
+	echo "=== Platform set to generic Unix (non-Linux, non-MacOS, non-Android). Now: make -f inweb/inweb.mk initial ==="
 
 .PHONY: android
 android: 
 	cp -f $(ME)/Materials/android-make-settings.mk $(ME)/platform-settings.mk
-	$(call make-me-once-tangled)
+	echo "=== Platform set to Android. Now: make -f inweb/inweb.mk initial ==="
 
 .PHONY: initial
 initial: $(ME)/platform-settings.mk
@@ -71,6 +76,15 @@ endef
 .PHONY: test
 test:
 	$(INTEST) -from $(ME) all
+
+.PHONY: pages
+pages:
+	mkdir -p $(ME)/docs/inweb
+	mkdir -p $(ME)/docs/foundation-module
+	mkdir -p $(ME)/docs/foundation-test
+	$(INWEB) $(ME) -weave-docs -weave-into $(ME)/docs/inweb
+	$(INWEB) $(ME)/foundation-module -weave-docs -weave-into $(ME)/docs/foundation-module
+	$(INWEB) $(ME)/foundation-test -weave-docs -weave-into $(ME)/docs/foundation-test
 
 .PHONY: clean
 clean:

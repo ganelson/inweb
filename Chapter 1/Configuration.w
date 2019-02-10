@@ -29,8 +29,8 @@ typedef struct inweb_instructions {
 	struct filename *weave_to_setting; /* |-weave-to X|: the pathname X, if supplied */
 	struct pathname *weave_into_setting; /* |-weave-into X|: the pathname X, if supplied */
 	struct filename *tangle_setting; /* |-tangle-to X|: the pathname X, if supplied */
-	struct filename *makefile_setting; /* |-makefile X|: the pathname X, if supplied */
-	struct filename *gitignore_setting; /* |-gitignore X|: the pathname X, if supplied */
+	struct filename *makefile_setting; /* |-makefile X|: the filename X, if supplied */
+	struct filename *gitignore_setting; /* |-gitignore X|: the filename X, if supplied */
 	struct filename *prototype_setting; /* |-prototype X|: the pathname X, if supplied */
 	int verbose_switch; /* |-verbose|: print names of files read to stdout */
 	int targets; /* used only for parsing */

@@ -35,16 +35,12 @@ data structures, |errno| is set to |ENOMEM|.
 (e) If an unambiguous filename is found but the |fopen()| fails, |errno| is
 left at whatever value the underlying |fopen()| set it to.
 
-@h Use of POSIX.
+@h The routine. ^"ifdef-PLATFORM_POSIX"
 The routine is available only on POSIX platforms where |PLATFORM_POSIX|
 is defined (see "Platform-Specific Definitions"). In practice this means
 everywhere except Windows, but all Windows file systems are case-preserving
 and case-insensitive in any case.
 
-=
-#ifdef PLATFORM_POSIX /* inweb: always predeclare */
-
-@h The routine.
 Briefly, we try to get the extension directory name right first, by looking
 for the given casing, then if that fails, for a unique alternative with
 different casing; and then repeat within that directory for the extension
@@ -178,22 +174,27 @@ The contents of |workstring| are not significant afterwards.
 
 @<Parse the path to break it into topdir path, extension directory and leafname@> =
 	char *p;
-	size_t extdirindex, extindex, namelen, dirlen;
+	size_t extdirindex = 0, extindex = 0, namelen = 0, dirlen = 0;
 
 	p = strrchr(path, FOLDER_SEPARATOR);
-	extindex = (size_t) (p - path);
-	namelen = length - extindex - 1;
-	strncpy(ciextname, path + extindex + 1, namelen);
+	if (p) {
+		extindex = (size_t) (p - path);
+		namelen = length - extindex - 1;
+		strncpy(ciextname, path + extindex + 1, namelen);
+	}
 	ciextname[namelen] = 0;
-
-	strncpy(workstring, path, (extindex-1));
-	workstring[extindex-1] = 0;
+	
+	strncpy(workstring, path, extindex);
+	workstring[extindex] = 0;
 	p = strrchr(workstring, FOLDER_SEPARATOR);
-	extdirindex = (size_t) (p - workstring);
-	strncpy(topdirpath, path, extdirindex);
+	if (p) {
+		extdirindex = (size_t) (p - workstring);
+		strncpy(topdirpath, path, extdirindex);
+	}
 	topdirpath[extdirindex] = 0;
 
-	dirlen = extindex - extdirindex - 1;
+	dirlen = extindex - extdirindex;
+	if (dirlen > 0) dirlen -= 1;
 	strncpy(ciextdirpath, path + extdirindex + 1, dirlen);
 	ciextdirpath[dirlen] = 0;
 
@@ -224,12 +225,10 @@ int CIFilingSystem::match_in_directory(void *vd,
 	return rc;
 }
 
-@h Non-POSIX tail.
+@h Non-POSIX tail. ^"ifndef-PLATFORM_POSIX"
 On platforms without POSIX directory handling, we revert to regular |fopen|.
 
 =
-#else
 FILE *CIFilingSystem::fopen(const char *path, const char *mode) {
 	return fopen(path, mode);
 }
-#endif
