@@ -1338,7 +1338,7 @@ typedef struct reader_state {
 	int halt_at_at; /* Used for reading contents pages of single-file webs */
 	int halted; /* Set when such a halt has occurred */
 } reader_state;
-#line 247 "inweb/Chapter 3/The Analyser.w"
+#line 250 "inweb/Chapter 3/The Analyser.w"
 typedef struct hash_table {
 	struct linked_list *analysis_hash[HASH_TAB_SIZE]; /* of |hash_table_entry| */
 	int analysis_hash_initialised; /* when we start up, array's contents are undefined */
@@ -1439,14 +1439,14 @@ typedef struct macro_usage {
 	int multiplicity; /* for example, 2 if it's used twice in this paragraph */
 	MEMORY_MANAGEMENT
 } macro_usage;
-#line 255 "inweb/Chapter 3/The Analyser.w"
+#line 258 "inweb/Chapter 3/The Analyser.w"
 typedef struct hash_table_entry {
 	text_stream *hash_key;
 	int reserved_word; /* in the language currently being woven, that is */
 	struct linked_list *usages; /* of |hash_table_entry_usage| */
 	MEMORY_MANAGEMENT
 } hash_table_entry;
-#line 316 "inweb/Chapter 3/The Analyser.w"
+#line 319 "inweb/Chapter 3/The Analyser.w"
 typedef struct hash_table_entry_usage {
 	struct paragraph *usage_recorded_at;
 	int form_of_usage; /* bitmap of the |*_USAGE| constants defined above */
@@ -2720,17 +2720,17 @@ void  Analyser__analyse_code(web *W) ;
 void  Analyser__analyse_as_code(web *W, source_line *L, text_stream *text, int mask, int transf) ;
 #line 227 "inweb/Chapter 3/The Analyser.w"
 int  Analyser__hash_code_from_word(text_stream *text) ;
-#line 268 "inweb/Chapter 3/The Analyser.w"
+#line 271 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry * Analyser__find_hash_entry(section *S, text_stream *text, int create) ;
-#line 297 "inweb/Chapter 3/The Analyser.w"
+#line 300 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__mark_reserved_word(section *S, text_stream *p, int e) ;
-#line 302 "inweb/Chapter 3/The Analyser.w"
+#line 305 "inweb/Chapter 3/The Analyser.w"
 int  Analyser__is_reserved_word(section *S, text_stream *p, int e) ;
-#line 325 "inweb/Chapter 3/The Analyser.w"
+#line 328 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__analyse_find(web *W, source_line *L, text_stream *identifier, int u) ;
-#line 346 "inweb/Chapter 3/The Analyser.w"
+#line 349 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__write_makefile(web *W, filename *F) ;
-#line 353 "inweb/Chapter 3/The Analyser.w"
+#line 356 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__write_gitignore(web *W, filename *F) ;
 #line 20 "inweb/Chapter 3/The Swarm.w"
 void  Swarm__weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag, 	weave_pattern *pattern, filename *to, pathname *into, int docs_mode) ;
@@ -13963,21 +13963,24 @@ int Analyser__hash_code_from_word(text_stream *text) {
     	case '-': if (Str__len(text) == 1) break; /* an isolated minus sign is an ordinary word */
     		/* and otherwise fall into... */
     	case '0': case '1': case '2': case '3': case '4':
-    	case '5': case '6': case '7': case '8': case '9':
+    	case '5': case '6': case '7': case '8': case '9': {
+    		int numeric = TRUE;
     		/* the first character may prove to be the start of a number: is this true? */
-			for (p = Str__forward(p); Str__in_range(p); p = Str__forward(p)) if (isdigit(Str__get(p)) == FALSE) break;
-			return NUMBER_HASH;
+			for (p = Str__forward(p); Str__in_range(p); p = Str__forward(p))
+				if (isdigit(Str__get(p)) == FALSE) numeric = FALSE;
+			if (numeric) return NUMBER_HASH;
+		}
     }
     for (p=Str__start(text); Str__in_range(p); p = Str__forward(p))
     	hash_code = (unsigned int) ((int) (hash_code*30011) + (Str__get(p)));
     return (int) (1+(hash_code % (HASH_TAB_SIZE-1))); /* result of X 30011, plus 1 */
 }
 
-#line 251 "inweb/Chapter 3/The Analyser.w"
+#line 254 "inweb/Chapter 3/The Analyser.w"
 
-#line 261 "inweb/Chapter 3/The Analyser.w"
+#line 264 "inweb/Chapter 3/The Analyser.w"
 
-#line 268 "inweb/Chapter 3/The Analyser.w"
+#line 271 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry *Analyser__find_hash_entry(section *S, text_stream *text, int create) {
 	hash_table *HT = &(S->sect_target->symbols);
 	int h = Analyser__hash_code_from_word(text);
@@ -14004,7 +14007,7 @@ hash_table_entry *Analyser__find_hash_entry(section *S, text_stream *text, int c
 	return NULL;
 }
 
-#line 297 "inweb/Chapter 3/The Analyser.w"
+#line 300 "inweb/Chapter 3/The Analyser.w"
 void Analyser__mark_reserved_word(section *S, text_stream *p, int e) {
 	hash_table_entry *hte = Analyser__find_hash_entry(S, p, TRUE);
 	hte->reserved_word |= (1 << e);
@@ -14016,9 +14019,9 @@ int Analyser__is_reserved_word(section *S, text_stream *p, int e) {
 	return FALSE;
 }
 
-#line 321 "inweb/Chapter 3/The Analyser.w"
+#line 324 "inweb/Chapter 3/The Analyser.w"
 
-#line 325 "inweb/Chapter 3/The Analyser.w"
+#line 328 "inweb/Chapter 3/The Analyser.w"
 void Analyser__analyse_find(web *W, source_line *L, text_stream *identifier, int u) {
 	hash_table_entry *hte = Analyser__find_hash_entry(L->owning_section, identifier, FALSE);
 	if (hte == NULL) return;
@@ -14035,7 +14038,7 @@ void Analyser__analyse_find(web *W, source_line *L, text_stream *identifier, int
 	hteu->form_of_usage |= u;
 }
 
-#line 346 "inweb/Chapter 3/The Analyser.w"
+#line 349 "inweb/Chapter 3/The Analyser.w"
 void Analyser__write_makefile(web *W, filename *F) {
 	filename *prototype = Filenames__in_folder(W->path_to_web, TL_IS_124);
 	if (!(TextFiles__exists(prototype)))

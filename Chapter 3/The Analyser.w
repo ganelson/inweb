@@ -231,10 +231,13 @@ int Analyser::hash_code_from_word(text_stream *text) {
     	case '-': if (Str::len(text) == 1) break; /* an isolated minus sign is an ordinary word */
     		/* and otherwise fall into... */
     	case '0': case '1': case '2': case '3': case '4':
-    	case '5': case '6': case '7': case '8': case '9':
+    	case '5': case '6': case '7': case '8': case '9': {
+    		int numeric = TRUE;
     		/* the first character may prove to be the start of a number: is this true? */
-			for (p = Str::forward(p); Str::in_range(p); p = Str::forward(p)) if (isdigit(Str::get(p)) == FALSE) break;
-			return NUMBER_HASH;
+			for (p = Str::forward(p); Str::in_range(p); p = Str::forward(p))
+				if (isdigit(Str::get(p)) == FALSE) numeric = FALSE;
+			if (numeric) return NUMBER_HASH;
+		}
     }
     for (p=Str::start(text); Str::in_range(p); p = Str::forward(p))
     	hash_code = (unsigned int) ((int) (hash_code*30011) + (Str::get(p)));
