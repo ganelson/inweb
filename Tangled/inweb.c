@@ -2760,9 +2760,9 @@ void  Indexer__transcribe_CSS(OUTPUT_STREAM, filename *CSS_file) ;
 void  Indexer__copy_CSS(text_stream *line, text_file_position *tfp, void *X) ;
 #line 16 "inweb/Chapter 3/The Weaver.w"
 int  Weaver__weave_source(web *W, weave_target *wv) ;
-#line 649 "inweb/Chapter 3/The Weaver.w"
+#line 650 "inweb/Chapter 3/The Weaver.w"
 void  Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *wv, paragraph *P) ;
-#line 784 "inweb/Chapter 3/The Weaver.w"
+#line 785 "inweb/Chapter 3/The Weaver.w"
 int  Weaver__weave_table_of_contents(OUTPUT_STREAM, weave_target *wv, section *S) ;
 #line 14 "inweb/Chapter 3/The Tangler.w"
 void  Tangler__go(web *W, tangle_target *target, filename *dest_file) ;
@@ -14876,7 +14876,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	if (L->category == BAR_LCAT) {
 		
 {
-#line 633 "inweb/Chapter 3/The Weaver.w"
+#line 634 "inweb/Chapter 3/The Weaver.w"
 	int mode_now = state->kind_of_material;
 	if (state->kind_of_material != REGULAR_MATERIAL) {
 		state->kind_of_material = REGULAR_MATERIAL;
@@ -14904,7 +14904,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	/* The crucial junction point between modes... */
 	
 {
-#line 482 "inweb/Chapter 3/The Weaver.w"
+#line 483 "inweb/Chapter 3/The Weaver.w"
 	if ((L->category == HEADING_START_LCAT) ||
 		(L->category == PARAGRAPH_START_LCAT) ||
 		(L->category == CHAPTER_HEADING_LCAT) ||
@@ -14912,7 +14912,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 		state->in_run_of_definitions = FALSE;
 		
 {
-#line 633 "inweb/Chapter 3/The Weaver.w"
+#line 634 "inweb/Chapter 3/The Weaver.w"
 	int mode_now = state->kind_of_material;
 	if (state->kind_of_material != REGULAR_MATERIAL) {
 		state->kind_of_material = REGULAR_MATERIAL;
@@ -14925,17 +14925,17 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	if (L) current_paragraph = L->owning_paragraph;
 
 }
-#line 487 "inweb/Chapter 3/The Weaver.w"
+#line 488 "inweb/Chapter 3/The Weaver.w"
 ;
 		if (wv->theme_match)
 			
 {
-#line 517 "inweb/Chapter 3/The Weaver.w"
+#line 518 "inweb/Chapter 3/The Weaver.w"
 	if ((L->owning_paragraph) &&
 		(L->owning_paragraph->starts_on_new_page)) Formats__pagebreak(OUT, wv);
 
 }
-#line 489 "inweb/Chapter 3/The Weaver.w"
+#line 490 "inweb/Chapter 3/The Weaver.w"
 ;
 		Languages__reset_syntax_colouring(S->sect_language); /* a precaution: limits bad colouring accidents to one para */
 		int weight = 0;
@@ -14945,7 +14945,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 
 		
 {
-#line 530 "inweb/Chapter 3/The Weaver.w"
+#line 531 "inweb/Chapter 3/The Weaver.w"
 	if (weight == 3) {
 		Str__copy(state->chaptermark, L->text_operand);
 		Str__clear(state->sectionmark);
@@ -14961,13 +14961,13 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	}
 
 }
-#line 496 "inweb/Chapter 3/The Weaver.w"
+#line 497 "inweb/Chapter 3/The Weaver.w"
 ;
 
 		text_stream *TeX_macro = NULL;
 		
 {
-#line 560 "inweb/Chapter 3/The Weaver.w"
+#line 561 "inweb/Chapter 3/The Weaver.w"
 	switch (weight) {
 		case 0: TeX_macro = TL_IS_150; break;
 		case 1: TeX_macro = TL_IS_151; break;
@@ -14976,7 +14976,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	}
 	if (wv->theme_match) 
 {
-#line 579 "inweb/Chapter 3/The Weaver.w"
+#line 580 "inweb/Chapter 3/The Weaver.w"
 	switch (weight) {
 		case 0: TeX_macro = TL_IS_156; break;
 		case 1: TeX_macro = TL_IS_157; break;
@@ -14997,7 +14997,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	}
 
 }
-#line 566 "inweb/Chapter 3/The Weaver.w"
+#line 567 "inweb/Chapter 3/The Weaver.w"
 ;
 	if ((state->next_heading_without_vertical_skip) && (weight < 2)) {
 		state->next_heading_without_vertical_skip = FALSE;
@@ -15008,13 +15008,13 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	}
 
 }
-#line 499 "inweb/Chapter 3/The Weaver.w"
+#line 500 "inweb/Chapter 3/The Weaver.w"
 ;
 
 		TEMPORARY_TEXT(heading_text);
 		
 {
-#line 599 "inweb/Chapter 3/The Weaver.w"
+#line 600 "inweb/Chapter 3/The Weaver.w"
 	if (weight == 3) {
 		TEMPORARY_TEXT(brief_title);
 		match_results mr = Regexp__create_mr();
@@ -15034,7 +15034,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	}
 
 }
-#line 502 "inweb/Chapter 3/The Weaver.w"
+#line 503 "inweb/Chapter 3/The Weaver.w"
 ;
 		Formats__paragraph_heading(OUT, wv, TeX_macro, S, L->owning_paragraph,
 			heading_text, state->chaptermark, state->sectionmark, weight);
@@ -15045,7 +15045,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 
 		
 {
-#line 621 "inweb/Chapter 3/The Weaver.w"
+#line 622 "inweb/Chapter 3/The Weaver.w"
 	if (Str__len(L->text_operand2) > 0) {
 		TEMPORARY_TEXT(matter);
 		WRITE_TO(matter, "%S\n", L->text_operand2);
@@ -15055,7 +15055,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	}
 
 }
-#line 510 "inweb/Chapter 3/The Weaver.w"
+#line 511 "inweb/Chapter 3/The Weaver.w"
 ;
 
 		if (weight == 3) Formats__chapter_title_page(OUT, wv, C);
@@ -15287,6 +15287,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 		para_macro *pmac = Macros__find_by_name(mr.exp[1], S);
 		Formats__source_code(OUT, wv, tab_stops_of_indentation, prefatory,
 			mr.exp[0], colouring, concluding_comment, (found == 0)?TRUE:FALSE, FALSE, TRUE);
+		Languages__reset_syntax_colouring(S->sect_language);
 		found++;
 		int defn = (L->owning_paragraph == pmac->defining_paragraph)?TRUE:FALSE;
 		if (defn) state->in_run_of_definitions = FALSE;
@@ -15330,7 +15331,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	source_line *L = NULL;
 	
 {
-#line 633 "inweb/Chapter 3/The Weaver.w"
+#line 634 "inweb/Chapter 3/The Weaver.w"
 	int mode_now = state->kind_of_material;
 	if (state->kind_of_material != REGULAR_MATERIAL) {
 		state->kind_of_material = REGULAR_MATERIAL;
@@ -15386,13 +15387,13 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 
 #line 95 "inweb/Chapter 3/The Weaver.w"
 
-#line 649 "inweb/Chapter 3/The Weaver.w"
+#line 650 "inweb/Chapter 3/The Weaver.w"
 void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *wv, paragraph *P) {
 	Tags__show_endnote_on_ifdefs(OUT, wv, P);
 	if (P->defines_macro)
 		
 {
-#line 662 "inweb/Chapter 3/The Weaver.w"
+#line 663 "inweb/Chapter 3/The Weaver.w"
 	Formats__endnote(OUT, wv, 1);
 	Formats__text(OUT, wv, TL_IS_161);
 	int ct = 0;
@@ -15432,13 +15433,13 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *wv
 	Formats__endnote(OUT, wv, 2);
 
 }
-#line 652 "inweb/Chapter 3/The Weaver.w"
+#line 653 "inweb/Chapter 3/The Weaver.w"
 ;
 	function *fn;
 	LOOP_OVER_LINKED_LIST(fn, function, P->functions)
 		
 {
-#line 701 "inweb/Chapter 3/The Weaver.w"
+#line 702 "inweb/Chapter 3/The Weaver.w"
 	Formats__endnote(OUT, wv, 1);
 	hash_table_entry *hte =
 		Analyser__find_hash_entry(fn->function_header_at->owning_section, fn->function_name, FALSE);
@@ -15453,7 +15454,7 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *wv
 			(P->under_section == hteu->usage_recorded_at->under_section))
 			
 {
-#line 724 "inweb/Chapter 3/The Weaver.w"
+#line 725 "inweb/Chapter 3/The Weaver.w"
 	if (used_flag == FALSE) Formats__text(OUT, wv, TL_IS_175);
 	used_flag = TRUE;
 	section *S = hteu->usage_recorded_at->under_section;
@@ -15471,13 +15472,13 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *wv
 	last_cited_in = hteu->usage_recorded_at->under_section;
 
 }
-#line 713 "inweb/Chapter 3/The Weaver.w"
+#line 714 "inweb/Chapter 3/The Weaver.w"
 ;
 	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
 		if (P->under_section != hteu->usage_recorded_at->under_section)
 			
 {
-#line 724 "inweb/Chapter 3/The Weaver.w"
+#line 725 "inweb/Chapter 3/The Weaver.w"
 	if (used_flag == FALSE) Formats__text(OUT, wv, TL_IS_175);
 	used_flag = TRUE;
 	section *S = hteu->usage_recorded_at->under_section;
@@ -15495,7 +15496,7 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *wv
 	last_cited_in = hteu->usage_recorded_at->under_section;
 
 }
-#line 716 "inweb/Chapter 3/The Weaver.w"
+#line 717 "inweb/Chapter 3/The Weaver.w"
 ;
 	if (used_flag == FALSE) Formats__text(OUT, wv, TL_IS_172);
 	if ((last_cited_in != P->under_section) && (last_cited_in))
@@ -15504,13 +15505,13 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *wv
 	Formats__endnote(OUT, wv, 2);
 
 }
-#line 655 "inweb/Chapter 3/The Weaver.w"
+#line 656 "inweb/Chapter 3/The Weaver.w"
 ;
 	c_structure *st;
 	LOOP_OVER_LINKED_LIST(st, c_structure, P->structures)
 		
 {
-#line 741 "inweb/Chapter 3/The Weaver.w"
+#line 742 "inweb/Chapter 3/The Weaver.w"
 	Formats__endnote(OUT, wv, 1);
 	Formats__text(OUT, wv, TL_IS_180);
 	Formats__text(OUT, wv, st->structure_name);
@@ -15550,11 +15551,11 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *wv
 	Formats__endnote(OUT, wv, 2);
 
 }
-#line 658 "inweb/Chapter 3/The Weaver.w"
+#line 659 "inweb/Chapter 3/The Weaver.w"
 ;
 }
 
-#line 784 "inweb/Chapter 3/The Weaver.w"
+#line 785 "inweb/Chapter 3/The Weaver.w"
 int Weaver__weave_table_of_contents(OUTPUT_STREAM, weave_target *wv, section *S) {
 	int noteworthy = 0;
 	paragraph *P;

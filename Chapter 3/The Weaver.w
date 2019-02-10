@@ -462,6 +462,7 @@ otherwise, they are set flush right.
 		para_macro *pmac = Macros::find_by_name(mr.exp[1], S);
 		Formats::source_code(OUT, wv, tab_stops_of_indentation, prefatory,
 			mr.exp[0], colouring, concluding_comment, (found == 0)?TRUE:FALSE, FALSE, TRUE);
+		Languages::reset_syntax_colouring(S->sect_language);
 		found++;
 		int defn = (L->owning_paragraph == pmac->defining_paragraph)?TRUE:FALSE;
 		if (defn) state->in_run_of_definitions = FALSE;
