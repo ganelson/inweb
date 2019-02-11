@@ -463,8 +463,8 @@ actually running a one-line AppleScript here.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::init_thread</span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">) {</span>
-        <span class="identifier">pthread_attr_init</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">);</span>
-        <span class="identifier">pthread_attr_setstacksize</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pthread_attr_init</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">) != 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread initialisation failed"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pthread_attr_setstacksize</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size</span><span class="plain">) != 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread stack sizing failed"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">size_t</span><span class="plain"> </span><span class="functiontext">Platform::get_thread_stack_size</span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">) {</span>

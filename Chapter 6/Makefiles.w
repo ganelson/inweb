@@ -30,7 +30,7 @@ void Makefiles::write(web *W, filename *prototype, filename *F) {
 	TextFiles::read(prototype, FALSE, "can't open prototype file",
 		TRUE, Makefiles::scan_makefile_line, NULL, &MS);
 	STREAM_CLOSE(OUT);
-	WRITE_TO(STDOUT, "Wrote makefile to %f\n", F);
+	WRITE_TO(STDOUT, "Wrote makefile '%f' from script '%f'\n", F, prototype);
 }
 
 @ =

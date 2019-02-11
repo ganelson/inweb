@@ -24,7 +24,7 @@ void Git::write_gitignore(web *W, filename *prototype, filename *F) {
 	TextFiles::read(prototype, FALSE, "can't open prototype file",
 		TRUE, Git::copy_gitignore_line, NULL, &MS);
 	STREAM_CLOSE(OUT);
-	WRITE_TO(STDOUT, "Wrote gitignore to %f\n", F);
+	WRITE_TO(STDOUT, "Wrote gitignore file '%f' from script '%f'\n", F, prototype);
 }
 
 @ =

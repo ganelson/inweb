@@ -2594,13 +2594,13 @@ void  Main__follow_instructions(inweb_instructions *ins) ;
 void  Main__error_in_web(text_stream *message, source_line *sl) ;
 #line 47 "inweb/Chapter 1/Configuration.w"
 inweb_instructions  Configuration__read(int argc, char **argv) ;
-#line 169 "inweb/Chapter 1/Configuration.w"
+#line 173 "inweb/Chapter 1/Configuration.w"
 void  Configuration__switch(int id, int val, text_stream *arg, void *state) ;
-#line 241 "inweb/Chapter 1/Configuration.w"
+#line 245 "inweb/Chapter 1/Configuration.w"
 void  Configuration__bareword(int id, text_stream *opt, void *state) ;
-#line 256 "inweb/Chapter 1/Configuration.w"
+#line 260 "inweb/Chapter 1/Configuration.w"
 void  Configuration__set_range(inweb_instructions *args, text_stream *opt) ;
-#line 288 "inweb/Chapter 1/Configuration.w"
+#line 292 "inweb/Chapter 1/Configuration.w"
 void  Configuration__set_fundamental_mode(inweb_instructions *args, int new_material) ;
 #line 35 "inweb/Chapter 1/Patterns.w"
 weave_pattern * Patterns__find(web *W, text_stream *name) ;
@@ -3797,8 +3797,8 @@ int Platform__join_thread(pthread_t pt, void** rv) {
 }
 
 void Platform__init_thread(pthread_attr_t* pa, size_t size) {
-	pthread_attr_init(pa);
-	pthread_attr_setstacksize(pa, size);
+	if (pthread_attr_init(pa) != 0) internal_error("thread initialisation failed");
+	if (pthread_attr_setstacksize(pa, size) != 0) internal_error("thread stack sizing failed");
 }
 
 size_t Platform__get_thread_stack_size(pthread_attr_t* pa) {
@@ -11091,7 +11091,7 @@ inweb_instructions Configuration__read(int argc, char **argv) {
 	inweb_instructions args;
 	
 {
-#line 61 "inweb/Chapter 1/Configuration.w"
+#line 65 "inweb/Chapter 1/Configuration.w"
 	args.inweb_mode = NO_MODE;
 	args.swarm_mode = SWARM_OFF_SWM;
 	args.catalogue_switch = FALSE;
@@ -11121,7 +11121,7 @@ inweb_instructions Configuration__read(int argc, char **argv) {
 ;
 	
 {
-#line 111 "inweb/Chapter 1/Configuration.w"
+#line 115 "inweb/Chapter 1/Configuration.w"
 	CommandLine__declare_heading(L"inweb: a tool for literate programming\n\n"
 		L"Usage: inweb WEB OPTIONS RANGE\n\n"
 		L"WEB must be a directory holding a literate program (a 'web')\n\n"
@@ -11181,21 +11181,25 @@ inweb_instructions Configuration__read(int argc, char **argv) {
 #line 50 "inweb/Chapter 1/Configuration.w"
 ;
 	CommandLine__read(argc, argv, &args, &Configuration__switch, &Configuration__bareword);
-	if ((args.chosen_web == NULL) && (args.chosen_file == NULL) &&
-		(args.inweb_mode != TRANSLATE_MODE)) args.inweb_mode = NO_MODE;
+	if ((args.chosen_web == NULL) && (args.chosen_file == NULL)) {
+		if ((args.makefile_setting) || (args.gitignore_setting))
+			args.inweb_mode = TRANSLATE_MODE;
+		if (args.inweb_mode != TRANSLATE_MODE)
+			args.inweb_mode = NO_MODE;
+	}
 	if (Str__len(args.chosen_range) == 0) {
 		Str__copy(args.chosen_range, TL_IS_32);
 	}
 	return args;
 }
 
-#line 91 "inweb/Chapter 1/Configuration.w"
+#line 95 "inweb/Chapter 1/Configuration.w"
 
-#line 99 "inweb/Chapter 1/Configuration.w"
+#line 103 "inweb/Chapter 1/Configuration.w"
 
-#line 109 "inweb/Chapter 1/Configuration.w"
+#line 113 "inweb/Chapter 1/Configuration.w"
 
-#line 169 "inweb/Chapter 1/Configuration.w"
+#line 173 "inweb/Chapter 1/Configuration.w"
 void Configuration__switch(int id, int val, text_stream *arg, void *state) {
 	inweb_instructions *args = (inweb_instructions *) state;
 	switch (id) {
@@ -11263,7 +11267,7 @@ void Configuration__switch(int id, int val, text_stream *arg, void *state) {
 	}
 }
 
-#line 241 "inweb/Chapter 1/Configuration.w"
+#line 245 "inweb/Chapter 1/Configuration.w"
 void Configuration__bareword(int id, text_stream *opt, void *state) {
 	inweb_instructions *args = (inweb_instructions *) state;
 	if ((args->chosen_web == NULL) && (args->chosen_file == NULL)) {
@@ -11274,7 +11278,7 @@ void Configuration__bareword(int id, text_stream *opt, void *state) {
 	} else Configuration__set_range(args, opt);
 }
 
-#line 256 "inweb/Chapter 1/Configuration.w"
+#line 260 "inweb/Chapter 1/Configuration.w"
 void Configuration__set_range(inweb_instructions *args, text_stream *opt) {
 	match_results mr = Regexp__create_mr();
 	if (Str__eq_wide_string(opt, L"index")) {
@@ -11304,7 +11308,7 @@ void Configuration__set_range(inweb_instructions *args, text_stream *opt) {
 	Regexp__dispose_of(&mr);
 }
 
-#line 288 "inweb/Chapter 1/Configuration.w"
+#line 292 "inweb/Chapter 1/Configuration.w"
 void Configuration__set_fundamental_mode(inweb_instructions *args, int new_material) {
 	if ((args->inweb_mode != NO_MODE) && (args->inweb_mode != new_material))
 		Errors__fatal("can only do one at a time - weaving, tangling or analysing");
@@ -19688,7 +19692,7 @@ void Makefiles__write(web *W, filename *prototype, filename *F) {
 	TextFiles__read(prototype, FALSE, "can't open prototype file",
 		TRUE, Makefiles__scan_makefile_line, NULL, &MS);
 	STREAM_CLOSE(OUT);
-	WRITE_TO(STDOUT, "Wrote makefile to %f\n", F);
+	WRITE_TO(STDOUT, "Wrote makefile '%f' from script '%f'\n", F, prototype);
 }
 
 #line 37 "inweb/Chapter 6/Makefiles.w"

@@ -49,8 +49,12 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	@<Initialise the args@>;
 	@<Declare the command-line switches specific to Inweb@>;
 	CommandLine::read(argc, argv, &args, &Configuration::switch, &Configuration::bareword);
-	if ((args.chosen_web == NULL) && (args.chosen_file == NULL) &&
-		(args.inweb_mode != TRANSLATE_MODE)) args.inweb_mode = NO_MODE;
+	if ((args.chosen_web == NULL) && (args.chosen_file == NULL)) {
+		if ((args.makefile_setting) || (args.gitignore_setting))
+			args.inweb_mode = TRANSLATE_MODE;
+		if (args.inweb_mode != TRANSLATE_MODE)
+			args.inweb_mode = NO_MODE;
+	}
 	if (Str::len(args.chosen_range) == 0) {
 		Str::copy(args.chosen_range, I"0");
 	}

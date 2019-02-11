@@ -265,8 +265,8 @@ int Platform::join_thread(pthread_t pt, void** rv) {
 }
 
 void Platform::init_thread(pthread_attr_t* pa, size_t size) {
-	pthread_attr_init(pa);
-	pthread_attr_setstacksize(pa, size);
+	if (pthread_attr_init(pa) != 0) internal_error("thread initialisation failed");
+	if (pthread_attr_setstacksize(pa, size) != 0) internal_error("thread stack sizing failed");
 }
 
 size_t Platform::get_thread_stack_size(pthread_attr_t* pa) {

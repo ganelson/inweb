@@ -66,8 +66,12 @@ then declare them.
         &lt;<span class="cwebmacro">Initialise the args</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Declare the command-line switches specific to Inweb</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">;</span>
         <span class="functiontext">CommandLine::read</span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, &amp;</span><span class="identifier">args</span><span class="plain">, &amp;</span><span class="functiontext">Configuration::switch</span><span class="plain">, &amp;</span><span class="functiontext">Configuration::bareword</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">args</span><span class="element">.chosen_web</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">args</span><span class="element">.chosen_file</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">args</span><span class="element">.inweb_mode</span><span class="plain"> != </span><span class="constant">TRANSLATE_MODE</span><span class="plain">)) </span><span class="identifier">args</span><span class="element">.inweb_mode</span><span class="plain"> = </span><span class="constant">NO_MODE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">args</span><span class="element">.chosen_web</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">args</span><span class="element">.chosen_file</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">args</span><span class="element">.makefile_setting</span><span class="plain">) || (</span><span class="identifier">args</span><span class="element">.gitignore_setting</span><span class="plain">))</span>
+                <span class="identifier">args</span><span class="element">.inweb_mode</span><span class="plain"> = </span><span class="constant">TRANSLATE_MODE</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="element">.inweb_mode</span><span class="plain"> != </span><span class="constant">TRANSLATE_MODE</span><span class="plain">)</span>
+                <span class="identifier">args</span><span class="element">.inweb_mode</span><span class="plain"> = </span><span class="constant">NO_MODE</span><span class="plain">;</span>
+        <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">args</span><span class="element">.chosen_range</span><span class="plain">) == 0) {</span>
             <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">args</span><span class="element">.chosen_range</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"0"</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -362,7 +366,7 @@ Otherwise, a range is a chapter number/letter, or a section range.
 
 <p class="endnote">The function Configuration::set_fundamental_mode is used in <a href="#SP3">&#167;3</a>.</p>
 
-<!--End of weave: 295 lines from a web of 20876-->
+<!--End of weave: 299 lines from a web of 20880-->
 	</body>
 </html>
 
