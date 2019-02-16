@@ -281,8 +281,8 @@ void HTML::incorporate_helper(text_stream *line_of_template,
 @h Body.
 
 =
-void HTML::begin_body(OUTPUT_STREAM, char *class) {
-	if (class) HTML_OPEN_WITH("body", "class=\"%s\"", class)
+void HTML::begin_body(OUTPUT_STREAM, text_stream *class) {
+	if (class) HTML_OPEN_WITH("body", "class=\"%S\"", class)
 	else HTML_OPEN("body");
 }
 

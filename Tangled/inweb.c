@@ -2440,7 +2440,7 @@ void  HTML__incorporate_HTML(OUTPUT_STREAM, filename *M) ;
 #line 276 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__incorporate_helper(text_stream *line_of_template, 	text_file_position *tfp, void *OUT) ;
 #line 284 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__begin_body(OUTPUT_STREAM, char *class) ;
+void  HTML__begin_body(OUTPUT_STREAM, text_stream *class) ;
 #line 289 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__end_body(OUTPUT_STREAM) ;
 #line 297 "inweb/foundation-module/Chapter 5/HTML.w"
@@ -9135,8 +9135,8 @@ void HTML__incorporate_helper(text_stream *line_of_template,
 }
 
 #line 284 "inweb/foundation-module/Chapter 5/HTML.w"
-void HTML__begin_body(OUTPUT_STREAM, char *class) {
-	if (class) HTML_OPEN_WITH("body", "class=\"%s\"", class)
+void HTML__begin_body(OUTPUT_STREAM, text_stream *class) {
+	if (class) HTML_OPEN_WITH("body", "class=\"%S\"", class)
 	else HTML_OPEN("body");
 }
 
