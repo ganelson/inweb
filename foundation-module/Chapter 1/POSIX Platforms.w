@@ -168,11 +168,51 @@ void Platform::where_am_i(wchar_t *p, size_t length) {
 	p[0] = '\0';
 	return;
 
-@h Shell commands.
+@h Shell commands. ^"ifndef-PLATFORM_MACOS"
 
 =
 int Platform::system(const char *cmd) {
 	return system(cmd);
+}
+
+@ ^"ifdef-PLATFORM_MACOS"
+In MacOS 10.5, a new implementation of the C standard library 
+crippled performance of |system()| by placing it behind a global mutex, so
+that it was impossible for two cores to be calling the function at the same
+time. The net effect of this is that the Inform test suite, executing in
+Intest, ran in 1/16th speed. This issue didn't come to light until 2019,
+however, because the build setting |-mmacosx-version-min=10.4| turned out
+to force use of the (perfectly good) pre-10.5 library, where |system()|
+continued to run in a multi-threaded way, just as it does on Linux and
+most all other Unixes. The old library was eventually withdrawn by Apple
+in 2018, and in any case would stop working at some point in 2019-20 due
+to the final removal of 32-bit binary support from MacOS.
+
+It took several days to find a pthread-safe way to reimplement |system()|.
+The obvious way, using |fork()| and then running |execve()| on the child
+process -- essentially the standard way to implement |system()|, if you forget
+about signal-handling -- led to obscure and unrepeatable memory corruption
+bugs in Intest, with the worker threads apparently writing on each other's
+memory space. Using |posix_spawn()| instead appears to work better.
+
+=
+#include <spawn.h>
+#include <sys/wait.h>
+
+extern char **environ;
+
+int Platform::system(const char *cmd) {
+    char *argv[] = {"sh", "-c", (char *) cmd, NULL};
+    pid_t pid;
+    int status = posix_spawn(&pid, "/bin/sh", NULL, NULL, argv, environ);
+    if (status == 0) {
+        if (waitpid(pid, &status, 0) != -1) return status;
+    	internal_error("waitpid failed");
+    } else {
+        WRITE_TO(STDERR, "posix_spawn: %s\n", strerror(status));
+        internal_error("posix_spawn failed");
+    }
+    return -1;
 }
 
 @h Directory handling.

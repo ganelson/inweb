@@ -122,7 +122,7 @@ or an array of small objects.
 (1) Allocating and freeing a few dozen large blocks of contiguous memory.
 
 @h Level 1: memory blocks.
-Memory is allocated in blocks of 100K, within which objects are allocated as
+Memory is allocated in blocks within which objects are allocated as
 needed. The "safety margin" is the number of spare bytes left blank at the
 end of each object: this is done because we want to be paranoid about
 compilers on different architectures aligning structures to different
@@ -132,10 +132,10 @@ chance of a mistake causing a memory exception which crashes the compiler,
 because if that happens it will be difficult to recover the circumstances from
 the debugging log.
 
-@d SAFETY_MARGIN 64
-@d BLANK_END_SIZE 128
+@d SAFETY_MARGIN 128
+@d BLANK_END_SIZE 256
 
-@ At present |MEMORY_GRANULARITY| is 100K. This is the quantity of memory
+@ At present |MEMORY_GRANULARITY| is 800K. This is the quantity of memory
 allocated by each individual |malloc| call.
 
 After |MAX_BLOCKS_ALLOWED| blocks, we throw in the towel: we must have
@@ -146,7 +146,7 @@ grind slowly to a halt, never refusing a |malloc|, until the user was
 unable to get the GUI responsive enough to kill the process.)
 
 @d MAX_BLOCKS_ALLOWED 15000
-@d MEMORY_GRANULARITY 100*1024*4 /* which must be divisible by 1024 */
+@d MEMORY_GRANULARITY 100*1024*8 /* which must be divisible by 1024 */
 
 =
 int no_blocks_allocated = 0;
@@ -447,6 +447,8 @@ type_name *allocate_##type_name##_before(type_name *existing) {
 	return new_obj;
 }
 void copy_##type_name(type_name *to, type_name *from) {
+	CREATE_MUTEX(mutex);
+	LOCK_MUTEX(mutex);
 	type_name *prev_obj = to->prev_structure;
 	type_name *next_obj = to->next_structure;
 	int aid = to->allocation_id;
@@ -454,6 +456,7 @@ void copy_##type_name(type_name *to, type_name *from) {
 	to->allocation_id = aid;
 	to->next_structure = next_obj;
 	to->prev_structure = prev_obj;
+	UNLOCK_MUTEX(mutex);
 }
 
 @ |ALLOCATE_IN_ARRAYS| is still more obfuscated. When we
@@ -692,6 +695,8 @@ to write to the result.
 
 =
 char *Memory::new_string(char *from) {
+	CREATE_MUTEX(mutex);
+	LOCK_MUTEX(mutex);
 	int length_needed = (int) strlen(from) + 1;
 	if (!((current_ssa) &&
 		(current_ssa->first_free_byte + length_needed < SSA_CAPACITY))) {
@@ -702,6 +707,7 @@ char *Memory::new_string(char *from) {
 	char *rp = current_ssa->storage_at + current_ssa->first_free_byte;
 	current_ssa->first_free_byte += length_needed;
 	strcpy(rp, from);
+	UNLOCK_MUTEX(mutex);
 	return rp;
 }
 

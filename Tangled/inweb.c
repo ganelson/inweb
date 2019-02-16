@@ -110,7 +110,7 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 252 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 292 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 typedef pthread_t foundation_thread;
 typedef pthread_attr_t foundation_thread_attributes;
 
@@ -360,10 +360,10 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define method_MT 21
 #define method_set_MT 22
 #define ebook_mark_MT 23
-#define SAFETY_MARGIN 64
-#define BLANK_END_SIZE 128
+#define SAFETY_MARGIN 128
+#define BLANK_END_SIZE 256
 #define MAX_BLOCKS_ALLOWED 15000
-#define MEMORY_GRANULARITY 100*1024*4 /* which must be divisible by 1024 */
+#define MEMORY_GRANULARITY 100*1024*8 /* which must be divisible by 1024 */
 #define INTEGRITY_NUMBER 0x12345678 /* a value unlikely to be in memory just by chance */
 #define CREATE(type_name) (allocate_##type_name())
 #define COPY(to, from, type_name) (copy_##type_name(to, from))
@@ -430,6 +430,8 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
     	return new_obj;\
     }\
     void copy_##type_name(type_name *to, type_name *from) {\
+    	CREATE_MUTEX(mutex);\
+    	LOCK_MUTEX(mutex);\
     	type_name *prev_obj = to->prev_structure;\
     	type_name *next_obj = to->next_structure;\
     	int aid = to->allocation_id;\
@@ -437,6 +439,7 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
     	to->allocation_id = aid;\
     	to->next_structure = next_obj;\
     	to->prev_structure = prev_obj;\
+    	UNLOCK_MUTEX(mutex);\
     }
 #define ALLOCATE_IN_ARRAYS(type_name, NO_TO_ALLOCATE_TOGETHER)\
     MAKE_REFERENCE_ROUTINES(type_name, type_name##_array_MT)\
@@ -946,13 +949,13 @@ typedef struct memory_frame {
 	int mem_type; /* type of object stored in this frame */
 	int allocation_id; /* allocation ID number of object stored in this frame */
 } memory_frame;
-#line 681 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 684 "inweb/foundation-module/Chapter 2/Memory.w"
 typedef struct string_storage_area {
 	char *storage_at;
 	int first_free_byte;
 	MEMORY_MANAGEMENT
 } string_storage_area;
-#line 857 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 863 "inweb/foundation-module/Chapter 2/Memory.w"
 typedef struct general_pointer {
 	void *pointer_to_data;
 	int run_time_type_code;
@@ -1630,56 +1633,64 @@ void  Platform__where_am_i(wchar_t *p, size_t length) ;
 void  Platform__where_am_i(wchar_t *p, size_t length) ;
 #endif /* PLATFORM_ANDROID */
 #endif /* PLATFORM_POSIX */
+#ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
 #line 174 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__system(const char *cmd) ;
+#endif /* PLATFORM_MACOS */
+#endif /* PLATFORM_POSIX */
+#ifdef PLATFORM_MACOS
+#ifdef PLATFORM_POSIX
+#line 204 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+int  Platform__system(const char *cmd) ;
+#endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 181 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 221 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__mkdir(char *transcoded_pathname) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 189 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 229 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void * Platform__opendir(char *path_to_folder) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 194 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 234 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__readdir(void *folder, char *path_to_folder, char *leafname) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 209 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 249 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__closedir(void *folder) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 217 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 257 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__sleep(int seconds) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 233 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 273 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 246 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 286 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 258 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 298 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__create_thread(foundation_thread *pt, 	const foundation_thread_attributes *pa, void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 263 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 303 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__join_thread(pthread_t pt, void** rv) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 267 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 307 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__init_thread(pthread_attr_t* pa, size_t size) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 272 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 312 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 size_t  Platform__get_thread_stack_size(pthread_attr_t* pa) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_WINDOWS
@@ -1772,39 +1783,39 @@ void  Memory__check_memory_integrity(void) ;
 void  Memory__debug_memory_frames(int from, int to) ;
 #line 295 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__allocate(int mem_type, int extent) ;
-#line 557 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 560 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__name_fundamental_reasons(void) ;
-#line 570 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 573 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__reason_name(int r, char *reason) ;
-#line 575 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 578 "inweb/foundation-module/Chapter 2/Memory.w"
 char * Memory__description_of_reason(int r) ;
-#line 600 "inweb/foundation-module/Chapter 2/Memory.w"
-void * Memory__I7_calloc(int how_many, int size_in_bytes, int reason) ;
 #line 603 "inweb/foundation-module/Chapter 2/Memory.w"
+void * Memory__I7_calloc(int how_many, int size_in_bytes, int reason) ;
+#line 606 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__I7_malloc(int size_in_bytes, int reason) ;
-#line 610 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 613 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__I7_alloc(int N, int S, int R) ;
-#line 661 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 664 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__I7_free(void *pointer, int R, int bytes_freed) ;
-#line 671 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 674 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__I7_array_free(void *pointer, int R, int num_cells, size_t cell_size) ;
-#line 694 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 697 "inweb/foundation-module/Chapter 2/Memory.w"
 char * Memory__new_string(char *from) ;
-#line 711 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 717 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__free_ssas(void) ;
-#line 721 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 727 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__log_usage(int total) ;
-#line 740 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 746 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__log_statistics(void) ;
-#line 810 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 816 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__compare_usage(const void *ent1, const void *ent2) ;
-#line 820 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 826 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__proportion(int bytes, int total) ;
-#line 827 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 833 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__paranoid_calloc(size_t N, size_t S) ;
-#line 862 "inweb/foundation-module/Chapter 2/Memory.w"
-general_pointer  Memory__store_gp_null(void) ;
 #line 868 "inweb/foundation-module/Chapter 2/Memory.w"
+general_pointer  Memory__store_gp_null(void) ;
+#line 874 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__test_gp_null(general_pointer gp) ;
 #line 272 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__initialise(text_stream *stream, int from) ;
@@ -3712,15 +3723,41 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
 
 #endif /* PLATFORM_ANDROID */
 #endif /* PLATFORM_POSIX */
+#ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
 #line 174 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__system(const char *cmd) {
 	return system(cmd);
 }
 
+#endif /* PLATFORM_MACOS */
+#endif /* PLATFORM_POSIX */
+#ifdef PLATFORM_MACOS
+#ifdef PLATFORM_POSIX
+#line 199 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#include <spawn.h>
+#include <sys/wait.h>
+
+extern char **environ;
+
+int Platform__system(const char *cmd) {
+    char *argv[] = {"sh", "-c", (char *) cmd, NULL};
+    pid_t pid;
+    int status = posix_spawn(&pid, "/bin/sh", NULL, NULL, argv, environ);
+    if (status == 0) {
+        if (waitpid(pid, &status, 0) != -1) return status;
+    	internal_error("waitpid failed");
+    } else {
+        WRITE_TO(STDERR, "posix_spawn: %s\n", strerror(status));
+        internal_error("posix_spawn failed");
+    }
+    return -1;
+}
+
+#endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 181 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 221 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__mkdir(char *transcoded_pathname) {
 	errno = 0;
 	int rv = mkdir(transcoded_pathname, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
@@ -3756,7 +3793,7 @@ void Platform__closedir(void *folder) {
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 217 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 257 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__sleep(int seconds) {
 	sleep((unsigned int) seconds);
 }
@@ -3764,7 +3801,7 @@ void Platform__sleep(int seconds) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 233 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 273 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__notification(text_stream *text, int happy) {
 	char *sound_name = "Bell.aiff";
 	if (happy == FALSE) sound_name = "Submarine.aiff";
@@ -3779,14 +3816,14 @@ void Platform__notification(text_stream *text, int happy) {
 #endif /* PLATFORM_POSIX */
 #ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 246 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 286 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__notification(text_stream *text, int happy) {
 }
 
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 258 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 298 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__create_thread(foundation_thread *pt,
 	const foundation_thread_attributes *pa, void *(*fn)(void *), void *arg) {
 	return pthread_create(pt, pa, fn, arg);
@@ -4285,7 +4322,7 @@ void *Memory__allocate(int mem_type, int extent) {
 	return (void *) cp;
 }
 
-#line 520 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 523 "inweb/foundation-module/Chapter 2/Memory.w"
 ALLOCATE_INDIVIDUALLY(filename)
 ALLOCATE_INDIVIDUALLY(pathname)
 ALLOCATE_INDIVIDUALLY(string_storage_area)
@@ -4312,9 +4349,9 @@ ALLOCATE_IN_ARRAYS(match_avinue, 1000)
 ALLOCATE_IN_ARRAYS(match_trie, 1000)
 ALLOCATE_IN_ARRAYS(text_stream, 100)
 
-#line 555 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 558 "inweb/foundation-module/Chapter 2/Memory.w"
 
-#line 557 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 560 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__name_fundamental_reasons(void) {
 	Memory__reason_name(STREAM_MREASON, "text stream storage");
 	Memory__reason_name(FILENAME_STORAGE_MREASON, "filename/pathname storage");
@@ -4323,7 +4360,7 @@ void Memory__name_fundamental_reasons(void) {
 	Memory__reason_name(CLS_SORTING_MREASON, "sorting");
 }
 
-#line 568 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 571 "inweb/foundation-module/Chapter 2/Memory.w"
 char *memory_needs[NO_DEFINED_MREASON_VALUES];
 
 void Memory__reason_name(int r, char *reason) {
@@ -4336,13 +4373,13 @@ char *Memory__description_of_reason(int r) {
 	return memory_needs[r];
 }
 
-#line 588 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 591 "inweb/foundation-module/Chapter 2/Memory.w"
 int max_memory_at_once_for_each_need[NO_DEFINED_MREASON_VALUES],
 	memory_claimed_for_each_need[NO_DEFINED_MREASON_VALUES],
 	number_of_claims_for_each_need[NO_DEFINED_MREASON_VALUES];
 int total_claimed_simply = 0;
 
-#line 600 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 603 "inweb/foundation-module/Chapter 2/Memory.w"
 void *Memory__I7_calloc(int how_many, int size_in_bytes, int reason) {
 	return Memory__I7_alloc(how_many, size_in_bytes, reason);
 }
@@ -4350,7 +4387,7 @@ void *Memory__I7_malloc(int size_in_bytes, int reason) {
 	return Memory__I7_alloc(-1, size_in_bytes, reason);
 }
 
-#line 610 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 613 "inweb/foundation-module/Chapter 2/Memory.w"
 void *Memory__I7_alloc(int N, int S, int R) {
 	CREATE_MUTEX(mutex);
 	LOCK_MUTEX(mutex);
@@ -4359,7 +4396,7 @@ void *Memory__I7_alloc(int N, int S, int R) {
 	if ((R < 0) || (R >= NO_DEFINED_MREASON_VALUES)) internal_error("no such memory reason");
 	if (total_claimed_simply == 0) 
 {
-#line 644 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 647 "inweb/foundation-module/Chapter 2/Memory.w"
 	int i;
 	for (i=0; i<NO_DEFINED_MREASON_VALUES; i++) {
 		max_memory_at_once_for_each_need[i] = 0;
@@ -4368,11 +4405,11 @@ void *Memory__I7_alloc(int N, int S, int R) {
 	}
 
 }
-#line 616 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 619 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	
 {
-#line 628 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 631 "inweb/foundation-module/Chapter 2/Memory.w"
 	if (N > 0) {
 		pointer = Memory__paranoid_calloc((size_t) N, (size_t) S);
 		bytes_needed = N*S;
@@ -4385,11 +4422,11 @@ void *Memory__I7_alloc(int N, int S, int R) {
 	}
 
 }
-#line 617 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 620 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	
 {
-#line 652 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 655 "inweb/foundation-module/Chapter 2/Memory.w"
 	memory_claimed_for_each_need[R] += bytes_needed;
 	total_claimed_simply += bytes_needed;
 	number_of_claims_for_each_need[R]++;
@@ -4397,13 +4434,13 @@ void *Memory__I7_alloc(int N, int S, int R) {
 		max_memory_at_once_for_each_need[R] = memory_claimed_for_each_need[R];
 
 }
-#line 618 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 621 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	UNLOCK_MUTEX(mutex);
 	return pointer;
 }
 
-#line 661 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 664 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__I7_free(void *pointer, int R, int bytes_freed) {
 	if ((R < 0) || (R >= NO_DEFINED_MREASON_VALUES)) internal_error("no such memory reason");
 	if (pointer == NULL) internal_error("can't free NULL memory");
@@ -4418,12 +4455,14 @@ void Memory__I7_array_free(void *pointer, int R, int num_cells, size_t cell_size
 	Memory__I7_free(pointer, R, num_cells*((int) cell_size));
 }
 
-#line 686 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 689 "inweb/foundation-module/Chapter 2/Memory.w"
 
 string_storage_area *current_ssa = NULL;
 
-#line 694 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 697 "inweb/foundation-module/Chapter 2/Memory.w"
 char *Memory__new_string(char *from) {
+	CREATE_MUTEX(mutex);
+	LOCK_MUTEX(mutex);
 	int length_needed = (int) strlen(from) + 1;
 	if (!((current_ssa) &&
 		(current_ssa->first_free_byte + length_needed < SSA_CAPACITY))) {
@@ -4434,17 +4473,18 @@ char *Memory__new_string(char *from) {
 	char *rp = current_ssa->storage_at + current_ssa->first_free_byte;
 	current_ssa->first_free_byte += length_needed;
 	strcpy(rp, from);
+	UNLOCK_MUTEX(mutex);
 	return rp;
 }
 
-#line 711 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 717 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__free_ssas(void) {
 	string_storage_area *ssa;
 	LOOP_OVER(ssa, string_storage_area)
 		Memory__I7_free(ssa->storage_at, STRING_STORAGE_MREASON, SSA_CAPACITY);
 }
 
-#line 721 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 727 "inweb/foundation-module/Chapter 2/Memory.w"
 int Memory__log_usage(int total) {
 	if (total_claimed_simply == 0) return 0;
 	int i, t = 0;
@@ -4460,7 +4500,7 @@ int Memory__log_usage(int total) {
 	return t;
 }
 
-#line 740 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 746 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__log_statistics(void) {
 	int total_for_objects = MEMORY_GRANULARITY*no_blocks_allocated; /* usage in bytes */
 	int total_for_SMAs = Memory__log_usage(0); /* usage in bytes */
@@ -4469,20 +4509,20 @@ void Memory__log_statistics(void) {
 
 	
 {
-#line 773 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 779 "inweb/foundation-module/Chapter 2/Memory.w"
 	int i;
 	for (i=0; i<NO_DEFINED_MT_VALUES; i++) sorted_usage[i] = i;
 	qsort(sorted_usage, (size_t) NO_DEFINED_MT_VALUES, sizeof(int), Memory__compare_usage);
 
 }
-#line 746 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 752 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 
 	int total_for_objects_used = 0; /* out of the |total_for_objects|, the bytes used */
 	int total_objects = 0;
 	
 {
-#line 756 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 762 "inweb/foundation-module/Chapter 2/Memory.w"
 	int i, j;
 	for (j=0; j<NO_DEFINED_MT_VALUES; j++) {
 		i = sorted_usage[j];
@@ -4497,12 +4537,12 @@ void Memory__log_statistics(void) {
 	}
 
 }
-#line 750 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 756 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	int overhead_for_objects = total_for_objects - total_for_objects_used; /* bytes wasted */
 	
 {
-#line 780 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 786 "inweb/foundation-module/Chapter 2/Memory.w"
 	LOG("\nReport by memory manager:\n\n");
 	LOG("Total consumption was %dK = %dMB, divided up in the following proportions:\n",
 		total, (total+512)/1024);
@@ -4533,25 +4573,25 @@ void Memory__log_statistics(void) {
 	Memory__log_usage(total);
 
 }
-#line 752 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 758 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 }
 
-#line 810 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 816 "inweb/foundation-module/Chapter 2/Memory.w"
 int Memory__compare_usage(const void *ent1, const void *ent2) {
 	int ix1 = *((const int *) ent1);
 	int ix2 = *((const int *) ent2);
 	return alloc_status[ix2].bytes_allocated - alloc_status[ix1].bytes_allocated;
 }
 
-#line 820 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 826 "inweb/foundation-module/Chapter 2/Memory.w"
 int Memory__proportion(int bytes, int total) {
 	float B = (float) bytes, T = (float) total;
 	float P = (1000*B)/(1024*T);
 	return (int) P;
 }
 
-#line 827 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 833 "inweb/foundation-module/Chapter 2/Memory.w"
 void *Memory__paranoid_calloc(size_t N, size_t S) {
 	CREATE_MUTEX(mutex);
 	LOCK_MUTEX(mutex);
@@ -4560,7 +4600,7 @@ void *Memory__paranoid_calloc(size_t N, size_t S) {
 	return P;
 }
 
-#line 861 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 867 "inweb/foundation-module/Chapter 2/Memory.w"
 
 general_pointer Memory__store_gp_null(void) {
 	general_pointer gp;
@@ -4573,7 +4613,7 @@ int Memory__test_gp_null(general_pointer gp) {
 	return FALSE;
 }
 
-#line 920 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 926 "inweb/foundation-module/Chapter 2/Memory.w"
 MAKE_REFERENCE_ROUTINES(char, 1000)
 
 #line 243 "inweb/foundation-module/Chapter 2/Streams.w"
@@ -19941,7 +19981,7 @@ void Git__write_gitignore(web *W, filename *prototype, filename *F) {
 	TextFiles__read(prototype, FALSE, "can't open prototype file",
 		TRUE, Git__copy_gitignore_line, NULL, &MS);
 	STREAM_CLOSE(OUT);
-	WRITE_TO(STDOUT, "Wrote gitignore to %f\n", F);
+	WRITE_TO(STDOUT, "Wrote gitignore file '%f' from script '%f'\n", F, prototype);
 }
 
 #line 31 "inweb/Chapter 6/Git Support.w"
