@@ -250,9 +250,17 @@ all other switches are delegated to the client's callback function |f|.
 	switch (cls->switch_id) {
 		case CRASH_CLSW: Errors::enter_debugger_mode(); innocuous = TRUE; break;
 		case LOG_CLSW: @<Parse debugging log inclusion@>; innocuous = TRUE; break;
-		case VERSION_CLSW:
-			PRINT("%s [[Version Number]] '[[Version Name]]' (build [[Build Number]] on [[Build Date]])\n", INTOOL_NAME);
+		case VERSION_CLSW: {
+			char *bn = "[[Build Number]]";
+			char *vn = "[[Version Number]]";
+			if (vn[0] == 0) vn = "1";
+			char *vname = "[[Version Name]]";
+			PRINT("[[Title]] %s", vn);
+			if (vname[0]) PRINT(" '%s'", vname);
+			if (bn[0]) PRINT(" (build %s)", bn);
+			PRINT("\n");
 			innocuous = TRUE; break;
+		}
 		case HELP_CLSW: CommandLine::write_help(STDOUT); innocuous = TRUE; break;
 		case FIXTIME_CLSW: Time::fix(); break;
 		case AT_CLSW: Pathnames::set_installation_path(Pathnames::from_text(arg)); break;

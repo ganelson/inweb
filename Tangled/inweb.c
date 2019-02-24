@@ -2041,11 +2041,11 @@ int  CommandLine__read(int argc, char **argv, void *state, 	void (*f)(int, int, 
 int  CommandLine__read_pair(text_stream *opt, text_stream *arg, void *state, 	void (*f)(int, int, text_stream *, void *), int *substantive) ;
 #line 220 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N, 	text_stream *arg, void *state, 	void (*f)(int, int, text_stream *, void *), int *substantive) ;
-#line 296 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 304 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__declare_heading(wchar_t *heading_text_literal) ;
-#line 300 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 308 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__write_help(OUTPUT_STREAM) ;
-#line 338 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 346 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__compare_names(const void *ent1, const void *ent2) ;
 #line 51 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void  Pathnames__start(void) ;
@@ -6212,7 +6212,7 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 		case CRASH_CLSW: Errors__enter_debugger_mode(); innocuous = TRUE; break;
 		case LOG_CLSW: 
 {
-#line 275 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 283 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	if (Log__get_debug_log_filename() == NULL) {
 		TEMPORARY_TEXT(itn);
 		WRITE_TO(itn, "%s", INTOOL_NAME);
@@ -6226,9 +6226,17 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 }
 #line 252 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ; innocuous = TRUE; break;
-		case VERSION_CLSW:
-			PRINT("%s 7 'Escape to Danger' (build 6P91 on 29 December 2018)\n", INTOOL_NAME);
+		case VERSION_CLSW: {
+			char *bn = "6P91";
+			char *vn = "7";
+			if (vn[0] == 0) vn = "1";
+			char *vname = "Escape to Danger";
+			PRINT("inweb %s", vn);
+			if (vname[0]) PRINT(" '%s'", vname);
+			if (bn[0]) PRINT(" (build %s)", bn);
+			PRINT("\n");
 			innocuous = TRUE; break;
+		}
 		case HELP_CLSW: CommandLine__write_help(STDOUT); innocuous = TRUE; break;
 		case FIXTIME_CLSW: Time__fix(); break;
 		case AT_CLSW: Pathnames__set_installation_path(Pathnames__from_text(arg)); break;
@@ -6254,7 +6262,7 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 	return cls->valency;
 }
 
-#line 294 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 302 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 text_stream *cls_heading = NULL;
 
 void CommandLine__declare_heading(wchar_t *heading_text_literal) {
@@ -6278,7 +6286,7 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	int filter = FALSE;
 	
 {
-#line 323 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 331 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	for (int i=0; i<N; i++) {
 		command_line_switch *cls = sorted_table[i];
 		if (cls->foundation_switch != filter) continue;
@@ -6294,13 +6302,13 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	}
 
 }
-#line 315 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 323 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 	WRITE("\n");
 	filter = TRUE;
 	
 {
-#line 323 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 331 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	for (int i=0; i<N; i++) {
 		command_line_switch *cls = sorted_table[i];
 		if (cls->foundation_switch != filter) continue;
@@ -6316,12 +6324,12 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	}
 
 }
-#line 318 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 326 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 	Memory__I7_free(sorted_table, CLS_SORTING_MREASON, N*((int) sizeof(command_line_switch *)));
 }
 
-#line 338 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 346 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__compare_names(const void *ent1, const void *ent2) {
 	text_stream *tx1 = (*((const command_line_switch **) ent1))->switch_sort_name;
 	text_stream *tx2 = (*((const command_line_switch **) ent2))->switch_sort_name;
