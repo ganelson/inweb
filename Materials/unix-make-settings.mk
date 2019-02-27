@@ -24,10 +24,6 @@ INFORM6OS = LINUX
 
 INDOCOPTS = linux_app
 
-# For reasons to do with CSS, the following should be "-nofont" for Windows:
-
-INRTPSOPTS = -font
-
 # -multi in the following runs "make check" with processes divided among what
 # are expected to be four processors, for a substantial speed gain, but doesn't
 # change the outcome:
