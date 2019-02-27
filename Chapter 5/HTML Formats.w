@@ -564,12 +564,59 @@ void HTMLFormat::xref(OUTPUT_STREAM, weave_target *wv, paragraph *P, section *fr
 
 @ =
 void HTMLFormat::tail(weave_format *self, text_stream *OUT, weave_target *wv,
-	text_stream *comment) {
+	text_stream *comment, section *this_S) {
 	HTMLFormat::exit_current_paragraph(OUT);
+	if (wv->docs_mode) {
+		chapter *C = this_S->owning_chapter;
+		section *S, *last_S = NULL, *prev_S = NULL, *next_S = NULL;
+		LOOP_OVER_LINKED_LIST(S, section, C->sections) {
+			if (S == this_S) prev_S = last_S;
+			if (last_S == this_S) next_S = S;
+			last_S = S;
+		}
+
+		HTML::hr(OUT, "tocbar");
+		HTML_OPEN_WITH("ul", "class=\"toc\"");
+		HTML_OPEN("li");
+		if (prev_S == NULL) WRITE("<i>(This section begins %S.)</i>", C->ch_title);
+		else {
+			TEMPORARY_TEXT(TEMP);
+			HTMLFormat::sref(TEMP, wv, prev_S);
+			HTML::begin_link(OUT, TEMP);
+			WRITE("Back to '%S'", prev_S->sect_title);
+			HTML::end_link(OUT);
+			DISCARD_TEXT(TEMP);
+		}
+		HTML_CLOSE("li");
+		HTML_OPEN("li");
+		if (next_S == NULL) WRITE("<i>(This section ends %S.)</i>", C->ch_title);
+		else {
+			TEMPORARY_TEXT(TEMP);
+			HTMLFormat::sref(TEMP, wv, next_S);
+			HTML::begin_link(OUT, TEMP);
+			WRITE("Continue with '%S'", next_S->sect_title);
+			HTML::end_link(OUT);
+			DISCARD_TEXT(TEMP);
+		}
+		HTML_CLOSE("li");
+		HTML_CLOSE("ul");
+		HTML::hr(OUT, "tocbar");
+	}
 	HTML::comment(OUT, comment);
 	HTML::completed(OUT);
 	Bibliographic::set_datum(wv->weave_web, I"Booklet Title", wv->booklet_title);
 	Indexer::cover_sheet_maker(OUT, wv->weave_web, I"template", wv, WEAVE_SECOND_HALF);
+}
+
+@ =
+void HTMLFormat::sref(OUTPUT_STREAM, weave_target *wv, section *S) {
+	if (S == NULL) internal_error("unwoven section");
+	LOOP_THROUGH_TEXT(pos, S->range)
+		if (Str::get(pos) == '/')
+			PUT('-');
+		else
+			PUT(Str::get(pos));
+	WRITE(".html");
 }
 
 @h EPUB-only methods.

@@ -23,6 +23,7 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 	if ((Str::len(wv->cover_sheet_to_use) > 0) && (W->no_sections > 1))
 		@<Weave head of the cover sheet, if any@>;
 	int lines_woven = 0;
+	section *latest_section = NULL;
 	@<Weave the body of the material@>;
 	if ((Str::len(wv->cover_sheet_to_use) > 0) && (W->no_sections > 1))
 		@<Weave tail of the cover sheet, if any@>;
@@ -53,6 +54,7 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 			Str::clear(state->chaptermark);
 			LOOP_OVER_LINKED_LIST(S, section, C->sections)
 				if (Reader::range_within(S->range, wv->weave_range)) {
+					latest_section = S;
 					Languages::begin_weave(S, wv);
 					Str::clear(state->sectionmark);
 					@<Weave this section@>;
@@ -67,7 +69,7 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 @<Weave the rennab@> =
 	TEMPORARY_TEXT(rennab);
 	WRITE_TO(rennab, "End of weave: %d lines from a web of %d", lines_woven, W->no_lines);
-	Formats::tail(OUT, wv, rennab);
+	Formats::tail(OUT, wv, rennab, latest_section);
 	DISCARD_TEXT(rennab);
 
 @h The state.

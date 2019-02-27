@@ -405,7 +405,7 @@ void TeX::change_material(weave_format *self, text_stream *OUT, weave_target *wv
 
 @ =
 void TeX::tail(weave_format *self, text_stream *OUT, weave_target *wv,
-	text_stream *comment) {
+	text_stream *comment, section *S) {
 	WRITE("%% %S\n", comment);
 	WRITE("\\end\n");
 }

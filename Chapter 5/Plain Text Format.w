@@ -145,6 +145,6 @@ void PlainText::locale(weave_format *self, text_stream *OUT, weave_target *wv,
 
 @ =
 void PlainText::tail(weave_format *self, text_stream *OUT, weave_target *wv,
-	text_stream *comment) {
+	text_stream *comment, section *S) {
 	WRITE("[%S]\n", comment);
 }

@@ -12,6 +12,7 @@ Tests/intest-history.txt
 Tests/Transient/
 Tests/hashes.intest
 Tests/_Results_Actual/
+foundation-test/Tests/Test Cases/_Results_Actual/
 platform-settings.mk
 foundation-module/Woven/
 Examples/*.o

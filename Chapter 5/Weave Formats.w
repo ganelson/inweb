@@ -474,10 +474,10 @@ intended for human eyes, and will be some sort of "End of weave" remark.
 
 =
 VMETHOD_TYPE(TAIL_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
-	text_stream *comment)
-void Formats::tail(OUTPUT_STREAM, weave_target *wv, text_stream *comment) {
+	text_stream *comment, section *S)
+void Formats::tail(OUTPUT_STREAM, weave_target *wv, text_stream *comment, section *S) {
 	weave_format *wf = wv->format;
-	VMETHOD_CALL(wf, TAIL_FOR_MTID, OUT, wv, comment);
+	VMETHOD_CALL(wf, TAIL_FOR_MTID, OUT, wv, comment, S);
 }
 
 @h Post-processing.
