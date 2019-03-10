@@ -6,6 +6,9 @@
 
 # This is the Gnome version, by Philip Chimento
 
+INTEST = intest/Tangled/intest
+INWEB = inweb/Tangled/inweb
+
 # First, the locations to which resources must be copied, inside the
 # application. These pathnames mustn't contain spaces:
 

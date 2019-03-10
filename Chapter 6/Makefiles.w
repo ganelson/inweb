@@ -100,16 +100,21 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	return;
 
 @<Expand identity-settings@> =
+	WRITE("INWEB = "); Makefiles::pathname_slashed(OUT, path_to_inweb); WRITE("/Tangled/inweb\n");
+	pathname *path_to_intest = Pathnames::subfolder(Pathnames::up(path_to_inweb), I"intest");
+	WRITE("INTEST = "); Makefiles::pathname_slashed(OUT, path_to_intest); WRITE("/Tangled/intest\n");
 	WRITE("MYNAME = %S\n", Pathnames::directory_name(MS->for_web->path_to_web));
-	WRITE("ME = %p\n", MS->for_web->path_to_web);
+	WRITE("ME = "); Makefiles::pathname_slashed(OUT, MS->for_web->path_to_web);
+	WRITE("\n");
 	module *MW = MS->for_web->as_module;
 	module *X = FIRST_IN_LINKED_LIST(module, MW->dependencies);
 	if (X) {
 		WRITE("# which depends on:\n");
 		int N = 1;
 		LOOP_OVER_LINKED_LIST(X, module, MW->dependencies) {
-			WRITE("MODULE%d = %p\n", N, X->module_location);
-			N++;
+			WRITE("MODULE%d = ", N++);
+			Makefiles::pathname_slashed(OUT, X->module_location);
+			WRITE("\n");
 		}
 	}
 	MS->last_line_was_blank = FALSE;
@@ -184,6 +189,18 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 		MS->last_line_was_blank = FALSE;
 		WRITE("%S\n", line);
 	}
+
+@ =
+void Makefiles::pathname_slashed(OUTPUT_STREAM, pathname *P) {
+	TEMPORARY_TEXT(PT)
+	WRITE_TO(PT, "%p", P);
+	LOOP_THROUGH_TEXT(pos, PT) {
+		wchar_t c = Str::get(pos);
+		if (c == ' ') WRITE("\\ ");
+		else PUT(c);
+	}
+	DISCARD_TEXT(PT)
+}
 
 @ And finally, the following handles repetitions both of blocks and of spans:
 

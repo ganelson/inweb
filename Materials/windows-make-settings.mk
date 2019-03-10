@@ -2,6 +2,9 @@
 # This is the Windows version, by David Kinder. To use, you will need
 # Cygwin with the Mingw-w64 GCC compiler installed.
 
+INTEST = intest/Tangled/intest
+INWEB = inweb/Tangled/inweb
+
 BUILTINCOMPS = ../Build/Compilers
 INTERNAL = ../Build/Internal
 BUILTINHTML = ../Build/Documentation

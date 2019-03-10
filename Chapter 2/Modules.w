@@ -83,7 +83,7 @@ pathname *Modules::find(web *W, module_search *ms, text_stream *name) {
 	pathname *tries[4];
 	tries[0] = W?(W->path_to_web):NULL;
 	tries[1] = Pathnames::up(tries[0]);
-	tries[2] = Pathnames::from_text(I"inweb");
+	tries[2] = path_to_inweb;
 	tries[3] = ms->path_to_search;
 	int N = 4;
 	for (int i=0; i<N; i++) {
