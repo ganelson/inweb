@@ -103,21 +103,23 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	WRITE("INWEB = "); Makefiles::pathname_slashed(OUT, path_to_inweb); WRITE("/Tangled/inweb\n");
 	pathname *path_to_intest = Pathnames::subfolder(Pathnames::up(path_to_inweb), I"intest");
 	WRITE("INTEST = "); Makefiles::pathname_slashed(OUT, path_to_intest); WRITE("/Tangled/intest\n");
-	WRITE("MYNAME = %S\n", Pathnames::directory_name(MS->for_web->path_to_web));
-	WRITE("ME = "); Makefiles::pathname_slashed(OUT, MS->for_web->path_to_web);
-	WRITE("\n");
-	module *MW = MS->for_web->as_module;
-	module *X = FIRST_IN_LINKED_LIST(module, MW->dependencies);
-	if (X) {
-		WRITE("# which depends on:\n");
-		int N = 1;
-		LOOP_OVER_LINKED_LIST(X, module, MW->dependencies) {
-			WRITE("MODULE%d = ", N++);
-			Makefiles::pathname_slashed(OUT, X->module_location);
-			WRITE("\n");
+	if (MS->for_web) {
+		WRITE("MYNAME = %S\n", Pathnames::directory_name(MS->for_web->path_to_web));
+		WRITE("ME = "); Makefiles::pathname_slashed(OUT, MS->for_web->path_to_web);
+		WRITE("\n");
+		module *MW = MS->for_web->as_module;
+		module *X = FIRST_IN_LINKED_LIST(module, MW->dependencies);
+		if (X) {
+			WRITE("# which depends on:\n");
+			int N = 1;
+			LOOP_OVER_LINKED_LIST(X, module, MW->dependencies) {
+				WRITE("MODULE%d = ", N++);
+				Makefiles::pathname_slashed(OUT, X->module_location);
+				WRITE("\n");
+			}
 		}
+		MS->last_line_was_blank = FALSE;
 	}
-	MS->last_line_was_blank = FALSE;
 	Regexp::dispose_of(&mr);
 	return;
 

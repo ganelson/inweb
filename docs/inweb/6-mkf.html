@@ -86,7 +86,7 @@ following a "prototype".
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Makefiles::scan_makefile_line is used in <a href="#SP1">&#167;1</a>, <a href="#SP2_5">&#167;2.5</a>, <a href="#SP3">&#167;3</a>.</p>
+<p class="endnote">The function Makefiles::scan_makefile_line is used in <a href="#SP1">&#167;1</a>, <a href="#SP2_5">&#167;2.5</a>, <a href="#SP4">&#167;4</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Begin a repeat block</span> <span class="cwebmacronumber">2.1</span>&gt; =
@@ -181,19 +181,26 @@ following a "prototype".
 
 
 <pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"MYNAME = %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">Pathnames::directory_name</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;for_web</span><span class="plain">-</span><span class="element">&gt;path_to_web</span><span class="plain">));</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"ME = %p\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;for_web</span><span class="plain">-</span><span class="element">&gt;path_to_web</span><span class="plain">);</span>
-        <span class="reserved">module</span><span class="plain"> *</span><span class="identifier">MW</span><span class="plain"> = </span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;for_web</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">;</span>
-        <span class="reserved">module</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FIRST_IN_LINKED_LIST</span><span class="plain">(</span><span class="reserved">module</span><span class="plain">, </span><span class="identifier">MW</span><span class="plain">-</span><span class="element">&gt;dependencies</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X</span><span class="plain">) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"# which depends on:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 1;</span>
-            <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="reserved">module</span><span class="plain">, </span><span class="identifier">MW</span><span class="plain">-</span><span class="element">&gt;dependencies</span><span class="plain">) {</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"MODULE%d = %p\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">X</span><span class="plain">-</span><span class="element">&gt;module_location</span><span class="plain">);</span>
-                <span class="identifier">N</span><span class="plain">++;</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"INWEB = "</span><span class="plain">); </span><span class="functiontext">Makefiles::pathname_slashed</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">path_to_inweb</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"/Tangled/inweb\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_intest</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="functiontext">Pathnames::up</span><span class="plain">(</span><span class="identifier">path_to_inweb</span><span class="plain">), </span><span class="identifier">I</span><span class="string">"intest"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"INTEST = "</span><span class="plain">); </span><span class="functiontext">Makefiles::pathname_slashed</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">path_to_intest</span><span class="plain">); </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"/Tangled/intest\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;for_web</span><span class="plain">) {</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"MYNAME = %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="functiontext">Pathnames::directory_name</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;for_web</span><span class="plain">-</span><span class="element">&gt;path_to_web</span><span class="plain">));</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"ME = "</span><span class="plain">); </span><span class="functiontext">Makefiles::pathname_slashed</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;for_web</span><span class="plain">-</span><span class="element">&gt;path_to_web</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+            <span class="reserved">module</span><span class="plain"> *</span><span class="identifier">MW</span><span class="plain"> = </span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;for_web</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">;</span>
+            <span class="reserved">module</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain"> = </span><span class="identifier">FIRST_IN_LINKED_LIST</span><span class="plain">(</span><span class="reserved">module</span><span class="plain">, </span><span class="identifier">MW</span><span class="plain">-</span><span class="element">&gt;dependencies</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">X</span><span class="plain">) {</span>
+                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"# which depends on:\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 1;</span>
+                <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">X</span><span class="plain">, </span><span class="reserved">module</span><span class="plain">, </span><span class="identifier">MW</span><span class="plain">-</span><span class="element">&gt;dependencies</span><span class="plain">) {</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"MODULE%d = "</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">++);</span>
+                    <span class="functiontext">Makefiles::pathname_slashed</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">X</span><span class="plain">-</span><span class="element">&gt;module_location</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+                <span class="plain">}</span>
             <span class="plain">}</span>
+            <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;last_line_was_blank</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;last_line_was_blank</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
@@ -331,7 +338,27 @@ following a "prototype".
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>And finally, the following handles repetitions both of blocks and of spans:
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
+
+
+<pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Makefiles::pathname_slashed</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
+        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">PT</span><span class="plain">)</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">PT</span><span class="plain">, </span><span class="string">"%p"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
+        <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">PT</span><span class="plain">) {</span>
+            <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">\</span><span class="string"> "</span><span class="plain">);</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">PT</span><span class="plain">)</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Makefiles::pathname_slashed is used in <a href="#SP2_6">&#167;2.6</a>.</p>
+
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And finally, the following handles repetitions both of blocks and of spans:
 </p>
 
 
@@ -372,7 +399,9 @@ following a "prototype".
 
 <p class="endnote">The function Makefiles::repeat is used in <a href="#SP2_3">&#167;2.3</a>, <a href="#SP2_4">&#167;2.4</a>.</p>
 
-<!--End of weave: 235 lines from a web of 20880-->
+<hr class="tocbar">
+<ul class="toc"><li><i>(This section begins Chapter 6: Extras.)</i></li><li><a href="6-gs.html">Continue with 'Git Support'</a></li></ul><hr class="tocbar">
+<!--End of weave: 255 lines from a web of 21004-->
 	</body>
 </html>
 

@@ -393,8 +393,8 @@ of which are variadic and have to be written out the old-fashioned way:
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::begin_body</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">class</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">class</span><span class="plain">) </span><span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"body"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">%s\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">class</span><span class="plain">)</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::begin_body</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">class</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">class</span><span class="plain">) </span><span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"body"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">%S\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">class</span><span class="plain">)</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"body"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
@@ -1002,7 +1002,9 @@ need to run quickly.
 
 <p class="endnote">The function HTML::end_colour appears nowhere else.</p>
 
-<!--End of weave: 757 lines from a web of 9279-->
+<hr class="tocbar">
+<ul class="toc"><li><i>(This section begins Chapter 5: Generating Websites.)</i></li><li><a href="5-ee.html">Continue with 'Epub Ebooks'</a></li></ul><hr class="tocbar">
+<!--End of weave: 757 lines from a web of 9333-->
 	</body>
 </html>
 

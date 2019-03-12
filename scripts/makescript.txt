@@ -99,6 +99,8 @@ test:
 
 .PHONY: pages
 pages:
+	mkdir -p $(ME)/docs
+	inform/inpolicy/Tangled/inpolicy -write-me inweb/scripts/READMEscript.txt
 	mkdir -p $(ME)/docs/inweb
 	mkdir -p $(ME)/docs/foundation-module
 	mkdir -p $(ME)/docs/foundation-test

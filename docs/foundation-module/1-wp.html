@@ -189,7 +189,7 @@ just that installation and use of Foundation-built tools is less convenient.)
 
 <p class="endnote">The function GetExitCodeProcess appears nowhere else.</p>
 
-<p class="endnote">The function Platform::system is used in 1/pp (<a href="1-pp.html#SP10">&#167;10</a>), 3/shl (<a href="3-shl.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function Platform::system is used in 1/pp (<a href="1-pp.html#SP10">&#167;10</a>, <a href="1-pp.html#SP11">&#167;11</a>), 3/shl (<a href="3-shl.html#SP5">&#167;5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Directory handling. </b></p>
 
@@ -235,13 +235,13 @@ just that installation and use of Foundation-built tools is less convenient.)
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
 
-<p class="endnote">The function Platform::mkdir is used in 1/pp (<a href="1-pp.html#SP11">&#167;11</a>), 3/pth (<a href="3-pth.html#SP8">&#167;8</a>).</p>
+<p class="endnote">The function Platform::mkdir is used in 1/pp (<a href="1-pp.html#SP12">&#167;12</a>), 3/pth (<a href="3-pth.html#SP8">&#167;8</a>).</p>
 
-<p class="endnote">The function Platform::opendir is used in 1/pp (<a href="1-pp.html#SP11">&#167;11</a>), 3/drc (<a href="3-drc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Platform::opendir is used in 1/pp (<a href="1-pp.html#SP12">&#167;12</a>), 3/drc (<a href="3-drc.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Platform::readdir is used in 1/pp (<a href="1-pp.html#SP11">&#167;11</a>), 3/drc (<a href="3-drc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Platform::readdir is used in 1/pp (<a href="1-pp.html#SP12">&#167;12</a>), 3/drc (<a href="3-drc.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Platform::closedir is used in 1/pp (<a href="1-pp.html#SP11">&#167;11</a>), 3/drc (<a href="3-drc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Platform::closedir is used in 1/pp (<a href="1-pp.html#SP12">&#167;12</a>), 3/drc (<a href="3-drc.html#SP2">&#167;2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Sleep. </b>The Windows <code class="display"><span class="extract">Sleep</span></code> call measures time in milliseconds, whereas
 POSIX <code class="display"><span class="extract">sleep</span></code> is for seconds.
@@ -259,7 +259,7 @@ POSIX <code class="display"><span class="extract">sleep</span></code> is for sec
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
 
-<p class="endnote">The function Platform::sleep is used in 1/pp (<a href="1-pp.html#SP12">&#167;12</a>).</p>
+<p class="endnote">The function Platform::sleep is used in 1/pp (<a href="1-pp.html#SP13">&#167;13</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Notifications. </b></p>
 
@@ -273,7 +273,7 @@ POSIX <code class="display"><span class="extract">sleep</span></code> is for sec
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
 
-<p class="endnote">The function Platform::notification is used in 1/pp (<a href="1-pp.html#SP13">&#167;13</a>, <a href="1-pp.html#SP14">&#167;14</a>).</p>
+<p class="endnote">The function Platform::notification is used in 1/pp (<a href="1-pp.html#SP14">&#167;14</a>, <a href="1-pp.html#SP15">&#167;15</a>).</p>
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Concurrency. </b>The following predeclarations come from the Windows SDK.
 </p>
@@ -340,13 +340,13 @@ POSIX <code class="display"><span class="extract">sleep</span></code> is for sec
 
 <p class="endnote">The function Platform::Win32_Thread_Func appears nowhere else.</p>
 
-<p class="endnote">The function Platform::create_thread is used in 1/pp (<a href="1-pp.html#SP16">&#167;16</a>).</p>
+<p class="endnote">The function Platform::create_thread is used in 1/pp (<a href="1-pp.html#SP17">&#167;17</a>).</p>
 
-<p class="endnote">The function Platform::join_thread is used in 1/pp (<a href="1-pp.html#SP16">&#167;16</a>).</p>
+<p class="endnote">The function Platform::join_thread is used in 1/pp (<a href="1-pp.html#SP17">&#167;17</a>).</p>
 
-<p class="endnote">The function Platform::init_thread is used in 1/pp (<a href="1-pp.html#SP16">&#167;16</a>).</p>
+<p class="endnote">The function Platform::init_thread is used in 1/pp (<a href="1-pp.html#SP17">&#167;17</a>).</p>
 
-<p class="endnote">The function Platform::get_thread_stack_size is used in 1/pp (<a href="1-pp.html#SP16">&#167;16</a>).</p>
+<p class="endnote">The function Platform::get_thread_stack_size is used in 1/pp (<a href="1-pp.html#SP17">&#167;17</a>).</p>
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Mutexes. </b></p>
 
@@ -369,7 +369,9 @@ POSIX <code class="display"><span class="extract">sleep</span></code> is for sec
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
 
-<!--End of weave: 236 lines from a web of 9279-->
+<hr class="tocbar">
+<ul class="toc"><li><a href="1-pp.html">Back to 'POSIX Platforms'</a></li><li><i>(This section ends Chapter 1: Setting Up.)</i></li></ul><hr class="tocbar">
+<!--End of weave: 236 lines from a web of 9333-->
 	</body>
 </html>
 

@@ -734,10 +734,10 @@ intended for human eyes, and will be some sort of "End of weave" remark.
 
 <pre class="display">
     <span class="identifier">VMETHOD_TYPE</span><span class="plain">(</span><span class="constant">TAIL_FOR_MTID</span><span class="plain">,</span><span class="reserved"> weave_format</span><span class="plain"> *</span><span class="identifier">wf</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
-        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">comment</span><span class="plain">)</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Formats::tail</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">comment</span><span class="plain">) {</span>
+        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">comment</span><span class="plain">, </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">)</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Formats::tail</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">comment</span><span class="plain">, </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">wf</span><span class="plain"> = </span><span class="identifier">wv</span><span class="plain">-</span><span class="element">&gt;format</span><span class="plain">;</span>
-        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">TAIL_FOR_MTID</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">comment</span><span class="plain">);</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">TAIL_FOR_MTID</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">comment</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -837,7 +837,9 @@ text like <code class="display"><span class="extract">[[PDF Size]]</span></code>
 
 <p class="endnote">The function Formats::substitute_post_processing_data is used in 3/ti (<a href="3-ti.html#SP4_1_8_2">&#167;4.1.8.2</a>, <a href="3-ti.html#SP4_1_8_3">&#167;4.1.8.3</a>, <a href="3-ti.html#SP4_1_8_4">&#167;4.1.8.4</a>).</p>
 
-<!--End of weave: 540 lines from a web of 20880-->
+<hr class="tocbar">
+<ul class="toc"><li><i>(This section begins Chapter 5: Formats.)</i></li><li><a href="5-ptf.html">Continue with 'Plain Text Format'</a></li></ul><hr class="tocbar">
+<!--End of weave: 540 lines from a web of 21004-->
 	</body>
 </html>
 

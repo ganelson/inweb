@@ -159,7 +159,7 @@ a way to create new small objects of any given type.
 or an array of small objects.
 </li><li>(1) Allocating and freeing a few dozen large blocks of contiguous memory.
 </li></ul>
-<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Level 1: memory blocks. </b>Memory is allocated in blocks of 100K, within which objects are allocated as
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Level 1: memory blocks. </b>Memory is allocated in blocks within which objects are allocated as
 needed. The "safety margin" is the number of spare bytes left blank at the
 end of each object: this is done because we want to be paranoid about
 compilers on different architectures aligning structures to different
@@ -172,10 +172,10 @@ the debugging log.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">SAFETY_MARGIN</span><span class="plain"> 64</span>
-    <span class="definitionkeyword">define</span> <span class="constant">BLANK_END_SIZE</span><span class="plain"> 128</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SAFETY_MARGIN</span><span class="plain"> 128</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BLANK_END_SIZE</span><span class="plain"> 256</span>
 </pre>
-<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>At present <code class="display"><span class="extract">MEMORY_GRANULARITY</span></code> is 100K. This is the quantity of memory
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>At present <code class="display"><span class="extract">MEMORY_GRANULARITY</span></code> is 800K. This is the quantity of memory
 allocated by each individual <code class="display"><span class="extract">malloc</span></code> call.
 </p>
 
@@ -190,7 +190,7 @@ unable to get the GUI responsive enough to kill the process.)
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">MAX_BLOCKS_ALLOWED</span><span class="plain"> 15000</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MEMORY_GRANULARITY</span><span class="plain"> 100*1024*4 </span>    <span class="comment">which must be divisible by 1024</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MEMORY_GRANULARITY</span><span class="plain"> 100*1024*8 </span>    <span class="comment">which must be divisible by 1024</span>
 </pre>
 
 <pre class="display">
@@ -619,6 +619,8 @@ double-quotes.
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">new_obj</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="identifier">copy_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
+        <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
+        <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">prev_obj</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">-&gt;</span><span class="identifier">prev_structure</span><span class="plain">;</span>
         <span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">next_obj</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">-&gt;</span><span class="identifier">next_structure</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">aid</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">;</span>
@@ -626,6 +628,7 @@ double-quotes.
         <span class="identifier">to</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain"> = </span><span class="identifier">aid</span><span class="plain">;</span>
         <span class="identifier">to</span><span class="plain">-&gt;</span><span class="identifier">next_structure</span><span class="plain"> = </span><span class="identifier">next_obj</span><span class="plain">;</span>
         <span class="identifier">to</span><span class="plain">-&gt;</span><span class="identifier">prev_structure</span><span class="plain"> = </span><span class="identifier">prev_obj</span><span class="plain">;</span>
+        <span class="identifier">UNLOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b><code class="display"><span class="extract">ALLOCATE_IN_ARRAYS</span></code> is still more obfuscated. When we
@@ -965,6 +968,8 @@ to write to the result.
 
 <pre class="display">
     <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Memory::new_string</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
+        <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
+        <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">length_needed</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) + 1;</span>
         <span class="reserved">if</span><span class="plain"> (!((</span><span class="identifier">current_ssa</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">current_ssa</span><span class="plain">-</span><span class="element">&gt;first_free_byte</span><span class="plain"> + </span><span class="identifier">length_needed</span><span class="plain"> &lt; </span><span class="constant">SSA_CAPACITY</span><span class="plain">))) {</span>
@@ -975,6 +980,7 @@ to write to the result.
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">rp</span><span class="plain"> = </span><span class="identifier">current_ssa</span><span class="plain">-</span><span class="element">&gt;storage_at</span><span class="plain"> + </span><span class="identifier">current_ssa</span><span class="plain">-</span><span class="element">&gt;first_free_byte</span><span class="plain">;</span>
         <span class="identifier">current_ssa</span><span class="plain">-</span><span class="element">&gt;first_free_byte</span><span class="plain"> += </span><span class="identifier">length_needed</span><span class="plain">;</span>
         <span class="identifier">strcpy</span><span class="plain">(</span><span class="identifier">rp</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">);</span>
+        <span class="identifier">UNLOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rp</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -1299,7 +1305,9 @@ allocated objects above; so that leaves only humble <code class="display"><span 
 
 <p class="inwebparagraph"></p>
 
-<!--End of weave: 926 lines from a web of 9279-->
+<hr class="tocbar">
+<ul class="toc"><li><a href="2-dl.html">Back to 'Debugging Log'</a></li><li><a href="2-str.html">Continue with 'Streams'</a></li></ul><hr class="tocbar">
+<!--End of weave: 932 lines from a web of 9333-->
 	</body>
 </html>
 

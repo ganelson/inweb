@@ -92,8 +92,15 @@ program: some input, some thinking, a choice of three forms of output.
 
 =
 void Main::follow_instructions(inweb_instructions *ins) {
-	if (ins->inweb_mode == TRANSLATE_MODE) @<Translate a makefile@>
-	else if (ins->inweb_mode != NO_MODE) @<Analyse, tangle or weave an existing web@>;
+	web *W = NULL;
+	if (ins->chosen_web)
+		W = Reader::load_web(ins->chosen_web, ins->chosen_file,
+			Modules::make_search_path(ins->import_setting), ins->verbose_switch,
+			ins->inweb_mode, ins->weave_into_setting);
+	if (no_inweb_errors == 0) {
+		if (ins->inweb_mode == TRANSLATE_MODE) @<Translate a makefile@>
+		else if (ins->inweb_mode != NO_MODE) @<Analyse, tangle or weave an existing web@>;
+	}
 }
 
 @ This is a one-off featurette:
@@ -104,22 +111,17 @@ void Main::follow_instructions(inweb_instructions *ins) {
 	if ((ins->gitignore_setting) && (ins->prototype_setting == NULL))
 		ins->prototype_setting = Filenames::from_text(I"gitignorescript.txt");
 	if (ins->makefile_setting)
-		Makefiles::write(NULL, ins->prototype_setting, ins->makefile_setting);
+		Makefiles::write(W, ins->prototype_setting, ins->makefile_setting);
 	else if (ins->gitignore_setting)
-		Git::write_gitignore(NULL, ins->prototype_setting, ins->gitignore_setting);
+		Git::write_gitignore(W, ins->prototype_setting, ins->gitignore_setting);
 
-@ But otherwise we read and fully parse a web, and then do something with it:
+@ But otherwise we do something with the given web:
 
 @<Analyse, tangle or weave an existing web@> =
-	web *W = Reader::load_web(ins->chosen_web, ins->chosen_file,
-		Modules::make_search_path(ins->import_setting), ins->verbose_switch,
-		ins->inweb_mode, ins->weave_into_setting);
-	if (no_inweb_errors == 0) {
-		Reader::print_web_statistics(W);
-		if (ins->inweb_mode == ANALYSE_MODE) @<Analyse the web@>;
-		if (ins->inweb_mode == TANGLE_MODE) @<Tangle the web@>;
-		if (ins->inweb_mode == WEAVE_MODE) @<Weave the web@>;
-	}
+	Reader::print_web_statistics(W);
+	if (ins->inweb_mode == ANALYSE_MODE) @<Analyse the web@>;
+	if (ins->inweb_mode == TANGLE_MODE) @<Tangle the web@>;
+	if (ins->inweb_mode == WEAVE_MODE) @<Weave the web@>;
 
 @ "Analysis" invokes any combination of the following diagnostic tools:
 

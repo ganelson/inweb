@@ -2601,7 +2601,7 @@ int  SoundFiles__get_MIDI_information(FILE *pFile, unsigned int *pType, 	unsigne
 int  main(int argc, char **argv) ;
 #line 94 "inweb/Chapter 1/Program Control.w"
 void  Main__follow_instructions(inweb_instructions *ins) ;
-#line 283 "inweb/Chapter 1/Program Control.w"
+#line 285 "inweb/Chapter 1/Program Control.w"
 void  Main__error_in_web(text_stream *message, source_line *sl) ;
 #line 47 "inweb/Chapter 1/Configuration.w"
 inweb_instructions  Configuration__read(int argc, char **argv) ;
@@ -3221,9 +3221,9 @@ int  RunningTeX__substitute_post_processing_data(text_stream *to, weave_target *
 void  Makefiles__write(web *W, filename *prototype, filename *F) ;
 #line 37 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, void *X) ;
-#line 194 "inweb/Chapter 6/Makefiles.w"
+#line 196 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) ;
-#line 208 "inweb/Chapter 6/Makefiles.w"
+#line 210 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__repeat(OUTPUT_STREAM, text_stream *prefix, int every_time, text_stream *matter, 	int as_lines, text_stream *suffix, text_file_position *tfp, makefile_state *MS) ;
 #line 15 "inweb/Chapter 6/Git Support.w"
 void  Git__write_gitignore(web *W, filename *prototype, filename *F) ;
@@ -10936,32 +10936,34 @@ int main(int argc, char **argv) {
 
 #line 94 "inweb/Chapter 1/Program Control.w"
 void Main__follow_instructions(inweb_instructions *ins) {
-	if (ins->inweb_mode == TRANSLATE_MODE) 
+	web *W = NULL;
+	if (ins->chosen_web)
+		W = Reader__load_web(ins->chosen_web, ins->chosen_file,
+			Modules__make_search_path(ins->import_setting), ins->verbose_switch,
+			ins->inweb_mode, ins->weave_into_setting);
+	if (no_inweb_errors == 0) {
+		if (ins->inweb_mode == TRANSLATE_MODE) 
 {
-#line 102 "inweb/Chapter 1/Program Control.w"
+#line 109 "inweb/Chapter 1/Program Control.w"
 	if ((ins->makefile_setting) && (ins->prototype_setting == NULL))
 		ins->prototype_setting = Filenames__from_text(TL_IS_22);
 	if ((ins->gitignore_setting) && (ins->prototype_setting == NULL))
 		ins->prototype_setting = Filenames__from_text(TL_IS_23);
 	if (ins->makefile_setting)
-		Makefiles__write(NULL, ins->prototype_setting, ins->makefile_setting);
+		Makefiles__write(W, ins->prototype_setting, ins->makefile_setting);
 	else if (ins->gitignore_setting)
-		Git__write_gitignore(NULL, ins->prototype_setting, ins->gitignore_setting);
+		Git__write_gitignore(W, ins->prototype_setting, ins->gitignore_setting);
 
 }
-#line 95 "inweb/Chapter 1/Program Control.w"
+#line 101 "inweb/Chapter 1/Program Control.w"
 
-	else if (ins->inweb_mode != NO_MODE) 
+		else if (ins->inweb_mode != NO_MODE) 
 {
-#line 114 "inweb/Chapter 1/Program Control.w"
-	web *W = Reader__load_web(ins->chosen_web, ins->chosen_file,
-		Modules__make_search_path(ins->import_setting), ins->verbose_switch,
-		ins->inweb_mode, ins->weave_into_setting);
-	if (no_inweb_errors == 0) {
-		Reader__print_web_statistics(W);
-		if (ins->inweb_mode == ANALYSE_MODE) 
+#line 121 "inweb/Chapter 1/Program Control.w"
+	Reader__print_web_statistics(W);
+	if (ins->inweb_mode == ANALYSE_MODE) 
 {
-#line 127 "inweb/Chapter 1/Program Control.w"
+#line 129 "inweb/Chapter 1/Program Control.w"
 	if (ins->swarm_mode != SWARM_OFF_SWM)
 		Errors__fatal("only specific parts of the web can be analysed");
 	if (ins->catalogue_switch)
@@ -10978,17 +10980,17 @@ void Main__follow_instructions(inweb_instructions *ins) {
 		Analyser__scan_line_categories(W, ins->chosen_range);
 
 }
-#line 119 "inweb/Chapter 1/Program Control.w"
+#line 122 "inweb/Chapter 1/Program Control.w"
 ;
-		if (ins->inweb_mode == TANGLE_MODE) 
+	if (ins->inweb_mode == TANGLE_MODE) 
 {
-#line 157 "inweb/Chapter 1/Program Control.w"
+#line 159 "inweb/Chapter 1/Program Control.w"
 	TEMPORARY_TEXT(tangle_leaf);
 	tangle_target *tn = NULL;
 	if (Str__eq_wide_string(ins->chosen_range, L"0")) {
 		
 {
-#line 182 "inweb/Chapter 1/Program Control.w"
+#line 184 "inweb/Chapter 1/Program Control.w"
 	tn = NULL;
 	if (Bibliographic__data_exists(W, TL_IS_24))
 		Str__copy(tangle_leaf, Bibliographic__get_datum(W, TL_IS_25));
@@ -10997,24 +10999,24 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	Str__concatenate(tangle_leaf, W->main_language->file_extension);
 
 }
-#line 160 "inweb/Chapter 1/Program Control.w"
+#line 162 "inweb/Chapter 1/Program Control.w"
 ;
 	} else if (Reader__get_section_for_range(W, ins->chosen_range)) {
 		
 {
-#line 192 "inweb/Chapter 1/Program Control.w"
+#line 194 "inweb/Chapter 1/Program Control.w"
 	section *S = Reader__get_section_for_range(W, ins->chosen_range);
 	tn = S->sect_target;
 	if (tn == NULL) Errors__fatal("section cannot be independently tangled");
 	Str__copy(tangle_leaf, Filenames__get_leafname(S->source_file_for_section));
 
 }
-#line 162 "inweb/Chapter 1/Program Control.w"
+#line 164 "inweb/Chapter 1/Program Control.w"
 ;
 	} else {
 		
 {
-#line 201 "inweb/Chapter 1/Program Control.w"
+#line 203 "inweb/Chapter 1/Program Control.w"
 	chapter *C;
 	LOOP_OVER(C, chapter)
 		if (Str__eq(ins->chosen_range, C->ch_range)) {
@@ -11033,7 +11035,7 @@ void Main__follow_instructions(inweb_instructions *ins) {
 		Errors__fatal("only the entire web, or specific sections, can be tangled");
 
 }
-#line 164 "inweb/Chapter 1/Program Control.w"
+#line 166 "inweb/Chapter 1/Program Control.w"
 ;
 	}
 	if (Str__len(tangle_leaf) == 0) { Errors__fatal("no tangle destination known"); }
@@ -11049,15 +11051,15 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	DISCARD_TEXT(tangle_leaf);
 
 }
-#line 120 "inweb/Chapter 1/Program Control.w"
+#line 123 "inweb/Chapter 1/Program Control.w"
 ;
-		if (ins->inweb_mode == WEAVE_MODE) 
+	if (ins->inweb_mode == WEAVE_MODE) 
 {
-#line 221 "inweb/Chapter 1/Program Control.w"
+#line 223 "inweb/Chapter 1/Program Control.w"
 	Numbering__number_web(W);
 	if (ins->weave_docs) 
 {
-#line 253 "inweb/Chapter 1/Program Control.w"
+#line 255 "inweb/Chapter 1/Program Control.w"
 	if (ins->weave_into_setting == NULL) {
 		pathname *docs = Pathnames__subfolder(W->path_to_web, TL_IS_27);
 		Pathnames__create_in_file_system(docs);
@@ -11077,7 +11079,7 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	ins->weave_pattern = TL_IS_31;
 
 }
-#line 222 "inweb/Chapter 1/Program Control.w"
+#line 224 "inweb/Chapter 1/Program Control.w"
 ;
 
 	theme_tag *tag = Tags__find_by_name(ins->tag_setting, FALSE);
@@ -11092,14 +11094,14 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	if (r != SWARM_OFF_SWM) ins->swarm_mode = r;
 	
 {
-#line 272 "inweb/Chapter 1/Program Control.w"
+#line 274 "inweb/Chapter 1/Program Control.w"
 	section *S; int k = 1;
 	LOOP_OVER(S, section)
 		if (Reader__range_within(S->range, ins->chosen_range))
 			S->printed_number = k++;
 
 }
-#line 234 "inweb/Chapter 1/Program Control.w"
+#line 236 "inweb/Chapter 1/Program Control.w"
 ;
 	if (ins->swarm_mode == SWARM_OFF_SWM) {
 		int shall_we_open = ins->open_pdf_switch;
@@ -11116,16 +11118,16 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	Formats__end_weaving(W, pattern);
 
 }
-#line 121 "inweb/Chapter 1/Program Control.w"
+#line 124 "inweb/Chapter 1/Program Control.w"
+;
+
+}
+#line 102 "inweb/Chapter 1/Program Control.w"
 ;
 	}
-
-}
-#line 96 "inweb/Chapter 1/Program Control.w"
-;
 }
 
-#line 283 "inweb/Chapter 1/Program Control.w"
+#line 285 "inweb/Chapter 1/Program Control.w"
 void Main__error_in_web(text_stream *message, source_line *sl) {
 	if (sl) {
 		Errors__in_text_file_S(message, &(sl->source));
@@ -19860,21 +19862,23 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	WRITE("INWEB = "); Makefiles__pathname_slashed(OUT, path_to_inweb); WRITE("/Tangled/inweb\n");
 	pathname *path_to_intest = Pathnames__subfolder(Pathnames__up(path_to_inweb), TL_IS_298);
 	WRITE("INTEST = "); Makefiles__pathname_slashed(OUT, path_to_intest); WRITE("/Tangled/intest\n");
-	WRITE("MYNAME = %S\n", Pathnames__directory_name(MS->for_web->path_to_web));
-	WRITE("ME = "); Makefiles__pathname_slashed(OUT, MS->for_web->path_to_web);
-	WRITE("\n");
-	module *MW = MS->for_web->as_module;
-	module *X = FIRST_IN_LINKED_LIST(module, MW->dependencies);
-	if (X) {
-		WRITE("# which depends on:\n");
-		int N = 1;
-		LOOP_OVER_LINKED_LIST(X, module, MW->dependencies) {
-			WRITE("MODULE%d = ", N++);
-			Makefiles__pathname_slashed(OUT, X->module_location);
-			WRITE("\n");
+	if (MS->for_web) {
+		WRITE("MYNAME = %S\n", Pathnames__directory_name(MS->for_web->path_to_web));
+		WRITE("ME = "); Makefiles__pathname_slashed(OUT, MS->for_web->path_to_web);
+		WRITE("\n");
+		module *MW = MS->for_web->as_module;
+		module *X = FIRST_IN_LINKED_LIST(module, MW->dependencies);
+		if (X) {
+			WRITE("# which depends on:\n");
+			int N = 1;
+			LOOP_OVER_LINKED_LIST(X, module, MW->dependencies) {
+				WRITE("MODULE%d = ", N++);
+				Makefiles__pathname_slashed(OUT, X->module_location);
+				WRITE("\n");
+			}
 		}
+		MS->last_line_was_blank = FALSE;
 	}
-	MS->last_line_was_blank = FALSE;
 	Regexp__dispose_of(&mr);
 	return;
 
@@ -19898,7 +19902,7 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 
 		if (Regexp__match(&mr, line, L" *{tool} *(%C+) (%C+) (%c+) *")) 
 {
-#line 125 "inweb/Chapter 6/Makefiles.w"
+#line 127 "inweb/Chapter 6/Makefiles.w"
 	Modules__new(mr.exp[0], Pathnames__from_text(mr.exp[2]), MAKEFILE_TOOL_MOM);
 	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", mr.exp[0], mr.exp[0], mr.exp[1]);
@@ -19912,7 +19916,7 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 ;
 		if (Regexp__match(&mr, line, L" *{module} *(%C+) (%C+) (%c+) *")) 
 {
-#line 134 "inweb/Chapter 6/Makefiles.w"
+#line 136 "inweb/Chapter 6/Makefiles.w"
 	Modules__new(mr.exp[0], Pathnames__from_text(mr.exp[2]), MAKEFILE_MODULE_MOM);
 	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
 	MS->last_line_was_blank = FALSE;
@@ -19924,7 +19928,7 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 ;
 		if (Regexp__match(&mr, line, L" *{dep} *(%C+) on (%C+) *")) 
 {
-#line 141 "inweb/Chapter 6/Makefiles.w"
+#line 143 "inweb/Chapter 6/Makefiles.w"
 	module *MA = Modules__find_loaded_by_name(tfp, mr.exp[0]);
 	module *MB = Modules__find_loaded_by_name(tfp, mr.exp[1]);
 	if ((MA) && (MB)) Modules__dependency(MA, MB);
@@ -19937,7 +19941,7 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 
 		if (Regexp__match(&mr, line, L"(%c*?) *{dependent-files} *")) 
 {
-#line 148 "inweb/Chapter 6/Makefiles.w"
+#line 150 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%S", mr.exp[0]);
 	if ((MS->for_web) && (MS->for_web->chaptered == FALSE))
 		WRITE(" $(ME)/Contents.w $(ME)/Sections/*.w");
@@ -19962,7 +19966,7 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 ;
 		if (Regexp__match(&mr, line, L"(%c*?) *{dependent-files-for} *(%C+)")) 
 {
-#line 168 "inweb/Chapter 6/Makefiles.w"
+#line 170 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%S", mr.exp[0]);
 	module *MW = Modules__find_loaded_by_name(tfp, mr.exp[1]);
 	if (MW) {
@@ -19987,7 +19991,7 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 
 	
 {
-#line 185 "inweb/Chapter 6/Makefiles.w"
+#line 187 "inweb/Chapter 6/Makefiles.w"
 	if (Str__len(line) == 0) {
 		if (MS->last_line_was_blank == FALSE) WRITE("\n");
 		MS->last_line_was_blank = TRUE;
@@ -20001,7 +20005,7 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 ;
 }
 
-#line 194 "inweb/Chapter 6/Makefiles.w"
+#line 196 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) {
 	TEMPORARY_TEXT(PT)
 	WRITE_TO(PT, "%p", P);
@@ -20013,7 +20017,7 @@ void Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) {
 	DISCARD_TEXT(PT)
 }
 
-#line 208 "inweb/Chapter 6/Makefiles.w"
+#line 210 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__repeat(OUTPUT_STREAM, text_stream *prefix, int every_time, text_stream *matter,
 	int as_lines, text_stream *suffix, text_file_position *tfp, makefile_state *MS) {
 	module *M;

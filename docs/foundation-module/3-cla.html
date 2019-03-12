@@ -349,9 +349,17 @@ all other switches are delegated to the client's callback function <code class="
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">cls</span><span class="plain">-</span><span class="element">&gt;switch_id</span><span class="plain">) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">CRASH_CLSW</span><span class="plain">: </span><span class="functiontext">Errors::enter_debugger_mode</span><span class="plain">(); </span><span class="identifier">innocuous</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">LOG_CLSW</span><span class="plain">: </span>&lt;<span class="cwebmacro">Parse debugging log inclusion</span> <span class="cwebmacronumber">8.1.1</span>&gt;<span class="plain">; </span><span class="identifier">innocuous</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VERSION_CLSW</span><span class="plain">:</span>
-                <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"%s [[Version Number]] '[[Version Name]]' (build [[Build Number]] on [[Build Date]])\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">INTOOL_NAME</span><span class="plain">);</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">VERSION_CLSW</span><span class="plain">: {</span>
+                <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">bn</span><span class="plain"> = </span><span class="string">"[[Build Number]]"</span><span class="plain">;</span>
+                <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">vn</span><span class="plain"> = </span><span class="string">"[[Version Number]]"</span><span class="plain">;</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vn</span><span class="plain">[0] == 0) </span><span class="identifier">vn</span><span class="plain"> = </span><span class="string">"1"</span><span class="plain">;</span>
+                <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">vname</span><span class="plain"> = </span><span class="string">"[[Version Name]]"</span><span class="plain">;</span>
+                <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"[[Title]] %s"</span><span class="plain">, </span><span class="identifier">vn</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">vname</span><span class="plain">[0]) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">" '%s'"</span><span class="plain">, </span><span class="identifier">vname</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bn</span><span class="plain">[0]) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">" (build %s)"</span><span class="plain">, </span><span class="identifier">bn</span><span class="plain">);</span>
+                <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
                 <span class="identifier">innocuous</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="plain">}</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">HELP_CLSW</span><span class="plain">: </span><span class="functiontext">CommandLine::write_help</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">); </span><span class="identifier">innocuous</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">FIXTIME_CLSW</span><span class="plain">: </span><span class="functiontext">Time::fix</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">AT_CLSW</span><span class="plain">: </span><span class="functiontext">Pathnames::set_installation_path</span><span class="plain">(</span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
@@ -481,7 +489,9 @@ name and purpose.
 
 <p class="endnote">The function CommandLine::compare_names is used in <a href="#SP9">&#167;9</a>.</p>
 
-<!--End of weave: 346 lines from a web of 9279-->
+<hr class="tocbar">
+<ul class="toc"><li><a href="3-em.html">Back to 'Error Messages'</a></li><li><a href="3-pth.html">Continue with 'Pathnames'</a></li></ul><hr class="tocbar">
+<!--End of weave: 354 lines from a web of 9333-->
 	</body>
 </html>
 
