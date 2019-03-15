@@ -135,9 +135,9 @@ to a structure which has |METHOD_CALLS| as part of its definition.
 	rval = FALSE;
 	for (method *M = upon?(upon->methods->first_method):NULL; M; M = M->next_method)
 		if (M->method_id == id) {
-			int rv = (*((id##_type) (M->method_function)))(upon);
-			if (rv) {
-				rval = rv;
+			int method_rval_ = (*((id##_type) (M->method_function)))(upon);
+			if (method_rval_) {
+				rval = method_rval_;
 				break;
 			}
 		}
