@@ -1,6 +1,6 @@
 Title: foundation-test
 Author: Graham Nelson
-Purpose: For testing the foundation module.
+Purpose: Unit tests for the foundation module.
 Language: InC
 Licence: Artistic License 2.0
 
