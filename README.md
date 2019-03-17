@@ -16,6 +16,16 @@ compilers. Its main use since 2004 has been to build the Inform compiler and
 its associated tools (see [ganelson/inform](https://github.com/ganelson/inform)),
 including another general-purpose tool, [ganelson/intest](https://github.com/ganelson/intest).
 
+## Licence
+
+Except as noted, copyright in material in this repository (the "Package") is
+held by Graham Nelson (the "Author"), who retains copyright so that there is
+a single point of reference. As from the first date of this repository
+becoming public, the Package is placed under the [Artistic License 2.0](https://opensource.org/licenses/Artistic-2.0).
+This is a highly permissive licence, used by Perl among other notable projects,
+recognised by the Open Source Initiative as open and by the Free Software
+Foundation as free in both senses.
+
 ## Build Instructions
 
 Inweb is itself a literate program. There is clearly a circularity here: to

@@ -566,10 +566,7 @@ void Streams::write_as_ISO_string(char *C_string, text_stream *stream, int buffe
 	C_string[i] = 0;
 }
 
-@ Unicode code points outside the first page are flattened to |'?'| in an
-ISO string:
-
-=
+@ =
 void Streams::write_as_UTF8_string(char *C_string, text_stream *stream, int buffer_size) {
 	if (buffer_size == 0) return;
 	if (stream == NULL) { C_string[0] = 0; return; }

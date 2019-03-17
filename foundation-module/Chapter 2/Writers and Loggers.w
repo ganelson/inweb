@@ -148,10 +148,7 @@ void Writers::printf(text_stream *stream, char *fmt, ...) {
 				else Streams::putc(*p, stream);
 				break;
 			case '\n':
-//				if (stream->stream_flags & USES_I6_ESCAPES_STRF)
-//					Streams::putc('^', stream);
-//				else
-					Streams::putc(*p, stream);
+				Streams::putc(*p, stream);
 				break;
 			default: Streams::putc(*p, stream); break;
 		}

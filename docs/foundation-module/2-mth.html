@@ -193,9 +193,9 @@ to a structure which has <code class="display"><span class="extract">METHOD_CALL
         <span class="identifier">rval</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">method</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain"> = </span><span class="identifier">upon</span><span class="plain">?(</span><span class="identifier">upon</span><span class="plain">-&gt;</span><span class="identifier">methods</span><span class="plain">-</span><span class="element">&gt;first_method</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">; </span><span class="identifier">M</span><span class="plain">; </span><span class="identifier">M</span><span class="plain"> = </span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;next_method</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;method_id</span><span class="plain"> == </span><span class="identifier">id</span><span class="plain">) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = (*((</span><span class="identifier">id</span><span class="plain">##</span><span class="identifier">_type</span><span class="plain">) (</span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;method_function</span><span class="plain">)))(</span><span class="identifier">upon</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain">) {</span>
-                    <span class="identifier">rval</span><span class="plain"> = </span><span class="identifier">rv</span><span class="plain">;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">method_rval_</span><span class="plain"> = (*((</span><span class="identifier">id</span><span class="plain">##</span><span class="identifier">_type</span><span class="plain">) (</span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;method_function</span><span class="plain">)))(</span><span class="identifier">upon</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">method_rval_</span><span class="plain">) {</span>
+                    <span class="identifier">rval</span><span class="plain"> = </span><span class="identifier">method_rval_</span><span class="plain">;</span>
                     <span class="reserved">break</span><span class="plain">;</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
@@ -211,7 +211,7 @@ to a structure which has <code class="display"><span class="extract">METHOD_CALL
 </pre>
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-wal.html">Back to 'Writers and Loggers'</a></li><li><a href="2-llas.html">Continue with 'Linked Lists and Stacks'</a></li></ul><hr class="tocbar">
-<!--End of weave: 153 lines from a web of 9333-->
+<!--End of weave: 153 lines from a web of 9327-->
 	</body>
 </html>
 

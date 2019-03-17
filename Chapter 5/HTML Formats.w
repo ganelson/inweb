@@ -523,7 +523,7 @@ void HTMLFormat::commentary_text(weave_format *self, text_stream *OUT, weave_tar
 			((Str::get_at(id, i+3) == ' ') || (Str::get_at(id, i+3) == '\n') ||
 			(Str::get_at(id, i+3) == 0))) {
 			WRITE(" &mdash;"); i+=2;
-		} else WRITE("%c", Str::get_at(id, i));
+		} else PUT(Str::get_at(id, i));
 	}
 }
 

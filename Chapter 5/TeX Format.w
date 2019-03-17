@@ -520,29 +520,242 @@ To do this, the weaver calls the following.
 
 =
 void TeX::remove_math_mode(OUTPUT_STREAM, text_stream *text) {
+	TEMPORARY_TEXT(math_matter);
+	TeX::remove_math_mode_range(math_matter, text, 0, Str::len(text)-1);
+	WRITE("%S", math_matter);
+	DISCARD_TEXT(math_matter);
+}
+
+void TeX::remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int from, int to) {
+	for (int i=from; i <= to; i++) {
+		@<Remove the over construction@>;
+	}
+	for (int i=from; i <= to; i++) {
+		@<Remove the rm and it constructions@>;
+		@<Remove the sqrt constructions@>;
+	}
 	int math_mode = FALSE;
-	for (int i=0; i < Str::len(text); i++) {
+	for (int i=from; i <= to; i++) {
 		switch (Str::get_at(text, i)) {
-			case '$': math_mode = (math_mode)?FALSE:TRUE; break;
+			case '$':
+				if (Str::get_at(text, i+1) == '$') i++;
+				math_mode = (math_mode)?FALSE:TRUE; break;
+			case '~': if (math_mode) WRITE(" "); else WRITE("~"); break;
 			case '\\': @<Do something to strip out a TeX macro@>; break;
-			default: WRITE("%c", Str::get_at(text, i)); break;
+			default: PUT(Str::get_at(text, i)); break;
 		}
 	}
 }
+
+@ Here we remove |{{top}\over{bottom}}|, converting it to |((top) / (bottom))|.
+
+@<Remove the over construction@> =
+	if ((Str::get_at(text, i) == '\\') &&
+		(Str::get_at(text, i+1) == 'o') && (Str::get_at(text, i+2) == 'v') &&
+		(Str::get_at(text, i+3) == 'e') && (Str::get_at(text, i+4) == 'r') &&
+		(Str::get_at(text, i+5) == '{')) {
+		int bl = 1;
+		int j = i-1;
+		for (; j >= from; j--) {
+			wchar_t c = Str::get_at(text, j);
+			if (c == '{') {
+				bl--;
+				if (bl == 0) break;
+			}
+			if (c == '}') bl++;
+		}
+		TeX::remove_math_mode_range(OUT, text, from, j-1);
+		WRITE("((");
+		TeX::remove_math_mode_range(OUT, text, j+2, i-2);
+		WRITE(") / (");
+		j=i+6; bl = 1;
+		for (; j <= to; j++) {
+			wchar_t c = Str::get_at(text, j);
+			if (c == '}') {
+				bl--;
+				if (bl == 0) break;
+			}
+			if (c == '{') bl++;
+		}
+		TeX::remove_math_mode_range(OUT, text, i+6, j-1);
+		WRITE("))");
+		TeX::remove_math_mode_range(OUT, text, j+2, to);
+		return;
+	}
+
+@ Here we remove |{\rm text}|, converting it to |text|, and similarly |\it|.
+
+@<Remove the rm and it constructions@> =
+	if ((Str::get_at(text, i) == '{') && (Str::get_at(text, i+1) == '\\') &&
+		(((Str::get_at(text, i+2) == 'r') && (Str::get_at(text, i+3) == 'm')) ||
+			((Str::get_at(text, i+2) == 'i') && (Str::get_at(text, i+3) == 't'))) &&
+		(Str::get_at(text, i+4) == ' ')) {
+		TeX::remove_math_mode_range(OUT, text, from, i-1);
+		int j=i+5;
+		for (; j <= to; j++)
+			if (Str::get_at(text, j) == '}')
+				break;
+		TeX::remove_math_mode_range(OUT, text, i+5, j-1);
+		TeX::remove_math_mode_range(OUT, text, j+1, to);
+		return;
+	}
+
+@ Here we remove |\sqrt{N}|, converting it to |sqrt(N)|. As a special case,
+we also look out for |{}^3\sqrt{N}| for cube root.
+
+@<Remove the sqrt constructions@> =
+	if ((Str::get_at(text, i) == '\\') &&
+		(Str::get_at(text, i+1) == 's') && (Str::get_at(text, i+2) == 'q') &&
+		(Str::get_at(text, i+3) == 'r') && (Str::get_at(text, i+4) == 't') &&
+		(Str::get_at(text, i+5) == '{')) {
+		if ((Str::get_at(text, i-4) == '{') &&
+			(Str::get_at(text, i-3) == '}') &&
+			(Str::get_at(text, i-2) == '^') &&
+			(Str::get_at(text, i-1) == '3')) {
+			TeX::remove_math_mode_range(OUT, text, from, i-5);
+			WRITE(" curt(");				
+		} else {
+			TeX::remove_math_mode_range(OUT, text, from, i-1);
+			WRITE(" sqrt(");
+		}
+		int j=i+6, bl = 1;
+		for (; j <= to; j++) {
+			wchar_t c = Str::get_at(text, j);
+			if (c == '}') {
+				bl--;
+				if (bl == 0) break;
+			}
+			if (c == '{') bl++;
+		}
+		TeX::remove_math_mode_range(OUT, text, i+6, j-1);
+		WRITE(")");
+		TeX::remove_math_mode_range(OUT, text, j+1, to);
+		return;
+	}
 
 @<Do something to strip out a TeX macro@> =
 	TEMPORARY_TEXT(macro);
 	i++;
 	while ((i < Str::len(text)) && (Characters::isalpha(Str::get_at(text, i))))
 		PUT_TO(macro, Str::get_at(text, i++));
-	if (Str::eq(macro, I"leq")) WRITE("<=");
-	else if (Str::eq(macro, I"geq")) WRITE("<=");
-	else if (Str::eq(macro, I"neq")) WRITE("!=");
-	else {
-		if (Str::len(macro) > 0)
-			PRINT("[Passing through unknown TeX macro \\%S: on '%S']\n", macro, text);
-		WRITE("\\%S", macro);
-	}
+	if (Str::eq(macro, I"not")) @<Remove the not prefix@>
+	else @<Remove a general macro@>;
 	DISCARD_TEXT(macro);
 	i--;
 
+@<Remove a general macro@> =
+	if (Str::eq(macro, I"leq")) WRITE("<=");
+	else if (Str::eq(macro, I"geq")) WRITE(">=");
+	else if (Str::eq(macro, I"sim")) WRITE("~");
+	else if (Str::eq(macro, I"hbox")) WRITE("");
+	else if (Str::eq(macro, I"left")) WRITE("");
+	else if (Str::eq(macro, I"right")) WRITE("");
+	else if (Str::eq(macro, I"Rightarrow")) WRITE("=>");
+	else if (Str::eq(macro, I"Leftrightarrow")) WRITE("<=>");
+	else if (Str::eq(macro, I"to")) WRITE("-->");
+	else if (Str::eq(macro, I"rightarrow")) WRITE("-->");
+	else if (Str::eq(macro, I"longrightarrow")) WRITE("-->");
+	else if (Str::eq(macro, I"leftarrow")) WRITE("<--");
+	else if (Str::eq(macro, I"longleftarrow")) WRITE("<--");
+	else if (Str::eq(macro, I"lbrace")) WRITE("{");
+	else if (Str::eq(macro, I"mid")) WRITE("|");
+	else if (Str::eq(macro, I"rbrace")) WRITE("}");
+	else if (Str::eq(macro, I"cdot")) WRITE(".");
+	else if (Str::eq(macro, I"cdots")) WRITE("...");
+	else if (Str::eq(macro, I"dots")) WRITE("...");
+	else if (Str::eq(macro, I"times")) WRITE("*");
+	else if (Str::eq(macro, I"quad")) WRITE("  ");
+	else if (Str::eq(macro, I"qquad")) WRITE("    ");
+	else if (Str::eq(macro, I"TeX")) WRITE("TeX");
+	else if (Str::eq(macro, I"neq")) WRITE("!=");
+	else if (Str::eq(macro, I"noteq")) WRITE("!=");
+	else if (Str::eq(macro, I"ell")) WRITE("l");
+	else if (Str::eq(macro, I"log")) WRITE("log");
+	else if (Str::eq(macro, I"exp")) WRITE("exp");
+	else if (Str::eq(macro, I"sin")) WRITE("sin");
+	else if (Str::eq(macro, I"cos")) WRITE("cos");
+	else if (Str::eq(macro, I"tan")) WRITE("tan");
+	else if (Str::eq(macro, I"top")) WRITE("T");
+	else if (Str::eq(macro, I"Alpha")) PUT((wchar_t) 0x0391);
+	else if (Str::eq(macro, I"Beta")) PUT((wchar_t) 0x0392);
+	else if (Str::eq(macro, I"Gamma")) PUT((wchar_t) 0x0393);
+	else if (Str::eq(macro, I"Delta")) PUT((wchar_t) 0x0394);
+	else if (Str::eq(macro, I"Epsilon")) PUT((wchar_t) 0x0395);
+	else if (Str::eq(macro, I"Zeta")) PUT((wchar_t) 0x0396);
+	else if (Str::eq(macro, I"Eta")) PUT((wchar_t) 0x0397);
+	else if (Str::eq(macro, I"Theta")) PUT((wchar_t) 0x0398);
+	else if (Str::eq(macro, I"Iota")) PUT((wchar_t) 0x0399);
+	else if (Str::eq(macro, I"Kappa")) PUT((wchar_t) 0x039A);
+	else if (Str::eq(macro, I"Lambda")) PUT((wchar_t) 0x039B);
+	else if (Str::eq(macro, I"Mu")) PUT((wchar_t) 0x039C);
+	else if (Str::eq(macro, I"Nu")) PUT((wchar_t) 0x039D);
+	else if (Str::eq(macro, I"Xi")) PUT((wchar_t) 0x039E);
+	else if (Str::eq(macro, I"Omicron")) PUT((wchar_t) 0x039F);
+	else if (Str::eq(macro, I"Pi")) PUT((wchar_t) 0x03A0);
+	else if (Str::eq(macro, I"Rho")) PUT((wchar_t) 0x03A1);
+	else if (Str::eq(macro, I"Varsigma")) PUT((wchar_t) 0x03A2);
+	else if (Str::eq(macro, I"Sigma")) PUT((wchar_t) 0x03A3);
+	else if (Str::eq(macro, I"Tau")) PUT((wchar_t) 0x03A4);
+	else if (Str::eq(macro, I"Upsilon")) PUT((wchar_t) 0x03A5);
+	else if (Str::eq(macro, I"Phi")) PUT((wchar_t) 0x03A6);
+	else if (Str::eq(macro, I"Chi")) PUT((wchar_t) 0x03A7);
+	else if (Str::eq(macro, I"Psi")) PUT((wchar_t) 0x03A8);
+	else if (Str::eq(macro, I"Omega")) PUT((wchar_t) 0x03A9);
+	else if (Str::eq(macro, I"alpha")) PUT((wchar_t) 0x03B1);
+	else if (Str::eq(macro, I"beta")) PUT((wchar_t) 0x03B2);
+	else if (Str::eq(macro, I"gamma")) PUT((wchar_t) 0x03B3);
+	else if (Str::eq(macro, I"delta")) PUT((wchar_t) 0x03B4);
+	else if (Str::eq(macro, I"epsilon")) PUT((wchar_t) 0x03B5);
+	else if (Str::eq(macro, I"zeta")) PUT((wchar_t) 0x03B6);
+	else if (Str::eq(macro, I"eta")) PUT((wchar_t) 0x03B7);
+	else if (Str::eq(macro, I"theta")) PUT((wchar_t) 0x03B8);
+	else if (Str::eq(macro, I"iota")) PUT((wchar_t) 0x03B9);
+	else if (Str::eq(macro, I"kappa")) PUT((wchar_t) 0x03BA);
+	else if (Str::eq(macro, I"lambda")) PUT((wchar_t) 0x03BB);
+	else if (Str::eq(macro, I"mu")) PUT((wchar_t) 0x03BC);
+	else if (Str::eq(macro, I"nu")) PUT((wchar_t) 0x03BD);
+	else if (Str::eq(macro, I"xi")) PUT((wchar_t) 0x03BE);
+	else if (Str::eq(macro, I"omicron")) PUT((wchar_t) 0x03BF);
+	else if (Str::eq(macro, I"pi")) PUT((wchar_t) 0x03C0);
+	else if (Str::eq(macro, I"rho")) PUT((wchar_t) 0x03C1);
+	else if (Str::eq(macro, I"varsigma")) PUT((wchar_t) 0x03C2);
+	else if (Str::eq(macro, I"sigma")) PUT((wchar_t) 0x03C3);
+	else if (Str::eq(macro, I"tau")) PUT((wchar_t) 0x03C4);
+	else if (Str::eq(macro, I"upsilon")) PUT((wchar_t) 0x03C5);
+	else if (Str::eq(macro, I"phi")) PUT((wchar_t) 0x03C6);
+	else if (Str::eq(macro, I"chi")) PUT((wchar_t) 0x03C7);
+	else if (Str::eq(macro, I"psi")) PUT((wchar_t) 0x03C8);
+	else if (Str::eq(macro, I"omega")) PUT((wchar_t) 0x03C9);
+	else if (Str::eq(macro, I"exists")) PUT((wchar_t) 0x2203);
+	else if (Str::eq(macro, I"in")) PUT((wchar_t) 0x2208);
+	else if (Str::eq(macro, I"forall")) PUT((wchar_t) 0x2200);
+	else if (Str::eq(macro, I"cap")) PUT((wchar_t) 0x2229);
+	else if (Str::eq(macro, I"emptyset")) PUT((wchar_t) 0x2205);
+	else if (Str::eq(macro, I"subseteq")) PUT((wchar_t) 0x2286);
+	else if (Str::eq(macro, I"land")) PUT((wchar_t) 0x2227);
+	else if (Str::eq(macro, I"lor")) PUT((wchar_t) 0x2228);
+	else if (Str::eq(macro, I"lnot")) PUT((wchar_t) 0x00AC);
+	else if (Str::eq(macro, I"sum")) PUT((wchar_t) 0x03A3);
+	else if (Str::eq(macro, I"prod")) PUT((wchar_t) 0x03A0);
+	else {
+		if (Str::len(macro) > 0)
+			PRINT("Passing through unknown TeX macro \\%S:  %S", macro, text);
+		WRITE("\\%S", macro);
+	}
+
+@ For Inform's purposes, we need to deal with just |\not\exists| and |\not\forall|.
+
+@<Remove the not prefix@> =
+	if (Str::get_at(text, i) == '\\') {
+		Str::clear(macro);
+		i++;
+		while ((i < Str::len(text)) && (Characters::isalpha(Str::get_at(text, i))))
+			PUT_TO(macro, Str::get_at(text, i++));
+		if (Str::eq(macro, I"exists")) PUT((wchar_t) 0x2204);
+		else if (Str::eq(macro, I"forall")) { PUT((wchar_t) 0x00AC); PUT((wchar_t) 0x2200); }
+		else {
+			PRINT("Don't know how to apply '\\not' to '\\%S'\n", macro);
+		}
+	} else {
+		PRINT("Don't know how to apply '\\not' here\n");
+	}
