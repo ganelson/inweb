@@ -8,13 +8,10 @@ SAFETYCOPY = $(ME)/Tangled/inweb_dev
 
 .PHONY: all
 
-all: $(ME)/platform-settings.mk $(ME)/Tangled/$(ME) $(ME)/Manual.html
+all: $(ME)/platform-settings.mk $(ME)/Tangled/$(ME)
 
 $(ME)/Tangled/$(ME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-me)
-
-$(ME)/Manual.html: $(ME)/Contents.w $(ME)/Preliminaries/*.w 
-	$(ME)/Tangled/$(ME) $(ME) -weave P -weave-to $(ME)/Manual.html
 
 .PHONY: force
 force: $(ME)/platform-settings.mk

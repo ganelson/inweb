@@ -93,7 +93,7 @@ program: some input, some thinking, a choice of three forms of output.
 =
 void Main::follow_instructions(inweb_instructions *ins) {
 	web *W = NULL;
-	if (ins->chosen_web)
+	if ((ins->chosen_web) || (ins->chosen_file))
 		W = Reader::load_web(ins->chosen_web, ins->chosen_file,
 			Modules::make_search_path(ins->import_setting), ins->verbose_switch,
 			ins->inweb_mode, ins->weave_into_setting);

@@ -6323,7 +6323,7 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 #line 252 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
-			char *bn = "6P91";
+			char *bn = "";
 			char *vn = "7";
 			if (vn[0] == 0) vn = "1";
 			char *vname = "Escape to Danger";
@@ -11029,7 +11029,7 @@ int main(int argc, char **argv) {
 #line 94 "inweb/Chapter 1/Program Control.w"
 void Main__follow_instructions(inweb_instructions *ins) {
 	web *W = NULL;
-	if (ins->chosen_web)
+	if ((ins->chosen_web) || (ins->chosen_file))
 		W = Reader__load_web(ins->chosen_web, ins->chosen_file,
 			Modules__make_search_path(ins->import_setting), ins->verbose_switch,
 			ins->inweb_mode, ins->weave_into_setting);

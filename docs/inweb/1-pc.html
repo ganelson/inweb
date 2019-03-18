@@ -158,7 +158,7 @@ program: some input, some thinking, a choice of three forms of output.
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Main::follow_instructions</span><span class="plain">(</span><span class="reserved">inweb_instructions</span><span class="plain"> *</span><span class="identifier">ins</span><span class="plain">) {</span>
         <span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_web</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_web</span><span class="plain">) || (</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_file</span><span class="plain">))</span>
             <span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Reader::load_web</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_web</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_file</span><span class="plain">,</span>
                 <span class="functiontext">Modules::make_search_path</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;import_setting</span><span class="plain">), </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;verbose_switch</span><span class="plain">,</span>
                 <span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;inweb_mode</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;weave_into_setting</span><span class="plain">);</span>
@@ -489,7 +489,7 @@ source:
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="1-bsc.html">Back to 'Basics'</a></li><li><a href="1-cnf.html">Continue with 'Configuration'</a></li></ul><hr class="tocbar">
-<!--End of weave: 297 lines from a web of 21211-->
+<!--End of weave-->
 	</body>
 </html>
 

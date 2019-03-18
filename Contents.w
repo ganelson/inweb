@@ -6,8 +6,6 @@ Web Syntax Version: 2
 Licence: This is a free, open-source program published under the Artistic License 2.0.
 Version Name: Escape to Danger
 Version Number: 7
-Build Number: 6P91
-Build Date: 29 December 2018
 
 Import: foundation
 
