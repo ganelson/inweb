@@ -15536,7 +15536,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 {
 #line 70 "inweb/Chapter 3/The Weaver.w"
 	TEMPORARY_TEXT(rennab);
-	WRITE_TO(rennab, "End of weave: %d lines from a web of %d", lines_woven, W->no_lines);
+	WRITE_TO(rennab, "End of weave");
 	Formats__tail(OUT, wv, rennab, latest_section);
 	DISCARD_TEXT(rennab);
 
@@ -19046,212 +19046,247 @@ void TeX__remove_math_mode(OUTPUT_STREAM, text_stream *text) {
 
 void TeX__remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int from, int to) {
 	for (int i=from; i <= to; i++) {
-		if ((Str__get_at(text, i) == '\\') &&
-			(Str__get_at(text, i+1) == 'o') && (Str__get_at(text, i+2) == 'v') &&
-			(Str__get_at(text, i+3) == 'e') && (Str__get_at(text, i+4) == 'r') &&
-			(Str__get_at(text, i+5) == '{')) {
-			int bl = 1;
-			int j = i-1;
-			for (; j >= from; j--) {
-				wchar_t c = Str__get_at(text, j);
-				if (c == '{') {
-					bl--;
-					if (bl == 0) break;
-				}
-				if (c == '}') bl++;
+		
+{
+#line 553 "inweb/Chapter 5/TeX Format.w"
+	if ((Str__get_at(text, i) == '\\') &&
+		(Str__get_at(text, i+1) == 'o') && (Str__get_at(text, i+2) == 'v') &&
+		(Str__get_at(text, i+3) == 'e') && (Str__get_at(text, i+4) == 'r') &&
+		(Str__get_at(text, i+5) == '{')) {
+		int bl = 1;
+		int j = i-1;
+		for (; j >= from; j--) {
+			wchar_t c = Str__get_at(text, j);
+			if (c == '{') {
+				bl--;
+				if (bl == 0) break;
 			}
-			TeX__remove_math_mode_range(OUT, text, from, j-1);
-			WRITE("((");
-			TeX__remove_math_mode_range(OUT, text, j+2, i-2);
-			WRITE(") / (");
-			j=i+6; bl = 1;
-			for (; j <= to; j++) {
-				wchar_t c = Str__get_at(text, j);
-				if (c == '}') {
-					bl--;
-					if (bl == 0) break;
-				}
-				if (c == '{') bl++;
-			}
-			TeX__remove_math_mode_range(OUT, text, i+6, j-1);
-			WRITE("))");
-			TeX__remove_math_mode_range(OUT, text, j+2, to);
-			return;
+			if (c == '}') bl++;
 		}
+		TeX__remove_math_mode_range(OUT, text, from, j-1);
+		WRITE("((");
+		TeX__remove_math_mode_range(OUT, text, j+2, i-2);
+		WRITE(") / (");
+		j=i+6; bl = 1;
+		for (; j <= to; j++) {
+			wchar_t c = Str__get_at(text, j);
+			if (c == '}') {
+				bl--;
+				if (bl == 0) break;
+			}
+			if (c == '{') bl++;
+		}
+		TeX__remove_math_mode_range(OUT, text, i+6, j-1);
+		WRITE("))");
+		TeX__remove_math_mode_range(OUT, text, j+2, to);
+		return;
+	}
+
+}
+#line 531 "inweb/Chapter 5/TeX Format.w"
+;
 	}
 	for (int i=from; i <= to; i++) {
-		if ((Str__get_at(text, i) == '{') && (Str__get_at(text, i+1) == '\\') &&
-			(((Str__get_at(text, i+2) == 'r') && (Str__get_at(text, i+3) == 'm')) ||
-				((Str__get_at(text, i+2) == 'i') && (Str__get_at(text, i+3) == 't'))) &&
-			(Str__get_at(text, i+4) == ' ')) {
+		
+{
+#line 589 "inweb/Chapter 5/TeX Format.w"
+	if ((Str__get_at(text, i) == '{') && (Str__get_at(text, i+1) == '\\') &&
+		(((Str__get_at(text, i+2) == 'r') && (Str__get_at(text, i+3) == 'm')) ||
+			((Str__get_at(text, i+2) == 'i') && (Str__get_at(text, i+3) == 't'))) &&
+		(Str__get_at(text, i+4) == ' ')) {
+		TeX__remove_math_mode_range(OUT, text, from, i-1);
+		int j=i+5;
+		for (; j <= to; j++)
+			if (Str__get_at(text, j) == '}')
+				break;
+		TeX__remove_math_mode_range(OUT, text, i+5, j-1);
+		TeX__remove_math_mode_range(OUT, text, j+1, to);
+		return;
+	}
+
+}
+#line 534 "inweb/Chapter 5/TeX Format.w"
+;
+		
+{
+#line 607 "inweb/Chapter 5/TeX Format.w"
+	if ((Str__get_at(text, i) == '\\') &&
+		(Str__get_at(text, i+1) == 's') && (Str__get_at(text, i+2) == 'q') &&
+		(Str__get_at(text, i+3) == 'r') && (Str__get_at(text, i+4) == 't') &&
+		(Str__get_at(text, i+5) == '{')) {
+		if ((Str__get_at(text, i-4) == '{') &&
+			(Str__get_at(text, i-3) == '}') &&
+			(Str__get_at(text, i-2) == '^') &&
+			(Str__get_at(text, i-1) == '3')) {
+			TeX__remove_math_mode_range(OUT, text, from, i-5);
+			WRITE(" curt(");
+		} else {
 			TeX__remove_math_mode_range(OUT, text, from, i-1);
-			int j=i+5;
-			for (; j <= to; j++)
-				if (Str__get_at(text, j) == '}')
-					break;
-			TeX__remove_math_mode_range(OUT, text, i+5, j-1);
-			TeX__remove_math_mode_range(OUT, text, j+1, to);
-			return;
+			WRITE(" sqrt(");
 		}
-		if ((Str__get_at(text, i) == '\\') &&
-			(Str__get_at(text, i+1) == 's') && (Str__get_at(text, i+2) == 'q') &&
-			(Str__get_at(text, i+3) == 'r') && (Str__get_at(text, i+4) == 't') &&
-			(Str__get_at(text, i+5) == '{')) {
-			if ((Str__get_at(text, i-4) == '{') &&
-				(Str__get_at(text, i-3) == '}') &&
-				(Str__get_at(text, i-2) == '^') &&
-				(Str__get_at(text, i-1) == '3')) {
-				TeX__remove_math_mode_range(OUT, text, from, i-5);
-				WRITE(" curt(");
-			} else {
-				TeX__remove_math_mode_range(OUT, text, from, i-1);
-				WRITE(" sqrt(");
+		int j=i+6, bl = 1;
+		for (; j <= to; j++) {
+			wchar_t c = Str__get_at(text, j);
+			if (c == '}') {
+				bl--;
+				if (bl == 0) break;
 			}
-			int j=i+6, bl = 1;
-			for (; j <= to; j++) {
-				wchar_t c = Str__get_at(text, j);
-				if (c == '}') {
-					bl--;
-					if (bl == 0) break;
-				}
-				if (c == '{') bl++;
-			}
-			TeX__remove_math_mode_range(OUT, text, i+6, j-1);
-			WRITE(")");
-			TeX__remove_math_mode_range(OUT, text, j+1, to);
-			return;
+			if (c == '{') bl++;
 		}
+		TeX__remove_math_mode_range(OUT, text, i+6, j-1);
+		WRITE(")");
+		TeX__remove_math_mode_range(OUT, text, j+1, to);
+		return;
+	}
+
+}
+#line 535 "inweb/Chapter 5/TeX Format.w"
+;
 	}
 	int math_mode = FALSE;
 	for (int i=from; i <= to; i++) {
 		switch (Str__get_at(text, i)) {
-			case '$': math_mode = (math_mode)?FALSE:TRUE; break;
+			case '$':
+				if (Str__get_at(text, i+1) == '$') i++;
+				math_mode = (math_mode)?FALSE:TRUE; break;
 			case '~': if (math_mode) WRITE(" "); else WRITE("~"); break;
 			case '\\': 
 {
-#line 619 "inweb/Chapter 5/TeX Format.w"
+#line 637 "inweb/Chapter 5/TeX Format.w"
 	TEMPORARY_TEXT(macro);
 	i++;
 	while ((i < Str__len(text)) && (Characters__isalpha(Str__get_at(text, i))))
 		PUT_TO(macro, Str__get_at(text, i++));
-	if (Str__eq(macro, TL_IS_273)) {
-		if (Str__get_at(text, i) == '\\') {
-			Str__clear(macro);
-			i++;
-			while ((i < Str__len(text)) && (Characters__isalpha(Str__get_at(text, i))))
-				PUT_TO(macro, Str__get_at(text, i++));
-			if (Str__eq(macro, TL_IS_274)) PUT((wchar_t) 0x2204);
-			else if (Str__eq(macro, TL_IS_275)) { PUT((wchar_t) 0x00AC); PUT((wchar_t) 0x2200); }
-			else {
-				PRINT("Don't know how to apply '\\not' to '\\%S'\n", macro);
-			}
-		} else {
-			PRINT("Don't know how to apply '\\not' here\n");
+	if (Str__eq(macro, TL_IS_273)) 
+{
+#line 749 "inweb/Chapter 5/TeX Format.w"
+	if (Str__get_at(text, i) == '\\') {
+		Str__clear(macro);
+		i++;
+		while ((i < Str__len(text)) && (Characters__isalpha(Str__get_at(text, i))))
+			PUT_TO(macro, Str__get_at(text, i++));
+		if (Str__eq(macro, TL_IS_367)) PUT((wchar_t) 0x2204);
+		else if (Str__eq(macro, TL_IS_368)) { PUT((wchar_t) 0x00AC); PUT((wchar_t) 0x2200); }
+		else {
+			PRINT("Don't know how to apply '\\not' to '\\%S'\n", macro);
 		}
-	} else if (Str__eq(macro, TL_IS_276)) WRITE("<=");
-	else if (Str__eq(macro, TL_IS_277)) WRITE(">=");
-	else if (Str__eq(macro, TL_IS_278)) WRITE("~");
+	} else {
+		PRINT("Don't know how to apply '\\not' here\n");
+	}
+
+}
+#line 641 "inweb/Chapter 5/TeX Format.w"
+
+	else 
+{
+#line 647 "inweb/Chapter 5/TeX Format.w"
+	if (Str__eq(macro, TL_IS_274)) WRITE("<=");
+	else if (Str__eq(macro, TL_IS_275)) WRITE(">=");
+	else if (Str__eq(macro, TL_IS_276)) WRITE("~");
+	else if (Str__eq(macro, TL_IS_277)) WRITE("");
+	else if (Str__eq(macro, TL_IS_278)) WRITE("");
 	else if (Str__eq(macro, TL_IS_279)) WRITE("");
-	else if (Str__eq(macro, TL_IS_280)) WRITE("");
-	else if (Str__eq(macro, TL_IS_281)) WRITE("");
-	else if (Str__eq(macro, TL_IS_282)) WRITE("=>");
-	else if (Str__eq(macro, TL_IS_283)) WRITE("<=>");
+	else if (Str__eq(macro, TL_IS_280)) WRITE("=>");
+	else if (Str__eq(macro, TL_IS_281)) WRITE("<=>");
+	else if (Str__eq(macro, TL_IS_282)) WRITE("-->");
+	else if (Str__eq(macro, TL_IS_283)) WRITE("-->");
 	else if (Str__eq(macro, TL_IS_284)) WRITE("-->");
-	else if (Str__eq(macro, TL_IS_285)) WRITE("-->");
-	else if (Str__eq(macro, TL_IS_286)) WRITE("-->");
-	else if (Str__eq(macro, TL_IS_287)) WRITE("<--");
-	else if (Str__eq(macro, TL_IS_288)) WRITE("<--");
-	else if (Str__eq(macro, TL_IS_289)) WRITE("{");
-	else if (Str__eq(macro, TL_IS_290)) WRITE("|");
-	else if (Str__eq(macro, TL_IS_291)) WRITE("}");
-	else if (Str__eq(macro, TL_IS_292)) WRITE(".");
-	else if (Str__eq(macro, TL_IS_293)) WRITE("...");
-	else if (Str__eq(macro, TL_IS_294)) WRITE("...");
-	else if (Str__eq(macro, TL_IS_295)) WRITE("*");
-	else if (Str__eq(macro, TL_IS_296)) WRITE("  ");
-	else if (Str__eq(macro, TL_IS_297)) WRITE("    ");
-	else if (Str__eq(macro, TL_IS_298)) WRITE("TeX");
-	else if (Str__eq(macro, TL_IS_299)) WRITE("!=");
-	else if (Str__eq(macro, TL_IS_300)) WRITE("!=");
-	else if (Str__eq(macro, TL_IS_301)) WRITE("l");
-	else if (Str__eq(macro, TL_IS_302)) WRITE("log");
-	else if (Str__eq(macro, TL_IS_303)) WRITE("exp");
-	else if (Str__eq(macro, TL_IS_304)) WRITE("sin");
-	else if (Str__eq(macro, TL_IS_305)) WRITE("cos");
-	else if (Str__eq(macro, TL_IS_306)) WRITE("tan");
-	else if (Str__eq(macro, TL_IS_307)) WRITE("T");
-	else if (Str__eq(macro, TL_IS_308)) PUT((wchar_t) 0x0391);
-	else if (Str__eq(macro, TL_IS_309)) PUT((wchar_t) 0x0392);
-	else if (Str__eq(macro, TL_IS_310)) PUT((wchar_t) 0x0393);
-	else if (Str__eq(macro, TL_IS_311)) PUT((wchar_t) 0x0394);
-	else if (Str__eq(macro, TL_IS_312)) PUT((wchar_t) 0x0395);
-	else if (Str__eq(macro, TL_IS_313)) PUT((wchar_t) 0x0396);
-	else if (Str__eq(macro, TL_IS_314)) PUT((wchar_t) 0x0397);
-	else if (Str__eq(macro, TL_IS_315)) PUT((wchar_t) 0x0398);
-	else if (Str__eq(macro, TL_IS_316)) PUT((wchar_t) 0x0399);
-	else if (Str__eq(macro, TL_IS_317)) PUT((wchar_t) 0x039A);
-	else if (Str__eq(macro, TL_IS_318)) PUT((wchar_t) 0x039B);
-	else if (Str__eq(macro, TL_IS_319)) PUT((wchar_t) 0x039C);
-	else if (Str__eq(macro, TL_IS_320)) PUT((wchar_t) 0x039D);
-	else if (Str__eq(macro, TL_IS_321)) PUT((wchar_t) 0x039E);
-	else if (Str__eq(macro, TL_IS_322)) PUT((wchar_t) 0x039F);
-	else if (Str__eq(macro, TL_IS_323)) PUT((wchar_t) 0x03A0);
-	else if (Str__eq(macro, TL_IS_324)) PUT((wchar_t) 0x03A1);
-	else if (Str__eq(macro, TL_IS_325)) PUT((wchar_t) 0x03A2);
-	else if (Str__eq(macro, TL_IS_326)) PUT((wchar_t) 0x03A3);
-	else if (Str__eq(macro, TL_IS_327)) PUT((wchar_t) 0x03A4);
-	else if (Str__eq(macro, TL_IS_328)) PUT((wchar_t) 0x03A5);
-	else if (Str__eq(macro, TL_IS_329)) PUT((wchar_t) 0x03A6);
-	else if (Str__eq(macro, TL_IS_330)) PUT((wchar_t) 0x03A7);
-	else if (Str__eq(macro, TL_IS_331)) PUT((wchar_t) 0x03A8);
-	else if (Str__eq(macro, TL_IS_332)) PUT((wchar_t) 0x03A9);
-	else if (Str__eq(macro, TL_IS_333)) PUT((wchar_t) 0x03B1);
-	else if (Str__eq(macro, TL_IS_334)) PUT((wchar_t) 0x03B2);
-	else if (Str__eq(macro, TL_IS_335)) PUT((wchar_t) 0x03B3);
-	else if (Str__eq(macro, TL_IS_336)) PUT((wchar_t) 0x03B4);
-	else if (Str__eq(macro, TL_IS_337)) PUT((wchar_t) 0x03B5);
-	else if (Str__eq(macro, TL_IS_338)) PUT((wchar_t) 0x03B6);
-	else if (Str__eq(macro, TL_IS_339)) PUT((wchar_t) 0x03B7);
-	else if (Str__eq(macro, TL_IS_340)) PUT((wchar_t) 0x03B8);
-	else if (Str__eq(macro, TL_IS_341)) PUT((wchar_t) 0x03B9);
-	else if (Str__eq(macro, TL_IS_342)) PUT((wchar_t) 0x03BA);
-	else if (Str__eq(macro, TL_IS_343)) PUT((wchar_t) 0x03BB);
-	else if (Str__eq(macro, TL_IS_344)) PUT((wchar_t) 0x03BC);
-	else if (Str__eq(macro, TL_IS_345)) PUT((wchar_t) 0x03BD);
-	else if (Str__eq(macro, TL_IS_346)) PUT((wchar_t) 0x03BE);
-	else if (Str__eq(macro, TL_IS_347)) PUT((wchar_t) 0x03BF);
-	else if (Str__eq(macro, TL_IS_348)) PUT((wchar_t) 0x03C0);
-	else if (Str__eq(macro, TL_IS_349)) PUT((wchar_t) 0x03C1);
-	else if (Str__eq(macro, TL_IS_350)) PUT((wchar_t) 0x03C2);
-	else if (Str__eq(macro, TL_IS_351)) PUT((wchar_t) 0x03C3);
-	else if (Str__eq(macro, TL_IS_352)) PUT((wchar_t) 0x03C4);
-	else if (Str__eq(macro, TL_IS_353)) PUT((wchar_t) 0x03C5);
-	else if (Str__eq(macro, TL_IS_354)) PUT((wchar_t) 0x03C6);
-	else if (Str__eq(macro, TL_IS_355)) PUT((wchar_t) 0x03C7);
-	else if (Str__eq(macro, TL_IS_356)) PUT((wchar_t) 0x03C8);
-	else if (Str__eq(macro, TL_IS_357)) PUT((wchar_t) 0x03C9);
-	else if (Str__eq(macro, TL_IS_358)) PUT((wchar_t) 0x2203);
-	else if (Str__eq(macro, TL_IS_359)) PUT((wchar_t) 0x2208);
-	else if (Str__eq(macro, TL_IS_360)) PUT((wchar_t) 0x2200);
-	else if (Str__eq(macro, TL_IS_361)) PUT((wchar_t) 0x2229);
-	else if (Str__eq(macro, TL_IS_362)) PUT((wchar_t) 0x2205);
-	else if (Str__eq(macro, TL_IS_363)) PUT((wchar_t) 0x2286);
-	else if (Str__eq(macro, TL_IS_364)) PUT((wchar_t) 0x2227);
-	else if (Str__eq(macro, TL_IS_365)) PUT((wchar_t) 0x2228);
-	else if (Str__eq(macro, TL_IS_366)) PUT((wchar_t) 0x00AC);
-	else if (Str__eq(macro, TL_IS_367)) PUT((wchar_t) 0x03A3);
-	else if (Str__eq(macro, TL_IS_368)) PUT((wchar_t) 0x03A0);
+	else if (Str__eq(macro, TL_IS_285)) WRITE("<--");
+	else if (Str__eq(macro, TL_IS_286)) WRITE("<--");
+	else if (Str__eq(macro, TL_IS_287)) WRITE("{");
+	else if (Str__eq(macro, TL_IS_288)) WRITE("|");
+	else if (Str__eq(macro, TL_IS_289)) WRITE("}");
+	else if (Str__eq(macro, TL_IS_290)) WRITE(".");
+	else if (Str__eq(macro, TL_IS_291)) WRITE("...");
+	else if (Str__eq(macro, TL_IS_292)) WRITE("...");
+	else if (Str__eq(macro, TL_IS_293)) WRITE("*");
+	else if (Str__eq(macro, TL_IS_294)) WRITE("  ");
+	else if (Str__eq(macro, TL_IS_295)) WRITE("    ");
+	else if (Str__eq(macro, TL_IS_296)) WRITE("TeX");
+	else if (Str__eq(macro, TL_IS_297)) WRITE("!=");
+	else if (Str__eq(macro, TL_IS_298)) WRITE("!=");
+	else if (Str__eq(macro, TL_IS_299)) WRITE("l");
+	else if (Str__eq(macro, TL_IS_300)) WRITE("log");
+	else if (Str__eq(macro, TL_IS_301)) WRITE("exp");
+	else if (Str__eq(macro, TL_IS_302)) WRITE("sin");
+	else if (Str__eq(macro, TL_IS_303)) WRITE("cos");
+	else if (Str__eq(macro, TL_IS_304)) WRITE("tan");
+	else if (Str__eq(macro, TL_IS_305)) WRITE("T");
+	else if (Str__eq(macro, TL_IS_306)) PUT((wchar_t) 0x0391);
+	else if (Str__eq(macro, TL_IS_307)) PUT((wchar_t) 0x0392);
+	else if (Str__eq(macro, TL_IS_308)) PUT((wchar_t) 0x0393);
+	else if (Str__eq(macro, TL_IS_309)) PUT((wchar_t) 0x0394);
+	else if (Str__eq(macro, TL_IS_310)) PUT((wchar_t) 0x0395);
+	else if (Str__eq(macro, TL_IS_311)) PUT((wchar_t) 0x0396);
+	else if (Str__eq(macro, TL_IS_312)) PUT((wchar_t) 0x0397);
+	else if (Str__eq(macro, TL_IS_313)) PUT((wchar_t) 0x0398);
+	else if (Str__eq(macro, TL_IS_314)) PUT((wchar_t) 0x0399);
+	else if (Str__eq(macro, TL_IS_315)) PUT((wchar_t) 0x039A);
+	else if (Str__eq(macro, TL_IS_316)) PUT((wchar_t) 0x039B);
+	else if (Str__eq(macro, TL_IS_317)) PUT((wchar_t) 0x039C);
+	else if (Str__eq(macro, TL_IS_318)) PUT((wchar_t) 0x039D);
+	else if (Str__eq(macro, TL_IS_319)) PUT((wchar_t) 0x039E);
+	else if (Str__eq(macro, TL_IS_320)) PUT((wchar_t) 0x039F);
+	else if (Str__eq(macro, TL_IS_321)) PUT((wchar_t) 0x03A0);
+	else if (Str__eq(macro, TL_IS_322)) PUT((wchar_t) 0x03A1);
+	else if (Str__eq(macro, TL_IS_323)) PUT((wchar_t) 0x03A2);
+	else if (Str__eq(macro, TL_IS_324)) PUT((wchar_t) 0x03A3);
+	else if (Str__eq(macro, TL_IS_325)) PUT((wchar_t) 0x03A4);
+	else if (Str__eq(macro, TL_IS_326)) PUT((wchar_t) 0x03A5);
+	else if (Str__eq(macro, TL_IS_327)) PUT((wchar_t) 0x03A6);
+	else if (Str__eq(macro, TL_IS_328)) PUT((wchar_t) 0x03A7);
+	else if (Str__eq(macro, TL_IS_329)) PUT((wchar_t) 0x03A8);
+	else if (Str__eq(macro, TL_IS_330)) PUT((wchar_t) 0x03A9);
+	else if (Str__eq(macro, TL_IS_331)) PUT((wchar_t) 0x03B1);
+	else if (Str__eq(macro, TL_IS_332)) PUT((wchar_t) 0x03B2);
+	else if (Str__eq(macro, TL_IS_333)) PUT((wchar_t) 0x03B3);
+	else if (Str__eq(macro, TL_IS_334)) PUT((wchar_t) 0x03B4);
+	else if (Str__eq(macro, TL_IS_335)) PUT((wchar_t) 0x03B5);
+	else if (Str__eq(macro, TL_IS_336)) PUT((wchar_t) 0x03B6);
+	else if (Str__eq(macro, TL_IS_337)) PUT((wchar_t) 0x03B7);
+	else if (Str__eq(macro, TL_IS_338)) PUT((wchar_t) 0x03B8);
+	else if (Str__eq(macro, TL_IS_339)) PUT((wchar_t) 0x03B9);
+	else if (Str__eq(macro, TL_IS_340)) PUT((wchar_t) 0x03BA);
+	else if (Str__eq(macro, TL_IS_341)) PUT((wchar_t) 0x03BB);
+	else if (Str__eq(macro, TL_IS_342)) PUT((wchar_t) 0x03BC);
+	else if (Str__eq(macro, TL_IS_343)) PUT((wchar_t) 0x03BD);
+	else if (Str__eq(macro, TL_IS_344)) PUT((wchar_t) 0x03BE);
+	else if (Str__eq(macro, TL_IS_345)) PUT((wchar_t) 0x03BF);
+	else if (Str__eq(macro, TL_IS_346)) PUT((wchar_t) 0x03C0);
+	else if (Str__eq(macro, TL_IS_347)) PUT((wchar_t) 0x03C1);
+	else if (Str__eq(macro, TL_IS_348)) PUT((wchar_t) 0x03C2);
+	else if (Str__eq(macro, TL_IS_349)) PUT((wchar_t) 0x03C3);
+	else if (Str__eq(macro, TL_IS_350)) PUT((wchar_t) 0x03C4);
+	else if (Str__eq(macro, TL_IS_351)) PUT((wchar_t) 0x03C5);
+	else if (Str__eq(macro, TL_IS_352)) PUT((wchar_t) 0x03C6);
+	else if (Str__eq(macro, TL_IS_353)) PUT((wchar_t) 0x03C7);
+	else if (Str__eq(macro, TL_IS_354)) PUT((wchar_t) 0x03C8);
+	else if (Str__eq(macro, TL_IS_355)) PUT((wchar_t) 0x03C9);
+	else if (Str__eq(macro, TL_IS_356)) PUT((wchar_t) 0x2203);
+	else if (Str__eq(macro, TL_IS_357)) PUT((wchar_t) 0x2208);
+	else if (Str__eq(macro, TL_IS_358)) PUT((wchar_t) 0x2200);
+	else if (Str__eq(macro, TL_IS_359)) PUT((wchar_t) 0x2229);
+	else if (Str__eq(macro, TL_IS_360)) PUT((wchar_t) 0x2205);
+	else if (Str__eq(macro, TL_IS_361)) PUT((wchar_t) 0x2286);
+	else if (Str__eq(macro, TL_IS_362)) PUT((wchar_t) 0x2227);
+	else if (Str__eq(macro, TL_IS_363)) PUT((wchar_t) 0x2228);
+	else if (Str__eq(macro, TL_IS_364)) PUT((wchar_t) 0x00AC);
+	else if (Str__eq(macro, TL_IS_365)) PUT((wchar_t) 0x03A3);
+	else if (Str__eq(macro, TL_IS_366)) PUT((wchar_t) 0x03A0);
 	else {
 		if (Str__len(macro) > 0)
 			PRINT("Passing through unknown TeX macro \\%S:  %S", macro, text);
 		WRITE("\\%S", macro);
 	}
+
+}
+#line 642 "inweb/Chapter 5/TeX Format.w"
+;
 	DISCARD_TEXT(macro);
 	i--;
 
-
 }
-#line 612 "inweb/Chapter 5/TeX Format.w"
+#line 544 "inweb/Chapter 5/TeX Format.w"
 ; break;
 			default: PUT(Str__get_at(text, i)); break;
 		}
@@ -20662,101 +20697,101 @@ void register_tangled_text_literals(void) {
     TL_IS_271 = Str__literal(L".tex");
     TL_IS_272 = Str__literal(L"inweb-macros.tex");
     TL_IS_273 = Str__literal(L"not");
-    TL_IS_274 = Str__literal(L"exists");
-    TL_IS_275 = Str__literal(L"forall");
-    TL_IS_276 = Str__literal(L"leq");
-    TL_IS_277 = Str__literal(L"geq");
-    TL_IS_278 = Str__literal(L"sim");
-    TL_IS_279 = Str__literal(L"hbox");
-    TL_IS_280 = Str__literal(L"left");
-    TL_IS_281 = Str__literal(L"right");
-    TL_IS_282 = Str__literal(L"Rightarrow");
-    TL_IS_283 = Str__literal(L"Leftrightarrow");
-    TL_IS_284 = Str__literal(L"to");
-    TL_IS_285 = Str__literal(L"rightarrow");
-    TL_IS_286 = Str__literal(L"longrightarrow");
-    TL_IS_287 = Str__literal(L"leftarrow");
-    TL_IS_288 = Str__literal(L"longleftarrow");
-    TL_IS_289 = Str__literal(L"lbrace");
-    TL_IS_290 = Str__literal(L"mid");
-    TL_IS_291 = Str__literal(L"rbrace");
-    TL_IS_292 = Str__literal(L"cdot");
-    TL_IS_293 = Str__literal(L"cdots");
-    TL_IS_294 = Str__literal(L"dots");
-    TL_IS_295 = Str__literal(L"times");
-    TL_IS_296 = Str__literal(L"quad");
-    TL_IS_297 = Str__literal(L"qquad");
-    TL_IS_298 = Str__literal(L"TeX");
-    TL_IS_299 = Str__literal(L"neq");
-    TL_IS_300 = Str__literal(L"noteq");
-    TL_IS_301 = Str__literal(L"ell");
-    TL_IS_302 = Str__literal(L"log");
-    TL_IS_303 = Str__literal(L"exp");
-    TL_IS_304 = Str__literal(L"sin");
-    TL_IS_305 = Str__literal(L"cos");
-    TL_IS_306 = Str__literal(L"tan");
-    TL_IS_307 = Str__literal(L"top");
-    TL_IS_308 = Str__literal(L"Alpha");
-    TL_IS_309 = Str__literal(L"Beta");
-    TL_IS_310 = Str__literal(L"Gamma");
-    TL_IS_311 = Str__literal(L"Delta");
-    TL_IS_312 = Str__literal(L"Epsilon");
-    TL_IS_313 = Str__literal(L"Zeta");
-    TL_IS_314 = Str__literal(L"Eta");
-    TL_IS_315 = Str__literal(L"Theta");
-    TL_IS_316 = Str__literal(L"Iota");
-    TL_IS_317 = Str__literal(L"Kappa");
-    TL_IS_318 = Str__literal(L"Lambda");
-    TL_IS_319 = Str__literal(L"Mu");
-    TL_IS_320 = Str__literal(L"Nu");
-    TL_IS_321 = Str__literal(L"Xi");
-    TL_IS_322 = Str__literal(L"Omicron");
-    TL_IS_323 = Str__literal(L"Pi");
-    TL_IS_324 = Str__literal(L"Rho");
-    TL_IS_325 = Str__literal(L"Varsigma");
-    TL_IS_326 = Str__literal(L"Sigma");
-    TL_IS_327 = Str__literal(L"Tau");
-    TL_IS_328 = Str__literal(L"Upsilon");
-    TL_IS_329 = Str__literal(L"Phi");
-    TL_IS_330 = Str__literal(L"Chi");
-    TL_IS_331 = Str__literal(L"Psi");
-    TL_IS_332 = Str__literal(L"Omega");
-    TL_IS_333 = Str__literal(L"alpha");
-    TL_IS_334 = Str__literal(L"beta");
-    TL_IS_335 = Str__literal(L"gamma");
-    TL_IS_336 = Str__literal(L"delta");
-    TL_IS_337 = Str__literal(L"epsilon");
-    TL_IS_338 = Str__literal(L"zeta");
-    TL_IS_339 = Str__literal(L"eta");
-    TL_IS_340 = Str__literal(L"theta");
-    TL_IS_341 = Str__literal(L"iota");
-    TL_IS_342 = Str__literal(L"kappa");
-    TL_IS_343 = Str__literal(L"lambda");
-    TL_IS_344 = Str__literal(L"mu");
-    TL_IS_345 = Str__literal(L"nu");
-    TL_IS_346 = Str__literal(L"xi");
-    TL_IS_347 = Str__literal(L"omicron");
-    TL_IS_348 = Str__literal(L"pi");
-    TL_IS_349 = Str__literal(L"rho");
-    TL_IS_350 = Str__literal(L"varsigma");
-    TL_IS_351 = Str__literal(L"sigma");
-    TL_IS_352 = Str__literal(L"tau");
-    TL_IS_353 = Str__literal(L"upsilon");
-    TL_IS_354 = Str__literal(L"phi");
-    TL_IS_355 = Str__literal(L"chi");
-    TL_IS_356 = Str__literal(L"psi");
-    TL_IS_357 = Str__literal(L"omega");
-    TL_IS_358 = Str__literal(L"exists");
-    TL_IS_359 = Str__literal(L"in");
-    TL_IS_360 = Str__literal(L"forall");
-    TL_IS_361 = Str__literal(L"cap");
-    TL_IS_362 = Str__literal(L"emptyset");
-    TL_IS_363 = Str__literal(L"subseteq");
-    TL_IS_364 = Str__literal(L"land");
-    TL_IS_365 = Str__literal(L"lor");
-    TL_IS_366 = Str__literal(L"lnot");
-    TL_IS_367 = Str__literal(L"sum");
-    TL_IS_368 = Str__literal(L"prod");
+    TL_IS_274 = Str__literal(L"leq");
+    TL_IS_275 = Str__literal(L"geq");
+    TL_IS_276 = Str__literal(L"sim");
+    TL_IS_277 = Str__literal(L"hbox");
+    TL_IS_278 = Str__literal(L"left");
+    TL_IS_279 = Str__literal(L"right");
+    TL_IS_280 = Str__literal(L"Rightarrow");
+    TL_IS_281 = Str__literal(L"Leftrightarrow");
+    TL_IS_282 = Str__literal(L"to");
+    TL_IS_283 = Str__literal(L"rightarrow");
+    TL_IS_284 = Str__literal(L"longrightarrow");
+    TL_IS_285 = Str__literal(L"leftarrow");
+    TL_IS_286 = Str__literal(L"longleftarrow");
+    TL_IS_287 = Str__literal(L"lbrace");
+    TL_IS_288 = Str__literal(L"mid");
+    TL_IS_289 = Str__literal(L"rbrace");
+    TL_IS_290 = Str__literal(L"cdot");
+    TL_IS_291 = Str__literal(L"cdots");
+    TL_IS_292 = Str__literal(L"dots");
+    TL_IS_293 = Str__literal(L"times");
+    TL_IS_294 = Str__literal(L"quad");
+    TL_IS_295 = Str__literal(L"qquad");
+    TL_IS_296 = Str__literal(L"TeX");
+    TL_IS_297 = Str__literal(L"neq");
+    TL_IS_298 = Str__literal(L"noteq");
+    TL_IS_299 = Str__literal(L"ell");
+    TL_IS_300 = Str__literal(L"log");
+    TL_IS_301 = Str__literal(L"exp");
+    TL_IS_302 = Str__literal(L"sin");
+    TL_IS_303 = Str__literal(L"cos");
+    TL_IS_304 = Str__literal(L"tan");
+    TL_IS_305 = Str__literal(L"top");
+    TL_IS_306 = Str__literal(L"Alpha");
+    TL_IS_307 = Str__literal(L"Beta");
+    TL_IS_308 = Str__literal(L"Gamma");
+    TL_IS_309 = Str__literal(L"Delta");
+    TL_IS_310 = Str__literal(L"Epsilon");
+    TL_IS_311 = Str__literal(L"Zeta");
+    TL_IS_312 = Str__literal(L"Eta");
+    TL_IS_313 = Str__literal(L"Theta");
+    TL_IS_314 = Str__literal(L"Iota");
+    TL_IS_315 = Str__literal(L"Kappa");
+    TL_IS_316 = Str__literal(L"Lambda");
+    TL_IS_317 = Str__literal(L"Mu");
+    TL_IS_318 = Str__literal(L"Nu");
+    TL_IS_319 = Str__literal(L"Xi");
+    TL_IS_320 = Str__literal(L"Omicron");
+    TL_IS_321 = Str__literal(L"Pi");
+    TL_IS_322 = Str__literal(L"Rho");
+    TL_IS_323 = Str__literal(L"Varsigma");
+    TL_IS_324 = Str__literal(L"Sigma");
+    TL_IS_325 = Str__literal(L"Tau");
+    TL_IS_326 = Str__literal(L"Upsilon");
+    TL_IS_327 = Str__literal(L"Phi");
+    TL_IS_328 = Str__literal(L"Chi");
+    TL_IS_329 = Str__literal(L"Psi");
+    TL_IS_330 = Str__literal(L"Omega");
+    TL_IS_331 = Str__literal(L"alpha");
+    TL_IS_332 = Str__literal(L"beta");
+    TL_IS_333 = Str__literal(L"gamma");
+    TL_IS_334 = Str__literal(L"delta");
+    TL_IS_335 = Str__literal(L"epsilon");
+    TL_IS_336 = Str__literal(L"zeta");
+    TL_IS_337 = Str__literal(L"eta");
+    TL_IS_338 = Str__literal(L"theta");
+    TL_IS_339 = Str__literal(L"iota");
+    TL_IS_340 = Str__literal(L"kappa");
+    TL_IS_341 = Str__literal(L"lambda");
+    TL_IS_342 = Str__literal(L"mu");
+    TL_IS_343 = Str__literal(L"nu");
+    TL_IS_344 = Str__literal(L"xi");
+    TL_IS_345 = Str__literal(L"omicron");
+    TL_IS_346 = Str__literal(L"pi");
+    TL_IS_347 = Str__literal(L"rho");
+    TL_IS_348 = Str__literal(L"varsigma");
+    TL_IS_349 = Str__literal(L"sigma");
+    TL_IS_350 = Str__literal(L"tau");
+    TL_IS_351 = Str__literal(L"upsilon");
+    TL_IS_352 = Str__literal(L"phi");
+    TL_IS_353 = Str__literal(L"chi");
+    TL_IS_354 = Str__literal(L"psi");
+    TL_IS_355 = Str__literal(L"omega");
+    TL_IS_356 = Str__literal(L"exists");
+    TL_IS_357 = Str__literal(L"in");
+    TL_IS_358 = Str__literal(L"forall");
+    TL_IS_359 = Str__literal(L"cap");
+    TL_IS_360 = Str__literal(L"emptyset");
+    TL_IS_361 = Str__literal(L"subseteq");
+    TL_IS_362 = Str__literal(L"land");
+    TL_IS_363 = Str__literal(L"lor");
+    TL_IS_364 = Str__literal(L"lnot");
+    TL_IS_365 = Str__literal(L"sum");
+    TL_IS_366 = Str__literal(L"prod");
+    TL_IS_367 = Str__literal(L"exists");
+    TL_IS_368 = Str__literal(L"forall");
     TL_IS_369 = Str__literal(L"HTML");
     TL_IS_370 = Str__literal(L".html");
     TL_IS_371 = Str__literal(L"ePub");

@@ -68,7 +68,7 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 
 @<Weave the rennab@> =
 	TEMPORARY_TEXT(rennab);
-	WRITE_TO(rennab, "End of weave: %d lines from a web of %d", lines_woven, W->no_lines);
+	WRITE_TO(rennab, "End of weave");
 	Formats::tail(OUT, wv, rennab, latest_section);
 	DISCARD_TEXT(rennab);
 
