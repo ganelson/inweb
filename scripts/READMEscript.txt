@@ -7,7 +7,7 @@ Inweb offers a modern approach to literate programming. Unlike the original
 LP tools of the late 1970s, led by Donald Knuth, or of the 1990s revival,
 Inweb aims to serve programmers in the Github age. It scales to much larger
 programs than CWEB, and since 2004 has been the tool used by the
-[Inform programming language project](https://github.com/ganelson/inform)),
+[Inform programming language project](https://github.com/ganelson/inform),
 where it manages a 300,000-line code base.
 
 Literate programming is a methodology created by Donald Knuth in the late
@@ -19,7 +19,7 @@ For the Inweb manual, see [&#9733;&nbsp;inweb/Preliminaries](docs/inweb/P-iti).
 
 __Disclaimer__. Because this is a private repository (until the next public
 release of Inform, when it will open), its GitHub pages server cannot be
-enabled yet. As a result links marked &#9733; below lead only to raw HTML
+enabled yet. As a result links marked &#9733; lead only to raw HTML
 source, not to served web pages. They can in the mean time be browsed offline
 as static HTML files stored in "docs".
 
@@ -64,8 +64,8 @@ use "initial", and you should just: "make -f inweb/inweb.mk"
 ## Also Included
 
 Inweb contains a substantial library of code shared by a number of other
-programs, such as the [Intest testing tool](https://github.com/ganelson/intest))
-and the [Inform compiler and related tools](https://github.com/ganelson/inform)).
+programs, such as the [Intest testing tool](https://github.com/ganelson/intest)
+and the [Inform compiler and related tools](https://github.com/ganelson/inform).
 
 This library is called "Foundation", and has its own web
 here: [&#9733;&nbsp;foundation-module](docs/foundation-module/index.html).
