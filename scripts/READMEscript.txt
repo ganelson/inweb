@@ -42,7 +42,7 @@ Getting around that circularity means that the initial setup takes a few steps:
 
 * Create a directory to work in: "mkdir work"
 * Change the current directory to this: "cd work"
-* Clone Inweb: "git clone https://github.com/ganelson/inform.git"
+* Clone Inweb: "git clone https://github.com/ganelson/inweb.git"
 * Run **one of the following commands**. Unix is for any generic version of Unix,
 non-Linux, non-MacOS: Solaris, for example. Android support is currently disabled,
 though only because its build settings are currently missing from the inweb
