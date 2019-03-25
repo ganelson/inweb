@@ -38,9 +38,10 @@ Foundation as free in both senses.
 Inweb is intentionally self-sufficient, with no dependencies on any other
 software beyond a modern C compiler. However, it does in a sense depend on
 itself: because Inweb is itself a web, you need Inweb to compile Inweb.
-Getting around that circularity means that the initial setup takes a few steps:
+Getting around that circularity means that the initial setup takes a few steps.
 
-* Create a directory to work in: "mkdir work"
+Make a directory in which to work: let's call this "work". Then:
+
 * Change the current directory to this: "cd work"
 * Clone Inweb: "git clone https://github.com/ganelson/inweb.git"
 * Run **one of the following commands**. Unix is for any generic version of Unix,
