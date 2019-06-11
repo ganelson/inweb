@@ -861,7 +861,7 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define LATE_PREWEAVE_ANALYSIS_ANA_MTID 33
 #define SHARE_ELEMENT_ANA_MTID 34
 #define MAX_CONDITIONAL_COMPILATION_STACK 8
-#define MAX_ARG_LINES 8 /* maximum number of lines over which a function's header can extend */
+#define MAX_ARG_LINES 32 /* maximum number of lines over which a function's header can extend */
 #define NOT_A_NONTERMINAL -4
 #define A_FLEXIBLE_NONTERMINAL -3
 #define A_VORACIOUS_NONTERMINAL -2

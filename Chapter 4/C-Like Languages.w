@@ -402,7 +402,7 @@ Having read the first line, |arguments| would contain |inference_subject *infs,|
 and would thus be incomplete. We continue across subsequent lines until we
 reach an open brace |{|.
 
-@d MAX_ARG_LINES 8 /* maximum number of lines over which a function's header can extend */
+@d MAX_ARG_LINES 32 /* maximum number of lines over which a function's header can extend */
 
 @<Soak up further arguments from continuation lines after the declaration@> =
 	source_line *AL = L;
