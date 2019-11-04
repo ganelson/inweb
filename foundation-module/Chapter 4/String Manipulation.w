@@ -276,6 +276,7 @@ void Str::concatenate(text_stream *S1, text_stream *S2) {
 }
 
 void Str::copy(text_stream *S1, text_stream *S2) {
+	if (S1 == S2) return;
 	Str::clear(S1);
 	Streams::copy(S1, S2);
 }
