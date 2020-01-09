@@ -610,7 +610,6 @@ compatibility purposes.
 	sect->source_file_for_section = Filenames::in_folder(P, leafname_to_use);
 	TEMPORARY_TEXT(ext);
 	Filenames::write_extension(ext, sect->source_file_for_section);
-	if (Str::eq(ext, I".i6t")) sect->using_syntax = V1_SYNTAX;
 	DISCARD_TEXT(ext);
 	DISCARD_TEXT(leafname_to_use);
 
