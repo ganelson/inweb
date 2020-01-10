@@ -415,8 +415,11 @@ method does something to change that.
 @d STRING_COLOUR		's'
 @d PLAIN_COLOUR			'p'
 @d EXTRACT_COLOUR		'x'
+@d COMMENT_COLOUR		'!'
 
 =
+int colouring_state = PLAIN_COLOUR;
+
 IMETHOD_TYPE(SYNTAX_COLOUR_WEA_MTID, programming_language *pl, text_stream *OUT, weave_target *wv, web *W,
 	chapter *C, section *S, source_line *L, text_stream *matter, text_stream *colouring)
 int Languages::syntax_colour(OUTPUT_STREAM, programming_language *pl, weave_target *wv,

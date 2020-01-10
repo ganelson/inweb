@@ -824,8 +824,6 @@ This is a very simple syntax colouring algorithm. The state at any given
 time is a single variable, the current category of code being looked at:
 
 =
-int colouring_state = PLAIN_COLOUR;
-
 void CLike::reset_syntax_colouring(programming_language *self) {
 	colouring_state = PLAIN_COLOUR;
 }

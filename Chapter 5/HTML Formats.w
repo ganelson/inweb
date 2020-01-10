@@ -491,6 +491,7 @@ void HTMLFormat::change_colour(weave_format *self, text_stream *OUT, weave_targe
 		case CONSTANT_COLOUR: 		cl = "constant"; break;
 		case PLAIN_COLOUR: 			cl = "plain"; break;
 		case EXTRACT_COLOUR: 		cl = "extract"; break;
+		case COMMENT_COLOUR: 		cl = "comment"; break;
 		default: PRINT("col: %d\n", col); internal_error("bad colour"); break;
 	}
 	HTML_OPEN_WITH("span", "class=\"%s\"", cl);
