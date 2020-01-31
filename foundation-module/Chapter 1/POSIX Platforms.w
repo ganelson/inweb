@@ -251,6 +251,36 @@ void Platform::closedir(void *folder) {
 	closedir(dirp);
 }
 
+@h Sync.
+Both names here are of directories which do exist. The function makes
+the |dest| tree an exact copy of the |source| tree (and therefore deletes
+anything different which was originally in |dest|).
+
+In POSIX world, we can fairly well depend on |rsync| being around:
+
+=
+void Platform::rsync(char *transcoded_source, char *transcoded_dest) {
+	char rsync_command[10*MAX_FILENAME_LENGTH];
+	sprintf(rsync_command, "rsync -a --delete ");
+	Platform::quote_text(rsync_command + strlen(rsync_command), transcoded_source, TRUE);
+	sprintf(rsync_command + strlen(rsync_command), " ");
+	Platform::quote_text(rsync_command + strlen(rsync_command), transcoded_dest, FALSE);
+	Platform::system(rsync_command);
+}
+
+void Platform::quote_text(char *quoted, char *raw, int terminate) {
+	quoted[0] = SHELL_QUOTE_CHARACTER;
+	int qp = 1;
+	for (int rp = 0; raw[rp]; rp++) {
+		char c = raw[rp];
+		if (c == SHELL_QUOTE_CHARACTER) quoted[qp++] = '\\';
+		quoted[qp++] = c;
+	}
+	if (terminate) quoted[qp++] = FOLDER_SEPARATOR;
+	quoted[qp++] = SHELL_QUOTE_CHARACTER;
+	quoted[qp++] = 0;
+}
+
 @h Sleep.
 
 =
