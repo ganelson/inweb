@@ -28,6 +28,12 @@ Switches come in five sorts:
 @e NUMERICAL_CLSF /* sets an integer to the given value */
 @e TEXTUAL_CLSF /* sets text to the given value */
 
+@ Switches are also grouped, though this affects only the printout of them
+in |-help|. Groups are enumerated thus:
+
+@e NO_CLSG from 0
+@e FOUNDATION_CLSG
+
 =
 typedef struct command_line_switch {
 	int switch_id;
@@ -36,7 +42,7 @@ typedef struct command_line_switch {
 	struct text_stream *help_text;
 	int valency; /* 1 for bare, 2 for one argument follows */
 	int form; /* one of the |*_CLSF| values above */
-	int foundation_switch; /* |TRUE| for the ones built in to every tool */
+	int switch_group; /* one of the |*_CLSG| valyes above */
 	struct command_line_switch *negates; /* relevant only for booleans */
 	MEMORY_MANAGEMENT
 } command_line_switch;
@@ -53,20 +59,18 @@ A new |*_CLSW| value should be enumerated to be the ID referring to this
 swtich, and then the client should call:
 
 =
+int current_switch_group = NO_CLSG;
+void CommandLine::begin_group(int id) {
+	current_switch_group = id;
+}
+void CommandLine::end_group(void) {
+	current_switch_group = NO_CLSG;
+}
 command_line_switch *CommandLine::declare_switch(int id,
 	wchar_t *name_literal, int val, wchar_t *help_literal) {
 	return CommandLine::declare_switch_p(id,
 		Str::new_from_wide_string(name_literal), val,
 		Str::new_from_wide_string(help_literal));
-}
-command_line_switch *CommandLine::declare_switch_f(int id,
-	wchar_t *name_literal, int val, wchar_t *help_literal) {
-	command_line_switch *cls =
-		CommandLine::declare_switch_p(
-			id, Str::new_from_wide_string(name_literal), val,
-			Str::new_from_wide_string(help_literal));
-	cls->foundation_switch = TRUE;
-	return cls;
 }
 command_line_switch *CommandLine::declare_switch_p(int id,
 	text_stream *name, int val, text_stream *help_literal) {
@@ -79,7 +83,7 @@ command_line_switch *CommandLine::declare_switch_p(int id,
 	cls->help_text = help_literal;
 	cls->form = ACTION_CLSF;
 	cls->negates = NULL;
-	cls->foundation_switch = FALSE;
+	cls->switch_group = current_switch_group;
 	Dictionaries::create(cls_dictionary, cls->switch_name);
 	Dictionaries::write_value(cls_dictionary, cls->switch_name, cls);
 	return cls;
@@ -115,8 +119,8 @@ command_line_switch *CommandLine::declare_boolean_switch_p(int id,
 	negated->form = BOOLEAN_OFF_CLSF;
 	negated->negates = cls;
 
-	cls->foundation_switch = fnd;
-	negated->foundation_switch = fnd;
+	cls->switch_group = fnd;
+	negated->switch_group = fnd;
 
 	return cls;
 }
@@ -124,11 +128,6 @@ command_line_switch *CommandLine::declare_boolean_switch(int id,
 	wchar_t *name_literal, int val, wchar_t *help_literal) {
 	return CommandLine::declare_boolean_switch_p(id,
 		name_literal, val, help_literal, FALSE);
-}
-command_line_switch *CommandLine::declare_boolean_switch_f(int id,
-	wchar_t *name_literal, int val, wchar_t *help_literal) {
-	return CommandLine::declare_boolean_switch_p(id,
-		name_literal, val, help_literal, TRUE);
 }
 
 void CommandLine::declare_numerical_switch(int id,
@@ -160,13 +159,32 @@ general, the client should then exit with exit code 0 if this happens.
 
 This is all easier to demonstrate than explain. See Inweb for an example.
 
+@ Here goes the reader. It works through the command line arguments, then
+through the file if one has by that point been provided.
+
 @d BOGUS_CLSN -12345678 /* bogus because guaranteed not to be a genuine switch ID */
 
 =
+typedef struct clf_reader_state {
+	void *state;
+	void (*f)(int, int, text_stream *, void *);
+	void (*g)(int, text_stream *, void *);
+	int subs;
+	int nrt;
+} clf_reader_state;
+
 int CommandLine::read(int argc, char **argv, void *state,
 	void (*f)(int, int, text_stream *, void *), void (*g)(int, text_stream *, void *)) {
-	int substantive = FALSE;
-	for (int i=1, no_raw_tokens=0; i<argc; i++) {
+	clf_reader_state crs;
+	crs.state = state; crs.f = f; crs.g = g;
+	crs.subs = FALSE; crs.nrt = 0;
+	CommandLine::read_array(&crs, argc, argv);
+	CommandLine::read_file(&crs);
+	return crs.subs;
+}
+
+void CommandLine::read_array(clf_reader_state *crs, int argc, char **argv) {
+	for (int i=1; i<argc; i++) {
 		int switched = FALSE;
 		char *p = argv[i];
 		while (p[0] == '-') { p++; switched = TRUE; } /* allow a doubled-dash as a single */
@@ -175,25 +193,107 @@ int CommandLine::read(int argc, char **argv, void *state,
 		TEMPORARY_TEXT(arg);
 		if (i+1 < argc) Streams::write_locale_string(arg, argv[i+1]);
 		if (switched) {
-			int N = CommandLine::read_pair(opt, arg, state, f, &substantive);
+			int N = CommandLine::read_pair(crs, opt, arg);
 			if (N == 0)
 				Errors::fatal_with_text("unknown command line switch: -%S", opt);
 			i += N - 1;
 		} else {
-			(*g)(no_raw_tokens++, opt, state);
-			substantive = TRUE;
+			CommandLine::read_one(crs, opt);
 		}
 		DISCARD_TEXT(opt);
 		DISCARD_TEXT(arg);
 	}
-	return substantive;
+}
+
+@ We can also read the "command line" from a file. The following variable
+holds the filename to read from.
+
+=
+filename *command_line_file = NULL;
+void CommandLine::also_read_file(filename *F) {
+	command_line_file = F;
+}
+
+@ It's useful to log some of what we're reading here, so that people can tell
+from the debugging log what switches were actually used. But since the log
+might not exist as early as now, we have to record any log entries, and play
+them back later (i.e., when the debugging log does exist).
+
+=
+linked_list *command_line_logs = NULL;
+void CommandLine::record_log(text_stream *line) {
+	if (command_line_logs == NULL)
+		command_line_logs = NEW_LINKED_LIST(text_stream);
+	ADD_TO_LINKED_LIST(line, text_stream, command_line_logs);
+}
+
+void CommandLine::play_back_log(void) {
+	if (command_line_logs) {
+		text_stream *line;
+		LOOP_OVER_LINKED_LIST(line, text_stream, command_line_logs)
+			LOG("%S\n", line);
+	}
+}
+
+@ White space at start and end of lines is ignored; blank lines and those
+beginning with a |#| are ignored (but a # following other content does not
+mean a comment, so don't use trailing comments on lines); each line must
+either be a single switch like |-no-service| or a pair like |-connect tower11|.
+Shell conventions on quoting are not used, but the line |-greet Fred Smith|
+is equivalent to |-greet 'Fred Smith'| on the command line, so there's no
+problem with internal space characters in arguments.
+
+=
+void CommandLine::read_file(clf_reader_state *crs) {
+	text_stream *logline = Str::new();
+	WRITE_TO(logline, "Reading further switches from file: %f", command_line_file);
+	CommandLine::record_log(logline);
+	if (command_line_file)
+		TextFiles::read(command_line_file, FALSE,
+			NULL, FALSE, CommandLine::read_file_helper, NULL, (void *) crs);
+	command_line_file = NULL;
+	text_stream *lastline = Str::new();
+	WRITE_TO(lastline, "Completed expert settings file");
+	CommandLine::record_log(lastline);
+}
+void CommandLine::read_file_helper(text_stream *text, text_file_position *tfp, void *state) {
+	clf_reader_state *crs = (clf_reader_state *) state;
+	match_results mr = Regexp::create_mr();
+	if ((Str::is_whitespace(text)) || (Regexp::match(&mr, text, L" *#%c*"))) {
+		;
+	} else {
+		text_stream *logline = Str::new();
+		WRITE_TO(logline, "line %d: %S", tfp->line_count, text);
+		CommandLine::record_log(logline);
+		if (Regexp::match(&mr, text, L" *-*(%C+) (%c+?) *")) {
+			int N = CommandLine::read_pair(crs, mr.exp[0], mr.exp[1]);
+			if (N == 0)
+				Errors::fatal_with_text("unknown command line switch: -%S", mr.exp[0]);
+			if (N == 1)
+				Errors::fatal_with_text("command line switch does not take value: -%S", mr.exp[0]);
+		} else if (Regexp::match(&mr, text, L" *-*(%C+) *")) {
+			int N = CommandLine::read_pair(crs, mr.exp[0], NULL);
+			if (N == 0)
+				Errors::fatal_with_text("unknown command line switch: -%S", mr.exp[0]);
+			if (N == 2)
+				Errors::fatal_with_text("command line switch requires value: -%S", mr.exp[0]);
+		} else {
+			Errors::in_text_file("illegible line in expert settings file", tfp);
+			WRITE_TO(STDERR, "'%S'\n", text);
+		}
+	}
+	Regexp::dispose_of(&mr);
+}
+
+void CommandLine::read_one(clf_reader_state *crs, text_stream *opt) {
+	(*(crs->g))(crs->nrt++, opt, crs->state);
+	crs->subs = TRUE;
 }
 
 @ We also allow |-setting=X| as equivalent to |-setting X|.
 
 =
-int CommandLine::read_pair(text_stream *opt, text_stream *arg, void *state,
-	void (*f)(int, int, text_stream *, void *), int *substantive) {
+int CommandLine::read_pair(clf_reader_state *crs, text_stream *opt, text_stream *arg) {
 	TEMPORARY_TEXT(opt_p);
 	TEMPORARY_TEXT(opt_val);
 	Str::copy(opt_p, opt);
@@ -208,7 +308,7 @@ int CommandLine::read_pair(text_stream *opt, text_stream *arg, void *state,
 		Str::copy(opt_p, mr.exp[0]);
 		Str::copy(opt_val, mr.exp[1]);
 	}
-	int rv = CommandLine::read_pair_p(opt_p, opt_val, N, arg, state, f, substantive);
+	int rv = CommandLine::read_pair_p(opt_p, opt_val, N, arg, crs->state, crs->f, &(crs->subs));
 	DISCARD_TEXT(opt_p);
 	DISCARD_TEXT(opt_val);
 	return rv;
@@ -292,11 +392,12 @@ all other switches are delegated to the client's callback function |f|.
 
 @h Help text.
 That just leaves the following, which implements the |-help| switch. It
-alphabetically sorts the switches, and prints out a list of them, except
-that switches created by Foundation are in a separate bunch at the bottom.
-(Those are the dull ones.) If a header text has been declared, that appears
-at the top of the list. It's usually a brief description of the tool's
-name and purpose.
+alphabetically sorts the switches, and prints out a list of them as grouped,
+with ungrouped switches as the top paragraph and Foundation switches as the
+bottom one. (Those are the dull ones.)
+
+If a header text has been declared, that appears above the list. It's usually
+a brief description of the tool's name and purpose.
 
 =
 text_stream *cls_heading = NULL;
@@ -319,18 +420,25 @@ void CommandLine::write_help(OUTPUT_STREAM) {
 	qsort(sorted_table, (size_t) N, sizeof(command_line_switch *), CommandLine::compare_names);
 
 	if (Str::len(cls_heading) > 0) WRITE("%S\n", cls_heading);
-	int filter = FALSE;
+	int filter = NO_CLSG, new_para_needed = FALSE;
 	@<Show options in alphabetical order@>;
-	WRITE("\n");
-	filter = TRUE;
-	@<Show options in alphabetical order@>;
+	for (filter = NO_CLSG; filter<NO_DEFINED_CLSG_VALUES; filter++)
+		if ((filter != NO_CLSG) && (filter != FOUNDATION_CLSG))
+			@<Show options in alphabetical order@>;
+	filter = FOUNDATION_CLSG;
+	@<Show options in alphabetical order@>;	
+
 	Memory::I7_free(sorted_table, CLS_SORTING_MREASON, N*((int) sizeof(command_line_switch *)));
 }
 
 @<Show options in alphabetical order@> =
+	if (new_para_needed) {
+		WRITE("\n");
+		new_para_needed = FALSE;
+	}
 	for (int i=0; i<N; i++) {
 		command_line_switch *cls = sorted_table[i];
-		if (cls->foundation_switch != filter) continue;
+		if (cls->switch_group != filter) continue;
 		TEMPORARY_TEXT(line);
 		WRITE_TO(line, "-%S", cls->switch_name);
 		if (cls->form == NUMERICAL_CLSF) WRITE_TO(line, "=N");
@@ -340,6 +448,7 @@ void CommandLine::write_help(OUTPUT_STREAM) {
 		WRITE_TO(line, "%S\n", cls->help_text);
 		WRITE("%S", line);
 		DISCARD_TEXT(line);
+		new_para_needed = TRUE;
 	}
 
 @ =
