@@ -90,6 +90,7 @@ void Foundation::start(void) {
 	@<Register the default stream writers@>;
 	[[textliterals]];
 	Time::begin();
+	Pathnames::start();
 	@<Register the default debugging log aspects@>;
 	@<Register the default debugging log writers@>;
 	@<Register the default command line switches@>;
