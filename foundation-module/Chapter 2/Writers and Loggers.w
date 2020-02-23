@@ -89,8 +89,10 @@ void Writers::register_writer_p(int set, int esc, void *f, int cat) {
 	if ((esc < 0) || (esc >= 128) ||
 		((Characters::isalpha(esc) == FALSE) && (Characters::isdigit(esc) == FALSE)))
 		internal_error("nonalphabetic escape");
-	if (escapes_category[set][esc] != VACANT_ECAT)
+	if (escapes_category[set][esc] != VACANT_ECAT) {
+		WRITE_TO(STDERR, "Clashing escape is %s%c\n", (set == 0)?"%":"$", esc);
 		internal_error("clash of escapes");
+	}
 	escapes_category[set][esc] = cat;
 	the_escapes[set][esc] = f;
 }
