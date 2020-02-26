@@ -72,7 +72,8 @@ extend across multiple lines.
 	section *S;
 	LOOP_WITHIN_TANGLE(C, S, target)
 		if (L->category == BEGIN_DEFINITION_LCAT) {
-			Tags::open_ifdefs(OUT, L->owning_paragraph);
+			if (L->owning_paragraph == NULL) Main::error_in_web(I"misplaced definition", L);
+			else Tags::open_ifdefs(OUT, L->owning_paragraph);
 			Languages::start_definition(OUT, lang,
 				L->text_operand,
 				L->text_operand2, S, L);
@@ -81,7 +82,7 @@ extend across multiple lines.
 				Languages::prolong_definition(OUT, lang, L->text, S, L);
 			}
 			Languages::end_definition(OUT, lang, S, L);
-			Tags::close_ifdefs(OUT, L->owning_paragraph);
+			if (L->owning_paragraph) Tags::close_ifdefs(OUT, L->owning_paragraph);
 		}
 	Enumerations::define_extents(OUT, target, lang);
 
