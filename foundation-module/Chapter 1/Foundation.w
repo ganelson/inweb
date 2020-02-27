@@ -142,17 +142,17 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 @e AT_CLSW
 
 @<Register the default command line switches@> =
-	CommandLine::begin_group(FOUNDATION_CLSG);
+	CommandLine::begin_group(FOUNDATION_CLSG, NULL);
 	CommandLine::declare_switch(LOG_CLSW, L"log", 2,
 		L"write the debugging log to include diagnostics on X");
 	CommandLine::declare_switch(VERSION_CLSW, L"version", 1,
 		L"print out version number");
-	CommandLine::declare_switch(CRASH_CLSW, L"crash", 1,
-		L"intentionally crash if a fatal error occurs (for debugger backtraces)");
+	CommandLine::declare_boolean_switch(CRASH_CLSW, L"crash", 1,
+		L"intentionally crash on internal errors, for debugger backtracing", FALSE);
 	CommandLine::declare_switch(HELP_CLSW, L"help", 1,
 		L"print this help information");
 	CommandLine::declare_boolean_switch(FIXTIME_CLSW, L"fixtime", 1,
-		L"set the time to be 11 a.m. on 28 March 2016 (for testing)");
+		L"pretend the time is 11 a.m. on 28 March 2016 for testing", FALSE);
 	CommandLine::declare_switch(AT_CLSW, L"at", 2,
 		L"specify that this tool is installed at X");
 	CommandLine::end_group();

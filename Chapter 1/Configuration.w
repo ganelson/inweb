@@ -127,7 +127,7 @@ provides automatically.
 		L"   sections: ditto with sections\n");
 
 	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
-		L"explain what inweb is doing");
+		L"explain what inweb is doing", FALSE);
 	CommandLine::declare_switch(IMPORT_FROM_CLSW, L"import-from", 2,
 		L"specify that imported modules are at pathname X");
 

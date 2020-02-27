@@ -43,6 +43,7 @@ typedef struct command_line_switch {
 	int valency; /* 1 for bare, 2 for one argument follows */
 	int form; /* one of the |*_CLSF| values above */
 	int switch_group; /* one of the |*_CLSG| valyes above */
+	int active_by_default; /* relevant only for booleans */
 	struct command_line_switch *negates; /* relevant only for booleans */
 	MEMORY_MANAGEMENT
 } command_line_switch;
@@ -59,9 +60,13 @@ A new |*_CLSW| value should be enumerated to be the ID referring to this
 swtich, and then the client should call:
 
 =
-int current_switch_group = NO_CLSG;
-void CommandLine::begin_group(int id) {
+int current_switch_group = -1;
+text_stream *switch_group_names[NO_DEFINED_CLSG_VALUES+1];
+void CommandLine::begin_group(int id, text_stream *name) {
+	if (current_switch_group == -1)
+		for (int i=0; i<=NO_DEFINED_CLSG_VALUES; i++) switch_group_names[i] = NULL;
 	current_switch_group = id;
+	switch_group_names[id] = name;
 }
 void CommandLine::end_group(void) {
 	current_switch_group = NO_CLSG;
@@ -74,6 +79,10 @@ command_line_switch *CommandLine::declare_switch(int id,
 }
 command_line_switch *CommandLine::declare_switch_p(int id,
 	text_stream *name, int val, text_stream *help_literal) {
+	if (current_switch_group == -1) {
+		current_switch_group = NO_CLSG;
+		for (int i=0; i<=NO_DEFINED_CLSG_VALUES; i++) switch_group_names[i] = NULL;
+	}
 	if (cls_dictionary == NULL) cls_dictionary = Dictionaries::new(16, FALSE);
 	command_line_switch *cls = CREATE(command_line_switch);
 	cls->switch_name = name;
@@ -82,6 +91,7 @@ command_line_switch *CommandLine::declare_switch_p(int id,
 	cls->valency = val;
 	cls->help_text = help_literal;
 	cls->form = ACTION_CLSF;
+	cls->active_by_default = FALSE;
 	cls->negates = NULL;
 	cls->switch_group = current_switch_group;
 	Dictionaries::create(cls_dictionary, cls->switch_name);
@@ -104,8 +114,8 @@ section. So the sorting version of |no-verbose| is |verbose_|.
 |-no-destroy-world|:
 
 =
-command_line_switch *CommandLine::declare_boolean_switch_p(int id,
-	wchar_t *name_literal, int val, wchar_t *help_literal, int fnd) {
+command_line_switch *CommandLine::declare_boolean_switch(int id,
+	wchar_t *name_literal, int val, wchar_t *help_literal, int active) {
 	command_line_switch *cls =
 		CommandLine::declare_switch(id, name_literal, val, help_literal);
 	text_stream *neg = Str::new();
@@ -118,16 +128,9 @@ command_line_switch *CommandLine::declare_boolean_switch_p(int id,
 	cls->form = BOOLEAN_ON_CLSF;
 	negated->form = BOOLEAN_OFF_CLSF;
 	negated->negates = cls;
-
-	cls->switch_group = fnd;
-	negated->switch_group = fnd;
-
+	
+	if (active) cls->active_by_default = TRUE; else negated->active_by_default = TRUE;
 	return cls;
-}
-command_line_switch *CommandLine::declare_boolean_switch(int id,
-	wchar_t *name_literal, int val, wchar_t *help_literal) {
-	return CommandLine::declare_boolean_switch_p(id,
-		name_literal, val, help_literal, FALSE);
 }
 
 void CommandLine::declare_numerical_switch(int id,
@@ -348,7 +351,11 @@ all other switches are delegated to the client's callback function |f|.
 
 @<Take action on what is now definitely a switch@> =
 	switch (cls->switch_id) {
-		case CRASH_CLSW: Errors::enter_debugger_mode(); innocuous = TRUE; break;
+		case CRASH_CLSW:
+			if (cls->form == BOOLEAN_ON_CLSF) {
+				Errors::enter_debugger_mode(); innocuous = TRUE;
+			}
+			break;
 		case LOG_CLSW: @<Parse debugging log inclusion@>; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			char *bn = "[[Build Number]]";
@@ -362,7 +369,9 @@ all other switches are delegated to the client's callback function |f|.
 			innocuous = TRUE; break;
 		}
 		case HELP_CLSW: CommandLine::write_help(STDOUT); innocuous = TRUE; break;
-		case FIXTIME_CLSW: Time::fix(); break;
+		case FIXTIME_CLSW: 
+			if (cls->form == BOOLEAN_ON_CLSF) Time::fix();
+			break;
 		case AT_CLSW: Pathnames::set_installation_path(Pathnames::from_text(arg)); break;
 		default:
 			if (f) {
@@ -439,16 +448,28 @@ void CommandLine::write_help(OUTPUT_STREAM) {
 	for (int i=0; i<N; i++) {
 		command_line_switch *cls = sorted_table[i];
 		if (cls->switch_group != filter) continue;
+		if ((cls->form == BOOLEAN_OFF_CLSF) || (cls->form == BOOLEAN_ON_CLSF)) {
+			if (cls->active_by_default) continue;
+		}
+		text_stream *label = switch_group_names[filter];
+		if (new_para_needed == FALSE) {
+			if (Str::len(label) > 0) WRITE("%S:\n", label);
+			new_para_needed = TRUE;
+		}
 		TEMPORARY_TEXT(line);
+		if (Str::len(label) > 0) WRITE_TO(line, "  ");
 		WRITE_TO(line, "-%S", cls->switch_name);
 		if (cls->form == NUMERICAL_CLSF) WRITE_TO(line, "=N");
 		if (cls->form == TEXTUAL_CLSF) WRITE_TO(line, "=X");
 		if (cls->valency > 1) WRITE_TO(line, " X");
-		while (Str::len(line) < max+5) WRITE_TO(line, " ");
-		WRITE_TO(line, "%S\n", cls->help_text);
-		WRITE("%S", line);
+		while (Str::len(line) < max+7) WRITE_TO(line, " ");
+		WRITE_TO(line, "%S", cls->help_text);
+		if (cls->form == BOOLEAN_ON_CLSF)
+			WRITE_TO(line, " (default is -no-%S)", cls->switch_name);
+		if (cls->form == BOOLEAN_OFF_CLSF)
+			WRITE_TO(line, " (default is -%S)", cls->negates->switch_name);
+		WRITE("%S\n", line);
 		DISCARD_TEXT(line);
-		new_para_needed = TRUE;
 	}
 
 @ =
