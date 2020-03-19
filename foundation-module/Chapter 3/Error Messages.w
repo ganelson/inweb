@@ -8,12 +8,12 @@ issued. If this returns |FALSE|, nothing is printed to |stderr|.
 
 =
 int (*errors_handler)(text_stream *, int) = NULL;
-void (*internal_errors_handler)(char *, char *, int) = NULL;
+void (*internal_errors_handler)(void *, char *, char *, int) = NULL;
 
 void Errors::set_handler(int (*f)(text_stream *, int)) {
 	errors_handler = f;
 }
-void Errors::set_internal_handler(void (*f)(char *, char *, int)) {
+void Errors::set_internal_handler(void (*f)(void *, char *, char *, int)) {
 	internal_errors_handler = f;
 }
 
@@ -79,12 +79,12 @@ void Errors::fatal_with_path(char *message, pathname *P) {
 
 @ Assertion failures lead to the following:
 
-@d internal_error(message) Errors::internal_error_handler(message, __FILE__, __LINE__)
+@d internal_error(message) Errors::internal_error_handler(NULL, message, __FILE__, __LINE__)
 
 =
-void Errors::internal_error_handler(char *message, char *f, int lc) {
+void Errors::internal_error_handler(void *p, char *message, char *f, int lc) {
 	if (internal_errors_handler)
-		(*internal_errors_handler)(message, f, lc);
+		(*internal_errors_handler)(p, message, f, lc);
 	else
 		Errors::fatal_with_C_string("internal error (%s)", message);
 }

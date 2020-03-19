@@ -241,10 +241,12 @@ the default filename is "Important Warnings".
 			else shall_we_open = FALSE;
 		}
 		Swarm::weave_subset(W, ins->chosen_range, shall_we_open, tag, pattern,
-			ins->weave_to_setting, ins->weave_into_setting, ins->weave_docs);
+			ins->weave_to_setting, ins->weave_into_setting, ins->weave_docs,
+			ins->breadcrumb_setting, ins->navigation_setting);
 	} else {
 		Swarm::weave(W, ins->chosen_range, ins->swarm_mode, tag, pattern,
-			ins->weave_to_setting, ins->weave_into_setting, ins->weave_docs);
+			ins->weave_to_setting, ins->weave_into_setting, ins->weave_docs,
+			ins->breadcrumb_setting, ins->navigation_setting);
 	}
 	Formats::end_weaving(W, pattern);
 

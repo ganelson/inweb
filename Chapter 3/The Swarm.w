@@ -18,7 +18,8 @@ This routine is called with mode |SWARM_SECTIONS_SWM|, |SWARM_CHAPTERS_SWM| or
 weave_target *swarm_leader = NULL; /* the most inclusive one we weave */
 
 void Swarm::weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag,
-	weave_pattern *pattern, filename *to, pathname *into, int docs_mode) {
+	weave_pattern *pattern, filename *to, pathname *into, int docs_mode,
+	linked_list *breadcrumbs, filename *navigation) {
 	swarm_leader = NULL;
 	chapter *C;
 	section *S;
@@ -27,17 +28,20 @@ void Swarm::weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag,
 			if (swarm_mode == SWARM_CHAPTERS_SWM)
 				if ((W->chaptered == TRUE) && (Reader::range_within(C->ch_range, range))) {
 					C->ch_weave = Swarm::weave_subset(W,
-						C->ch_range, FALSE, tag, pattern, to, into, docs_mode);
+						C->ch_range, FALSE, tag, pattern, to, into, docs_mode,
+						breadcrumbs, navigation);
 					if (Str::len(range) > 0) swarm_leader = C->ch_weave;
 				}
 			if (swarm_mode == SWARM_SECTIONS_SWM)
 				LOOP_OVER_LINKED_LIST(S, section, C->sections)
 					if (Reader::range_within(S->range, range))
 						S->sect_weave = Swarm::weave_subset(W,
-							S->range, FALSE, tag, pattern, to, into, docs_mode);
+							S->range, FALSE, tag, pattern, to, into, docs_mode,
+							breadcrumbs, navigation);
 		}
 
-	Swarm::weave_index_templates(W, range, pattern, (to)?TRUE:FALSE);
+	Swarm::weave_index_templates(W, range, pattern, (to)?TRUE:FALSE, into, navigation,
+		breadcrumbs, docs_mode);
 }
 
 @ The following is where an individual weave task begins, whether it comes
@@ -46,7 +50,8 @@ the call comes from Program Control).
 
 =
 weave_target *Swarm::weave_subset(web *W, text_stream *range, int open_afterwards,
-	theme_tag *tag, weave_pattern *pattern, filename *to, pathname *into, int docs_mode) {
+	theme_tag *tag, weave_pattern *pattern, filename *to, pathname *into, int docs_mode,
+	linked_list *breadcrumbs, filename *navigation) {
 	weave_target *wt = NULL;
 	if (no_inweb_errors == 0) {
 		Analyser::analyse_code(W);
@@ -74,6 +79,8 @@ typedef struct weave_target {
 	void *post_processing_results; /* optional typesetting diagnostics after running through */
 	int self_contained; /* make a self-contained file if possible */
 	int docs_mode; /* make as part of a |-weave-docs| run */
+	struct linked_list *breadcrumbs; /* non-standard breadcrumb trail, if any */
+	struct filename *navigation; /* navigation links, or |NULL| if not supplied */
 	MEMORY_MANAGEMENT
 } weave_target;
 
@@ -89,6 +96,8 @@ typedef struct weave_target {
 	wt->cover_sheet_to_use = Str::new();
 	wt->self_contained = FALSE;
 	wt->docs_mode = docs_mode;
+	wt->navigation = navigation;
+	wt->breadcrumbs = breadcrumbs;
 	if (W->no_sections <= 1) wt->self_contained = TRUE;
 	Str::copy(wt->cover_sheet_to_use, I"cover-sheet");
 
@@ -161,7 +170,7 @@ generic |index.html| if those aren't available in the current pattern.
 
 =
 void Swarm::weave_index_templates(web *W, text_stream *range, weave_pattern *pattern,
-	int self_contained) {
+	int self_contained, pathname *into, filename *F, linked_list *crumbs, int docs) {
 	if (!(Bibliographic::data_exists(W, I"Version Number")))
 		Bibliographic::set_datum(W, I"Version Number", I" ");
 	text_stream *index_leaf = NULL;
@@ -169,6 +178,6 @@ void Swarm::weave_index_templates(web *W, text_stream *range, weave_pattern *pat
 	else index_leaf = I"unchaptered-index.html";
 	filename *OUT = Patterns::obtain_filename(pattern, index_leaf);
 	if (OUT == NULL) OUT = Patterns::obtain_filename(pattern, I"index.html");
-	if (OUT) Indexer::run(W, range, OUT, I"index.html", NULL, pattern);
+	if (OUT) Indexer::run(W, range, OUT, I"index.html", NULL, pattern, into, F, crumbs, docs);
 	if (self_contained == FALSE) Patterns::copy_payloads_into_weave(W, pattern);
 }

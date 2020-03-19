@@ -60,6 +60,7 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 	match_results mr = Regexp::create_mr();
 	if ((include) && ((state->target->self_contained) || (state->target->pattern->embed_CSS)) &&
 		(Regexp::match(&mr, matter, L" *%<link href=%\"(%c+?)\"%c*"))) {
+		
 		filename *CSS_file = Patterns::obtain_filename(state->target->pattern, mr.exp[0]);
 		Indexer::transcribe_CSS(matter, CSS_file);
 	} else {
@@ -83,6 +84,8 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 		state->halves |= IN_SECOND_HALF;
 	} else if (Str::eq_wide_string(command, L"Cover Sheet")) {
 		if (include) @<Weave in the parent pattern's cover sheet@>;
+	} else if (Regexp::match(&mr2, command, L"Navigation")) {
+		if (include) @<Weave in navigation@>;
 	} else if (Regexp::match(&mr2, command, L"Template (%c*?)")) {
 		if (include) @<Weave in an index@>;
 	} else if (Bibliographic::data_exists(state->target->weave_web, command)) {
@@ -104,16 +107,45 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 		Errors::in_text_file("cover sheet recursively includes itself", tfp);
 	}
 
+@<Weave in navigation@> =
+	pathname *P = Filenames::get_path_to(state->target->weave_to);
+	Indexer::nav_column(OUT, P, state->target->weave_web, state->target->weave_range,
+		state->target->pattern, state->target->navigation);
+
 @<Weave in an index@> =
+	pathname *P = Filenames::get_path_to(state->target->weave_to);
 	filename *CF = Patterns::obtain_filename(state->target->pattern, mr2.exp[0]);
 	if (CF == NULL)
 		Errors::in_text_file("pattern does not provide this template file", tfp);
 	else
 		Indexer::run(state->target->weave_web, state->target->weave_range,
-			CF, NULL, OUT, state->target->pattern);
+			CF, NULL, OUT, state->target->pattern, P, state->target->navigation,
+			NULL, FALSE);
 
 @<Weave in the value of this variable name@> =
 	WRITE("%S", Bibliographic::get_datum(state->target->weave_web, command));
+
+@
+
+=
+void Indexer::nav_column(OUTPUT_STREAM, pathname *P, web *W, text_stream *range,
+	weave_pattern *pattern, filename *nav) {
+	if (nav) {
+		if (TextFiles::exists(nav))
+			Indexer::run(W, range, nav, NULL, OUT, pattern, P, NULL, NULL, FALSE);
+		else
+			Errors::fatal_with_file("unable to find navigation file", nav);
+	} else {
+		if (pattern->hierarchical) {
+			filename *F = Filenames::in_folder(Pathnames::up(P), I"nav.html");
+			if (TextFiles::exists(F))
+				Indexer::run(W, range, F, NULL, OUT, pattern, P, NULL, NULL, FALSE);
+		}
+		filename *F = Filenames::in_folder(P, I"nav.html");
+		if (TextFiles::exists(F))
+			Indexer::run(W, range, F, NULL, OUT, pattern, P, NULL, NULL, FALSE);
+	}
+}
 
 @h Full index pages.
 This is a much more substantial service, and operates as a little processor
@@ -138,6 +170,12 @@ typedef struct contents_processor {
 	int repeat_stack_startpos[CI_STACK_CAPACITY];
 	int stack_pointer; /* And this is our stack pointer for tracking of loops */
 	text_stream *restrict_to_range;
+	web *nav_web;
+	weave_pattern *nav_pattern;
+	pathname *nav_path;
+	filename *nav_file;
+	linked_list *crumbs;
+	int docs_mode;
 } contents_processor;
 
 contents_processor Indexer::new_processor(text_stream *range) {
@@ -155,8 +193,15 @@ contents_processor Indexer::new_processor(text_stream *range) {
 =
 void Indexer::run(web *W, text_stream *range,
 	filename *template_filename, text_stream *contents_page_leafname,
-	text_stream *write_to, weave_pattern *pattern) {
+	text_stream *write_to, weave_pattern *pattern, pathname *P, filename *nav_file,
+	linked_list *crumbs, int docs) {
 	contents_processor actual_cp = Indexer::new_processor(range);
+	actual_cp.nav_web = W;
+	actual_cp.nav_pattern = pattern;
+	actual_cp.nav_path = P;
+	actual_cp.nav_file = nav_file;
+	actual_cp.crumbs = crumbs;
+	actual_cp.docs_mode = docs;
 	contents_processor *cp = &actual_cp;
 	text_stream TO_struct; text_stream *OUT = &TO_struct;
 	@<Read in the source file containing the contents page template@>;
@@ -406,6 +451,11 @@ its square-bracketed parts.
 		match_results mr = Regexp::create_mr();
 		if (Bibliographic::data_exists(W, varname)) {
 			@<Substitute any bibliographic datum named@>;
+		} else if (Regexp::match(&mr, varname, L"Navigation")) {
+			Indexer::nav_column(substituted, cp->nav_path, cp->nav_web,
+				cp->restrict_to_range, cp->nav_pattern, cp->nav_file);
+		} else if (Regexp::match(&mr, varname, L"Breadcrumbs")) {
+			HTMLFormat::drop_initial_breadcrumbs(substituted, cp->crumbs, cp->docs_mode);
 		} else if (Regexp::match(&mr, varname, L"Chapter (%c+)")) {
 			text_stream *detail = mr.exp[0];
 			chapter *C = CONTENT_IN_ITEM(

@@ -81,9 +81,10 @@ pages:
 	mkdir -p $(ME)/docs/inweb
 	mkdir -p $(ME)/docs/foundation-module
 	mkdir -p $(ME)/docs/foundation-test
-	$(INWEB) $(ME) -weave-docs -weave-into $(ME)/docs/inweb
-	$(INWEB) $(ME)/foundation-module -weave-docs -weave-into $(ME)/docs/foundation-module
-	$(INWEB) $(ME)/foundation-test -weave-docs -weave-into $(ME)/docs/foundation-test
+	$(INWEB) $(ME)/docs/docs-src/webs.inweb -weave-as GitHubCovers -weave-into $(ME)/docs -navigation $(ME)/docs/docs-src/nav-o.html
+	$(INWEB) $(ME) -weave-docs -weave-into $(ME)/docs/inweb -breadcrumb 'Source:../webs.html' -navigation $(ME)/docs/docs-src/nav.html
+	$(INWEB) $(ME)/foundation-module -weave-docs -weave-into $(ME)/docs/foundation-module -breadcrumb 'Source:../webs.html' -navigation $(ME)/docs/docs-src/nav.html
+	$(INWEB) $(ME)/foundation-test -weave-docs -weave-into $(ME)/docs/foundation-test -breadcrumb 'Source:../webs.html' -navigation $(ME)/docs/docs-src/nav.html
 
 .PHONY: clean
 clean:

@@ -144,7 +144,10 @@ void HTMLFormat::top(weave_format *self, text_stream *OUT, weave_target *wv, tex
 	Indexer::cover_sheet_maker(OUT, wv->weave_web, I"template", wv, WEAVE_FIRST_HALF);
 	if (wv->self_contained == FALSE) {
 		filename *CSS = Patterns::obtain_filename(wv->pattern, I"inweb.css");
-		Patterns::copy_file_into_weave(wv->weave_web, CSS);
+		if (wv->pattern->hierarchical)
+			Patterns::copy_up_file_into_weave(wv->weave_web, CSS);
+		else
+			Patterns::copy_file_into_weave(wv->weave_web, CSS);
 	}
 	HTML::comment(OUT, comment);
 	html_in_para = HTML_OUT;
@@ -233,12 +236,14 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 		if (wv->self_contained == FALSE) {
 			if (crumbs_dropped == FALSE) {
 				filename *C = Patterns::obtain_filename(wv->pattern, I"crumbs.gif");
-				Patterns::copy_file_into_weave(wv->weave_web, C);
+				if (wv->pattern->hierarchical)
+					Patterns::copy_up_file_into_weave(wv->weave_web, C);
+				else
+					Patterns::copy_file_into_weave(wv->weave_web, C);
 				crumbs_dropped = TRUE;
 			}
 			HTML_OPEN_WITH("ul", "class=\"crumbs\"");
-			if (wv->docs_mode)
-				HTMLFormat::breadcrumb(OUT, I"&#9733;", I"../webs.html");
+			HTMLFormat::drop_initial_breadcrumbs(OUT, wv->breadcrumbs, wv->docs_mode);
 
 			TEMPORARY_TEXT(titling);
 			WRITE_TO(titling, "%S", Bibliographic::get_datum(wv->weave_web, I"Title"));
@@ -263,6 +268,16 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 			HTML_CLOSE("ul");
 		}
 	}
+}
+
+void HTMLFormat::drop_initial_breadcrumbs(OUTPUT_STREAM, linked_list *crumbs, int docs_mode) {
+	if (LinkedLists::len(crumbs) > 0) {
+		breadcrumb_request *BR;
+		LOOP_OVER_LINKED_LIST(BR, breadcrumb_request, crumbs) {
+			HTMLFormat::breadcrumb(OUT, BR->breadcrumb_text, BR->breadcrumb_link);
+		}
+	} else if (docs_mode)
+		HTMLFormat::breadcrumb(OUT, I"&#9733;", I"../webs.html");
 }
 
 @ =

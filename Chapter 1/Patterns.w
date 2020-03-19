@@ -15,12 +15,14 @@ typedef struct weave_pattern {
 
 	struct weave_format *pattern_format; /* such as |DVI|: the desired final format */
 	struct linked_list *payloads; /* of |text_stream|: leafnames of associated files */
+	struct linked_list *up_payloads; /* of |text_stream|: leafnames of associated files */
 
 	struct text_stream *tex_command; /* shell command to use for |tex| */
 	struct text_stream *pdftex_command; /* shell command to use for |pdftex| */
 	struct text_stream *open_command; /* shell command to use for |open| */
 
 	int embed_CSS; /* embed CSS directly into any HTML files made? */
+	int hierarchical; /* weave as one part of a collection of woven webs */
 	int show_abbrevs; /* show section range abbreviations in the weave? */
 	int number_sections; /* insert section numbers into the weave? */
 	struct text_stream *default_range; /* for example, |sections| */
@@ -45,8 +47,10 @@ weave_pattern *Patterns::find(web *W, text_stream *name) {
 	wp->pattern_name = Str::duplicate(name);
 	wp->pattern_location = NULL;
 	wp->payloads = NEW_LINKED_LIST(text_stream);
+	wp->up_payloads = NEW_LINKED_LIST(text_stream);
 	wp->based_on = NULL;
 	wp->embed_CSS = FALSE;
+	wp->hierarchical = FALSE;
 	wp->patterned_for = W;
 	wp->show_abbrevs = TRUE;
 	wp->number_sections = FALSE;
@@ -86,7 +90,9 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 	if (Regexp::match(&mr, line, L" *from (%c+)")) @<This is a from command@>;
 	if (Regexp::match(&mr, line, L" *(%c+?) = (%c+)")) @<This is an X = Y command@>;
 	if (Regexp::match(&mr, line, L" *embed css *")) @<This is an embed CSS command@>;
+	if (Regexp::match(&mr, line, L" *hierarchical *")) @<This is a hierarchical command@>;
 	if (Regexp::match(&mr, line, L" *use (%c+)")) @<This is a use command@>;
+	if (Regexp::match(&mr, line, L" *use-up (%c+)")) @<This is a use-up command@>;
 	if (Regexp::match(&mr, line, L" *%C%c*"))
 		Errors::in_text_file("unrecognised pattern command", tfp);
 	Regexp::dispose_of(&mr);
@@ -127,6 +133,11 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 	Regexp::dispose_of(&mr);
 	return;
 
+@<This is a hierarchical command@> =
+	wp->hierarchical = TRUE;
+	Regexp::dispose_of(&mr);
+	return;
+
 @ "Payloads" are associated files such as images which may be needed for an
 HTML weave to look right. We identify them here only by leafname: their
 actual location will depend on where the pattern directory is.
@@ -134,6 +145,12 @@ actual location will depend on where the pattern directory is.
 @<This is a use command@> =
 	text_stream *leafname = Str::duplicate(mr.exp[0]);
 	ADD_TO_LINKED_LIST(leafname, text_stream, wp->payloads);
+	Regexp::dispose_of(&mr);
+	return;
+
+@<This is a use-up command@> =
+	text_stream *leafname = Str::duplicate(mr.exp[0]);
+	ADD_TO_LINKED_LIST(leafname, text_stream, wp->up_payloads);
 	Regexp::dispose_of(&mr);
 	return;
 
@@ -157,6 +174,11 @@ from each other then this routine will lock up into an infinite loop.
 
 =
 filename *Patterns::obtain_filename(weave_pattern *pattern, text_stream *leafname) {
+	if (Str::prefix_eq(leafname, I"../", 3)) {
+		Str::delete_first_character(leafname);
+		Str::delete_first_character(leafname);
+		Str::delete_first_character(leafname);
+	}
 	filename *F = Filenames::in_folder(pattern->pattern_location, leafname);
 	if (TextFiles::exists(F)) return F;
 	if (pattern->based_on) return Patterns::obtain_filename(pattern->based_on, leafname);
@@ -177,11 +199,25 @@ void Patterns::copy_payloads_into_weave(web *W, weave_pattern *pattern) {
 			Epub::note_image(W->as_ebook, rel);
 		}
 	}
+	LOOP_OVER_LINKED_LIST(leafname, text_stream, pattern->up_payloads) {
+		filename *F = Patterns::obtain_filename(pattern, leafname);
+		Patterns::copy_up_file_into_weave(W, F);
+		if (W->as_ebook) {
+			filename *rel = Filenames::in_folder(NULL, leafname);
+			Epub::note_image(W->as_ebook, rel);
+		}
+	}
 }
 
 @ =
 void Patterns::copy_file_into_weave(web *W, filename *F) {
 	pathname *H = W->redirect_weaves_to;
 	if (H == NULL) H = Reader::woven_folder(W);
+	Shell::copy(F, H, "");
+}
+void Patterns::copy_up_file_into_weave(web *W, filename *F) {
+	pathname *H = W->redirect_weaves_to;
+	if (H == NULL) H = Reader::woven_folder(W);
+	H = Pathnames::up(H);
 	Shell::copy(F, H, "");
 }

@@ -6,6 +6,7 @@ Managing how we record and use the current time and date.
 From the local environment, we'll extract the time at which we're running.
 
 =
+time_t right_now;
 struct tm *the_present = NULL;
 int fix_time_mode = FALSE;
 

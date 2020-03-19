@@ -1,0 +1,21 @@
+Title: Overview
+Author: Graham Nelson
+Purpose: A documentation page.
+Language: C
+
+@ This website holds human-readable, or "woven", forms of the source code for
+the literate programming tool Inweb. To download and build Inweb, go to the
+repository's front page and follow the instructions there. These pages are
+purely to help maintainers of Inweb, or anyone interested in looking under the
+hood, to see how it works.
+
+@ The Inform software uses literate programming, a doctrine invented by Donald
+Knuth. Under LP, a single program is called a "web", and can either be
+"woven" for humans to read or "tangled" for computers to compile. You are
+reading the woven form. There are three webs accessible from this page:
+(a) The |inweb| tool.
+(b) The |foundation| module, which is not a stand-alone program, but is
+instead a library of utility functions needed by |inweb| and also by some
+of the programs tangled by it (such as the Inform compiler).
+(c) A modest unit test tool, which simply exercises some of the functions
+of |foundation|.

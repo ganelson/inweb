@@ -32,11 +32,19 @@ typedef struct inweb_instructions {
 	struct filename *makefile_setting; /* |-makefile X|: the filename X, if supplied */
 	struct filename *gitignore_setting; /* |-gitignore X|: the filename X, if supplied */
 	struct filename *prototype_setting; /* |-prototype X|: the pathname X, if supplied */
+	struct filename *navigation_setting; /* |-navigation X|: the filename X, if supplied */
+	struct linked_list *breadcrumb_setting; /* of |breadcrumb_request| */
 	int verbose_switch; /* |-verbose|: print names of files read to stdout */
 	int targets; /* used only for parsing */
 
 	struct pathname *import_setting; /* |-import X|: where to find imported webs */
 } inweb_instructions;
+
+typedef struct breadcrumb_request {
+	struct text_stream *breadcrumb_text;
+	struct text_stream *breadcrumb_link;
+	MEMORY_MANAGEMENT
+} breadcrumb_request;
 
 @h Reading the command line.
 The dull work of this is done by the Foundation module: all we need to do is
@@ -80,6 +88,8 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.makefile_setting = NULL;
 	args.gitignore_setting = NULL;
 	args.prototype_setting = NULL;
+	args.navigation_setting = NULL;
+	args.breadcrumb_setting = NEW_LINKED_LIST(breadcrumb_request);
 	args.tag_setting = Str::new();
 	args.weave_pattern = Str::new_from_wide_string(L"HTML");
 	args.weave_docs = FALSE;
@@ -108,6 +118,8 @@ provides automatically.
 @e WEAVE_AS_CLSW
 @e WEAVE_TAG_CLSW
 @e WEAVE_DOCS_CLSW
+@e BREADCRUMB_CLSW
+@e NAVIGATION_CLSW
 @e TANGLE_CLSW
 @e TANGLE_TO_CLSW
 
@@ -162,6 +174,10 @@ provides automatically.
 		L"set weave pattern to X (default is 'HTML')");
 	CommandLine::declare_switch(WEAVE_TAG_CLSW, L"weave-tag", 2,
 		L"weave, but only using material tagged as X");
+	CommandLine::declare_switch(BREADCRUMB_CLSW, L"breadcrumb", 2,
+		L"use the text X as a breadcrumb in overhead navigation");
+	CommandLine::declare_switch(NAVIGATION_CLSW, L"navigation", 2,
+		L"use the file X as a column of navigation links");
 	CommandLine::declare_switch(TANGLE_CLSW, L"tangle", 1,
 		L"tangle the web into machine-compilable form");
 	CommandLine::declare_switch(TANGLE_TO_CLSW, L"tangle-to", 2,
@@ -225,6 +241,13 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 		case WEAVE_TAG_CLSW:
 			args->tag_setting = Str::duplicate(arg);
 			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
+		case BREADCRUMB_CLSW:
+			ADD_TO_LINKED_LIST(Configuration::breadcrumb(arg),
+				breadcrumb_request, args->breadcrumb_setting);
+			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
+		case NAVIGATION_CLSW:
+			args->navigation_setting = Filenames::from_text(arg);
+			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
 
 		/* Tangle-related */
 		case TANGLE_CLSW:
@@ -235,6 +258,21 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 
 		default: internal_error("unimplemented switch");
 	}
+}
+
+breadcrumb_request *Configuration::breadcrumb(text_stream *arg) {
+	breadcrumb_request *BR = CREATE(breadcrumb_request);
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, arg, L"(%c*?): *(%c*)")) {
+		BR->breadcrumb_text = Str::duplicate(mr.exp[0]);
+		BR->breadcrumb_link = Str::duplicate(mr.exp[1]);	
+	} else {
+		BR->breadcrumb_text = Str::duplicate(arg);
+		BR->breadcrumb_link = Str::duplicate(arg);
+		WRITE_TO(BR->breadcrumb_link, ".html");
+	}
+	Regexp::dispose_of(&mr);
+	return BR;
 }
 
 @ Foundation calls this routine on any command-line argument which is

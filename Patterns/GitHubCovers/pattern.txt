@@ -1,6 +1,5 @@
 from HTML
 format = HTML
 default-range = sections
-hierarchical
-use-up crumbs.gif
-use-up inweb.css
+use crumbs.gif
+use inweb.css
