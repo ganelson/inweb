@@ -66,6 +66,8 @@ with the memory system. The ones here are those needed by Foundation.
 @e method_MT
 @e method_set_MT
 @e ebook_mark_MT
+@e semantic_version_number_holder_MT
+@e semver_range_MT
 
 @ For each type of object to be allocated, a single structure of the
 following design is maintained. Types which are allocated individually,
@@ -538,6 +540,8 @@ ALLOCATE_INDIVIDUALLY(linked_list)
 ALLOCATE_INDIVIDUALLY(method)
 ALLOCATE_INDIVIDUALLY(method_set)
 ALLOCATE_INDIVIDUALLY(ebook_mark)
+ALLOCATE_INDIVIDUALLY(semantic_version_number_holder)
+ALLOCATE_INDIVIDUALLY(semver_range)
 
 ALLOCATE_IN_ARRAYS(dict_entry, 100)
 ALLOCATE_IN_ARRAYS(HTML_tag, 1000)

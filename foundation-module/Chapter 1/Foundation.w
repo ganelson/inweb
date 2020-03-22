@@ -104,6 +104,7 @@ prints a filename by calling |Filenames::writer|.
 @<Register the default stream writers@> =
 	Writers::register_writer('f', &Filenames::writer);
 	Writers::register_writer('p', &Pathnames::writer);
+	Writers::register_writer('v', &VersionNumbers::writer);
 	Writers::register_writer('S', &Streams::writer);
 
 @ We provide a full logging service, in which different "aspects" can be

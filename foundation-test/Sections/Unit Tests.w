@@ -212,3 +212,109 @@ void Unit::test_stacks(void) {
 	PRINT("Top of stack is: %S\n", TOP_OF_LIFO_STACK(text_stream, test_stack));
 	if (LIFO_STACK_EMPTY(text_stream, test_stack)) PRINT("Stack is empty\n");
 }
+
+@h Semantic versions.
+
+=
+void Unit::test_range(OUTPUT_STREAM, text_stream *text) {
+	semantic_version_number V = VersionNumbers::from_text(text);
+	semver_range *R = VersionNumberRanges::compatibility_range(V);
+	WRITE("Compatibility range of %v  =  ", &V);
+	VersionNumberRanges::write_range(OUT, R);
+	WRITE("\n");
+	R = VersionNumberRanges::at_least_range(V);
+	WRITE("At-least range of %v  =  ", &V);
+	VersionNumberRanges::write_range(OUT, R);
+	WRITE("\n");
+	R = VersionNumberRanges::at_most_range(V);
+	WRITE("At-most range of %v  =  ", &V);
+	VersionNumberRanges::write_range(OUT, R);
+	WRITE("\n");
+}
+
+void Unit::test_intersect(OUTPUT_STREAM,
+	text_stream *text1, int r1, text_stream *text2, int r2) {
+	semantic_version_number V1 = VersionNumbers::from_text(text1);
+	semver_range *R1 = NULL;
+	if (r1 == 0) R1 = VersionNumberRanges::compatibility_range(V1);
+	else if (r1 > 0) R1 = VersionNumberRanges::at_least_range(V1);
+	else if (r1 < 0) R1 = VersionNumberRanges::at_most_range(V1);
+	semantic_version_number V2 = VersionNumbers::from_text(text2);
+	semver_range *R2 = NULL;
+	if (r2 == 0) R2 = VersionNumberRanges::compatibility_range(V2);
+	else if (r2 > 0) R2 = VersionNumberRanges::at_least_range(V2);
+	else if (r2 < 0) R2 = VersionNumberRanges::at_most_range(V2);
+	VersionNumberRanges::write_range(OUT, R1);
+	WRITE(" intersect ");
+	VersionNumberRanges::write_range(OUT, R2);
+	WRITE(" = ");
+	int changed = VersionNumberRanges::intersect_range(R1, R2);
+	VersionNumberRanges::write_range(OUT, R1);
+	if (changed) WRITE (" -- changed");
+	WRITE("\n");
+}
+
+void Unit::test_read_write(OUTPUT_STREAM, text_stream *text) {
+	semantic_version_number V = VersionNumbers::from_text(text);
+	WRITE("'%S'   -->   %v\n", text, &V);
+}
+
+void Unit::test_precedence(OUTPUT_STREAM, text_stream *text1, text_stream *text2) {
+	semantic_version_number V1 = VersionNumbers::from_text(text1);
+	semantic_version_number V2 = VersionNumbers::from_text(text2);
+	int gt = VersionNumbers::gt(V1, V2);
+	int eq = VersionNumbers::eq(V1, V2);
+	int lt = VersionNumbers::lt(V1, V2);
+	if (lt) WRITE("%v  <  %v", &V1, &V2);
+	if (eq) WRITE("%v  =  %v", &V1, &V2);
+	if (gt) WRITE("%v  >  %v", &V1, &V2);
+	WRITE("\n");
+}
+
+void Unit::test_semver(void) {
+	Unit::test_read_write(STDOUT, I"1");
+	Unit::test_read_write(STDOUT, I"1.2");
+	Unit::test_read_write(STDOUT, I"1.2.3");
+	Unit::test_read_write(STDOUT, I"71.0.45672");
+	Unit::test_read_write(STDOUT, I"1.2.3.4");
+	Unit::test_read_write(STDOUT, I"9/861022");
+	Unit::test_read_write(STDOUT, I"9/86102");
+	Unit::test_read_write(STDOUT, I"9/8610223");
+	Unit::test_read_write(STDOUT, I"9/861022.2");
+	Unit::test_read_write(STDOUT, I"9/861022/2");
+	Unit::test_read_write(STDOUT, I"1.2.3-alpha.0.x45.1789");
+	Unit::test_read_write(STDOUT, I"1+lobster");
+	Unit::test_read_write(STDOUT, I"1.2+lobster");
+	Unit::test_read_write(STDOUT, I"1.2.3+lobster");
+	Unit::test_read_write(STDOUT, I"1.2.3-beta.2+shellfish");
+	
+	PRINT("\n");
+	Unit::test_precedence(STDOUT, I"3", I"5");
+	Unit::test_precedence(STDOUT, I"3", I"3");
+	Unit::test_precedence(STDOUT, I"3", I"3.0");
+	Unit::test_precedence(STDOUT, I"3", I"3.0.0");
+	Unit::test_precedence(STDOUT, I"3.1.41", I"3.1.5");
+	Unit::test_precedence(STDOUT, I"3.1.41", I"3.2.5");
+	Unit::test_precedence(STDOUT, I"3.1.41", I"3.1.41+arm64");
+	Unit::test_precedence(STDOUT, I"3.1.41", I"3.1.41-pre.0.1");
+	Unit::test_precedence(STDOUT, I"3.1.41-alpha.72", I"3.1.41-alpha.8");
+	Unit::test_precedence(STDOUT, I"3.1.41-alpha.72a", I"3.1.41-alpha.8a");
+	Unit::test_precedence(STDOUT, I"3.1.41-alpha.72", I"3.1.41-beta.72");
+	Unit::test_precedence(STDOUT, I"3.1.41-alpha.72", I"3.1.41-alpha.72.zeta");
+	Unit::test_precedence(STDOUT, I"1.2.3+lobster.54", I"1.2.3+lobster.100");
+	
+	PRINT("\n");
+	Unit::test_range(STDOUT, I"6.4.2-kappa.17");
+
+	PRINT("\n");
+	Unit::test_intersect(STDOUT, I"6.4.2-kappa.17", 0, I"3.5.5", 0);
+	Unit::test_intersect(STDOUT, I"6.4.2-kappa.17", 0, I"6.9.1", 0);
+	Unit::test_intersect(STDOUT, I"6.9.1", 0, I"6.4.2-kappa.17", 0);
+	Unit::test_intersect(STDOUT, I"6.4.2", 1, I"3.5.5", 1);
+	Unit::test_intersect(STDOUT, I"6.4.2", 1, I"3.5.5", -1);
+	Unit::test_intersect(STDOUT, I"6.4.2", -1, I"3.5.5", 1);
+	Unit::test_intersect(STDOUT, I"6.4.2", -1, I"3.5.5", -1);
+}
+
+
+
