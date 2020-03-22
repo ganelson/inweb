@@ -9,9 +9,7 @@ Version Number: 7
 
 Import: foundation
 
-Preliminaries
-"This chapter of preliminaries, from the Inweb web, makes up the User Guide
-for the program."
+Manual
 	Introduction to Inweb
 	Webs, Tangling and Weaving
 	How to Write a Web

@@ -417,6 +417,13 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 		WRITE_TO(RS->titling_line_to_insert, "%S.", line);
 		WRITE_TO(pdf_leafname, "Preliminaries.pdf");
 		RS->current_web->chaptered = TRUE;
+	} else if (Str::eq_wide_string(line, L"Manual")) {
+		WRITE_TO(new_chapter_range, "M");
+		WRITE_TO(RS->chapter_folder_name, "Manual");
+		Str::clear(RS->titling_line_to_insert);
+		WRITE_TO(RS->titling_line_to_insert, "%S.", line);
+		WRITE_TO(pdf_leafname, "Manual.pdf");
+		RS->current_web->chaptered = TRUE;
 	} else if (Regexp::match(&mr, line, L"Header: (%c+)")) {
 		pathname *P = RS->path_to;
 		if (P == NULL) P = RS->current_web->path_to_web;
@@ -457,7 +464,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 		Errors::in_text_file_S(err, tfp);
 		WRITE_TO(STDERR, "(Must be 'Chapter <number>: Title', "
 			"'Appendix <letter A to O>: Title',\n");
-		WRITE_TO(STDERR, "'Preliminaries' or 'Sections')\n");
+		WRITE_TO(STDERR, "'Manual', 'Preliminaries' or 'Sections')\n");
 		DISCARD_TEXT(err);
 	}
 

@@ -195,3 +195,36 @@ weaves a report somewhat like this:
 	|    Section Lexical Services: 3/lexs: 606 lines.|
 	|    Section Vocabulary: 3/vocab: 338 lines.|
 	|    Section Built-In Words: 3/words: 1207 lines.|
+
+@h Navigation and breadcrumbs.
+When assembling large numbers of woven websites together, as is needed for
+example by the main Inform repository's GitHub pages, we need to navigate
+externally as well as internally: that is, the page for one tool will need
+a way to link to pages for other tools.
+
+To that end, the special expansion |[[Navigation]]| in a pattern template
+will expand by looking for a file which contains a fragment of HTML, usually
+consisting only of an un-numbered list of links.
+
+By default, Inweb looks for a file called |nav.html| in two directories: the
+one above the destination, and the destination. If both exist, they are both
+used. If neither exists, the expansion is empty, but no error is produced.
+
+However, this can be overridden at the command line, with |-navigation N|,
+where |N| is the filename for a suitable fragment of navigation HTML.
+
+@ The row of breadcrumbs at the top of a woven website can also be
+customised from the command line, in that the prefatory breadcrumbs can
+be explicitly chosen. (If they are not chosen, there's just a star, which
+links to the relevant GitHub repository home page.) Any number can be
+supplied. For example:
+
+	|-breadcrumb 'Groceries:groc.html' -breadcrumb Produce|
+
+produces the trail
+
+	|Groceries > Produce > ...|
+
+with the links being to |groc.html| and |Produce.html| respectively. (The
+colon is optional, and needed only if the link is not to the text with |.html|
+appended.)

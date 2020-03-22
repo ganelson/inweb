@@ -15,7 +15,7 @@ Literate programming is a methodology created by Donald Knuth in the late
 be readable by humans as well as by other programs. The human-readable form
 for Inweb (which is itself a web) is here: [&#9733;&nbsp;inweb](docs/inweb/index.html).
 
-For the Inweb manual, see [&#9733;&nbsp;inweb/Preliminaries](docs/inweb/P-iti).
+For the Inweb manual, see [&#9733;&nbsp;inweb/Preliminaries](docs/inweb/M-iti).
 
 __Disclaimer__. Because this is a private repository (until the next public
 release of Inform, when it will open), its GitHub pages server cannot be

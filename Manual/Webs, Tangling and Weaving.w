@@ -158,9 +158,9 @@ are stored in subdirectories of the web directory:
 stored in a single subdirectory called |Sections|.
 
 (b) Alternatively (not additionally), a larger web can use chapter
-subdirectories called |Preliminaries|, |Chapter 1|, |Chapter 2|, ...,
+subdirectories called |Manual|, |Preliminaries|, |Chapter 1|, |Chapter 2|, ...,
 |Appendix A|, |Appendix B|, ...; preliminaries and appendices being optional.
-(There can't be a Chapter 0, though there can be Appendix A, B, C, ..., O.)
+(There can't be a Chapter 0, though there can be Appendix A, B, C, ..., L.)
 
 A multi-section web can contain a variety of other subdirectories as needed.
 Two in particular, |Woven| and |Tangled|, are automatically created by Inweb
@@ -245,9 +245,9 @@ much longer roster, such as:
 	|    SR1 - Physical World Model|
 
 ... and so on. Here the sections appear in directories called Preliminaries,
-Chapter 1, Chapter 2, ..., Appendix A. (These are the only possibilities:
-Inweb doesn't allow other forms of name for blocks of sections. There can't be
-a Chapter 0, though there can be Appendix B, C, ..., O.)
+Chapter 1, Chapter 2, ..., Appendix A. (There can't be a Chapter 0, though
+there can be Appendix B, C, ..., O; there can also be a Manual chapter, in
+the sense of documentation.)
 
 In case of any doubt we can use the following command-line switch to see
 how Inweb is actually reading the sections of a web |W|:
@@ -357,9 +357,9 @@ sense only for chaptered webs, and puts each chapter into its own file.
 @ Ranges can also be used to weave only part of a web:
 
 (a) In a chaptered web, chapters are abbreviated to just their numbers: for
-example, the range |2| means "just Chapter 2". The Preliminaries alone is |P|.
-Appendix A, B, C are |A|, |B|, |C| and so on. (This is why Appendices can
-only run up to O.)
+example, the range |2| means "just Chapter 2". The Preliminaries alone is |P|;
+the Manual, |M|. Appendix A, B, C are |A|, |B|, |C| and so on. (This is why
+Appendices can only run up to L.)
 
 (b) In an unchaptered web, |S| means "all the sections". This is almost but not
 quite the same as |all|: the cover sheet (a sort of title page) is omitted.

@@ -1372,7 +1372,7 @@ typedef struct hash_table {
 	struct linked_list *analysis_hash[HASH_TAB_SIZE]; /* of |hash_table_entry| */
 	int analysis_hash_initialised; /* when we start up, array's contents are undefined */
 } hash_table;
-#line 762 "inweb/Chapter 2/The Reader.w"
+#line 769 "inweb/Chapter 2/The Reader.w"
 typedef struct tangle_target {
 	struct programming_language *tangle_language; /* common to the entire contents */
 	struct hash_table symbols; /* a table of identifiable names in this program */
@@ -2715,21 +2715,21 @@ void  Reader__read_contents_page(web *W, module_search *import_path, int verbose
 void  Reader__read_contents_page_from(web *W, module_search *import_path, int verbosely, pathname *path) ;
 #line 255 "inweb/Chapter 2/The Reader.w"
 void  Reader__read_contents_line(text_stream *line, text_file_position *tfp, void *X) ;
-#line 619 "inweb/Chapter 2/The Reader.w"
+#line 626 "inweb/Chapter 2/The Reader.w"
 void  Reader__read_file(web *W, filename *OUT, text_stream *titling_line, section *sect, 	int verbosely, int disregard_top) ;
-#line 658 "inweb/Chapter 2/The Reader.w"
+#line 665 "inweb/Chapter 2/The Reader.w"
 void  Reader__scan_source_line(text_stream *line, text_file_position *tfp, void *state) ;
-#line 695 "inweb/Chapter 2/The Reader.w"
+#line 702 "inweb/Chapter 2/The Reader.w"
 chapter * Reader__get_chapter_for_range(web *W, text_stream *range) ;
-#line 704 "inweb/Chapter 2/The Reader.w"
+#line 711 "inweb/Chapter 2/The Reader.w"
 section * Reader__get_section_for_range(web *W, text_stream *range) ;
-#line 718 "inweb/Chapter 2/The Reader.w"
+#line 725 "inweb/Chapter 2/The Reader.w"
 section * Reader__section_by_filename(web *W, text_stream *filename) ;
-#line 740 "inweb/Chapter 2/The Reader.w"
+#line 747 "inweb/Chapter 2/The Reader.w"
 int  Reader__range_within(text_stream *range1, text_stream *range2) ;
-#line 769 "inweb/Chapter 2/The Reader.w"
+#line 776 "inweb/Chapter 2/The Reader.w"
 tangle_target * Reader__add_tangle_target(web *W, programming_language *language) ;
-#line 792 "inweb/Chapter 2/The Reader.w"
+#line 799 "inweb/Chapter 2/The Reader.w"
 void  Reader__add_imported_header(web *W, filename *HF) ;
 #line 27 "inweb/Chapter 2/Modules.w"
 module * Modules__new(text_stream *name, pathname *at, int m) ;
@@ -12289,7 +12289,7 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 	line = TL_IS_83;
 	
 {
-#line 483 "inweb/Chapter 2/The Reader.w"
+#line 490 "inweb/Chapter 2/The Reader.w"
 	chapter *C = CREATE(chapter);
 	C->ch_range = Str__duplicate(new_chapter_range);
 	C->ch_title = Str__duplicate(line);
@@ -12315,11 +12315,11 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 	filename_of_single_file_web = tfp->text_file_filename;
 	
 {
-#line 506 "inweb/Chapter 2/The Reader.w"
+#line 513 "inweb/Chapter 2/The Reader.w"
 	section *sect = CREATE(section);
 	
 {
-#line 519 "inweb/Chapter 2/The Reader.w"
+#line 526 "inweb/Chapter 2/The Reader.w"
 	if (filename_of_single_file_web) {
 		sect->source_file_for_section = filename_of_single_file_web;
 		sect->paused_until_at = TRUE;
@@ -12355,22 +12355,22 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 	Regexp__dispose_of(&mr);
 
 }
-#line 507 "inweb/Chapter 2/The Reader.w"
+#line 514 "inweb/Chapter 2/The Reader.w"
 ;
 	
 {
-#line 554 "inweb/Chapter 2/The Reader.w"
+#line 561 "inweb/Chapter 2/The Reader.w"
 	chapter *C = RS->chapter_being_scanned;
 	C->owning_web->no_sections++;
 	sect->owning_chapter = C;
 	ADD_TO_LINKED_LIST(sect, section, C->sections);
 
 }
-#line 508 "inweb/Chapter 2/The Reader.w"
+#line 515 "inweb/Chapter 2/The Reader.w"
 ;
 	
 {
-#line 566 "inweb/Chapter 2/The Reader.w"
+#line 573 "inweb/Chapter 2/The Reader.w"
 	sect->sect_language = RS->chapter_being_scanned->ch_language; /* by default */
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, line, L"(%c*%C) %(Independent (%c*) *%)")) {
@@ -12378,7 +12378,7 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 		text_stream *language_name = mr.exp[1];
 		
 {
-#line 579 "inweb/Chapter 2/The Reader.w"
+#line 586 "inweb/Chapter 2/The Reader.w"
 	text_stream *p = language_name;
 	if (Str__len(p) == 0) p = Bibliographic__get_datum(RS->current_web, TL_IS_88);
 	programming_language *pl = Languages__find_by_name(p);
@@ -12386,7 +12386,7 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 	sect->sect_target = Reader__add_tangle_target(RS->current_web, pl);
 
 }
-#line 571 "inweb/Chapter 2/The Reader.w"
+#line 578 "inweb/Chapter 2/The Reader.w"
 ;
 		Str__copy(sect->sect_title, title_alone);
 	} else {
@@ -12395,13 +12395,13 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 	Regexp__dispose_of(&mr);
 
 }
-#line 509 "inweb/Chapter 2/The Reader.w"
+#line 516 "inweb/Chapter 2/The Reader.w"
 ;
 
 	if (sect->source_file_for_section == NULL)
 		
 {
-#line 597 "inweb/Chapter 2/The Reader.w"
+#line 604 "inweb/Chapter 2/The Reader.w"
 	TEMPORARY_TEXT(leafname_to_use);
 	WRITE_TO(leafname_to_use,
 		"%S%S", sect->sect_title, sect->sect_language->source_file_extension);
@@ -12422,7 +12422,7 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 	DISCARD_TEXT(leafname_to_use);
 
 }
-#line 512 "inweb/Chapter 2/The Reader.w"
+#line 519 "inweb/Chapter 2/The Reader.w"
 ;
 
 	Reader__read_file(RS->current_web, sect->source_file_for_section,
@@ -12537,7 +12537,7 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 		text_stream *language_name = mr.exp[1];
 		
 {
-#line 473 "inweb/Chapter 2/The Reader.w"
+#line 480 "inweb/Chapter 2/The Reader.w"
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, language_name, L" *"))
 		language_name = Bibliographic__get_datum(RS->current_web, TL_IS_87);
@@ -12566,6 +12566,13 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 		Str__clear(RS->titling_line_to_insert);
 		WRITE_TO(RS->titling_line_to_insert, "%S.", line);
 		WRITE_TO(pdf_leafname, "Preliminaries.pdf");
+		RS->current_web->chaptered = TRUE;
+	} else if (Str__eq_wide_string(line, L"Manual")) {
+		WRITE_TO(new_chapter_range, "M");
+		WRITE_TO(RS->chapter_folder_name, "Manual");
+		Str__clear(RS->titling_line_to_insert);
+		WRITE_TO(RS->titling_line_to_insert, "%S.", line);
+		WRITE_TO(pdf_leafname, "Manual.pdf");
 		RS->current_web->chaptered = TRUE;
 	} else if (Regexp__match(&mr, line, L"Header: (%c+)")) {
 		pathname *P = RS->path_to;
@@ -12607,13 +12614,13 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 		Errors__in_text_file_S(err, tfp);
 		WRITE_TO(STDERR, "(Must be 'Chapter <number>: Title', "
 			"'Appendix <letter A to O>: Title',\n");
-		WRITE_TO(STDERR, "'Preliminaries' or 'Sections')\n");
+		WRITE_TO(STDERR, "'Manual', 'Preliminaries' or 'Sections')\n");
 		DISCARD_TEXT(err);
 	}
 
 	if (this_is_a_chapter) 
 {
-#line 483 "inweb/Chapter 2/The Reader.w"
+#line 490 "inweb/Chapter 2/The Reader.w"
 	chapter *C = CREATE(chapter);
 	C->ch_range = Str__duplicate(new_chapter_range);
 	C->ch_title = Str__duplicate(line);
@@ -12633,7 +12640,7 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 	RS->chapter_being_scanned = C;
 
 }
-#line 464 "inweb/Chapter 2/The Reader.w"
+#line 471 "inweb/Chapter 2/The Reader.w"
 ;
 	DISCARD_TEXT(new_chapter_range);
 	DISCARD_TEXT(pdf_leafname);
@@ -12644,11 +12651,11 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 ;
 	} else 
 {
-#line 506 "inweb/Chapter 2/The Reader.w"
+#line 513 "inweb/Chapter 2/The Reader.w"
 	section *sect = CREATE(section);
 	
 {
-#line 519 "inweb/Chapter 2/The Reader.w"
+#line 526 "inweb/Chapter 2/The Reader.w"
 	if (filename_of_single_file_web) {
 		sect->source_file_for_section = filename_of_single_file_web;
 		sect->paused_until_at = TRUE;
@@ -12684,22 +12691,22 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 	Regexp__dispose_of(&mr);
 
 }
-#line 507 "inweb/Chapter 2/The Reader.w"
+#line 514 "inweb/Chapter 2/The Reader.w"
 ;
 	
 {
-#line 554 "inweb/Chapter 2/The Reader.w"
+#line 561 "inweb/Chapter 2/The Reader.w"
 	chapter *C = RS->chapter_being_scanned;
 	C->owning_web->no_sections++;
 	sect->owning_chapter = C;
 	ADD_TO_LINKED_LIST(sect, section, C->sections);
 
 }
-#line 508 "inweb/Chapter 2/The Reader.w"
+#line 515 "inweb/Chapter 2/The Reader.w"
 ;
 	
 {
-#line 566 "inweb/Chapter 2/The Reader.w"
+#line 573 "inweb/Chapter 2/The Reader.w"
 	sect->sect_language = RS->chapter_being_scanned->ch_language; /* by default */
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, line, L"(%c*%C) %(Independent (%c*) *%)")) {
@@ -12707,7 +12714,7 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 		text_stream *language_name = mr.exp[1];
 		
 {
-#line 579 "inweb/Chapter 2/The Reader.w"
+#line 586 "inweb/Chapter 2/The Reader.w"
 	text_stream *p = language_name;
 	if (Str__len(p) == 0) p = Bibliographic__get_datum(RS->current_web, TL_IS_88);
 	programming_language *pl = Languages__find_by_name(p);
@@ -12715,7 +12722,7 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 	sect->sect_target = Reader__add_tangle_target(RS->current_web, pl);
 
 }
-#line 571 "inweb/Chapter 2/The Reader.w"
+#line 578 "inweb/Chapter 2/The Reader.w"
 ;
 		Str__copy(sect->sect_title, title_alone);
 	} else {
@@ -12724,13 +12731,13 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 	Regexp__dispose_of(&mr);
 
 }
-#line 509 "inweb/Chapter 2/The Reader.w"
+#line 516 "inweb/Chapter 2/The Reader.w"
 ;
 
 	if (sect->source_file_for_section == NULL)
 		
 {
-#line 597 "inweb/Chapter 2/The Reader.w"
+#line 604 "inweb/Chapter 2/The Reader.w"
 	TEMPORARY_TEXT(leafname_to_use);
 	WRITE_TO(leafname_to_use,
 		"%S%S", sect->sect_title, sect->sect_language->source_file_extension);
@@ -12751,7 +12758,7 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 	DISCARD_TEXT(leafname_to_use);
 
 }
-#line 512 "inweb/Chapter 2/The Reader.w"
+#line 519 "inweb/Chapter 2/The Reader.w"
 ;
 
 	Reader__read_file(RS->current_web, sect->source_file_for_section,
@@ -12771,7 +12778,7 @@ void Reader__read_contents_line(text_stream *line, text_file_position *tfp, void
 ;
 }
 
-#line 619 "inweb/Chapter 2/The Reader.w"
+#line 626 "inweb/Chapter 2/The Reader.w"
 void Reader__read_file(web *W, filename *OUT, text_stream *titling_line, section *sect,
 	int verbosely, int disregard_top) {
 	section *current_section = sect;
@@ -12780,49 +12787,14 @@ void Reader__read_file(web *W, filename *OUT, text_stream *titling_line, section
 		(sect->owning_chapter->titling_line_inserted == FALSE))
 		
 {
-#line 637 "inweb/Chapter 2/The Reader.w"
+#line 644 "inweb/Chapter 2/The Reader.w"
 	sect->owning_chapter->titling_line_inserted = TRUE;
 	TEMPORARY_TEXT(line);
 	text_file_position *tfp = NULL;
 	WRITE_TO(line, "Chapter Heading");
 	
 {
-#line 671 "inweb/Chapter 2/The Reader.w"
-	source_line *sl = Lines__new_source_line(line, tfp);
-
-	/* enter this in its section's linked list of lines: */
-	sl->owning_section = current_section;
-	if (current_section->first_line == NULL) current_section->first_line = sl;
-	else current_section->last_line->next_line = sl;
-	current_section->last_line = sl;
-
-	/* we haven't detected paragraph boundaries yet, so: */
-	sl->owning_paragraph = NULL;
-
-	/* and keep count: */
-	sl->owning_section->sect_extent++;
-	sl->owning_section->owning_chapter->ch_extent++;
-	sl->owning_section->owning_chapter->owning_web->no_lines++;
-
-}
-#line 641 "inweb/Chapter 2/The Reader.w"
-;
-	DISCARD_TEXT(line);
-
-}
-#line 625 "inweb/Chapter 2/The Reader.w"
-;
-
-	if (disregard_top)
-		
-{
-#line 645 "inweb/Chapter 2/The Reader.w"
-	TEMPORARY_TEXT(line);
-	text_file_position *tfp = NULL;
-	WRITE_TO(line, "Main.");
-	
-{
-#line 671 "inweb/Chapter 2/The Reader.w"
+#line 678 "inweb/Chapter 2/The Reader.w"
 	source_line *sl = Lines__new_source_line(line, tfp);
 
 	/* enter this in its section's linked list of lines: */
@@ -12842,10 +12814,22 @@ void Reader__read_file(web *W, filename *OUT, text_stream *titling_line, section
 }
 #line 648 "inweb/Chapter 2/The Reader.w"
 ;
-	Str__clear(line);
+	DISCARD_TEXT(line);
+
+}
+#line 632 "inweb/Chapter 2/The Reader.w"
+;
+
+	if (disregard_top)
+		
+{
+#line 652 "inweb/Chapter 2/The Reader.w"
+	TEMPORARY_TEXT(line);
+	text_file_position *tfp = NULL;
+	WRITE_TO(line, "Main.");
 	
 {
-#line 671 "inweb/Chapter 2/The Reader.w"
+#line 678 "inweb/Chapter 2/The Reader.w"
 	source_line *sl = Lines__new_source_line(line, tfp);
 
 	/* enter this in its section's linked list of lines: */
@@ -12863,12 +12847,35 @@ void Reader__read_file(web *W, filename *OUT, text_stream *titling_line, section
 	sl->owning_section->owning_chapter->owning_web->no_lines++;
 
 }
-#line 650 "inweb/Chapter 2/The Reader.w"
+#line 655 "inweb/Chapter 2/The Reader.w"
+;
+	Str__clear(line);
+	
+{
+#line 678 "inweb/Chapter 2/The Reader.w"
+	source_line *sl = Lines__new_source_line(line, tfp);
+
+	/* enter this in its section's linked list of lines: */
+	sl->owning_section = current_section;
+	if (current_section->first_line == NULL) current_section->first_line = sl;
+	else current_section->last_line->next_line = sl;
+	current_section->last_line = sl;
+
+	/* we haven't detected paragraph boundaries yet, so: */
+	sl->owning_paragraph = NULL;
+
+	/* and keep count: */
+	sl->owning_section->sect_extent++;
+	sl->owning_section->owning_chapter->ch_extent++;
+	sl->owning_section->owning_chapter->owning_web->no_lines++;
+
+}
+#line 657 "inweb/Chapter 2/The Reader.w"
 ;
 	DISCARD_TEXT(line);
 
 }
-#line 628 "inweb/Chapter 2/The Reader.w"
+#line 635 "inweb/Chapter 2/The Reader.w"
 ;
 
 	int cl = TextFiles__read(OUT, FALSE, "can't open section file", TRUE,
@@ -12877,7 +12884,7 @@ void Reader__read_file(web *W, filename *OUT, text_stream *titling_line, section
 		PRINT("Read section: '%S' (%d lines)\n", sect->sect_title, cl);
 }
 
-#line 658 "inweb/Chapter 2/The Reader.w"
+#line 665 "inweb/Chapter 2/The Reader.w"
 void Reader__scan_source_line(text_stream *line, text_file_position *tfp, void *state) {
 	section *current_section = (section *) state;
 	int l = Str__len(line) - 1;
@@ -12889,7 +12896,7 @@ void Reader__scan_source_line(text_stream *line, text_file_position *tfp, void *
 	}
 	
 {
-#line 671 "inweb/Chapter 2/The Reader.w"
+#line 678 "inweb/Chapter 2/The Reader.w"
 	source_line *sl = Lines__new_source_line(line, tfp);
 
 	/* enter this in its section's linked list of lines: */
@@ -12907,11 +12914,11 @@ void Reader__scan_source_line(text_stream *line, text_file_position *tfp, void *
 	sl->owning_section->owning_chapter->owning_web->no_lines++;
 
 }
-#line 667 "inweb/Chapter 2/The Reader.w"
+#line 674 "inweb/Chapter 2/The Reader.w"
 ;
 }
 
-#line 695 "inweb/Chapter 2/The Reader.w"
+#line 702 "inweb/Chapter 2/The Reader.w"
 chapter *Reader__get_chapter_for_range(web *W, text_stream *range) {
 	chapter *C;
 	if (W)
@@ -12932,7 +12939,7 @@ section *Reader__get_section_for_range(web *W, text_stream *range) {
 	return NULL;
 }
 
-#line 718 "inweb/Chapter 2/The Reader.w"
+#line 725 "inweb/Chapter 2/The Reader.w"
 section *Reader__section_by_filename(web *W, text_stream *filename) {
 	chapter *C;
 	section *S;
@@ -12948,7 +12955,7 @@ section *Reader__section_by_filename(web *W, text_stream *filename) {
 	return NULL;
 }
 
-#line 740 "inweb/Chapter 2/The Reader.w"
+#line 747 "inweb/Chapter 2/The Reader.w"
 int Reader__range_within(text_stream *range1, text_stream *range2) {
 	if (Str__eq_wide_string(range2, L"0")) return TRUE;
 	if (Str__eq(range1, range2)) return TRUE;
@@ -12960,9 +12967,9 @@ int Reader__range_within(text_stream *range1, text_stream *range2) {
 	return FALSE;
 }
 
-#line 767 "inweb/Chapter 2/The Reader.w"
+#line 774 "inweb/Chapter 2/The Reader.w"
 
-#line 769 "inweb/Chapter 2/The Reader.w"
+#line 776 "inweb/Chapter 2/The Reader.w"
 tangle_target *Reader__add_tangle_target(web *W, programming_language *language) {
 	tangle_target *tt = CREATE(tangle_target);
 	tt->tangle_language = language;
@@ -12970,7 +12977,7 @@ tangle_target *Reader__add_tangle_target(web *W, programming_language *language)
 	return tt;
 }
 
-#line 792 "inweb/Chapter 2/The Reader.w"
+#line 799 "inweb/Chapter 2/The Reader.w"
 void Reader__add_imported_header(web *W, filename *HF) {
 	ADD_TO_LINKED_LIST(HF, filename, W->headers);
 }
