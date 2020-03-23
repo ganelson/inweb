@@ -77,19 +77,20 @@ test:
 .PHONY: commit
 commit:
 	$(INWEB) -advance-build-file $(ME)/build.txt
+	$(INWEB) -prototype inweb/scripts/READMEscript.txt -write-me inweb/README.md
 	cd $(ME); git commit -a
 
 .PHONY: pages
 pages:
 	mkdir -p $(ME)/docs
-	rm $(ME)/docs/*.html
-	inform/inpolicy/Tangled/inpolicy -write-me inweb/scripts/READMEscript.txt
+	rm -f $(ME)/docs/*.html
+	$(INWEB) -prototype inweb/scripts/READMEscript.txt -write-me inweb/README.md
 	mkdir -p $(ME)/docs/inweb
-	rm $(ME)/docs/inweb/*.html
+	rm -f $(ME)/docs/inweb/*.html
 	mkdir -p $(ME)/docs/foundation-module
-	rm $(ME)/docs/foundation-module/*.html
+	rm -f $(ME)/docs/foundation-module/*.html
 	mkdir -p $(ME)/docs/foundation-test
-	rm $(ME)/docs/foundation-test/*.html
+	rm -f $(ME)/docs/foundation-test/*.html
 	$(INWEB) $(ME)/docs/docs-src/webs.inweb -weave-as GitHubCovers -weave-into $(ME)/docs -navigation $(ME)/docs/docs-src/nav-o.html
 	$(INWEB) $(ME) -weave-docs -weave-into $(ME)/docs/inweb -breadcrumb 'Source:../webs.html' -navigation $(ME)/docs/docs-src/nav.html
 	$(INWEB) $(ME)/foundation-module -weave-docs -weave-into $(ME)/docs/foundation-module -breadcrumb 'Source:../webs.html' -navigation $(ME)/docs/docs-src/nav.html

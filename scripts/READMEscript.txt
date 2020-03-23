@@ -1,5 +1,6 @@
-@-> ../README.md
-# Inweb @version(inweb)
+# Inweb @var(inweb,Version Number)
+
+v@var(inweb,Semantic Version Number) '@var(inweb,Version Name)' (@var(inweb,Build Date))
 
 ## About Inweb
 
@@ -83,6 +84,5 @@ If you have also built Intest as "work/intest", then you can try these:
 
 ### Colophon
 
-This README.mk file was generated automatically by Inpolicy (see the
-[Inform repository](https://github.com/ganelson/inform)), and should not
+This README.mk file was generated automatically by Inweb, and should not
 be edited. To make changes, edit scripts/READMEscript.txt and re-generate.

@@ -33,6 +33,7 @@ typedef struct inweb_instructions {
 	struct filename *makefile_setting; /* |-makefile X|: the filename X, if supplied */
 	struct filename *gitignore_setting; /* |-gitignore X|: the filename X, if supplied */
 	struct filename *advance_setting; /* |-advance-build-file X|: advance build file X */
+	struct filename *writeme_setting; /* |-write-me X|: advance build file X */
 	struct filename *prototype_setting; /* |-prototype X|: the pathname X, if supplied */
 	struct filename *navigation_setting; /* |-navigation X|: the filename X, if supplied */
 	struct linked_list *breadcrumb_setting; /* of |breadcrumb_request| */
@@ -91,6 +92,7 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.makefile_setting = NULL;
 	args.gitignore_setting = NULL;
 	args.advance_setting = NULL;
+	args.writeme_setting = NULL;
 	args.prototype_setting = NULL;
 	args.navigation_setting = NULL;
 	args.breadcrumb_setting = NEW_LINKED_LIST(breadcrumb_request);
@@ -113,6 +115,7 @@ provides automatically.
 @e ADVANCE_CLSW
 @e GITIGNORE_CLSW
 @e MAKEFILE_CLSW
+@e WRITEME_CLSW
 @e ADVANCE_FILE_CLSW
 @e PROTOTYPE_CLSW
 @e SCAN_CLSW
@@ -159,6 +162,8 @@ provides automatically.
 		L"write a .gitignore file for this web and store it in X");
 	CommandLine::declare_switch(ADVANCE_FILE_CLSW, L"advance-build-file", 2,
 		L"increment daily build code in file X");
+	CommandLine::declare_switch(WRITEME_CLSW, L"write-me", 2,
+		L"write a read-me file following instructions in file X");
 	CommandLine::declare_switch(PROTOTYPE_CLSW, L"prototype", 2,
 		L"translate makefile from prototype X");
 	CommandLine::declare_switch(FUNCTIONS_CLSW, L"functions", 1,
@@ -228,6 +233,10 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 			break;
 		case ADVANCE_FILE_CLSW:
 			args->advance_setting = Filenames::from_text(arg);
+			Configuration::set_fundamental_mode(args, TRANSLATE_MODE);
+			break;
+		case WRITEME_CLSW:
+			args->writeme_setting = Filenames::from_text(arg);
 			Configuration::set_fundamental_mode(args, TRANSLATE_MODE);
 			break;
 		case PROTOTYPE_CLSW:

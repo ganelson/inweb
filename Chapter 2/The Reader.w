@@ -50,7 +50,7 @@ typedef struct web {
 
 @ =
 web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbosely,
-	int inweb_mode, pathname *redirection) {
+	int inweb_mode, pathname *redirection, int parsing) {
 	web *W = CREATE(web);
 	W->path_to_web = P;
 	W->single_file = alt_F;
@@ -70,7 +70,7 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbos
 	W->version_number = VersionNumbers::null();
 	Bibliographic::initialise_data(W);
 	Reader::add_tangle_target(W, Languages::default()); /* the bulk of the web is automatically a target */
-	Reader::read_contents_page(W, I, verbosely);
+	Reader::read_contents_page(W, I, verbosely, parsing);
 	BuildFiles::deduce_semver(W);
 	Parser::parse_web(W, inweb_mode);
 	if (W->no_sections == 1) {
@@ -179,8 +179,8 @@ Because a contents page can, by importing a module, cause a further contents
 page to be read, we set this up as a recursion:
 
 =
-void Reader::read_contents_page(web *W, module_search *import_path, int verbosely) {
-	Reader::read_contents_page_from(W, import_path, verbosely, NULL);
+void Reader::read_contents_page(web *W, module_search *import_path, int verbosely, int parsing) {
+	Reader::read_contents_page_from(W, import_path, verbosely, parsing, NULL);
 	Bibliographic::check_required_data(W);
 }
 
@@ -203,12 +203,14 @@ typedef struct reader_state {
 	struct pathname *path_to; /* Where web material is being read from */
 	struct module_search *import_from; /* Where imported webs are */
 	int scan_verbosely;
+	int parsing;
 	int main_web_not_module; /* Reading the original web, or an included one? */
 	int halt_at_at; /* Used for reading contents pages of single-file webs */
 	int halted; /* Set when such a halt has occurred */
 } reader_state;
 
-void Reader::read_contents_page_from(web *W, module_search *import_path, int verbosely, pathname *path) {
+void Reader::read_contents_page_from(web *W, module_search *import_path, int verbosely,
+	int parsing, pathname *path) {
 	reader_state RS;
 	@<Initialise the reader state@>;
 
@@ -231,6 +233,7 @@ void Reader::read_contents_page_from(web *W, module_search *import_path, int ver
 	RS.chapter_folder_name = Str::new();
 	RS.titling_line_to_insert = Str::new();
 	RS.scan_verbosely = verbosely;
+	RS.parsing = parsing;
 	RS.path_to = path;
 	RS.import_from = import_path;
 	RS.halted = FALSE;
@@ -435,16 +438,19 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 		Reader::add_imported_header(RS->current_web, HF);
 		this_is_a_chapter = FALSE;
 	} else if (Regexp::match(&mr, line, L"Import: (%c+)")) {
-		pathname *imported = Modules::find(RS->current_web, RS->import_from, mr.exp[0]);
-		if (imported == NULL) {
-			TEMPORARY_TEXT(err);
-			WRITE_TO(err, "unable to find module: %S", line);
-			Errors::in_text_file_S(err, tfp);
-			DISCARD_TEXT(err);
-		} else {
-			int save_syntax = RS->current_web->default_syntax;
-			Reader::read_contents_page_from(RS->current_web, RS->import_from, RS->scan_verbosely, imported);
-			RS->current_web->default_syntax = save_syntax;
+		if (RS->parsing) {
+			pathname *imported = Modules::find(RS->current_web, RS->import_from, mr.exp[0]);
+			if (imported == NULL) {
+				TEMPORARY_TEXT(err);
+				WRITE_TO(err, "unable to find module: %S", line);
+				Errors::in_text_file_S(err, tfp);
+				DISCARD_TEXT(err);
+			} else {
+				int save_syntax = RS->current_web->default_syntax;
+				Reader::read_contents_page_from(RS->current_web, RS->import_from,
+					RS->scan_verbosely, RS->parsing, imported);
+				RS->current_web->default_syntax = save_syntax;
+			}
 		}
 		this_is_a_chapter = FALSE;
 	} else if (Regexp::match(&mr, line, L"Chapter (%d+): %c+")) {
@@ -520,10 +526,10 @@ we also read in and process its file.
 
 	if (sect->source_file_for_section == NULL)
 		@<Work out the filename of this section file@>;
-
-	Reader::read_file(RS->current_web, sect->source_file_for_section,
-		RS->titling_line_to_insert, sect, RS->scan_verbosely,
-		(filename_of_single_file_web)?TRUE:FALSE);
+	if (RS->parsing)
+		Reader::read_file(RS->current_web, sect->source_file_for_section,
+			RS->titling_line_to_insert, sect, RS->scan_verbosely,
+			(filename_of_single_file_web)?TRUE:FALSE);
 
 @<Initialise the section structure@> =
 	if (filename_of_single_file_web) {

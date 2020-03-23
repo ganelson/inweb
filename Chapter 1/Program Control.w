@@ -96,7 +96,7 @@ void Main::follow_instructions(inweb_instructions *ins) {
 	if ((ins->chosen_web) || (ins->chosen_file))
 		W = Reader::load_web(ins->chosen_web, ins->chosen_file,
 			Modules::make_search_path(ins->import_setting), ins->verbose_switch,
-			ins->inweb_mode, ins->weave_into_setting);
+			ins->inweb_mode, ins->weave_into_setting, TRUE);
 	if (no_inweb_errors == 0) {
 		if (ins->inweb_mode == TRANSLATE_MODE) @<Translate a makefile@>
 		else if (ins->inweb_mode != NO_MODE) @<Analyse, tangle or weave an existing web@>;
@@ -110,12 +110,16 @@ void Main::follow_instructions(inweb_instructions *ins) {
 		ins->prototype_setting = Filenames::from_text(I"makescript.txt");
 	if ((ins->gitignore_setting) && (ins->prototype_setting == NULL))
 		ins->prototype_setting = Filenames::from_text(I"gitignorescript.txt");
+	if ((ins->writeme_setting) && (ins->prototype_setting == NULL))
+		ins->prototype_setting = Filenames::from_text(I"READMEscript.txt");
 	if (ins->makefile_setting)
 		Makefiles::write(W, ins->prototype_setting, ins->makefile_setting);
 	else if (ins->gitignore_setting)
 		Git::write_gitignore(W, ins->prototype_setting, ins->gitignore_setting);
 	else if (ins->advance_setting)
 		BuildFiles::advance(ins->advance_setting);
+	else if (ins->writeme_setting)
+		Readme::write(ins->prototype_setting, ins->writeme_setting);
 
 @ But otherwise we do something with the given web:
 

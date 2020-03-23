@@ -1,4 +1,6 @@
-# Inweb version 7 'Escape to Danger'
+# Inweb 7
+
+v7-alpha.1+1A01 'Escape to Danger' (23 March 2020)
 
 ## About Inweb
 
@@ -82,7 +84,6 @@ If you have also built Intest as "work/intest", then you can try these:
 
 ### Colophon
 
-This README.mk file was generated automatically by Inpolicy (see the
-[Inform repository](https://github.com/ganelson/inform)), and should not
+This README.mk file was generated automatically by Inweb, and should not
 be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
 
