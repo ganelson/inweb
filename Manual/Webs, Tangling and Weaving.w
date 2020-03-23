@@ -522,6 +522,63 @@ specifies the files to be ignored. The following does so for a web |W|:
 Once again, Inweb does this by working from a script, this time called
 |gitignorescript.txt|.
 
+@h README files.
+Repositories at Github customarily have |README.mk| files, in Markdown
+syntax, explaining what they are. These of course should probably include
+current version numbers, and it's a pain keeping that up to date. For
+really complicated repositories, containing multiple webs, some automation
+is essential, and once again Inweb can oblige.
+
+	|$ inweb/Tangled/inweb W -write-me W/README.mk|
+
+expands a script called |READMEscript.txt| into |README.mk|. Alternatively,
+the script can be specified explicitly:
+
+	|$ inweb/Tangled/inweb W -prototype MySpecialThang.txt -write-me W/README.mk|
+
+@ Everything in the script is copied over verbatim except where the |@| character
+is used, which was chosen because it isn't significant in Github's form of
+Markdown. |@name(args)| is like a function call (or, in more traditional
+language, a macro): it expands out to something depending on the arguments.
+|args| is a comma-separated list of fragments of text, which can themselves
+contain further uses of |@|. (If these fragments of text need to contain
+commas or brackets, they can be put into single quotes: |@thus(4,',')| has
+two arguments, |4| and |,|.) Three functions are built in:
+
+(a) |@version(A)| expands to the version number of |A|, which is normally the
+path to a web; it then produces the value of the |[[Version Number]]| for
+that web. But |A| can also be the filename of an Inform extension, provided
+that it ends in |.i7x|, or a few other Inform-specific things for which
+Inweb is able to deduce a version number.
+
+(b) |@purpose(A)| is the same, but for the |[[Purpose]]| of a web. It's
+blank for everything else.
+
+(c) |@var(A,D)| is more general, and reads the bibliographic datum |D| from
+the web indicated by |A|. In fact, |@version(A)| is an abbreviation for
+|@var(A,Version Number)| and |@purpose(A)| for |@var(A,Purpose)|, so this
+is really the only one needed.
+
+@ It is also possible to define new functions. For example:
+
+	|@define book(title, path, topic)|
+	|* @title - @topic. Ebook in Indoc format, stored at path @path.|
+	|@end|
+
+The definition lies between |@define| and |@end| commands. This one takes
+three parameters, and inside the definition, their values can be referred
+to as |@title|, |@path| and |@topic|. Functions are free to use other
+functions:
+
+	|@define primary(program, language)|
+	|* @program - @purpose(@program) - __@version(@program)__|
+	|@end|
+
+However, each function needs to have been defined before any line on which
+it is actually expanded. A definition of one function |A| can refer to another
+function |B| not yet defined; but any actual use of |A| must be made after
+both |A| and |B| have been defined. So, basically, declare before use.
+
 @h GitHub Pages support.
 If a project is hosted at GitHub, then the GitHub Pages service is the ideal
 place to serve a woven copy of the project to the world. To that end,
