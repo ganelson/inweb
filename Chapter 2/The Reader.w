@@ -34,6 +34,7 @@ typedef struct web {
 	int analysed; /* has this been scanned for function usage and such? */
 
 	struct linked_list *bibliographic_data; /* of |bibliographic_datum|: key-value pairs for title and such */
+	struct semantic_version_number version_number; /* as deduced from the bibliographic data */
 	struct programming_language *main_language; /* in which most of the sections are written */
 	struct linked_list *tangle_targets; /* of |tangle_target| */
 
@@ -66,9 +67,11 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbos
 	W->redirect_weaves_to = redirection;
 	W->as_module = Modules::main_module(W);
 	W->default_syntax = default_inweb_syntax;
+	W->version_number = VersionNumbers::null();
 	Bibliographic::initialise_data(W);
 	Reader::add_tangle_target(W, Languages::default()); /* the bulk of the web is automatically a target */
 	Reader::read_contents_page(W, I, verbosely);
+	BuildFiles::deduce_semver(W);
 	Parser::parse_web(W, inweb_mode);
 	if (W->no_sections == 1) {
 		chapter *C = FIRST_IN_LINKED_LIST(chapter, W->chapters);

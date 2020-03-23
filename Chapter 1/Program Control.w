@@ -114,6 +114,8 @@ void Main::follow_instructions(inweb_instructions *ins) {
 		Makefiles::write(W, ins->prototype_setting, ins->makefile_setting);
 	else if (ins->gitignore_setting)
 		Git::write_gitignore(W, ins->prototype_setting, ins->gitignore_setting);
+	else if (ins->advance_setting)
+		BuildFiles::advance(ins->advance_setting);
 
 @ But otherwise we do something with the given web:
 
@@ -138,6 +140,8 @@ void Main::follow_instructions(inweb_instructions *ins) {
 		Analyser::write_makefile(W, ins->makefile_setting);
 	if (ins->gitignore_setting)
 		Analyser::write_gitignore(W, ins->gitignore_setting);
+	if (ins->advance_switch)
+		BuildFiles::advance_for_web(W);
 	if (ins->scan_switch)
 		Analyser::scan_line_categories(W, ins->chosen_range);
 

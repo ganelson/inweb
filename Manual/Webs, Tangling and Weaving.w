@@ -551,3 +551,35 @@ Note that:
 substitutes the path |P| for |W/docs/NAME|. But the files created there still
 expect that to be able to link to a |../webs.html|, that is, in the directory
 above them.
+
+@h Semantic version numbering and build metadata.
+When Inweb reads in a web, it also looks for a file called |build.txt| in
+the web's directory; if that isn't there, it looks for the same file in the
+current working directory; if that's not there either, never mind.
+
+Such a file contains up to three text fields, all optional:
+
+	|Prerelease: alpha.1|
+	|Build Date: 23 March 2020|
+	|Build Number: 6Q26|
+
+The bibliographic variables |Prerelease| and so on are then set from this
+file. (They can equally well be set by the Contents section of the web, and
+if so then that takes priority.)
+
+The Prerelease and Build Number, if given, are used in combination with the
+Version Number (set in the Contents) to produce the semantic version number,
+or semver, for the web. For example, if the Contents included:
+
+	|Version Number: 6.2.12|
+
+then the semver would be |6.2.12-alpha.1+6Q26|. This is accessible within
+the web as the variable |Semantic Version Number|.
+
+@ A special advancing mechanism exists to update build numbers and dates.
+Running Inweb with |-advance-build W| checks the build date for web |W|:
+if it differs from today, then it is changed to today, and the build code
+is advanced by one.
+
+Running |-advance-build-file B| does this for a stand-alone build file |B|,
+without need of a web.

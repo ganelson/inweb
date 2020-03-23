@@ -103,6 +103,8 @@ with the memory system. The ones here are those needed by Foundation.
     <span class="definitionkeyword">enum</span> <span class="constant">method_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">method_set_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ebook_mark_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">semantic_version_number_holder_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">semver_range_MT</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>For each type of object to be allocated, a single structure of the
 following design is maintained. Types which are allocated individually,
@@ -732,6 +734,8 @@ used in the lower levels.
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">method</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">method_set</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">ebook_mark</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">semantic_version_number_holder</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">semver_range</span><span class="plain">)</span>
 
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">dict_entry</span><span class="plain">, 100)</span>
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">HTML_tag</span><span class="plain">, 1000)</span>

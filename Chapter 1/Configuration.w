@@ -24,6 +24,7 @@ typedef struct inweb_instructions {
 	int catalogue_switch; /* |-catalogue|: print catalogue of sections */
 	int functions_switch; /* |-functions|: print catalogue of functions within sections */
 	int structures_switch; /* |-structures|: print catalogue of structures within sections */
+	int advance_switch; /* |-advance-build|: advance build file for web */
 	int open_pdf_switch; /* |-open-pdf|: open any woven PDF in the OS once it is made */
 	int scan_switch; /* |-scan|: simply show the syntactic scan of the source */
 	struct filename *weave_to_setting; /* |-weave-to X|: the pathname X, if supplied */
@@ -31,6 +32,7 @@ typedef struct inweb_instructions {
 	struct filename *tangle_setting; /* |-tangle-to X|: the pathname X, if supplied */
 	struct filename *makefile_setting; /* |-makefile X|: the filename X, if supplied */
 	struct filename *gitignore_setting; /* |-gitignore X|: the filename X, if supplied */
+	struct filename *advance_setting; /* |-advance-build-file X|: advance build file X */
 	struct filename *prototype_setting; /* |-prototype X|: the pathname X, if supplied */
 	struct filename *navigation_setting; /* |-navigation X|: the filename X, if supplied */
 	struct linked_list *breadcrumb_setting; /* of |breadcrumb_request| */
@@ -75,6 +77,7 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.catalogue_switch = FALSE;
 	args.functions_switch = FALSE;
 	args.structures_switch = FALSE;
+	args.advance_switch = FALSE;
 	args.open_pdf_switch = NOT_APPLICABLE;
 	args.scan_switch = FALSE;
 	args.verbose_switch = FALSE;
@@ -87,6 +90,7 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.weave_into_setting = NULL;
 	args.makefile_setting = NULL;
 	args.gitignore_setting = NULL;
+	args.advance_setting = NULL;
 	args.prototype_setting = NULL;
 	args.navigation_setting = NULL;
 	args.breadcrumb_setting = NEW_LINKED_LIST(breadcrumb_request);
@@ -106,8 +110,10 @@ provides automatically.
 @e CATALOGUE_CLSW
 @e FUNCTIONS_CLSW
 @e STRUCTURES_CLSW
+@e ADVANCE_CLSW
 @e GITIGNORE_CLSW
 @e MAKEFILE_CLSW
+@e ADVANCE_FILE_CLSW
 @e PROTOTYPE_CLSW
 @e SCAN_CLSW
 
@@ -151,12 +157,16 @@ provides automatically.
 		L"write a makefile for this web and store it in X");
 	CommandLine::declare_switch(GITIGNORE_CLSW, L"gitignore", 2,
 		L"write a .gitignore file for this web and store it in X");
+	CommandLine::declare_switch(ADVANCE_FILE_CLSW, L"advance-build-file", 2,
+		L"increment daily build code in file X");
 	CommandLine::declare_switch(PROTOTYPE_CLSW, L"prototype", 2,
 		L"translate makefile from prototype X");
 	CommandLine::declare_switch(FUNCTIONS_CLSW, L"functions", 1,
 		L"catalogue the functions in the web");
 	CommandLine::declare_switch(STRUCTURES_CLSW, L"structures", 1,
 		L"catalogue the structures in the web");
+	CommandLine::declare_switch(ADVANCE_CLSW, L"advance-build", 1,
+		L"increment daily build code for the web");
 	CommandLine::declare_switch(SCAN_CLSW, L"scan", 1,
 		L"scan the web");
 
@@ -203,6 +213,9 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 		case STRUCTURES_CLSW:
 			args->structures_switch = TRUE;
 			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
+		case ADVANCE_CLSW:
+			args->advance_switch = TRUE;
+			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
 		case MAKEFILE_CLSW:
 			args->makefile_setting = Filenames::from_text(arg);
 			if (args->inweb_mode != TRANSLATE_MODE)
@@ -212,6 +225,10 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 			args->gitignore_setting = Filenames::from_text(arg);
 			if (args->inweb_mode != TRANSLATE_MODE)
 				Configuration::set_fundamental_mode(args, ANALYSE_MODE);
+			break;
+		case ADVANCE_FILE_CLSW:
+			args->advance_setting = Filenames::from_text(arg);
+			Configuration::set_fundamental_mode(args, TRANSLATE_MODE);
 			break;
 		case PROTOTYPE_CLSW:
 			args->prototype_setting = Filenames::from_text(arg);

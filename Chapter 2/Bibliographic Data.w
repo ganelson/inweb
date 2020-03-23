@@ -61,7 +61,9 @@ void Bibliographic::initialise_data(web *W) {
 	Bibliographic::set_datum(W, I"Capitalized Title", NULL);
 	Bibliographic::set_datum(W, I"Build Date", NULL);
 	Bibliographic::set_datum(W, I"Build Number", NULL);
-	Bibliographic::set_datum(W, I"Version Number", NULL);
+	Bibliographic::set_datum(W, I"Prerelease", NULL);
+	Bibliographic::set_datum(W, I"Semantic Version Number", NULL);
+	Bibliographic::set_datum(W, I"Version Number", I"1");
 	Bibliographic::set_datum(W, I"Version Name", NULL);
 	Bibliographic::set_datum(W, I"Index Template", NULL);
 	Bibliographic::set_datum(W, I"Preform Language", NULL);
@@ -70,6 +72,8 @@ void Bibliographic::initialise_data(web *W) {
 	bd = Bibliographic::set_datum(W, I"Namespaces", I"Off"); bd->on_or_off = TRUE;
 	bd = Bibliographic::set_datum(W, I"Strict Usage Rules", I"Off"); bd->on_or_off = TRUE;
 	bd = Bibliographic::set_datum(W, I"Web Syntax Version", NULL);
+	
+	BuildFiles::set_bibliographic_data_for(W);
 }
 
 @ Once the declarations for a web have been processed, the following is called

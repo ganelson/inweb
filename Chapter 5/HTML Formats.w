@@ -245,12 +245,8 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 			HTML_OPEN_WITH("ul", "class=\"crumbs\"");
 			HTMLFormat::drop_initial_breadcrumbs(OUT, wv->breadcrumbs, wv->docs_mode);
 
-			TEMPORARY_TEXT(titling);
-			WRITE_TO(titling, "%S", Bibliographic::get_datum(wv->weave_web, I"Title"));
-			text_stream *v = Bibliographic::get_datum(wv->weave_web, I"Version Number");
-			if (Str::len(v) > 0) WRITE_TO(titling, " %S", v);
-			HTMLFormat::breadcrumb(OUT, titling, I"index.html");
-			DISCARD_TEXT(titling);
+			HTMLFormat::breadcrumb(OUT,
+				Bibliographic::get_datum(wv->weave_web, I"Title"), I"index.html");
 
 			if (wv->weave_web->chaptered) {
 				TEMPORARY_TEXT(chapter_link);

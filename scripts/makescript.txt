@@ -92,6 +92,14 @@ endef
 test:
 	$(INTEST) -from $(ME) all
 
+# "make commit" should be used only by the Benevolent Overlord of Inweb.
+# It updates the build code and commits to the repository.
+
+.PHONY: commit
+commit:
+	$(INWEB) -advance-build-file $(ME)/build.txt
+	cd $(ME); git commit -a
+
 # Weaving the web for GitHub Pages:
 
 .PHONY: pages

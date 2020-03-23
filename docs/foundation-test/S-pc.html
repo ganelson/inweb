@@ -40,6 +40,7 @@
     <span class="definitionkeyword">enum</span> <span class="constant">TEST_REPLACEMENT_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TEST_LISTS_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TEST_STACKS_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">TEST_SEMVER_CLSW</span>
 </pre>
 
 <pre class="display">
@@ -61,6 +62,8 @@
             <span class="identifier">L</span><span class="string">"test linked lists (X is ignored)"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">TEST_STACKS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-stacks"</span><span class="plain">, 2,</span>
             <span class="identifier">L</span><span class="string">"test LIFO stacks (X is ignored)"</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">TEST_SEMVER_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-semver"</span><span class="plain">, 2,</span>
+            <span class="identifier">L</span><span class="string">"test semantic version numbers (X is ignored)"</span><span class="plain">);</span>
 
         <span class="functiontext">CommandLine::read</span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="functiontext">Main::respond</span><span class="plain">, &amp;</span><span class="functiontext">Main::ignore</span><span class="plain">);</span>
         <span class="functiontext">Foundation::end</span><span class="plain">();</span>
@@ -76,6 +79,7 @@
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_LITERALS_CLSW</span><span class="plain">: </span><span class="functiontext">Unit::test_literals</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_LISTS_CLSW</span><span class="plain">: </span><span class="functiontext">Unit::test_linked_lists</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_STACKS_CLSW</span><span class="plain">: </span><span class="functiontext">Unit::test_stacks</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">TEST_SEMVER_CLSW</span><span class="plain">: </span><span class="functiontext">Unit::test_semver</span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 

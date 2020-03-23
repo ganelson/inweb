@@ -74,6 +74,11 @@ endef
 test:
 	$(INTEST) -from $(ME) all
 
+.PHONY: commit
+commit:
+	$(INWEB) -advance-build-file $(ME)/build.txt
+	cd $(ME); git commit -a
+
 .PHONY: pages
 pages:
 	mkdir -p $(ME)/docs

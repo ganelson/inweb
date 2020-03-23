@@ -358,13 +358,13 @@ all other switches are delegated to the client's callback function |f|.
 			break;
 		case LOG_CLSW: @<Parse debugging log inclusion@>; innocuous = TRUE; break;
 		case VERSION_CLSW: {
-			char *bn = "[[Build Number]]";
-			char *vn = "[[Version Number]]";
-			if (vn[0] == 0) vn = "1";
+			PRINT("[[Title]]");
+			char *svn = "[[Semantic Version Number]]";
+			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "[[Version Name]]";
-			PRINT("[[Title]] %s", vn);
 			if (vname[0]) PRINT(" '%s'", vname);
-			if (bn[0]) PRINT(" (build %s)", bn);
+			char *d = "[[Build Date]]";
+			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
 		}
