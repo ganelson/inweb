@@ -456,6 +456,8 @@ its square-bracketed parts.
 				cp->restrict_to_range, cp->nav_pattern, cp->nav_file);
 		} else if (Regexp::match(&mr, varname, L"Breadcrumbs")) {
 			HTMLFormat::drop_initial_breadcrumbs(substituted, cp->crumbs, cp->docs_mode);
+		} else if (Regexp::match(&mr, varname, L"Modules")) {
+			@<Substitute the list of imported modules@>;
 		} else if (Regexp::match(&mr, varname, L"Chapter (%c+)")) {
 			text_stream *detail = mr.exp[0];
 			chapter *C = CONTENT_IN_ITEM(
@@ -547,6 +549,33 @@ its square-bracketed parts.
 	} else {
 		WRITE_TO(substituted, "%S for %S", varname, S->sect_title);
 	}
+
+@<Substitute the list of imported modules@> =
+	module *M = W->as_module;
+	int L = LinkedLists::len(M->dependencies);
+	if (L > 0) {
+		WRITE_TO(substituted,
+			"<p class=\"purpose\">Together with the following imported module%s:\n",
+			(L==1)?"":"s");
+		WRITE_TO(substituted, "<ul class=\"chapterlist\">\n");
+		Indexer::list_module(substituted, W->as_module, FALSE);
+		WRITE_TO(substituted, "</ul>\n");
+	}
+
+@ =
+void Indexer::list_module(OUTPUT_STREAM, module *M, int list_this) {
+	if (list_this) {
+		WRITE("<li><p>%S - ", M->module_name);
+		TEMPORARY_TEXT(url);
+		WRITE_TO(url, "%p", M->module_location);
+		Readme::write_var(OUT, url, I"Purpose");
+		DISCARD_TEXT(url);
+		WRITE("</p></li>");
+	}
+	module *N;
+	LOOP_OVER_LINKED_LIST(N, module, M->dependencies)
+		Indexer::list_module(OUT, N, TRUE);
+}
 
 @h Transcribing CSS.
 

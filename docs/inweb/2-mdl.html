@@ -55,7 +55,7 @@ means.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure module is accessed in 6/mkf and here.</p>
+<p class="endnote">The structure module is accessed in 3/ti, 6/mkf and here.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
@@ -87,14 +87,14 @@ internally named <code class="display"><span class="extract">"(main)"</span></co
 
 
 <pre class="display">
-    <span class="reserved">module</span><span class="plain"> *</span><span class="functiontext">Modules::main_module</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">) {</span>
+    <span class="reserved">module</span><span class="plain"> *</span><span class="functiontext">Modules::create_main_module</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Modules::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"(main)"</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;path_to_web</span><span class="plain">, </span><span class="constant">READING_WEB_MOM</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Modules::main_module is used in 2/tr (<a href="2-tr.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Modules::create_main_module is used in 2/tr (<a href="2-tr.html#SP2">&#167;2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Dependencies. </b>When web A imports module B, we will say that A is dependent on B. A web
 can import multiple modules, so there can a list of dependencies. These are

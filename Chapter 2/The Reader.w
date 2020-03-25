@@ -65,7 +65,7 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbos
 	W->analysed = FALSE;
 	W->as_ebook = NULL;
 	W->redirect_weaves_to = redirection;
-	W->as_module = Modules::main_module(W);
+	W->as_module = Modules::create_main_module(W);
 	W->default_syntax = default_inweb_syntax;
 	W->version_number = VersionNumbers::null();
 	Bibliographic::initialise_data(W);
@@ -438,7 +438,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 		Reader::add_imported_header(RS->current_web, HF);
 		this_is_a_chapter = FALSE;
 	} else if (Regexp::match(&mr, line, L"Import: (%c+)")) {
-		if (RS->parsing) {
+		if (RS->import_from) {
 			pathname *imported = Modules::find(RS->current_web, RS->import_from, mr.exp[0]);
 			if (imported == NULL) {
 				TEMPORARY_TEXT(err);
@@ -446,10 +446,12 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 				Errors::in_text_file_S(err, tfp);
 				DISCARD_TEXT(err);
 			} else {
-				int save_syntax = RS->current_web->default_syntax;
-				Reader::read_contents_page_from(RS->current_web, RS->import_from,
-					RS->scan_verbosely, RS->parsing, imported);
-				RS->current_web->default_syntax = save_syntax;
+				if (RS->parsing) {
+					int save_syntax = RS->current_web->default_syntax;
+					Reader::read_contents_page_from(RS->current_web, RS->import_from,
+						RS->scan_verbosely, RS->parsing, imported);
+					RS->current_web->default_syntax = save_syntax;
+				}
 			}
 		}
 		this_is_a_chapter = FALSE;

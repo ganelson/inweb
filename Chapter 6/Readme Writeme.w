@@ -217,7 +217,7 @@ void Readme::expand_macro(write_state *ws, text_stream *OUT, macro *M, text_file
 	else {
 		TEMPORARY_TEXT(program);
 		Readme::expand_material(ws, program, ws->stack_frame->pars[0], tfp);
-		Readme::write_var(ws, OUT, program, I"Version Number", tfp);
+		Readme::write_var(OUT, program, I"Version Number");
 		DISCARD_TEXT(program);
 	}
 
@@ -227,7 +227,7 @@ void Readme::expand_macro(write_state *ws, text_stream *OUT, macro *M, text_file
 	else {
 		TEMPORARY_TEXT(program);
 		Readme::expand_material(ws, program, ws->stack_frame->pars[0], tfp);
-		Readme::write_var(ws, OUT, program, I"Purpose", tfp);
+		Readme::write_var(OUT, program, I"Purpose");
 		DISCARD_TEXT(program);
 	}
 
@@ -239,7 +239,7 @@ void Readme::expand_macro(write_state *ws, text_stream *OUT, macro *M, text_file
 		TEMPORARY_TEXT(bibv);
 		Readme::expand_material(ws, program, ws->stack_frame->pars[0], tfp);
 		Readme::expand_material(ws, bibv, ws->stack_frame->pars[1], tfp);
-		Readme::write_var(ws, OUT, program, bibv, tfp);
+		Readme::write_var(OUT, program, bibv);
 		DISCARD_TEXT(program);
 		DISCARD_TEXT(bibv);
 	}
@@ -260,8 +260,7 @@ typedef struct writeme_asset {
 	MEMORY_MANAGEMENT
 } writeme_asset;
 
-void Readme::write_var(write_state *ws, text_stream *OUT,
-	text_stream *program, text_stream *datum, text_file_position *tfp) {
+void Readme::write_var(text_stream *OUT, text_stream *program, text_stream *datum) {
 	writeme_asset *A = Readme::find_asset(program);
 	if (A->if_web) WRITE("%S", Bibliographic::get_datum(A->if_web, datum));
 	else if (Str::eq(datum, I"Build Date")) WRITE("%S", A->date);

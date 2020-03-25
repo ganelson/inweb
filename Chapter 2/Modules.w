@@ -42,7 +42,7 @@ main web -- which can be tangled, and results in an actual program -- is
 internally named |"(main)"|, a name which the user will never see.
 
 =
-module *Modules::main_module(web *W) {
+module *Modules::create_main_module(web *W) {
 	return Modules::new(I"(main)", W->path_to_web, READING_WEB_MOM);
 }
 
