@@ -152,9 +152,9 @@ but in fact that's fine here.)
 
 <p class="endnote">The function HTMLFormat::cp is used in <a href="#SP4">&#167;4</a>, <a href="#SP7">&#167;7</a>, <a href="#SP12">&#167;12</a>, <a href="#SP21">&#167;21</a>.</p>
 
-<p class="endnote">The function HTMLFormat::pre is used in <a href="#SP19">&#167;19</a>.</p>
+<p class="endnote">The function HTMLFormat::pre is used in <a href="#SP15">&#167;15</a>, <a href="#SP19">&#167;19</a>.</p>
 
-<p class="endnote">The function HTMLFormat::cpre is used in <a href="#SP4">&#167;4</a>, <a href="#SP19">&#167;19</a>.</p>
+<p class="endnote">The function HTMLFormat::cpre is used in <a href="#SP4">&#167;4</a>, <a href="#SP15">&#167;15</a>, <a href="#SP19">&#167;19</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Depth 1 means "inside a list entry"; depth 2, "inside an entry of a list
 which is itself inside a list entry"; and so on.
@@ -561,21 +561,38 @@ the page, and this drops one.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTMLFormat::figure</span><span class="reserved">(weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">figname</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">w</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">h</span><span class="plain">) {</span>
         <span class="functiontext">HTMLFormat::exit_current_paragraph</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-        <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"center"</span><span class="plain">);</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">RF</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">figname</span><span class="plain">);</span>
-        <span class="functiontext">HTML::image</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">RF</span><span class="plain">);</span>
-        <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"center"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span>
             <span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-</span><span class="element">&gt;weave_web</span><span class="plain">-</span><span class="element">&gt;path_to_web</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Figures"</span><span class="plain">),</span>
             <span class="identifier">figname</span><span class="plain">);</span>
-        <span class="functiontext">Patterns::copy_file_into_weave</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-</span><span class="element">&gt;weave_web</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">RF</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">figname</span><span class="plain">);</span>
+        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">ext</span><span class="plain">);</span>
+        <span class="functiontext">Filenames::write_extension</span><span class="plain">(</span><span class="identifier">ext</span><span class="plain">, </span><span class="identifier">RF</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">ext</span><span class="plain">, </span><span class="identifier">I</span><span class="string">".txt"</span><span class="plain">)) {</span>
+            <span class="functiontext">HTMLFormat::pre</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"unable to read file of test cases"</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">,</span>
+                <span class="plain">&amp;</span><span class="functiontext">HTMLFormat::text_file_helper</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
+            <span class="functiontext">HTMLFormat::cpre</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"center"</span><span class="plain">);</span>
+            <span class="functiontext">HTML::image</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">RF</span><span class="plain">);</span>
+            <span class="functiontext">Patterns::copy_file_into_weave</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-</span><span class="element">&gt;weave_web</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+            <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"center"</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">ext</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTMLFormat::text_file_helper</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
+        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = (</span><span class="reserved">text_stream</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function HTMLFormat::figure is used in <a href="#SP1_1_1">&#167;1.1.1</a>.</p>
+
+<p class="endnote">The function HTMLFormat::text_file_helper appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b></p>
 
@@ -852,32 +869,33 @@ the page, and this drops one.
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">last_S</span><span class="plain"> == </span><span class="identifier">this_S</span><span class="plain">) </span><span class="identifier">next_S</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
                 <span class="identifier">last_S</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
             <span class="plain">}</span>
-
-            <span class="functiontext">HTML::hr</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"tocbar"</span><span class="plain">);</span>
-            <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"ul"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">toc\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
-            <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prev_S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;(This section begins %S.)&lt;/i&gt;"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;ch_title</span><span class="plain">);</span>
-            <span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
-                <span class="functiontext">HTMLFormat::sref</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">prev_S</span><span class="plain">);</span>
-                <span class="functiontext">HTML::begin_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">TEMP</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Back to '%S'"</span><span class="plain">, </span><span class="identifier">prev_S</span><span class="plain">-</span><span class="element">&gt;sect_title</span><span class="plain">);</span>
-                <span class="functiontext">HTML::end_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-                <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prev_S</span><span class="plain">) || (</span><span class="identifier">next_S</span><span class="plain">)) {</span>
+                <span class="functiontext">HTML::hr</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"tocbar"</span><span class="plain">);</span>
+                <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"ul"</span><span class="plain">, </span><span class="string">"class=\</span><span class="plain">"</span><span class="string">toc\</span><span class="plain">"</span><span class="string">"</span><span class="plain">);</span>
+                <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prev_S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;(This section begins %S.)&lt;/i&gt;"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;ch_title</span><span class="plain">);</span>
+                <span class="reserved">else</span><span class="plain"> {</span>
+                    <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
+                    <span class="functiontext">HTMLFormat::sref</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">prev_S</span><span class="plain">);</span>
+                    <span class="functiontext">HTML::begin_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">TEMP</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Back to '%S'"</span><span class="plain">, </span><span class="identifier">prev_S</span><span class="plain">-</span><span class="element">&gt;sect_title</span><span class="plain">);</span>
+                    <span class="functiontext">HTML::end_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
+                    <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
+                <span class="plain">}</span>
+                <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">);</span>
+                <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">next_S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;(This section ends %S.)&lt;/i&gt;"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;ch_title</span><span class="plain">);</span>
+                <span class="reserved">else</span><span class="plain"> {</span>
+                    <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
+                    <span class="functiontext">HTMLFormat::sref</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">next_S</span><span class="plain">);</span>
+                    <span class="functiontext">HTML::begin_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">TEMP</span><span class="plain">);</span>
+                    <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Continue with '%S'"</span><span class="plain">, </span><span class="identifier">next_S</span><span class="plain">-</span><span class="element">&gt;sect_title</span><span class="plain">);</span>
+                    <span class="functiontext">HTML::end_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
+                    <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
+                <span class="plain">}</span>
+                <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">);</span>
+                <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"ul"</span><span class="plain">);</span>
             <span class="plain">}</span>
-            <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">);</span>
-            <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">next_S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;i&gt;(This section ends %S.)&lt;/i&gt;"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;ch_title</span><span class="plain">);</span>
-            <span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
-                <span class="functiontext">HTMLFormat::sref</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">next_S</span><span class="plain">);</span>
-                <span class="functiontext">HTML::begin_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">TEMP</span><span class="plain">);</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Continue with '%S'"</span><span class="plain">, </span><span class="identifier">next_S</span><span class="plain">-</span><span class="element">&gt;sect_title</span><span class="plain">);</span>
-                <span class="functiontext">HTML::end_link</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-                <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
-            <span class="plain">}</span>
-            <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"li"</span><span class="plain">);</span>
-            <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"ul"</span><span class="plain">);</span>
             <span class="functiontext">HTML::hr</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"tocbar"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">HTML::comment</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">comment</span><span class="plain">);</span>

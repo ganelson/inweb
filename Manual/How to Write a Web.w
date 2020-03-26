@@ -303,6 +303,13 @@ The weaver expects that any pictures needed will be stored in a subdirectory of
 the web called |Figures|: for instance, the weaver would seek |Fig_2_3.pdf| at
 pathname |Figures/Fig_2_3.pdf|.
 
+@ Usually small plain text files can also be incorporated: these are treated
+exactly as Figures, but have the file extension |.txt|. For example,
+
+	|[[help.txt]]|
+
+incorporates a pre-formatted version of the plain text file |Figures/help.txt|.
+
 @ Mathematical formulae can be typed in TeX notation between dollar signs,
 as usual for TeX formulae. This can of course only really be rendered if
 the weave is to TeX, but a few very approximate attempts are made by Inweb

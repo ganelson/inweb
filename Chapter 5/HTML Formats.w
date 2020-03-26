@@ -375,15 +375,30 @@ void HTMLFormat::bar(weave_format *self, text_stream *OUT, weave_target *wv) {
 void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *figname, int w, int h) {
 	HTMLFormat::exit_current_paragraph(OUT);
-	HTML_OPEN("center");
-	filename *RF = Filenames::from_text(figname);
-	HTML::image(OUT, RF);
-	HTML_CLOSE("center");
-	WRITE("\n");
 	filename *F = Filenames::in_folder(
 		Pathnames::subfolder(wv->weave_web->path_to_web, I"Figures"),
 		figname);
-	Patterns::copy_file_into_weave(wv->weave_web, F);
+	filename *RF = Filenames::from_text(figname);
+	TEMPORARY_TEXT(ext);
+	Filenames::write_extension(ext, RF);
+	if (Str::eq_insensitive(ext, I".txt")) {
+		HTMLFormat::pre(OUT, NULL);
+		TextFiles::read(F, FALSE, "unable to read file of test cases", TRUE,
+			&HTMLFormat::text_file_helper, NULL, OUT);
+		HTMLFormat::cpre(OUT);
+	} else {
+		HTML_OPEN("center");
+		HTML::image(OUT, RF);
+		Patterns::copy_file_into_weave(wv->weave_web, F);
+		HTML_CLOSE("center");
+	}
+	DISCARD_TEXT(ext);
+	WRITE("\n");
+}
+
+void HTMLFormat::text_file_helper(text_stream *text, text_file_position *tfp, void *state) {
+	text_stream *OUT = (text_stream *) state;
+	WRITE("%S\n", text);
 }
 
 @ =

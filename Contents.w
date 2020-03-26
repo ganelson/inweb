@@ -15,6 +15,7 @@ Manual
 	How to Write a Web
 	The InC Dialect
 	Advanced Weaving with Patterns
+	Reference Card
 
 Chapter 1: Top Level
 "Dealing with the user, and deciding what is to be done."
