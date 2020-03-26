@@ -3413,11 +3413,11 @@ void  HTMLFormat__locale(weave_format *self, text_stream *OUT, weave_target *wv,
 void  HTMLFormat__xref(OUTPUT_STREAM, weave_target *wv, paragraph *P, section *from, 	int a_link) ;
 #line 578 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__tail(weave_format *self, text_stream *OUT, weave_target *wv, 	text_stream *comment, section *this_S) ;
-#line 624 "inweb/Chapter 5/HTML Formats.w"
+#line 625 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__sref(OUTPUT_STREAM, weave_target *wv, section *S) ;
-#line 637 "inweb/Chapter 5/HTML Formats.w"
+#line 638 "inweb/Chapter 5/HTML Formats.w"
 int  HTMLFormat__begin_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) ;
-#line 652 "inweb/Chapter 5/HTML Formats.w"
+#line 653 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__end_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) ;
 #line 22 "inweb/Chapter 5/Running Through TeX.w"
 void  RunningTeX__post_process_weave(weave_target *wv, int open_afterwards, int to_DVI) ;
@@ -6774,11 +6774,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A01";
+			char *svn = "7-alpha.1+1A02";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "23 March 2020";
+			char *d = "25 March 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -21210,32 +21210,33 @@ void HTMLFormat__tail(weave_format *self, text_stream *OUT, weave_target *wv,
 			if (last_S == this_S) next_S = S;
 			last_S = S;
 		}
-
-		HTML__hr(OUT, "tocbar");
-		HTML_OPEN_WITH("ul", "class=\"toc\"");
-		HTML_OPEN("li");
-		if (prev_S == NULL) WRITE("<i>(This section begins %S.)</i>", C->ch_title);
-		else {
-			TEMPORARY_TEXT(TEMP);
-			HTMLFormat__sref(TEMP, wv, prev_S);
-			HTML__begin_link(OUT, TEMP);
-			WRITE("Back to '%S'", prev_S->sect_title);
-			HTML__end_link(OUT);
-			DISCARD_TEXT(TEMP);
+		if ((prev_S) || (next_S)) {
+			HTML__hr(OUT, "tocbar");
+			HTML_OPEN_WITH("ul", "class=\"toc\"");
+			HTML_OPEN("li");
+			if (prev_S == NULL) WRITE("<i>(This section begins %S.)</i>", C->ch_title);
+			else {
+				TEMPORARY_TEXT(TEMP);
+				HTMLFormat__sref(TEMP, wv, prev_S);
+				HTML__begin_link(OUT, TEMP);
+				WRITE("Back to '%S'", prev_S->sect_title);
+				HTML__end_link(OUT);
+				DISCARD_TEXT(TEMP);
+			}
+			HTML_CLOSE("li");
+			HTML_OPEN("li");
+			if (next_S == NULL) WRITE("<i>(This section ends %S.)</i>", C->ch_title);
+			else {
+				TEMPORARY_TEXT(TEMP);
+				HTMLFormat__sref(TEMP, wv, next_S);
+				HTML__begin_link(OUT, TEMP);
+				WRITE("Continue with '%S'", next_S->sect_title);
+				HTML__end_link(OUT);
+				DISCARD_TEXT(TEMP);
+			}
+			HTML_CLOSE("li");
+			HTML_CLOSE("ul");
 		}
-		HTML_CLOSE("li");
-		HTML_OPEN("li");
-		if (next_S == NULL) WRITE("<i>(This section ends %S.)</i>", C->ch_title);
-		else {
-			TEMPORARY_TEXT(TEMP);
-			HTMLFormat__sref(TEMP, wv, next_S);
-			HTML__begin_link(OUT, TEMP);
-			WRITE("Continue with '%S'", next_S->sect_title);
-			HTML__end_link(OUT);
-			DISCARD_TEXT(TEMP);
-		}
-		HTML_CLOSE("li");
-		HTML_CLOSE("ul");
 		HTML__hr(OUT, "tocbar");
 	}
 	HTML__comment(OUT, comment);
@@ -21244,7 +21245,7 @@ void HTMLFormat__tail(weave_format *self, text_stream *OUT, weave_target *wv,
 	Indexer__cover_sheet_maker(OUT, wv->weave_web, TL_IS_449, wv, WEAVE_SECOND_HALF);
 }
 
-#line 624 "inweb/Chapter 5/HTML Formats.w"
+#line 625 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__sref(OUTPUT_STREAM, weave_target *wv, section *S) {
 	if (S == NULL) internal_error("unwoven section");
 	LOOP_THROUGH_TEXT(pos, S->range)
@@ -21255,7 +21256,7 @@ void HTMLFormat__sref(OUTPUT_STREAM, weave_target *wv, section *S) {
 	WRITE(".html");
 }
 
-#line 637 "inweb/Chapter 5/HTML Formats.w"
+#line 638 "inweb/Chapter 5/HTML Formats.w"
 int HTMLFormat__begin_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) {
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "%S", Bibliographic__get_datum(W, TL_IS_450));

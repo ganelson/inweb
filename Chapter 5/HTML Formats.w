@@ -586,32 +586,33 @@ void HTMLFormat::tail(weave_format *self, text_stream *OUT, weave_target *wv,
 			if (last_S == this_S) next_S = S;
 			last_S = S;
 		}
-
-		HTML::hr(OUT, "tocbar");
-		HTML_OPEN_WITH("ul", "class=\"toc\"");
-		HTML_OPEN("li");
-		if (prev_S == NULL) WRITE("<i>(This section begins %S.)</i>", C->ch_title);
-		else {
-			TEMPORARY_TEXT(TEMP);
-			HTMLFormat::sref(TEMP, wv, prev_S);
-			HTML::begin_link(OUT, TEMP);
-			WRITE("Back to '%S'", prev_S->sect_title);
-			HTML::end_link(OUT);
-			DISCARD_TEXT(TEMP);
+		if ((prev_S) || (next_S)) {
+			HTML::hr(OUT, "tocbar");
+			HTML_OPEN_WITH("ul", "class=\"toc\"");
+			HTML_OPEN("li");
+			if (prev_S == NULL) WRITE("<i>(This section begins %S.)</i>", C->ch_title);
+			else {
+				TEMPORARY_TEXT(TEMP);
+				HTMLFormat::sref(TEMP, wv, prev_S);
+				HTML::begin_link(OUT, TEMP);
+				WRITE("Back to '%S'", prev_S->sect_title);
+				HTML::end_link(OUT);
+				DISCARD_TEXT(TEMP);
+			}
+			HTML_CLOSE("li");
+			HTML_OPEN("li");
+			if (next_S == NULL) WRITE("<i>(This section ends %S.)</i>", C->ch_title);
+			else {
+				TEMPORARY_TEXT(TEMP);
+				HTMLFormat::sref(TEMP, wv, next_S);
+				HTML::begin_link(OUT, TEMP);
+				WRITE("Continue with '%S'", next_S->sect_title);
+				HTML::end_link(OUT);
+				DISCARD_TEXT(TEMP);
+			}
+			HTML_CLOSE("li");
+			HTML_CLOSE("ul");
 		}
-		HTML_CLOSE("li");
-		HTML_OPEN("li");
-		if (next_S == NULL) WRITE("<i>(This section ends %S.)</i>", C->ch_title);
-		else {
-			TEMPORARY_TEXT(TEMP);
-			HTMLFormat::sref(TEMP, wv, next_S);
-			HTML::begin_link(OUT, TEMP);
-			WRITE("Continue with '%S'", next_S->sect_title);
-			HTML::end_link(OUT);
-			DISCARD_TEXT(TEMP);
-		}
-		HTML_CLOSE("li");
-		HTML_CLOSE("ul");
 		HTML::hr(OUT, "tocbar");
 	}
 	HTML::comment(OUT, comment);
