@@ -4038,7 +4038,7 @@ void Foundation__start(void) {
 	CommandLine__declare_switch(VERSION_CLSW, L"version", 1,
 		L"print out version number");
 	CommandLine__declare_boolean_switch(CRASH_CLSW, L"crash", 1,
-		L"intentionally crash on internal errors, for debugger backtracing", FALSE);
+		L"intentionally crash on internal errors, for backtracing", FALSE);
 	CommandLine__declare_switch(HELP_CLSW, L"help", 1,
 		L"print this help information");
 	CommandLine__declare_boolean_switch(FIXTIME_CLSW, L"fixtime", 1,
@@ -6777,11 +6777,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A03";
+			char *svn = "7-alpha.1+1A04";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "26 March 2020";
+			char *d = "27 March 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;

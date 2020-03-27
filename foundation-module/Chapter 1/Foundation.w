@@ -149,7 +149,7 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 	CommandLine::declare_switch(VERSION_CLSW, L"version", 1,
 		L"print out version number");
 	CommandLine::declare_boolean_switch(CRASH_CLSW, L"crash", 1,
-		L"intentionally crash on internal errors, for debugger backtracing", FALSE);
+		L"intentionally crash on internal errors, for backtracing", FALSE);
 	CommandLine::declare_switch(HELP_CLSW, L"help", 1,
 		L"print this help information");
 	CommandLine::declare_boolean_switch(FIXTIME_CLSW, L"fixtime", 1,
