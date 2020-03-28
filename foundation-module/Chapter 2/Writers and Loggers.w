@@ -42,7 +42,7 @@ typedef void (*writer_function)(text_stream *, char *, void *);
 typedef void (*writer_function_I)(text_stream *, char *, int);
 typedef void (*log_function)(text_stream *, void *);
 typedef void (*log_function_I)(text_stream *, int);
-#ifdef WORDING_LOGS_ALLOWED
+#ifdef WORDS_MODULE
 	typedef void (*writer_function_W)(text_stream *, char *, wording);
 	typedef void (*log_function_W)(text_stream *, wording);
 #endif
@@ -76,7 +76,7 @@ void Writers::register_writer_I(int esc, void (*f)(text_stream *, char *, int)) 
 void Writers::register_logger_I(int esc, void (*f)(text_stream *, int)) {
 	Writers::register_writer_p(1, esc, (void *) f, INTSIZED_ECAT);
 }
-#ifdef WORDING_LOGS_ALLOWED
+#ifdef WORDS_MODULE
 #define Writers::register_writer_W(esc, f) Writers::register_writer_p(0, esc, (void *) f, WORDING_ECAT);
 #define Writers::register_logger_W(esc, f) Writers::register_writer_p(1, esc, (void *) f, WORDING_ECAT);
 #endif
@@ -198,7 +198,7 @@ void Writers::printf(text_stream *stream, char *fmt, ...) {
 			break;
 		}
 		case WORDING_ECAT: {
-			#ifdef WORDING_LOGS_ALLOWED
+			#ifdef WORDS_MODULE
 			if (set == 0) {
 				writer_function_W f = (writer_function_W) the_escapes[0][esc_number];
 				wording W = va_arg(ap, wording);
