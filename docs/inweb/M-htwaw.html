@@ -130,20 +130,21 @@ example shows all three being used:
 
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Definitions are made using one of two commands: <code class="display"><span class="extract">@d</span></code> or <code class="display"><span class="extract">@define</span></code>, or
-<code class="display"><span class="extract">@e</span></code> or <code class="display"><span class="extract">@enum</span></code>. These create new constants in the program, with the values
-given: they are the equivalent of a <code class="display"><span class="extract">#define</span></code> directive in C. <code class="display"><span class="extract">@define</span></code> is
-the simpler form. For example,
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Definitions are made using one of three commands: <code class="display"><span class="extract">@d</span></code> or <code class="display"><span class="extract">@define</span></code>; or
+<code class="display"><span class="extract">@e</span></code> or <code class="display"><span class="extract">@enum</span></code>; or <code class="display"><span class="extract">@default</span></code>, which is rarely used and has no abbreviation.
+These create new constants in the program, with the values given: they are
+the equivalent of a <code class="display"><span class="extract">#define</span></code> directive in C. <code class="display"><span class="extract">@define</span></code> is the simpler form.
+For example,
 </p>
 
 <p class="inwebparagraph"></p>
 
 
 <pre class="display">
-        <span class="plain">@define USEFUL_PRIME 16339</span>
+        <span class="plain">@define ENIGMATIC_NUMBER 90125</span>
 </pre>
 
-<p class="inwebparagraph">sets <code class="display"><span class="extract">USEFUL_PRIME</span></code> to 16339. Unlike in the C preprocessor, multi-line
+<p class="inwebparagraph">sets <code class="display"><span class="extract">ENIGMATIC_NUMBER</span></code> to 90125. Unlike in the C preprocessor, multi-line
 definitions are automatically handled, so for example:
 </p>
 
@@ -205,6 +206,43 @@ each subsequent <code class="display"><span class="extract">_MNTH</span></code> 
 from anywhere in the web, including in sections or paragraphs earlier than
 the ones in which they are defined. (The tangler automatically arranges code
 as necessary to make this work.)
+</p>
+
+<p class="inwebparagraph">A symbol defined with <code class="display"><span class="extract">@default</span></code> has the given value only if some other use
+of <code class="display"><span class="extract">@d</span></code> or <code class="display"><span class="extract">@e</span></code> in the web has not already defined it. For example, if the
+web contains:
+</p>
+
+<p class="inwebparagraph"></p>
+
+
+<pre class="display">
+        <span class="plain">@default MAX_HEADROOM 100</span>
+        <span class="plain">@d MAX_HEADROOM 99</span>
+</pre>
+
+<p class="inwebparagraph">or
+</p>
+
+<p class="inwebparagraph"></p>
+
+
+<pre class="display">
+        <span class="plain">@d MAX_HEADROOM 99</span>
+        <span class="plain">@default MAX_HEADROOM 100</span>
+</pre>
+
+<p class="inwebparagraph">then the value is 99, but if only
+</p>
+
+<p class="inwebparagraph"></p>
+
+
+<pre class="display">
+        <span class="plain">@default MAX_HEADROOM 100</span>
+</pre>
+
+<p class="inwebparagraph">then the value is 100.
 </p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Finally, a paragraph can contain code. This is introduced with an equals

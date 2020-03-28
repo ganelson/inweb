@@ -63,14 +63,15 @@ example shows all three being used:
 	|    return TRUE;|
 	|}|
 
-@ Definitions are made using one of two commands: |@d| or |@define|, or
-|@e| or |@enum|. These create new constants in the program, with the values
-given: they are the equivalent of a |#define| directive in C. |@define| is
-the simpler form. For example,
+@ Definitions are made using one of three commands: |@d| or |@define|; or
+|@e| or |@enum|; or |@default|, which is rarely used and has no abbreviation.
+These create new constants in the program, with the values given: they are
+the equivalent of a |#define| directive in C. |@define| is the simpler form.
+For example,
 
-	|@define USEFUL_PRIME 16339|
+	|@define ENIGMATIC_NUMBER 90125|
 
-sets |USEFUL_PRIME| to 16339. Unlike in the C preprocessor, multi-line
+sets |ENIGMATIC_NUMBER| to 90125. Unlike in the C preprocessor, multi-line
 definitions are automatically handled, so for example:
 
 	|@ The following macro defines a function:|
@@ -112,6 +113,24 @@ All symbols defined with |@define| or |@enum| are global, and can be used
 from anywhere in the web, including in sections or paragraphs earlier than
 the ones in which they are defined. (The tangler automatically arranges code
 as necessary to make this work.)
+
+A symbol defined with |@default| has the given value only if some other use
+of |@d| or |@e| in the web has not already defined it. For example, if the
+web contains:
+
+	|@default MAX_HEADROOM 100|
+	|@d MAX_HEADROOM 99|
+
+or
+
+	|@d MAX_HEADROOM 99|
+	|@default MAX_HEADROOM 100|
+
+then the value is 99, but if only
+
+	|@default MAX_HEADROOM 100|
+
+then the value is 100.
 
 @ Finally, a paragraph can contain code. This is introduced with an equals
 sign: in some sense, the value of the paragraph is the code it contains.

@@ -392,6 +392,11 @@ long forms |@define|, |@enum| and |@heading|, and plain old |@| remain.
 		if (S->using_syntax < V2_SYNTAX)
 			Parser::wrong_version(S->using_syntax, L, "'@define' for definitions (use '@d' instead)", V2_SYNTAX);
 		@<Deal with the define marker@>;
+	} else if (Str::eq_wide_string(command_text, L"default")) {
+		if (S->using_syntax < V2_SYNTAX)
+			Parser::wrong_version(S->using_syntax, L, "'@default' for definitions", V2_SYNTAX);
+		L->default_defn = TRUE;
+		@<Deal with the define marker@>;
 	} else if (Str::eq_wide_string(command_text, L"enum")) @<Deal with the enumeration marker@>
 	else if ((Str::eq_wide_string(command_text, L"e")) && (S->using_syntax >= V2_SYNTAX))
 		@<Deal with the enumeration marker@>

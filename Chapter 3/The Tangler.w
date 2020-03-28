@@ -71,20 +71,30 @@ extend across multiple lines.
 	chapter *C;
 	section *S;
 	LOOP_WITHIN_TANGLE(C, S, target)
-		if (L->category == BEGIN_DEFINITION_LCAT) {
-			if (L->owning_paragraph == NULL) Main::error_in_web(I"misplaced definition", L);
-			else Tags::open_ifdefs(OUT, L->owning_paragraph);
-			Languages::start_definition(OUT, lang,
-				L->text_operand,
-				L->text_operand2, S, L);
-			while ((L->next_line) && (L->next_line->category == CONT_DEFINITION_LCAT)) {
-				L = L->next_line;
-				Languages::prolong_definition(OUT, lang, L->text, S, L);
+		if (L->category == BEGIN_DEFINITION_LCAT)
+			if (L->default_defn == FALSE)
+				@<Define the constant@>;
+	LOOP_WITHIN_TANGLE(C, S, target)
+		if (L->category == BEGIN_DEFINITION_LCAT)
+			if (L->default_defn) {
+				Languages::open_ifdef(OUT, lang, L->text_operand, FALSE);
+				@<Define the constant@>;
+				Languages::close_ifdef(OUT, lang, L->text_operand, FALSE);
 			}
-			Languages::end_definition(OUT, lang, S, L);
-			if (L->owning_paragraph) Tags::close_ifdefs(OUT, L->owning_paragraph);
-		}
 	Enumerations::define_extents(OUT, target, lang);
+
+@<Define the constant@> =
+	if (L->owning_paragraph == NULL) Main::error_in_web(I"misplaced definition", L);
+	else Tags::open_ifdefs(OUT, L->owning_paragraph);
+	Languages::start_definition(OUT, lang,
+		L->text_operand,
+		L->text_operand2, S, L);
+	while ((L->next_line) && (L->next_line->category == CONT_DEFINITION_LCAT)) {
+		L = L->next_line;
+		Languages::prolong_definition(OUT, lang, L->text, S, L);
+	}
+	Languages::end_definition(OUT, lang, S, L);
+	if (L->owning_paragraph) Tags::close_ifdefs(OUT, L->owning_paragraph);
 
 @<Tangle any imported headers@> =
 	filename *F;

@@ -1444,6 +1444,7 @@ typedef struct source_line {
 
 	int category; /* what sort of line this is: an |*_LCAT| value */
 	int command_code; /* used only for |COMMAND_LCAT| lines: a |*_CMD| value */
+	int default_defn; /* used only for |BEGIN_DEFINITION_LCAT| lines */
 	int is_commentary; /* flag */
 	struct function *function_defined; /* if any C-like function is defined on this line */
 	struct preform_nonterminal *preform_nonterminal_defined; /* similarly */
@@ -1456,7 +1457,7 @@ typedef struct source_line {
 	struct source_line *next_line; /* within the owning section's linked list */
 	struct paragraph *owning_paragraph; /* for lines falling under paragraphs; |NULL| if not */
 } source_line;
-#line 585 "inweb/Chapter 2/The Parser.w"
+#line 590 "inweb/Chapter 2/The Parser.w"
 typedef struct paragraph {
 	int above_bar; /* placed above the dividing bar in its section (in Version 1 syntax) */
 	int placed_early; /* should appear early in the tangled code */
@@ -2877,15 +2878,15 @@ pathname * Modules__find(web *W, module_search *ms, text_stream *name) ;
 int  Modules__exists(pathname *P) ;
 #line 121 "inweb/Chapter 2/Modules.w"
 module * Modules__find_loaded_by_name(text_file_position *tfp, text_stream *name) ;
-#line 41 "inweb/Chapter 2/Line Categories.w"
+#line 42 "inweb/Chapter 2/Line Categories.w"
 source_line * Lines__new_source_line(text_stream *line, text_file_position *tfp) ;
-#line 100 "inweb/Chapter 2/Line Categories.w"
+#line 102 "inweb/Chapter 2/Line Categories.w"
 char * Lines__category_name(int cat) ;
 #line 17 "inweb/Chapter 2/The Parser.w"
 void  Parser__parse_web(web *W, int inweb_mode) ;
-#line 670 "inweb/Chapter 2/The Parser.w"
+#line 675 "inweb/Chapter 2/The Parser.w"
 text_stream * Parser__extract_purpose(text_stream *prologue, source_line *XL, section *S, source_line **adjust) ;
-#line 691 "inweb/Chapter 2/The Parser.w"
+#line 696 "inweb/Chapter 2/The Parser.w"
 void  Parser__wrong_version(int using, source_line *L, char *feature, int need) ;
 #line 20 "inweb/Chapter 2/Paragraph Macros.w"
 para_macro * Macros__create(section *S, paragraph *P, source_line *L, text_stream *name) ;
@@ -2977,11 +2978,11 @@ void  Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *w
 int  Weaver__weave_table_of_contents(OUTPUT_STREAM, weave_target *wv, section *S) ;
 #line 14 "inweb/Chapter 3/The Tangler.w"
 void  Tangler__go(web *W, tangle_target *target, filename *dest_file) ;
-#line 99 "inweb/Chapter 3/The Tangler.w"
+#line 109 "inweb/Chapter 3/The Tangler.w"
 void  Tangler__tangle_paragraph(OUTPUT_STREAM, paragraph *P) ;
-#line 134 "inweb/Chapter 3/The Tangler.w"
+#line 144 "inweb/Chapter 3/The Tangler.w"
 void  Tangler__tangle_code(OUTPUT_STREAM, text_stream *original, section *S, source_line *L) ;
-#line 231 "inweb/Chapter 3/The Tangler.w"
+#line 241 "inweb/Chapter 3/The Tangler.w"
 tangle_target * Tangler__primary_target(web *W) ;
 #line 35 "inweb/Chapter 4/Programming Languages.w"
 programming_language * Languages__default(void) ;
@@ -5698,7 +5699,7 @@ int escapes_category[2][128]; /* one of the |*_ECAT| values above */
 void *the_escapes[2][128]; /* the function to call to implement this */
 
 #line 45 "inweb/foundation-module/Chapter 2/Writers and Loggers.w"
-#ifdef WORDING_LOGS_ALLOWED
+#ifdef WORDS_MODULE
 	typedef void (*writer_function_W)(text_stream *, char *, wording);
 	typedef void (*log_function_W)(text_stream *, wording);
 #endif
@@ -5730,7 +5731,7 @@ void Writers__register_writer_I(int esc, void (*f)(text_stream *, char *, int)) 
 void Writers__register_logger_I(int esc, void (*f)(text_stream *, int)) {
 	Writers__register_writer_p(1, esc, (void *) f, INTSIZED_ECAT);
 }
-#ifdef WORDING_LOGS_ALLOWED
+#ifdef WORDS_MODULE
 #define Writers__register_writer_W(esc, f) Writers__register_writer_p(0, esc, (void *) f, WORDING_ECAT);
 #define Writers__register_logger_W(esc, f) Writers__register_writer_p(1, esc, (void *) f, WORDING_ECAT);
 #endif
@@ -5822,7 +5823,7 @@ void Writers__printf(text_stream *stream, char *fmt, ...) {
 			break;
 		}
 		case WORDING_ECAT: {
-			#ifdef WORDING_LOGS_ALLOWED
+			#ifdef WORDS_MODULE
 			if (set == 0) {
 				writer_function_W f = (writer_function_W) the_escapes[0][esc_number];
 				wording W = va_arg(ap, wording);
@@ -5927,7 +5928,7 @@ void Writers__printf(text_stream *stream, char *fmt, ...) {
 			break;
 		}
 		case WORDING_ECAT: {
-			#ifdef WORDING_LOGS_ALLOWED
+			#ifdef WORDS_MODULE
 			if (set == 0) {
 				writer_function_W f = (writer_function_W) the_escapes[0][esc_number];
 				wording W = va_arg(ap, wording);
@@ -6777,11 +6778,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A04";
+			char *svn = "7-alpha.1+1A05";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "27 March 2020";
+			char *d = "28 March 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -13683,9 +13684,9 @@ module *Modules__find_loaded_by_name(text_file_position *tfp, text_stream *name)
 	return NULL;
 }
 
-#line 39 "inweb/Chapter 2/Line Categories.w"
+#line 40 "inweb/Chapter 2/Line Categories.w"
 
-#line 41 "inweb/Chapter 2/Line Categories.w"
+#line 42 "inweb/Chapter 2/Line Categories.w"
 source_line *Lines__new_source_line(text_stream *line, text_file_position *tfp) {
 	source_line *sl = CREATE(source_line);
 	sl->text = Str__duplicate(line);
@@ -13694,6 +13695,7 @@ source_line *Lines__new_source_line(text_stream *line, text_file_position *tfp) 
 
 	sl->category = NO_LCAT; /* that is, unknown category as yet */
 	sl->command_code = NO_CMD;
+	sl->default_defn = FALSE;
 	sl->is_commentary = FALSE;
 	sl->function_defined = NULL;
 	sl->preform_nonterminal_defined = NULL;
@@ -13708,11 +13710,11 @@ source_line *Lines__new_source_line(text_stream *line, text_file_position *tfp) 
 	return sl;
 }
 
-#line 71 "inweb/Chapter 2/Line Categories.w"
+#line 73 "inweb/Chapter 2/Line Categories.w"
 
-#line 95 "inweb/Chapter 2/Line Categories.w"
+#line 97 "inweb/Chapter 2/Line Categories.w"
 
-#line 100 "inweb/Chapter 2/Line Categories.w"
+#line 102 "inweb/Chapter 2/Line Categories.w"
 char *Lines__category_name(int cat) {
 	switch (cat) {
 		case NO_LCAT: return "(uncategorised)";
@@ -13744,7 +13746,7 @@ char *Lines__category_name(int cat) {
 	return "(?unknown)";
 }
 
-#line 140 "inweb/Chapter 2/Line Categories.w"
+#line 142 "inweb/Chapter 2/Line Categories.w"
 
 #line 17 "inweb/Chapter 2/The Parser.w"
 void Parser__parse_web(web *W, int inweb_mode) {
@@ -14160,7 +14162,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 #line 382 "inweb/Chapter 2/The Parser.w"
 	if (Str__eq_wide_string(command_text, L"Purpose:")) 
 {
-#line 424 "inweb/Chapter 2/The Parser.w"
+#line 429 "inweb/Chapter 2/The Parser.w"
 	if (before_bar == FALSE) Main__error_in_web(TL_IS_109, L);
 	if (S->using_syntax >= V2_SYNTAX)
 		Parser__wrong_version(S->using_syntax, L, "'@Purpose'", V1_SYNTAX);
@@ -14174,7 +14176,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 
 	else if (Str__eq_wide_string(command_text, L"Interface:")) 
 {
-#line 433 "inweb/Chapter 2/The Parser.w"
+#line 438 "inweb/Chapter 2/The Parser.w"
 	if (S->using_syntax >= V2_SYNTAX)
 		Parser__wrong_version(S->using_syntax, L, "'@Interface'", V1_SYNTAX);
 	if (before_bar == FALSE) Main__error_in_web(TL_IS_110, L);
@@ -14193,7 +14195,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 
 	else if (Str__eq_wide_string(command_text, L"Definitions:")) 
 {
-#line 447 "inweb/Chapter 2/The Parser.w"
+#line 452 "inweb/Chapter 2/The Parser.w"
 	if (S->using_syntax >= V2_SYNTAX)
 		Parser__wrong_version(S->using_syntax, L, "'@Definitions' headings", V1_SYNTAX);
 	if (before_bar == FALSE) Main__error_in_web(TL_IS_111, L);
@@ -14207,7 +14209,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 
 	else if (Regexp__match(&mr, command_text, L"----+")) 
 {
-#line 459 "inweb/Chapter 2/The Parser.w"
+#line 464 "inweb/Chapter 2/The Parser.w"
 	if (S->using_syntax >= V2_SYNTAX)
 		Parser__wrong_version(S->using_syntax, L, "the bar '----...'", V1_SYNTAX);
 	if (before_bar == FALSE) Main__error_in_web(TL_IS_112, L);
@@ -14226,7 +14228,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 			((S->using_syntax == V1_SYNTAX) && (Str__eq_wide_string(command_text, L"e"))))
 				
 {
-#line 476 "inweb/Chapter 2/The Parser.w"
+#line 481 "inweb/Chapter 2/The Parser.w"
 	if (S->using_syntax > V1_SYNTAX)
 		Parser__wrong_version(S->using_syntax, L, "'@c' and '@x'", V1_SYNTAX);
 	L->category = BEGIN_CODE_LCAT;
@@ -14241,7 +14243,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 
 	else if (Str__eq_wide_string(command_text, L"d")) 
 {
-#line 489 "inweb/Chapter 2/The Parser.w"
+#line 494 "inweb/Chapter 2/The Parser.w"
 	L->category = BEGIN_DEFINITION_LCAT;
 	code_lcat_for_body = CONT_DEFINITION_LCAT;
 	match_results mr = Regexp__create_mr();
@@ -14265,7 +14267,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 			Parser__wrong_version(S->using_syntax, L, "'@define' for definitions (use '@d' instead)", V2_SYNTAX);
 		
 {
-#line 489 "inweb/Chapter 2/The Parser.w"
+#line 494 "inweb/Chapter 2/The Parser.w"
 	L->category = BEGIN_DEFINITION_LCAT;
 	code_lcat_for_body = CONT_DEFINITION_LCAT;
 	match_results mr = Regexp__create_mr();
@@ -14284,9 +14286,34 @@ void Parser__parse_web(web *W, int inweb_mode) {
 }
 #line 394 "inweb/Chapter 2/The Parser.w"
 ;
+	} else if (Str__eq_wide_string(command_text, L"default")) {
+		if (S->using_syntax < V2_SYNTAX)
+			Parser__wrong_version(S->using_syntax, L, "'@default' for definitions", V2_SYNTAX);
+		L->default_defn = TRUE;
+		
+{
+#line 494 "inweb/Chapter 2/The Parser.w"
+	L->category = BEGIN_DEFINITION_LCAT;
+	code_lcat_for_body = CONT_DEFINITION_LCAT;
+	match_results mr = Regexp__create_mr();
+	if (Regexp__match(&mr, remainder, L"(%C+) (%c+)")) {
+		L->text_operand = Str__duplicate(mr.exp[0]); /* name of term defined */
+		L->text_operand2 = Str__duplicate(mr.exp[1]); /* Value */
+	} else {
+		L->text_operand = Str__duplicate(remainder); /* name of term defined */
+		L->text_operand2 = Str__new(); /* no value given */
+	}
+	Analyser__mark_reserved_word(S, L->text_operand, CONSTANT_COLOUR);
+	comment_mode = FALSE;
+	L->is_commentary = FALSE;
+	Regexp__dispose_of(&mr);
+
+}
+#line 399 "inweb/Chapter 2/The Parser.w"
+;
 	} else if (Str__eq_wide_string(command_text, L"enum")) 
 {
-#line 508 "inweb/Chapter 2/The Parser.w"
+#line 513 "inweb/Chapter 2/The Parser.w"
 	L->category = BEGIN_DEFINITION_LCAT;
 	text_stream *from = NULL;
 	match_results mr = Regexp__create_mr();
@@ -14315,12 +14342,12 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 395 "inweb/Chapter 2/The Parser.w"
+#line 400 "inweb/Chapter 2/The Parser.w"
 
 	else if ((Str__eq_wide_string(command_text, L"e")) && (S->using_syntax >= V2_SYNTAX))
 		
 {
-#line 508 "inweb/Chapter 2/The Parser.w"
+#line 513 "inweb/Chapter 2/The Parser.w"
 	L->category = BEGIN_DEFINITION_LCAT;
 	text_stream *from = NULL;
 	match_results mr = Regexp__create_mr();
@@ -14349,7 +14376,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 397 "inweb/Chapter 2/The Parser.w"
+#line 402 "inweb/Chapter 2/The Parser.w"
 
 	else {
 		int weight = -1, new_page = FALSE;
@@ -14371,7 +14398,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 		}
 		if (weight >= 0) 
 {
-#line 560 "inweb/Chapter 2/The Parser.w"
+#line 565 "inweb/Chapter 2/The Parser.w"
 	comment_mode = TRUE;
 	L->is_commentary = TRUE;
 	L->category = PARAGRAPH_START_LCAT;
@@ -14390,7 +14417,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	}
 	
 {
-#line 607 "inweb/Chapter 2/The Parser.w"
+#line 612 "inweb/Chapter 2/The Parser.w"
 	paragraph *P = CREATE(paragraph);
 	if (S->using_syntax > V1_SYNTAX) {
 		P->above_bar = FALSE;
@@ -14423,7 +14450,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	current_paragraph = P;
 
 }
-#line 576 "inweb/Chapter 2/The Parser.w"
+#line 581 "inweb/Chapter 2/The Parser.w"
 ;
 
 	L->owning_paragraph = current_paragraph;
@@ -14431,7 +14458,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 416 "inweb/Chapter 2/The Parser.w"
+#line 421 "inweb/Chapter 2/The Parser.w"
 
 		else Main__error_in_web(TL_IS_108, L);
 	}
@@ -14449,7 +14476,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 ;
 	if (comment_mode) 
 {
-#line 641 "inweb/Chapter 2/The Parser.w"
+#line 646 "inweb/Chapter 2/The Parser.w"
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, L->text, L">> (%c+)")) {
 		L->category = SOURCE_DISPLAY_LCAT;
@@ -14462,7 +14489,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 ;
 	if (comment_mode == FALSE) 
 {
-#line 653 "inweb/Chapter 2/The Parser.w"
+#line 658 "inweb/Chapter 2/The Parser.w"
 	if ((L->category != BEGIN_DEFINITION_LCAT) && (L->category != COMMAND_LCAT))
 		L->category = code_lcat_for_body;
 
@@ -14515,9 +14542,9 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	Languages__further_parsing(W, W->main_language);
 }
 
-#line 605 "inweb/Chapter 2/The Parser.w"
+#line 610 "inweb/Chapter 2/The Parser.w"
 
-#line 670 "inweb/Chapter 2/The Parser.w"
+#line 675 "inweb/Chapter 2/The Parser.w"
 text_stream *Parser__extract_purpose(text_stream *prologue, source_line *XL, section *S, source_line **adjust) {
 	text_stream *P = Str__duplicate(prologue);
 	while ((XL) && (XL->next_line) && (XL->owning_section == S) &&
@@ -14533,7 +14560,7 @@ text_stream *Parser__extract_purpose(text_stream *prologue, source_line *XL, sec
 	return P;
 }
 
-#line 691 "inweb/Chapter 2/The Parser.w"
+#line 696 "inweb/Chapter 2/The Parser.w"
 void Parser__wrong_version(int using, source_line *L, char *feature, int need) {
 	TEMPORARY_TEXT(warning);
 	WRITE_TO(warning, "%s is a feature available only in version %d syntax (you're using version %d)",
@@ -16891,19 +16918,50 @@ void Tangler__go(web *W, tangle_target *target, filename *dest_file) {
 	chapter *C;
 	section *S;
 	LOOP_WITHIN_TANGLE(C, S, target)
-		if (L->category == BEGIN_DEFINITION_LCAT) {
-			if (L->owning_paragraph == NULL) Main__error_in_web(TL_IS_200, L);
-			else Tags__open_ifdefs(OUT, L->owning_paragraph);
-			Languages__start_definition(OUT, lang,
-				L->text_operand,
-				L->text_operand2, S, L);
-			while ((L->next_line) && (L->next_line->category == CONT_DEFINITION_LCAT)) {
-				L = L->next_line;
-				Languages__prolong_definition(OUT, lang, L->text, S, L);
+		if (L->category == BEGIN_DEFINITION_LCAT)
+			if (L->default_defn == FALSE)
+				
+{
+#line 87 "inweb/Chapter 3/The Tangler.w"
+	if (L->owning_paragraph == NULL) Main__error_in_web(TL_IS_200, L);
+	else Tags__open_ifdefs(OUT, L->owning_paragraph);
+	Languages__start_definition(OUT, lang,
+		L->text_operand,
+		L->text_operand2, S, L);
+	while ((L->next_line) && (L->next_line->category == CONT_DEFINITION_LCAT)) {
+		L = L->next_line;
+		Languages__prolong_definition(OUT, lang, L->text, S, L);
+	}
+	Languages__end_definition(OUT, lang, S, L);
+	if (L->owning_paragraph) Tags__close_ifdefs(OUT, L->owning_paragraph);
+
+}
+#line 76 "inweb/Chapter 3/The Tangler.w"
+;
+	LOOP_WITHIN_TANGLE(C, S, target)
+		if (L->category == BEGIN_DEFINITION_LCAT)
+			if (L->default_defn) {
+				Languages__open_ifdef(OUT, lang, L->text_operand, FALSE);
+				
+{
+#line 87 "inweb/Chapter 3/The Tangler.w"
+	if (L->owning_paragraph == NULL) Main__error_in_web(TL_IS_200, L);
+	else Tags__open_ifdefs(OUT, L->owning_paragraph);
+	Languages__start_definition(OUT, lang,
+		L->text_operand,
+		L->text_operand2, S, L);
+	while ((L->next_line) && (L->next_line->category == CONT_DEFINITION_LCAT)) {
+		L = L->next_line;
+		Languages__prolong_definition(OUT, lang, L->text, S, L);
+	}
+	Languages__end_definition(OUT, lang, S, L);
+	if (L->owning_paragraph) Tags__close_ifdefs(OUT, L->owning_paragraph);
+
+}
+#line 81 "inweb/Chapter 3/The Tangler.w"
+;
+				Languages__close_ifdef(OUT, lang, L->text_operand, FALSE);
 			}
-			Languages__end_definition(OUT, lang, S, L);
-			if (L->owning_paragraph) Tags__close_ifdefs(OUT, L->owning_paragraph);
-		}
 	Enumerations__define_extents(OUT, target, lang);
 
 }
@@ -16933,7 +16991,7 @@ void Tangler__go(web *W, tangle_target *target, filename *dest_file) {
 
 	
 {
-#line 90 "inweb/Chapter 3/The Tangler.w"
+#line 100 "inweb/Chapter 3/The Tangler.w"
 	filename *F;
 	LOOP_OVER_LINKED_LIST(F, filename, W->headers)
 		Shell__copy(F, Reader__tangled_folder(W), "");
@@ -16944,7 +17002,7 @@ void Tangler__go(web *W, tangle_target *target, filename *dest_file) {
 	Languages__additional_tangling(lang, W, target);
 }
 
-#line 99 "inweb/Chapter 3/The Tangler.w"
+#line 109 "inweb/Chapter 3/The Tangler.w"
 void Tangler__tangle_paragraph(OUTPUT_STREAM, paragraph *P) {
 	Tags__open_ifdefs(OUT, P);
 	int contiguous = FALSE;
@@ -16953,14 +17011,14 @@ void Tangler__tangle_paragraph(OUTPUT_STREAM, paragraph *P) {
 		if (Languages__will_insert_in_tangle(P->under_section->sect_language, L)) {
 			
 {
-#line 124 "inweb/Chapter 3/The Tangler.w"
+#line 134 "inweb/Chapter 3/The Tangler.w"
 	if (contiguous == FALSE) {
 		contiguous = TRUE;
 		Languages__insert_line_marker(OUT, P->under_section->sect_language, L);
 	}
 
 }
-#line 105 "inweb/Chapter 3/The Tangler.w"
+#line 115 "inweb/Chapter 3/The Tangler.w"
 ;
 			Languages__insert_in_tangle(OUT, P->under_section->sect_language, L);
 		}
@@ -16969,14 +17027,14 @@ void Tangler__tangle_paragraph(OUTPUT_STREAM, paragraph *P) {
 		} else {
 			
 {
-#line 124 "inweb/Chapter 3/The Tangler.w"
+#line 134 "inweb/Chapter 3/The Tangler.w"
 	if (contiguous == FALSE) {
 		contiguous = TRUE;
 		Languages__insert_line_marker(OUT, P->under_section->sect_language, L);
 	}
 
 }
-#line 111 "inweb/Chapter 3/The Tangler.w"
+#line 121 "inweb/Chapter 3/The Tangler.w"
 ;
 			Tangler__tangle_code(OUT, L->text, P->under_section, L); WRITE("\n");
 		}
@@ -16984,7 +17042,7 @@ void Tangler__tangle_paragraph(OUTPUT_STREAM, paragraph *P) {
 	Tags__close_ifdefs(OUT, P);
 }
 
-#line 134 "inweb/Chapter 3/The Tangler.w"
+#line 144 "inweb/Chapter 3/The Tangler.w"
 void Tangler__tangle_code(OUTPUT_STREAM, text_stream *original, section *S, source_line *L) {
 	int mlen, slen;
 	int mpos = Regexp__find_expansion(original, '@', '<', '@', '>', &mlen);
@@ -16993,7 +17051,7 @@ void Tangler__tangle_code(OUTPUT_STREAM, text_stream *original, section *S, sour
 		(Languages__allow_expansion(S->sect_language, original)))
 		
 {
-#line 166 "inweb/Chapter 3/The Tangler.w"
+#line 176 "inweb/Chapter 3/The Tangler.w"
 	TEMPORARY_TEXT(temp);
 	Str__copy(temp, original); Str__truncate(temp, mpos);
 	Languages__tangle_code(OUT, S->sect_language, temp);
@@ -17019,12 +17077,12 @@ void Tangler__tangle_code(OUTPUT_STREAM, text_stream *original, section *S, sour
 	DISCARD_TEXT(temp);
 
 }
-#line 140 "inweb/Chapter 3/The Tangler.w"
+#line 150 "inweb/Chapter 3/The Tangler.w"
 
 	else if (spos >= 0)
 		
 {
-#line 206 "inweb/Chapter 3/The Tangler.w"
+#line 216 "inweb/Chapter 3/The Tangler.w"
 	web *W = S->owning_chapter->owning_web;
 
 	TEMPORARY_TEXT(temp);
@@ -17047,13 +17105,13 @@ void Tangler__tangle_code(OUTPUT_STREAM, text_stream *original, section *S, sour
 	DISCARD_TEXT(temp);
 
 }
-#line 142 "inweb/Chapter 3/The Tangler.w"
+#line 152 "inweb/Chapter 3/The Tangler.w"
 
 	else
 		Languages__tangle_code(OUT, S->sect_language, original); /* this is usually what happens */
 }
 
-#line 231 "inweb/Chapter 3/The Tangler.w"
+#line 241 "inweb/Chapter 3/The Tangler.w"
 tangle_target *Tangler__primary_target(web *W) {
 	if (W == NULL) internal_error("no such web");
 	return FIRST_IN_LINKED_LIST(tangle_target, W->tangle_targets);

@@ -51,6 +51,7 @@ correspond to one of these:
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">category</span><span class="plain">; </span>    <span class="comment">what sort of line this is: an <code class="display"><span class="extract">*_LCAT</span></code> value</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">command_code</span><span class="plain">; </span>    <span class="comment">used only for <code class="display"><span class="extract">COMMAND_LCAT</span></code> lines: a <code class="display"><span class="extract">*_CMD</span></code> value</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">default_defn</span><span class="plain">; </span>    <span class="comment">used only for <code class="display"><span class="extract">BEGIN_DEFINITION_LCAT</span></code> lines</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">is_commentary</span><span class="plain">; </span>    <span class="comment">flag</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">function</span><span class="plain"> *</span><span class="identifier">function_defined</span><span class="plain">; </span>    <span class="comment">if any C-like function is defined on this line</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">preform_nonterminal</span><span class="plain"> *</span><span class="identifier">preform_nonterminal_defined</span><span class="plain">; </span>    <span class="comment">similarly</span>
@@ -81,6 +82,7 @@ correspond to one of these:
 
         <span class="identifier">sl</span><span class="plain">-</span><span class="element">&gt;category</span><span class="plain"> = </span><span class="constant">NO_LCAT</span><span class="plain">; </span>    <span class="comment">that is, unknown category as yet</span>
         <span class="identifier">sl</span><span class="plain">-</span><span class="element">&gt;command_code</span><span class="plain"> = </span><span class="constant">NO_CMD</span><span class="plain">;</span>
+        <span class="identifier">sl</span><span class="plain">-</span><span class="element">&gt;default_defn</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">sl</span><span class="plain">-</span><span class="element">&gt;is_commentary</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">sl</span><span class="plain">-</span><span class="element">&gt;function_defined</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">sl</span><span class="plain">-</span><span class="element">&gt;preform_nonterminal_defined</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
