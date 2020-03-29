@@ -261,3 +261,16 @@ int Filenames::eq(filename *F1, filename *F2) {
 	DISCARD_TEXT(T2);
 	return rv;
 }
+
+@h Timestamps.
+
+=
+time_t Filenames::timestamp(filename *F) {
+	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
+	TEMPORARY_TEXT(FN);
+	WRITE_TO(FN, "%f", F);
+	Str::copy_to_locale_string(transcoded_pathname, FN, 4*MAX_FILENAME_LENGTH);
+	time_t t = Platform::timestamp(transcoded_pathname);
+	DISCARD_TEXT(FN);
+	return t;
+}

@@ -251,6 +251,24 @@ void Platform::closedir(void *folder) {
 	closedir(dirp);
 }
 
+@h Timestamp.
+There are implementations of the C standard library where |time_t| has
+super-weird behaviour, but on almost POSIX systems, time 0 corresponds to
+midnight on 1 January 1970. All we really need is that the "never" value
+is one which is earlier than any possible timestamp on the files we'll
+be dealing with.
+
+=
+time_t Platform::never_time(void) {
+	return (time_t) 0;
+}
+
+time_t Platform::timestamp(char *transcoded_filename) {
+	struct stat filestat;
+	if (stat(transcoded_filename, &filestat) != -1) return filestat.st_mtime;
+	return Platform::never_time();
+}
+
 @h Sync.
 Both names here are of directories which do exist. The function makes
 the |dest| tree an exact copy of the |source| tree (and therefore deletes
