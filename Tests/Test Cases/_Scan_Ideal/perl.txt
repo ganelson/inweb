@@ -1,4 +1,4 @@
-web "perl": 1 section(s) : 3 paragraph(s) : 16 line(s)
+web "perl": 1 section : 3 paragraphs : 16 lines
 Scan of source lines for '0'
 0000001  SECTION_HEADING.....  Main.
 0000002  PURPOSE_BODY........  

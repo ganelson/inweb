@@ -213,7 +213,7 @@ If the text in double-squares isn't recognised, that's not an error: it simply
 passes straight through. So |[[water]]| becomes just |[[water]]|.
 
 @<Expand a double-square command@> =
-	web *W = S->owning_chapter->owning_web;
+	web *W = S->owning_web;
 
 	TEMPORARY_TEXT(temp);
 	for (int i=0; i<spos; i++) PUT_TO(temp, Str::get_at(original, i));
@@ -222,8 +222,8 @@ passes straight through. So |[[water]]| becomes just |[[water]]|.
 	for (int i=0; i<slen-4; i++) Str::put_at(temp, i, Str::get_at(original, spos+2+i));
 	Str::truncate(temp, slen-4);
 	if (Languages::special_tangle_command(OUT, S->sect_language, temp) == FALSE) {
-		if (Bibliographic::look_up_datum(W, temp))
-			WRITE("%S", Bibliographic::get_datum(W, temp));
+		if (Bibliographic::look_up_datum(W->md, temp))
+			WRITE("%S", Bibliographic::get_datum(W->md, temp));
 		else
 			WRITE("[[%S]]", temp);
 	}

@@ -27,9 +27,7 @@ Chapter 1: Top Level
 Chapter 2: Parsing a Web
 "Reading in the entire text of the web, parsing its structure and looking for
 identifier names within it."
-	Bibliographic Data
 	The Reader
-	Modules
 	Line Categories
 	The Parser
 	Paragraph Macros
@@ -68,5 +66,4 @@ Chapter 6: Extras
 "Additional features for turning webs into open-source projects."
 	Makefiles
 	Git Support
-	Build Files
 	Readme Writeme

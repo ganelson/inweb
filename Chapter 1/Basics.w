@@ -15,7 +15,6 @@ We need to itemise the structures we'll want to allocate. To explicate this
 see Foundation, but these are all struct names with either |_MT| or, in one
 case, |_array_MT| appended. MT stands for "memory type".
 
-@e bibliographic_datum_MT
 @e breadcrumb_request_MT
 @e c_structure_MT
 @e chapter_MT
@@ -26,8 +25,6 @@ case, |_array_MT| appended. MT stands for "memory type".
 @e macro_MT
 @e macro_tokens_MT
 @e macro_usage_MT
-@e module_MT
-@e module_search_MT
 @e nonterminal_variable_MT
 @e para_macro_MT
 @e paragraph_MT
@@ -53,7 +50,6 @@ types.
 
 =
 ALLOCATE_IN_ARRAYS(source_line, 1000)
-ALLOCATE_INDIVIDUALLY(bibliographic_datum)
 ALLOCATE_INDIVIDUALLY(breadcrumb_request)
 ALLOCATE_INDIVIDUALLY(c_structure)
 ALLOCATE_INDIVIDUALLY(chapter)
@@ -64,8 +60,6 @@ ALLOCATE_INDIVIDUALLY(hash_table_entry)
 ALLOCATE_INDIVIDUALLY(macro_tokens)
 ALLOCATE_INDIVIDUALLY(macro_usage)
 ALLOCATE_INDIVIDUALLY(macro)
-ALLOCATE_INDIVIDUALLY(module_search)
-ALLOCATE_INDIVIDUALLY(module)
 ALLOCATE_INDIVIDUALLY(nonterminal_variable)
 ALLOCATE_INDIVIDUALLY(para_macro)
 ALLOCATE_INDIVIDUALLY(paragraph_tagging)

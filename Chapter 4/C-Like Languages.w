@@ -970,7 +970,7 @@ bibliographic variable, but don't do that.
 =
 void CLike::post_analysis(programming_language *self, web *W) {
 	int check_namespaces = FALSE;
-	if (Str::eq_wide_string(Bibliographic::get_datum(W, I"Namespaces"), L"On")) check_namespaces = TRUE;
+	if (Str::eq_wide_string(Bibliographic::get_datum(W->md, I"Namespaces"), L"On")) check_namespaces = TRUE;
 	function *fn;
 	LOOP_OVER(fn, function) {
 		hash_table_entry *hte =

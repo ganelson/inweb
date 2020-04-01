@@ -55,20 +55,20 @@ void Analyser::catalogue_the_sections(web *W, text_stream *range, int form) {
 	section *S;
 	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
 		LOOP_OVER_LINKED_LIST(S, section, C->sections) {
-			if (max_range_width < Str::len(S->range)) max_range_width = Str::len(S->range);
+			if (max_range_width < Str::len(S->sect_range)) max_range_width = Str::len(S->sect_range);
 			TEMPORARY_TEXT(main_title);
-			WRITE_TO(main_title, "Chapter %S/%S", C->ch_range, S->sect_title);
+			WRITE_TO(main_title, "Chapter %S/%S", C->md->ch_range, S->md->sect_title);
 			if (max_width < Str::len(main_title)) max_width = Str::len(main_title);
 			DISCARD_TEXT(main_title);
 		}
 	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
-		if ((Str::eq_wide_string(range, L"0")) || (Str::eq(range, C->ch_range))) {
+		if ((Str::eq_wide_string(range, L"0")) || (Str::eq(range, C->md->ch_range))) {
 			PRINT("      -----\n");
 			LOOP_OVER_LINKED_LIST(S, section, C->sections) {
 				TEMPORARY_TEXT(main_title);
-				WRITE_TO(main_title, "Chapter %S/%S", C->ch_range, S->sect_title);
-				PRINT("%4d  %S", S->sect_extent, S->range);
-				for (int i = Str::len(S->range); i<max_range_width+2; i++) PRINT(" ");
+				WRITE_TO(main_title, "Chapter %S/%S", C->md->ch_range, S->md->sect_title);
+				PRINT("%4d  %S", S->sect_extent, S->sect_range);
+				for (int i = Str::len(S->sect_range); i<max_range_width+2; i++) PRINT(" ");
 				PRINT("%S", main_title);
 				for (int i = Str::len(main_title); i<max_width+2; i++) PRINT(" ");
 				if (form != BASIC_SECTIONCAT)
@@ -347,14 +347,14 @@ folder: failing that, we fall back on a default script belonging to Inweb.
 
 =
 void Analyser::write_makefile(web *W, filename *F) {
-	filename *prototype = Filenames::in_folder(W->path_to_web, I"makescript.txt");
+	filename *prototype = Filenames::in_folder(W->md->path_to_web, I"makescript.txt");
 	if (!(TextFiles::exists(prototype)))
 		prototype = Filenames::in_folder(path_to_inweb_materials, I"makescript.txt");
 	Makefiles::write(W, prototype, F);
 }
 
 void Analyser::write_gitignore(web *W, filename *F) {
-	filename *prototype = Filenames::in_folder(W->path_to_web, I"gitignorescript.txt");
+	filename *prototype = Filenames::in_folder(W->md->path_to_web, I"gitignorescript.txt");
 	if (!(TextFiles::exists(prototype)))
 		prototype = Filenames::in_folder(path_to_inweb_materials, I"gitignorescript.txt");
 	Git::write_gitignore(W, prototype, F);

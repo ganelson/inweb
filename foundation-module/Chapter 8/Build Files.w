@@ -7,8 +7,8 @@ When we read a web, we look for a file in it called |build.txt|. If no such
 file exists, we look for the same thing in the current working directory.
 
 =
-filename *BuildFiles::build_file_for_web(web *W) {
-	filename *F = Filenames::in_folder(W->path_to_web, I"build.txt");
+filename *BuildFiles::build_file_for_web(web_md *WS) {
+	filename *F = Filenames::in_folder(WS->path_to_web, I"build.txt");
 	if (TextFiles::exists(F)) return F;
 	F = Filenames::in_folder(NULL, I"build.txt");
 	if (TextFiles::exists(F)) return F;
@@ -74,16 +74,16 @@ Whenever a web is read in by Inweb, its build file is looked at in order to
 set some bibliographic data.
 
 =
-void BuildFiles::set_bibliographic_data_for(web *W) {
-	filename *F = BuildFiles::build_file_for_web(W);
+void BuildFiles::set_bibliographic_data_for(web_md *WS) {
+	filename *F = BuildFiles::build_file_for_web(WS);
 	if (F) {
 		build_file_data bfd = BuildFiles::read(F);
 		if (Str::len(bfd.prerelease_text) > 0)
-			Bibliographic::set_datum(W, I"Prerelease", bfd.prerelease_text);
+			Bibliographic::set_datum(WS, I"Prerelease", bfd.prerelease_text);
 		if (Str::len(bfd.build_code) > 0)
-			Bibliographic::set_datum(W, I"Build Number", bfd.build_code);
+			Bibliographic::set_datum(WS, I"Build Number", bfd.build_code);
 		if (Str::len(bfd.build_date) > 0)
-			Bibliographic::set_datum(W, I"Build Date", bfd.build_date);
+			Bibliographic::set_datum(WS, I"Build Date", bfd.build_date);
 	}
 }
 
@@ -96,26 +96,26 @@ If no error occurs, then the expansion |[[Semantic Version Number]]| is
 guaranteed to produce a semver-legal version number.
 
 =
-void BuildFiles::deduce_semver(web *W) {
+void BuildFiles::deduce_semver(web_md *WS) {
 	TEMPORARY_TEXT(combined);
-	text_stream *s = Bibliographic::get_datum(W, I"Semantic Version Number");
+	text_stream *s = Bibliographic::get_datum(WS, I"Semantic Version Number");
 	if (Str::len(s) > 0) WRITE_TO(combined, "%S", s);
 	else {
-		text_stream *v = Bibliographic::get_datum(W, I"Version Number");
+		text_stream *v = Bibliographic::get_datum(WS, I"Version Number");
 		if (Str::len(v) > 0) WRITE_TO(combined, "%S", v);
-		text_stream *p = Bibliographic::get_datum(W, I"Prerelease");
+		text_stream *p = Bibliographic::get_datum(WS, I"Prerelease");
 		if (Str::len(p) > 0) WRITE_TO(combined, "-%S", p);
-		text_stream *b = Bibliographic::get_datum(W, I"Build Number");
+		text_stream *b = Bibliographic::get_datum(WS, I"Build Number");
 		if (Str::len(b) > 0) WRITE_TO(combined, "+%S", b);
 	}
 	if (Str::len(combined) > 0) {
-		W->version_number = VersionNumbers::from_text(combined);
-		if (VersionNumbers::is_null(W->version_number)) {
+		WS->version_number = VersionNumbers::from_text(combined);
+		if (VersionNumbers::is_null(WS->version_number)) {
 			Errors::fatal_with_text(
 				"Combined version '%S' does not comply with the semver standard",
 				combined);
 		} else {
-			Bibliographic::set_datum(W, I"Semantic Version Number", combined);
+			Bibliographic::set_datum(WS, I"Semantic Version Number", combined);
 		}
 	}
 	DISCARD_TEXT(combined);
@@ -126,8 +126,8 @@ We update the build date to today and, if supplied, also increment the build
 number if we find that the date has changed.
 
 =
-void BuildFiles::advance_for_web(web *W) {
-	filename *F = BuildFiles::build_file_for_web(W);
+void BuildFiles::advance_for_web(web_md *WS) {
+	filename *F = BuildFiles::build_file_for_web(WS);
 	if (F) BuildFiles::advance(F);
 	else Errors::fatal("web has no build file");
 }

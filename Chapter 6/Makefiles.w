@@ -104,10 +104,10 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	pathname *path_to_intest = Pathnames::subfolder(Pathnames::up(path_to_inweb), I"intest");
 	WRITE("INTEST = "); Makefiles::pathname_slashed(OUT, path_to_intest); WRITE("/Tangled/intest\n");
 	if (MS->for_web) {
-		WRITE("MYNAME = %S\n", Pathnames::directory_name(MS->for_web->path_to_web));
-		WRITE("ME = "); Makefiles::pathname_slashed(OUT, MS->for_web->path_to_web);
+		WRITE("MYNAME = %S\n", Pathnames::directory_name(MS->for_web->md->path_to_web));
+		WRITE("ME = "); Makefiles::pathname_slashed(OUT, MS->for_web->md->path_to_web);
 		WRITE("\n");
-		module *MW = MS->for_web->as_module;
+		module *MW = MS->for_web->md->as_module;
 		module *X = FIRST_IN_LINKED_LIST(module, MW->dependencies);
 		if (X) {
 			WRITE("# which depends on:\n");
@@ -124,7 +124,7 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	return;
 
 @<Declare a tool@> =
-	Modules::new(mr.exp[0], Pathnames::from_text(mr.exp[2]), MAKEFILE_TOOL_MOM);
+	WebModules::new(mr.exp[0], Pathnames::from_text(mr.exp[2]), MAKEFILE_TOOL_MOM);
 	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", mr.exp[0], mr.exp[0], mr.exp[1]);
 	WRITE("%SX = $(%SWEB)/Tangled/%S\n", mr.exp[0], mr.exp[0], mr.exp[1]);
@@ -133,26 +133,26 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	return;
 
 @<Declare a module@> =
-	Modules::new(mr.exp[0], Pathnames::from_text(mr.exp[2]), MAKEFILE_MODULE_MOM);
+	WebModules::new(mr.exp[0], Pathnames::from_text(mr.exp[2]), MAKEFILE_MODULE_MOM);
 	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
 	MS->last_line_was_blank = FALSE;
 	Regexp::dispose_of(&mr);
 	return;
 
 @<Declare a dependency@> =
-	module *MA = Modules::find_loaded_by_name(tfp, mr.exp[0]);
-	module *MB = Modules::find_loaded_by_name(tfp, mr.exp[1]);
-	if ((MA) && (MB)) Modules::dependency(MA, MB);
+	module *MA = WebModules::find_loaded_by_name(tfp, mr.exp[0]);
+	module *MB = WebModules::find_loaded_by_name(tfp, mr.exp[1]);
+	if ((MA) && (MB)) WebModules::dependency(MA, MB);
 	Regexp::dispose_of(&mr);
 	return;
 
 @<Expand dependent-files@> =
 	WRITE("%S", mr.exp[0]);
-	if ((MS->for_web) && (MS->for_web->chaptered == FALSE))
+	if ((MS->for_web) && (MS->for_web->md->chaptered == FALSE))
 		WRITE(" $(ME)/Contents.w $(ME)/Sections/*.w");
 	else
 		WRITE(" $(ME)/Contents.w $(ME)/Chapter*/*.w");
-	module *MW = MS->for_web->as_module;
+	module *MW = MS->for_web->md->as_module;
 	module *X = FIRST_IN_LINKED_LIST(module, MW->dependencies);
 	if (X) {
 		int N = 1;
@@ -168,7 +168,7 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 
 @<Expand dependent-files-for@> =
 	WRITE("%S", mr.exp[0]);
-	module *MW = Modules::find_loaded_by_name(tfp, mr.exp[1]);
+	module *MW = WebModules::find_loaded_by_name(tfp, mr.exp[1]);
 	if (MW) {
 		WRITE(" $(%SWEB)/Contents.w $(%SWEB)/Chapter*/*.w",
 			MW->module_name, MW->module_name, MW->module_name);

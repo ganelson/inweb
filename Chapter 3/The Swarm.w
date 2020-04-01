@@ -24,19 +24,19 @@ void Swarm::weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag,
 	chapter *C;
 	section *S;
 	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
-		if (C->imported == FALSE) {
+		if (C->md->imported == FALSE) {
 			if (swarm_mode == SWARM_CHAPTERS_SWM)
-				if ((W->chaptered == TRUE) && (Reader::range_within(C->ch_range, range))) {
+				if ((W->md->chaptered == TRUE) && (Reader::range_within(C->md->ch_range, range))) {
 					C->ch_weave = Swarm::weave_subset(W,
-						C->ch_range, FALSE, tag, pattern, to, into, docs_mode,
+						C->md->ch_range, FALSE, tag, pattern, to, into, docs_mode,
 						breadcrumbs, navigation);
 					if (Str::len(range) > 0) swarm_leader = C->ch_weave;
 				}
 			if (swarm_mode == SWARM_SECTIONS_SWM)
 				LOOP_OVER_LINKED_LIST(S, section, C->sections)
-					if (Reader::range_within(S->range, range))
+					if (Reader::range_within(S->sect_range, range))
 						S->sect_weave = Swarm::weave_subset(W,
-							S->range, FALSE, tag, pattern, to, into, docs_mode,
+							S->sect_range, FALSE, tag, pattern, to, into, docs_mode,
 							breadcrumbs, navigation);
 		}
 
@@ -98,7 +98,7 @@ typedef struct weave_target {
 	wt->docs_mode = docs_mode;
 	wt->navigation = navigation;
 	wt->breadcrumbs = breadcrumbs;
-	if (W->no_sections <= 1) wt->self_contained = TRUE;
+	if (W->md->no_sections <= 1) wt->self_contained = TRUE;
 	Str::copy(wt->cover_sheet_to_use, I"cover-sheet");
 
 	TEMPORARY_TEXT(leafname);
@@ -106,10 +106,10 @@ typedef struct weave_target {
 	pathname *H = W->redirect_weaves_to;
 	if (H == NULL) H = into;
 	if (H == NULL) {
-		if (W->single_file == NULL)
+		if (W->md->single_file == NULL)
 	 		H = Reader::woven_folder(W);
 	 	else
-	 		H = Filenames::get_path_to(W->single_file);
+	 		H = Filenames::get_path_to(W->md->single_file);
 	}
 	if (to) {
 		wt->weave_to = to;
@@ -124,8 +124,8 @@ and details of any cover-sheet to use.
 	match_results mr = Regexp::create_mr();
 	if (Str::eq_wide_string(range, L"0")) {
 		wt->booklet_title = Str::new_from_wide_string(L"Complete Program");
-		if (W->single_file) {
-			Filenames::write_unextended_leafname(leafname, W->single_file);
+		if (W->md->single_file) {
+			Filenames::write_unextended_leafname(leafname, W->md->single_file);
 		} else {
 			WRITE_TO(leafname, "Complete");
 		}
@@ -171,10 +171,10 @@ generic |index.html| if those aren't available in the current pattern.
 =
 void Swarm::weave_index_templates(web *W, text_stream *range, weave_pattern *pattern,
 	int self_contained, pathname *into, filename *F, linked_list *crumbs, int docs) {
-	if (!(Bibliographic::data_exists(W, I"Version Number")))
-		Bibliographic::set_datum(W, I"Version Number", I" ");
+	if (!(Bibliographic::data_exists(W->md, I"Version Number")))
+		Bibliographic::set_datum(W->md, I"Version Number", I" ");
 	text_stream *index_leaf = NULL;
-	if (W->chaptered) index_leaf = I"chaptered-index.html";
+	if (W->md->chaptered) index_leaf = I"chaptered-index.html";
 	else index_leaf = I"unchaptered-index.html";
 	filename *OUT = Patterns::obtain_filename(pattern, index_leaf);
 	if (OUT == NULL) OUT = Patterns::obtain_filename(pattern, I"index.html");

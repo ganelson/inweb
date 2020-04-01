@@ -6,9 +6,6 @@ this plan out.
 @ Inweb syntax has gradually shifted over the years, but there are two main
 versions: the second was cleaned up and simplified from the first in 2019.
 
-@e V1_SYNTAX from 1
-@e V2_SYNTAX
-
 =
 int default_inweb_syntax = V2_SYNTAX;
 
@@ -95,7 +92,7 @@ void Main::follow_instructions(inweb_instructions *ins) {
 	web *W = NULL;
 	if ((ins->chosen_web) || (ins->chosen_file))
 		W = Reader::load_web(ins->chosen_web, ins->chosen_file,
-			Modules::make_search_path(ins->import_setting), ins->verbose_switch,
+			WebModules::make_search_path(ins->import_setting), ins->verbose_switch,
 			ins->inweb_mode, ins->weave_into_setting, TRUE);
 	if (no_inweb_errors == 0) {
 		if (ins->inweb_mode == TRANSLATE_MODE) @<Translate a makefile@>
@@ -124,7 +121,7 @@ void Main::follow_instructions(inweb_instructions *ins) {
 @ But otherwise we do something with the given web:
 
 @<Analyse, tangle or weave an existing web@> =
-	Reader::print_web_statistics(W);
+	WebStructure::print_web_statistics(W->md);
 	if (ins->inweb_mode == ANALYSE_MODE) @<Analyse the web@>;
 	if (ins->inweb_mode == TANGLE_MODE) @<Tangle the web@>;
 	if (ins->inweb_mode == WEAVE_MODE) @<Weave the web@>;
@@ -145,7 +142,7 @@ void Main::follow_instructions(inweb_instructions *ins) {
 	if (ins->gitignore_setting)
 		Analyser::write_gitignore(W, ins->gitignore_setting);
 	if (ins->advance_switch)
-		BuildFiles::advance_for_web(W);
+		BuildFiles::advance_for_web(W->md);
 	if (ins->scan_switch)
 		Analyser::scan_line_categories(W, ins->chosen_range);
 
@@ -170,15 +167,13 @@ line , but otherwise we impose a sensible choice based on the target.
 		@<Work out main tangle destination@>;
 	} else if (Reader::get_section_for_range(W, ins->chosen_range)) {
 		@<Work out an independent tangle destination, from one section of the web@>;
-	} else {
-		@<Work out an independent tangle destination, from one chapter of the web@>;
 	}
 	if (Str::len(tangle_leaf) == 0) { Errors::fatal("no tangle destination known"); }
 
 	filename *tangle_to = ins->tangle_setting;
 	if (tangle_to == NULL) {
 		pathname *P = Reader::tangled_folder(W);
-		if (W->single_file) P = Filenames::get_path_to(W->single_file);
+		if (W->md->single_file) P = Filenames::get_path_to(W->md->single_file);
 		tangle_to = Filenames::in_folder(P, tangle_leaf);
 	}
 	if (tn == NULL) tn = Tangler::primary_target(W);
@@ -190,10 +185,10 @@ which for many small webs will be the entire thing.
 
 @<Work out main tangle destination@> =
 	tn = NULL;
-	if (Bibliographic::data_exists(W, I"Short Title"))
-		Str::copy(tangle_leaf, Bibliographic::get_datum(W, I"Short Title"));
+	if (Bibliographic::data_exists(W->md, I"Short Title"))
+		Str::copy(tangle_leaf, Bibliographic::get_datum(W->md, I"Short Title"));
 	else
-		Str::copy(tangle_leaf, Bibliographic::get_datum(W, I"Title"));
+		Str::copy(tangle_leaf, Bibliographic::get_datum(W->md, I"Title"));
 	Str::concatenate(tangle_leaf, W->main_language->file_extension);
 
 @ If someone tangles, say, |2/eg| then the default filename is "Example Section".
@@ -202,28 +197,7 @@ which for many small webs will be the entire thing.
 	section *S = Reader::get_section_for_range(W, ins->chosen_range);
 	tn = S->sect_target;
 	if (tn == NULL) Errors::fatal("section cannot be independently tangled");
-	Str::copy(tangle_leaf, Filenames::get_leafname(S->source_file_for_section));
-
-@ If someone tangles, say, |B| meaning "Appendix B: Important Warnings" then
-the default filename is "Important Warnings".
-
-@<Work out an independent tangle destination, from one chapter of the web@> =
-	chapter *C;
-	LOOP_OVER(C, chapter)
-		if (Str::eq(ins->chosen_range, C->ch_range)) {
-			match_results mr = Regexp::create_mr();
-			if (C->ch_target) {
-				if (Regexp::match(&mr, C->ch_title, L"%c+?: (%c+)"))
-					Str::copy(tangle_leaf, mr.exp[0]);
-				else
-					Str::copy(tangle_leaf, C->ch_title);
-				tn = C->ch_target;
-				break;
-			}
-			Regexp::dispose_of(&mr);
-		}
-	if (tn == NULL)
-		Errors::fatal("only the entire web, or specific sections, can be tangled");
+	Str::copy(tangle_leaf, Filenames::get_leafname(S->md->source_file_for_section));
 
 @ Weaving is not actually easier, it's just more thoroughly delegated:
 
@@ -248,6 +222,7 @@ the default filename is "Important Warnings".
 			if (Str::len(pattern->open_command) > 0) shall_we_open = TRUE;
 			else shall_we_open = FALSE;
 		}
+		if (tag) PRINT("Tag!\n");
 		Swarm::weave_subset(W, ins->chosen_range, shall_we_open, tag, pattern,
 			ins->weave_to_setting, ins->weave_into_setting, ins->weave_docs,
 			ins->breadcrumb_setting, ins->navigation_setting);
@@ -263,13 +238,13 @@ the default filename is "Important Warnings".
 
 @<Prepare a docs weave@> =
 	if (ins->weave_into_setting == NULL) {
-		pathname *docs = Pathnames::subfolder(W->path_to_web, I"docs");
+		pathname *docs = Pathnames::subfolder(W->md->path_to_web, I"docs");
 		Pathnames::create_in_file_system(docs);
 		text_stream *leaf = Str::new();
-		if (Bibliographic::data_exists(W, I"Short Title"))
-			Str::copy(leaf, Bibliographic::get_datum(W, I"Short Title"));
+		if (Bibliographic::data_exists(W->md, I"Short Title"))
+			Str::copy(leaf, Bibliographic::get_datum(W->md, I"Short Title"));
 		else
-			Str::copy(leaf, Bibliographic::get_datum(W, I"Title"));
+			Str::copy(leaf, Bibliographic::get_datum(W->md, I"Title"));
 		if (Str::len(leaf) > 0) {
 			ins->weave_into_setting = Pathnames::subfolder(docs, leaf);
 			Pathnames::create_in_file_system(ins->weave_into_setting);
@@ -283,7 +258,7 @@ the default filename is "Important Warnings".
 @<Assign section numbers for printing purposes@> =
 	section *S; int k = 1;
 	LOOP_OVER(S, section)
-		if (Reader::range_within(S->range, ins->chosen_range))
+		if (Reader::range_within(S->sect_range, ins->chosen_range))
 			S->printed_number = k++;
 
 @h Error messages.

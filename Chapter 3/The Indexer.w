@@ -88,7 +88,7 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 		if (include) @<Weave in navigation@>;
 	} else if (Regexp::match(&mr2, command, L"Template (%c*?)")) {
 		if (include) @<Weave in an index@>;
-	} else if (Bibliographic::data_exists(state->target->weave_web, command)) {
+	} else if (Bibliographic::data_exists(state->target->weave_web->md, command)) {
 		if (include) @<Weave in the value of this variable name@>;
 	} else {
 		if (include) WRITE("%S", command);
@@ -123,7 +123,7 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 			NULL, FALSE);
 
 @<Weave in the value of this variable name@> =
-	WRITE("%S", Bibliographic::get_datum(state->target->weave_web, command));
+	WRITE("%S", Bibliographic::get_datum(state->target->weave_web->md, command));
 
 @
 
@@ -280,12 +280,12 @@ void Indexer::save_template_line(text_stream *line, text_file_position *tfp, voi
 	for (int j=0; j<cp->stack_pointer; j++) {
 		if (cp->repeat_stack_level[j] == CHAPTER_LEVEL)
 			PRINT(" %d: %S/%S",
-				j, ((chapter *) CONTENT_IN_ITEM(cp->repeat_stack_variable[j], chapter))->ch_range,
-				((chapter *) CONTENT_IN_ITEM(cp->repeat_stack_threshold[j], chapter))->ch_range);
+				j, ((chapter *) CONTENT_IN_ITEM(cp->repeat_stack_variable[j], chapter))->md->ch_range,
+				((chapter *) CONTENT_IN_ITEM(cp->repeat_stack_threshold[j], chapter))->md->ch_range);
 		else if (cp->repeat_stack_level[j] == SECTION_LEVEL)
 			PRINT(" %d: %S/%S",
-				j, ((section *) CONTENT_IN_ITEM(cp->repeat_stack_variable[j], section))->range,
-				((section *) CONTENT_IN_ITEM(cp->repeat_stack_threshold[j], section))->range);
+				j, ((section *) CONTENT_IN_ITEM(cp->repeat_stack_variable[j], section))->sect_range,
+				((section *) CONTENT_IN_ITEM(cp->repeat_stack_threshold[j], section))->sect_range);
 	}
 	PRINT("\n");
 
@@ -300,13 +300,13 @@ chapter as its value during the sole iteration.
 		section *S;
 		LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
 			LOOP_OVER_LINKED_LIST(S, section, C->sections)
-				if (Str::eq(S->range, mr.exp[0])) {
+				if (Str::eq(S->sect_range, mr.exp[0])) {
 					Indexer::start_CI_loop(cp, SECTION_LEVEL, S_item, S_item, lpos);
 					Regexp::dispose_of(&mr);
 					goto CYCLE;
 				}
 		LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
-			if (Str::eq(C->ch_range, mr.exp[0])) {
+			if (Str::eq(C->md->ch_range, mr.exp[0])) {
 				Indexer::start_CI_loop(cp, CHAPTER_LEVEL, C_item, C_item, lpos);
 				Regexp::dispose_of(&mr);
 				goto CYCLE;
@@ -326,7 +326,7 @@ chapter as its value during the sole iteration.
 	if (loop_level != 0) {
 		linked_list_item *from = NULL, *to = NULL;
 		linked_list_item *CI = FIRST_ITEM_IN_LINKED_LIST(chapter, W->chapters);
-		while ((CI) && (CONTENT_IN_ITEM(CI, chapter)->imported))
+		while ((CI) && (CONTENT_IN_ITEM(CI, chapter)->md->imported))
 			CI = NEXT_ITEM_IN_LINKED_LIST(CI, chapter);
 		if (loop_level == CHAPTER_LEVEL) {
 			from = CI;
@@ -334,7 +334,7 @@ chapter as its value during the sole iteration.
 			if (Str::eq_wide_string(cp->restrict_to_range, L"0") == FALSE) {
 				chapter *C;
 				LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
-					if (Str::eq(C->ch_range, cp->restrict_to_range)) {
+					if (Str::eq(C->md->ch_range, cp->restrict_to_range)) {
 						from = C_item; to = from;
 						break;
 					}
@@ -449,7 +449,7 @@ its square-bracketed parts.
 
 		TEMPORARY_TEXT(substituted);
 		match_results mr = Regexp::create_mr();
-		if (Bibliographic::data_exists(W, varname)) {
+		if (Bibliographic::data_exists(W->md, varname)) {
 			@<Substitute any bibliographic datum named@>;
 		} else if (Regexp::match(&mr, varname, L"Navigation")) {
 			Indexer::nav_column(substituted, cp->nav_path, cp->nav_web,
@@ -492,7 +492,7 @@ its square-bracketed parts.
 @ This is why, for instance, |[[Author]]| is replaced by the author's name:
 
 @<Substitute any bibliographic datum named@> =
-	Str::copy(substituted, Bibliographic::get_datum(W, varname));
+	Str::copy(substituted, Bibliographic::get_datum(W->md, varname));
 
 @ We store little about the complete-web-in-one-file PDF:
 
@@ -505,33 +505,33 @@ its square-bracketed parts.
 
 @<Substitute a detail about the currently selected Chapter@> =
 	if (Str::eq_wide_string(detail, L"Title")) {
-		Str::copy(substituted, C->ch_title);
+		Str::copy(substituted, C->md->ch_title);
 	} else if (Str::eq_wide_string(detail, L"Code")) {
-		Str::copy(substituted, C->ch_range);
+		Str::copy(substituted, C->md->ch_range);
 	} else if (Str::eq_wide_string(detail, L"Purpose")) {
-		Str::copy(substituted, C->rubric);
+		Str::copy(substituted, C->md->rubric);
 	} else if (Formats::substitute_post_processing_data(substituted, C->ch_weave, detail, pattern)) {
 		;
 	} else {
-		WRITE_TO(substituted, "%S for %S", varname, C->ch_title);
+		WRITE_TO(substituted, "%S for %S", varname, C->md->ch_title);
 	}
 
 @ And this, finally, is a very similar construction for Sections.
 
 @<Substitute a detail about the currently selected Section@> =
 	if (Str::eq_wide_string(detail, L"Title")) {
-		Str::copy(substituted, S->sect_title);
+		Str::copy(substituted, S->md->sect_title);
 	} else if (Str::eq_wide_string(detail, L"Purpose")) {
 		Str::copy(substituted, S->sect_purpose);
 	} else if (Str::eq_wide_string(detail, L"Code")) {
-		Str::copy(substituted, S->range);
+		Str::copy(substituted, S->sect_range);
 	} else if (Str::eq_wide_string(detail, L"Lines")) {
 		WRITE_TO(substituted, "%d", S->sect_extent);
 	} else if (Str::eq_wide_string(detail, L"Source")) {
-		WRITE_TO(substituted, "%f", S->source_file_for_section);
+		WRITE_TO(substituted, "%f", S->md->source_file_for_section);
 	} else if (Str::eq_wide_string(detail, L"Page")) {
 		TEMPORARY_TEXT(linkto);
-		Str::copy(linkto, S->range);
+		Str::copy(linkto, S->sect_range);
 		LOOP_THROUGH_TEXT(P, linkto)
 			if ((Str::get(P) == '/') || (Str::get(P) == ' '))
 				Str::put(P, '-');
@@ -547,18 +547,18 @@ its square-bracketed parts.
 	} else if (Formats::substitute_post_processing_data(substituted, S->sect_weave, detail, pattern)) {
 		;
 	} else {
-		WRITE_TO(substituted, "%S for %S", varname, S->sect_title);
+		WRITE_TO(substituted, "%S for %S", varname, S->md->sect_title);
 	}
 
 @<Substitute the list of imported modules@> =
-	module *M = W->as_module;
+	module *M = W->md->as_module;
 	int L = LinkedLists::len(M->dependencies);
 	if (L > 0) {
 		WRITE_TO(substituted,
 			"<p class=\"purpose\">Together with the following imported module%s:\n",
 			(L==1)?"":"s");
 		WRITE_TO(substituted, "<ul class=\"chapterlist\">\n");
-		Indexer::list_module(substituted, W->as_module, FALSE);
+		Indexer::list_module(substituted, W->md->as_module, FALSE);
 		WRITE_TO(substituted, "</ul>\n");
 	}
 

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>6/bf2</title>
+		<title>6/gs</title>
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
@@ -387,7 +387,7 @@ assume that the version complies with any format).
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Readme::write_var</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">program</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">datum</span><span class="plain">) {</span>
         <span class="reserved">writeme_asset</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain"> = </span><span class="functiontext">Readme::find_asset</span><span class="plain">(</span><span class="identifier">program</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;if_web</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;if_web</span><span class="plain">, </span><span class="identifier">datum</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;if_web</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;if_web</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">, </span><span class="identifier">datum</span><span class="plain">));</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">datum</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Build Date"</span><span class="plain">)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;date</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">datum</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Version Number"</span><span class="plain">)) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;version</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -593,7 +593,7 @@ assume that the version complies with any format).
 <p class="endnote">The function Readme::readme_harvester is used in <a href="#SP9_1_4">&#167;9.1.4</a>.</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="6-bf2.html">Back to 'Build Files'</a></li><li><i>(This section ends Chapter 6: Extras.)</i></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="6-gs.html">Back to 'Git Support'</a></li><li><i>(This section ends Chapter 6: Extras.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
 		</main>
 	</body>

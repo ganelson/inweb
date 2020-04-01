@@ -262,7 +262,7 @@ typedef struct writeme_asset {
 
 void Readme::write_var(text_stream *OUT, text_stream *program, text_stream *datum) {
 	writeme_asset *A = Readme::find_asset(program);
-	if (A->if_web) WRITE("%S", Bibliographic::get_datum(A->if_web, datum));
+	if (A->if_web) WRITE("%S", Bibliographic::get_datum(A->if_web->md, datum));
 	else if (Str::eq(datum, I"Build Date")) WRITE("%S", A->date);
 	else if (Str::eq(datum, I"Version Number")) WRITE("%S", A->version);
 }

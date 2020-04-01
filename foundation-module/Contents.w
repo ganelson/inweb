@@ -56,3 +56,9 @@ Chapter 7: Semantic Versioning
 "For reading, storing and comparing standard semantic version numbers."
 	Version Numbers
 	Version Number Ranges
+
+Chapter 8: Literate Programming
+	Bibliographic Data for Webs
+	Web Structure
+	Web Modules
+	Build Files

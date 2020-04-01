@@ -69,6 +69,7 @@ the tag is |History|, the caption "How tags came about".
 
 =
 theme_tag *Tags::add_by_name(paragraph *P, text_stream *text) {
+	if (Str::len(text) == 0) internal_error("empty tag name");
 	TEMPORARY_TEXT(name); Str::copy(name, text);
 	TEMPORARY_TEXT(caption);
 	match_results mr = Regexp::create_mr();

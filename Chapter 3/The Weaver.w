@@ -20,12 +20,12 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 		Errors::fatal_with_file("unable to write woven file", wv->weave_to);
 
 	@<Weave the banner@>;
-	if ((Str::len(wv->cover_sheet_to_use) > 0) && (W->no_sections > 1))
+	if ((Str::len(wv->cover_sheet_to_use) > 0) && (W->md->no_sections > 1))
 		@<Weave head of the cover sheet, if any@>;
 	int lines_woven = 0;
 	section *latest_section = NULL;
 	@<Weave the body of the material@>;
-	if ((Str::len(wv->cover_sheet_to_use) > 0) && (W->no_sections > 1))
+	if ((Str::len(wv->cover_sheet_to_use) > 0) && (W->md->no_sections > 1))
 		@<Weave tail of the cover sheet, if any@>;
 	@<Weave the rennab@>;
 
@@ -40,8 +40,8 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 	DISCARD_TEXT(banner);
 
 @<Weave head of the cover sheet, if any@> =
-	if (!(Bibliographic::data_exists(W, I"Booklet Title")))
-		Bibliographic::set_datum(W, I"Booklet Title", wv->booklet_title);
+	if (!(Bibliographic::data_exists(W->md, I"Booklet Title")))
+		Bibliographic::set_datum(W->md, I"Booklet Title", wv->booklet_title);
 	Indexer::cover_sheet_maker(OUT, W, wv->cover_sheet_to_use, wv, WEAVE_FIRST_HALF);
 
 @<Weave the body of the material@> =
@@ -50,10 +50,10 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 	chapter *C;
 	section *S;
 	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
-		if (C->imported == FALSE) {
+		if (C->md->imported == FALSE) {
 			Str::clear(state->chaptermark);
 			LOOP_OVER_LINKED_LIST(S, section, C->sections)
-				if (Reader::range_within(S->range, wv->weave_range)) {
+				if (Reader::range_within(S->sect_range, wv->weave_range)) {
 					latest_section = S;
 					Languages::begin_weave(S, wv);
 					Str::clear(state->sectionmark);
@@ -62,8 +62,8 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 		}
 
 @<Weave tail of the cover sheet, if any@> =
-	if (!(Bibliographic::data_exists(W, I"Booklet Title")))
-		Bibliographic::set_datum(W, I"Booklet Title", wv->booklet_title);
+	if (!(Bibliographic::data_exists(W->md, I"Booklet Title")))
+		Bibliographic::set_datum(W->md, I"Booklet Title", wv->booklet_title);
 	Indexer::cover_sheet_maker(OUT, W, wv->cover_sheet_to_use, wv, WEAVE_SECOND_HALF);
 
 @<Weave the rennab@> =
@@ -170,16 +170,16 @@ at us; but we don't weave them into the output, that's for sure.
 	text_stream *figname = L->text_operand;
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, figname, L"(%d+)cm: (%c+)")) {
-		if (S->using_syntax > V1_SYNTAX)
-			Parser::wrong_version(S->using_syntax, L, "[[Figure: Xcm:...]]", V1_SYNTAX);
+		if (S->md->using_syntax > V1_SYNTAX)
+			Parser::wrong_version(S->md->using_syntax, L, "[[Figure: Xcm:...]]", V1_SYNTAX);
 		Formats::figure(OUT, wv, mr.exp[1], Str::atoi(mr.exp[0], 0), -1);
 	} else if (Regexp::match(&mr, figname, L"(%c+) width (%d+)cm")) {
-		if (S->using_syntax < V2_SYNTAX)
-			Parser::wrong_version(S->using_syntax, L, "[[F width Xcm]]", V2_SYNTAX);
+		if (S->md->using_syntax < V2_SYNTAX)
+			Parser::wrong_version(S->md->using_syntax, L, "[[F width Xcm]]", V2_SYNTAX);
 		Formats::figure(OUT, wv, mr.exp[0], Str::atoi(mr.exp[1], 0), -1);
 	} else if (Regexp::match(&mr, figname, L"(%c+) height (%d+)cm")) {
-		if (S->using_syntax < V2_SYNTAX)
-			Parser::wrong_version(S->using_syntax, L, "[[F height Xcm]]", V2_SYNTAX);
+		if (S->md->using_syntax < V2_SYNTAX)
+			Parser::wrong_version(S->md->using_syntax, L, "[[F height Xcm]]", V2_SYNTAX);
 		Formats::figure(OUT, wv, mr.exp[0], -1, Str::atoi(mr.exp[1], 0));
 	} else {
 		Formats::figure(OUT, wv, figname, -1, -1);
@@ -537,7 +537,7 @@ in TeX's deeply peculiar font encoding system.
 	if (weight == 2) {
 		Str::copy(state->sectionmark, L->text_operand);
 		if (wv->pattern->show_abbrevs == FALSE) Str::clear(state->chaptermark);
-		else if (Str::len(S->range) > 0) Str::copy(state->chaptermark, S->range);
+		else if (Str::len(S->sect_range) > 0) Str::copy(state->chaptermark, S->sect_range);
 		if (Str::len(state->chaptermark) > 0) {
 			Str::clear(state->sectionmark);
 			WRITE_TO(state->sectionmark, " - %S", L->text_operand);
@@ -588,13 +588,13 @@ about breaking pages at chapters and sections fail to work. So:
 	if (weight >= 0) { weight = 0; }
 	text_stream *cap = Tags::retrieve_caption(L->owning_paragraph, wv->theme_match);
 	if (Str::len(cap) > 0) {
-		Formats::subheading(OUT, wv, 1, cap, C->ch_title);
+		Formats::subheading(OUT, wv, 1, cap, C->md->ch_title);
 		state->last_extract_from = S;
 	} else if (state->last_extract_from != S) {
 		state->last_extract_from = S;
 		TEMPORARY_TEXT(extr);
-		WRITE_TO(extr, "From %S: %S", C->ch_title, S->sect_title);
-		Formats::subheading(OUT, wv, 1, extr, C->ch_title);
+		WRITE_TO(extr, "From %S: %S", C->md->ch_title, S->md->sect_title);
+		Formats::subheading(OUT, wv, 1, extr, C->md->ch_title);
 		DISCARD_TEXT(extr);
 	}
 
@@ -602,15 +602,15 @@ about breaking pages at chapters and sections fail to work. So:
 	if (weight == 3) {
 		TEMPORARY_TEXT(brief_title);
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, C->ch_title, L"%c*?: (%c*)"))
+		if (Regexp::match(&mr, C->md->ch_title, L"%c*?: (%c*)"))
 			Str::copy(brief_title, mr.exp[0]);
 		else
-			Str::copy(brief_title, C->ch_title);
-		WRITE_TO(heading_text, "%S: %S", C->ch_range, brief_title);
+			Str::copy(brief_title, C->md->ch_title);
+		WRITE_TO(heading_text, "%S: %S", C->md->ch_range, brief_title);
 		DISCARD_TEXT(brief_title);
 		Regexp::dispose_of(&mr);
-	} else if ((weight == 2) && (W->no_sections == 1)) {
-		Str::copy(heading_text, Bibliographic::get_datum(W, I"Title"));
+	} else if ((weight == 2) && (W->md->no_sections == 1)) {
+		Str::copy(heading_text, Bibliographic::get_datum(W->md, I"Title"));
 	} else {
 		if ((weight == 2) && (wv->pattern->number_sections) && (S->printed_number >= 0))
 			WRITE_TO(heading_text, "%d. ", S->printed_number);
@@ -733,7 +733,7 @@ void Weaver::show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *wv
 			if (last_cited_in != P->under_section) Formats::text(OUT, wv, I"), ");
 			else Formats::text(OUT, wv, I", ");
 		}
-		Formats::text(OUT, wv, hteu->usage_recorded_at->under_section->range);
+		Formats::text(OUT, wv, hteu->usage_recorded_at->under_section->sect_range);
 		Formats::text(OUT, wv, I" (");
 	}
 	if (count_under++ > 0) Formats::text(OUT, wv, I", ");
@@ -772,7 +772,7 @@ void Weaver::show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *wv
 		LOOP_OVER(S, section)
 			if ((S->scratch_flag) && (S != P->under_section)) {
 				if (c++ > 0) Formats::text(OUT, wv, I", ");
-				Formats::text(OUT, wv, S->range);
+				Formats::text(OUT, wv, S->sect_range);
 			}
 		if (P->under_section->scratch_flag) Formats::text(OUT, wv, I" and here");
 	}
@@ -792,7 +792,7 @@ int Weaver::weave_table_of_contents(OUTPUT_STREAM, weave_target *wv, section *S)
 			noteworthy++;
 	if (noteworthy == 0) return FALSE;
 
-	Formats::toc(OUT, wv, 1, S->range, I"", NULL);
+	Formats::toc(OUT, wv, 1, S->sect_range, I"", NULL);
 	noteworthy = 0;
 	LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
 		if ((P->weight > 0) && ((S->barred == FALSE) || (P->above_bar == FALSE))) {

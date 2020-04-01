@@ -33,11 +33,6 @@ versions: the second was cleaned up and simplified from the first in 2019.
 </p>
 
 
-<pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">V1_SYNTAX</span><span class="definitionkeyword"> from </span><span class="constant">1</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">V2_SYNTAX</span>
-</pre>
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">default_inweb_syntax</span><span class="plain"> = </span><span class="constant">V2_SYNTAX</span><span class="plain">;</span>
 </pre>
@@ -134,7 +129,7 @@ subfolder called <code class="display"><span class="extract">Materials</span></c
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function main is used in <a href="#SP7_2_2">&#167;7.2.2</a>, 1/cnf (<a href="1-cnf.html#SP1">&#167;1</a>), 2/mdl (<a href="2-mdl.html#SP3">&#167;3</a>), 4/cl (<a href="4-cl.html#SP3_4_2_5">&#167;3.4.2.5</a>).</p>
+<p class="endnote">The function main is used in <a href="#SP7_2_2">&#167;7.2.2</a>, 8/wm (<a href="8-wm.html#SP3">&#167;3</a>), 1/cnf (<a href="1-cnf.html#SP1">&#167;1</a>), 4/cl (<a href="4-cl.html#SP3_4_2_5">&#167;3.4.2.5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP6_1"></a><b>&#167;6.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Initialise inweb</span> <span class="cwebmacronumber">6.1</span>&gt; =
@@ -175,7 +170,7 @@ program: some input, some thinking, a choice of three forms of output.
         <span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_web</span><span class="plain">) || (</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_file</span><span class="plain">))</span>
             <span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Reader::load_web</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_web</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_file</span><span class="plain">,</span>
-                <span class="functiontext">Modules::make_search_path</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;import_setting</span><span class="plain">), </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;verbose_switch</span><span class="plain">,</span>
+                <span class="functiontext">WebModules::make_search_path</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;import_setting</span><span class="plain">), </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;verbose_switch</span><span class="plain">,</span>
                 <span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;inweb_mode</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;weave_into_setting</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_inweb_errors</span><span class="plain"> == 0) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;inweb_mode</span><span class="plain"> == </span><span class="constant">TRANSLATE_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Translate a makefile</span> <span class="cwebmacronumber">7.1</span>&gt;
@@ -228,7 +223,7 @@ program: some input, some thinking, a choice of three forms of output.
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Reader::print_web_statistics</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="functiontext">WebStructure::print_web_statistics</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;inweb_mode</span><span class="plain"> == </span><span class="constant">ANALYSE_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Analyse the web</span> <span class="cwebmacronumber">7.2.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;inweb_mode</span><span class="plain"> == </span><span class="constant">TANGLE_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Tangle the web</span> <span class="cwebmacronumber">7.2.2</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;inweb_mode</span><span class="plain"> == </span><span class="constant">WEAVE_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Weave the web</span> <span class="cwebmacronumber">7.2.3</span>&gt;<span class="plain">;</span>
@@ -261,7 +256,7 @@ program: some input, some thinking, a choice of three forms of output.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;gitignore_setting</span><span class="plain">)</span>
             <span class="functiontext">Analyser::write_gitignore</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;gitignore_setting</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;advance_switch</span><span class="plain">)</span>
-            <span class="functiontext">BuildFiles::advance_for_web</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+            <span class="functiontext">BuildFiles::advance_for_web</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;scan_switch</span><span class="plain">)</span>
             <span class="functiontext">Analyser::scan_line_categories</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_range</span><span class="plain">);</span>
 </pre>
@@ -299,15 +294,13 @@ line , but otherwise we impose a sensible choice based on the target.
             &lt;<span class="cwebmacro">Work out main tangle destination</span> <span class="cwebmacronumber">7.2.2.1</span>&gt;<span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Reader::get_section_for_range</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_range</span><span class="plain">)) {</span>
             &lt;<span class="cwebmacro">Work out an independent tangle destination, from one section of the web</span> <span class="cwebmacronumber">7.2.2.2</span>&gt;<span class="plain">;</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            &lt;<span class="cwebmacro">Work out an independent tangle destination, from one chapter of the web</span> <span class="cwebmacronumber">7.2.2.3</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">) == 0) { </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"no tangle destination known"</span><span class="plain">); }</span>
 
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">tangle_to</span><span class="plain"> = </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;tangle_setting</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tangle_to</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Reader::tangled_folder</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;single_file</span><span class="plain">) </span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Filenames::get_path_to</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;single_file</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">-</span><span class="element">&gt;single_file</span><span class="plain">) </span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Filenames::get_path_to</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">-</span><span class="element">&gt;single_file</span><span class="plain">);</span>
             <span class="identifier">tangle_to</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">tangle_leaf</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">tn</span><span class="plain"> = </span><span class="functiontext">Tangler::primary_target</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
@@ -331,10 +324,10 @@ which for many small webs will be the entire thing.
 
 <pre class="displaydefn">
         <span class="identifier">tn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Bibliographic::data_exists</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">))</span>
-            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Bibliographic::data_exists</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">))</span>
+            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">));</span>
         <span class="reserved">else</span>
-            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Title"</span><span class="plain">));</span>
+            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Title"</span><span class="plain">));</span>
         <span class="functiontext">Str::concatenate</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;main_language</span><span class="plain">-</span><span class="element">&gt;file_extension</span><span class="plain">);</span>
 </pre>
 
@@ -355,40 +348,7 @@ which for many small webs will be the entire thing.
         <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Reader::get_section_for_range</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_range</span><span class="plain">);</span>
         <span class="identifier">tn</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;sect_target</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"section cannot be independently tangled"</span><span class="plain">);</span>
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="functiontext">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;source_file_for_section</span><span class="plain">));</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="#SP7_2_2">&#167;7.2.2</a>.</p>
-
-<p class="inwebparagraph"><a id="SP7_2_2_3"></a><b>&#167;7.2.2.3.  </b>If someone tangles, say, <code class="display"><span class="extract">B</span></code> meaning "Appendix B: Important Warnings" then
-the default filename is "Important Warnings".
-</p>
-
-
-<p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Work out an independent tangle destination, from one chapter of the web</span> <span class="cwebmacronumber">7.2.2.3</span>&gt; =
-</code></p>
-
-
-<pre class="displaydefn">
-        <span class="reserved">chapter</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">chapter</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_range</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;ch_range</span><span class="plain">)) {</span>
-                <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;ch_target</span><span class="plain">) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;ch_title</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%c+?: (%c+)"</span><span class="plain">))</span>
-                        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
-                    <span class="reserved">else</span>
-                        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;ch_title</span><span class="plain">);</span>
-                    <span class="identifier">tn</span><span class="plain"> = </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;ch_target</span><span class="plain">;</span>
-                    <span class="reserved">break</span><span class="plain">;</span>
-                <span class="plain">}</span>
-                <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
-            <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"only the entire web, or specific sections, can be tangled"</span><span class="plain">);</span>
+        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="functiontext">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">-</span><span class="element">&gt;source_file_for_section</span><span class="plain">));</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -425,6 +385,7 @@ the default filename is "Important Warnings".
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">pattern</span><span class="plain">-</span><span class="element">&gt;open_command</span><span class="plain">) &gt; 0) </span><span class="identifier">shall_we_open</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">shall_we_open</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
             <span class="plain">}</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tag</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Tag!\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
             <span class="functiontext">Swarm::weave_subset</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_range</span><span class="plain">, </span><span class="identifier">shall_we_open</span><span class="plain">, </span><span class="identifier">tag</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">,</span>
                 <span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;weave_to_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;weave_into_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;weave_docs</span><span class="plain">,</span>
                 <span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;breadcrumb_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;navigation_setting</span><span class="plain">);</span>
@@ -452,13 +413,13 @@ the default filename is "Important Warnings".
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;weave_into_setting</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">docs</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;path_to_web</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"docs"</span><span class="plain">);</span>
+            <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">docs</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">-</span><span class="element">&gt;path_to_web</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"docs"</span><span class="plain">);</span>
             <span class="functiontext">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">docs</span><span class="plain">);</span>
             <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leaf</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Bibliographic::data_exists</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">))</span>
-                <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">));</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Bibliographic::data_exists</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">))</span>
+                <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">));</span>
             <span class="reserved">else</span>
-                <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Title"</span><span class="plain">));</span>
+                <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Title"</span><span class="plain">));</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">) &gt; 0) {</span>
                 <span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;weave_into_setting</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">docs</span><span class="plain">, </span><span class="identifier">leaf</span><span class="plain">);</span>
                 <span class="functiontext">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;weave_into_setting</span><span class="plain">);</span>
@@ -482,7 +443,7 @@ the default filename is "Important Warnings".
 <pre class="displaydefn">
         <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = 1;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">section</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Reader::range_within</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;range</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_range</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Reader::range_within</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;sect_range</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;chosen_range</span><span class="plain">))</span>
                 <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;printed_number</span><span class="plain"> = </span><span class="identifier">k</span><span class="plain">++;</span>
 </pre>
 

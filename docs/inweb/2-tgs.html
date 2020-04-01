@@ -42,7 +42,7 @@ to one of the following being created:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure theme_tag is accessed in 5/htm, 3/ts, 4/is and here.</p>
+<p class="endnote">The structure theme_tag is accessed in 5/htm, 8/ws, 2/tr, 3/ts, 4/is and here.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Here we find a tag from its name, case-sensitively. On each run of Inweb,
 there's just a single namespace of all known tags. There are never very
@@ -117,6 +117,7 @@ the tag is <code class="display"><span class="extract">History</span></code>, th
 
 <pre class="display">
     <span class="reserved">theme_tag</span><span class="plain"> *</span><span class="functiontext">Tags::add_by_name</span><span class="plain">(</span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">) == 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"empty tag name"</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">); </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">caption</span><span class="plain">);</span>
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
@@ -135,7 +136,7 @@ the tag is <code class="display"><span class="extract">History</span></code>, th
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Tags::add_by_name is used in 2/tr (<a href="2-tr.html#SP9_2_2_1">&#167;9.2.2.1</a>), 2/tp (<a href="2-tp.html#SP1_1_2">&#167;1.1.2</a>, <a href="2-tp.html#SP1_1_6_3">&#167;1.1.6.3</a>), 4/cl (<a href="4-cl.html#SP3_2">&#167;3.2</a>).</p>
+<p class="endnote">The function Tags::add_by_name is used in 2/tr (<a href="2-tr.html#SP2">&#167;2</a>), 2/tp (<a href="2-tp.html#SP1_1_2">&#167;1.1.2</a>, <a href="2-tp.html#SP1_1_6_3">&#167;1.1.6.3</a>), 4/cl (<a href="4-cl.html#SP3_2">&#167;3.2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>If a given line is tagged with a given tag, what caption does it have?
 </p>

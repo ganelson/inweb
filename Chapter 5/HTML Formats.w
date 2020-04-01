@@ -246,13 +246,13 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 			HTMLFormat::drop_initial_breadcrumbs(OUT, wv->breadcrumbs, wv->docs_mode);
 
 			HTMLFormat::breadcrumb(OUT,
-				Bibliographic::get_datum(wv->weave_web, I"Title"), I"index.html");
+				Bibliographic::get_datum(wv->weave_web->md, I"Title"), I"index.html");
 
-			if (wv->weave_web->chaptered) {
+			if (wv->weave_web->md->chaptered) {
 				TEMPORARY_TEXT(chapter_link);
 				WRITE_TO(chapter_link, "index.html#%s%S", (wv->weave_web->as_ebook)?"C":"",
-					S->owning_chapter->ch_range);
-				HTMLFormat::breadcrumb(OUT, S->owning_chapter->ch_title, chapter_link);
+					S->owning_chapter->md->ch_range);
+				HTMLFormat::breadcrumb(OUT, S->owning_chapter->md->ch_title, chapter_link);
 				DISCARD_TEXT(chapter_link);
 			}
 
@@ -376,7 +376,7 @@ void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *figname, int w, int h) {
 	HTMLFormat::exit_current_paragraph(OUT);
 	filename *F = Filenames::in_folder(
-		Pathnames::subfolder(wv->weave_web->path_to_web, I"Figures"),
+		Pathnames::subfolder(wv->weave_web->md->path_to_web, I"Figures"),
 		figname);
 	filename *RF = Filenames::from_text(figname);
 	TEMPORARY_TEXT(ext);
@@ -573,7 +573,7 @@ void HTMLFormat::xref(OUTPUT_STREAM, weave_target *wv, paragraph *P, section *fr
 	int a_link) {
 	TEMPORARY_TEXT(linkto);
 	if ((from) && (P->under_section != from)) {
-		Str::copy(linkto, P->under_section->range);
+		Str::copy(linkto, P->under_section->sect_range);
 		LOOP_THROUGH_TEXT(pos, linkto)
 			if ((Str::get(pos) == '/') || (Str::get(pos) == ' '))
 				Str::put(pos, '-');
@@ -605,23 +605,23 @@ void HTMLFormat::tail(weave_format *self, text_stream *OUT, weave_target *wv,
 			HTML::hr(OUT, "tocbar");
 			HTML_OPEN_WITH("ul", "class=\"toc\"");
 			HTML_OPEN("li");
-			if (prev_S == NULL) WRITE("<i>(This section begins %S.)</i>", C->ch_title);
+			if (prev_S == NULL) WRITE("<i>(This section begins %S.)</i>", C->md->ch_title);
 			else {
 				TEMPORARY_TEXT(TEMP);
 				HTMLFormat::sref(TEMP, wv, prev_S);
 				HTML::begin_link(OUT, TEMP);
-				WRITE("Back to '%S'", prev_S->sect_title);
+				WRITE("Back to '%S'", prev_S->md->sect_title);
 				HTML::end_link(OUT);
 				DISCARD_TEXT(TEMP);
 			}
 			HTML_CLOSE("li");
 			HTML_OPEN("li");
-			if (next_S == NULL) WRITE("<i>(This section ends %S.)</i>", C->ch_title);
+			if (next_S == NULL) WRITE("<i>(This section ends %S.)</i>", C->md->ch_title);
 			else {
 				TEMPORARY_TEXT(TEMP);
 				HTMLFormat::sref(TEMP, wv, next_S);
 				HTML::begin_link(OUT, TEMP);
-				WRITE("Continue with '%S'", next_S->sect_title);
+				WRITE("Continue with '%S'", next_S->md->sect_title);
 				HTML::end_link(OUT);
 				DISCARD_TEXT(TEMP);
 			}
@@ -632,14 +632,14 @@ void HTMLFormat::tail(weave_format *self, text_stream *OUT, weave_target *wv,
 	}
 	HTML::comment(OUT, comment);
 	HTML::completed(OUT);
-	Bibliographic::set_datum(wv->weave_web, I"Booklet Title", wv->booklet_title);
+	Bibliographic::set_datum(wv->weave_web->md, I"Booklet Title", wv->booklet_title);
 	Indexer::cover_sheet_maker(OUT, wv->weave_web, I"template", wv, WEAVE_SECOND_HALF);
 }
 
 @ =
 void HTMLFormat::sref(OUTPUT_STREAM, weave_target *wv, section *S) {
 	if (S == NULL) internal_error("unwoven section");
-	LOOP_THROUGH_TEXT(pos, S->range)
+	LOOP_THROUGH_TEXT(pos, S->sect_range)
 		if (Str::get(pos) == '/')
 			PUT('-');
 		else
@@ -652,7 +652,7 @@ void HTMLFormat::sref(OUTPUT_STREAM, weave_target *wv, section *S) {
 =
 int HTMLFormat::begin_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) {
 	TEMPORARY_TEXT(T)
-	WRITE_TO(T, "%S", Bibliographic::get_datum(W, I"Title"));
+	WRITE_TO(T, "%S", Bibliographic::get_datum(W->md, I"Title"));
 	W->as_ebook = Epub::new(T, "P");
 	filename *CSS = Patterns::obtain_filename(pattern, I"inweb.css");
 	Epub::use_CSS_throughout(W->as_ebook, CSS);

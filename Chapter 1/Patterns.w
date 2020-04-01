@@ -62,7 +62,7 @@ weave_pattern *Patterns::find(web *W, text_stream *name) {
 @<Locate the pattern directory@> =
 	wp->pattern_location =
 		Pathnames::subfolder(
-			Pathnames::subfolder(W->path_to_web, I"Patterns"),
+			Pathnames::subfolder(W->md->path_to_web, I"Patterns"),
 			name);
 	pattern_file = Filenames::in_folder(wp->pattern_location, I"pattern.txt");
 	if (TextFiles::exists(pattern_file) == FALSE) {
@@ -118,9 +118,9 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 		wp->pdftex_command = Str::duplicate(mr.exp[1]);
 	} else if (Str::eq(mr.exp[0], I"open-command")) {
 		wp->open_command = Str::duplicate(mr.exp[1]);
-	} else if ((Bibliographic::data_exists(wp->patterned_for, mr.exp[0])) ||
+	} else if ((Bibliographic::data_exists(wp->patterned_for->md, mr.exp[0])) ||
 		(Str::eq(mr.exp[0], I"Booklet Title"))) {
-		Bibliographic::set_datum(wp->patterned_for, mr.exp[0], mr.exp[1]);
+		Bibliographic::set_datum(wp->patterned_for->md, mr.exp[0], mr.exp[1]);
 	} else {
 		PRINT("Setting: %S\n", mr.exp[0]);
 		Errors::in_text_file("no such pattern setting", tfp);

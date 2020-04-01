@@ -55,11 +55,11 @@ void PlainText::toc(weave_format *self, text_stream *OUT, weave_target *wv, int 
 @ =
 void PlainText::chapter_title_page(weave_format *self, text_stream *OUT,
 	weave_target *wv, chapter *C) {
-	WRITE("%S\n\n", C->rubric);
+	WRITE("%S\n\n", C->md->rubric);
 	section *S;
 	LOOP_OVER_LINKED_LIST(S, section, C->sections)
 		WRITE("    %S: %S\n        %S\n",
-			S->range, S->sect_title, S->sect_purpose);
+			S->sect_range, S->md->sect_title, S->sect_purpose);
 }
 
 @ =

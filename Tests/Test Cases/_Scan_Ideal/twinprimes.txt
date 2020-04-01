@@ -1,4 +1,4 @@
-web "twinprimes": 1 section(s) : 4 paragraph(s) : 48 line(s)
+web "twinprimes": 1 section : 4 paragraphs : 48 lines
 Scan of source lines for '0'
 0000001  SECTION_HEADING.....  Main.
 0000002  PURPOSE_BODY........  

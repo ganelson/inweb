@@ -1,4 +1,4 @@
-web "hellow": 1 section(s) : 1 paragraph(s) : 9 line(s)
+web "hellow": 1 section : 1 paragraph : 9 lines
 Scan of source lines for '0'
 0000001  SECTION_HEADING.....  Main.
 0000002  PURPOSE_BODY........  
