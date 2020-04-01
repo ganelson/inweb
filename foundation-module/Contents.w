@@ -58,7 +58,7 @@ Chapter 7: Semantic Versioning
 	Version Number Ranges
 
 Chapter 8: Literate Programming
-	Bibliographic Data for Webs
 	Web Structure
+	Bibliographic Data for Webs
 	Web Modules
 	Build Files

@@ -1,42 +1,51 @@
-[WebStructure::] Web Structure.
+[WebMetadata::] Web Structure.
 
 To read the structure of a literate programming web from a path in the file
 system.
 
-@ Inweb syntax has gradually shifted over the years, but there are two main
+@h Introduction.
+Webs are literate programs for the Inweb LP system. A single web consists of
+a number of chapters (though sometimes just one, called "Sections"), each
+of which consists of a number of sections. A web can represent a stand-alone
+program, or a library to be used in multiple programs, in which case it is
+called a "module".
+
+Inweb syntax has gradually shifted over the years, but there are two main
 versions: the second was cleaned up and simplified from the first in 2019.
 
 @e V1_SYNTAX from 1
 @e V2_SYNTAX
 
-@h Storing data.
-There are never more than a dozen or so key-value pairs, and it's more
-convenient to store them directly here than to use a dictionary.
+@h Web MD.
+No relation to the website of the same name: MD here stands for metadata.
+Our task in this section will be to read a web from the filing system and
+produce the following metadata structure.
+
+Each web produces a single instance of |web_md|:
 
 =
 typedef struct web_md {
 	struct pathname *path_to_web; /* relative to the current working directory */
 	struct filename *single_file; /* relative to the current working directory */
-	struct linked_list *bibliographic_data; /* of |web_bibliographic_datum|: key-value pairs for title and such */
-	struct semantic_version_number version_number; /* as deduced from the bibliographic data */
+	struct linked_list *bibliographic_data; /* of |web_bibliographic_datum| */
+	struct semantic_version_number version_number; /* as deduced from bibliographic data */
 	int default_syntax; /* which version syntax the sections will have */
 	int chaptered; /* has the author explicitly divided it into named chapters? */
 	struct text_stream *main_language_name; /* in which most of the sections are written */
 
-	struct linked_list *chapters_md; /* of |chapter_md| */
-
-	/* convenient statistics */
-	int no_lines; /* total lines in literate source, excluding contents */
-	int no_paragraphs; /* this will be at least 1 */
-	int no_sections; /* again, excluding contents: it will eventually be at least 1 */
-	int no_chapters; /* this will be at least 1 */
 	struct module *as_module; /* the root of a small dependency graph */
 
+	struct filename *contents_filename; /* or |NULL| for a single-file web */
 	struct linked_list *tangle_target_names; /* of |text_stream| */
 	struct linked_list *header_filenames; /* of |filename| */
+
+	struct linked_list *chapters_md; /* of |chapter_md| */
 	MEMORY_MANAGEMENT
 } web_md;
 
+@ The |chapters_md| list in a |web_md| contains these as its entries:
+
+=
 typedef struct chapter_md {
 	struct text_stream *ch_range; /* e.g., |P| for Preliminaries, |7| for Chapter 7, |C| for Appendix C */
 	struct text_stream *ch_title; /* e.g., "Chapter 3: Fresh Water Fish" */
@@ -44,13 +53,15 @@ typedef struct chapter_md {
 
 	struct text_stream *ch_language_name; /* in which most of the sections are written */
 
-	struct linked_list *sections_md; /* of |section_md| */
-
-	struct web_md *owning_web_structure;
 	int imported; /* from a different web? */
+
+	struct linked_list *sections_md; /* of |section_md| */
 	MEMORY_MANAGEMENT
 } chapter_md;
 
+@ And the |sections_md| list in a |chapter_md| contains these as its entries:
+
+=
 typedef struct section_md {
 	struct text_stream *sect_title; /* e.g., "Program Control" */
 	int using_syntax; /* which syntax the web is written in */
@@ -65,31 +76,54 @@ typedef struct section_md {
 	MEMORY_MANAGEMENT
 } section_md;
 
+@h Reading from the file system.
+Webs can be stored in two ways: as a directory containing a multitude of files,
+in which case the pathname |P| is supplied; or as a single file with everything
+in one (and thus, implicitly, a single chapter and a single section), in which
+case a filename |alt_F| is supplied.
 
+=
+web_md *WebMetadata::get_without_modules(pathname *P, filename *alt_F) {
+	return WebMetadata::get(P, alt_F, V2_SYNTAX, NULL, FALSE, FALSE, NULL);
+}
 
-
-web_md *WebStructure::read(pathname *P, filename *alt_F, int syntax_version) {
+web_md *WebMetadata::get(pathname *P, filename *alt_F, int syntax_version,
+	module_search *I, int verbosely, int including_modules, pathname *path_to_inweb) {
 	web_md *Wm = CREATE(web_md);
-	Wm->path_to_web = P;
-	Wm->single_file = alt_F;
-	if (alt_F) Wm->path_to_web = Filenames::get_path_to(alt_F);
+	@<Begin the bibliographic data@>;
+	@<Initialise the rest of the web MD@>;
+	WebMetadata::read_contents_page(Wm, I, verbosely, including_modules, NULL, path_to_inweb);
+	@<Consolidate the bibliographic data@>;
+	return Wm;
+}
+
+@<Begin the bibliographic data@> =
 	Wm->bibliographic_data = NEW_LINKED_LIST(web_bibliographic_datum);
-	Wm->version_number = VersionNumbers::null();
 	Bibliographic::initialise_data(Wm);
+
+@<Initialise the rest of the web MD@> =
+	if (P) {
+		Wm->path_to_web = P;
+		Wm->single_file = NULL;
+		Wm->contents_filename = Filenames::in_folder(P, I"Contents.w");
+	} else {
+		Wm->path_to_web = Filenames::get_path_to(alt_F);
+		Wm->single_file = alt_F;
+		Wm->contents_filename = NULL;
+	}
+	Wm->version_number = VersionNumbers::null();
 	Wm->default_syntax = syntax_version;
 	Wm->chaptered = FALSE;
 	Wm->chapters_md = NEW_LINKED_LIST(chapter_md);
-	Wm->no_lines = 0; Wm->no_sections = 0; Wm->no_chapters = 0; Wm->no_paragraphs = 0;
 	Wm->tangle_target_names = NEW_LINKED_LIST(text_stream);
 	Wm->main_language_name = Str::new();
 	Wm->header_filenames = NEW_LINKED_LIST(filename);
 	Wm->as_module = WebModules::create_main_module(Wm);
-	return Wm;
-}
 
-void WebStructure::add_header(web_md *Wm, filename *HF) {
-	ADD_TO_LINKED_LIST(HF, filename, Wm->header_filenames);
-}
+@<Consolidate the bibliographic data@> =
+	Bibliographic::check_required_data(Wm);
+	BuildFiles::deduce_semver(Wm);
+	BuildFiles::set_bibliographic_data_for(Wm);
 
 @h Reading the contents page.
 Making the web begins by reading the contents section, which really isn't a
@@ -100,15 +134,9 @@ make it look odd). When the word "section" is used in the Inweb code, it
 almost always means "section other than the contents".
 
 Because a contents page can, by importing a module, cause a further contents
-page to be read, we set this up as a recursion:
+page to be read, we set this up as a recursion.
 
-=
-void WebStructure::read_contents_page(web_md *Wm, module_search *import_path, int verbosely, int parsing, pathname *X) {
-	WebStructure::read_contents_page_helper(Wm, import_path, verbosely, parsing, NULL, X);
-	Bibliographic::check_required_data(Wm);
-}
-
-@ We then run through an individual contents page line by line, using the
+We then run through an individual contents page line by line, using the
 following slate of variables to keep track of where we are.
 
 With a single-file web, the "contents section" doesn't exist as a file in its
@@ -128,26 +156,29 @@ typedef struct reader_state {
 	struct module_search *import_from; /* Where imported webs are */
 	struct pathname *path_to_inweb;
 	int scan_verbosely;
-	int parsing;
+	int including_modules;
 	int main_web_not_module; /* Reading the original web, or an included one? */
 	int halt_at_at; /* Used for reading contents pages of single-file webs */
 	int halted; /* Set when such a halt has occurred */
+	int section_count;
+	struct section_md *last_section;
 } reader_state;
 
-void WebStructure::read_contents_page_helper(web_md *Wm, module_search *import_path, int verbosely,
-	int parsing, pathname *path, pathname *X) {
+void WebMetadata::read_contents_page(web_md *Wm, module_search *import_path, int verbosely,
+	int including_modules, pathname *path, pathname *X) {
 	reader_state RS;
 	@<Initialise the reader state@>;
 
 	int cl = TextFiles::read(RS.contents_filename, FALSE, "can't open contents file",
-		TRUE, WebStructure::read_contents_line, NULL, &RS);
+		TRUE, WebMetadata::read_contents_line, NULL, &RS);
 	if (verbosely) {
 		if (Wm->single_file) {
 			PRINT("Read %d lines of contents part at top of file\n", cl);
 		} else {
-			PRINT("Read contents section: 'Contents.w' (%d lines)\n", cl);
+			PRINT("Read contents section (%d lines)\n", cl);
 		}
 	}
+	if (RS.section_count == 1) RS.last_section->is_a_singleton = TRUE;
 }
 
 @<Initialise the reader state@> =
@@ -158,7 +189,7 @@ void WebStructure::read_contents_page_helper(web_md *Wm, module_search *import_p
 	RS.chapter_folder_name = Str::new();
 	RS.titling_line_to_insert = Str::new();
 	RS.scan_verbosely = verbosely;
-	RS.parsing = parsing;
+	RS.including_modules = including_modules;
 	RS.path_to = path;
 	RS.import_from = import_path;
 	RS.halted = FALSE;
@@ -178,13 +209,15 @@ void WebStructure::read_contents_page_helper(web_md *Wm, module_search *import_p
 		RS.contents_filename = Filenames::in_folder(path, I"Contents.w");
 		RS.halt_at_at = FALSE;
 	}
+	RS.section_count = 0;
+	RS.last_section = NULL;
 
 @ The contents section has a syntax quite different from all other sections,
 and sets out bibliographic information about the web, the sections and their
 organisation, and so on.
 
 =
-void WebStructure::read_contents_line(text_stream *line, text_file_position *tfp, void *X) {
+void WebMetadata::read_contents_line(text_stream *line, text_file_position *tfp, void *X) {
 	reader_state *RS = (reader_state *) X;
 	if (RS->halted) return;
 
@@ -353,7 +386,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 		if (P == NULL) P = RS->Wm->path_to_web;
 		P = Pathnames::subfolder(P, I"Headers");
 		filename *HF = Filenames::in_folder(P, mr.exp[0]);
-		WebStructure::add_header(RS->Wm, HF);
+		ADD_TO_LINKED_LIST(HF, filename, RS->Wm->header_filenames);
 		this_is_a_chapter = FALSE;
 	} else if (Regexp::match(&mr, line, L"Import: (%c+)")) {
 		if (RS->import_from) {
@@ -364,10 +397,10 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 				Errors::in_text_file_S(err, tfp);
 				DISCARD_TEXT(err);
 			} else {
-				if (RS->parsing) {
+				if (RS->including_modules) {
 					int save_syntax = RS->Wm->default_syntax;
-					WebStructure::read_contents_page_helper(RS->Wm, RS->import_from,
-						RS->scan_verbosely, RS->parsing, imported, RS->path_to_inweb);
+					WebMetadata::read_contents_page(RS->Wm, RS->import_from,
+						RS->scan_verbosely, RS->including_modules, imported, RS->path_to_inweb);
 					RS->Wm->default_syntax = save_syntax;
 				}
 			}
@@ -421,13 +454,11 @@ with the same language as the main web unless stated otherwise.
 	Cm->ch_title = Str::duplicate(line);
 	Cm->rubric = Str::new();
 	Cm->ch_language_name = language_name;
-	Cm->owning_web_structure = RS->Wm;
 	Cm->imported = TRUE;
 	Cm->sections_md = NEW_LINKED_LIST(section_md);
 	if (RS->main_web_not_module) Cm->imported = FALSE;
 
 	ADD_TO_LINKED_LIST(Cm, chapter_md, RS->Wm->chapters_md);
-	RS->Wm->no_chapters++;
 	RS->chapter_being_scanned = Cm;
 
 @ That's enough on creating chapters. This is the more interesting business
@@ -463,14 +494,9 @@ we also read in and process its file.
 
 @<Add the section to the web and the current chapter@> =
 	chapter_md *Cm = RS->chapter_being_scanned;
-	RS->Wm->no_sections++;
+	RS->section_count++;
+	RS->last_section = Sm;
 	ADD_TO_LINKED_LIST(Sm, section_md, Cm->sections_md);
-
-@ Just as for chapters, but a section which is an independent target with
-language "Inform 6" is given the filename extension |.i6t| instead of |.w|.
-This is to conform with the naming convention used within Inform, where
-I6 template files -- Inweb files with language Inform 6 -- are given the
-file extensions |.i6t|.
 
 @<Work out the language and tangle target for the section@> =
 	Sm->sect_language_name = RS->chapter_being_scanned->ch_language_name; /* by default */
@@ -508,15 +534,21 @@ the extension needs to be |.i6t|. We allow either.
 	}
 	DISCARD_TEXT(leafname_to_use);
 
-@ This really serves no purpose, but seems to boost morale.
+@h Statistics.
 
 =
-void WebStructure::print_web_statistics(web_md *Wm) {
-	PRINT("web \"%S\": ", Bibliographic::get_datum(Wm, I"Title"));
-	if (Wm->chaptered) PRINT("%d chapter%s : ",
-		Wm->no_chapters, (Wm->no_chapters == 1)?"":"s");
-	PRINT("%d section%s : %d paragraph%s : %d line%s\n",
-		Wm->no_sections, (Wm->no_sections == 1)?"":"s",
-		Wm->no_paragraphs, (Wm->no_paragraphs == 1)?"":"s",
-		Wm->no_lines, (Wm->no_lines == 1)?"":"s");
+int WebMetadata::chapter_count(web_md *Wm) {
+	int n = 0;
+	chapter_md *Cm;
+	LOOP_OVER_LINKED_LIST(Cm, chapter_md, Wm->chapters_md) n++;
+	return n;
+}
+int WebMetadata::section_count(web_md *Wm) {
+	int n = 0;
+	chapter_md *Cm;
+	LOOP_OVER_LINKED_LIST(Cm, chapter_md, Wm->chapters_md) {
+		section_md *Sm;
+		LOOP_OVER_LINKED_LIST(Sm, section_md, Cm->sections_md) n++;
+	}
+	return n;
 }

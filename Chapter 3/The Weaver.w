@@ -20,12 +20,12 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 		Errors::fatal_with_file("unable to write woven file", wv->weave_to);
 
 	@<Weave the banner@>;
-	if ((Str::len(wv->cover_sheet_to_use) > 0) && (W->md->no_sections > 1))
+	if ((Str::len(wv->cover_sheet_to_use) > 0) && (Reader::web_has_one_section(W) == FALSE))
 		@<Weave head of the cover sheet, if any@>;
 	int lines_woven = 0;
 	section *latest_section = NULL;
 	@<Weave the body of the material@>;
-	if ((Str::len(wv->cover_sheet_to_use) > 0) && (W->md->no_sections > 1))
+	if ((Str::len(wv->cover_sheet_to_use) > 0) && (Reader::web_has_one_section(W) == FALSE))
 		@<Weave tail of the cover sheet, if any@>;
 	@<Weave the rennab@>;
 
@@ -609,7 +609,7 @@ about breaking pages at chapters and sections fail to work. So:
 		WRITE_TO(heading_text, "%S: %S", C->md->ch_range, brief_title);
 		DISCARD_TEXT(brief_title);
 		Regexp::dispose_of(&mr);
-	} else if ((weight == 2) && (W->md->no_sections == 1)) {
+	} else if ((weight == 2) && (Reader::web_has_one_section(W))) {
 		Str::copy(heading_text, Bibliographic::get_datum(W->md, I"Title"));
 	} else {
 		if ((weight == 2) && (wv->pattern->number_sections) && (S->printed_number >= 0))

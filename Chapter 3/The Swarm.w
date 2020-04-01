@@ -98,7 +98,7 @@ typedef struct weave_target {
 	wt->docs_mode = docs_mode;
 	wt->navigation = navigation;
 	wt->breadcrumbs = breadcrumbs;
-	if (W->md->no_sections <= 1) wt->self_contained = TRUE;
+	if (Reader::web_has_one_section(W)) wt->self_contained = TRUE;
 	Str::copy(wt->cover_sheet_to_use, I"cover-sheet");
 
 	TEMPORARY_TEXT(leafname);

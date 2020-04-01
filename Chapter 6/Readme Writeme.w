@@ -253,7 +253,7 @@ assume that the version complies with any format).
 =
 typedef struct writeme_asset {
 	struct text_stream *name;
-	struct web *if_web;
+	struct web_md *if_web;
 	struct text_stream *date;
 	struct text_stream *version;
 	int next_is_version;
@@ -262,7 +262,7 @@ typedef struct writeme_asset {
 
 void Readme::write_var(text_stream *OUT, text_stream *program, text_stream *datum) {
 	writeme_asset *A = Readme::find_asset(program);
-	if (A->if_web) WRITE("%S", Bibliographic::get_datum(A->if_web->md, datum));
+	if (A->if_web) WRITE("%S", Bibliographic::get_datum(A->if_web, datum));
 	else if (Str::eq(datum, I"Build Date")) WRITE("%S", A->date);
 	else if (Str::eq(datum, I"Version Number")) WRITE("%S", A->version);
 }
@@ -289,8 +289,7 @@ writeme_asset *Readme::find_asset(text_stream *program) {
 	} else {
 		filename *F = Filenames::in_folder(Pathnames::from_text(program), I"Contents.w");
 		if (TextFiles::exists(F)) {
-			A->if_web = Reader::load_web(Pathnames::from_text(program), NULL, NULL, FALSE,
-				V2_SYNTAX, NULL, FALSE);
+			A->if_web = WebMetadata::get_without_modules(Pathnames::from_text(program), NULL);
 		} else {
 			filename *I6_vn = Filenames::in_folder(
 				Pathnames::subfolder(Pathnames::from_text(program), I"inform6"), I"header.h");

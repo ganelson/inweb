@@ -90,10 +90,14 @@ program: some input, some thinking, a choice of three forms of output.
 =
 void Main::follow_instructions(inweb_instructions *ins) {
 	web *W = NULL;
-	if ((ins->chosen_web) || (ins->chosen_file))
+	if ((ins->chosen_web) || (ins->chosen_file)) {
 		W = Reader::load_web(ins->chosen_web, ins->chosen_file,
 			WebModules::make_search_path(ins->import_setting), ins->verbose_switch,
-			ins->inweb_mode, ins->weave_into_setting, TRUE);
+			TRUE);
+		W->redirect_weaves_to = ins->weave_into_setting;
+		Reader::read_web(W, ins->verbose_switch);
+		Parser::parse_web(W, ins->inweb_mode);
+	}
 	if (no_inweb_errors == 0) {
 		if (ins->inweb_mode == TRANSLATE_MODE) @<Translate a makefile@>
 		else if (ins->inweb_mode != NO_MODE) @<Analyse, tangle or weave an existing web@>;
@@ -121,7 +125,7 @@ void Main::follow_instructions(inweb_instructions *ins) {
 @ But otherwise we do something with the given web:
 
 @<Analyse, tangle or weave an existing web@> =
-	WebStructure::print_web_statistics(W->md);
+	Reader::print_web_statistics(W);
 	if (ins->inweb_mode == ANALYSE_MODE) @<Analyse the web@>;
 	if (ins->inweb_mode == TANGLE_MODE) @<Tangle the web@>;
 	if (ins->inweb_mode == WEAVE_MODE) @<Weave the web@>;

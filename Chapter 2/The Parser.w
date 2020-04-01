@@ -581,7 +581,7 @@ will be woven exactly as the succeeding lines will be.
 	@<Create a new paragraph, starting here, as new current paragraph@>;
 
 	L->owning_paragraph = current_paragraph;
-	W->md->no_paragraphs++;
+	W->no_paragraphs++;
 	Regexp::dispose_of(&mr);
 
 @ So now it's time to create paragraph structures:
