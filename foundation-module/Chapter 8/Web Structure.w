@@ -90,6 +90,7 @@ web_md *WebMetadata::get_without_modules(pathname *P, filename *alt_F) {
 
 web_md *WebMetadata::get(pathname *P, filename *alt_F, int syntax_version,
 	module_search *I, int verbosely, int including_modules, pathname *path_to_inweb) {
+	if ((including_modules) && (I == NULL)) I = WebModules::make_search_path(NULL);
 	web_md *Wm = CREATE(web_md);
 	@<Begin the bibliographic data@>;
 	@<Initialise the rest of the web MD@>;

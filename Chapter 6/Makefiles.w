@@ -14,7 +14,9 @@ typedef struct makefile_state {
 	int last_line_was_blank; /* used to suppress runs of multiple blank lines */
 	int allow_commands; /* permit the prototype to use special commands */
 	int repeat_scope; /* during a repeat, either |MAKEFILE_TOOL_MOM| or |MAKEFILE_MODULE_MOM| */
+	struct text_stream *repeat_tag;
 	struct dictionary *tools_dictionary;
+	struct dictionary *webs_dictionary;
 	struct dictionary *modules_dictionary;
 	struct module_search *search_path;
 } makefile_state;
@@ -27,9 +29,11 @@ void Makefiles::write(web *W, filename *prototype, filename *F, module_search *I
 	MS.inside_block = FALSE;
 	MS.allow_commands = TRUE;
 	MS.tools_dictionary = Dictionaries::new(16, FALSE);
+	MS.webs_dictionary = Dictionaries::new(16, FALSE);
 	MS.modules_dictionary = Dictionaries::new(16, FALSE);
 	MS.search_path = I;
 	MS.repeat_scope = -1;
+	MS.repeat_tag = NULL;
 	text_stream *OUT = &(MS.to_makefile);
 	if (STREAM_OPEN_TO_FILE(OUT, F, ISO_ENC) == FALSE)
 		Errors::fatal_with_file("unable to write tangled file", F);
@@ -49,24 +53,33 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, line, L" *#%c*")) { Regexp::dispose_of(&mr); return; } // Skip comment lines
 	if (MS->allow_commands) {
-		if (Regexp::match(&mr, line, L" *{repeat-tools-block} *")) @<Begin a repeat tool block@>;
-		if (Regexp::match(&mr, line, L" *{repeat-modules-block} *")) @<Begin a repeat module block@>;
-		if (Regexp::match(&mr, line, L" *{end-block} *"))  @<End a repeat block@>;
+		if (Regexp::match(&mr, line, L" *{repeat-tools-block:(%C*)} *"))
+			@<Begin a repeat tool block@>;
+		if (Regexp::match(&mr, line, L" *{repeat-webs-block:(%C*)} *"))
+			@<Begin a repeat web block@>;
+		if (Regexp::match(&mr, line, L" *{repeat-modules-block:(%C*)} *"))
+			@<Begin a repeat module block@>;
+		if (Regexp::match(&mr, line, L" *{end-block} *")) @<End a repeat block@>;
 		if (MS->inside_block) @<Deal with a line in a repeat block@>;
 
 		if (Regexp::match(&mr, line, L"(%c*){repeat-tools-span}(%c*?){end-span}(%c*)"))
 			@<Deal with a repeat span@>;
+		if (Regexp::match(&mr, line, L"(%c*){repeat-webs-span}(%c*?){end-span}(%c*)"))
+			@<Deal with a repeat web span@>;
 		if (Regexp::match(&mr, line, L"(%c*){repeat-modules-span}(%c*?){end-span}(%c*)"))
 			@<Deal with a repeat module span@>;
 
 		if (Regexp::match(&mr, line, L" *{identity-settings} *")) @<Expand identity-settings@>;
 		if (Regexp::match(&mr, line, L" *{platform-settings} *")) @<Expand platform-settings@>;
 
-		if (Regexp::match(&mr, line, L" *{tool} *(%C+) (%C+) (%c+) *")) @<Declare a tool@>;
-		if (Regexp::match(&mr, line, L" *{module} *(%C+) (%C+) (%c+) *")) @<Declare a module@>;
+		if (Regexp::match(&mr, line, L" *{tool} *(%C+) (%C+) (%c+) (%C+) *")) @<Declare a tool@>;
+		if (Regexp::match(&mr, line, L" *{web} *(%C+) (%C+) (%c+) (%C+) *")) @<Declare a web@>;
+		if (Regexp::match(&mr, line, L" *{module} *(%C+) (%C+) (%c+) (%C+) *")) @<Declare a module@>;
 
 		if (Regexp::match(&mr, line, L"(%c*?) *{dependent-files} *")) @<Expand dependent-files@>;
-		if (Regexp::match(&mr, line, L"(%c*?) *{dependent-files-for-tool} *(%C+)"))
+		if (Regexp::match(&mr, line, L"(%c*?) *{dependent-files-for-tool-alone} *(%C+)"))
+			@<Expand dependent-files-for-tool-alone@>;
+		if (Regexp::match(&mr, line, L"(%c*?) *{dependent-files-for-tool-and-modules} *(%C+)"))
 			@<Expand dependent-files-for-tool@>;
 		if (Regexp::match(&mr, line, L"(%c*?) *{dependent-files-for-module} *(%C+)"))
 			@<Expand dependent-files-for-module@>;
@@ -80,6 +93,16 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	if (MS->inside_block) Errors::in_text_file("nested repeat blocks are not allowed", tfp);
 	MS->inside_block = TRUE;
 	MS->repeat_scope = MAKEFILE_TOOL_MOM;
+	MS->repeat_tag = Str::duplicate(mr.exp[0]);
+	Str::clear(MS->repeat_block);
+	Regexp::dispose_of(&mr);
+	return;
+
+@<Begin a repeat web block@> =
+	if (MS->inside_block) Errors::in_text_file("nested repeat blocks are not allowed", tfp);
+	MS->inside_block = TRUE;
+	MS->repeat_scope = MAKEFILE_WEB_MOM;
+	MS->repeat_tag = Str::duplicate(mr.exp[0]);
 	Str::clear(MS->repeat_block);
 	Regexp::dispose_of(&mr);
 	return;
@@ -88,6 +111,7 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	if (MS->inside_block) Errors::in_text_file("nested repeat blocks are not allowed", tfp);
 	MS->inside_block = TRUE;
 	MS->repeat_scope = MAKEFILE_MODULE_MOM;
+	MS->repeat_tag = Str::duplicate(mr.exp[0]);
 	Str::clear(MS->repeat_block);
 	Regexp::dispose_of(&mr);
 	return;
@@ -100,14 +124,22 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	if (MS->inside_block == FALSE)
 		Errors::in_text_file("{endblock} without {repeatblock}", tfp);
 	MS->inside_block = FALSE;
-	Makefiles::repeat(OUT, NULL, TRUE, MS->repeat_block, TRUE, NULL, tfp, MS, MS->repeat_scope);
+	Makefiles::repeat(OUT, NULL, TRUE, MS->repeat_block, TRUE, NULL, tfp, MS, MS->repeat_scope, MS->repeat_tag);
 	Str::clear(MS->repeat_block);
 	Regexp::dispose_of(&mr);
 	return;
 
 @<Deal with a repeat span@> =
 	WRITE("%S", mr.exp[0]);
-	Makefiles::repeat(OUT, I" ", FALSE, mr.exp[1], FALSE, NULL, tfp, MS, MAKEFILE_TOOL_MOM);
+	Makefiles::repeat(OUT, I" ", FALSE, mr.exp[1], FALSE, NULL, tfp, MS, MAKEFILE_TOOL_MOM, I"all");
+	WRITE("%S\n", mr.exp[2]);
+	MS->last_line_was_blank = FALSE;
+	Regexp::dispose_of(&mr);
+	return;
+
+@<Deal with a repeat web span@> =
+	WRITE("%S", mr.exp[0]);
+	Makefiles::repeat(OUT, I" ", FALSE, mr.exp[1], FALSE, NULL, tfp, MS, MAKEFILE_WEB_MOM, I"all");
 	WRITE("%S\n", mr.exp[2]);
 	MS->last_line_was_blank = FALSE;
 	Regexp::dispose_of(&mr);
@@ -115,7 +147,7 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 
 @<Deal with a repeat module span@> =
 	WRITE("%S", mr.exp[0]);
-	Makefiles::repeat(OUT, I" ", FALSE, mr.exp[1], FALSE, NULL, tfp, MS, MAKEFILE_MODULE_MOM);
+	Makefiles::repeat(OUT, I" ", FALSE, mr.exp[1], FALSE, NULL, tfp, MS, MAKEFILE_MODULE_MOM, I"all");
 	WRITE("%S\n", mr.exp[2]);
 	MS->last_line_was_blank = FALSE;
 	Regexp::dispose_of(&mr);
@@ -144,24 +176,43 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	return;
 
 @<Declare a tool@> =
+	WRITE("%SLEAF = %S\n", mr.exp[0], mr.exp[1]);
 	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", mr.exp[0], mr.exp[0], mr.exp[1]);
 	WRITE("%SX = $(%SWEB)/Tangled/%S\n", mr.exp[0], mr.exp[0], mr.exp[1]);
 	MS->last_line_was_blank = FALSE;
 	web_md *Wm = Reader::load_web_md(Pathnames::from_text(mr.exp[2]), NULL, MS->search_path, FALSE, TRUE);
 	Wm->as_module->module_name = Str::duplicate(mr.exp[0]);
+	Wm->as_module->module_tag = Str::duplicate(mr.exp[3]);
 	Wm->as_module->origin_marker = MAKEFILE_TOOL_MOM;
 	Dictionaries::create(MS->tools_dictionary, mr.exp[0]);
 	Dictionaries::write_value(MS->tools_dictionary, mr.exp[0], Wm);
 	Regexp::dispose_of(&mr);
 	return;
 
+@<Declare a web@> =
+	WRITE("%SLEAF = %S\n", mr.exp[0], mr.exp[1]);
+	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
+	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", mr.exp[0], mr.exp[0], mr.exp[1]);
+	WRITE("%SX = $(%SWEB)/Tangled/%S\n", mr.exp[0], mr.exp[0], mr.exp[1]);
+	MS->last_line_was_blank = FALSE;
+	web_md *Wm = Reader::load_web_md(Pathnames::from_text(mr.exp[2]), NULL, MS->search_path, FALSE, TRUE);
+	Wm->as_module->module_name = Str::duplicate(mr.exp[0]);
+	Wm->as_module->module_tag = Str::duplicate(mr.exp[3]);
+	Wm->as_module->origin_marker = MAKEFILE_WEB_MOM;
+	Dictionaries::create(MS->webs_dictionary, mr.exp[0]);
+	Dictionaries::write_value(MS->webs_dictionary, mr.exp[0], Wm);
+	Regexp::dispose_of(&mr);
+	return;
+
 @<Declare a module@> =
+	WRITE("%SLEAF = %S\n", mr.exp[0], mr.exp[1]);
 	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
 	MS->last_line_was_blank = FALSE;
 	web_md *Wm = Reader::load_web_md(Pathnames::from_text(mr.exp[2]), NULL, MS->search_path, FALSE, FALSE);
 	Wm->as_module->module_name = Str::duplicate(mr.exp[0]);
 	Wm->as_module->origin_marker = MAKEFILE_MODULE_MOM;
+	Wm->as_module->module_tag = Str::duplicate(mr.exp[3]);
 	Dictionaries::create(MS->modules_dictionary, mr.exp[0]);
 	Dictionaries::write_value(MS->modules_dictionary, mr.exp[0], Wm);
 	Regexp::dispose_of(&mr);
@@ -180,6 +231,26 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	if (Dictionaries::find(MS->tools_dictionary, mr.exp[1])) {
 		web_md *Wm = Dictionaries::read_value(MS->tools_dictionary, mr.exp[1]);
 		Makefiles::pattern(OUT, Wm->sections_md, Wm->contents_filename);
+	} else if (Dictionaries::find(MS->webs_dictionary, mr.exp[1])) {
+		web_md *Wm = Dictionaries::read_value(MS->webs_dictionary, mr.exp[1]);
+		Makefiles::pattern(OUT, Wm->sections_md, Wm->contents_filename);
+	} else {
+		PRINT("Tool %S\n", mr.exp[0]);
+		Errors::in_text_file("unknown tool to find dependencies for", tfp);
+	}
+	WRITE("\n");
+	MS->last_line_was_blank = FALSE;
+	Regexp::dispose_of(&mr);
+	return;
+
+@<Expand dependent-files-for-tool-alone@> =
+	WRITE("%S", mr.exp[0]);
+	if (Dictionaries::find(MS->tools_dictionary, mr.exp[1])) {
+		web_md *Wm = Dictionaries::read_value(MS->tools_dictionary, mr.exp[1]);
+		Makefiles::pattern(OUT, Wm->as_module->sections_md, Wm->contents_filename);
+	} else if (Dictionaries::find(MS->webs_dictionary, mr.exp[1])) {
+		web_md *Wm = Dictionaries::read_value(MS->webs_dictionary, mr.exp[1]);
+		Makefiles::pattern(OUT, Wm->as_module->sections_md, Wm->contents_filename);
 	} else {
 		PRINT("Tool %S\n", mr.exp[0]);
 		Errors::in_text_file("unknown tool to find dependencies for", tfp);
@@ -263,11 +334,12 @@ void Makefiles::pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 
 =
 void Makefiles::repeat(OUTPUT_STREAM, text_stream *prefix, int every_time, text_stream *matter,
-	int as_lines, text_stream *suffix, text_file_position *tfp, makefile_state *MS, int over) {
+	int as_lines, text_stream *suffix, text_file_position *tfp, makefile_state *MS, int over, text_stream *tag) {
 	module *M;
 	int c = 0;
 	LOOP_OVER(M, module) {
-		if (M->origin_marker == over) {
+		if ((M->origin_marker == over) &&
+			((Str::eq(tag, I"all")) || (Str::eq(tag, M->module_tag)))) {
 			if ((prefix) && ((c++ > 0) || (every_time))) WRITE("%S", prefix);
 			if (matter) {
 				TEMPORARY_TEXT(line);
@@ -278,7 +350,7 @@ void Makefiles::repeat(OUTPUT_STREAM, text_stream *prefix, int every_time, text_
 							Str::clear(line);
 						}
 					} else {
-						if (Str::get(pos) == '*') {
+						if (Str::get(pos) == '@') {
 							WRITE_TO(line, "%S", M->module_name);
 						} else {
 							PUT_TO(line, Str::get(pos));

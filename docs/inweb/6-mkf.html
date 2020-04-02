@@ -40,7 +40,9 @@ following a "prototype".
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_line_was_blank</span><span class="plain">; </span>    <span class="comment">used to suppress runs of multiple blank lines</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allow_commands</span><span class="plain">; </span>    <span class="comment">permit the prototype to use special commands</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">repeat_scope</span><span class="plain">; </span>    <span class="comment">during a repeat, either <code class="display"><span class="extract">MAKEFILE_TOOL_MOM</span></code> or <code class="display"><span class="extract">MAKEFILE_MODULE_MOM</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">repeat_tag</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">tools_dictionary</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">webs_dictionary</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">modules_dictionary</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">module_search</span><span class="plain"> *</span><span class="identifier">search_path</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">makefile_state</span><span class="plain">;</span>
@@ -53,9 +55,11 @@ following a "prototype".
         <span class="identifier">MS</span><span class="element">.inside_block</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">MS</span><span class="element">.allow_commands</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="identifier">MS</span><span class="element">.tools_dictionary</span><span class="plain"> = </span><span class="functiontext">Dictionaries::new</span><span class="plain">(16, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="identifier">MS</span><span class="element">.webs_dictionary</span><span class="plain"> = </span><span class="functiontext">Dictionaries::new</span><span class="plain">(16, </span><span class="constant">FALSE</span><span class="plain">);</span>
         <span class="identifier">MS</span><span class="element">.modules_dictionary</span><span class="plain"> = </span><span class="functiontext">Dictionaries::new</span><span class="plain">(16, </span><span class="constant">FALSE</span><span class="plain">);</span>
         <span class="identifier">MS</span><span class="element">.search_path</span><span class="plain"> = </span><span class="identifier">I</span><span class="plain">;</span>
         <span class="identifier">MS</span><span class="element">.repeat_scope</span><span class="plain"> = -1;</span>
+        <span class="identifier">MS</span><span class="element">.repeat_tag</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = &amp;(</span><span class="identifier">MS</span><span class="element">.to_makefile</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">ISO_ENC</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
             <span class="functiontext">Errors::fatal_with_file</span><span class="plain">(</span><span class="string">"unable to write tangled file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
@@ -85,37 +89,46 @@ following a "prototype".
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *#%c*"</span><span class="plain">)) { </span><span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; } </span>    <span class="comment">Skip comment lines</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;allow_commands</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{repeat-tools-block} *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Begin a repeat tool block</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{repeat-modules-block} *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Begin a repeat module block</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{end-block} *"</span><span class="plain">))  </span>&lt;<span class="cwebmacro">End a repeat block</span> <span class="cwebmacronumber">2.4</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;inside_block</span><span class="plain">) </span>&lt;<span class="cwebmacro">Deal with a line in a repeat block</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{repeat-tools-block:(%C*)} *"</span><span class="plain">))</span>
+                &lt;<span class="cwebmacro">Begin a repeat tool block</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{repeat-webs-block:(%C*)} *"</span><span class="plain">))</span>
+                &lt;<span class="cwebmacro">Begin a repeat web block</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{repeat-modules-block:(%C*)} *"</span><span class="plain">))</span>
+                &lt;<span class="cwebmacro">Begin a repeat module block</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{end-block} *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">End a repeat block</span> <span class="cwebmacronumber">2.5</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;inside_block</span><span class="plain">) </span>&lt;<span class="cwebmacro">Deal with a line in a repeat block</span> <span class="cwebmacronumber">2.4</span>&gt;<span class="plain">;</span>
 
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*){repeat-tools-span}(%c*?){end-span}(%c*)"</span><span class="plain">))</span>
-                &lt;<span class="cwebmacro">Deal with a repeat span</span> <span class="cwebmacronumber">2.5</span>&gt;<span class="plain">;</span>
+                &lt;<span class="cwebmacro">Deal with a repeat span</span> <span class="cwebmacronumber">2.6</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*){repeat-webs-span}(%c*?){end-span}(%c*)"</span><span class="plain">))</span>
+                &lt;<span class="cwebmacro">Deal with a repeat web span</span> <span class="cwebmacronumber">2.7</span>&gt;<span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*){repeat-modules-span}(%c*?){end-span}(%c*)"</span><span class="plain">))</span>
-                &lt;<span class="cwebmacro">Deal with a repeat module span</span> <span class="cwebmacronumber">2.6</span>&gt;<span class="plain">;</span>
+                &lt;<span class="cwebmacro">Deal with a repeat module span</span> <span class="cwebmacronumber">2.8</span>&gt;<span class="plain">;</span>
 
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{identity-settings} *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Expand identity-settings</span> <span class="cwebmacronumber">2.8</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{platform-settings} *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Expand platform-settings</span> <span class="cwebmacronumber">2.7</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{identity-settings} *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Expand identity-settings</span> <span class="cwebmacronumber">2.10</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{platform-settings} *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Expand platform-settings</span> <span class="cwebmacronumber">2.9</span>&gt;<span class="plain">;</span>
 
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{tool} *(%C+) (%C+) (%c+) *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Declare a tool</span> <span class="cwebmacronumber">2.9</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{module} *(%C+) (%C+) (%c+) *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Declare a module</span> <span class="cwebmacronumber">2.10</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{tool} *(%C+) (%C+) (%c+) (%C+) *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Declare a tool</span> <span class="cwebmacronumber">2.11</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{web} *(%C+) (%C+) (%c+) (%C+) *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Declare a web</span> <span class="cwebmacronumber">2.12</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{module} *(%C+) (%C+) (%c+) (%C+) *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Declare a module</span> <span class="cwebmacronumber">2.13</span>&gt;<span class="plain">;</span>
 
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?) *{dependent-files} *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Expand dependent-files</span> <span class="cwebmacronumber">2.11</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?) *{dependent-files-for-tool} *(%C+)"</span><span class="plain">))</span>
-                &lt;<span class="cwebmacro">Expand dependent-files-for-tool</span> <span class="cwebmacronumber">2.12</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?) *{dependent-files} *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Expand dependent-files</span> <span class="cwebmacronumber">2.14</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?) *{dependent-files-for-tool-alone} *(%C+)"</span><span class="plain">))</span>
+                &lt;<span class="cwebmacro">Expand dependent-files-for-tool-alone</span> <span class="cwebmacronumber">2.16</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?) *{dependent-files-for-tool-and-modules} *(%C+)"</span><span class="plain">))</span>
+                &lt;<span class="cwebmacro">Expand dependent-files-for-tool</span> <span class="cwebmacronumber">2.15</span>&gt;<span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?) *{dependent-files-for-module} *(%C+)"</span><span class="plain">))</span>
-                &lt;<span class="cwebmacro">Expand dependent-files-for-module</span> <span class="cwebmacronumber">2.13</span>&gt;<span class="plain">;</span>
+                &lt;<span class="cwebmacro">Expand dependent-files-for-module</span> <span class="cwebmacronumber">2.17</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
 
-        &lt;<span class="cwebmacro">And otherwise copy the line straight through</span> <span class="cwebmacronumber">2.14</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">And otherwise copy the line straight through</span> <span class="cwebmacronumber">2.18</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Makefiles::scan_makefile_line is used in <a href="#SP1">&#167;1</a>, <a href="#SP2_7">&#167;2.7</a>, <a href="#SP4">&#167;4</a>.</p>
+<p class="endnote">The function Makefiles::scan_makefile_line is used in <a href="#SP1">&#167;1</a>, <a href="#SP2_9">&#167;2.9</a>, <a href="#SP4">&#167;4</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Begin a repeat tool block</span> <span class="cwebmacronumber">2.1</span>&gt; =
@@ -126,6 +139,7 @@ following a "prototype".
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;inside_block</span><span class="plain">) </span><span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"nested repeat blocks are not allowed"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
         <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;inside_block</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_scope</span><span class="plain"> = </span><span class="constant">MAKEFILE_TOOL_MOM</span><span class="plain">;</span>
+        <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_tag</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
         <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_block</span><span class="plain">);</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
@@ -136,14 +150,15 @@ following a "prototype".
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Begin a repeat module block</span> <span class="cwebmacronumber">2.2</span>&gt; =
+&lt;<span class="cwebmacrodefn">Begin a repeat web block</span> <span class="cwebmacronumber">2.2</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;inside_block</span><span class="plain">) </span><span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"nested repeat blocks are not allowed"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
         <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;inside_block</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_scope</span><span class="plain"> = </span><span class="constant">MAKEFILE_MODULE_MOM</span><span class="plain">;</span>
+        <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_scope</span><span class="plain"> = </span><span class="constant">MAKEFILE_WEB_MOM</span><span class="plain">;</span>
+        <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_tag</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
         <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_block</span><span class="plain">);</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
@@ -154,7 +169,26 @@ following a "prototype".
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2_3"></a><b>&#167;2.3.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Deal with a line in a repeat block</span> <span class="cwebmacronumber">2.3</span>&gt; =
+&lt;<span class="cwebmacrodefn">Begin a repeat module block</span> <span class="cwebmacronumber">2.3</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;inside_block</span><span class="plain">) </span><span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"nested repeat blocks are not allowed"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
+        <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;inside_block</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+        <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_scope</span><span class="plain"> = </span><span class="constant">MAKEFILE_MODULE_MOM</span><span class="plain">;</span>
+        <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_tag</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+        <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_block</span><span class="plain">);</span>
+        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain">;</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+
+<p class="inwebparagraph"><a id="SP2_4"></a><b>&#167;2.4.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Deal with a line in a repeat block</span> <span class="cwebmacronumber">2.4</span>&gt; =
 </code></p>
 
 
@@ -167,8 +201,8 @@ following a "prototype".
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_4"></a><b>&#167;2.4.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">End a repeat block</span> <span class="cwebmacronumber">2.4</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_5"></a><b>&#167;2.5.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">End a repeat block</span> <span class="cwebmacronumber">2.5</span>&gt; =
 </code></p>
 
 
@@ -176,7 +210,7 @@ following a "prototype".
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;inside_block</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">)</span>
             <span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"{endblock} without {repeatblock}"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
         <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;inside_block</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="functiontext">Makefiles::repeat</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_block</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_scope</span><span class="plain">);</span>
+        <span class="functiontext">Makefiles::repeat</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_block</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_scope</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_tag</span><span class="plain">);</span>
         <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;repeat_block</span><span class="plain">);</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
@@ -186,32 +220,14 @@ following a "prototype".
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_5"></a><b>&#167;2.5.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Deal with a repeat span</span> <span class="cwebmacronumber">2.5</span>&gt; =
-</code></p>
-
-
-<pre class="displaydefn">
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
-        <span class="functiontext">Makefiles::repeat</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">" "</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1], </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">, </span><span class="constant">MAKEFILE_TOOL_MOM</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[2]);</span>
-        <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;last_line_was_blank</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain">;</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
-
 <p class="inwebparagraph"><a id="SP2_6"></a><b>&#167;2.6.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Deal with a repeat module span</span> <span class="cwebmacronumber">2.6</span>&gt; =
+&lt;<span class="cwebmacrodefn">Deal with a repeat span</span> <span class="cwebmacronumber">2.6</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
-        <span class="functiontext">Makefiles::repeat</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">" "</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1], </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">, </span><span class="constant">MAKEFILE_MODULE_MOM</span><span class="plain">);</span>
+        <span class="functiontext">Makefiles::repeat</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">" "</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1], </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">, </span><span class="constant">MAKEFILE_TOOL_MOM</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"all"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[2]);</span>
         <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;last_line_was_blank</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
@@ -223,7 +239,43 @@ following a "prototype".
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2_7"></a><b>&#167;2.7.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Expand platform-settings</span> <span class="cwebmacronumber">2.7</span>&gt; =
+&lt;<span class="cwebmacrodefn">Deal with a repeat web span</span> <span class="cwebmacronumber">2.7</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+        <span class="functiontext">Makefiles::repeat</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">" "</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1], </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">, </span><span class="constant">MAKEFILE_WEB_MOM</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"all"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[2]);</span>
+        <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;last_line_was_blank</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain">;</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+
+<p class="inwebparagraph"><a id="SP2_8"></a><b>&#167;2.8.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Deal with a repeat module span</span> <span class="cwebmacronumber">2.8</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+        <span class="functiontext">Makefiles::repeat</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">I</span><span class="string">" "</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1], </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">, </span><span class="constant">MAKEFILE_MODULE_MOM</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"all"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[2]);</span>
+        <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;last_line_was_blank</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain">;</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+
+<p class="inwebparagraph"><a id="SP2_9"></a><b>&#167;2.9.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Expand platform-settings</span> <span class="cwebmacronumber">2.9</span>&gt; =
 </code></p>
 
 
@@ -241,8 +293,8 @@ following a "prototype".
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_8"></a><b>&#167;2.8.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Expand identity-settings</span> <span class="cwebmacronumber">2.8</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_10"></a><b>&#167;2.10.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Expand identity-settings</span> <span class="cwebmacronumber">2.10</span>&gt; =
 </code></p>
 
 
@@ -264,18 +316,20 @@ following a "prototype".
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_9"></a><b>&#167;2.9.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Declare a tool</span> <span class="cwebmacronumber">2.9</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_11"></a><b>&#167;2.11.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Declare a tool</span> <span class="cwebmacronumber">2.11</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%SLEAF = %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%SWEB = %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[2]);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%SMAKER = $(%SWEB)/%S.mk\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%SX = $(%SWEB)/Tangled/%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
         <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;last_line_was_blank</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">Wm</span><span class="plain"> = </span><span class="functiontext">Reader::load_web_md</span><span class="plain">(</span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[2]), </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;search_path</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
         <span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">-</span><span class="element">&gt;module_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+        <span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">-</span><span class="element">&gt;module_tag</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[3]);</span>
         <span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">-</span><span class="element">&gt;origin_marker</span><span class="plain"> = </span><span class="constant">MAKEFILE_TOOL_MOM</span><span class="plain">;</span>
         <span class="functiontext">Dictionaries::create</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;tools_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
         <span class="functiontext">Dictionaries::write_value</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;tools_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">Wm</span><span class="plain">);</span>
@@ -287,17 +341,44 @@ following a "prototype".
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_10"></a><b>&#167;2.10.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Declare a module</span> <span class="cwebmacronumber">2.10</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_12"></a><b>&#167;2.12.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Declare a web</span> <span class="cwebmacronumber">2.12</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%SLEAF = %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%SWEB = %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[2]);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%SMAKER = $(%SWEB)/%S.mk\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%SX = $(%SWEB)/Tangled/%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
+        <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;last_line_was_blank</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">Wm</span><span class="plain"> = </span><span class="functiontext">Reader::load_web_md</span><span class="plain">(</span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[2]), </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;search_path</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
+        <span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">-</span><span class="element">&gt;module_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+        <span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">-</span><span class="element">&gt;module_tag</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[3]);</span>
+        <span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">-</span><span class="element">&gt;origin_marker</span><span class="plain"> = </span><span class="constant">MAKEFILE_WEB_MOM</span><span class="plain">;</span>
+        <span class="functiontext">Dictionaries::create</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;webs_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+        <span class="functiontext">Dictionaries::write_value</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;webs_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">Wm</span><span class="plain">);</span>
+        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain">;</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+
+<p class="inwebparagraph"><a id="SP2_13"></a><b>&#167;2.13.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Declare a module</span> <span class="cwebmacronumber">2.13</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%SLEAF = %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%SWEB = %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[2]);</span>
         <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;last_line_was_blank</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">Wm</span><span class="plain"> = </span><span class="functiontext">Reader::load_web_md</span><span class="plain">(</span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[2]), </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;search_path</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
         <span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">-</span><span class="element">&gt;module_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
         <span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">-</span><span class="element">&gt;origin_marker</span><span class="plain"> = </span><span class="constant">MAKEFILE_MODULE_MOM</span><span class="plain">;</span>
+        <span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">-</span><span class="element">&gt;module_tag</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[3]);</span>
         <span class="functiontext">Dictionaries::create</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;modules_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
         <span class="functiontext">Dictionaries::write_value</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;modules_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0], </span><span class="identifier">Wm</span><span class="plain">);</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
@@ -308,8 +389,8 @@ following a "prototype".
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_11"></a><b>&#167;2.11.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Expand dependent-files</span> <span class="cwebmacronumber">2.11</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_14"></a><b>&#167;2.14.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Expand dependent-files</span> <span class="cwebmacronumber">2.14</span>&gt; =
 </code></p>
 
 
@@ -326,8 +407,8 @@ following a "prototype".
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_12"></a><b>&#167;2.12.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Expand dependent-files-for-tool</span> <span class="cwebmacronumber">2.12</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_15"></a><b>&#167;2.15.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Expand dependent-files-for-tool</span> <span class="cwebmacronumber">2.15</span>&gt; =
 </code></p>
 
 
@@ -335,6 +416,9 @@ following a "prototype".
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Dictionaries::find</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;tools_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1])) {</span>
             <span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">Wm</span><span class="plain"> = </span><span class="functiontext">Dictionaries::read_value</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;tools_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
+            <span class="functiontext">Makefiles::pattern</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;sections_md</span><span class="plain">, </span><span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;contents_filename</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Dictionaries::find</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;webs_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1])) {</span>
+            <span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">Wm</span><span class="plain"> = </span><span class="functiontext">Dictionaries::read_value</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;webs_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
             <span class="functiontext">Makefiles::pattern</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;sections_md</span><span class="plain">, </span><span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;contents_filename</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Tool %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
@@ -350,8 +434,35 @@ following a "prototype".
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_13"></a><b>&#167;2.13.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Expand dependent-files-for-module</span> <span class="cwebmacronumber">2.13</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_16"></a><b>&#167;2.16.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Expand dependent-files-for-tool-alone</span> <span class="cwebmacronumber">2.16</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Dictionaries::find</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;tools_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1])) {</span>
+            <span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">Wm</span><span class="plain"> = </span><span class="functiontext">Dictionaries::read_value</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;tools_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
+            <span class="functiontext">Makefiles::pattern</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">-</span><span class="element">&gt;sections_md</span><span class="plain">, </span><span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;contents_filename</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Dictionaries::find</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;webs_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1])) {</span>
+            <span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">Wm</span><span class="plain"> = </span><span class="functiontext">Dictionaries::read_value</span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;webs_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[1]);</span>
+            <span class="functiontext">Makefiles::pattern</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">-</span><span class="element">&gt;sections_md</span><span class="plain">, </span><span class="identifier">Wm</span><span class="plain">-</span><span class="element">&gt;contents_filename</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Tool %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]);</span>
+            <span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"unknown tool to find dependencies for"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
+        <span class="identifier">MS</span><span class="plain">-</span><span class="element">&gt;last_line_was_blank</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain">;</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+
+<p class="inwebparagraph"><a id="SP2_17"></a><b>&#167;2.17.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Expand dependent-files-for-module</span> <span class="cwebmacronumber">2.17</span>&gt; =
 </code></p>
 
 
@@ -373,8 +484,8 @@ following a "prototype".
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP2_14"></a><b>&#167;2.14.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">And otherwise copy the line straight through</span> <span class="cwebmacronumber">2.14</span>&gt; =
+<p class="inwebparagraph"><a id="SP2_18"></a><b>&#167;2.18.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">And otherwise copy the line straight through</span> <span class="cwebmacronumber">2.18</span>&gt; =
 </code></p>
 
 
@@ -420,9 +531,9 @@ following a "prototype".
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Makefiles::pathname_slashed is used in <a href="#SP2_8">&#167;2.8</a>.</p>
+<p class="endnote">The function Makefiles::pathname_slashed is used in <a href="#SP2_10">&#167;2.10</a>.</p>
 
-<p class="endnote">The function Makefiles::pattern is used in <a href="#SP2_11">&#167;2.11</a>, <a href="#SP2_12">&#167;2.12</a>, <a href="#SP2_13">&#167;2.13</a>.</p>
+<p class="endnote">The function Makefiles::pattern is used in <a href="#SP2_14">&#167;2.14</a>, <a href="#SP2_15">&#167;2.15</a>, <a href="#SP2_16">&#167;2.16</a>, <a href="#SP2_17">&#167;2.17</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Add pattern for file F, if not already given</span> <span class="cwebmacronumber">3.1</span>&gt; =
@@ -466,11 +577,12 @@ following a "prototype".
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Makefiles::repeat</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">prefix</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">every_time</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">matter</span><span class="plain">,</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">as_lines</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">suffix</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">makefile_state</span><span class="plain"> *</span><span class="identifier">MS</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">over</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">as_lines</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">suffix</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">makefile_state</span><span class="plain"> *</span><span class="identifier">MS</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">over</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">tag</span><span class="plain">) {</span>
         <span class="reserved">module</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = 0;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">M</span><span class="plain">, </span><span class="reserved">module</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;origin_marker</span><span class="plain"> == </span><span class="identifier">over</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;origin_marker</span><span class="plain"> == </span><span class="identifier">over</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">((</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">tag</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"all"</span><span class="plain">)) || (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">tag</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;module_tag</span><span class="plain">)))) {</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">prefix</span><span class="plain">) &amp;&amp; ((</span><span class="identifier">c</span><span class="plain">++ &gt; 0) || (</span><span class="identifier">every_time</span><span class="plain">))) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">prefix</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">matter</span><span class="plain">) {</span>
                     <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">);</span>
@@ -481,7 +593,7 @@ following a "prototype".
                                 <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">);</span>
                             <span class="plain">}</span>
                         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'*'</span><span class="plain">) {</span>
+                            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="character">'@'</span><span class="plain">) {</span>
                                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;module_name</span><span class="plain">);</span>
                             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                                 <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">, </span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">));</span>
@@ -499,7 +611,7 @@ following a "prototype".
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Makefiles::repeat is used in <a href="#SP2_4">&#167;2.4</a>, <a href="#SP2_5">&#167;2.5</a>, <a href="#SP2_6">&#167;2.6</a>.</p>
+<p class="endnote">The function Makefiles::repeat is used in <a href="#SP2_5">&#167;2.5</a>, <a href="#SP2_6">&#167;2.6</a>, <a href="#SP2_7">&#167;2.7</a>, <a href="#SP2_8">&#167;2.8</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 6: Extras.)</i></li><li><a href="6-gs.html">Continue with 'Git Support'</a></li></ul><hr class="tocbar">

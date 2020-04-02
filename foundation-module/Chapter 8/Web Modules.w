@@ -12,6 +12,7 @@ means.
 
 @e READING_WEB_MOM from 0
 @e MAKEFILE_TOOL_MOM
+@e MAKEFILE_WEB_MOM
 @e MAKEFILE_MODULE_MOM
 
 =
@@ -19,6 +20,7 @@ typedef struct module {
 	struct pathname *module_location;
 	struct text_stream *module_name;
 	struct linked_list *dependencies; /* of |module|: which other modules does this need? */
+	struct text_stream *module_tag;
 	int origin_marker; /* one of the |*_MOM| values above */
 	struct linked_list *sections_md; /* of |section_md|: just the ones in this module */
 	MEMORY_MANAGEMENT
@@ -31,6 +33,7 @@ module *WebModules::new(text_stream *name, pathname *at, int m) {
 	M->module_name = Str::duplicate(name);
 	M->dependencies = NEW_LINKED_LIST(module);
 	M->origin_marker = m;
+	M->module_tag = I"miscellaneous";
 	M->sections_md = NEW_LINKED_LIST(section_md);
 	return M;
 }
