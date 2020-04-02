@@ -95,12 +95,17 @@ typedef struct section {
 |web_md|-|chapter_md|-|section_md| tree:
 
 =
+web_md *Reader::load_web_md(pathname *P, filename *alt_F, module_search *I, int verbosely,
+	int including_modules) {
+	return  WebMetadata::get(P, alt_F, default_inweb_syntax, I, verbosely,
+		including_modules, path_to_inweb);
+}
+
 web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbosely,
 	int including_modules) {
 
 	web *W = CREATE(web);
-	W->md = WebMetadata::get(P, alt_F, default_inweb_syntax, I, verbosely,
-		including_modules, path_to_inweb);
+	W->md = Reader::load_web_md(P, alt_F, I, verbosely, including_modules);
 	tangle_target *main_target = NULL;
 
 	@<Write the Inweb Version bibliographic datum@>;

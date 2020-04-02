@@ -20,6 +20,7 @@ typedef struct module {
 	struct text_stream *module_name;
 	struct linked_list *dependencies; /* of |module|: which other modules does this need? */
 	int origin_marker; /* one of the |*_MOM| values above */
+	struct linked_list *sections_md; /* of |section_md|: just the ones in this module */
 	MEMORY_MANAGEMENT
 } module;
 
@@ -30,6 +31,7 @@ module *WebModules::new(text_stream *name, pathname *at, int m) {
 	M->module_name = Str::duplicate(name);
 	M->dependencies = NEW_LINKED_LIST(module);
 	M->origin_marker = m;
+	M->sections_md = NEW_LINKED_LIST(section_md);
 	return M;
 }
 
@@ -79,7 +81,7 @@ module_search *WebModules::make_search_path(pathname *ext_path) {
 called |Blah| on disc? We try four possibilities in sequence:
 
 =
-pathname *WebModules::find(web_md *WS, module_search *ms, text_stream *name, pathname *X) {
+module *WebModules::find(web_md *WS, module_search *ms, text_stream *name, pathname *X) {
 	TEMPORARY_TEXT(T);
 	WRITE_TO(T, "%S-module", name);
 	pathname *tries[4];
@@ -102,27 +104,12 @@ and a dependency created from the web's |(main)| module to this one.
 @<Accept this directory as the module@> =
 	module *M = WebModules::new(name, P, READING_WEB_MOM);
 	WebModules::dependency(WS->as_module, M);
-	return P;
+	return M;
 
 @ We accept that a plausibly-named directory is indeed the module being
-sought if it contains a file called |Contents.w|: it's then certainly going
-to be a web of some kind.
+sought if it looks like a web.
 
 =
 int WebModules::exists(pathname *P) {
-	filename *Contents = Filenames::in_folder(P, I"Contents.w");
-	return TextFiles::exists(Contents);
-}
-
-@ Once loaded, wherever they came from, we sometimes need to look up a
-module by name.
-
-=
-module *WebModules::find_loaded_by_name(text_file_position *tfp, text_stream *name) {
-	module *M;
-	LOOP_OVER(M, module)
-		if (Str::eq(name, M->module_name))
-			return M;
-	Errors::in_text_file("unknown module name", tfp);
-	return NULL;
+	return WebMetadata::directory_looks_like_a_web(P);
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
-		<title>8/ws</title>
+		<title>8/bdfw</title>
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
@@ -49,13 +49,14 @@ means.
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">module_name</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">dependencies</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">module</span></code>: which other modules does this need?</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">origin_marker</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">*_MOM</span></code> values above</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">sections_md</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">section_md</span></code>: just the ones in this module</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">module</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure module is private to this section.</p>
+<p class="endnote">The structure module is accessed in 8/ws and here.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
@@ -67,6 +68,7 @@ means.
         <span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;module_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;dependencies</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">module</span><span class="plain">);</span>
         <span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;origin_marker</span><span class="plain"> = </span><span class="identifier">m</span><span class="plain">;</span>
+        <span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;sections_md</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">section_md</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">M</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -94,7 +96,7 @@ internally named <code class="display"><span class="extract">"(main)"</span></co
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function WebModules::create_main_module is used in 8/ws (<a href="8-ws.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function WebModules::create_main_module is used in 8/ws (<a href="8-ws.html#SP5_2">&#167;5.2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Dependencies. </b>When web A imports module B, we will say that A is dependent on B. A web
 can import multiple modules, so there can a list of dependencies. These are
@@ -151,7 +153,7 @@ called <code class="display"><span class="extract">Blah</span></code> on disc? W
 
 
 <pre class="display">
-    <span class="reserved">pathname</span><span class="plain"> *</span><span class="functiontext">WebModules::find</span><span class="plain">(</span><span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">WS</span><span class="plain">, </span><span class="reserved">module_search</span><span class="plain"> *</span><span class="identifier">ms</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">) {</span>
+    <span class="reserved">module</span><span class="plain"> *</span><span class="functiontext">WebModules::find</span><span class="plain">(</span><span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">WS</span><span class="plain">, </span><span class="reserved">module_search</span><span class="plain"> *</span><span class="identifier">ms</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%S-module"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">tries</span><span class="plain">[4];</span>
@@ -171,7 +173,7 @@ called <code class="display"><span class="extract">Blah</span></code> on disc? W
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function WebModules::find is used in 8/ws (<a href="8-ws.html#SP5_3_3_2">&#167;5.3.3.2</a>).</p>
+<p class="endnote">The function WebModules::find is used in 8/ws (<a href="8-ws.html#SP7_3_3_2">&#167;7.3.3.2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b>When the module is found (if it is), a suitable module structure is made,
 and a dependency created from the web's <code class="display"><span class="extract">(main)</span></code> module to this one.
@@ -186,7 +188,7 @@ and a dependency created from the web's <code class="display"><span class="extra
 <pre class="displaydefn">
         <span class="reserved">module</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain"> = </span><span class="functiontext">WebModules::new</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="constant">READING_WEB_MOM</span><span class="plain">);</span>
         <span class="functiontext">WebModules::dependency</span><span class="plain">(</span><span class="identifier">WS</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">M</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -194,15 +196,13 @@ and a dependency created from the web's <code class="display"><span class="extra
 <p class="endnote">This code is used in <a href="#SP7">&#167;7</a>.</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>We accept that a plausibly-named directory is indeed the module being
-sought if it contains a file called <code class="display"><span class="extract">Contents.w</span></code>: it's then certainly going
-to be a web of some kind.
+sought if it looks like a web.
 </p>
 
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">WebModules::exists</span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">Contents</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Contents.w"</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">Contents</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">WebMetadata::directory_looks_like_a_web</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -210,28 +210,8 @@ to be a web of some kind.
 
 <p class="endnote">The function WebModules::exists is used in <a href="#SP7">&#167;7</a>.</p>
 
-<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Once loaded, wherever they came from, we sometimes need to look up a
-module by name.
-</p>
-
-
-<pre class="display">
-    <span class="reserved">module</span><span class="plain"> *</span><span class="functiontext">WebModules::find_loaded_by_name</span><span class="plain">(</span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
-        <span class="reserved">module</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">M</span><span class="plain">, </span><span class="reserved">module</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;module_name</span><span class="plain">))</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">M</span><span class="plain">;</span>
-        <span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"unknown module name"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="plain">}</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The function WebModules::find_loaded_by_name appears nowhere else.</p>
-
 <hr class="tocbar">
-<ul class="toc"><li><a href="8-ws.html">Back to 'Web Structure'</a></li><li><a href="8-bf.html">Continue with 'Build Files'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="8-bdfw.html">Back to 'Bibliographic Data for Webs'</a></li><li><a href="8-bf.html">Continue with 'Build Files'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 		</main>
 	</body>

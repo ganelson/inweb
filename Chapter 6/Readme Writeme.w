@@ -287,8 +287,7 @@ writeme_asset *Readme::find_asset(text_stream *program) {
 	if (Str::ends_with_wide_string(program, L".i7x")) {
 		@<Read in the extension file@>;
 	} else {
-		filename *F = Filenames::in_folder(Pathnames::from_text(program), I"Contents.w");
-		if (TextFiles::exists(F)) {
+		if (WebMetadata::directory_looks_like_a_web(Pathnames::from_text(program))) {
 			A->if_web = WebMetadata::get_without_modules(Pathnames::from_text(program), NULL);
 		} else {
 			filename *I6_vn = Filenames::in_folder(

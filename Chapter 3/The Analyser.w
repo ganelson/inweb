@@ -346,11 +346,11 @@ The work here is all delegated. In each case we look for a script in the web's
 folder: failing that, we fall back on a default script belonging to Inweb.
 
 =
-void Analyser::write_makefile(web *W, filename *F) {
+void Analyser::write_makefile(web *W, filename *F, module_search *I) {
 	filename *prototype = Filenames::in_folder(W->md->path_to_web, I"makescript.txt");
 	if (!(TextFiles::exists(prototype)))
 		prototype = Filenames::in_folder(path_to_inweb_materials, I"makescript.txt");
-	Makefiles::write(W, prototype, F);
+	Makefiles::write(W, prototype, F, I);
 }
 
 void Analyser::write_gitignore(web *W, filename *F) {

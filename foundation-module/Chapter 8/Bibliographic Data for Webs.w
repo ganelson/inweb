@@ -80,7 +80,7 @@ void Bibliographic::check_required_data(web_md *Wm) {
 		if ((bd->declaration_mandatory) &&
 			(Str::len(bd->value) == 0))
 				Errors::fatal_with_text(
-					"The Contents.w section does not specify '%S: ...'", bd->key);
+					"The web does not specify '%S: ...'", bd->key);
 }
 
 @h Reading bibliographic data.

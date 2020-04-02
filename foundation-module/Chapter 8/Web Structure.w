@@ -40,6 +40,7 @@ typedef struct web_md {
 	struct linked_list *header_filenames; /* of |filename| */
 
 	struct linked_list *chapters_md; /* of |chapter_md| */
+	struct linked_list *sections_md; /* of |section_md| */
 	MEMORY_MANAGEMENT
 } web_md;
 
@@ -92,7 +93,8 @@ web_md *WebMetadata::get(pathname *P, filename *alt_F, int syntax_version,
 	web_md *Wm = CREATE(web_md);
 	@<Begin the bibliographic data@>;
 	@<Initialise the rest of the web MD@>;
-	WebMetadata::read_contents_page(Wm, I, verbosely, including_modules, NULL, path_to_inweb);
+	WebMetadata::read_contents_page(Wm, Wm->as_module, I, verbosely,
+		including_modules, NULL, path_to_inweb);
 	@<Consolidate the bibliographic data@>;
 	return Wm;
 }
@@ -105,7 +107,7 @@ web_md *WebMetadata::get(pathname *P, filename *alt_F, int syntax_version,
 	if (P) {
 		Wm->path_to_web = P;
 		Wm->single_file = NULL;
-		Wm->contents_filename = Filenames::in_folder(P, I"Contents.w");
+		Wm->contents_filename = WebMetadata::contents_filename(P);
 	} else {
 		Wm->path_to_web = Filenames::get_path_to(alt_F);
 		Wm->single_file = alt_F;
@@ -114,6 +116,7 @@ web_md *WebMetadata::get(pathname *P, filename *alt_F, int syntax_version,
 	Wm->version_number = VersionNumbers::null();
 	Wm->default_syntax = syntax_version;
 	Wm->chaptered = FALSE;
+	Wm->sections_md = NEW_LINKED_LIST(sections_md);
 	Wm->chapters_md = NEW_LINKED_LIST(chapter_md);
 	Wm->tangle_target_names = NEW_LINKED_LIST(text_stream);
 	Wm->main_language_name = Str::new();
@@ -153,6 +156,7 @@ typedef struct reader_state {
 	struct text_stream *chapter_folder_name; /* Where sections in the current chapter live */
 	struct text_stream *titling_line_to_insert; /* To be inserted automagically */
 	struct pathname *path_to; /* Where web material is being read from */
+	struct module *reading_from;
 	struct module_search *import_from; /* Where imported webs are */
 	struct pathname *path_to_inweb;
 	int scan_verbosely;
@@ -164,7 +168,8 @@ typedef struct reader_state {
 	struct section_md *last_section;
 } reader_state;
 
-void WebMetadata::read_contents_page(web_md *Wm, module_search *import_path, int verbosely,
+void WebMetadata::read_contents_page(web_md *Wm, module *of_module,
+	module_search *import_path, int verbosely,
 	int including_modules, pathname *path, pathname *X) {
 	reader_state RS;
 	@<Initialise the reader state@>;
@@ -183,6 +188,7 @@ void WebMetadata::read_contents_page(web_md *Wm, module_search *import_path, int
 
 @<Initialise the reader state@> =
 	RS.Wm = Wm;
+	RS.reading_from = of_module;
 	RS.in_biblio = TRUE;
 	RS.in_purpose = FALSE;
 	RS.chapter_being_scanned = NULL;
@@ -206,7 +212,7 @@ void WebMetadata::read_contents_page(web_md *Wm, module_search *import_path, int
 		RS.contents_filename = Wm->single_file;
 		RS.halt_at_at = TRUE;
 	} else {
-		RS.contents_filename = Filenames::in_folder(path, I"Contents.w");
+		RS.contents_filename = WebMetadata::contents_filename(path);
 		RS.halt_at_at = FALSE;
 	}
 	RS.section_count = 0;
@@ -326,7 +332,9 @@ unindented ones for chapters.
 
 @<Read the roster of sections at the bottom@> =
 	if (begins_with_white_space == FALSE) {
-		if (Str::get_first_char(line) == '"') { RS->in_purpose = TRUE; Str::delete_first_character(line); }
+		if (Str::get_first_char(line) == '"') {
+			RS->in_purpose = TRUE; Str::delete_first_character(line);
+		}
 		if (RS->in_purpose == TRUE) @<Record the purpose of the current chapter@>
 		else @<Read about a new chapter@>;
 	} else @<Read about, and read in, a new section@>;
@@ -390,7 +398,8 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 		this_is_a_chapter = FALSE;
 	} else if (Regexp::match(&mr, line, L"Import: (%c+)")) {
 		if (RS->import_from) {
-			pathname *imported = WebModules::find(RS->Wm, RS->import_from, mr.exp[0], RS->path_to_inweb);
+			module *imported =
+				WebModules::find(RS->Wm, RS->import_from, mr.exp[0], RS->path_to_inweb);
 			if (imported == NULL) {
 				TEMPORARY_TEXT(err);
 				WRITE_TO(err, "unable to find module: %S", line);
@@ -399,8 +408,9 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 			} else {
 				if (RS->including_modules) {
 					int save_syntax = RS->Wm->default_syntax;
-					WebMetadata::read_contents_page(RS->Wm, RS->import_from,
-						RS->scan_verbosely, RS->including_modules, imported, RS->path_to_inweb);
+					WebMetadata::read_contents_page(RS->Wm, imported, RS->import_from,
+						RS->scan_verbosely, RS->including_modules,
+						imported->module_location, RS->path_to_inweb);
 					RS->Wm->default_syntax = save_syntax;
 				}
 			}
@@ -497,6 +507,8 @@ we also read in and process its file.
 	RS->section_count++;
 	RS->last_section = Sm;
 	ADD_TO_LINKED_LIST(Sm, section_md, Cm->sections_md);
+	ADD_TO_LINKED_LIST(Sm, section_md, RS->Wm->sections_md);
+	ADD_TO_LINKED_LIST(Sm, section_md, RS->reading_from->sections_md);
 
 @<Work out the language and tangle target for the section@> =
 	Sm->sect_language_name = RS->chapter_being_scanned->ch_language_name; /* by default */
@@ -533,6 +545,17 @@ the extension needs to be |.i6t|. We allow either.
 		Sm->source_file_for_section = Filenames::in_folder(P, leafname_to_use);
 	}
 	DISCARD_TEXT(leafname_to_use);
+
+@h Relative pathnames or filenames.
+
+=
+int WebMetadata::directory_looks_like_a_web(pathname *P) {
+	return TextFiles::exists(WebMetadata::contents_filename(P));
+}
+
+filename *WebMetadata::contents_filename(pathname *P) {
+	return Filenames::in_folder(P, I"Contents.w");
+}
 
 @h Statistics.
 
