@@ -41,12 +41,16 @@ for it to do anything.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Parser::parse_web</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">inweb_mode</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Parser::parse_web</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">inweb_mode</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sequential</span><span class="plain">) {</span>
         <span class="reserved">chapter</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">;</span>
         <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">chapter</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;chapters</span><span class="plain">)</span>
-            <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">section</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;sections</span><span class="plain">)</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">chapter</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;chapters</span><span class="plain">) {</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">section_counter</span><span class="plain"> = 1;</span>
+            <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">section</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;sections</span><span class="plain">) {</span>
                 &lt;<span class="cwebmacro">Parse a section</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
+                <span class="identifier">section_counter</span><span class="plain">++;</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
         <span class="functiontext">Languages::further_parsing</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;main_language</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -352,18 +356,23 @@ also give the namespace for its functions.
 
 
 <pre class="displaydefn">
-        <span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;sect_range</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;sect_range</span><span class="plain">) == 0) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sequential</span><span class="plain">) {</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;sect_range</span><span class="plain">, </span><span class="string">"%S/"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">-</span><span class="element">&gt;ch_range</span><span class="plain">);</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;sect_range</span><span class="plain">, </span><span class="string">"s%d"</span><span class="plain">, </span><span class="identifier">section_counter</span><span class="plain">);</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+                <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">-</span><span class="element">&gt;sect_title</span><span class="plain">;</span>
+                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">letters_from_each_word</span><span class="plain"> = 5;</span>
+                <span class="reserved">do</span><span class="plain"> {</span>
+                    <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;sect_range</span><span class="plain">);</span>
+                    <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;sect_range</span><span class="plain">, </span><span class="string">"%S/"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">-</span><span class="element">&gt;ch_range</span><span class="plain">);</span>
+                    &lt;<span class="cwebmacro">Make the tail using this many consonants from each word</span> <span class="cwebmacronumber">1.1.6.2.1.1</span>&gt;<span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (--</span><span class="identifier">letters_from_each_word</span><span class="plain"> == 0) </span><span class="reserved">break</span><span class="plain">;</span>
+                <span class="plain">} </span><span class="reserved">while</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;sect_range</span><span class="plain">) &gt; 5);</span>
 
-        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">-</span><span class="element">&gt;sect_title</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">letters_from_each_word</span><span class="plain"> = 5;</span>
-        <span class="reserved">do</span><span class="plain"> {</span>
-            <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;sect_range</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;sect_range</span><span class="plain">, </span><span class="string">"%S/"</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;md</span><span class="plain">-</span><span class="element">&gt;ch_range</span><span class="plain">);</span>
-            &lt;<span class="cwebmacro">Make the tail using this many consonants from each word</span> <span class="cwebmacronumber">1.1.6.2.1.1</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (--</span><span class="identifier">letters_from_each_word</span><span class="plain"> == 0) </span><span class="reserved">break</span><span class="plain">;</span>
-        <span class="plain">} </span><span class="reserved">while</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;sect_range</span><span class="plain">) &gt; 5);</span>
-
-        &lt;<span class="cwebmacro">Terminate with disambiguating numbers in case of collisions</span> <span class="cwebmacronumber">1.1.6.2.1.2</span>&gt;<span class="plain">;</span>
+                &lt;<span class="cwebmacro">Terminate with disambiguating numbers in case of collisions</span> <span class="cwebmacronumber">1.1.6.2.1.2</span>&gt;<span class="plain">;</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>

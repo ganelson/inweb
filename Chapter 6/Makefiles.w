@@ -90,27 +90,21 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 }
 
 @<Begin a repeat tool block@> =
-	if (MS->inside_block) Errors::in_text_file("nested repeat blocks are not allowed", tfp);
-	MS->inside_block = TRUE;
-	MS->repeat_scope = MAKEFILE_TOOL_MOM;
-	MS->repeat_tag = Str::duplicate(mr.exp[0]);
-	Str::clear(MS->repeat_block);
-	Regexp::dispose_of(&mr);
-	return;
+	int marker = MAKEFILE_TOOL_MOM;
+	@<Begin a repeat block@>;
 
 @<Begin a repeat web block@> =
-	if (MS->inside_block) Errors::in_text_file("nested repeat blocks are not allowed", tfp);
-	MS->inside_block = TRUE;
-	MS->repeat_scope = MAKEFILE_WEB_MOM;
-	MS->repeat_tag = Str::duplicate(mr.exp[0]);
-	Str::clear(MS->repeat_block);
-	Regexp::dispose_of(&mr);
-	return;
+	int marker = MAKEFILE_WEB_MOM;
+	@<Begin a repeat block@>;
 
 @<Begin a repeat module block@> =
+	int marker = MAKEFILE_MODULE_MOM;
+	@<Begin a repeat block@>;
+
+@<Begin a repeat block@> =
 	if (MS->inside_block) Errors::in_text_file("nested repeat blocks are not allowed", tfp);
 	MS->inside_block = TRUE;
-	MS->repeat_scope = MAKEFILE_MODULE_MOM;
+	MS->repeat_scope = marker;
 	MS->repeat_tag = Str::duplicate(mr.exp[0]);
 	Str::clear(MS->repeat_block);
 	Regexp::dispose_of(&mr);
@@ -130,24 +124,20 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	return;
 
 @<Deal with a repeat span@> =
-	WRITE("%S", mr.exp[0]);
-	Makefiles::repeat(OUT, I" ", FALSE, mr.exp[1], FALSE, NULL, tfp, MS, MAKEFILE_TOOL_MOM, I"all");
-	WRITE("%S\n", mr.exp[2]);
-	MS->last_line_was_blank = FALSE;
-	Regexp::dispose_of(&mr);
-	return;
+	int marker = MAKEFILE_TOOL_MOM;
+	@<Begin a repeat span@>;
 
 @<Deal with a repeat web span@> =
-	WRITE("%S", mr.exp[0]);
-	Makefiles::repeat(OUT, I" ", FALSE, mr.exp[1], FALSE, NULL, tfp, MS, MAKEFILE_WEB_MOM, I"all");
-	WRITE("%S\n", mr.exp[2]);
-	MS->last_line_was_blank = FALSE;
-	Regexp::dispose_of(&mr);
-	return;
+	int marker = MAKEFILE_WEB_MOM;
+	@<Begin a repeat span@>;
 
 @<Deal with a repeat module span@> =
+	int marker = MAKEFILE_MODULE_MOM;
+	@<Begin a repeat span@>;
+
+@<Begin a repeat span@> =
 	WRITE("%S", mr.exp[0]);
-	Makefiles::repeat(OUT, I" ", FALSE, mr.exp[1], FALSE, NULL, tfp, MS, MAKEFILE_MODULE_MOM, I"all");
+	Makefiles::repeat(OUT, I" ", FALSE, mr.exp[1], FALSE, NULL, tfp, MS, marker, I"all");
 	WRITE("%S\n", mr.exp[2]);
 	MS->last_line_was_blank = FALSE;
 	Regexp::dispose_of(&mr);
@@ -176,21 +166,18 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	return;
 
 @<Declare a tool@> =
-	WRITE("%SLEAF = %S\n", mr.exp[0], mr.exp[1]);
-	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
-	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", mr.exp[0], mr.exp[0], mr.exp[1]);
-	WRITE("%SX = $(%SWEB)/Tangled/%S\n", mr.exp[0], mr.exp[0], mr.exp[1]);
-	MS->last_line_was_blank = FALSE;
-	web_md *Wm = Reader::load_web_md(Pathnames::from_text(mr.exp[2]), NULL, MS->search_path, FALSE, TRUE);
-	Wm->as_module->module_name = Str::duplicate(mr.exp[0]);
-	Wm->as_module->module_tag = Str::duplicate(mr.exp[3]);
-	Wm->as_module->origin_marker = MAKEFILE_TOOL_MOM;
-	Dictionaries::create(MS->tools_dictionary, mr.exp[0]);
-	Dictionaries::write_value(MS->tools_dictionary, mr.exp[0], Wm);
-	Regexp::dispose_of(&mr);
-	return;
+	int marker = MAKEFILE_TOOL_MOM;
+	@<Declare something@>;
 
 @<Declare a web@> =
+	int marker = MAKEFILE_WEB_MOM;
+	@<Declare something@>;
+
+@<Declare a module@> =
+	int marker = MAKEFILE_MODULE_MOM;
+	@<Declare something@>;
+
+@<Declare something@> =
 	WRITE("%SLEAF = %S\n", mr.exp[0], mr.exp[1]);
 	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", mr.exp[0], mr.exp[0], mr.exp[1]);
@@ -199,22 +186,9 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	web_md *Wm = Reader::load_web_md(Pathnames::from_text(mr.exp[2]), NULL, MS->search_path, FALSE, TRUE);
 	Wm->as_module->module_name = Str::duplicate(mr.exp[0]);
 	Wm->as_module->module_tag = Str::duplicate(mr.exp[3]);
-	Wm->as_module->origin_marker = MAKEFILE_WEB_MOM;
-	Dictionaries::create(MS->webs_dictionary, mr.exp[0]);
-	Dictionaries::write_value(MS->webs_dictionary, mr.exp[0], Wm);
-	Regexp::dispose_of(&mr);
-	return;
-
-@<Declare a module@> =
-	WRITE("%SLEAF = %S\n", mr.exp[0], mr.exp[1]);
-	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
-	MS->last_line_was_blank = FALSE;
-	web_md *Wm = Reader::load_web_md(Pathnames::from_text(mr.exp[2]), NULL, MS->search_path, FALSE, FALSE);
-	Wm->as_module->module_name = Str::duplicate(mr.exp[0]);
-	Wm->as_module->origin_marker = MAKEFILE_MODULE_MOM;
-	Wm->as_module->module_tag = Str::duplicate(mr.exp[3]);
-	Dictionaries::create(MS->modules_dictionary, mr.exp[0]);
-	Dictionaries::write_value(MS->modules_dictionary, mr.exp[0], Wm);
+	Wm->as_module->origin_marker = marker;
+	Dictionaries::create(MS->tools_dictionary, mr.exp[0]);
+	Dictionaries::write_value(MS->tools_dictionary, mr.exp[0], Wm);
 	Regexp::dispose_of(&mr);
 	return;
 

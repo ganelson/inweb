@@ -55,6 +55,7 @@ command line: there will only ever be one of these.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scan_switch</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">-scan</span></code>: simply show the syntactic scan of the source</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">weave_to_setting</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">-weave-to X</span></code>: the pathname X, if supplied</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">weave_into_setting</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">-weave-into X</span></code>: the pathname X, if supplied</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sequential</span><span class="plain">; </span>    <span class="comment">give the sections sequential sigils</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">tangle_setting</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">-tangle-to X</span></code>: the pathname X, if supplied</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">makefile_setting</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">-makefile X</span></code>: the filename X, if supplied</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">gitignore_setting</span><span class="plain">; </span>    <span class="comment"><code class="display"><span class="extract">-gitignore X</span></code>: the filename X, if supplied</span>
@@ -133,6 +134,7 @@ then declare them.
         <span class="identifier">args</span><span class="element">.tangle_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">args</span><span class="element">.weave_to_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">args</span><span class="element">.weave_into_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="element">.sequential</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">args</span><span class="element">.makefile_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">args</span><span class="element">.gitignore_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">args</span><span class="element">.advance_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -173,6 +175,7 @@ provides automatically.
     <span class="definitionkeyword">enum</span> <span class="constant">WEAVE_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">WEAVE_INTO_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">WEAVE_TO_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SEQUENTIAL_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">OPEN_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">WEAVE_AS_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">WEAVE_TAG_CLSW</span>
@@ -238,6 +241,8 @@ provides automatically.
             <span class="identifier">L</span><span class="string">"weave, but into directory X"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">WEAVE_TO_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"weave-to"</span><span class="plain">, 2,</span>
             <span class="identifier">L</span><span class="string">"weave, but to filename X (for single files only)"</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">SEQUENTIAL_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"sequential"</span><span class="plain">, 1,</span>
+            <span class="identifier">L</span><span class="string">"name woven leaves with sequential numbering"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">OPEN_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"open"</span><span class="plain">, 1,</span>
             <span class="identifier">L</span><span class="string">"weave then open woven file"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">WEAVE_AS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"weave-as"</span><span class="plain">, 2,</span>
@@ -320,6 +325,8 @@ provides automatically.
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">WEAVE_TO_CLSW</span><span class="plain">:</span>
                 <span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;weave_to_setting</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">);</span>
                 <span class="functiontext">Configuration::set_fundamental_mode</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="constant">WEAVE_MODE</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="constant">SEQUENTIAL_CLSW</span><span class="plain">:</span>
+                <span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;sequential</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">OPEN_CLSW</span><span class="plain">:</span>
                 <span class="identifier">args</span><span class="plain">-</span><span class="element">&gt;open_pdf_switch</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
                 <span class="functiontext">Configuration::set_fundamental_mode</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="constant">WEAVE_MODE</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>

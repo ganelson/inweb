@@ -244,9 +244,11 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 			}
 			HTML_OPEN_WITH("ul", "class=\"crumbs\"");
 			HTMLFormat::drop_initial_breadcrumbs(OUT, wv->breadcrumbs, wv->docs_mode);
-
-			HTMLFormat::breadcrumb(OUT,
-				Bibliographic::get_datum(wv->weave_web->md, I"Title"), I"index.html");
+			text_stream *bct = Bibliographic::get_datum(wv->weave_web->md, I"Title");
+			if (Str::len(Bibliographic::get_datum(wv->weave_web->md, I"Short Title")) > 0) {
+				bct = Bibliographic::get_datum(wv->weave_web->md, I"Short Title");
+			}
+			HTMLFormat::breadcrumb(OUT, bct, I"index.html");
 
 			if (wv->weave_web->md->chaptered) {
 				TEMPORARY_TEXT(chapter_link);

@@ -14,12 +14,16 @@ function definitions are recognised in C programs.) There is no requirement
 for it to do anything.
 
 =
-void Parser::parse_web(web *W, int inweb_mode) {
+void Parser::parse_web(web *W, int inweb_mode, int sequential) {
 	chapter *C;
 	section *S;
-	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
-		LOOP_OVER_LINKED_LIST(S, section, C->sections)
+	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters) {
+		int section_counter = 1;
+		LOOP_OVER_LINKED_LIST(S, section, C->sections) {
 			@<Parse a section@>;
+			section_counter++;
+		}
+	}
 	Languages::further_parsing(W, W->main_language);
 }
 
@@ -196,18 +200,23 @@ also give the namespace for its functions.
 @ If no range is supplied, we make one ourselves.
 
 @<Set the range to an automatic abbreviation of the relative pathname@> =
-	S->sect_range = Str::new();
+	if (Str::len(S->sect_range) == 0) {
+		if (sequential) {
+			WRITE_TO(S->sect_range, "%S/", C->md->ch_range);
+			WRITE_TO(S->sect_range, "s%d", section_counter);
+		} else {
+			text_stream *from = S->md->sect_title;
+			int letters_from_each_word = 5;
+			do {
+				Str::clear(S->sect_range);
+				WRITE_TO(S->sect_range, "%S/", C->md->ch_range);
+				@<Make the tail using this many consonants from each word@>;
+				if (--letters_from_each_word == 0) break;
+			} while (Str::len(S->sect_range) > 5);
 
-	text_stream *from = S->md->sect_title;
-	int letters_from_each_word = 5;
-	do {
-		Str::clear(S->sect_range);
-		WRITE_TO(S->sect_range, "%S/", C->md->ch_range);
-		@<Make the tail using this many consonants from each word@>;
-		if (--letters_from_each_word == 0) break;
-	} while (Str::len(S->sect_range) > 5);
-
-	@<Terminate with disambiguating numbers in case of collisions@>;
+			@<Terminate with disambiguating numbers in case of collisions@>;
+		}
+	}
 
 @ We collapse words to an initial letter plus consonants: thus "electricity"
 would be "elctrcty", since we don't count "y" as a vowel here.

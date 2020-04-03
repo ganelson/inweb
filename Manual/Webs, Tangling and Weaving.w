@@ -368,7 +368,9 @@ quite the same as |all|: the cover sheet (a sort of title page) is omitted.
 example, |S/tgc| and |S/tsoe| in the Goldbach web example, or |2/ec| for
 the "Enumerated Constants" section of Chapter 2 of Inweb itself. Note that
 running Inweb with |-catalogue| shows all the sections of a web, and their
-abbreviations.
+abbreviations. If it's a nuisance that these section ranges are hard to
+predict, run with |-sequential| to have them simply be |X/s1|, |X/s2|, ...,
+within each chapter, where |X| is the chapter range.
 
 @h Weave tags.
 An alternative to a range is to specify a tag. Rather than weaving contiguous

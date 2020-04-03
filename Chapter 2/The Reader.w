@@ -188,6 +188,7 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbos
 	S->tag_with = NULL;
 	if (Str::len(Sm->tag_name) > 0)
 		S->tag_with = Tags::add_by_name(NULL, Sm->tag_name);
+	S->sect_range = Str::new();
 
 @<Add the imported headers@> =
 	filename *HF;

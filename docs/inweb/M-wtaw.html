@@ -590,7 +590,9 @@ quite the same as <code class="display"><span class="extract">all</span></code>:
 example, <code class="display"><span class="extract">S/tgc</span></code> and <code class="display"><span class="extract">S/tsoe</span></code> in the Goldbach web example, or <code class="display"><span class="extract">2/ec</span></code> for
 the "Enumerated Constants" section of Chapter 2 of Inweb itself. Note that
 running Inweb with <code class="display"><span class="extract">-catalogue</span></code> shows all the sections of a web, and their
-abbreviations.
+abbreviations. If it's a nuisance that these section ranges are hard to
+predict, run with <code class="display"><span class="extract">-sequential</span></code> to have them simply be <code class="display"><span class="extract">X/s1</span></code>, <code class="display"><span class="extract">X/s2</span></code>, ...,
+within each chapter, where <code class="display"><span class="extract">X</span></code> is the chapter range.
 </li></ul>
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Weave tags. </b>An alternative to a range is to specify a tag. Rather than weaving contiguous
 pieces of the web, this collates together all those paragraphs with a given

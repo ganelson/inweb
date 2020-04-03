@@ -29,6 +29,7 @@ typedef struct inweb_instructions {
 	int scan_switch; /* |-scan|: simply show the syntactic scan of the source */
 	struct filename *weave_to_setting; /* |-weave-to X|: the pathname X, if supplied */
 	struct pathname *weave_into_setting; /* |-weave-into X|: the pathname X, if supplied */
+	int sequential; /* give the sections sequential sigils */
 	struct filename *tangle_setting; /* |-tangle-to X|: the pathname X, if supplied */
 	struct filename *makefile_setting; /* |-makefile X|: the filename X, if supplied */
 	struct filename *gitignore_setting; /* |-gitignore X|: the filename X, if supplied */
@@ -89,6 +90,7 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.tangle_setting = NULL;
 	args.weave_to_setting = NULL;
 	args.weave_into_setting = NULL;
+	args.sequential = FALSE;
 	args.makefile_setting = NULL;
 	args.gitignore_setting = NULL;
 	args.advance_setting = NULL;
@@ -123,6 +125,7 @@ provides automatically.
 @e WEAVE_CLSW
 @e WEAVE_INTO_CLSW
 @e WEAVE_TO_CLSW
+@e SEQUENTIAL_CLSW
 @e OPEN_CLSW
 @e WEAVE_AS_CLSW
 @e WEAVE_TAG_CLSW
@@ -183,6 +186,8 @@ provides automatically.
 		L"weave, but into directory X");
 	CommandLine::declare_switch(WEAVE_TO_CLSW, L"weave-to", 2,
 		L"weave, but to filename X (for single files only)");
+	CommandLine::declare_boolean_switch(SEQUENTIAL_CLSW, L"sequential", 1,
+		L"name woven leaves with sequential numbering", FALSE);
 	CommandLine::declare_switch(OPEN_CLSW, L"open", 1,
 		L"weave then open woven file");
 	CommandLine::declare_switch(WEAVE_AS_CLSW, L"weave-as", 2,
@@ -258,6 +263,8 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 		case WEAVE_TO_CLSW:
 			args->weave_to_setting = Filenames::from_text(arg);
 			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
+		case SEQUENTIAL_CLSW:
+			args->sequential = val; break;
 		case OPEN_CLSW:
 			args->open_pdf_switch = TRUE;
 			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;

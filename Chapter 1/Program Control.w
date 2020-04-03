@@ -96,7 +96,7 @@ void Main::follow_instructions(inweb_instructions *ins) {
 			TRUE);
 		W->redirect_weaves_to = ins->weave_into_setting;
 		Reader::read_web(W, ins->verbose_switch);
-		Parser::parse_web(W, ins->inweb_mode);
+		Parser::parse_web(W, ins->inweb_mode, ins->sequential);
 	}
 	if (no_inweb_errors == 0) {
 		if (ins->inweb_mode == TRANSLATE_MODE) @<Translate a makefile@>
@@ -228,7 +228,6 @@ which for many small webs will be the entire thing.
 			if (Str::len(pattern->open_command) > 0) shall_we_open = TRUE;
 			else shall_we_open = FALSE;
 		}
-		if (tag) PRINT("Tag!\n");
 		Swarm::weave_subset(W, ins->chosen_range, shall_we_open, tag, pattern,
 			ins->weave_to_setting, ins->weave_into_setting, ins->weave_docs,
 			ins->breadcrumb_setting, ins->navigation_setting);

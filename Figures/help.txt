@@ -28,6 +28,7 @@ You can also, or instead, specify:
 -open                    weave then open woven file
 -prototype X             translate makefile from prototype X
 -scan                    scan the web
+-sequential              name woven leaves with sequential numbering (default is -no-sequential)
 -structures              catalogue the structures in the web
 -tangle                  tangle the web into machine-compilable form
 -tangle-to X             tangle, but to filename X
