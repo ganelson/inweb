@@ -24,7 +24,7 @@ void Parser::parse_web(web *W, int inweb_mode, int sequential) {
 			section_counter++;
 		}
 	}
-	Languages::further_parsing(W, W->main_language);
+	LanguageMethods::further_parsing(W, W->main_language);
 }
 
 @ The task now is to parse those source lines, categorise them, and group them
@@ -525,7 +525,7 @@ enumerated sort of |@d|.
 	L->text_operand = Str::duplicate(remainder); /* name of term defined */
 	TEMPORARY_TEXT(before);
 	TEMPORARY_TEXT(after);
-	if (Languages::parse_comment(S->sect_language, L->text_operand,
+	if (LanguageMethods::parse_comment(S->sect_language, L->text_operand,
 		before, after)) {
 		Str::copy(L->text_operand, before);
 	}
@@ -674,7 +674,7 @@ CWEB, but is needed for languages which don't allow multi-line definitions.)
 		comment_mode = TRUE;
 	}
 
-	Languages::subcategorise_line(S->sect_language, L);
+	LanguageMethods::subcategorise_line(S->sect_language, L);
 
 @ The purpose text occurs just below the heading. In version 1 it's cued with
 a |@Purpose:| command; in version 2 it is unmarked. The following routine

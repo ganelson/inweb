@@ -13,10 +13,6 @@ void CLike::make_c_like(programming_language *pl) {
 	METHOD_ADD(pl, ADDITIONAL_EARLY_MATTER_TAN_MTID, CLike::additional_early_matter);
 	METHOD_ADD(pl, ADDITIONAL_PREDECLARATIONS_TAN_MTID, CLike::additional_predeclarations);
 
-	METHOD_ADD(pl, BEGIN_WEAVE_WEA_MTID, CLike::begin_weave);
-	METHOD_ADD(pl, RESET_SYNTAX_COLOURING_WEA_MTID, CLike::reset_syntax_colouring);
-	METHOD_ADD(pl, SYNTAX_COLOUR_WEA_MTID, CLike::syntax_colour);
-
 	METHOD_ADD(pl, CATALOGUE_ANA_MTID, CLike::catalogue);
 	METHOD_ADD(pl, EARLY_PREWEAVE_ANALYSIS_ANA_MTID, CLike::analyse_code);
 	METHOD_ADD(pl, LATE_PREWEAVE_ANALYSIS_ANA_MTID, CLike::post_analysis);
@@ -265,7 +261,7 @@ typedef struct structure_element {
 	elt->element_name = Str::duplicate(elname);
 	elt->allow_sharing = FALSE;
 	elt->element_created_at = L;
-	if (Languages::share_element(W->main_language, elname)) elt->allow_sharing = TRUE;
+	if (LanguageMethods::share_element(W->main_language, elname)) elt->allow_sharing = TRUE;
 	ADD_TO_LINKED_LIST(elt, structure_element, current_str->elements);
 
 @h Structure dependency.
@@ -539,7 +535,7 @@ a structure: for example |typedef unsigned int uint;| would be a simple typedef.
 	LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W))
 		if (L->category == TYPEDEF_LCAT) {
 			Tags::open_ifdefs(OUT, L->owning_paragraph);
-			Languages::tangle_code(OUT, W->main_language, L->text);
+			LanguageMethods::tangle_code(OUT, W->main_language, L->text);
 			WRITE("\n");
 			Tags::close_ifdefs(OUT, L->owning_paragraph);
 		}
@@ -570,7 +566,7 @@ void CLike::tangle_structure(OUTPUT_STREAM, programming_language *self, c_struct
 		CLike::tangle_structure(OUT, self, embodied);
 	str->tangled = TRUE;
 	Tags::open_ifdefs(OUT, str->typedef_begins->owning_paragraph);
-	Languages::insert_line_marker(OUT, self, str->typedef_begins);
+	LanguageMethods::insert_line_marker(OUT, self, str->typedef_begins);
 	for (source_line *L = str->typedef_begins; L; L = L->next_line) {
 		WRITE("%S\n", L->text);
 		L->suppress_tangling = TRUE;
@@ -610,160 +606,15 @@ exist either way.
 				}
 			}
 			Tags::open_ifdefs(OUT, L->owning_paragraph);
-			Languages::insert_line_marker(OUT, W->main_language, L);
+			LanguageMethods::insert_line_marker(OUT, W->main_language, L);
 			WRITE("%S ", fn->function_type);
-			Languages::tangle_code(OUT, W->main_language, fn->function_name);
+			LanguageMethods::tangle_code(OUT, W->main_language, fn->function_name);
 			WRITE("(%S;\n", fn->function_arguments);
 			Tags::close_ifdefs(OUT, L->owning_paragraph);
 			for (int i=0; i<to_close; i++) {
 				WRITE("#endif\n");
 			}
 		}
-
-@h Begin weave.
-We use this opportunity only to register C's usual set of reserved words as
-being of interest for syntax colouring. |FILE| gets in even though it's not
-technically reserved but only a type name, defined in the standard C library.
-
-=
-void CLike::begin_weave(programming_language *self, section *S, weave_target *wv) {
-	Analyser::mark_reserved_word(S, I"FILE", RESERVED_COLOUR);
-
-	Analyser::mark_reserved_word(S, I"auto", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"break", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"case", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"char", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"const", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"continue", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"default", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"do", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"double", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"else", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"enum", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"extern", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"float", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"for", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"goto", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"if", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"int", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"long", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"register", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"return", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"short", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"signed", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"sizeof", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"static", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"struct", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"switch", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"typedef", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"union", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"unsigned", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"void", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"volatile", RESERVED_COLOUR);
-	Analyser::mark_reserved_word(S, I"while", RESERVED_COLOUR);
-}
-
-@h Syntax colouring.
-This is a very simple syntax colouring algorithm. The state at any given
-time is a single variable, the current category of code being looked at:
-
-=
-void CLike::reset_syntax_colouring(programming_language *self) {
-	colouring_state = PLAIN_COLOUR;
-}
-
-@ =
-int CLike::syntax_colour(programming_language *self, text_stream *OUT, weave_target *wv,
-	web *W, chapter *C, section *S, source_line *L, text_stream *matter,
-	text_stream *colouring) {
-	for (int i=0; i < Str::len(matter); i++) {
-		int skip = FALSE, one_off = -1, will_be = -1;
-		switch (colouring_state) {
-			case PLAIN_COLOUR:
-				switch (Str::get_at(matter, i)) {
-					case '\"': colouring_state = STRING_COLOUR; break;
-					case '\'': colouring_state = CHAR_LITERAL_COLOUR; break;
-				}
-				if ((Regexp::identifier_char(Str::get_at(matter, i))) &&
-					(Str::get_at(matter, i) != ':')) {
-					if ((!(isdigit(Str::get_at(matter, i)))) ||
-						((i>0) && (Str::get_at(colouring, i-1) == IDENTIFIER_COLOUR)))
-						one_off = IDENTIFIER_COLOUR;
-				}
-				break;
-			case CHAR_LITERAL_COLOUR:
-				switch (Str::get_at(matter, i)) {
-					case '\\': skip = TRUE; break;
-					case '\'': will_be = PLAIN_COLOUR; break;
-				}
-				break;
-			case STRING_COLOUR:
-				switch (Str::get_at(matter, i)) {
-					case '\\': skip = TRUE; break;
-					case '\"': will_be = PLAIN_COLOUR; break;
-				}
-				break;
-		}
-		if (one_off >= 0) Str::put_at(colouring, i, (char) one_off);
-		else Str::put_at(colouring, i, (char) colouring_state);
-		if (will_be >= 0) colouring_state = (char) will_be;
-		if ((skip) && (Str::get_at(matter, i+1))) i++;
-	}
-	@<Find identifiers and colour them appropriately@>;
-	return FALSE;
-}
-
-@ Note that an identifier, followed by |::| and then another identifier, is
-merged here into one long identifier. Thus in the code |r = X::Y(1);|, the
-above routine would identify three identifiers, |r|, |X| and |Y|; but the
-code below merges these into |r| and |X::Y|.
-
-@<Find identifiers and colour them appropriately@> =
-	int ident_from = -1;
-	for (int i=0; i < Str::len(matter); i++) {
-		if ((Str::get_at(matter, i) == ':') && (Str::get_at(matter, i+1) == ':') &&
-			(Str::get_at(colouring, i-1) == IDENTIFIER_COLOUR) &&
-			(Str::get_at(colouring, i+2) == IDENTIFIER_COLOUR)) {
-			Str::put_at(colouring, i, IDENTIFIER_COLOUR);
-			Str::put_at(colouring, i+1, IDENTIFIER_COLOUR);
-		}
-		if (Str::get_at(colouring, i) == IDENTIFIER_COLOUR) {
-			if (ident_from == -1) ident_from = i;
-		} else {
-			if (ident_from >= 0)
-				CLike::colour_ident(S, matter, colouring, ident_from, i-1);
-			ident_from = -1;
-		}
-	}
-	if (ident_from >= 0)
-		CLike::colour_ident(S, matter, colouring, ident_from, Str::len(matter)-1);
-
-@ Here we look at a word made up of identifier characters -- such as |int|, |X|,
-or |CLike::colour_ident| -- and decide whether to recolour its characters on
-the basis of what it means.
-
-=
-void CLike::colour_ident(section *S, text_stream *matter, text_stream *colouring, int from, int to) {
-	TEMPORARY_TEXT(id);
-	Str::substr(id, Str::at(matter, from), Str::at(matter, to+1));
-
-	int override = -1;
-	if (Analyser::is_reserved_word(S, id, FUNCTION_COLOUR)) override = FUNCTION_COLOUR;
-	if (Analyser::is_reserved_word(S, id, RESERVED_COLOUR)) override = RESERVED_COLOUR;
-	if (Analyser::is_reserved_word(S, id, CONSTANT_COLOUR)) override = CONSTANT_COLOUR;
-	if (Analyser::is_reserved_word(S, id, ELEMENT_COLOUR)) {
-		int at = --from;
-		while ((at > 0) && (Characters::is_space_or_tab(Str::get_at(matter, at)))) at--;
-		if (((at >= 0) && (Str::get_at(matter, at) == '.')) ||
-			((at >= 0) && (Str::get_at(matter, at-1) == '-') && (Str::get_at(matter, at) == '>')))
-			override = ELEMENT_COLOUR;
-	}
-
-	if (override >= 0)
-		for (int i=from; i<=to; i++)
-			Str::put_at(colouring, i, override);
-	DISCARD_TEXT(id);
-}
 
 @h Overriding regular code weaving.
 We have the opportunity here to sidestep the regular weaving algorithm, and do

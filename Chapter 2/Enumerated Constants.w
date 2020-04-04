@@ -100,9 +100,9 @@ void Enumerations::define_extents(OUTPUT_STREAM, tangle_target *target, programm
 			TEMPORARY_TEXT(value);
 			WRITE_TO(symbol, "NO_DEFINED_%S_VALUES", es->postfix);
 			WRITE_TO(value, "%d", es->next_free_value - es->first_value);
-			Languages::start_definition(OUT, lang, symbol, value,
+			LanguageMethods::start_definition(OUT, lang, symbol, value,
 				es->last_observed_at->owning_section, es->last_observed_at);
-			Languages::end_definition(OUT, lang,
+			LanguageMethods::end_definition(OUT, lang,
 				es->last_observed_at->owning_section, es->last_observed_at);
 			DISCARD_TEXT(symbol);
 			DISCARD_TEXT(value);

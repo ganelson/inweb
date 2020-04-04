@@ -47,8 +47,8 @@ because tangled code doesn't need to know its own paragraph numbers.
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Numbering::number_web</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">chapter</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">;</span>
         <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">chapter</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">-</span><span class="element">&gt;chapters</span><span class="plain">) {</span>
-            <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">section</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-</span><span class="element">&gt;sections</span><span class="plain">) {</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="reserved">chapter</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">chapters</span><span class="plain">) {</span>
+            <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">section</span><span class="plain">, </span><span class="identifier">C</span><span class="plain">-&gt;</span><span class="element">sections</span><span class="plain">) {</span>
                 &lt;<span class="cwebmacro">Scan this section to see where paragraph macros are used</span> <span class="cwebmacronumber">1.1</span>&gt;<span class="plain">;</span>
                 &lt;<span class="cwebmacro">Work out paragraph numbers within this section</span> <span class="cwebmacronumber">1.2</span>&gt;<span class="plain">;</span>
             <span class="plain">}</span>
@@ -66,9 +66,9 @@ because tangled code doesn't need to know its own paragraph numbers.
 
 
 <pre class="displaydefn">
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;first_line</span><span class="plain">; </span><span class="identifier">L</span><span class="plain">; </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;next_line</span><span class="plain">) {</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">first_line</span><span class="plain">; </span><span class="identifier">L</span><span class="plain">; </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">next_line</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
-            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;text</span><span class="plain">);</span>
+            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">text</span><span class="plain">);</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mlen</span><span class="plain">, </span><span class="identifier">mpos</span><span class="plain">;</span>
             <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">mpos</span><span class="plain"> = </span><span class="functiontext">Regexp::find_expansion</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="character">'@'</span><span class="plain">, </span><span class="character">'&lt;'</span><span class="plain">, </span><span class="character">'@'</span><span class="plain">, </span><span class="character">'&gt;'</span><span class="plain">, &amp;</span><span class="identifier">mlen</span><span class="plain">)) != -1) {</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">found_macro</span><span class="plain">);</span>
@@ -122,18 +122,18 @@ lexicographic sequence.
 
 <pre class="displaydefn">
         <span class="reserved">macro_usage</span><span class="plain"> *</span><span class="identifier">mu</span><span class="plain">, *</span><span class="identifier">last</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">mu</span><span class="plain">, </span><span class="reserved">macro_usage</span><span class="plain">, </span><span class="identifier">pmac</span><span class="plain">-</span><span class="element">&gt;macro_usages</span><span class="plain">) {</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">mu</span><span class="plain">, </span><span class="reserved">macro_usage</span><span class="plain">, </span><span class="identifier">pmac</span><span class="plain">-&gt;</span><span class="element">macro_usages</span><span class="plain">) {</span>
             <span class="identifier">last</span><span class="plain"> = </span><span class="identifier">mu</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mu</span><span class="plain">-</span><span class="element">&gt;used_in_paragraph</span><span class="plain"> == </span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;owning_paragraph</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mu</span><span class="plain">-&gt;</span><span class="element">used_in_paragraph</span><span class="plain"> == </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">owning_paragraph</span><span class="plain">)</span>
                 <span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mu</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="identifier">mu</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">macro_usage</span><span class="plain">);</span>
-            <span class="identifier">mu</span><span class="plain">-</span><span class="element">&gt;used_in_paragraph</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">-</span><span class="element">&gt;owning_paragraph</span><span class="plain">;</span>
-            <span class="identifier">mu</span><span class="plain">-</span><span class="element">&gt;multiplicity</span><span class="plain"> = 0;</span>
-            <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">mu</span><span class="plain">, </span><span class="reserved">macro_usage</span><span class="plain">, </span><span class="identifier">pmac</span><span class="plain">-</span><span class="element">&gt;macro_usages</span><span class="plain">);</span>
+            <span class="identifier">mu</span><span class="plain">-&gt;</span><span class="element">used_in_paragraph</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">owning_paragraph</span><span class="plain">;</span>
+            <span class="identifier">mu</span><span class="plain">-&gt;</span><span class="element">multiplicity</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">mu</span><span class="plain">, </span><span class="reserved">macro_usage</span><span class="plain">, </span><span class="identifier">pmac</span><span class="plain">-&gt;</span><span class="element">macro_usages</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">mu</span><span class="plain">-</span><span class="element">&gt;multiplicity</span><span class="plain">++;</span>
+        <span class="identifier">mu</span><span class="plain">-&gt;</span><span class="element">multiplicity</span><span class="plain">++;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -171,11 +171,11 @@ other nodes a bit speculatively.
 
 <pre class="displaydefn">
         <span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;paragraphs</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;defines_macro</span><span class="plain">) {</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">paragraphs</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">defines_macro</span><span class="plain">) {</span>
                 <span class="reserved">macro_usage</span><span class="plain"> *</span><span class="identifier">mu</span><span class="plain"> =</span>
-                    <span class="identifier">FIRST_IN_LINKED_LIST</span><span class="plain">(</span><span class="reserved">macro_usage</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;defines_macro</span><span class="plain">-</span><span class="element">&gt;macro_usages</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mu</span><span class="plain">) </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;parent_paragraph</span><span class="plain"> = </span><span class="identifier">mu</span><span class="plain">-</span><span class="element">&gt;used_in_paragraph</span><span class="plain">;</span>
+                    <span class="identifier">FIRST_IN_LINKED_LIST</span><span class="plain">(</span><span class="reserved">macro_usage</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">defines_macro</span><span class="plain">-&gt;</span><span class="element">macro_usages</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mu</span><span class="plain">) </span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="identifier">parent_paragraph</span><span class="plain"> = </span><span class="identifier">mu</span><span class="plain">-&gt;</span><span class="element">used_in_paragraph</span><span class="plain">;</span>
             <span class="plain">}</span>
 </pre>
 
@@ -190,13 +190,13 @@ other nodes a bit speculatively.
 
 <pre class="displaydefn">
         <span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;paragraphs</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;parent_paragraph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">paragraphs</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
                 <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">linked_list_item</span><span class="plain"> *</span><span class="identifier">P2_item</span><span class="plain"> = </span><span class="identifier">P_item</span><span class="plain">; </span><span class="identifier">P2_item</span><span class="plain">; </span><span class="identifier">P2_item</span><span class="plain"> = </span><span class="identifier">NEXT_ITEM_IN_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P2_item</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">)) {</span>
                     <span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P2</span><span class="plain"> = </span><span class="identifier">CONTENT_IN_ITEM</span><span class="plain">(</span><span class="identifier">P2_item</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">);</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P2</span><span class="plain">-</span><span class="element">&gt;parent_paragraph</span><span class="plain">) {</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P2</span><span class="plain">-</span><span class="element">&gt;parent_paragraph</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain"> &lt; </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain">)</span>
-                            <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;parent_paragraph</span><span class="plain"> = </span><span class="identifier">P2</span><span class="plain">-</span><span class="element">&gt;parent_paragraph</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P2</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain">) {</span>
+                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P2</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain"> &lt; </span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain">)</span>
+                            <span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain"> = </span><span class="identifier">P2</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain">;</span>
                         <span class="reserved">break</span><span class="plain">;</span>
                     <span class="plain">}</span>
                 <span class="plain">}</span>
@@ -213,8 +213,8 @@ other nodes a bit speculatively.
 
 <pre class="displaydefn">
         <span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;paragraphs</span><span class="plain">)</span>
-            <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;paragraph_number</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">paragraphs</span><span class="plain">)</span>
+            <span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -233,14 +233,14 @@ numbered 1, 2, 3, ..., and then children are numbered with suffixes .1, .2, .3,
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">top_level</span><span class="plain"> = 1;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">top_level</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;paragraphs</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;parent_paragraph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;paragraph_number</span><span class="plain">, </span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">top_level</span><span class="plain">++);</span>
-                <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;next_child_number</span><span class="plain"> = 1;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">paragraphs</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+                <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">, </span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">top_level</span><span class="plain">++);</span>
+                <span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">next_child_number</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span>
-                <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;paragraph_number</span><span class="plain">);</span>
+                <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -254,7 +254,7 @@ numbered 1, 2, 3, ..., and then children are numbered with suffixes .1, .2, .3,
 
 <pre class="displaydefn">
         <span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;paragraphs</span><span class="plain">)</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">paragraphs</span><span class="plain">)</span>
             <span class="functiontext">Numbering::settle_paragraph_number</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
 </pre>
 
@@ -271,13 +271,13 @@ chosen by the author, so 2 it is.
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Numbering::settle_paragraph_number</span><span class="plain">(</span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;paragraph_number</span><span class="plain">) &gt; 0) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;paragraph_number</span><span class="plain">, </span><span class="string">"X"</span><span class="plain">); </span><span class="comment">to prevent malformed sections hanging this</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;parent_paragraph</span><span class="plain">) </span><span class="functiontext">Numbering::settle_paragraph_number</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;parent_paragraph</span><span class="plain">);</span>
-        <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;paragraph_number</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;paragraph_number</span><span class="plain">, </span><span class="string">"%S.%d"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;parent_paragraph</span><span class="plain">-</span><span class="element">&gt;paragraph_number</span><span class="plain">,</span>
-                <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;parent_paragraph</span><span class="plain">-</span><span class="element">&gt;next_child_number</span><span class="plain">++);</span>
-        <span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;next_child_number</span><span class="plain"> = 1;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">, </span><span class="string">"X"</span><span class="plain">); </span><span class="comment">to prevent malformed sections hanging this</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain">) </span><span class="functiontext">Numbering::settle_paragraph_number</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain">);</span>
+        <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">, </span><span class="string">"%S.%d"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">,</span>
+                <span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain">-&gt;</span><span class="element">next_child_number</span><span class="plain">++);</span>
+        <span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">next_child_number</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 

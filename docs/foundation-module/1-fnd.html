@@ -98,17 +98,17 @@ supplied instead for that case.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">TRUE</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">FALSE</span><span class="plain"> 0</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NOT_APPLICABLE</span><span class="plain"> 2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRUE</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FALSE</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NOT_APPLICABLE</span><span class="plain"> </span><span class="constant">2</span>
 </pre>
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>And we recognise two different encodings for narrow (i.e., <code class="display"><span class="extract">char *</span></code>) C strings.
 </p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">UTF8_ENC</span><span class="plain"> 1 </span><span class="comment">Write as UTF-8 without BOM</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ISO_ENC</span><span class="plain"> 2 </span><span class="comment">Write as ISO Latin-1 (i.e., no conversion needed)</span>
+    <span class="definitionkeyword">define</span> <span class="constant">UTF8_ENC</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">Write as UTF-8 without BOM</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ISO_ENC</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">Write as ISO Latin-1 (i.e., no conversion needed)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>It is assumed that our host filing system can manage at least 30-character
 filenames, that space is legal as a character in a filename, and that trailing
@@ -123,7 +123,7 @@ compromise in practice:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_FILENAME_LENGTH</span><span class="plain"> 1025</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_FILENAME_LENGTH</span><span class="plain"> </span><span class="constant">1025</span>
 </pre>
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Very occasionally we'll store a pointer as data:
 </p>
@@ -253,17 +253,17 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 
 <pre class="displaydefn">
         <span class="functiontext">CommandLine::begin_group</span><span class="plain">(</span><span class="constant">FOUNDATION_CLSG</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">LOG_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"log"</span><span class="plain">, 2,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">LOG_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"log"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"write the debugging log to include diagnostics on X"</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">VERSION_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"version"</span><span class="plain">, 1,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">VERSION_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"version"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"print out version number"</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">CRASH_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"crash"</span><span class="plain">, 1,</span>
+        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">CRASH_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"crash"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"intentionally crash on internal errors, for backtracing"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">HELP_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"help"</span><span class="plain">, 1,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">HELP_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"help"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"print this help information"</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">FIXTIME_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"fixtime"</span><span class="plain">, 1,</span>
+        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">FIXTIME_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"fixtime"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"pretend the time is 11 a.m. on 28 March 2016 for testing"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">AT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"at"</span><span class="plain">, 2,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">AT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"at"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"specify that this tool is installed at X"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::end_group</span><span class="plain">();</span>
 </pre>

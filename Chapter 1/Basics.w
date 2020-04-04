@@ -33,6 +33,7 @@ case, |_array_MT| appended. MT stands for "memory type".
 @e paragraph_tagging_MT
 @e preform_nonterminal_MT
 @e programming_language_MT
+@e reserved_word_MT
 @e section_MT
 @e source_line_array_MT
 @e structure_element_MT
@@ -70,6 +71,7 @@ ALLOCATE_INDIVIDUALLY(paragraph_tagging)
 ALLOCATE_INDIVIDUALLY(paragraph)
 ALLOCATE_INDIVIDUALLY(preform_nonterminal)
 ALLOCATE_INDIVIDUALLY(programming_language)
+ALLOCATE_INDIVIDUALLY(reserved_word)
 ALLOCATE_INDIVIDUALLY(section)
 ALLOCATE_INDIVIDUALLY(structure_element)
 ALLOCATE_INDIVIDUALLY(tangle_target)

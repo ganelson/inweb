@@ -55,7 +55,7 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 			LOOP_OVER_LINKED_LIST(S, section, C->sections)
 				if (Reader::range_within(S->sect_range, wv->weave_range)) {
 					latest_section = S;
-					Languages::begin_weave(S, wv);
+					LanguageMethods::begin_weave(S, wv);
 					Str::clear(state->sectionmark);
 					@<Weave this section@>;
 				}
@@ -114,7 +114,7 @@ typedef struct weaver_state {
 	paragraph *current_paragraph = NULL;
 	for (source_line *L = S->first_line; L; L = L->next_line) {
 		if ((Tags::tagged_with(L->owning_paragraph, wv->theme_match)) &&
-			(Languages::skip_in_weaving(S->sect_language, wv, L) == FALSE)) {
+			(LanguageMethods::skip_in_weaving(S->sect_language, wv, L) == FALSE)) {
 			lines_woven++;
 			@<Weave this line@>;
 		}
@@ -354,11 +354,11 @@ and macro usage is rendered differently.
 	@<Extract any comment matter ending the line to be set in italic@>;
 	@<Give constant definition lines slightly fancier openings@>;
 
-	if (Languages::weave_code_line(OUT, S->sect_language, wv,
+	if (LanguageMethods::weave_code_line(OUT, S->sect_language, wv,
 		W, C, S, L, matter, concluding_comment)) continue;
 
 	TEMPORARY_TEXT(colouring);
-	Languages::syntax_colour(OUT, S->sect_language, wv, W, C, S, L, matter, colouring);
+	LanguageMethods::syntax_colour(OUT, S->sect_language, wv, W, C, S, L, matter, colouring);
 
 	int found = 0;
 	@<Find macro usages and adjust syntax colouring accordingly@>;
@@ -436,7 +436,7 @@ otherwise, they are set flush right.
 @<Extract any comment matter ending the line to be set in italic@> =
 	TEMPORARY_TEXT(part_before_comment);
 	TEMPORARY_TEXT(part_within_comment);
-	if (Languages::parse_comment(S->sect_language,
+	if (LanguageMethods::parse_comment(S->sect_language,
 		matter, part_before_comment, part_within_comment)) {
 		Str::copy(matter, part_before_comment);
 		Str::copy(concluding_comment, part_within_comment);
@@ -464,7 +464,7 @@ otherwise, they are set flush right.
 		para_macro *pmac = Macros::find_by_name(mr.exp[1], S);
 		Formats::source_code(OUT, wv, tab_stops_of_indentation, prefatory,
 			mr.exp[0], colouring, concluding_comment, (found == 0)?TRUE:FALSE, FALSE, TRUE);
-		Languages::reset_syntax_colouring(S->sect_language);
+		LanguageMethods::reset_syntax_colouring(S->sect_language);
 		found++;
 		int defn = (L->owning_paragraph == pmac->defining_paragraph)?TRUE:FALSE;
 		if (defn) state->in_run_of_definitions = FALSE;
@@ -490,7 +490,7 @@ otherwise, they are set flush right.
 		@<Complete any started but not-fully-woven paragraph@>;
 		if (wv->theme_match)
 			@<If this is a paragraph break forced onto a new page, then throw a page@>;
-		Languages::reset_syntax_colouring(S->sect_language); /* a precaution: limits bad colouring accidents to one para */
+		LanguageMethods::reset_syntax_colouring(S->sect_language); /* a precaution: limits bad colouring accidents to one para */
 		int weight = 0;
 		if (L->category == HEADING_START_LCAT) weight = 1;
 		if (L->category == SECTION_HEADING_LCAT) weight = 2;

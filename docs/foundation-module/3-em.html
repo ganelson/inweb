@@ -44,9 +44,9 @@ issued. If this returns <code class="display"><span class="extract">FALSE</span>
         <span class="identifier">internal_errors_handler</span><span class="plain"> = </span><span class="identifier">f</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">problem_count</span><span class="plain"> = 0;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">problem_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Errors::have_occurred</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">problem_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
@@ -167,8 +167,8 @@ occurs unexpectedly, and one way to do that is to force a division by zero.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">DL</span><span class="plain">) </span><span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">debugger_mode</span><span class="plain">) {</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"(crashing intentionally to allow backtrace)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">to_deliberately_crash</span><span class="plain"> = 0;</span>
-            <span class="identifier">printf</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, 1/</span><span class="identifier">to_deliberately_crash</span><span class="plain">);</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">to_deliberately_crash</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">printf</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">/</span><span class="identifier">to_deliberately_crash</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="comment">on a fatal exit, memory isn't freed, because that causes threading problems</span>
         <span class="identifier">exit</span><span class="plain">(2);</span>
@@ -193,16 +193,16 @@ specify this at three levels of abstraction:
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">here</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">here</span><span class="plain">)</span>
-            <span class="functiontext">Errors::at_position</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">here</span><span class="plain">-</span><span class="element">&gt;text_file_filename</span><span class="plain">, </span><span class="identifier">here</span><span class="plain">-</span><span class="element">&gt;line_count</span><span class="plain">);</span>
+            <span class="functiontext">Errors::at_position</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">here</span><span class="plain">-&gt;</span><span class="element">text_file_filename</span><span class="plain">, </span><span class="identifier">here</span><span class="plain">-&gt;</span><span class="element">line_count</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="functiontext">Errors::at_position</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+            <span class="functiontext">Errors::at_position</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Errors::in_text_file_S</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">here</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">here</span><span class="plain">)</span>
-            <span class="functiontext">Errors::at_position_S</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">here</span><span class="plain">-</span><span class="element">&gt;text_file_filename</span><span class="plain">, </span><span class="identifier">here</span><span class="plain">-</span><span class="element">&gt;line_count</span><span class="plain">);</span>
+            <span class="functiontext">Errors::at_position_S</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">here</span><span class="plain">-&gt;</span><span class="element">text_file_filename</span><span class="plain">, </span><span class="identifier">here</span><span class="plain">-&gt;</span><span class="element">line_count</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="functiontext">Errors::at_position_S</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, 0);</span>
+            <span class="functiontext">Errors::at_position_S</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

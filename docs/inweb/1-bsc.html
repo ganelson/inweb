@@ -62,6 +62,7 @@ case, <code class="display"><span class="extract">_array_MT</span></code> append
     <span class="definitionkeyword">enum</span> <span class="constant">paragraph_tagging_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">preform_nonterminal_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">programming_language_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">reserved_word_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">section_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">source_line_array_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">structure_element_MT</span>
@@ -82,7 +83,7 @@ types.
 
 
 <pre class="display">
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">source_line</span><span class="plain">, 1000)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">source_line</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">breadcrumb_request</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">c_structure</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">chapter</span><span class="plain">)</span>
@@ -101,14 +102,15 @@ types.
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">paragraph</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">preform_nonterminal</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">reserved_word</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">section</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">structure_element</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">tangle_target</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">tex_results</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">text_literal</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">theme_tag</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="reserved">(weave_format</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="reserved">(weave_pattern</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">weave_pattern</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">weave_target</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">web</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">writeme_asset</span><span class="plain">)</span>

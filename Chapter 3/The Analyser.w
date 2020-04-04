@@ -72,7 +72,7 @@ void Analyser::catalogue_the_sections(web *W, text_stream *range, int form) {
 				PRINT("%S", main_title);
 				for (int i = Str::len(main_title); i<max_width+2; i++) PRINT(" ");
 				if (form != BASIC_SECTIONCAT)
-					Languages::catalogue(S->sect_language, S,
+					LanguageMethods::catalogue(S->sect_language, S,
 						(form == FUNCTIONS_SECTIONCAT)?TRUE:FALSE);
 				PRINT("\n");
 				DISCARD_TEXT(main_title);
@@ -101,7 +101,7 @@ these identifiers.
 
 @ The main analysis routine goes through a web as follows. Note that we only
 perform the search here, we don't comment on the results; any action to be
-taken must be handled by |Languages::late_preweave_analysis| when we're done.
+taken must be handled by |LanguageMethods::late_preweave_analysis| when we're done.
 
 =
 void Analyser::analyse_code(web *W) {
@@ -124,7 +124,7 @@ void Analyser::analyse_code(web *W) {
 				break;
 		}
 
-	Languages::late_preweave_analysis(W->main_language, W);
+	LanguageMethods::late_preweave_analysis(W->main_language, W);
 	W->analysed = TRUE;
 }
 
@@ -139,7 +139,7 @@ Version 2 removed Interface altogeter as being cumbersome for no real gain in
 practice.
 
 @<Ask language-specific code to identify search targets, and parse the Interfaces@> =
-	Languages::early_preweave_analysis(W->main_language, W);
+	LanguageMethods::early_preweave_analysis(W->main_language, W);
 
 	chapter *C;
 	section *S;

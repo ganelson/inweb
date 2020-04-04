@@ -45,7 +45,7 @@ on a POSIX operating system.
     <span class="definitionkeyword">define</span> <span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain"> </span><span class="character">'\</span><span class="plain">"</span><span class="character">'</span>
     <span class="definitionkeyword">define</span> <span class="constant">WINDOWS_JAVASCRIPT</span>
     <span class="definitionkeyword">define</span> <span class="constant">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain"> </span><span class="string">""</span>
-    <span class="definitionkeyword">define</span> <span class="constant">HTML_MAP_FONT_SIZE</span><span class="plain"> 11</span>
+    <span class="definitionkeyword">define</span> <span class="constant">HTML_MAP_FONT_SIZE</span><span class="plain"> </span><span class="constant">11</span>
 </pre>
 
 <pre class="display">
@@ -84,7 +84,7 @@ And with Windows GCC, <code class="display"><span class="extract">isdigit(-23)</
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::Windows_isdigit</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="character">'0'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="character">'9'</span><span class="plain">)) ? 1 : 0;</span>
+        <span class="reserved">return</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="character">'0'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="character">'9'</span><span class="plain">)) ? </span><span class="constant">1</span><span class="plain"> : </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -104,11 +104,11 @@ And with Windows GCC, <code class="display"><span class="extract">isdigit(-23)</
 
     <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Platform::getenv</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">static</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> </span><span class="identifier">env</span><span class="plain">[260];</span>
-        <span class="identifier">env</span><span class="plain">[0] = 0;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">,</span><span class="string">"PWD"</span><span class="plain">) == 0) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">GetCurrentDirectoryA</span><span class="plain">(260,</span><span class="identifier">env</span><span class="plain">) &gt; 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">env</span><span class="plain">;</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">,</span><span class="string">"HOME"</span><span class="plain">) == 0) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">SHGetFolderPathA</span><span class="plain">(0,5,0,0,</span><span class="identifier">env</span><span class="plain">) == 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">env</span><span class="plain">;</span>
+        <span class="identifier">env</span><span class="plain">[0] = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">,</span><span class="string">"PWD"</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">GetCurrentDirectoryA</span><span class="plain">(260,</span><span class="identifier">env</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">env</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">,</span><span class="string">"HOME"</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">SHGetFolderPathA</span><span class="plain">(0,5,0,0,</span><span class="identifier">env</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">env</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">getenv</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -136,7 +136,7 @@ just that installation and use of Foundation-built tools is less convenient.)
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::where_am_i</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
         <span class="identifier">DWORD</span><span class="plain"> </span><span class="identifier">result</span><span class="plain"> = </span><span class="identifier">GetModuleFileNameW</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">length</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">result</span><span class="plain"> == 0) || (</span><span class="identifier">result</span><span class="plain"> == </span><span class="identifier">length</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain">[0] = 0;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">result</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">result</span><span class="plain"> == </span><span class="identifier">length</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain">[0] = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -165,26 +165,26 @@ just that installation and use of Foundation-built tools is less convenient.)
     <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">GetExitCodeProcess</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">proc</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain">* </span><span class="identifier">code</span><span class="plain">);</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::system</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cmd</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strncmp</span><span class="plain">(</span><span class="identifier">cmd</span><span class="plain">,</span><span class="string">"md5 "</span><span class="plain">, 4) == 0) </span><span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strncmp</span><span class="plain">(</span><span class="identifier">cmd</span><span class="plain">,</span><span class="string">"md5 "</span><span class="plain">, </span><span class="constant">4</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
 
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">cmdline</span><span class="plain">[4096];</span>
         <span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">cmdline</span><span class="plain">,</span><span class="string">"cmd /s /c \</span><span class="plain">"</span><span class="string">%s\</span><span class="plain">"</span><span class="string">"</span><span class="plain">, </span><span class="identifier">cmd</span><span class="plain">);</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Startup_Info</span><span class="plain"> </span><span class="identifier">start</span><span class="plain"> = { </span><span class="reserved">sizeof</span><span class="plain"> (</span><span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Startup_Info</span><span class="plain">), 0 };</span>
-        <span class="identifier">start</span><span class="plain">.</span><span class="identifier">flags</span><span class="plain"> = 1;</span>
-        <span class="identifier">start</span><span class="plain">.</span><span class="identifier">showWindow</span><span class="plain"> = 0;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Startup_Info</span><span class="plain"> </span><span class="identifier">start</span><span class="plain"> = { </span><span class="reserved">sizeof</span><span class="plain"> (</span><span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Startup_Info</span><span class="plain">), </span><span class="constant">0</span><span class="plain"> };</span>
+        <span class="identifier">start</span><span class="plain">.</span><span class="identifier">flags</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="identifier">start</span><span class="plain">.</span><span class="identifier">showWindow</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Process_Info</span><span class="plain"> </span><span class="identifier">process</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">CreateProcessA</span><span class="plain">(0, </span><span class="identifier">cmdline</span><span class="plain">, 0, 0, 0, 0</span><span class="identifier">x8000000</span><span class="plain">, 0, 0, &amp;</span><span class="identifier">start</span><span class="plain">, &amp;</span><span class="identifier">process</span><span class="plain">) == 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">CreateProcessA</span><span class="plain">(0, </span><span class="identifier">cmdline</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0x8000000</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, &amp;</span><span class="identifier">start</span><span class="plain">, &amp;</span><span class="identifier">process</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
             <span class="reserved">return</span><span class="plain"> -1;</span>
 
         <span class="functiontext">CloseHandle</span><span class="plain">(</span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">thread</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">WaitForSingleObject</span><span class="plain">(</span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">process</span><span class="plain">, -1) != 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">WaitForSingleObject</span><span class="plain">(</span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">process</span><span class="plain">, -1) != </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="functiontext">CloseHandle</span><span class="plain">(</span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">process</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="plain">}</span>
 
-        <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">code</span><span class="plain"> = 10;</span>
+        <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">code</span><span class="plain"> = </span><span class="constant">10</span><span class="plain">;</span>
         <span class="functiontext">GetExitCodeProcess</span><span class="plain">(</span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">process</span><span class="plain">, &amp;</span><span class="identifier">code</span><span class="plain">);</span>
         <span class="functiontext">CloseHandle</span><span class="plain">(</span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">process</span><span class="plain">);</span>
 
@@ -211,9 +211,9 @@ just that installation and use of Foundation-built tools is less convenient.)
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::mkdir</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_pathname</span><span class="plain">) {</span>
-        <span class="identifier">errno</span><span class="plain"> = 0;</span>
+        <span class="identifier">errno</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">_mkdir</span><span class="plain">(</span><span class="identifier">transcoded_pathname</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">errno</span><span class="plain"> == </span><span class="identifier">EEXIST</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -233,7 +233,7 @@ just that installation and use of Foundation-built tools is less convenient.)
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">dp</span><span class="plain"> = </span><span class="identifier">readdir</span><span class="plain">(</span><span class="identifier">dirp</span><span class="plain">)) == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">path_to</span><span class="plain">, </span><span class="string">"%s%c%s"</span><span class="plain">, </span><span class="identifier">path_to_folder</span><span class="plain">, </span><span class="constant">FOLDER_SEPARATOR</span><span class="plain">, </span><span class="identifier">dp</span><span class="plain">-&gt;</span><span class="identifier">d_name</span><span class="plain">);</span>
         <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">_stat</span><span class="plain">(</span><span class="identifier">path_to</span><span class="plain">, &amp;</span><span class="identifier">file_status</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> != 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S_ISDIR</span><span class="plain">(</span><span class="identifier">file_status</span><span class="plain">.</span><span class="identifier">st_mode</span><span class="plain">))</span>
             <span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="string">"%s%c"</span><span class="plain">, </span><span class="identifier">dp</span><span class="plain">-&gt;</span><span class="identifier">d_name</span><span class="plain">, </span><span class="constant">FOLDER_SEPARATOR</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">strcpy</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="identifier">dp</span><span class="plain">-&gt;</span><span class="identifier">d_name</span><span class="plain">);</span>
@@ -266,7 +266,7 @@ POSIX <code class="display"><span class="extract">sleep</span></code> is for sec
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="identifier">Sleep</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">ms</span><span class="plain">);</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::sleep</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">seconds</span><span class="plain">) {</span>
-        <span class="identifier">Sleep</span><span class="plain">((</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain">) 1000*</span><span class="identifier">seconds</span><span class="plain">);</span>
+        <span class="identifier">Sleep</span><span class="plain">((</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain">) </span><span class="constant">1000</span><span class="plain">*</span><span class="identifier">seconds</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -319,7 +319,7 @@ POSIX <code class="display"><span class="extract">sleep</span></code> is for sec
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Thread_Start</span><span class="plain">* </span><span class="identifier">start</span><span class="plain"> = (</span><span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Thread_Start</span><span class="plain">*)</span><span class="identifier">param</span><span class="plain">;</span>
         <span class="plain">(</span><span class="identifier">start</span><span class="plain">-&gt;</span><span class="identifier">fn</span><span class="plain">)(</span><span class="identifier">start</span><span class="plain">-&gt;</span><span class="identifier">arg</span><span class="plain">);</span>
         <span class="identifier">free</span><span class="plain">(</span><span class="identifier">start</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::create_thread</span><span class="plain">(</span><span class="identifier">foundation_thread</span><span class="plain"> *</span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="identifier">foundation_thread_attributes</span><span class="plain"> *</span><span class="identifier">pa</span><span class="plain">,</span>
@@ -328,24 +328,24 @@ POSIX <code class="display"><span class="extract">sleep</span></code> is for sec
         <span class="identifier">start</span><span class="plain">-&gt;</span><span class="identifier">fn</span><span class="plain"> = </span><span class="identifier">fn</span><span class="plain">;</span>
         <span class="identifier">start</span><span class="plain">-&gt;</span><span class="identifier">arg</span><span class="plain"> = </span><span class="identifier">arg</span><span class="plain">;</span>
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">thread</span><span class="plain"> = </span><span class="functiontext">CreateThread</span><span class="plain">(0,0,</span><span class="functiontext">Platform::Win32_Thread_Func</span><span class="plain">,</span><span class="identifier">start</span><span class="plain">,0,0);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">thread</span><span class="plain"> == 0) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">thread</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">free</span><span class="plain">(</span><span class="identifier">start</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> 1;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="plain">*</span><span class="identifier">pt</span><span class="plain"> = </span><span class="identifier">thread</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain"> 0;</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::join_thread</span><span class="plain">(</span><span class="identifier">pthread_t</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">void</span><span class="plain">** </span><span class="identifier">rv</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="functiontext">WaitForSingleObject</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">,-1) == 0) ? 0 : 1;</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="functiontext">WaitForSingleObject</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">,-1) == </span><span class="constant">0</span><span class="plain">) ? </span><span class="constant">0</span><span class="plain"> : </span><span class="constant">1</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::init_thread</span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">) {</span>
     <span class="plain">}</span>
 
     <span class="identifier">size_t</span><span class="plain"> </span><span class="functiontext">Platform::get_thread_stack_size</span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> 0;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -373,7 +373,7 @@ be dealing with.
 
 <pre class="display">
     <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext">Platform::never_time</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">time_t</span><span class="plain">) 0;</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">time_t</span><span class="plain">) </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext">Platform::timestamp</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_filename</span><span class="plain">) {</span>
@@ -396,7 +396,7 @@ be dealing with.
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">)</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Critical_Section</span><span class="plain"> </span><span class="identifier">name</span><span class="plain"> { (</span><span class="reserved">void</span><span class="plain">*)-1, -1, 0, 0, 0, 0 };</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Critical_Section</span><span class="plain"> </span><span class="identifier">name</span><span class="plain"> { (</span><span class="reserved">void</span><span class="plain">*)-1, -1, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain"> };</span>
     <span class="definitionkeyword">define</span> <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">EnterCriticalSection</span><span class="plain">(&amp;</span><span class="identifier">name</span><span class="plain">);</span>
     <span class="definitionkeyword">define</span> <span class="identifier">UNLOCK_MUTEX</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">LeaveCriticalSection</span><span class="plain">(&amp;</span><span class="identifier">name</span><span class="plain">);</span>
 </pre>

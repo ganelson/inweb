@@ -23,7 +23,7 @@ void Tangler::go(web *W, tangle_target *target, filename *dest_file) {
 	STREAM_CLOSE(OUT);
 
 	@<Tangle any imported headers@>;
-	Languages::additional_tangling(lang, W, target);
+	LanguageMethods::additional_tangling(lang, W, target);
 }
 
 @ All of the sections are tangled together into one big file, the structure
@@ -37,9 +37,9 @@ of which can be seen below.
 
 @<Perform the actual tangle@> =
 	/* (a) The shebang line, a header for scripting languages, and other heading matter */
-	Languages::shebang(OUT, lang, W, target);
-	Languages::disclaimer(OUT, lang, W, target);
-	Languages::additional_early_matter(OUT, lang, W, target);
+	LanguageMethods::shebang(OUT, lang, W, target);
+	LanguageMethods::disclaimer(OUT, lang, W, target);
+	LanguageMethods::additional_early_matter(OUT, lang, W, target);
 	chapter *C; section *S; paragraph *P;
 	LOOP_OVER_PARAGRAPHS(C, S, target, P)
 		if ((P->placed_very_early) && (P->defines_macro == NULL))
@@ -49,7 +49,7 @@ of which can be seen below.
 	@<Tangle all the constant definitions in section order@>;
 
 	/* (c) Miscellaneous automated C predeclarations */
-	Languages::additional_predeclarations(OUT, lang, W);
+	LanguageMethods::additional_predeclarations(OUT, lang, W);
 
 	/* (d) Above-the-bar code from all of the sections (global variables, and such) */
 	LOOP_OVER_PARAGRAPHS(C, S, target, P)
@@ -62,7 +62,7 @@ of which can be seen below.
 			Tangler::tangle_paragraph(OUT, P);
 
 	/* (f) Opposite of the shebang: a footer */
-	Languages::gnabehs(OUT, lang, W);
+	LanguageMethods::gnabehs(OUT, lang, W);
 
 @ This is the result of all those |@d| definitions; note that these sometimes
 extend across multiple lines.
@@ -77,23 +77,23 @@ extend across multiple lines.
 	LOOP_WITHIN_TANGLE(C, S, target)
 		if (L->category == BEGIN_DEFINITION_LCAT)
 			if (L->default_defn) {
-				Languages::open_ifdef(OUT, lang, L->text_operand, FALSE);
+				LanguageMethods::open_ifdef(OUT, lang, L->text_operand, FALSE);
 				@<Define the constant@>;
-				Languages::close_ifdef(OUT, lang, L->text_operand, FALSE);
+				LanguageMethods::close_ifdef(OUT, lang, L->text_operand, FALSE);
 			}
 	Enumerations::define_extents(OUT, target, lang);
 
 @<Define the constant@> =
 	if (L->owning_paragraph == NULL) Main::error_in_web(I"misplaced definition", L);
 	else Tags::open_ifdefs(OUT, L->owning_paragraph);
-	Languages::start_definition(OUT, lang,
+	LanguageMethods::start_definition(OUT, lang,
 		L->text_operand,
 		L->text_operand2, S, L);
 	while ((L->next_line) && (L->next_line->category == CONT_DEFINITION_LCAT)) {
 		L = L->next_line;
-		Languages::prolong_definition(OUT, lang, L->text, S, L);
+		LanguageMethods::prolong_definition(OUT, lang, L->text, S, L);
 	}
-	Languages::end_definition(OUT, lang, S, L);
+	LanguageMethods::end_definition(OUT, lang, S, L);
 	if (L->owning_paragraph) Tags::close_ifdefs(OUT, L->owning_paragraph);
 
 @<Tangle any imported headers@> =
@@ -111,9 +111,9 @@ void Tangler::tangle_paragraph(OUTPUT_STREAM, paragraph *P) {
 	int contiguous = FALSE;
 	for (source_line *L = P->first_line_in_paragraph;
 		((L) && (L->owning_paragraph == P)); L = L->next_line) {
-		if (Languages::will_insert_in_tangle(P->under_section->sect_language, L)) {
+		if (LanguageMethods::will_insert_in_tangle(P->under_section->sect_language, L)) {
 			@<Insert line marker if necessary to show the origin of this code@>;
-			Languages::insert_in_tangle(OUT, P->under_section->sect_language, L);
+			LanguageMethods::insert_in_tangle(OUT, P->under_section->sect_language, L);
 		}
 		if ((L->category != CODE_BODY_LCAT) || (L->suppress_tangling)) {
 			contiguous = FALSE;
@@ -133,7 +133,7 @@ else; if so, here's where we use it.
 @<Insert line marker if necessary to show the origin of this code@> =
 	if (contiguous == FALSE) {
 		contiguous = TRUE;
-		Languages::insert_line_marker(OUT, P->under_section->sect_language, L);
+		LanguageMethods::insert_line_marker(OUT, P->under_section->sect_language, L);
 	}
 
 @h The Code Tangler.
@@ -146,12 +146,12 @@ void Tangler::tangle_code(OUTPUT_STREAM, text_stream *original, section *S, sour
 	int mpos = Regexp::find_expansion(original, '@', '<', '@', '>', &mlen);
 	int spos = Regexp::find_expansion(original, '[', '[', ']', ']', &slen);
 	if ((mpos >= 0) && ((spos == -1) || (mpos <= spos)) &&
-		(Languages::allow_expansion(S->sect_language, original)))
+		(LanguageMethods::allow_expansion(S->sect_language, original)))
 		@<Expand a paragraph macro@>
 	else if (spos >= 0)
 		@<Expand a double-square command@>
 	else
-		Languages::tangle_code(OUT, S->sect_language, original); /* this is usually what happens */
+		LanguageMethods::tangle_code(OUT, S->sect_language, original); /* this is usually what happens */
 }
 
 @ The first form of escape is a paragraph macro in the middle of code. For
@@ -175,21 +175,21 @@ So we insert a fresh line marker.
 @<Expand a paragraph macro@> =
 	TEMPORARY_TEXT(temp);
 	Str::copy(temp, original); Str::truncate(temp, mpos);
-	Languages::tangle_code(OUT, S->sect_language, temp);
+	LanguageMethods::tangle_code(OUT, S->sect_language, temp);
 
 	programming_language *lang = S->sect_language;
 	for (int i=0; i<mlen-4; i++) Str::put_at(temp, i, Str::get_at(original, mpos+2+i));
 	Str::truncate(temp, mlen-4);
 	para_macro *pmac = Macros::find_by_name(temp, S);
 	if (pmac) {
-		Languages::before_macro_expansion(OUT, lang, pmac);
+		LanguageMethods::before_macro_expansion(OUT, lang, pmac);
 		Tangler::tangle_paragraph(OUT, pmac->defining_paragraph);
-		Languages::after_macro_expansion(OUT, lang, pmac);
-		Languages::insert_line_marker(OUT, lang, L);
+		LanguageMethods::after_macro_expansion(OUT, lang, pmac);
+		LanguageMethods::insert_line_marker(OUT, lang, L);
 	} else {
 		Main::error_in_web(I"unknown macro", L);
 		WRITE_TO(STDERR, "Macro is '%S'\n", temp);
-		Languages::comment(OUT, lang, temp); /* recover by putting macro name in comment */
+		LanguageMethods::comment(OUT, lang, temp); /* recover by putting macro name in comment */
 	}
 	TEMPORARY_TEXT(rest);
 	Str::substr(rest, Str::at(original, mpos + mlen), Str::end(original));
@@ -217,11 +217,11 @@ passes straight through. So |[[water]]| becomes just |[[water]]|.
 
 	TEMPORARY_TEXT(temp);
 	for (int i=0; i<spos; i++) PUT_TO(temp, Str::get_at(original, i));
-	Languages::tangle_code(OUT, S->sect_language, temp);
+	LanguageMethods::tangle_code(OUT, S->sect_language, temp);
 
 	for (int i=0; i<slen-4; i++) Str::put_at(temp, i, Str::get_at(original, spos+2+i));
 	Str::truncate(temp, slen-4);
-	if (Languages::special_tangle_command(OUT, S->sect_language, temp) == FALSE) {
+	if (LanguageMethods::special_tangle_command(OUT, S->sect_language, temp) == FALSE) {
 		if (Bibliographic::look_up_datum(W->md, temp))
 			WRITE("%S", Bibliographic::get_datum(W->md, temp));
 		else

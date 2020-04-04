@@ -418,7 +418,7 @@ void InCSupport::additional_predeclarations(programming_language *self, text_str
 	LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W))
 		if (L->preform_nonterminal_defined) {
 			preform_nonterminal *pnt = L->preform_nonterminal_defined;
-			Languages::insert_line_marker(OUT, W->main_language, L);
+			LanguageMethods::insert_line_marker(OUT, W->main_language, L);
 			WRITE("nonterminal *%S = NULL;\n", pnt->as_C_identifier);
 		}
 
@@ -448,7 +448,7 @@ void InCSupport::gnabehs(programming_language *self, text_stream *OUT, web *W) {
 	LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W))
 		if (L->preform_nonterminal_defined) {
 			preform_nonterminal *pnt = L->preform_nonterminal_defined;
-			Languages::insert_line_marker(OUT, W->main_language, L);
+			LanguageMethods::insert_line_marker(OUT, W->main_language, L);
 			if (pnt->as_function) {
 				WRITE("\tINTERNAL_NONTERMINAL(L\"%S\", %S, %d, %d);\n",
 					pnt->nt_name, pnt->as_C_identifier,

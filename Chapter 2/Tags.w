@@ -36,7 +36,7 @@ theme_tag *Tags::find_by_name(text_stream *name, int creating_if_necessary) {
 			Str::substr(tag->ifdef_symbol, Str::at(name, 7), Str::end(name));
 			tag->ifdef_positive = FALSE;
 		}
-		Languages::new_tag_declared(tag);
+		LanguageMethods::new_tag_declared(tag);
 		return tag;
 	}
 	return NULL;
@@ -120,7 +120,7 @@ void Tags::open_ifdefs(OUTPUT_STREAM, paragraph *P) {
 	paragraph_tagging *pt;
 	LOOP_OVER_LINKED_LIST(pt, paragraph_tagging, P->taggings)
 		if (Str::len(pt->the_tag->ifdef_symbol) > 0)
-			Languages::open_ifdef(OUT,
+			LanguageMethods::open_ifdef(OUT,
 				P->under_section->sect_language, pt->the_tag->ifdef_symbol, pt->the_tag->ifdef_positive);
 }
 
@@ -128,7 +128,7 @@ void Tags::close_ifdefs(OUTPUT_STREAM, paragraph *P) {
 	paragraph_tagging *pt;
 	LOOP_OVER_LINKED_LIST(pt, paragraph_tagging, P->taggings)
 		if (Str::len(pt->the_tag->ifdef_symbol) > 0)
-			Languages::close_ifdef(OUT,
+			LanguageMethods::close_ifdef(OUT,
 				P->under_section->sect_language, pt->the_tag->ifdef_symbol, pt->the_tag->ifdef_positive);
 }
 

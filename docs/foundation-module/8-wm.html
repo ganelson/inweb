@@ -66,12 +66,12 @@ means.
 <pre class="display">
     <span class="reserved">module</span><span class="plain"> *</span><span class="functiontext">WebModules::new</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">m</span><span class="plain">) {</span>
         <span class="reserved">module</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">module</span><span class="plain">);</span>
-        <span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;module_location</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">;</span>
-        <span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;module_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;dependencies</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">module</span><span class="plain">);</span>
-        <span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;origin_marker</span><span class="plain"> = </span><span class="identifier">m</span><span class="plain">;</span>
-        <span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;module_tag</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"miscellaneous"</span><span class="plain">;</span>
-        <span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;sections_md</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">section_md</span><span class="plain">);</span>
+        <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">module_location</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">;</span>
+        <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">module_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">dependencies</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">module</span><span class="plain">);</span>
+        <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">origin_marker</span><span class="plain"> = </span><span class="identifier">m</span><span class="plain">;</span>
+        <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">module_tag</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"miscellaneous"</span><span class="plain">;</span>
+        <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">sections_md</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">section_md</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">M</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -93,7 +93,7 @@ internally named <code class="display"><span class="extract">"(main)"</span></co
 
 <pre class="display">
     <span class="reserved">module</span><span class="plain"> *</span><span class="functiontext">WebModules::create_main_module</span><span class="plain">(</span><span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">WS</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">WebModules::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"(main)"</span><span class="plain">, </span><span class="identifier">WS</span><span class="plain">-</span><span class="element">&gt;path_to_web</span><span class="plain">, </span><span class="constant">READING_WEB_MOM</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">WebModules::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"(main)"</span><span class="plain">, </span><span class="identifier">WS</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">, </span><span class="constant">READING_WEB_MOM</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -111,7 +111,7 @@ program generated by A.
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">WebModules::dependency</span><span class="plain">(</span><span class="reserved">module</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="reserved">module</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">A</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">B</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no module"</span><span class="plain">);</span>
-        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">, </span><span class="reserved">module</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">-</span><span class="element">&gt;dependencies</span><span class="plain">);</span>
+        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">, </span><span class="reserved">module</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="identifier">dependencies</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -141,7 +141,7 @@ program generated by A.
 <pre class="display">
     <span class="reserved">module_search</span><span class="plain"> *</span><span class="functiontext">WebModules::make_search_path</span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">ext_path</span><span class="plain">) {</span>
         <span class="reserved">module_search</span><span class="plain"> *</span><span class="identifier">ms</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">module_search</span><span class="plain">);</span>
-        <span class="identifier">ms</span><span class="plain">-</span><span class="element">&gt;path_to_search</span><span class="plain"> = </span><span class="identifier">ext_path</span><span class="plain">;</span>
+        <span class="identifier">ms</span><span class="plain">-&gt;</span><span class="element">path_to_search</span><span class="plain"> = </span><span class="identifier">ext_path</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ms</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -160,11 +160,11 @@ called <code class="display"><span class="extract">Blah</span></code> on disc? W
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%S-module"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">tries</span><span class="plain">[4];</span>
-        <span class="identifier">tries</span><span class="plain">[0] = </span><span class="identifier">WS</span><span class="plain">?(</span><span class="identifier">WS</span><span class="plain">-</span><span class="element">&gt;path_to_web</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">tries</span><span class="plain">[0] = </span><span class="identifier">WS</span><span class="plain">?(</span><span class="identifier">WS</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">tries</span><span class="plain">[1] = </span><span class="identifier">tries</span><span class="plain">[0]?(</span><span class="functiontext">Pathnames::up</span><span class="plain">(</span><span class="identifier">tries</span><span class="plain">[0])):</span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">tries</span><span class="plain">[2] = </span><span class="identifier">X</span><span class="plain">;</span>
-        <span class="identifier">tries</span><span class="plain">[3] = </span><span class="identifier">ms</span><span class="plain">-</span><span class="element">&gt;path_to_search</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = 4;</span>
+        <span class="identifier">tries</span><span class="plain">[3] = </span><span class="identifier">ms</span><span class="plain">-&gt;</span><span class="element">path_to_search</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">N</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text_relative</span><span class="plain">(</span><span class="identifier">tries</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">T</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">WebModules::exists</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">))) </span>&lt;<span class="cwebmacro">Accept this directory as the module</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
@@ -190,7 +190,7 @@ and a dependency created from the web's <code class="display"><span class="extra
 
 <pre class="displaydefn">
         <span class="reserved">module</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain"> = </span><span class="functiontext">WebModules::new</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="constant">READING_WEB_MOM</span><span class="plain">);</span>
-        <span class="functiontext">WebModules::dependency</span><span class="plain">(</span><span class="identifier">WS</span><span class="plain">-</span><span class="element">&gt;as_module</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">);</span>
+        <span class="functiontext">WebModules::dependency</span><span class="plain">(</span><span class="identifier">WS</span><span class="plain">-&gt;</span><span class="element">as_module</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">M</span><span class="plain">;</span>
 </pre>
 

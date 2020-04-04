@@ -10,6 +10,8 @@ Character Literal: '
 Character Literal Escape: \
 C-Like: true
 Supports Enumerations: true
+Hexadecimal Literal Prefix: 0x
+Negative Literal Prefix: -
 
 Before Macro Expansion: \n{\n
 After Macro Expansion: }\n
@@ -22,3 +24,50 @@ Line Marker: #line %d "%f"\n
 Start Definition: #define %S\s
 Prolong Definition: \\\n\s\s\s\s
 End Definition: \n
+
+keyword auto => !reserved
+keyword break => !reserved
+keyword case => !reserved
+keyword char => !reserved
+keyword const => !reserved
+keyword continue => !reserved
+keyword default => !reserved
+keyword do => !reserved
+keyword double => !reserved
+keyword else => !reserved
+keyword enum => !reserved
+keyword extern => !reserved
+keyword float => !reserved
+keyword for => !reserved
+keyword goto => !reserved
+keyword if => !reserved
+keyword int => !reserved
+keyword long => !reserved
+keyword register => !reserved
+keyword return => !reserved
+keyword short => !reserved
+keyword signed => !reserved
+keyword sizeof => !reserved
+keyword static => !reserved
+keyword struct => !reserved
+keyword switch => !reserved
+keyword typedef => !reserved
+keyword union => !reserved
+keyword unsigned => !reserved
+keyword void => !reserved
+keyword volatile => !reserved
+keyword while => !reserved
+
+colouring {
+	runs of unquoted {
+		runs of !identifier {
+			keyword !reserved => !reserved
+			keyword !function => !function
+			keyword !constant => !constant
+			keyword !element => {
+				optionally spaced prefix . => !element
+				optionally spaced prefix -> => !element
+			}
+		}
+	}
+}

@@ -147,7 +147,7 @@ here is UTF-8 since OS X and Linux both adopt this.
 <pre class="display">
     <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="constant">LOCALE_IS_ISO</span>
     <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">LOCALE_IS_UTF8</span>
-    <span class="plain">#</span><span class="identifier">define</span><span class="plain"> </span><span class="identifier">LOCALE_IS_UTF8</span><span class="plain"> 1</span>
+    <span class="plain">#</span><span class="identifier">define</span><span class="plain"> </span><span class="identifier">LOCALE_IS_UTF8</span><span class="plain"> </span><span class="constant">1</span>
     <span class="plain">#</span><span class="identifier">endif</span>
     <span class="plain">#</span><span class="identifier">endif</span>
 </pre>
@@ -182,7 +182,7 @@ just that installation and use of Foundation-built tools is less convenient.)
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::where_am_i</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
-        <span class="reserved">char</span><span class="plain"> </span><span class="identifier">buffer</span><span class="plain">[</span><span class="identifier">PATH_MAX</span><span class="plain"> + 1];</span>
+        <span class="reserved">char</span><span class="plain"> </span><span class="identifier">buffer</span><span class="plain">[</span><span class="identifier">PATH_MAX</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">];</span>
         &lt;<span class="cwebmacro">Follow the proc filesystem symlink to the real filesystem's file</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="character">;</span>
         &lt;<span class="cwebmacro">Transcode buffer, which is locale-encoded, into the wide-char buffer</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
@@ -208,8 +208,8 @@ symlinks in <code class="display"><span class="extract">/proc</span></code> are 
 
 <pre class="displaydefn">
         <span class="identifier">ssize_t</span><span class="plain"> </span><span class="identifier">link_len</span><span class="plain"> = </span><span class="identifier">readlink</span><span class="plain">(</span><span class="string">"/proc/self/exe"</span><span class="plain">, </span><span class="identifier">buffer</span><span class="plain">, </span><span class="identifier">PATH_MAX</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">link_len</span><span class="plain"> &lt; 0) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">; </span>    <span class="comment">unable to find</span>
-        <span class="identifier">buffer</span><span class="plain">[</span><span class="identifier">link_len</span><span class="plain">] = </span><span class="character">'\</span><span class="plain">0</span><span class="character">'</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">link_len</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">; </span>    <span class="comment">unable to find</span>
+        <span class="identifier">buffer</span><span class="plain">[</span><span class="identifier">link_len</span><span class="plain">] = </span><span class="character">'\</span><span class="constant">0</span><span class="character">'</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -248,14 +248,14 @@ string.
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">_NSGetExecutablePath</span><span class="plain">(</span><span class="reserved">char</span><span class="plain">* </span><span class="identifier">buf</span><span class="plain">, </span><span class="identifier">uint32_t</span><span class="plain">* </span><span class="identifier">bufsize</span><span class="plain">);</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::where_am_i</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
-        <span class="reserved">char</span><span class="plain"> </span><span class="identifier">relative_path</span><span class="plain">[4 * </span><span class="identifier">PATH_MAX</span><span class="plain"> + 1];</span>
-        <span class="reserved">char</span><span class="plain"> </span><span class="identifier">absolute_path</span><span class="plain">[</span><span class="identifier">PATH_MAX</span><span class="plain"> + 1];</span>
+        <span class="reserved">char</span><span class="plain"> </span><span class="identifier">relative_path</span><span class="plain">[4 * </span><span class="identifier">PATH_MAX</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">];</span>
+        <span class="reserved">char</span><span class="plain"> </span><span class="identifier">absolute_path</span><span class="plain">[</span><span class="identifier">PATH_MAX</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">];</span>
         <span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">convert_len</span><span class="plain">;</span>
         <span class="identifier">uint32_t</span><span class="plain"> </span><span class="identifier">pathsize</span><span class="plain"> = </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="identifier">relative_path</span><span class="plain">);</span>
         <span class="identifier">uint32_t</span><span class="plain"> </span><span class="identifier">tempsize</span><span class="plain"> = </span><span class="identifier">pathsize</span><span class="plain">;</span>
 
         <span class="comment">Get "a path" to the executable</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">_NSGetExecutablePath</span><span class="plain">(</span><span class="identifier">relative_path</span><span class="plain">, &amp;</span><span class="identifier">tempsize</span><span class="plain">) != 0) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">_NSGetExecutablePath</span><span class="plain">(</span><span class="identifier">relative_path</span><span class="plain">, &amp;</span><span class="identifier">tempsize</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
 
         <span class="comment">Convert to canonical absolute path</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">realpath</span><span class="plain">(</span><span class="identifier">relative_path</span><span class="plain">, </span><span class="identifier">absolute_path</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
@@ -317,7 +317,7 @@ string.
 
 
 <pre class="displaydefn">
-        <span class="identifier">p</span><span class="plain">[0] = </span><span class="character">'\</span><span class="plain">0</span><span class="character">'</span><span class="plain">;</span>
+        <span class="identifier">p</span><span class="plain">[0] = </span><span class="character">'\</span><span class="constant">0</span><span class="character">'</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
@@ -374,8 +374,8 @@ memory space. Using <code class="display"><span class="extract">posix_spawn()</s
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">argv</span><span class="plain">[] = {</span><span class="string">"sh"</span><span class="plain">, </span><span class="string">"-c"</span><span class="plain">, (</span><span class="reserved">char</span><span class="plain"> *) </span><span class="identifier">cmd</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">};</span>
         <span class="identifier">pid_t</span><span class="plain"> </span><span class="identifier">pid</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">status</span><span class="plain"> = </span><span class="identifier">posix_spawn</span><span class="plain">(&amp;</span><span class="identifier">pid</span><span class="plain">, </span><span class="string">"/bin/sh"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">environ</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">status</span><span class="plain"> == 0) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">waitpid</span><span class="plain">(</span><span class="identifier">pid</span><span class="plain">, &amp;</span><span class="identifier">status</span><span class="plain">, 0) != -1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">status</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">status</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">waitpid</span><span class="plain">(</span><span class="identifier">pid</span><span class="plain">, &amp;</span><span class="identifier">status</span><span class="plain">, </span><span class="constant">0</span><span class="plain">) != -1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">status</span><span class="plain">;</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"waitpid failed"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"posix_spawn: %s\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">strerror</span><span class="plain">(</span><span class="identifier">status</span><span class="plain">));</span>
@@ -396,9 +396,9 @@ memory space. Using <code class="display"><span class="extract">posix_spawn()</s
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::mkdir</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_pathname</span><span class="plain">) {</span>
-        <span class="identifier">errno</span><span class="plain"> = 0;</span>
+        <span class="identifier">errno</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">mkdir</span><span class="plain">(</span><span class="identifier">transcoded_pathname</span><span class="plain">, </span><span class="identifier">S_IRWXU</span><span class="plain"> | </span><span class="identifier">S_IRWXG</span><span class="plain"> | </span><span class="identifier">S_IROTH</span><span class="plain"> | </span><span class="identifier">S_IXOTH</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">errno</span><span class="plain"> == </span><span class="identifier">EEXIST</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -417,7 +417,7 @@ memory space. Using <code class="display"><span class="extract">posix_spawn()</s
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">dp</span><span class="plain"> = </span><span class="identifier">readdir</span><span class="plain">(</span><span class="identifier">dirp</span><span class="plain">)) == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">path_to</span><span class="plain">, </span><span class="string">"%s%c%s"</span><span class="plain">, </span><span class="identifier">path_to_folder</span><span class="plain">, </span><span class="constant">FOLDER_SEPARATOR</span><span class="plain">, </span><span class="identifier">dp</span><span class="plain">-&gt;</span><span class="identifier">d_name</span><span class="plain">);</span>
         <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">stat</span><span class="plain">(</span><span class="identifier">path_to</span><span class="plain">, &amp;</span><span class="identifier">file_status</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> != 0) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S_ISDIR</span><span class="plain">(</span><span class="identifier">file_status</span><span class="plain">.</span><span class="identifier">st_mode</span><span class="plain">)) </span><span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="string">"%s/"</span><span class="plain">, </span><span class="identifier">dp</span><span class="plain">-&gt;</span><span class="identifier">d_name</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">strcpy</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="identifier">dp</span><span class="plain">-&gt;</span><span class="identifier">d_name</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
@@ -451,7 +451,7 @@ be dealing with.
 
 <pre class="display">
     <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext">Platform::never_time</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">time_t</span><span class="plain">) 0;</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">time_t</span><span class="plain">) </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 
     <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext">Platform::timestamp</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_filename</span><span class="plain">) {</span>
@@ -490,15 +490,15 @@ anything different which was originally in <code class="display"><span class="ex
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::quote_text</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">quoted</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">terminate</span><span class="plain">) {</span>
         <span class="identifier">quoted</span><span class="plain">[0] = </span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">qp</span><span class="plain"> = 1;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">rp</span><span class="plain"> = 0; </span><span class="identifier">raw</span><span class="plain">[</span><span class="identifier">rp</span><span class="plain">]; </span><span class="identifier">rp</span><span class="plain">++) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">qp</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">rp</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">raw</span><span class="plain">[</span><span class="identifier">rp</span><span class="plain">]; </span><span class="identifier">rp</span><span class="plain">++) {</span>
             <span class="reserved">char</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">raw</span><span class="plain">[</span><span class="identifier">rp</span><span class="plain">];</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">) </span><span class="identifier">quoted</span><span class="plain">[</span><span class="identifier">qp</span><span class="plain">++] = </span><span class="character">'\</span><span class="plain">\</span><span class="character">'</span><span class="plain">;</span>
             <span class="identifier">quoted</span><span class="plain">[</span><span class="identifier">qp</span><span class="plain">++] = </span><span class="identifier">c</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">terminate</span><span class="plain">) </span><span class="identifier">quoted</span><span class="plain">[</span><span class="identifier">qp</span><span class="plain">++] = </span><span class="constant">FOLDER_SEPARATOR</span><span class="plain">;</span>
         <span class="identifier">quoted</span><span class="plain">[</span><span class="identifier">qp</span><span class="plain">++] = </span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">;</span>
-        <span class="identifier">quoted</span><span class="plain">[</span><span class="identifier">qp</span><span class="plain">++] = 0;</span>
+        <span class="identifier">quoted</span><span class="plain">[</span><span class="identifier">qp</span><span class="plain">++] = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -596,8 +596,8 @@ actually running a one-line AppleScript here.
     <span class="plain">}</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::init_thread</span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pthread_attr_init</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">) != 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread initialisation failed"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pthread_attr_setstacksize</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size</span><span class="plain">) != 0) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread stack sizing failed"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pthread_attr_init</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread initialisation failed"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pthread_attr_setstacksize</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread stack sizing failed"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
     <span class="identifier">size_t</span><span class="plain"> </span><span class="functiontext">Platform::get_thread_stack_size</span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">) {</span>

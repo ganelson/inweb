@@ -49,10 +49,10 @@ Chapter 4: Languages
 "Providing support for syntax-colouring and for better organisation of code
 in different programming languages."
 	Programming Languages
+	Language Methods
+	ACME Support
 	C-Like Languages
 	InC Support
-	Inform Support
-	ACME Support
 
 Chapter 5: Formats
 "Weaving to a variety of different human-readable formats."
