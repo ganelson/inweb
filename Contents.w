@@ -53,6 +53,7 @@ in different programming languages."
 	InC Support
 	Perl Support
 	Inform Support
+	ACME Support
 
 Chapter 5: Formats
 "Weaving to a variety of different human-readable formats."

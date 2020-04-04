@@ -25,8 +25,15 @@ typedef struct programming_language {
 	text_stream *language_name;
 	text_stream *file_extension; /* by default output to a file whose name has this extension */
 	text_stream *source_file_extension; /* by default input from a file whose name has this extension */
+	text_stream *language_details; /* brief explanation of what language is */
 	int supports_enumerations; /* as it will, if it belongs to the C family of languages */
 	int supports_namespaces; /* really just for InC */
+	text_stream *line_comment;
+	text_stream *string_literal;
+	text_stream *string_literal_escape;
+	text_stream *character_literal;
+	text_stream *character_literal_escape;
+	struct language_block *program; /* algorithm for syntax colouring */
 	METHOD_CALLS
 	MEMORY_MANAGEMENT
 } programming_language;
@@ -56,6 +63,141 @@ programming_language *Languages::find_by_name(text_stream *lname) {
 	return NULL;
 }
 
+@h New creation.
+
+=
+typedef struct colouring_rule {
+	int predicate;
+	int run;
+	struct text_stream *on;
+	int colour;
+	int prefix;
+	struct language_block *block;
+	MEMORY_MANAGEMENT
+} colouring_rule;
+
+typedef struct language_block {
+	struct linked_list *rules; /* of |colouring_rule| */
+	struct language_block *parent;
+	MEMORY_MANAGEMENT
+} language_block;
+
+typedef struct language_reader_state {
+	struct programming_language *defining;
+	struct language_block *current_block;
+} language_reader_state;
+
+programming_language *Languages::read_definition(filename *F) {
+	programming_language *pl = Languages::new_language(I"", I"");
+	language_reader_state lrs;
+	lrs.defining = pl;
+	lrs.current_block = NULL;
+	TextFiles::read(F, FALSE, "can't open cover sheet file", TRUE,
+		Languages::read_definition_line, NULL, (void *) &lrs);
+	return pl;
+}
+
+void Languages::read_definition_line(text_stream *line, text_file_position *tfp, void *v_state) {
+	language_reader_state *state = (language_reader_state *) v_state;
+	programming_language *pl = state->defining;
+	match_results mr = Regexp::create_mr(), mr2 = Regexp::create_mr();
+	Str::trim_white_space(line);
+	if (state->current_block) {
+		if (Str::eq(line, I"}")) {
+			state->current_block = state->current_block->parent;
+		} else if (Regexp::match(&mr, line, L"(%c+?) run => (%c+)")) {
+			int run = TRUE;
+			@<Parse single rule@>;
+		} else if (Regexp::match(&mr, line, L"(%c+?) => (%c+)")) {
+			int run = FALSE;
+			@<Parse single rule@>;
+		} else {
+			Errors::in_text_file("line in colouring block illegible", tfp);
+		}
+	} else {
+		if (Regexp::match(&mr, line, L"colou*ring %{")) {
+			language_block *block = CREATE(language_block);
+			block->rules = NEW_LINKED_LIST(colouring_rule);
+			block->parent = NULL;
+			pl->program = block;
+		} else if (Regexp::match(&mr, line, L"(%c+) *: *(%c+?)")) {
+			text_stream *key = mr.exp[0], *value = Str::duplicate(mr.exp[1]);
+			if (Str::cmp(key, I"Name")) pl->language_name = value;
+			else if (Str::cmp(key, I"Details")) pl->language_details = value;
+			else if (Str::cmp(key, I"Extension")) pl->file_extension = value;
+			else if (Str::cmp(key, I"Line Comment")) pl->line_comment = value;
+			else if (Str::cmp(key, I"String Literal")) pl->string_literal = value;
+			else if (Str::cmp(key, I"String Literal Escape")) pl->string_literal_escape = value;
+			else if (Str::cmp(key, I"Character Literal")) pl->character_literal = value;
+			else if (Str::cmp(key, I"Character Literal Escape")) pl->character_literal_escape = value;
+			else {
+				Errors::in_text_file("unknown property in list of language properties", tfp);
+			}
+		} else {
+			Errors::in_text_file("line in language definition illegible", tfp);
+		}
+	}
+	Regexp::dispose_of(&mr); Regexp::dispose_of(&mr2);
+}
+
+@<Parse single rule@> =
+	text_stream *premiss = mr.exp[0], *action = Str::duplicate(mr.exp[1]);
+
+	colouring_rule *rule = CREATE(colouring_rule);
+	ADD_TO_LINKED_LIST(rule, colouring_rule, state->current_block->rules);
+	rule->predicate = PLAIN_COLOUR;
+	rule->run = run;
+	rule->on = NULL;
+	rule->colour = PLAIN_COLOUR;
+	rule->block = NULL;
+	rule->prefix = FALSE;
+	Str::trim_white_space(premiss); Str::trim_white_space(action);
+	if (Str::get_first_char(premiss) == '!') {
+		rule->predicate = Languages::colour(premiss, tfp);
+	} else if (Str::eq(premiss, I"all")) {
+		rule->predicate = -1;
+	} else if (Regexp::match(&mr2, line, L"prefix (%c+)")) {
+		rule->prefix = TRUE;
+		rule->on = Str::duplicate(mr2.exp[0]);
+	} else {
+		rule->prefix = FALSE;
+		rule->on = Str::duplicate(mr2.exp[0]);
+	}
+	if (Str::eq(action, I"{")) {
+		language_block *block = CREATE(language_block);
+		block->rules = NEW_LINKED_LIST(colouring_rule);
+		block->parent = state->current_block;
+		rule->block = block;
+		state->current_block = block;
+	} else if (Str::get_first_char(action) == '!') {
+		rule->colour = Languages::colour(action, tfp);
+	} else {
+		Errors::in_text_file("action after '=>' illegible", tfp);
+	}
+
+@ =
+int Languages::colour(text_stream *T, text_file_position *tfp) {
+	if (Str::get_first_char(T) != '!') {
+		Errors::in_text_file("colour names must begin with !", tfp);
+		return PLAIN_COLOUR;
+	}
+	if (Str::eq(T, I"!string")) return STRING_COLOUR;
+	else if (Str::eq(T, I"!function")) return FUNCTION_COLOUR;
+	else if (Str::eq(T, I"!macro")) return MACRO_COLOUR;
+	else if (Str::eq(T, I"!reserved")) return RESERVED_COLOUR;
+	else if (Str::eq(T, I"!element")) return ELEMENT_COLOUR;
+	else if (Str::eq(T, I"!identifier")) return IDENTIFIER_COLOUR;
+	else if (Str::eq(T, I"!character")) return CHAR_LITERAL_COLOUR;
+	else if (Str::eq(T, I"!constant")) return CONSTANT_COLOUR;
+	else if (Str::eq(T, I"!plain")) return PLAIN_COLOUR;
+	else if (Str::eq(T, I"!extract")) return EXTRACT_COLOUR;
+	else if (Str::eq(T, I"!comment")) return COMMENT_COLOUR;
+	else {
+		Errors::in_text_file("no such !colour", tfp);
+		return PLAIN_COLOUR;
+	}
+}
+
 @h Creation.
 This must be performed very early in Inweb's run.
 
@@ -67,6 +209,7 @@ void Languages::create_programming_languages(void) {
 	InformSupport::create_I6();
 	InformSupport::create_I7();
 	PerlSupport::create();
+	ACMESupport::create();
 
 	/* together with a featureless language: */
 	Languages::new_language(I"Plain Text", I".txt");

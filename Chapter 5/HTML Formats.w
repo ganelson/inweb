@@ -320,7 +320,7 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 	current_colour = -1;
 	if (finishes) {
 		if (Str::len(concluding_comment) > 0) {
-			if ((Str::len(matter) > 0) || (!starts)) WRITE("    ");
+			if (!starts) WRITE("    ");
 			HTML_OPEN_WITH("span", "class=\"comment\"");
 			Formats::text(OUT, wv, concluding_comment);
 			HTML_CLOSE("span");
