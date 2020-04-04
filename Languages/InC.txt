@@ -1,0 +1,15 @@
+Name: InC
+Details: The Inform-tools extension to the C programming language
+Extension: .c
+Supports Namespaces: true
+Multiline Comment Open: /*
+Multiline Comment Close: */
+Line Comment: //
+String Literal: "
+String Literal Escape: \
+Character Literal: '
+Character Literal Escape: \
+C-Like: true
+
+Before Macro Expansion: \n{\n
+After Macro Expansion: }\n

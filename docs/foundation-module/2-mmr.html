@@ -64,9 +64,9 @@ IDs; and they cannot be iterated over.
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">MEMORY_MANAGEMENT</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allocation_id</span><span class="plain">; </span>    <span class="comment">Numbered from 0 upwards in creation order</span>
-        <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">next_structure</span><span class="plain">; </span>    <span class="comment">Next object in double-linked list</span>
-        <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">prev_structure</span><span class="plain">; </span>    <span class="comment">Previous object in double-linked list</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allocation_id</span><span class="plain">; </span><span class="comment">Numbered from 0 upwards in creation order</span>
+        <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">next_structure</span><span class="plain">; </span><span class="comment">Next object in double-linked list</span>
+        <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">prev_structure</span><span class="plain">; </span><span class="comment">Previous object in double-linked list</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>It is also necessary to define a constant in the following enumeration
 family: for <code class="display"><span class="extract">thingummy</span></code>, it would be <code class="display"><span class="extract">thingummy_MT</span></code>. Had it been a smaller
@@ -125,15 +125,15 @@ the doubly linked list is of the arrays.
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">allocation_status_structure</span><span class="plain"> {</span>
         <span class="comment">actually needed for allocation purposes:</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">objects_allocated</span><span class="plain">; </span>    <span class="comment">total number of objects (or arrays) ever allocated</span>
-        <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">first_in_memory</span><span class="plain">; </span>    <span class="comment">head of doubly linked list</span>
-        <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">last_in_memory</span><span class="plain">; </span>    <span class="comment">tail of doubly linked list</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">objects_allocated</span><span class="plain">; </span><span class="comment">total number of objects (or arrays) ever allocated</span>
+        <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">first_in_memory</span><span class="plain">; </span><span class="comment">head of doubly linked list</span>
+        <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">last_in_memory</span><span class="plain">; </span><span class="comment">tail of doubly linked list</span>
 
         <span class="comment">used only to provide statistics for the debugging log:</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name_of_type</span><span class="plain">; </span>    <span class="comment">e.g., <code class="display"><span class="extract">"lexicon_entry_MT"</span></code></span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bytes_allocated</span><span class="plain">; </span>    <span class="comment">total allocation for this type of object, not counting overhead</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">objects_count</span><span class="plain">; </span>    <span class="comment">total number currently in existence (i.e., undeleted)</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_allocated_together</span><span class="plain">; </span>    <span class="comment">number of objects in each array of this type of object</span>
+        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name_of_type</span><span class="plain">; </span><span class="comment">e.g., <code class="display"><span class="extract">"lexicon_entry_MT"</span></code></span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bytes_allocated</span><span class="plain">; </span><span class="comment">total allocation for this type of object, not counting overhead</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">objects_count</span><span class="plain">; </span><span class="comment">total number currently in existence (i.e., undeleted)</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_allocated_together</span><span class="plain">; </span><span class="comment">number of objects in each array of this type of object</span>
     <span class="plain">} </span><span class="reserved">allocation_status_structure</span><span class="plain">;</span>
 </pre>
 
@@ -213,12 +213,12 @@ unable to get the GUI responsive enough to kill the process.)
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="constant">MAX_BLOCKS_ALLOWED</span><span class="plain"> 15000</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MEMORY_GRANULARITY</span><span class="plain"> 100*1024*8 </span>    <span class="comment">which must be divisible by 1024</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MEMORY_GRANULARITY</span><span class="plain"> 100*1024*8 </span><span class="comment">which must be divisible by 1024</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_blocks_allocated</span><span class="plain"> = 0;</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_objects_allocated</span><span class="plain"> = 0; </span>    <span class="comment">a potentially larger number, used only for the debugging log</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_objects_allocated</span><span class="plain"> = 0; </span><span class="comment">a potentially larger number, used only for the debugging log</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -246,10 +246,10 @@ null bytes, followed by actual data.
 
 
 <pre class="display">
-    <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">first_memblock_header</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">head of list of memory blocks</span>
-    <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">current_memblock_header</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">tail of list of memory blocks</span>
+    <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">first_memblock_header</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">head of list of memory blocks</span>
+    <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">current_memblock_header</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">tail of list of memory blocks</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">used_in_current_memblock</span><span class="plain"> = 0; </span>    <span class="comment">number of bytes so far used in the tail memory block</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">used_in_current_memblock</span><span class="plain"> = 0; </span><span class="comment">number of bytes so far used in the tail memory block</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -361,15 +361,15 @@ a single large object, or a single array of small objects.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">INTEGRITY_NUMBER</span><span class="plain"> 0</span><span class="identifier">x12345678</span><span class="plain"> </span>    <span class="comment">a value unlikely to be in memory just by chance</span>
+    <span class="definitionkeyword">define</span> <span class="constant">INTEGRITY_NUMBER</span><span class="plain"> 0</span><span class="identifier">x12345678</span><span class="plain"> </span><span class="comment">a value unlikely to be in memory just by chance</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">memory_frame</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">integrity_check</span><span class="plain">; </span>    <span class="comment">this should always contain the <code class="display"><span class="extract">INTEGRITY_NUMBER</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">next_frame</span><span class="plain">; </span>    <span class="comment">next frame in the list of memory frames</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mem_type</span><span class="plain">; </span>    <span class="comment">type of object stored in this frame</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allocation_id</span><span class="plain">; </span>    <span class="comment">allocation ID number of object stored in this frame</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">integrity_check</span><span class="plain">; </span><span class="comment">this should always contain the <code class="display"><span class="extract">INTEGRITY_NUMBER</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">next_frame</span><span class="plain">; </span><span class="comment">next frame in the list of memory frames</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mem_type</span><span class="plain">; </span><span class="comment">type of object stored in this frame</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">allocation_id</span><span class="plain">; </span><span class="comment">allocation ID number of object stored in this frame</span>
     <span class="plain">} </span><span class="reserved">memory_frame</span><span class="plain">;</span>
 </pre>
 
@@ -384,8 +384,8 @@ blocks, but we don't need to worry about that.)
 
 
 <pre class="display">
-    <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">first_memory_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">earliest memory frame ever allocated</span>
-    <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">last_memory_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;  </span>    <span class="comment">most recent memory frame allocated</span>
+    <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">first_memory_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">earliest memory frame ever allocated</span>
+    <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">last_memory_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;  </span><span class="comment">most recent memory frame allocated</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -446,16 +446,16 @@ memory frame is created by the following function:
         <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">mf</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">bytes_free_in_current_memblock</span><span class="plain">, </span><span class="identifier">extent_without_overheads</span><span class="plain"> = </span><span class="identifier">extent</span><span class="plain">;</span>
 
-        <span class="identifier">extent</span><span class="plain"> += </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="reserved">memory_frame</span><span class="plain">); </span>    <span class="comment">each allocation is preceded by a memory frame</span>
-        <span class="identifier">extent</span><span class="plain"> += </span><span class="constant">SAFETY_MARGIN</span><span class="plain">; </span>    <span class="comment">each allocation is followed by <code class="display"><span class="extract">SAFETY_MARGIN</span></code> null bytes</span>
+        <span class="identifier">extent</span><span class="plain"> += </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="reserved">memory_frame</span><span class="plain">); </span><span class="comment">each allocation is preceded by a memory frame</span>
+        <span class="identifier">extent</span><span class="plain"> += </span><span class="constant">SAFETY_MARGIN</span><span class="plain">; </span><span class="comment">each allocation is followed by <code class="display"><span class="extract">SAFETY_MARGIN</span></code> null bytes</span>
 
         &lt;<span class="cwebmacro">Ensure that the current memory block has room for this many bytes</span> <span class="cwebmacronumber">16.1</span>&gt;<span class="plain">;</span>
 
         <span class="identifier">cp</span><span class="plain"> = ((</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *) (</span><span class="identifier">current_memblock_header</span><span class="plain">-</span><span class="element">&gt;the_memory</span><span class="plain">)) + </span><span class="identifier">used_in_current_memblock</span><span class="plain">;</span>
         <span class="identifier">used_in_current_memblock</span><span class="plain"> += </span><span class="identifier">extent</span><span class="plain">;</span>
 
-        <span class="identifier">mf</span><span class="plain"> = (</span><span class="reserved">memory_frame</span><span class="plain"> *) </span><span class="identifier">cp</span><span class="plain">; </span>    <span class="comment">the new memory frame,</span>
-        <span class="identifier">cp</span><span class="plain"> = </span><span class="identifier">cp</span><span class="plain"> + </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="reserved">memory_frame</span><span class="plain">); </span>    <span class="comment">following which is the actual allocated data</span>
+        <span class="identifier">mf</span><span class="plain"> = (</span><span class="reserved">memory_frame</span><span class="plain"> *) </span><span class="identifier">cp</span><span class="plain">; </span><span class="comment">the new memory frame,</span>
+        <span class="identifier">cp</span><span class="plain"> = </span><span class="identifier">cp</span><span class="plain"> + </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="reserved">memory_frame</span><span class="plain">); </span><span class="comment">following which is the actual allocated data</span>
 
         <span class="identifier">mf</span><span class="plain">-</span><span class="element">&gt;integrity_check</span><span class="plain"> = </span><span class="constant">INTEGRITY_NUMBER</span><span class="plain">;</span>
         <span class="identifier">mf</span><span class="plain">-</span><span class="element">&gt;allocation_id</span><span class="plain"> = </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mem_type</span><span class="plain">]</span><span class="element">.objects_allocated</span><span class="plain">;</span>
@@ -1068,17 +1068,17 @@ report in the debugging log (for which, see below).
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::log_statistics</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_for_objects</span><span class="plain"> = </span><span class="constant">MEMORY_GRANULARITY</span><span class="plain">*</span><span class="identifier">no_blocks_allocated</span><span class="plain">; </span>    <span class="comment">usage in bytes</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_for_SMAs</span><span class="plain"> = </span><span class="functiontext">Memory::log_usage</span><span class="plain">(0); </span>    <span class="comment">usage in bytes</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sorted_usage</span><span class="plain">[</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">]; </span>    <span class="comment">memory type numbers, in usage order</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain"> = (</span><span class="identifier">total_for_objects</span><span class="plain"> + </span><span class="identifier">total_for_SMAs</span><span class="plain">)/1024; </span>    <span class="comment">total memory usage in KB</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_for_objects</span><span class="plain"> = </span><span class="constant">MEMORY_GRANULARITY</span><span class="plain">*</span><span class="identifier">no_blocks_allocated</span><span class="plain">; </span><span class="comment">usage in bytes</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_for_SMAs</span><span class="plain"> = </span><span class="functiontext">Memory::log_usage</span><span class="plain">(0); </span><span class="comment">usage in bytes</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sorted_usage</span><span class="plain">[</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">]; </span><span class="comment">memory type numbers, in usage order</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain"> = (</span><span class="identifier">total_for_objects</span><span class="plain"> + </span><span class="identifier">total_for_SMAs</span><span class="plain">)/1024; </span><span class="comment">total memory usage in KB</span>
 
         &lt;<span class="cwebmacro">Sort the table of memory type usages into decreasing size order</span> <span class="cwebmacronumber">32.2</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_for_objects_used</span><span class="plain"> = 0; </span>    <span class="comment">out of the <code class="display"><span class="extract">total_for_objects</span></code>, the bytes used</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_for_objects_used</span><span class="plain"> = 0; </span><span class="comment">out of the <code class="display"><span class="extract">total_for_objects</span></code>, the bytes used</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_objects</span><span class="plain"> = 0;</span>
         &lt;<span class="cwebmacro">Calculate the memory usage for objects</span> <span class="cwebmacronumber">32.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">overhead_for_objects</span><span class="plain"> = </span><span class="identifier">total_for_objects</span><span class="plain"> - </span><span class="identifier">total_for_objects_used</span><span class="plain">; </span>    <span class="comment">bytes wasted</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">overhead_for_objects</span><span class="plain"> = </span><span class="identifier">total_for_objects</span><span class="plain"> - </span><span class="identifier">total_for_objects_used</span><span class="plain">; </span><span class="comment">bytes wasted</span>
         &lt;<span class="cwebmacro">Print the report to the debugging log</span> <span class="cwebmacronumber">32.3</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -1260,7 +1260,7 @@ structure.
     <span class="reserved">general_pointer</span><span class="plain"> </span><span class="functiontext">Memory::store_gp_null</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">;</span>
         <span class="identifier">gp</span><span class="element">.pointer_to_data</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">gp</span><span class="element">.run_time_type_code</span><span class="plain"> = -1; </span>    <span class="comment">guaranteed to differ from all <code class="display"><span class="extract">_MT</span></code> values</span>
+        <span class="identifier">gp</span><span class="element">.run_time_type_code</span><span class="plain"> = -1; </span><span class="comment">guaranteed to differ from all <code class="display"><span class="extract">_MT</span></code> values</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Memory::test_gp_null</span><span class="plain">(</span><span class="reserved">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">) {</span>

@@ -86,7 +86,7 @@ host file system.
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">intermediate</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">pathname_of_parent</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">known_to_exist</span><span class="plain">; </span>    <span class="comment">corresponds to a directory in the filing system</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">known_to_exist</span><span class="plain">; </span><span class="comment">corresponds to a directory in the filing system</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">pathname</span><span class="plain">;</span>
 </pre>
@@ -322,7 +322,7 @@ on the file system with that path.
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">; </span>    <span class="comment">the root of the file system always exists</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">; </span><span class="comment">the root of the file system always exists</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-</span><span class="element">&gt;known_to_exist</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">transcoded_pathname</span><span class="plain">[4*</span><span class="constant">MAX_FILENAME_LENGTH</span><span class="plain">];</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">);</span>

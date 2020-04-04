@@ -7,11 +7,7 @@ As can be seen, InC is a basically C-like language, but in addition to having
 all of those methods, it has a whole lot more of its own.
 
 =
-programming_language *InCSupport::create(void) {
-	programming_language *pl = Languages::new_language(I"InC", I".c");
-	pl->supports_namespaces = TRUE;
-	CLike::make_c_like(pl);
-
+void InCSupport::add_features(programming_language *pl) {
 	METHOD_ADD(pl, FURTHER_PARSING_PAR_MTID, InCSupport::further_parsing);
 
 	METHOD_ADD(pl, SUPPRESS_EXPANSION_TAN_MTID, InCSupport::suppress_expansion);
@@ -29,7 +25,6 @@ programming_language *InCSupport::create(void) {
 
 	METHOD_ADD(pl, EARLY_PREWEAVE_ANALYSIS_ANA_MTID, InCSupport::analyse_code);
 	METHOD_ADD(pl, SHARE_ELEMENT_ANA_MTID, InCSupport::share_element);
-	return pl;
 }
 
 @ We will apply this special tag wherever Preform grammar is defined:

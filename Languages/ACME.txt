@@ -1,0 +1,26 @@
+Name: ACME
+Details: ACME assembly language
+Extension: .a
+Line Comment: ;
+String Literal: "
+String Literal Escape: \
+Character Literal: '
+Character Literal Escape: \
+
+!string => !string
+!character => !character
+!identifier run => {
+	prefix . => !identifier
+	prefix $ => !plain
+	prefix ! => !element
+	prefix 0 => !plain
+	prefix 1 => !plain
+	prefix 2 => !plain
+	prefix 3 => !plain
+	prefix 4 => !plain
+	prefix 5 => !plain
+	prefix 6 => !plain
+	prefix 7 => !plain
+	prefix 8 => !plain
+	prefix 9 => !plain
+}

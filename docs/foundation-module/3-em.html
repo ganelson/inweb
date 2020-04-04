@@ -163,7 +163,7 @@ occurs unexpectedly, and one way to do that is to force a division by zero.
         <span class="identifier">printf</span><span class="plain">(</span><span class="string">"(Debugger mode enabled: will crash on fatal errors)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Errors::die</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) { </span>    <span class="comment">as void as it gets</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Errors::die</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) { </span><span class="comment">as void as it gets</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">DL</span><span class="plain">) </span><span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">debugger_mode</span><span class="plain">) {</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"(crashing intentionally to allow backtrace)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>

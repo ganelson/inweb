@@ -2,21 +2,6 @@
 
 To provide special features for the whole C family of languages.
 
-@h Creation.
-
-=
-programming_language *CLike::create_C(void) {
-	programming_language *pl = Languages::new_language(I"C", I".c");
-	CLike::make_c_like(pl);
-	return pl;
-}
-
-programming_language *CLike::create_CPP(void) {
-	programming_language *pl = Languages::new_language(I"C++", I".cpp");
-	CLike::make_c_like(pl);
-	return pl;
-}
-
 @h What makes a language C-like?
 This does:
 

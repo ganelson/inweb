@@ -34,10 +34,10 @@
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">para_macro</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">macro_name</span><span class="plain">; </span>    <span class="comment">usually long, like "Create a paragraph macro here"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">defining_paragraph</span><span class="plain">; </span>    <span class="comment">as printed in small type after the name in any usage</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">defn_start</span><span class="plain">; </span>    <span class="comment">it ends at the end of its defining paragraph</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">macro_usages</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">macro_usage</span></code>: only computed for weaves</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">macro_name</span><span class="plain">; </span><span class="comment">usually long, like "Create a paragraph macro here"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">defining_paragraph</span><span class="plain">; </span><span class="comment">as printed in small type after the name in any usage</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">defn_start</span><span class="plain">; </span><span class="comment">it ends at the end of its defining paragraph</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">macro_usages</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">macro_usage</span></code>: only computed for weaves</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">para_macro</span><span class="plain">;</span>
 </pre>

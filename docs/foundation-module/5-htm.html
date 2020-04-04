@@ -48,8 +48,8 @@ text stream.
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">HTML_file_state</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">XHTML_flag</span><span class="plain">; </span>    <span class="comment">writing strict XHTML for use in epubs</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="constant">lifo_stack</span><span class="plain"> *</span><span class="identifier">tag_stack</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">HTML_tag</span></code>: those currently open</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">XHTML_flag</span><span class="plain">; </span><span class="comment">writing strict XHTML for use in epubs</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="constant">lifo_stack</span><span class="plain"> *</span><span class="identifier">tag_stack</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">HTML_tag</span></code>: those currently open</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">CSS_included</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">JS_included</span><span class="plain">;</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
@@ -730,7 +730,7 @@ of which are variadic and have to be written out the old-fashioned way:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">CORNER_SIZE</span><span class="plain"> 8 </span>    <span class="comment">measured in pixels</span>
+    <span class="definitionkeyword">define</span> <span class="constant">CORNER_SIZE</span><span class="plain"> 8 </span><span class="comment">measured in pixels</span>
     <span class="definitionkeyword">define</span> <span class="constant">ROUND_BOX_TOP</span><span class="plain"> 1</span>
     <span class="definitionkeyword">define</span> <span class="constant">ROUND_BOX_BOTTOM</span><span class="plain"> 2</span>
 </pre>

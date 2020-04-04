@@ -1,0 +1,13 @@
+Name: Inform 6
+Details: The C-like interactive fiction language Inform 6
+Extension: .i6
+Line Comment: !
+String Literal: "
+String Literal Escape: \
+Character Literal: '
+Character Literal Escape: \
+
+Start Ifdef: #ifdef %S;\n
+End Ifdef: #endif; ! %S\n
+Start Ifndef: #ifndef %S;\n
+End Ifndef: #endif; ! %S\n

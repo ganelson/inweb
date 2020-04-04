@@ -76,7 +76,6 @@ int main(int argc, char **argv) {
 
 @<Initialise inweb@> =
 	Foundation::start();
-	Languages::create_programming_languages();
 	Formats::create_weave_formats();
 
 @<Shut inweb down@> =

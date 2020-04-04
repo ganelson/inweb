@@ -57,10 +57,10 @@ Switches come in five sorts:
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">ACTION_CLSF</span><span class="definitionkeyword"> from </span><span class="constant">1</span>    <span class="comment">does something</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">BOOLEAN_ON_CLSF</span><span class="plain"> </span>    <span class="comment">sets a flag true</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">BOOLEAN_OFF_CLSF</span><span class="plain"> </span>    <span class="comment">sets a flag false</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">NUMERICAL_CLSF</span><span class="plain"> </span>    <span class="comment">sets an integer to the given value</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TEXTUAL_CLSF</span><span class="plain"> </span>    <span class="comment">sets text to the given value</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">BOOLEAN_ON_CLSF</span><span class="plain"> </span><span class="comment">sets a flag true</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">BOOLEAN_OFF_CLSF</span><span class="plain"> </span><span class="comment">sets a flag false</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">NUMERICAL_CLSF</span><span class="plain"> </span><span class="comment">sets an integer to the given value</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">TEXTUAL_CLSF</span><span class="plain"> </span><span class="comment">sets text to the given value</span>
 </pre>
 
 <pre class="display">
@@ -81,14 +81,14 @@ in <code class="display"><span class="extract">-help</span></code>. Groups are e
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">command_line_switch</span><span class="plain"> {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">switch_id</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">switch_name</span><span class="plain">; </span>    <span class="comment">e.g., <code class="display"><span class="extract">no-verbose</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">switch_sort_name</span><span class="plain">; </span>    <span class="comment">e.g., <code class="display"><span class="extract">verbose</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">switch_name</span><span class="plain">; </span><span class="comment">e.g., <code class="display"><span class="extract">no-verbose</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">switch_sort_name</span><span class="plain">; </span><span class="comment">e.g., <code class="display"><span class="extract">verbose</span></code></span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">help_text</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">valency</span><span class="plain">; </span>    <span class="comment">1 for bare, 2 for one argument follows</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">form</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">*_CLSF</span></code> values above</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">switch_group</span><span class="plain">; </span>    <span class="comment">one of the <code class="display"><span class="extract">*_CLSG</span></code> valyes above</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">active_by_default</span><span class="plain">; </span>    <span class="comment">relevant only for booleans</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">command_line_switch</span><span class="plain"> *</span><span class="identifier">negates</span><span class="plain">; </span>    <span class="comment">relevant only for booleans</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">valency</span><span class="plain">; </span><span class="comment">1 for bare, 2 for one argument follows</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">form</span><span class="plain">; </span><span class="comment">one of the <code class="display"><span class="extract">*_CLSF</span></code> values above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">switch_group</span><span class="plain">; </span><span class="comment">one of the <code class="display"><span class="extract">*_CLSG</span></code> valyes above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">active_by_default</span><span class="plain">; </span><span class="comment">relevant only for booleans</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">command_line_switch</span><span class="plain"> *</span><span class="identifier">negates</span><span class="plain">; </span><span class="comment">relevant only for booleans</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">command_line_switch</span><span class="plain">;</span>
 </pre>
@@ -260,7 +260,7 @@ through the file if one has by that point been provided.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">BOGUS_CLSN</span><span class="plain"> -12345678 </span>    <span class="comment">bogus because guaranteed not to be a genuine switch ID</span>
+    <span class="definitionkeyword">define</span> <span class="constant">BOGUS_CLSN</span><span class="plain"> -12345678 </span><span class="comment">bogus because guaranteed not to be a genuine switch ID</span>
 </pre>
 
 <pre class="display">
@@ -286,7 +286,7 @@ through the file if one has by that point been provided.
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">argc</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">switched</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
             <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">[0] == </span><span class="character">'-'</span><span class="plain">) { </span><span class="identifier">p</span><span class="plain">++; </span><span class="identifier">switched</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; } </span>    <span class="comment">allow a doubled-dash as a single</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">[0] == </span><span class="character">'-'</span><span class="plain">) { </span><span class="identifier">p</span><span class="plain">++; </span><span class="identifier">switched</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; } </span><span class="comment">allow a doubled-dash as a single</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">);</span>
             <span class="functiontext">Streams::write_locale_string</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">);</span>

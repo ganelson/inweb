@@ -61,22 +61,22 @@ produce the following metadata structure.
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">web_md</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_web</span><span class="plain">; </span>    <span class="comment">relative to the current working directory</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">single_file</span><span class="plain">; </span>    <span class="comment">relative to the current working directory</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">bibliographic_data</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">web_bibliographic_datum</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="identifier">version_number</span><span class="plain">; </span>    <span class="comment">as deduced from bibliographic data</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">default_syntax</span><span class="plain">; </span>    <span class="comment">which version syntax the sections will have</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">chaptered</span><span class="plain">; </span>    <span class="comment">has the author explicitly divided it into named chapters?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">main_language_name</span><span class="plain">; </span>    <span class="comment">in which most of the sections are written</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_web</span><span class="plain">; </span><span class="comment">relative to the current working directory</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">single_file</span><span class="plain">; </span><span class="comment">relative to the current working directory</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">bibliographic_data</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">web_bibliographic_datum</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="identifier">version_number</span><span class="plain">; </span><span class="comment">as deduced from bibliographic data</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">default_syntax</span><span class="plain">; </span><span class="comment">which version syntax the sections will have</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">chaptered</span><span class="plain">; </span><span class="comment">has the author explicitly divided it into named chapters?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">main_language_name</span><span class="plain">; </span><span class="comment">in which most of the sections are written</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">module</span><span class="plain"> *</span><span class="identifier">as_module</span><span class="plain">; </span>    <span class="comment">the root of a small dependency graph</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">module</span><span class="plain"> *</span><span class="identifier">as_module</span><span class="plain">; </span><span class="comment">the root of a small dependency graph</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">contents_filename</span><span class="plain">; </span>    <span class="comment">or <code class="display"><span class="extract">NULL</span></code> for a single-file web</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">tangle_target_names</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">text_stream</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">header_filenames</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">filename</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">contents_filename</span><span class="plain">; </span><span class="comment">or <code class="display"><span class="extract">NULL</span></code> for a single-file web</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">tangle_target_names</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">text_stream</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">header_filenames</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">filename</span></code></span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">chapters_md</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">chapter_md</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">sections_md</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">section_md</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">chapters_md</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">chapter_md</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">sections_md</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">section_md</span></code></span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">web_md</span><span class="plain">;</span>
 </pre>
@@ -91,15 +91,15 @@ produce the following metadata structure.
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">chapter_md</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ch_range</span><span class="plain">; </span>    <span class="comment">e.g., <code class="display"><span class="extract">P</span></code> for Preliminaries, <code class="display"><span class="extract">7</span></code> for Chapter 7, <code class="display"><span class="extract">C</span></code> for Appendix C</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ch_title</span><span class="plain">; </span>    <span class="comment">e.g., "Chapter 3: Fresh Water Fish"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">rubric</span><span class="plain">; </span>    <span class="comment">optional; without double-quotation marks</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ch_range</span><span class="plain">; </span><span class="comment">e.g., <code class="display"><span class="extract">P</span></code> for Preliminaries, <code class="display"><span class="extract">7</span></code> for Chapter 7, <code class="display"><span class="extract">C</span></code> for Appendix C</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ch_title</span><span class="plain">; </span><span class="comment">e.g., "Chapter 3: Fresh Water Fish"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">rubric</span><span class="plain">; </span><span class="comment">optional; without double-quotation marks</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ch_language_name</span><span class="plain">; </span>    <span class="comment">in which most of the sections are written</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ch_language_name</span><span class="plain">; </span><span class="comment">in which most of the sections are written</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">imported</span><span class="plain">; </span>    <span class="comment">from a different web?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">imported</span><span class="plain">; </span><span class="comment">from a different web?</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">sections_md</span><span class="plain">; </span>    <span class="comment">of <code class="display"><span class="extract">section_md</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">sections_md</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">section_md</span></code></span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">chapter_md</span><span class="plain">;</span>
 </pre>
@@ -114,9 +114,9 @@ produce the following metadata structure.
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">section_md</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">sect_title</span><span class="plain">; </span>    <span class="comment">e.g., "Program Control"</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">using_syntax</span><span class="plain">; </span>    <span class="comment">which syntax the web is written in</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">is_a_singleton</span><span class="plain">; </span>    <span class="comment">is this the only section in its entire web?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">sect_title</span><span class="plain">; </span><span class="comment">e.g., "Program Control"</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">using_syntax</span><span class="plain">; </span><span class="comment">which syntax the web is written in</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">is_a_singleton</span><span class="plain">; </span><span class="comment">is this the only section in its entire web?</span>
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">source_file_for_section</span><span class="plain">;</span>
 
@@ -249,19 +249,19 @@ by halting at the junction point.
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">Wm</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">contents_filename</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">in_biblio</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">in_purpose</span><span class="plain">; </span>    <span class="comment">Reading the bit just after the new chapter?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">in_purpose</span><span class="plain">; </span><span class="comment">Reading the bit just after the new chapter?</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">chapter_md</span><span class="plain"> *</span><span class="identifier">chapter_being_scanned</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">chapter_folder_name</span><span class="plain">; </span>    <span class="comment">Where sections in the current chapter live</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">titling_line_to_insert</span><span class="plain">; </span>    <span class="comment">To be inserted automagically</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to</span><span class="plain">; </span>    <span class="comment">Where web material is being read from</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">chapter_folder_name</span><span class="plain">; </span><span class="comment">Where sections in the current chapter live</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">titling_line_to_insert</span><span class="plain">; </span><span class="comment">To be inserted automagically</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to</span><span class="plain">; </span><span class="comment">Where web material is being read from</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">module</span><span class="plain"> *</span><span class="identifier">reading_from</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">module_search</span><span class="plain"> *</span><span class="identifier">import_from</span><span class="plain">; </span>    <span class="comment">Where imported webs are</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">module_search</span><span class="plain"> *</span><span class="identifier">import_from</span><span class="plain">; </span><span class="comment">Where imported webs are</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inweb</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scan_verbosely</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">including_modules</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">main_web_not_module</span><span class="plain">; </span>    <span class="comment">Reading the original web, or an included one?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">halt_at_at</span><span class="plain">; </span>    <span class="comment">Used for reading contents pages of single-file webs</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">halted</span><span class="plain">; </span>    <span class="comment">Set when such a halt has occurred</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">main_web_not_module</span><span class="plain">; </span><span class="comment">Reading the original web, or an included one?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">halt_at_at</span><span class="plain">; </span><span class="comment">Used for reading contents pages of single-file webs</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">halted</span><span class="plain">; </span><span class="comment">Set when such a halt has occurred</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">section_count</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">section_md</span><span class="plain"> *</span><span class="identifier">last_section</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">reader_state</span><span class="plain">;</span>
@@ -579,7 +579,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 
 
 <pre class="displaydefn">
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">new_chapter_range</span><span class="plain">); </span>    <span class="comment">e.g., S, P, 1, 2, 3, A, B, ...</span>
+        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">new_chapter_range</span><span class="plain">); </span><span class="comment">e.g., S, P, 1, 2, 3, A, B, ...</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pdf_leafname</span><span class="plain">);</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">language_name</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
@@ -798,7 +798,7 @@ we also read in and process its file.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Sm</span><span class="plain">-</span><span class="element">&gt;sect_language_name</span><span class="plain"> = </span><span class="identifier">RS</span><span class="plain">-</span><span class="element">&gt;chapter_being_scanned</span><span class="plain">-</span><span class="element">&gt;ch_language_name</span><span class="plain">; </span>    <span class="comment">by default</span>
+        <span class="identifier">Sm</span><span class="plain">-</span><span class="element">&gt;sect_language_name</span><span class="plain"> = </span><span class="identifier">RS</span><span class="plain">-</span><span class="element">&gt;chapter_being_scanned</span><span class="plain">-</span><span class="element">&gt;ch_language_name</span><span class="plain">; </span><span class="comment">by default</span>
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*%C) %(Independent (%c*) *%)"</span><span class="plain">)) {</span>
             <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">title_alone</span><span class="plain"> = </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0];</span>

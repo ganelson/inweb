@@ -96,6 +96,14 @@ void Methods::add(method_set *S, int ID, void *function) {
 	}
 }
 
+int Methods::provided(method_set *S, int ID) {
+	if (S == NULL) return FALSE;
+	for (method *M = S->first_method; M; M = M->next_method)
+		if (M->method_id == ID)
+			return TRUE;
+	return FALSE;
+}
+
 @h Calling methods.
 Method calls are also done with a macro, but it has to come in four variants:
 

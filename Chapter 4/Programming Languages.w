@@ -24,33 +24,37 @@ Each language supported by Inweb has an instance of the following structure:
 typedef struct programming_language {
 	text_stream *language_name;
 	text_stream *file_extension; /* by default output to a file whose name has this extension */
-	text_stream *source_file_extension; /* by default input from a file whose name has this extension */
 	text_stream *language_details; /* brief explanation of what language is */
 	int supports_enumerations; /* as it will, if it belongs to the C family of languages */
 	int supports_namespaces; /* really just for InC */
 	text_stream *line_comment;
+	text_stream *multiline_comment_open;
+	text_stream *multiline_comment_close;
 	text_stream *string_literal;
 	text_stream *string_literal_escape;
 	text_stream *character_literal;
 	text_stream *character_literal_escape;
+	text_stream *shebang;
+	text_stream *line_marker;
+	text_stream *before_macro_expansion;
+	text_stream *after_macro_expansion;
+	text_stream *start_definition;
+	text_stream *end_definition;
+	text_stream *start_ifdef;
+	text_stream *end_ifdef;
+	text_stream *start_ifndef;
+	text_stream *end_ifndef;
+	int C_like;
+	int suppress_disclaimer;
 	struct language_block *program; /* algorithm for syntax colouring */
 	METHOD_CALLS
 	MEMORY_MANAGEMENT
 } programming_language;
 
 programming_language *default_language = NULL;
-programming_language *Languages::default(void) { return default_language; }
-
-programming_language *Languages::new_language(text_stream *name, text_stream *ext) {
-	programming_language *pl = CREATE(programming_language);
-	pl->language_name = Str::duplicate(name);
-	pl->file_extension = Str::duplicate(ext);
-	pl->supports_enumerations = FALSE;
-	pl->source_file_extension = I".w";
-	pl->methods = Methods::new_set();
-	pl->supports_namespaces = FALSE;
-	if (default_language == NULL) default_language = pl;
-	return pl;
+programming_language *Languages::default(void) {
+	if (default_language == NULL) default_language = Languages::find_by_name(I"C");
+	return default_language;
 }
 
 @ =
@@ -59,8 +63,25 @@ programming_language *Languages::find_by_name(text_stream *lname) {
 	LOOP_OVER(pl, programming_language)
 		if (Str::eq(lname, pl->language_name))
 			return pl;
-	Errors::fatal_with_text("unsupported programming language '%S'", lname);
-	return NULL;
+	pathname *P = Pathnames::subfolder(path_to_inweb, I"Languages");
+	TEMPORARY_TEXT(leaf);
+	WRITE_TO(leaf, "%S.txt", lname);
+	filename *F = Filenames::in_folder(P, leaf);
+	DISCARD_TEXT(leaf);
+	if (TextFiles::exists(F) == FALSE)
+		Errors::fatal_with_text(
+			"unsupported programming language '%S'", lname);
+	pl = Languages::read_definition(F);
+	if (Str::ne(pl->language_name, lname))
+		Errors::fatal_with_text(
+			"definition of programming language '%S' is for something else", lname);
+	if (default_language == NULL) default_language = pl;
+	if (pl->C_like) CLike::make_c_like(pl);
+	if (Str::eq(lname, I"ACME")) ACMESupport::add_features(pl);
+	if (Str::eq(lname, I"InC")) InCSupport::add_features(pl);
+	if (Str::eq(lname, I"Inform 6")) InformSupport::add_features_to_I6(pl);
+	ACMESupport::add_fallbacks(pl);
+	return pl;
 }
 
 @h New creation.
@@ -88,7 +109,31 @@ typedef struct language_reader_state {
 } language_reader_state;
 
 programming_language *Languages::read_definition(filename *F) {
-	programming_language *pl = Languages::new_language(I"", I"");
+	programming_language *pl = CREATE(programming_language);
+	pl->language_name = NULL;
+	pl->file_extension = NULL;
+	pl->supports_enumerations = FALSE;
+	pl->methods = Methods::new_set();
+	pl->supports_namespaces = FALSE;
+	pl->line_comment = NULL;
+	pl->multiline_comment_open = NULL;
+	pl->multiline_comment_close = NULL;
+	pl->string_literal = NULL;
+	pl->string_literal_escape = NULL;
+	pl->character_literal = NULL;
+	pl->character_literal_escape = NULL;
+	pl->shebang = NULL;
+	pl->line_marker = NULL;
+	pl->before_macro_expansion = NULL;
+	pl->after_macro_expansion = NULL;
+	pl->start_definition = NULL;
+	pl->end_definition = NULL;
+	pl->start_ifdef = NULL;
+	pl->end_ifdef = NULL;
+	pl->start_ifndef = NULL;
+	pl->end_ifndef = NULL;
+	pl->C_like = FALSE;
+	pl->suppress_disclaimer = FALSE;
 	language_reader_state lrs;
 	lrs.defining = pl;
 	lrs.current_block = NULL;
@@ -100,8 +145,10 @@ programming_language *Languages::read_definition(filename *F) {
 void Languages::read_definition_line(text_stream *line, text_file_position *tfp, void *v_state) {
 	language_reader_state *state = (language_reader_state *) v_state;
 	programming_language *pl = state->defining;
-	match_results mr = Regexp::create_mr(), mr2 = Regexp::create_mr();
 	Str::trim_white_space(line);
+	if (Str::len(line) == 0) return;
+	if (Str::get_first_char(line) == '#') return;
+	match_results mr = Regexp::create_mr(), mr2 = Regexp::create_mr();
 	if (state->current_block) {
 		if (Str::eq(line, I"}")) {
 			state->current_block = state->current_block->parent;
@@ -122,14 +169,32 @@ void Languages::read_definition_line(text_stream *line, text_file_position *tfp,
 			pl->program = block;
 		} else if (Regexp::match(&mr, line, L"(%c+) *: *(%c+?)")) {
 			text_stream *key = mr.exp[0], *value = Str::duplicate(mr.exp[1]);
-			if (Str::cmp(key, I"Name")) pl->language_name = value;
-			else if (Str::cmp(key, I"Details")) pl->language_details = value;
-			else if (Str::cmp(key, I"Extension")) pl->file_extension = value;
-			else if (Str::cmp(key, I"Line Comment")) pl->line_comment = value;
-			else if (Str::cmp(key, I"String Literal")) pl->string_literal = value;
-			else if (Str::cmp(key, I"String Literal Escape")) pl->string_literal_escape = value;
-			else if (Str::cmp(key, I"Character Literal")) pl->character_literal = value;
-			else if (Str::cmp(key, I"Character Literal Escape")) pl->character_literal_escape = value;
+			if (Str::eq(key, I"Name")) pl->language_name = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Details")) pl->language_details = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Extension")) pl->file_extension = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Line Comment")) pl->line_comment = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Multiline Comment Open")) pl->multiline_comment_open = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Multiline Comment Close")) pl->multiline_comment_close = Languages::text(value, tfp);
+			else if (Str::eq(key, I"String Literal")) pl->string_literal = Languages::text(value, tfp);
+			else if (Str::eq(key, I"String Literal Escape")) pl->string_literal_escape = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Character Literal")) pl->character_literal = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Character Literal Escape")) pl->character_literal_escape = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Shebang")) pl->shebang = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Line Marker")) pl->line_marker = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Before Macro Expansion")) pl->before_macro_expansion = Languages::text(value, tfp);
+			else if (Str::eq(key, I"After Macro Expansion")) pl->after_macro_expansion = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Start Definition")) pl->start_definition = Languages::text(value, tfp);
+			else if (Str::eq(key, I"End Definition")) pl->end_definition = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Start Ifdef")) pl->start_ifdef = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Start Ifndef")) pl->start_ifndef = Languages::text(value, tfp);
+			else if (Str::eq(key, I"End Ifdef")) pl->end_ifdef = Languages::text(value, tfp);
+			else if (Str::eq(key, I"End Ifndef")) pl->end_ifndef = Languages::text(value, tfp);
+			else if (Str::eq(key, I"C-Like"))
+				pl->C_like = Languages::boolean(value, tfp);
+			else if (Str::eq(key, I"Suppress Disclaimer"))
+				pl->suppress_disclaimer = Languages::boolean(value, tfp);
+			else if (Str::eq(key, I"Supports Namespaces"))
+				pl->supports_namespaces = Languages::boolean(value, tfp);
 			else {
 				Errors::in_text_file("unknown property in list of language properties", tfp);
 			}
@@ -198,21 +263,27 @@ int Languages::colour(text_stream *T, text_file_position *tfp) {
 	}
 }
 
-@h Creation.
-This must be performed very early in Inweb's run.
+int Languages::boolean(text_stream *T, text_file_position *tfp) {
+	if (Str::eq(T, I"true")) return TRUE;
+	else if (Str::eq(T, I"false")) return FALSE;
+	else {
+		Errors::in_text_file("must be true or false", tfp);
+		return FALSE;
+	}
+}
 
-=
-void Languages::create_programming_languages(void) {
-	CLike::create_C(); /* must be first, to make C the default language */
-	CLike::create_CPP();
-	InCSupport::create();
-	InformSupport::create_I6();
-	InformSupport::create_I7();
-	PerlSupport::create();
-	ACMESupport::create();
-
-	/* together with a featureless language: */
-	Languages::new_language(I"Plain Text", I".txt");
+text_stream *Languages::text(text_stream *T, text_file_position *tfp) {
+	text_stream *V = Str::new();
+	for (int i=0; i<Str::len(T); i++) {
+		wchar_t c = Str::get_at(T, i);
+		if ((c == '\\') && (Str::get_at(T, i+1) == 'n')) {
+			PUT_TO(V, '\n');
+			i++;
+		} else {
+			PUT_TO(V, c);
+		}
+	}
+	return V;
 }
 
 @h Parsing methods.

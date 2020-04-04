@@ -68,7 +68,7 @@ the bottom half, of the template; they are divided by the marker <code class="di
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">cover_sheet_state</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">WEAVE_COVER_TO</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">halves</span><span class="plain">; </span>    <span class="comment">a bitmap of the above values</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">halves</span><span class="plain">; </span><span class="comment">a bitmap of the above values</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">target</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">cover_sheet_state</span><span class="plain">;</span>
 </pre>
@@ -274,8 +274,8 @@ being accessed directly.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_TEMPLATE_LINES</span><span class="plain"> 256 </span>    <span class="comment">maximum number of lines in template</span>
-    <span class="definitionkeyword">define</span> <span class="constant">CI_STACK_CAPACITY</span><span class="plain"> 8 </span>    <span class="comment">maximum recursion of chapter/section iteration</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_TEMPLATE_LINES</span><span class="plain"> 256 </span><span class="comment">maximum number of lines in template</span>
+    <span class="definitionkeyword">define</span> <span class="constant">CI_STACK_CAPACITY</span><span class="plain"> 8 </span><span class="comment">maximum recursion of chapter/section iteration</span>
 </pre>
 
 <pre class="display">
@@ -286,7 +286,7 @@ being accessed directly.
         <span class="reserved">linked_list_item</span><span class="plain"> *</span><span class="identifier">repeat_stack_variable</span><span class="plain">[</span><span class="constant">CI_STACK_CAPACITY</span><span class="plain">];</span>
         <span class="reserved">linked_list_item</span><span class="plain"> *</span><span class="identifier">repeat_stack_threshold</span><span class="plain">[</span><span class="constant">CI_STACK_CAPACITY</span><span class="plain">];</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">repeat_stack_startpos</span><span class="plain">[</span><span class="constant">CI_STACK_CAPACITY</span><span class="plain">];</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">stack_pointer</span><span class="plain">; </span>    <span class="comment">And this is our stack pointer for tracking of loops</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">stack_pointer</span><span class="plain">; </span><span class="comment">And this is our stack pointer for tracking of loops</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">restrict_to_range</span><span class="plain">;</span>
         <span class="reserved">web</span><span class="plain"> *</span><span class="identifier">nav_web</span><span class="plain">;</span>
         <span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">nav_pattern</span><span class="plain">;</span>
@@ -315,7 +315,7 @@ being accessed directly.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">TRACE_CI_EXECUTION</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain"> </span>    <span class="comment">set true for debugging</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRACE_CI_EXECUTION</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain"> </span><span class="comment">set true for debugging</span>
 </pre>
 
 <pre class="display">
@@ -335,13 +335,13 @@ being accessed directly.
         &lt;<span class="cwebmacro">Read in the source file containing the contents page template</span> <span class="cwebmacronumber">5.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Open the contents page file to be constructed</span> <span class="cwebmacronumber">5.4</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lpos</span><span class="plain"> = 0; </span>    <span class="comment">This is our program counter: a line number in the template</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">lpos</span><span class="plain"> = 0; </span><span class="comment">This is our program counter: a line number in the template</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">lpos</span><span class="plain"> &lt; </span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;no_tlines</span><span class="plain">) {</span>
             <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">tl</span><span class="plain">);</span>
-            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tl</span><span class="plain">, </span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;tlines</span><span class="plain">[</span><span class="identifier">lpos</span><span class="plain">++]); </span>    <span class="comment">Fetch the line at the program counter and advance</span>
+            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tl</span><span class="plain">, </span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;tlines</span><span class="plain">[</span><span class="identifier">lpos</span><span class="plain">++]); </span><span class="comment">Fetch the line at the program counter and advance</span>
             &lt;<span class="cwebmacro">Make any necessary substitutions to turn tl into final output</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">tl</span><span class="plain">); </span>    <span class="comment">Copy the now finished line to the output</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">tl</span><span class="plain">); </span><span class="comment">Copy the now finished line to the output</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">tl</span><span class="plain">);</span>
             <span class="identifier">CYCLE</span><span class="plain">: ;</span>
             <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
@@ -360,7 +360,7 @@ being accessed directly.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">tl</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?) "</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tl</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]); </span>    <span class="comment">Strip trailing spaces</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">tl</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?) "</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tl</span><span class="plain">, </span><span class="identifier">mr</span><span class="element">.exp</span><span class="plain">[0]); </span><span class="comment">Strip trailing spaces</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="constant">TRACE_CI_EXECUTION</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Print line and contents of repeat stack</span> <span class="cwebmacronumber">5.1.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pattern</span><span class="plain">-</span><span class="element">&gt;embed_CSS</span><span class="plain">) &amp;&amp;</span>
@@ -586,7 +586,7 @@ chapter as its value during the sole iteration.
                 <span class="reserved">else</span><span class="plain"> {</span>
                     <span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;repeat_stack_variable</span><span class="plain">[</span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;stack_pointer</span><span class="plain">-1] =</span>
                         <span class="identifier">NEXT_ITEM_IN_LINKED_LIST</span><span class="plain">(</span><span class="identifier">SI</span><span class="plain">, </span><span class="reserved">section</span><span class="plain">);</span>
-                    <span class="identifier">lpos</span><span class="plain"> = </span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;repeat_stack_startpos</span><span class="plain">[</span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;stack_pointer</span><span class="plain">-1]; </span>    <span class="comment">Back round loop</span>
+                    <span class="identifier">lpos</span><span class="plain"> = </span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;repeat_stack_startpos</span><span class="plain">[</span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;stack_pointer</span><span class="plain">-1]; </span><span class="comment">Back round loop</span>
                 <span class="plain">}</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="reserved">linked_list_item</span><span class="plain"> *</span><span class="identifier">CI</span><span class="plain"> = </span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;repeat_stack_variable</span><span class="plain">[</span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;stack_pointer</span><span class="plain">-1];</span>
@@ -595,7 +595,7 @@ chapter as its value during the sole iteration.
                 <span class="reserved">else</span><span class="plain"> {</span>
                     <span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;repeat_stack_variable</span><span class="plain">[</span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;stack_pointer</span><span class="plain">-1] =</span>
                         <span class="identifier">NEXT_ITEM_IN_LINKED_LIST</span><span class="plain">(</span><span class="identifier">CI</span><span class="plain">, </span><span class="reserved">chapter</span><span class="plain">);</span>
-                    <span class="identifier">lpos</span><span class="plain"> = </span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;repeat_stack_startpos</span><span class="plain">[</span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;stack_pointer</span><span class="plain">-1]; </span>    <span class="comment">Back round loop</span>
+                    <span class="identifier">lpos</span><span class="plain"> = </span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;repeat_stack_startpos</span><span class="plain">[</span><span class="identifier">cp</span><span class="plain">-</span><span class="element">&gt;stack_pointer</span><span class="plain">-1]; </span><span class="comment">Back round loop</span>
                 <span class="plain">}</span>
             <span class="plain">}</span>
             <span class="reserved">goto</span><span class="plain"> </span><span class="identifier">CYCLE</span><span class="plain">;</span>

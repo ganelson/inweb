@@ -60,18 +60,18 @@ in a list.
 </li></ul>
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">TRIE_START</span><span class="plain"> -1 </span>    <span class="comment">head: the root of a trie parsing forwards from the start</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRIE_END</span><span class="plain"> -2 </span>    <span class="comment">head: the root of a trie parsing backwards from the end</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRIE_ANYTHING</span><span class="plain"> 10003 </span>    <span class="comment">choice: match any text here</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRIE_ANY_GROUP</span><span class="plain"> 10001 </span>    <span class="comment">choice: match any character from this group</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRIE_NOT_GROUP</span><span class="plain"> 10002 </span>    <span class="comment">choice: match any character not in this group</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRIE_STOP</span><span class="plain"> -3 </span>    <span class="comment">terminal: here's the outcome</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_TRIE_GROUP_SIZE</span><span class="plain"> 26 </span>    <span class="comment">size of the allowable groups of characters</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRIE_START</span><span class="plain"> -1 </span><span class="comment">head: the root of a trie parsing forwards from the start</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRIE_END</span><span class="plain"> -2 </span><span class="comment">head: the root of a trie parsing backwards from the end</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRIE_ANYTHING</span><span class="plain"> 10003 </span><span class="comment">choice: match any text here</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRIE_ANY_GROUP</span><span class="plain"> 10001 </span><span class="comment">choice: match any character from this group</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRIE_NOT_GROUP</span><span class="plain"> 10002 </span><span class="comment">choice: match any character not in this group</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRIE_STOP</span><span class="plain"> -3 </span><span class="comment">terminal: here's the outcome</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_TRIE_GROUP_SIZE</span><span class="plain"> 26 </span><span class="comment">size of the allowable groups of characters</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">match_trie</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">match_character</span><span class="plain">; </span>    <span class="comment">or one of the special cases above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">match_character</span><span class="plain">; </span><span class="comment">or one of the special cases above</span>
         <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">group_characters</span><span class="plain">[</span><span class="constant">MAX_TRIE_GROUP_SIZE</span><span class="plain">+1];</span>
         <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">match_outcome</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">on_success</span><span class="plain">;</span>
@@ -114,7 +114,7 @@ a linked list of such nodes).
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_TRIE_REWIND</span><span class="plain"> 10 </span>    <span class="comment">that should be far, far more rewinding than necessary</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_TRIE_REWIND</span><span class="plain"> 10 </span><span class="comment">that should be far, far more rewinding than necessary</span>
 </pre>
 
 <pre class="display">
@@ -134,10 +134,10 @@ a linked list of such nodes).
 
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">start</span><span class="plain">; </span><span class="identifier">i</span><span class="plain"> != </span><span class="identifier">endpoint</span><span class="plain">+</span><span class="identifier">delta</span><span class="plain">; </span><span class="identifier">i</span><span class="plain"> += </span><span class="identifier">delta</span><span class="plain">) {</span>
             <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">group</span><span class="plain">[</span><span class="constant">MAX_TRIE_GROUP_SIZE</span><span class="plain">+1];</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">g</span><span class="plain"> = 0; </span>    <span class="comment">size of group</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = (</span><span class="identifier">i</span><span class="plain">&lt;0)?0:(</span><span class="functiontext">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">)); </span>    <span class="comment">i.e., zero at the two ends of the text</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> &gt;= 0</span><span class="identifier">x20</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= 0</span><span class="identifier">x7f</span><span class="plain">)) </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">Characters::tolower</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">); </span>    <span class="comment">normalise it within ASCII</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == 0</span><span class="identifier">x20</span><span class="plain">) { </span><span class="identifier">c</span><span class="plain"> = 0; </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">endpoint</span><span class="plain"> - </span><span class="identifier">delta</span><span class="plain">; } </span>    <span class="comment">force any space to be equivalent to the final 0</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">g</span><span class="plain"> = 0; </span><span class="comment">size of group</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = (</span><span class="identifier">i</span><span class="plain">&lt;0)?0:(</span><span class="functiontext">Str::get_at</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">)); </span><span class="comment">i.e., zero at the two ends of the text</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> &gt;= 0</span><span class="identifier">x20</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= 0</span><span class="identifier">x7f</span><span class="plain">)) </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">Characters::tolower</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">); </span><span class="comment">normalise it within ASCII</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == 0</span><span class="identifier">x20</span><span class="plain">) { </span><span class="identifier">c</span><span class="plain"> = 0; </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">endpoint</span><span class="plain"> - </span><span class="identifier">delta</span><span class="plain">; } </span><span class="comment">force any space to be equivalent to the final 0</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">add_outcome</span><span class="plain">) {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pairc</span><span class="plain"> = 0;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'&lt;'</span><span class="plain">) </span><span class="identifier">pairc</span><span class="plain"> = </span><span class="character">'&gt;'</span><span class="plain">;</span>
@@ -166,13 +166,13 @@ a linked list of such nodes).
                     <span class="identifier">rewind_sp</span><span class="plain">--;</span>
                     <span class="reserved">goto</span><span class="plain"> </span><span class="identifier">RewindHere</span><span class="plain">;</span>
                 <span class="plain">}</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">failure!</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">failure!</span>
             <span class="plain">}</span>
             &lt;<span class="cwebmacro">We have run out of trie and must create a new exit to continue</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pos</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;match_character</span><span class="plain"> == </span><span class="constant">TRIE_ANYTHING</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Accept the current node of the trie</span> <span class="cwebmacronumber">2.4</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pos</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;match_outcome</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;match_outcome</span><span class="plain">; </span>    <span class="comment">success!</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">add_outcome</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">failure!</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pos</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;match_outcome</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain">-</span><span class="element">&gt;match_outcome</span><span class="plain">; </span><span class="comment">success!</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">add_outcome</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">failure!</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">We failed by running out of trie, so we must add a terminal node to make this string acceptable</span> <span class="cwebmacronumber">2.5</span>&gt;

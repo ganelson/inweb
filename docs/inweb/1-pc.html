@@ -48,10 +48,10 @@ so the fork in the road is not met until halfway through Inweb's execution.
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">NO_MODE</span><span class="definitionkeyword"> from </span><span class="constant">0</span>    <span class="comment">a special mode for doing nothing except printing command-line syntax</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">ANALYSE_MODE</span><span class="plain">   </span>    <span class="comment">for -scan, -catalogue, -functions and so on</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TANGLE_MODE</span><span class="plain">    </span>    <span class="comment">for any form of -tangle</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">WEAVE_MODE</span><span class="plain">     </span>    <span class="comment">for any form of -weave</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TRANSLATE_MODE</span><span class="plain"> </span>    <span class="comment">a special mode for translating a multi-web makefile</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">ANALYSE_MODE</span><span class="plain">   </span><span class="comment">for -scan, -catalogue, -functions and so on</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">TANGLE_MODE</span><span class="plain">    </span><span class="comment">for any form of -tangle</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">WEAVE_MODE</span><span class="plain">     </span><span class="comment">for any form of -weave</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">TRANSLATE_MODE</span><span class="plain"> </span><span class="comment">a special mode for translating a multi-web makefile</span>
 </pre>
 
 <pre class="display">
@@ -78,9 +78,9 @@ one after another.
 
 <pre class="definitions">
     <span class="definitionkeyword">enum</span> <span class="constant">SWARM_OFF_SWM</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SWARM_INDEX_SWM</span><span class="plain">    </span>    <span class="comment">make index(es) as if swarming, but don't actually swarm</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SWARM_CHAPTERS_SWM</span><span class="plain"> </span>    <span class="comment">swarm the chapters</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SWARM_SECTIONS_SWM</span><span class="plain"> </span>    <span class="comment">swarm the individual sections</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SWARM_INDEX_SWM</span><span class="plain">    </span><span class="comment">make index(es) as if swarming, but don't actually swarm</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SWARM_CHAPTERS_SWM</span><span class="plain"> </span><span class="comment">swarm the chapters</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">SWARM_SECTIONS_SWM</span><span class="plain"> </span><span class="comment">swarm the individual sections</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>In order to run, Inweb needs to know where it is installed &mdash; this
 enables it to find its configuration file, the macros file, and so on.
@@ -91,9 +91,9 @@ subfolder called <code class="display"><span class="extract">Materials</span></c
 
 
 <pre class="display">
-    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inweb</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">where we are installed</span>
-    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inweb_materials</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">the materials pathname</span>
-    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inweb_patterns</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span>    <span class="comment">where built-in patterns are stored</span>
+    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inweb</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">where we are installed</span>
+    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inweb_materials</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the materials pathname</span>
+    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inweb_patterns</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">where built-in patterns are stored</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -129,7 +129,7 @@ subfolder called <code class="display"><span class="extract">Materials</span></c
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function main is used in <a href="#SP7_2_2">&#167;7.2.2</a>, 8/wm (<a href="8-wm.html#SP3">&#167;3</a>), 1/cnf (<a href="1-cnf.html#SP1">&#167;1</a>), 4/cl (<a href="4-cl.html#SP3_4_2_5">&#167;3.4.2.5</a>).</p>
+<p class="endnote">The function main is used in <a href="#SP7_2_2">&#167;7.2.2</a>, 8/wm (<a href="8-wm.html#SP3">&#167;3</a>), 1/cnf (<a href="1-cnf.html#SP1">&#167;1</a>), 4/cl (<a href="4-cl.html#SP2_4_2_5">&#167;2.4.2.5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP6_1"></a><b>&#167;6.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Initialise inweb</span> <span class="cwebmacronumber">6.1</span>&gt; =
@@ -138,7 +138,6 @@ subfolder called <code class="display"><span class="extract">Materials</span></c
 
 <pre class="displaydefn">
         <span class="functiontext">Foundation::start</span><span class="plain">();</span>
-        <span class="functiontext">Languages::create_programming_languages</span><span class="plain">();</span>
         <span class="functiontext">Formats::create_weave_formats</span><span class="plain">();</span>
 </pre>
 
@@ -387,7 +386,7 @@ which for many small webs will be the entire thing.
         &lt;<span class="cwebmacro">Assign section numbers for printing purposes</span> <span class="cwebmacronumber">7.2.3.2</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;swarm_mode</span><span class="plain"> == </span><span class="constant">SWARM_OFF_SWM</span><span class="plain">) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">shall_we_open</span><span class="plain"> = </span><span class="identifier">ins</span><span class="plain">-</span><span class="element">&gt;open_pdf_switch</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shall_we_open</span><span class="plain"> == </span><span class="constant">NOT_APPLICABLE</span><span class="plain">) { </span>    <span class="comment">i.e., if it wasn't set at the command line</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shall_we_open</span><span class="plain"> == </span><span class="constant">NOT_APPLICABLE</span><span class="plain">) { </span><span class="comment">i.e., if it wasn't set at the command line</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">pattern</span><span class="plain">-</span><span class="element">&gt;open_command</span><span class="plain">) &gt; 0) </span><span class="identifier">shall_we_open</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
                 <span class="reserved">else</span><span class="plain"> </span><span class="identifier">shall_we_open</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -476,7 +475,7 @@ source:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Main::error_in_web is used in 1/cnf (<a href="1-cnf.html#SP5">&#167;5</a>), 2/tp (<a href="2-tp.html#SP1_1_6_3">&#167;1.1.6.3</a>, <a href="2-tp.html#SP1_1_6_4">&#167;1.1.6.4</a>, <a href="2-tp.html#SP1_1_6_6">&#167;1.1.6.6</a>, <a href="2-tp.html#SP1_1_6_5_1">&#167;1.1.6.5.1</a>, <a href="2-tp.html#SP1_1_6_5_1_1">&#167;1.1.6.5.1.1</a>, <a href="2-tp.html#SP1_1_6_5_1_2">&#167;1.1.6.5.1.2</a>, <a href="2-tp.html#SP1_1_6_5_1_3">&#167;1.1.6.5.1.3</a>, <a href="2-tp.html#SP1_1_6_5_1_4">&#167;1.1.6.5.1.4</a>, <a href="2-tp.html#SP1_1_6_5_1_7">&#167;1.1.6.5.1.7</a>, <a href="2-tp.html#SP3">&#167;3</a>), 2/ec (<a href="2-ec.html#SP3_1">&#167;3.1</a>, <a href="2-ec.html#SP3_2">&#167;3.2</a>, <a href="2-ec.html#SP3_3">&#167;3.3</a>), 3/ta (<a href="3-ta.html#SP4_1">&#167;4.1</a>), 3/tt (<a href="3-tt.html#SP1_1_1_1">&#167;1.1.1.1</a>, <a href="3-tt.html#SP3_1">&#167;3.1</a>), 4/pl (<a href="4-pl.html#SP10">&#167;10</a>), 4/cl (<a href="4-cl.html#SP3">&#167;3</a>, <a href="4-cl.html#SP3_1">&#167;3.1</a>, <a href="4-cl.html#SP3_4_2_1">&#167;3.4.2.1</a>, <a href="4-cl.html#SP3_4_2_5">&#167;3.4.2.5</a>, <a href="4-cl.html#SP22">&#167;22</a>).</p>
+<p class="endnote">The function Main::error_in_web is used in 1/cnf (<a href="1-cnf.html#SP5">&#167;5</a>), 2/tp (<a href="2-tp.html#SP1_1_6_3">&#167;1.1.6.3</a>, <a href="2-tp.html#SP1_1_6_4">&#167;1.1.6.4</a>, <a href="2-tp.html#SP1_1_6_6">&#167;1.1.6.6</a>, <a href="2-tp.html#SP1_1_6_5_1">&#167;1.1.6.5.1</a>, <a href="2-tp.html#SP1_1_6_5_1_1">&#167;1.1.6.5.1.1</a>, <a href="2-tp.html#SP1_1_6_5_1_2">&#167;1.1.6.5.1.2</a>, <a href="2-tp.html#SP1_1_6_5_1_3">&#167;1.1.6.5.1.3</a>, <a href="2-tp.html#SP1_1_6_5_1_4">&#167;1.1.6.5.1.4</a>, <a href="2-tp.html#SP1_1_6_5_1_7">&#167;1.1.6.5.1.7</a>, <a href="2-tp.html#SP3">&#167;3</a>), 2/ec (<a href="2-ec.html#SP3_1">&#167;3.1</a>, <a href="2-ec.html#SP3_2">&#167;3.2</a>, <a href="2-ec.html#SP3_3">&#167;3.3</a>), 3/ta (<a href="3-ta.html#SP4_1">&#167;4.1</a>), 3/tt (<a href="3-tt.html#SP1_1_1_1">&#167;1.1.1.1</a>, <a href="3-tt.html#SP3_1">&#167;3.1</a>), 4/pl (<a href="4-pl.html#SP11">&#167;11</a>), 4/cl (<a href="4-cl.html#SP2">&#167;2</a>, <a href="4-cl.html#SP2_1">&#167;2.1</a>, <a href="4-cl.html#SP2_4_2_1">&#167;2.4.2.1</a>, <a href="4-cl.html#SP2_4_2_5">&#167;2.4.2.5</a>, <a href="4-cl.html#SP21">&#167;21</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="1-bsc.html">Back to 'Basics'</a></li><li><a href="1-cnf.html">Continue with 'Configuration'</a></li></ul><hr class="tocbar">

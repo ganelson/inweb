@@ -148,11 +148,21 @@ attach it to an object with a method set, using the <code class="display"><span 
             <span class="identifier">existing</span><span class="plain">-</span><span class="element">&gt;next_method</span><span class="plain"> = </span><span class="identifier">M</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Methods::provided</span><span class="plain">(</span><span class="reserved">method_set</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">method</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-</span><span class="element">&gt;first_method</span><span class="plain">; </span><span class="identifier">M</span><span class="plain">; </span><span class="identifier">M</span><span class="plain"> = </span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;next_method</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">M</span><span class="plain">-</span><span class="element">&gt;method_id</span><span class="plain"> == </span><span class="identifier">ID</span><span class="plain">)</span>
+                <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+    <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function Methods::add appears nowhere else.</p>
+
+<p class="endnote">The function Methods::provided appears nowhere else.</p>
 
 <p class="endnote">The structure method is private to this section.</p>
 

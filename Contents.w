@@ -51,7 +51,6 @@ in different programming languages."
 	Programming Languages
 	C-Like Languages
 	InC Support
-	Perl Support
 	Inform Support
 	ACME Support
 
