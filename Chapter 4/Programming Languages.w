@@ -39,6 +39,7 @@ typedef struct programming_language {
 	text_stream *before_macro_expansion;
 	text_stream *after_macro_expansion;
 	text_stream *start_definition;
+	text_stream *prolong_definition;
 	text_stream *end_definition;
 	text_stream *start_ifdef;
 	text_stream *end_ifdef;
@@ -127,6 +128,7 @@ programming_language *Languages::read_definition(filename *F) {
 	pl->before_macro_expansion = NULL;
 	pl->after_macro_expansion = NULL;
 	pl->start_definition = NULL;
+	pl->prolong_definition = NULL;
 	pl->end_definition = NULL;
 	pl->start_ifdef = NULL;
 	pl->end_ifdef = NULL;
@@ -183,7 +185,9 @@ void Languages::read_definition_line(text_stream *line, text_file_position *tfp,
 			else if (Str::eq(key, I"Line Marker")) pl->line_marker = Languages::text(value, tfp);
 			else if (Str::eq(key, I"Before Macro Expansion")) pl->before_macro_expansion = Languages::text(value, tfp);
 			else if (Str::eq(key, I"After Macro Expansion")) pl->after_macro_expansion = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Supports Enumerations")) pl->supports_enumerations = Languages::boolean(value, tfp);
 			else if (Str::eq(key, I"Start Definition")) pl->start_definition = Languages::text(value, tfp);
+			else if (Str::eq(key, I"Prolong Definition")) pl->prolong_definition = Languages::text(value, tfp);
 			else if (Str::eq(key, I"End Definition")) pl->end_definition = Languages::text(value, tfp);
 			else if (Str::eq(key, I"Start Ifdef")) pl->start_ifdef = Languages::text(value, tfp);
 			else if (Str::eq(key, I"Start Ifndef")) pl->start_ifndef = Languages::text(value, tfp);
@@ -278,6 +282,15 @@ text_stream *Languages::text(text_stream *T, text_file_position *tfp) {
 		wchar_t c = Str::get_at(T, i);
 		if ((c == '\\') && (Str::get_at(T, i+1) == 'n')) {
 			PUT_TO(V, '\n');
+			i++;
+		} else if ((c == '\\') && (Str::get_at(T, i+1) == 's')) {
+			PUT_TO(V, ' ');
+			i++;
+		} else if ((c == '\\') && (Str::get_at(T, i+1) == 't')) {
+			PUT_TO(V, '\t');
+			i++;
+		} else if ((c == '\\') && (Str::get_at(T, i+1) == '\\')) {
+			PUT_TO(V, '\\');
 			i++;
 		} else {
 			PUT_TO(V, c);

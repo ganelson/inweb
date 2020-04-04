@@ -9,6 +9,16 @@ String Literal Escape: \
 Character Literal: '
 Character Literal Escape: \
 C-Like: true
+Supports Enumerations: true
 
 Before Macro Expansion: \n{\n
 After Macro Expansion: }\n
+Start Ifdef: #ifdef %S\n
+End Ifdef: #endif /* %S */\n
+Start Ifndef: #ifndef %S\n
+End Ifndef: #endif /* %S */\n
+Line Marker: #line %d "%f"\n
+
+Start Definition: #define %S\s
+Prolong Definition: \\\n\s\s\s\s
+End Definition: \n

@@ -7,24 +7,11 @@ This does:
 
 =
 void CLike::make_c_like(programming_language *pl) {
-	pl->supports_enumerations = TRUE;
-
 	METHOD_ADD(pl, FURTHER_PARSING_PAR_MTID, CLike::further_parsing);
 	METHOD_ADD(pl, SUBCATEGORISE_LINE_PAR_MTID, CLike::subcategorise_code);
 
-	METHOD_ADD(pl, SHEBANG_TAN_MTID, CLike::shebang);
 	METHOD_ADD(pl, ADDITIONAL_EARLY_MATTER_TAN_MTID, CLike::additional_early_matter);
-	METHOD_ADD(pl, START_DEFN_TAN_MTID, CLike::start_definition);
-	METHOD_ADD(pl, PROLONG_DEFN_TAN_MTID, CLike::prolong_definition);
-	METHOD_ADD(pl, END_DEFN_TAN_MTID, CLike::end_definition);
 	METHOD_ADD(pl, ADDITIONAL_PREDECLARATIONS_TAN_MTID, CLike::additional_predeclarations);
-	METHOD_ADD(pl, INSERT_LINE_MARKER_TAN_MTID, CLike::insert_line_marker);
-	METHOD_ADD(pl, BEFORE_MACRO_EXPANSION_TAN_MTID, CLike::before_macro_expansion);
-	METHOD_ADD(pl, AFTER_MACRO_EXPANSION_TAN_MTID, CLike::after_macro_expansion);
-	METHOD_ADD(pl, COMMENT_TAN_MTID, CLike::comment);
-	METHOD_ADD(pl, OPEN_IFDEF_TAN_MTID, CLike::open_ifdef);
-	METHOD_ADD(pl, CLOSE_IFDEF_TAN_MTID, CLike::close_ifdef);
-	METHOD_ADD(pl, PARSE_COMMENT_TAN_MTID, CLike::parse_comment);
 
 	METHOD_ADD(pl, BEGIN_WEAVE_WEA_MTID, CLike::begin_weave);
 	METHOD_ADD(pl, RESET_SYNTAX_COLOURING_WEA_MTID, CLike::reset_syntax_colouring);
@@ -507,22 +494,7 @@ void CLike::subcategorise_code(programming_language *self, source_line *L) {
 }
 
 @h Tangling extras.
-The "shebang" routine for a language is called to add anything it wants to
-at the very top of the tangled code. (For a scripting language such as
-Perl or Python, that might be a shebang: hence the name.)
-
-But we will use it to defime the constant |PLATFORM_POSIX| everywhere except
-Windows. This needs to happen right at the top, because the "very early
-code" may contain material conditional on whether it is defined.
-
-=
-void CLike::shebang(programming_language *self, text_stream *OUT, web *W, tangle_target *target) {
-	WRITE("#ifndef PLATFORM_WINDOWS\n");
-	WRITE("#define PLATFORM_POSIX\n");
-	WRITE("#endif\n");
-}
-
-@ "Additional early matter" is used for the inclusions of the ANSI library
+"Additional early matter" is used for the inclusions of the ANSI library
 files. We need to do that early, because otherwise types declared in them
 (such as |FILE|) won't exist in time for the structure definitions we will
 be tangling next.
@@ -543,24 +515,6 @@ void CLike::additional_early_matter(programming_language *self, text_stream *OUT
 			WRITE("\n");
 			Tags::close_ifdefs(OUT, L->owning_paragraph);
 		}
-}
-
-@ =
-int CLike::start_definition(programming_language *self, text_stream *OUT, text_stream *term, text_stream *start, section *S, source_line *L) {
-	WRITE("#define %S ", term);
-	Tangler::tangle_code(OUT, start, S, L);
-	return TRUE;
-}
-
-int CLike::prolong_definition(programming_language *self, text_stream *OUT, text_stream *more, section *S, source_line *L) {
-	WRITE("\\\n    ");
-	Tangler::tangle_code(OUT, more, S, L);
-	return TRUE;
-}
-
-int CLike::end_definition(programming_language *self, text_stream *OUT, section *S, source_line *L) {
-	WRITE("\n");
-	return TRUE;
 }
 
 @h Tangling predeclarations.
@@ -665,101 +619,6 @@ exist either way.
 				WRITE("#endif\n");
 			}
 		}
-
-@h Line markers.
-In order for C compilers to report C syntax errors on the correct line,
-despite rearranging by automatic tools, C conventionally recognises the
-preprocessor directive |#line| to tell it that a contiguous extract follows
-from the given file; we generate this automatically.
-
-=
-void CLike::insert_line_marker(programming_language *self, text_stream *OUT, source_line *L) {
-	WRITE("#line %d \"%/f\"\n",
-		L->source.line_count,
-		L->source.text_file_filename);
-}
-
-@h Comments.
-We write comments the old-fashioned way, that is, not using |//|.
-
-=
-void CLike::comment(programming_language *self, text_stream *OUT, text_stream *comm) {
-	WRITE("/* %S */\n", comm);
-}
-
-@ When parsing, we do recognise |//| comments, but we have to be careful not to
-react to comment markers inside comments or double-qupted text which is outside
-of comments, all of which makes this a little elaborate:
-
-=
-int CLike::parse_comment(programming_language *self,
-	text_stream *line, text_stream *part_before_comment, text_stream *part_within_comment) {
-	int q_mode = FALSE, c_mode = FALSE, non_white_space = FALSE, c_position = -1, c_end = -1;
-	for (int i=0; i<Str::len(line); i++) {
-		wchar_t c = Str::get_at(line, i);
-		if (c_mode) {
-			if (c == '*') {
-				wchar_t d = Str::get_at(line, i+1);
-				if (d == '/') { c_mode = FALSE; c_end = i; i++; }
-			}
-		} else {
-			if (!(Characters::is_whitespace(c))) non_white_space = TRUE;
-			if ((c == '\\') && (q_mode)) i += 1;
-			if (c == '"') q_mode = q_mode?FALSE:TRUE;
-			if ((c == '/') && (!q_mode)) {
-				wchar_t d = Str::get_at(line, i+1);
-				if (d == '/') { c_mode = TRUE; c_position = i; c_end = Str::len(line); non_white_space = FALSE; break; }
-				if (d == '*') { c_mode = TRUE; c_position = i; non_white_space = FALSE; }
-			}
-		}
-	}
-	if ((c_position >= 0) && (non_white_space == FALSE)) {
-		Str::clear(part_before_comment);
-		for (int i=0; i<c_position; i++) PUT_TO(part_before_comment, Str::get_at(line, i));
-		Str::clear(part_within_comment);
-		for (int i=c_position + 2; i<c_end; i++) PUT_TO(part_within_comment, Str::get_at(line, i));
-		Str::trim_white_space(part_within_comment);
-		return TRUE;
-	}
-	return FALSE;
-}
-
-@h Ifdefs.
-
-=
-void CLike::open_ifdef(programming_language *self, text_stream *OUT, text_stream *symbol, int sense) {
-	if (sense) WRITE("#ifdef %S\n", symbol);
-	else WRITE("#ifndef %S\n", symbol);
-}
-void CLike::close_ifdef(programming_language *self, text_stream *OUT, text_stream *symbol, int sense) {
-	WRITE("#endif /* %S */\n", symbol);
-}
-
-@h Before and after expansion.
-Places braces before and after expanded paragraph macros ensures that code like
-
-	|if (x == y) @<Do something dramatic@>;|
-
-tangles to something like this:
-
-	|if (x == y)|
-	|{|
-	|...|
-	|}|
-
-so that the variables defined inside the macro have limited scope, and so that
-multi-line macros are treated as a single statement by |if|, |while| and so on.
-(The new-line before the opening brace protects us against problems with
-Perl comments; Perl shares this code.)
-
-=
-void CLike::before_macro_expansion(programming_language *self, OUTPUT_STREAM, para_macro *pmac) {
-	WRITE("\n{\n");
-}
-
-void CLike::after_macro_expansion(programming_language *self, OUTPUT_STREAM, para_macro *pmac) {
-	WRITE("}\n");
-}
 
 @h Begin weave.
 We use this opportunity only to register C's usual set of reserved words as

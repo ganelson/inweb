@@ -31,6 +31,8 @@ void ACMESupport::add_fallbacks(programming_language *pl) {
 		METHOD_ADD(pl, AFTER_MACRO_EXPANSION_TAN_MTID, ACMESupport::after_macro_expansion);
 	if (Methods::provided(pl->methods, START_DEFN_TAN_MTID) == FALSE)
 		METHOD_ADD(pl, START_DEFN_TAN_MTID, ACMESupport::start_definition);
+	if (Methods::provided(pl->methods, PROLONG_DEFN_TAN_MTID) == FALSE)
+		METHOD_ADD(pl, PROLONG_DEFN_TAN_MTID, ACMESupport::prolong_definition);
 	if (Methods::provided(pl->methods, END_DEFN_TAN_MTID) == FALSE)
 		METHOD_ADD(pl, END_DEFN_TAN_MTID, ACMESupport::end_definition);
 	if (Methods::provided(pl->methods, OPEN_IFDEF_TAN_MTID) == FALSE)
@@ -84,6 +86,13 @@ int ACMESupport::start_definition(programming_language *pl, text_stream *OUT,
 	text_stream *term, text_stream *start, section *S, source_line *L) {
 	ACMESupport::expand(OUT, pl->start_definition, term, -1, NULL);
 	Tangler::tangle_code(OUT, start, S, L);
+	return TRUE;
+}
+
+int ACMESupport::prolong_definition(programming_language *pl,
+	text_stream *OUT, text_stream *more, section *S, source_line *L) {
+	ACMESupport::expand(OUT, pl->prolong_definition, NULL, -1, NULL);
+	Tangler::tangle_code(OUT, more, S, L);
 	return TRUE;
 }
 

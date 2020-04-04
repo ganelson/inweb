@@ -10,6 +10,25 @@ String Literal Escape: \
 Character Literal: '
 Character Literal Escape: \
 C-Like: true
+Supports Enumerations: true
+
+# The "shebang" routine for a language is called to add anything it wants to
+# at the very top of the tangled code. (For a scripting language such as
+# Perl or Python, that might be a shebang: hence the name.)
+# But we will use it to defime the constant PLATFORM_POSIX everywhere except
+# Windows. This needs to happen right at the top, because the "very early
+# code" in a tangle may contain material conditional on whether it is defined.
+
+Shebang: #ifndef PLATFORM_WINDOWS\n#define PLATFORM_POSIX\n#endif\n
 
 Before Macro Expansion: \n{\n
 After Macro Expansion: }\n
+Start Ifdef: #ifdef %S\n
+End Ifdef: #endif /* %S */\n
+Start Ifndef: #ifndef %S\n
+End Ifndef: #endif /* %S */\n
+Line Marker: #line %d "%f"\n
+
+Start Definition: #define %S\s
+Prolong Definition: \\\n\s\s\s\s
+End Definition: \n
