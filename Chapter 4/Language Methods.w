@@ -353,9 +353,10 @@ int LanguageMethods::syntax_colour(OUTPUT_STREAM, programming_language *pl, weav
 	Str::copy(colouring, matter);
 	for (int i=0; i < Str::len(matter); i++) Str::put_at(colouring, i, PLAIN_COLOUR);
 	int rv = FALSE;
-	if (L->category != TEXT_EXTRACT_LCAT) {
-		IMETHOD_CALL(rv, pl, SYNTAX_COLOUR_WEA_MTID, OUT, wv, W, C, S, L, matter, colouring);
-	}
+	programming_language *colour_as = pl;
+	if (L->category == TEXT_EXTRACT_LCAT) colour_as = L->colour_as;
+	if (colour_as)
+		IMETHOD_CALL(rv, colour_as, SYNTAX_COLOUR_WEA_MTID, OUT, wv, W, C, S, L, matter, colouring);
 	return rv;
 }
 

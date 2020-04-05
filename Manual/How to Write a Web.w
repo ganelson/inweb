@@ -166,9 +166,15 @@ We can also tell the tangler to ignore the code completely:
 	|= (not code)|
 
 That may seem paradoxical: when is code not code? When it's an extract of
-text being displayed for documentation reasons, is the answer. Syntax
-colouring is turned off for such code, since it's probably not written
-in the same language as the code.
+text being displayed for documentation reasons, is the answer. By default,
+this is assumed to be plain text, and is syntax-coloured (or rather, not)
+as such. If in fact it is a sample of code from some language Inweb
+supports, we can instead write, for example:
+
+	|= (sample ACME code)|
+
+to say that this is an extract of code in ACME format, and should be
+coloured accordingly.
 
 @ One last feature, but it's the most important. Some code extracts are
 given names, in angle brackets. If so, then the paragraph is the definition
@@ -328,6 +334,9 @@ exactly as Figures, but have the file extension |.txt|. For example,
 	|[[help.txt]]|
 
 incorporates a pre-formatted version of the plain text file |Figures/help.txt|.
+This can be syntax-coloured in any language known to Inweb:
+
+	|[[sample.txt]] as C|
 
 @ Mathematical formulae can be typed in TeX notation between dollar signs,
 as usual for TeX formulae. This can of course only really be rendered if

@@ -25,6 +25,7 @@ typedef struct source_line {
 	int category; /* what sort of line this is: an |*_LCAT| value */
 	int command_code; /* used only for |COMMAND_LCAT| lines: a |*_CMD| value */
 	int default_defn; /* used only for |BEGIN_DEFINITION_LCAT| lines */
+	struct programming_language *colour_as; /* used only for |TEXT_EXTRACT_LCAT| lines */
 	int is_commentary; /* flag */
 	struct function *function_defined; /* if any C-like function is defined on this line */
 	struct preform_nonterminal *preform_nonterminal_defined; /* similarly */
@@ -48,6 +49,7 @@ source_line *Lines::new_source_line(text_stream *line, text_file_position *tfp) 
 	sl->category = NO_LCAT; /* that is, unknown category as yet */
 	sl->command_code = NO_CMD;
 	sl->default_defn = FALSE;
+	sl->colour_as = NULL;
 	sl->is_commentary = FALSE;
 	sl->function_defined = NULL;
 	sl->preform_nonterminal_defined = NULL;

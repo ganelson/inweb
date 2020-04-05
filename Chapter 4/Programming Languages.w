@@ -106,6 +106,7 @@ typedef struct programming_language {
 	int C_like; /* languages with this set have access to extra features */
 
 	struct linked_list *reserved_words; /* of |reserved_word| */
+	struct hash_table built_in_keywords;
 	struct colouring_language_block *program; /* algorithm for syntax colouring */
 	METHOD_CALLS
 	MEMORY_MANAGEMENT
@@ -166,6 +167,7 @@ programming_language *Languages::read_definition(filename *F) {
 	pl->suppress_disclaimer = FALSE;
 
 	pl->reserved_words = NEW_LINKED_LIST(reserved_word);
+	pl->built_in_keywords.analysis_hash_initialised = FALSE;
 	pl->program = NULL;
 	pl->methods = Methods::new_set();
 
@@ -210,7 +212,7 @@ declare a reserved keyword, or set a key to a value.
 	} else if (Regexp::match(&mr, line, L"keyword (%C+) of (%c+?)")) {
 		Languages::reserved(pl, mr.exp[0], Languages::colour(mr.exp[1], tfp), tfp);
 	} else if (Regexp::match(&mr, line, L"keyword (%C+)")) {
-		Languages::reserved(pl, mr.exp[0], PLAIN_COLOUR, tfp);
+		Languages::reserved(pl, mr.exp[0], RESERVED_COLOUR, tfp);
 	} else if (Regexp::match(&mr, line, L"(%c+) *: *(%c+?)")) {
 		text_stream *key = mr.exp[0], *value = Str::duplicate(mr.exp[1]);
 		if (Str::eq(key, I"Name")) pl->language_name = Languages::text(value, tfp);
@@ -374,6 +376,11 @@ typedef struct colouring_rule {
 	/* the conclusion: */
 	struct colouring_language_block *execute_block; /* or |NULL|, in which case... */
 	int set_to_colour; /* ...paint the snippet in this colour */
+	int set_prefix_to_colour; /* ...also paint this (same for suffix) */
+	int debug; /* ...or print debugging text to console */
+	
+	/* workspace during painting */
+	int fix_position; /* where the prefix or suffix started */
 	MEMORY_MANAGEMENT
 } colouring_rule;
 
@@ -387,8 +394,10 @@ colouring_rule *Languages::new_rule(colouring_language_block *within) {
 	rule->match_prefix = NOT_A_RULE_PREFIX;
 	rule->match_keyword_of_colour = NOT_A_COLOUR;
 
-	rule->set_to_colour = PLAIN_COLOUR;
+	rule->set_to_colour = NOT_A_COLOUR;
+	rule->set_prefix_to_colour = NOT_A_COLOUR;
 	rule->execute_block = NULL;
+	rule->debug = FALSE;
 	return rule;
 }
 
@@ -405,6 +414,7 @@ void Languages::parse_rule(language_reader_state *state, text_stream *premiss,
 
 @<Parse the premiss@> =
 	if (Regexp::match(&mr, premiss, L"keyword of (%c+)")) {
+PRINT("Keyw of %S\n", mr.exp[0]);
 		rule->match_keyword_of_colour = Languages::colour(mr.exp[0], tfp);
 	} else if (Regexp::match(&mr, premiss, L"keyword")) {
 		Errors::in_text_file("ambiguous: make it keyword of !reserved or \"keyword\"", tfp);
@@ -437,8 +447,17 @@ void Languages::parse_rule(language_reader_state *state, text_stream *premiss,
 		rule->execute_block =
 			Languages::new_block(state->current_block, WHOLE_LINE_CRULE_RUN);
 		state->current_block = rule->execute_block;
+	} else if (Regexp::match(&mr, action, L"(!%c+) on prefix")) {
+		rule->set_prefix_to_colour = Languages::colour(mr.exp[0], tfp);
+	} else if (Regexp::match(&mr, action, L"(!%c+) on suffix")) {
+		rule->set_prefix_to_colour = Languages::colour(mr.exp[0], tfp);
+	} else if (Regexp::match(&mr, action, L"(!%c+) on both")) {
+		rule->set_to_colour = Languages::colour(mr.exp[0], tfp);
+		rule->set_prefix_to_colour = rule->set_to_colour;
 	} else if (Str::get_first_char(action) == '!') {
 		rule->set_to_colour = Languages::colour(action, tfp);
+	} else if (Str::eq(action, I"debug")) {
+		rule->debug = TRUE;
 	} else {
 		Errors::in_text_file("action after '=>' illegible", tfp);
 	}
@@ -464,6 +483,7 @@ reserved_word *Languages::reserved(programming_language *pl, text_stream *W, int
 	rw->word = Str::duplicate(W);
 	rw->colour = C;
 	ADD_TO_LINKED_LIST(rw, reserved_word, pl->reserved_words);
+	Analyser::mark_reserved_word(&(pl->built_in_keywords), rw->word, C);
 	return rw;
 }
 

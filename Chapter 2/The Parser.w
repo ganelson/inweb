@@ -35,6 +35,7 @@ markup syntax, and trying to detect incorrect uses of one within the other.
 @<Parse a section@> =
 	int comment_mode = TRUE;
 	int code_lcat_for_body = NO_LCAT;
+	programming_language *code_pl_for_body = NULL;
 	int before_bar = TRUE;
 	int next_par_number = 1;
 	paragraph *current_paragraph = NULL;
@@ -334,6 +335,7 @@ handling. We'll call these "paragraph macros".
 		comment_mode = FALSE;
 		L->is_commentary = FALSE;
 		code_lcat_for_body = CODE_BODY_LCAT; /* code follows on subsequent lines */
+		code_pl_for_body = NULL;
 		DISCARD_TEXT(para_macro_name);
 		continue;
 	}
@@ -363,8 +365,10 @@ division in the current section.
 @<Parse the line as an equals structural marker@> =
 	L->category = BEGIN_CODE_LCAT;
 	code_lcat_for_body = CODE_BODY_LCAT;
+	code_pl_for_body = NULL;
 	comment_mode = FALSE;
 	match_results mr = Regexp::create_mr();
+	match_results mr2 = Regexp::create_mr();
 	if (Regexp::match(&mr, L->text, L"= *(%c+) *")) {
 		if ((current_paragraph) && (Str::eq(mr.exp[0], I"(very early code)"))) {
 			current_paragraph->placed_very_early = TRUE;
@@ -372,6 +376,10 @@ division in the current section.
 			current_paragraph->placed_early = TRUE;
 		} else if ((current_paragraph) && (Str::eq(mr.exp[0], I"(not code)"))) {
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
+			code_pl_for_body = NULL;
+		} else if ((current_paragraph) && (Regexp::match(&mr2, mr.exp[0], L"%(sample (%c+) code%)"))) {
+			code_lcat_for_body = TEXT_EXTRACT_LCAT;
+			code_pl_for_body = Languages::find_by_name(mr2.exp[0]);
 		} else {
 			Main::error_in_web(I"unknown bracketed annotation", L);
 		}
@@ -379,6 +387,7 @@ division in the current section.
 		Main::error_in_web(I"unknown material after '='", L);
 	}
 	Regexp::dispose_of(&mr);
+	Regexp::dispose_of(&mr2);
 	continue;
 
 @ So here we have the possibilities which start with a column-1 |@| sign.
@@ -494,6 +503,7 @@ follows:
 		current_paragraph->placed_early = TRUE;
 	if (Str::eq_wide_string(command_text, L"x")) code_lcat_for_body = TEXT_EXTRACT_LCAT;
 	else code_lcat_for_body = CODE_BODY_LCAT;
+	code_pl_for_body = NULL;
 	comment_mode = FALSE;
 
 @ This is for |@d| and |@define|. Definitions are intended to translate to
@@ -502,6 +512,7 @@ C preprocessor macros, Inform 6 |Constant|s, and so on.
 @<Deal with the define marker@> =
 	L->category = BEGIN_DEFINITION_LCAT;
 	code_lcat_for_body = CONT_DEFINITION_LCAT;
+	code_pl_for_body = NULL;
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, remainder, L"(%C+) (%c+)")) {
 		L->text_operand = Str::duplicate(mr.exp[0]); /* name of term defined */
@@ -664,8 +675,10 @@ definition. (This is unnecessary for C, and is a point of difference with
 CWEB, but is needed for languages which don't allow multi-line definitions.)
 
 @<This is a line destined for the verbatim code@> =
-	if ((L->category != BEGIN_DEFINITION_LCAT) && (L->category != COMMAND_LCAT))
+	if ((L->category != BEGIN_DEFINITION_LCAT) && (L->category != COMMAND_LCAT)) {
 		L->category = code_lcat_for_body;
+		if (L->category == TEXT_EXTRACT_LCAT) L->colour_as = code_pl_for_body;
+	}
 
 	if ((L->category == CONT_DEFINITION_LCAT) && (Regexp::string_is_white_space(L->text))) {
 		L->category = COMMENT_BODY_LCAT;

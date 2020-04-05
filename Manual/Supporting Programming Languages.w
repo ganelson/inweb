@@ -66,11 +66,18 @@ last block of it is closed with a |}|.
 Everything in an ILD is optional, so a minimal ILD is in principle empty. In
 practice, though, every ILD should open like so:
 
-	|Name: C|
-	|Details: The C programming language|
-	|Extension: .c|
+= (sample ILDF code)
+Name: C
+Details: The C programming language
+Extension: .c
 
-Example:
+@ Blah.
+
+= (sample ACME code)
+	!byte %.##..##.
+    STA .romNumberActiveLastBRK                         ; and store it
+
+@ Example:
 
 [[perl.txt as ILDF]]
 
@@ -424,6 +431,13 @@ applied to the snippet only if this rule has matched. For example,
 
 means that if the original condition |keyword !element| applies, then two
 further rules are applied.
+
+By default, the colour is applied to the snippet. For prefix or suffix
+rules (see above), it can also be applied to the prefix or suffix: use
+the notation |=> C on both| or |=> C on suffix| or |=> C on prefix|.
+
+3. If Y is the word |debug|, then the current snippet and its colouring
+are printed out on the command line.
 
 @ The syntax of ILDs tends to avoid superfluous quotation marks as confusing,
 but sometimes you need to be pedantic. If you want to match the text |=>|,

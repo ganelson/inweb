@@ -199,6 +199,8 @@ rule across the whole snippet before moving on to the next.
 void Painter::execute(hash_table *HT, colouring_language_block *block, text_stream *matter,
 	text_stream *colouring, int from, int to) {
 	if (block == NULL) internal_error("no block");
+	TEMPORARY_TEXT(colouring_at_start);
+	Str::copy(colouring_at_start, colouring);
 	colouring_rule *rule;
 	LOOP_OVER_LINKED_LIST(rule, colouring_rule, block->rules) {
 		switch (block->run) {
@@ -222,7 +224,7 @@ void Painter::execute(hash_table *HT, colouring_language_block *block, text_stre
 			default: {
 				int ident_from = -1;
 				for (int i=from; i<=to; i++) {
-					int col = Str::get_at(colouring, i);
+					int col = Str::get_at(colouring_at_start, i);
 					if ((col == block->run) ||
 						((block->run == UNQUOTED_COLOUR) &&
 							((col != STRING_COLOUR) && (col != CHAR_LITERAL_COLOUR)))) {
@@ -239,6 +241,7 @@ void Painter::execute(hash_table *HT, colouring_language_block *block, text_stre
 			}
 		}
 	}
+	DISCARD_TEXT(colouring_at_start);
 }
 
 @ Rules have the form: if X, then Y.
@@ -276,6 +279,7 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 			if (ACMESupport::text_at(matter,
 				pos-Str::len(rule->match_text), rule->match_text) == FALSE)
 				return FALSE;
+			rule->fix_position = pos-Str::len(rule->match_text);
 		} else if ((rule->match_prefix == UNSPACED_RULE_SUFFIX) ||
 			(rule->match_prefix == SPACED_RULE_SUFFIX) ||
 			(rule->match_prefix == OPTIONALLY_SPACED_RULE_SUFFIX)) {
@@ -287,6 +291,7 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 			}
 			if (ACMESupport::text_at(matter, pos, rule->match_text) == FALSE)
 				return FALSE;
+			rule->fix_position = pos;
 		} else {
 			if (Str::ne(matter, rule->match_text)) return FALSE;
 		}
@@ -311,7 +316,22 @@ void Painter::follow(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to) {
 	if (rule->execute_block)
 		Painter::execute(HT, rule->execute_block, matter, colouring, from, to);
-	else 
-		for (int i=from; i<=to; i++)
-			Str::put_at(colouring, i, rule->set_to_colour);
+	else if (rule->debug) @<Print some debugging text@>
+	else {
+		if (rule->set_to_colour != NOT_A_COLOUR)
+			for (int i=from; i<=to; i++)
+				Str::put_at(colouring, i, rule->set_to_colour);
+		if (rule->set_prefix_to_colour != NOT_A_COLOUR)
+			for (int i=rule->fix_position; i<rule->fix_position+Str::len(rule->match_text); i++)
+				Str::put_at(colouring, i, rule->set_prefix_to_colour);
+	}
 }
+
+@<Print some debugging text@> =
+	PRINT("[%d, %d] text: ", from, to);
+	for (int i=from; i<=to; i++)
+		PUT_TO(STDOUT, Str::get_at(matter, i));
+	PRINT("\n[%d, %d] cols: ", from, to);
+	for (int i=from; i<=to; i++)
+		PUT_TO(STDOUT, Str::get_at(colouring, i));
+	PRINT("\n");

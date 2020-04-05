@@ -441,8 +441,10 @@ otherwise, they are set flush right.
 @<Extract any comment matter ending the line to be set in italic@> =
 	TEMPORARY_TEXT(part_before_comment);
 	TEMPORARY_TEXT(part_within_comment);
-	if (LanguageMethods::parse_comment(S->sect_language,
-		matter, part_before_comment, part_within_comment)) {
+	programming_language *pl = S->sect_language;
+	if (L->category == TEXT_EXTRACT_LCAT) pl = L->colour_as;
+	if ((pl) && (LanguageMethods::parse_comment(pl,
+		matter, part_before_comment, part_within_comment))) {
 		Str::copy(matter, part_before_comment);
 		Str::copy(concluding_comment, part_within_comment);
 	}

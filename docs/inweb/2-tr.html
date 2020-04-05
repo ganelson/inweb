@@ -588,6 +588,7 @@ a web contains just one target, which contains all of the sections.
         <span class="identifier">tangle_target</span><span class="plain"> *</span><span class="identifier">tt</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="identifier">tangle_target</span><span class="plain">);</span>
         <span class="identifier">tt</span><span class="plain">-&gt;</span><span class="identifier">tangle_language</span><span class="plain"> = </span><span class="identifier">language</span><span class="plain">;</span>
         <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">tt</span><span class="plain">, </span><span class="identifier">tangle_target</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">tangle_targets</span><span class="plain">);</span>
+        <span class="identifier">tt</span><span class="plain">-&gt;</span><span class="identifier">symbols</span><span class="plain">.</span><span class="identifier">analysis_hash_initialised</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">tt</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>

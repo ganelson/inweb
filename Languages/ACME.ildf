@@ -13,15 +13,13 @@ Negative Literal Prefix: -
 colouring {
 	runs of unquoted {
 		runs of !identifier {
-			(all) => !reserved
-			prefix . => !identifier
-			prefix ! => !element
-			keyword !reserved => !definition
+			=> !reserved
+			unspaced prefix . => !identifier on both
+			unspaced prefix ! => !element on both
 		}
 		characters {
 			+ => !identifier
 			- => !identifier
-			! => !element
 		}
 	}
 }

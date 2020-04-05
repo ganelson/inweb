@@ -1,3 +1,7 @@
 Name: Plain Text
 Details: For text files which are not programs
 Extension: .txt
+
+colouring {
+	=> !plain
+}

@@ -375,8 +375,10 @@ void HTMLFormat::bar(weave_format *self, text_stream *OUT, weave_target *wv) {
 
 @ =
 typedef struct HTML_figure_state {
-	text_stream *OUT;
-	programming_language *colour_as;
+	struct text_stream *OUT;
+	struct programming_language *colour_as;
+	struct weave_target *wv;
+	struct hash_table *keywords;
 } HTML_figure_state;
 
 void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
@@ -395,6 +397,8 @@ void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
 		HTML_figure_state hfs;
 		hfs.OUT = OUT;
 		hfs.colour_as = pl;
+		hfs.wv = wv;
+		hfs.keywords = (pl)?(&(pl->built_in_keywords)):NULL;
 		TextFiles::read(F, FALSE, "unable to read file of textual figure", TRUE,
 			&HTMLFormat::text_file_helper, NULL, &hfs);
 		if (pl == NULL) HTMLFormat::cpre(OUT);
@@ -413,10 +417,12 @@ void HTMLFormat::text_file_helper(text_stream *text, text_file_position *tfp, vo
 	HTML_figure_state *hfs = (HTML_figure_state *) state;
 	TEMPORARY_TEXT(colouring);
 	LOOP_THROUGH_TEXT(pos, text) PUT_TO(colouring, PLAIN_COLOUR);
-	if (hfs->colour_as) Painter::syntax_colour(hfs->colour_as, hfs->OUT,
-		NULL, text, colouring, TRUE);
-	WRITE_TO(hfs->OUT, "%S\n", text);
-	if (hfs->colour_as) WRITE_TO(hfs->OUT, "%S\n", colouring);
+	if (hfs->colour_as) {
+		Painter::syntax_colour(hfs->colour_as, hfs->OUT, hfs->keywords, text, colouring, TRUE);
+		Formats::source_code(hfs->OUT, hfs->wv, 1, I"", text, colouring, I"", TRUE, TRUE, TRUE);
+	} else {
+		WRITE_TO(hfs->OUT, "%S\n", text);
+	}
 	DISCARD_TEXT(colouring);
 }
 

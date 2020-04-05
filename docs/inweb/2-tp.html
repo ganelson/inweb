@@ -74,6 +74,7 @@ markup syntax, and trying to detect incorrect uses of one within the other.
 <pre class="displaydefn">
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">comment_mode</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="identifier">NO_LCAT</span><span class="plain">;</span>
+        <span class="identifier">programming_language</span><span class="plain"> *</span><span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">before_bar</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">next_par_number</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="identifier">paragraph</span><span class="plain"> *</span><span class="identifier">current_paragraph</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -538,6 +539,7 @@ handling. We'll call these "paragraph macros".
             <span class="identifier">comment_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">is_commentary</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="identifier">CODE_BODY_LCAT</span><span class="plain">; </span><span class="comment">code follows on subsequent lines</span>
+            <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">para_macro_name</span><span class="plain">);</span>
             <span class="identifier">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -591,8 +593,10 @@ division in the current section.
 <pre class="displaydefn">
         <span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">category</span><span class="plain"> = </span><span class="identifier">BEGIN_CODE_LCAT</span><span class="plain">;</span>
         <span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="identifier">CODE_BODY_LCAT</span><span class="plain">;</span>
+        <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">comment_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
         <span class="identifier">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="identifier">Regexp::create_mr</span><span class="plain">();</span>
+        <span class="identifier">match_results</span><span class="plain"> </span><span class="identifier">mr2</span><span class="plain"> = </span><span class="identifier">Regexp::create_mr</span><span class="plain">();</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"= *(%c+) *"</span><span class="plain">)) {</span>
             <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">current_paragraph</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"(very early code)"</span><span class="plain">))) {</span>
                 <span class="identifier">current_paragraph</span><span class="plain">-&gt;</span><span class="identifier">placed_very_early</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
@@ -600,6 +604,10 @@ division in the current section.
                 <span class="identifier">current_paragraph</span><span class="plain">-&gt;</span><span class="identifier">placed_early</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
             <span class="plain">} </span><span class="identifier">else</span><span class="plain"> </span><span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">current_paragraph</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Str::eq</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"(not code)"</span><span class="plain">))) {</span>
                 <span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="identifier">TEXT_EXTRACT_LCAT</span><span class="plain">;</span>
+                <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="plain">} </span><span class="identifier">else</span><span class="plain"> </span><span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">current_paragraph</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0], </span><span class="identifier">L</span><span class="string">"%(sample (%c+) code%)"</span><span class="plain">))) {</span>
+                <span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="identifier">TEXT_EXTRACT_LCAT</span><span class="plain">;</span>
+                <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">Languages::find_by_name</span><span class="plain">(</span><span class="identifier">mr2</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0]);</span>
             <span class="plain">} </span><span class="identifier">else</span><span class="plain"> {</span>
                 <span class="identifier">Main::error_in_web</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"unknown bracketed annotation"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -607,6 +615,7 @@ division in the current section.
             <span class="identifier">Main::error_in_web</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"unknown material after '='"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="identifier">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">);</span>
         <span class="identifier">continue</span><span class="plain">;</span>
 </pre>
 
@@ -790,6 +799,7 @@ follows:
             <span class="identifier">current_paragraph</span><span class="plain">-&gt;</span><span class="identifier">placed_early</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">command_text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"x"</span><span class="plain">)) </span><span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="identifier">TEXT_EXTRACT_LCAT</span><span class="plain">;</span>
         <span class="identifier">else</span><span class="plain"> </span><span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="identifier">CODE_BODY_LCAT</span><span class="plain">;</span>
+        <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">comment_mode</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
 </pre>
 
@@ -810,6 +820,7 @@ C preprocessor macros, Inform 6 <code class="display"><span class="extract">Cons
 <pre class="displaydefn">
         <span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">category</span><span class="plain"> = </span><span class="identifier">BEGIN_DEFINITION_LCAT</span><span class="plain">;</span>
         <span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="identifier">CONT_DEFINITION_LCAT</span><span class="plain">;</span>
+        <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="identifier">Regexp::create_mr</span><span class="plain">();</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">remainder</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%C+) (%c+)"</span><span class="plain">)) {</span>
             <span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">text_operand</span><span class="plain"> = </span><span class="identifier">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[0]); </span><span class="comment">name of term defined</span>
@@ -1052,8 +1063,10 @@ CWEB, but is needed for languages which don't allow multi-line definitions.)
 
 
 <pre class="displaydefn">
-        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">category</span><span class="plain"> != </span><span class="identifier">BEGIN_DEFINITION_LCAT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">category</span><span class="plain"> != </span><span class="identifier">COMMAND_LCAT</span><span class="plain">))</span>
+        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">category</span><span class="plain"> != </span><span class="identifier">BEGIN_DEFINITION_LCAT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">category</span><span class="plain"> != </span><span class="identifier">COMMAND_LCAT</span><span class="plain">)) {</span>
             <span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">category</span><span class="plain"> = </span><span class="identifier">code_lcat_for_body</span><span class="plain">;</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">category</span><span class="plain"> == </span><span class="identifier">TEXT_EXTRACT_LCAT</span><span class="plain">) </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">colour_as</span><span class="plain"> = </span><span class="identifier">code_pl_for_body</span><span class="plain">;</span>
+        <span class="plain">}</span>
 
         <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">category</span><span class="plain"> == </span><span class="identifier">CONT_DEFINITION_LCAT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">Regexp::string_is_white_space</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">text</span><span class="plain">))) {</span>
             <span class="identifier">L</span><span class="plain">-&gt;</span><span class="identifier">category</span><span class="plain"> = </span><span class="identifier">COMMENT_BODY_LCAT</span><span class="plain">;</span>
