@@ -1,6 +1,0 @@
-Name: Inform 7
-Details: The natural-language based language Inform 7
-Extension: .i7x
-Multiline Comment Open: [
-Multiline Comment Close: ]
-String Literal: "

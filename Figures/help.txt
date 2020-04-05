@@ -15,31 +15,42 @@ You can also, or instead, specify:
    chapters: to weave all chapters as individual documents
    sections: ditto with sections
 
--advance-build           increment daily build code for the web
--advance-build-file X    increment daily build code in file X
--breadcrumb X            use the text X as a breadcrumb in overhead navigation
--catalog                 same as '-catalogue'
--catalogue               list the sections in the web
--functions               catalogue the functions in the web
--gitignore X             write a .gitignore file for this web and store it in X
 -import-from X           specify that imported modules are at pathname X
--makefile X              write a makefile for this web and store it in X
--navigation X            use the file X as a column of navigation links
--open                    weave then open woven file
--prototype X             translate makefile from prototype X
--scan                    scan the web
--sequential              name woven leaves with sequential numbering (default is -no-sequential)
--structures              catalogue the structures in the web
--tangle                  tangle the web into machine-compilable form
--tangle-to X             tangle, but to filename X
 -verbose                 explain what inweb is doing (default is -no-verbose)
--weave                   weave the web into human-readable form
--weave-as X              set weave pattern to X (default is 'HTML')
--weave-docs              weave the web for use at GutHub Pages
--weave-into X            weave, but into directory X
--weave-tag X             weave, but only using material tagged as X
--weave-to X              weave, but to filename X (for single files only)
--write-me X              write a read-me file following instructions in file X
+
+for locating programming language definitions:
+  -read-language X       read language definition from file X
+  -read-languages X      read all language definitions in path X
+  -show-languages        list programming languages supported by Inweb
+
+for analysing a web:
+  -advance-build         increment daily build code for the web
+  -advance-build-file X  increment daily build code in file X
+  -catalog               same as '-catalogue'
+  -catalogue             list the sections in the web
+  -functions             catalogue the functions in the web
+  -gitignore X           write a .gitignore file for this web and store it in X
+  -makefile X            write a makefile for this web and store it in X
+  -prototype X           translate makefile from prototype X
+  -scan                  scan the web
+  -structures            catalogue the structures in the web
+  -write-me X            write a read-me file following instructions in file X
+
+for weaving a web:
+  -breadcrumb X          use the text X as a breadcrumb in overhead navigation
+  -navigation X          use the file X as a column of navigation links
+  -open                  weave then open woven file
+  -sequential            name woven leaves with sequential numbering (default is -no-sequential)
+  -weave                 weave the web into human-readable form
+  -weave-as X            set weave pattern to X (default is 'HTML')
+  -weave-docs            weave the web for use at GitHub Pages
+  -weave-into X          weave, but into directory X
+  -weave-tag X           weave, but only using material tagged as X
+  -weave-to X            weave, but to filename X (for single files only)
+
+for tangling a web:
+  -tangle                tangle the web into machine-compilable form
+  -tangle-to X           tangle, but to filename X
 
 -at X                    specify that this tool is installed at X
 -crash                   intentionally crash on internal errors, for backtracing (default is -no-crash)

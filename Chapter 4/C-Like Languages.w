@@ -133,7 +133,7 @@ typedef struct c_structure {
 @<Attach a structure to this source line@> =
 	c_structure *str = CREATE(c_structure);
 	@<Initialise the C structure structure@>;
-	Analyser::mark_reserved_word(L->owning_section, str->structure_name, RESERVED_COLOUR);
+	Analyser::mark_reserved_word_for_section(L->owning_section, str->structure_name, RESERVED_COLOUR);
 	@<Add this to the lists for its web and its paragraph@>;
 	@<Insertion-sort this into the alphabetical list of all structures found@>;
 	current_str = str;
@@ -256,7 +256,7 @@ typedef struct structure_element {
 } structure_element;
 
 @<Record the element@> =
-	Analyser::mark_reserved_word(L->owning_section, elname, ELEMENT_COLOUR);
+	Analyser::mark_reserved_word_for_section(L->owning_section, elname, ELEMENT_COLOUR);
 	structure_element *elt = CREATE(structure_element);
 	elt->element_name = Str::duplicate(elname);
 	elt->allow_sharing = FALSE;
@@ -354,7 +354,7 @@ forms like |static long long int| will work.
 
 @<A function definition was found@> =
 	@<Soak up further arguments from continuation lines after the declaration@>;
-	Analyser::mark_reserved_word(L->owning_section, fname, FUNCTION_COLOUR);
+	Analyser::mark_reserved_word_for_section(L->owning_section, fname, FUNCTION_COLOUR);
 	function *fn = CREATE(function);
 	@<Initialise the function structure@>;
 	@<Add the function to its paragraph and line@>;
@@ -417,9 +417,7 @@ part of the function structure. We'll need it when predeclaring the function.
 	fn->within_namespace = FALSE;
 	fn->called_from_other_sections = FALSE;
 	fn->call_freely = FALSE;
-	if ((Str::eq_wide_string(fn->function_name, L"isdigit")) &&
-		(W->main_language->supports_namespaces))
-		fn->call_freely = TRUE;
+	if (Str::eq_wide_string(fn->function_name, L"isdigit")) fn->call_freely = TRUE;
 	fn->function_header_at = L;
 
 	fn->no_conditionals = cc_sp;
@@ -645,13 +643,14 @@ are all known to Inweb's hash table of interesting identifiers:
 void CLike::analyse_code(programming_language *self, web *W) {
 	function *fn;
 	LOOP_OVER(fn, function)
-		Analyser::find_hash_entry(fn->function_header_at->owning_section, fn->function_name, TRUE);
+		Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,
+			fn->function_name, TRUE);
 	c_structure *str;
 	structure_element *elt;
 	LOOP_OVER_LINKED_LIST(str, c_structure, W->c_structures)
 		LOOP_OVER_LINKED_LIST(elt, structure_element, str->elements)
 			if (elt->allow_sharing == FALSE)
-				Analyser::find_hash_entry(elt->element_created_at->owning_section,
+				Analyser::find_hash_entry_for_section(elt->element_created_at->owning_section,
 					elt->element_name, TRUE);
 }
 
@@ -669,7 +668,8 @@ void CLike::post_analysis(programming_language *self, web *W) {
 	function *fn;
 	LOOP_OVER(fn, function) {
 		hash_table_entry *hte =
-			Analyser::find_hash_entry(fn->function_header_at->owning_section, fn->function_name, FALSE);
+			Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,
+				fn->function_name, FALSE);
 		if (hte) {
 			hash_table_entry_usage *hteu;
 			LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages) {

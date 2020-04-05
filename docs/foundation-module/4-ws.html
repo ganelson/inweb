@@ -38,7 +38,7 @@ wrappers simply abstract the standard C library's handling.
 
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Wide::len</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Wide::len</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="identifier">return</span><span class="plain"> (</span><span class="identifier">int</span><span class="plain">) </span><span class="identifier">wcslen</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -52,7 +52,7 @@ wrappers simply abstract the standard C library's handling.
 
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Wide::cmp</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Wide::cmp</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">) {</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">wcscmp</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">, </span><span class="identifier">B</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -65,7 +65,7 @@ wrappers simply abstract the standard C library's handling.
 
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Wide::atoi</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Wide::atoi</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="identifier">return</span><span class="plain"> (</span><span class="identifier">int</span><span class="plain">) </span><span class="identifier">wcstol</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">10</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

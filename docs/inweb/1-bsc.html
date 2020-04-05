@@ -34,8 +34,8 @@ build number as specified in the contents section of this web.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">INTOOL_NAME</span><span class="plain"> </span><span class="string">"inweb"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INWEB_BUILD</span><span class="plain"> </span><span class="string">"[[Version Number]]"</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">INTOOL_NAME</span><span class="plain"> </span><span class="string">"inweb"</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">INWEB_BUILD</span><span class="plain"> </span><span class="string">"[[Version Number]]"</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Setting up the memory manager. </b>We need to itemise the structures we'll want to allocate. To explicate this
 see Foundation, but these are all struct names with either <code class="display"><span class="extract">_MT</span></code> or, in one
@@ -44,37 +44,37 @@ case, <code class="display"><span class="extract">_array_MT</span></code> append
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">breadcrumb_request_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">c_structure_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">chapter_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">colouring_rule_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">enumeration_set_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">function_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">hash_table_entry_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">hash_table_entry_usage_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">colouring_language_block_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">macro_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">macro_tokens_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">macro_usage_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">nonterminal_variable_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">para_macro_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">paragraph_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">paragraph_tagging_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">preform_nonterminal_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">programming_language_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">reserved_word_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">section_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">source_line_array_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">structure_element_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">tangle_target_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">tex_results_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">text_literal_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">theme_tag_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">weave_format_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">weave_pattern_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">weave_target_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">web_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">writeme_asset_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">breadcrumb_request_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">c_structure_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">chapter_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">colouring_rule_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">enumeration_set_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">function_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">hash_table_entry_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">hash_table_entry_usage_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">colouring_language_block_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">macro_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">macro_tokens_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">macro_usage_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">nonterminal_variable_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">para_macro_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">paragraph_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">paragraph_tagging_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">preform_nonterminal_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">programming_language_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">reserved_word_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">section_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">source_line_array_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">structure_element_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">tangle_target_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">tex_results_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">text_literal_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">theme_tag_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">weave_format_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">weave_pattern_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">weave_target_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">web_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">writeme_asset_MT</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>And then expand the following macros, all defined in Foundation. This
 makes all the necessary constructor functions for creating objects of these
@@ -83,37 +83,37 @@ types.
 
 
 <pre class="display">
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">source_line</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">breadcrumb_request</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">c_structure</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">chapter</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">colouring_rule</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">enumeration_set</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">function</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">hash_table_entry_usage</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">hash_table_entry</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">colouring_language_block</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">macro_tokens</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">macro_usage</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">macro</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">nonterminal_variable</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">para_macro</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">paragraph_tagging</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">paragraph</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">preform_nonterminal</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">reserved_word</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">section</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">structure_element</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">tangle_target</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">tex_results</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">text_literal</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">theme_tag</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">weave_pattern</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">weave_target</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">web</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">writeme_asset</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="identifier">source_line</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">breadcrumb_request</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">c_structure</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">chapter</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">colouring_rule</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">enumeration_set</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">function</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">hash_table_entry_usage</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">hash_table_entry</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">colouring_language_block</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">macro_tokens</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">macro_usage</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">macro</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">nonterminal_variable</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">para_macro</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">paragraph_tagging</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">paragraph</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">preform_nonterminal</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">programming_language</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">reserved_word</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">section</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">structure_element</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">tangle_target</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">tex_results</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">text_literal</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">theme_tag</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">weave_format</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">weave_pattern</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">weave_target</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">web</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">writeme_asset</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph"></p>

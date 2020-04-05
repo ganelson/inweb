@@ -268,8 +268,7 @@ languages prepares for code analysis by calling this routine on the name
 of each C function.
 
 =
-hash_table_entry *Analyser::find_hash_entry(section *S, text_stream *text, int create) {
-	hash_table *HT = &(S->sect_target->symbols);
+hash_table_entry *Analyser::find_hash_entry(hash_table *HT, text_stream *text, int create) {
 	int h = Analyser::hash_code_from_word(text);
 	if (h == NUMBER_HASH) return NULL;
 	if (HT->analysis_hash_initialised == FALSE) {
@@ -294,18 +293,31 @@ hash_table_entry *Analyser::find_hash_entry(section *S, text_stream *text, int c
 	return NULL;
 }
 
+hash_table_entry *Analyser::find_hash_entry_for_section(section *S, text_stream *text,
+	int create) {
+	return Analyser::find_hash_entry(&(S->sect_target->symbols), text, create);
+}
+
 @ Marking and testing these bits:
 
 =
-void Analyser::mark_reserved_word(section *S, text_stream *p, int e) {
-	hash_table_entry *hte = Analyser::find_hash_entry(S, p, TRUE);
+void Analyser::mark_reserved_word(hash_table *HT, text_stream *p, int e) {
+	hash_table_entry *hte = Analyser::find_hash_entry(HT, p, TRUE);
 	hte->reserved_word |= (1 << e);
 }
 
-int Analyser::is_reserved_word(section *S, text_stream *p, int e) {
-	hash_table_entry *hte = Analyser::find_hash_entry(S, p, FALSE);
+void Analyser::mark_reserved_word_for_section(section *S, text_stream *p, int e) {
+	Analyser::mark_reserved_word(&(S->sect_target->symbols), p, e);
+}
+
+int Analyser::is_reserved_word(hash_table *HT, text_stream *p, int e) {
+	hash_table_entry *hte = Analyser::find_hash_entry(HT, p, FALSE);
 	if ((hte) && (hte->reserved_word & (1 << e))) return TRUE;
 	return FALSE;
+}
+
+int Analyser::is_reserved_word_for_section(section *S, text_stream *p, int e) {
+	return Analyser::is_reserved_word(&(S->sect_target->symbols), p, e);
 }
 
 @ Now we turn back to the actual analysis. When we spot an identifier that
@@ -326,7 +338,8 @@ typedef struct hash_table_entry_usage {
 
 =
 void Analyser::analyse_find(web *W, source_line *L, text_stream *identifier, int u) {
-	hash_table_entry *hte = Analyser::find_hash_entry(L->owning_section, identifier, FALSE);
+	hash_table_entry *hte =
+		Analyser::find_hash_entry_for_section(L->owning_section, identifier, FALSE);
 	if (hte == NULL) return;
 	hash_table_entry_usage *hteu = NULL;
 	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)

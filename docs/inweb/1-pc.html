@@ -34,7 +34,7 @@ versions: the second was cleaned up and simplified from the first in 2019.
 
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">default_inweb_syntax</span><span class="plain"> = </span><span class="constant">V2_SYNTAX</span><span class="plain">;</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">default_inweb_syntax</span><span class="plain"> = </span><span class="identifier">V2_SYNTAX</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -47,15 +47,15 @@ so the fork in the road is not met until halfway through Inweb's execution.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">NO_MODE</span><span class="definitionkeyword"> from </span><span class="constant">0</span>    <span class="comment">a special mode for doing nothing except printing command-line syntax</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">ANALYSE_MODE</span><span class="plain">   </span><span class="comment">for -scan, -catalogue, -functions and so on</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TANGLE_MODE</span><span class="plain">    </span><span class="comment">for any form of -tangle</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">WEAVE_MODE</span><span class="plain">     </span><span class="comment">for any form of -weave</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TRANSLATE_MODE</span><span class="plain"> </span><span class="comment">a special mode for translating a multi-web makefile</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">NO_MODE</span><span class="definitionkeyword"> from </span><span class="identifier">0</span>    <span class="comment">a special mode for doing nothing except printing command-line syntax</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">ANALYSE_MODE</span><span class="plain">   </span><span class="comment">for -scan, -catalogue, -functions and so on</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">TANGLE_MODE</span><span class="plain">    </span><span class="comment">for any form of -tangle</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">WEAVE_MODE</span><span class="plain">     </span><span class="comment">for any form of -weave</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">TRANSLATE_MODE</span><span class="plain"> </span><span class="comment">a special mode for translating a multi-web makefile</span>
 </pre>
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">fundamental_mode</span><span class="plain"> = </span><span class="constant">NO_MODE</span><span class="plain">;</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">fundamental_mode</span><span class="plain"> = </span><span class="identifier">NO_MODE</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -77,10 +77,10 @@ one after another.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">SWARM_OFF_SWM</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SWARM_INDEX_SWM</span><span class="plain">    </span><span class="comment">make index(es) as if swarming, but don't actually swarm</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SWARM_CHAPTERS_SWM</span><span class="plain"> </span><span class="comment">swarm the chapters</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SWARM_SECTIONS_SWM</span><span class="plain"> </span><span class="comment">swarm the individual sections</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">SWARM_OFF_SWM</span><span class="definitionkeyword"> from </span><span class="identifier">0</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">SWARM_INDEX_SWM</span><span class="plain">    </span><span class="comment">make index(es) as if swarming, but don't actually swarm</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">SWARM_CHAPTERS_SWM</span><span class="plain"> </span><span class="comment">swarm the chapters</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">SWARM_SECTIONS_SWM</span><span class="plain"> </span><span class="comment">swarm the individual sections</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>In order to run, Inweb needs to know where it is installed &mdash; this
 enables it to find its configuration file, the macros file, and so on.
@@ -91,9 +91,9 @@ subfolder called <code class="display"><span class="extract">Materials</span></c
 
 
 <pre class="display">
-    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inweb</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">where we are installed</span>
-    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inweb_materials</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the materials pathname</span>
-    <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inweb_patterns</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">where built-in patterns are stored</span>
+    <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inweb</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">where we are installed</span>
+    <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inweb_materials</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the materials pathname</span>
+    <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">path_to_inweb_patterns</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">where built-in patterns are stored</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -112,16 +112,16 @@ subfolder called <code class="display"><span class="extract">Materials</span></c
 
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">main</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">char</span><span class="plain"> **</span><span class="identifier">argv</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">main</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">char</span><span class="plain"> **</span><span class="identifier">argv</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Initialise inweb</span> <span class="cwebmacronumber">6.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">inweb_instructions</span><span class="plain"> </span><span class="identifier">args</span><span class="plain"> = </span><span class="functiontext">Configuration::read</span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">);</span>
-        <span class="identifier">fundamental_mode</span><span class="plain"> = </span><span class="identifier">args</span><span class="plain">.</span><span class="element">inweb_mode</span><span class="plain">;</span>
-        <span class="identifier">path_to_inweb</span><span class="plain"> = </span><span class="functiontext">Pathnames::installation_path</span><span class="plain">(</span><span class="string">"INWEB_PATH"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inweb"</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">.</span><span class="element">verbose_switch</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Installation path is %p\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">path_to_inweb</span><span class="plain">);</span>
-        <span class="identifier">path_to_inweb_patterns</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">path_to_inweb</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Patterns"</span><span class="plain">);</span>
-        <span class="identifier">path_to_inweb_materials</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">path_to_inweb</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Materials"</span><span class="plain">);</span>
+        <span class="identifier">inweb_instructions</span><span class="plain"> </span><span class="identifier">args</span><span class="plain"> = </span><span class="identifier">Configuration::read</span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">);</span>
+        <span class="identifier">fundamental_mode</span><span class="plain"> = </span><span class="identifier">args</span><span class="plain">.</span><span class="identifier">inweb_mode</span><span class="plain">;</span>
+        <span class="identifier">path_to_inweb</span><span class="plain"> = </span><span class="identifier">Pathnames::installation_path</span><span class="plain">(</span><span class="string">"INWEB_PATH"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"inweb"</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">args</span><span class="plain">.</span><span class="identifier">verbose_switch</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Installation path is %p\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">path_to_inweb</span><span class="plain">);</span>
+        <span class="identifier">path_to_inweb_patterns</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">path_to_inweb</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Patterns"</span><span class="plain">);</span>
+        <span class="identifier">path_to_inweb_materials</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">path_to_inweb</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Materials"</span><span class="plain">);</span>
 
-        <span class="functiontext">Main::follow_instructions</span><span class="plain">(&amp;</span><span class="identifier">args</span><span class="plain">);</span>
+        <span class="identifier">Main::follow_instructions</span><span class="plain">(&amp;</span><span class="identifier">args</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">Shut inweb down</span> <span class="cwebmacronumber">6.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
@@ -129,7 +129,7 @@ subfolder called <code class="display"><span class="extract">Materials</span></c
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function main is used in <a href="#SP7_2_2">&#167;7.2.2</a>, 8/wm (<a href="8-wm.html#SP3">&#167;3</a>), 1/cnf (<a href="1-cnf.html#SP1">&#167;1</a>), 4/cl (<a href="4-cl.html#SP2_4_2_5">&#167;2.4.2.5</a>).</p>
+<p class="endnote">The function main is used in <a href="#SP7_3_2">&#167;7.3.2</a>, 8/wm (<a href="8-wm.html#SP3">&#167;3</a>), 1/cnf (<a href="1-cnf.html#SP1">&#167;1</a>), 4/cl (<a href="4-cl.html#SP2_4_2_5">&#167;2.4.2.5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP6_1"></a><b>&#167;6.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Initialise inweb</span> <span class="cwebmacronumber">6.1</span>&gt; =
@@ -137,8 +137,8 @@ subfolder called <code class="display"><span class="extract">Materials</span></c
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Foundation::start</span><span class="plain">();</span>
-        <span class="functiontext">Formats::create_weave_formats</span><span class="plain">();</span>
+        <span class="identifier">Foundation::start</span><span class="plain">();</span>
+        <span class="identifier">Formats::create_weave_formats</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -151,7 +151,7 @@ subfolder called <code class="display"><span class="extract">Materials</span></c
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Foundation::end</span><span class="plain">();</span>
+        <span class="identifier">Foundation::end</span><span class="plain">();</span>
         <span class="identifier">return</span><span class="plain"> (</span><span class="identifier">no_inweb_errors</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)?0:1;</span>
 </pre>
 
@@ -165,19 +165,20 @@ program: some input, some thinking, a choice of three forms of output.
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Main::follow_instructions</span><span class="plain">(</span><span class="reserved">inweb_instructions</span><span class="plain"> *</span><span class="identifier">ins</span><span class="plain">) {</span>
-        <span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_web</span><span class="plain">) || (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_file</span><span class="plain">)) {</span>
-            <span class="identifier">W</span><span class="plain"> = </span><span class="functiontext">Reader::load_web</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_web</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_file</span><span class="plain">,</span>
-                <span class="functiontext">WebModules::make_search_path</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">import_setting</span><span class="plain">), </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">verbose_switch</span><span class="plain">,</span>
-                <span class="constant">TRUE</span><span class="plain">);</span>
-            <span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">redirect_weaves_to</span><span class="plain"> = </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_into_setting</span><span class="plain">;</span>
-            <span class="functiontext">Reader::read_web</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">verbose_switch</span><span class="plain">);</span>
-            <span class="functiontext">Parser::parse_web</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">inweb_mode</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">sequential</span><span class="plain">);</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Main::follow_instructions</span><span class="plain">(</span><span class="identifier">inweb_instructions</span><span class="plain"> *</span><span class="identifier">ins</span><span class="plain">) {</span>
+        <span class="identifier">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_web</span><span class="plain">) || (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_file</span><span class="plain">)) {</span>
+            <span class="identifier">W</span><span class="plain"> = </span><span class="identifier">Reader::load_web</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_web</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_file</span><span class="plain">,</span>
+                <span class="identifier">WebModules::make_search_path</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">import_setting</span><span class="plain">), </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">verbose_switch</span><span class="plain">,</span>
+                <span class="identifier">TRUE</span><span class="plain">);</span>
+            <span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">redirect_weaves_to</span><span class="plain"> = </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_into_setting</span><span class="plain">;</span>
+            <span class="identifier">Reader::read_web</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">verbose_switch</span><span class="plain">);</span>
+            <span class="identifier">Parser::parse_web</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">inweb_mode</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">sequential</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">no_inweb_errors</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
-            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">inweb_mode</span><span class="plain"> == </span><span class="constant">TRANSLATE_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Translate a makefile</span> <span class="cwebmacronumber">7.1</span>&gt;
-            <span class="identifier">else</span><span class="plain"> </span><span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">inweb_mode</span><span class="plain"> != </span><span class="constant">NO_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Analyse, tangle or weave an existing web</span> <span class="cwebmacronumber">7.2</span>&gt;<span class="plain">;</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">inweb_mode</span><span class="plain"> == </span><span class="identifier">TRANSLATE_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Translate a makefile</span> <span class="cwebmacronumber">7.1</span>&gt;
+            <span class="identifier">else</span><span class="plain"> </span><span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">show_languages_switch</span><span class="plain">) </span>&lt;<span class="cwebmacro">List available programming languages</span> <span class="cwebmacronumber">7.2</span>&gt;
+            <span class="identifier">else</span><span class="plain"> </span><span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">inweb_mode</span><span class="plain"> != </span><span class="identifier">NO_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Analyse, tangle or weave an existing web</span> <span class="cwebmacronumber">7.3</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -196,81 +197,99 @@ program: some input, some thinking, a choice of three forms of output.
 
 
 <pre class="displaydefn">
-        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">makefile_setting</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">prototype_setting</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
-            <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">prototype_setting</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"makescript.txt"</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">gitignore_setting</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">prototype_setting</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
-            <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">prototype_setting</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"gitignorescript.txt"</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">writeme_setting</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">prototype_setting</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
-            <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">prototype_setting</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"READMEscript.txt"</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">makefile_setting</span><span class="plain">)</span>
-            <span class="functiontext">Makefiles::write</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">prototype_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">makefile_setting</span><span class="plain">,</span>
-                <span class="functiontext">WebModules::make_search_path</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">import_setting</span><span class="plain">));</span>
-        <span class="identifier">else</span><span class="plain"> </span><span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">gitignore_setting</span><span class="plain">)</span>
-            <span class="functiontext">Git::write_gitignore</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">prototype_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">gitignore_setting</span><span class="plain">);</span>
-        <span class="identifier">else</span><span class="plain"> </span><span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">advance_setting</span><span class="plain">)</span>
-            <span class="functiontext">BuildFiles::advance</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">advance_setting</span><span class="plain">);</span>
-        <span class="identifier">else</span><span class="plain"> </span><span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">writeme_setting</span><span class="plain">)</span>
-            <span class="functiontext">Readme::write</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">prototype_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">writeme_setting</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">makefile_setting</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">prototype_setting</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
+            <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">prototype_setting</span><span class="plain"> = </span><span class="identifier">Filenames::from_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"makescript.txt"</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">gitignore_setting</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">prototype_setting</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
+            <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">prototype_setting</span><span class="plain"> = </span><span class="identifier">Filenames::from_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"gitignorescript.txt"</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">writeme_setting</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">prototype_setting</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
+            <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">prototype_setting</span><span class="plain"> = </span><span class="identifier">Filenames::from_text</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"READMEscript.txt"</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">makefile_setting</span><span class="plain">)</span>
+            <span class="identifier">Makefiles::write</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">prototype_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">makefile_setting</span><span class="plain">,</span>
+                <span class="identifier">WebModules::make_search_path</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">import_setting</span><span class="plain">));</span>
+        <span class="identifier">else</span><span class="plain"> </span><span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">gitignore_setting</span><span class="plain">)</span>
+            <span class="identifier">Git::write_gitignore</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">prototype_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">gitignore_setting</span><span class="plain">);</span>
+        <span class="identifier">else</span><span class="plain"> </span><span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">advance_setting</span><span class="plain">)</span>
+            <span class="identifier">BuildFiles::advance</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">advance_setting</span><span class="plain">);</span>
+        <span class="identifier">else</span><span class="plain"> </span><span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">writeme_setting</span><span class="plain">)</span>
+            <span class="identifier">Readme::write</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">prototype_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">writeme_setting</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This code is used in <a href="#SP7">&#167;7</a>.</p>
 
-<p class="inwebparagraph"><a id="SP7_2"></a><b>&#167;7.2.  </b>But otherwise we do something with the given web:
+<p class="inwebparagraph"><a id="SP7_2"></a><b>&#167;7.2.  </b>As is this:
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Analyse, tangle or weave an existing web</span> <span class="cwebmacronumber">7.2</span>&gt; =
+&lt;<span class="cwebmacrodefn">List available programming languages</span> <span class="cwebmacronumber">7.2</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Reader::print_web_statistics</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">inweb_mode</span><span class="plain"> == </span><span class="constant">ANALYSE_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Analyse the web</span> <span class="cwebmacronumber">7.2.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">inweb_mode</span><span class="plain"> == </span><span class="constant">TANGLE_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Tangle the web</span> <span class="cwebmacronumber">7.2.2</span>&gt;<span class="plain">;</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">inweb_mode</span><span class="plain"> == </span><span class="constant">WEAVE_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Weave the web</span> <span class="cwebmacronumber">7.2.3</span>&gt;<span class="plain">;</span>
+        <span class="identifier">Languages::read_definitions</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="identifier">Languages::show</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This code is used in <a href="#SP7">&#167;7</a>.</p>
 
-<p class="inwebparagraph"><a id="SP7_2_1"></a><b>&#167;7.2.1.  </b>"Analysis" invokes any combination of the following diagnostic tools:
+<p class="inwebparagraph"><a id="SP7_3"></a><b>&#167;7.3.  </b>But otherwise we do something with the given web:
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Analyse the web</span> <span class="cwebmacronumber">7.2.1</span>&gt; =
+&lt;<span class="cwebmacrodefn">Analyse, tangle or weave an existing web</span> <span class="cwebmacronumber">7.3</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">swarm_mode</span><span class="plain"> != </span><span class="constant">SWARM_OFF_SWM</span><span class="plain">)</span>
-            <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"only specific parts of the web can be analysed"</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">catalogue_switch</span><span class="plain">)</span>
-            <span class="functiontext">Analyser::catalogue_the_sections</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_range</span><span class="plain">, </span><span class="constant">BASIC_SECTIONCAT</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">functions_switch</span><span class="plain">)</span>
-            <span class="functiontext">Analyser::catalogue_the_sections</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_range</span><span class="plain">, </span><span class="constant">FUNCTIONS_SECTIONCAT</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">structures_switch</span><span class="plain">)</span>
-            <span class="functiontext">Analyser::catalogue_the_sections</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_range</span><span class="plain">, </span><span class="constant">STRUCTURES_SECTIONCAT</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">makefile_setting</span><span class="plain">)</span>
-            <span class="functiontext">Analyser::write_makefile</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">makefile_setting</span><span class="plain">,</span>
-                <span class="functiontext">WebModules::make_search_path</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">import_setting</span><span class="plain">));</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">gitignore_setting</span><span class="plain">)</span>
-            <span class="functiontext">Analyser::write_gitignore</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">gitignore_setting</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">advance_switch</span><span class="plain">)</span>
-            <span class="functiontext">BuildFiles::advance_for_web</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">scan_switch</span><span class="plain">)</span>
-            <span class="functiontext">Analyser::scan_line_categories</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_range</span><span class="plain">);</span>
+        <span class="identifier">Reader::print_web_statistics</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">inweb_mode</span><span class="plain"> == </span><span class="identifier">ANALYSE_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Analyse the web</span> <span class="cwebmacronumber">7.3.1</span>&gt;<span class="plain">;</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">inweb_mode</span><span class="plain"> == </span><span class="identifier">TANGLE_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Tangle the web</span> <span class="cwebmacronumber">7.3.2</span>&gt;<span class="plain">;</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">inweb_mode</span><span class="plain"> == </span><span class="identifier">WEAVE_MODE</span><span class="plain">) </span>&lt;<span class="cwebmacro">Weave the web</span> <span class="cwebmacronumber">7.3.3</span>&gt;<span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP7_2">&#167;7.2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP7">&#167;7</a>.</p>
 
-<p class="inwebparagraph"><a id="SP7_2_2"></a><b>&#167;7.2.2.  </b>We can tangle to any one of what might be several targets, numbered upwards
+<p class="inwebparagraph"><a id="SP7_3_1"></a><b>&#167;7.3.1.  </b>"Analysis" invokes any combination of the following diagnostic tools:
+</p>
+
+
+<p class="macrodefinition"><code class="display">
+&lt;<span class="cwebmacrodefn">Analyse the web</span> <span class="cwebmacronumber">7.3.1</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">swarm_mode</span><span class="plain"> != </span><span class="identifier">SWARM_OFF_SWM</span><span class="plain">)</span>
+            <span class="identifier">Errors::fatal</span><span class="plain">(</span><span class="string">"only specific parts of the web can be analysed"</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">catalogue_switch</span><span class="plain">)</span>
+            <span class="identifier">Analyser::catalogue_the_sections</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_range</span><span class="plain">, </span><span class="identifier">BASIC_SECTIONCAT</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">functions_switch</span><span class="plain">)</span>
+            <span class="identifier">Analyser::catalogue_the_sections</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_range</span><span class="plain">, </span><span class="identifier">FUNCTIONS_SECTIONCAT</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">structures_switch</span><span class="plain">)</span>
+            <span class="identifier">Analyser::catalogue_the_sections</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_range</span><span class="plain">, </span><span class="identifier">STRUCTURES_SECTIONCAT</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">makefile_setting</span><span class="plain">)</span>
+            <span class="identifier">Analyser::write_makefile</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">makefile_setting</span><span class="plain">,</span>
+                <span class="identifier">WebModules::make_search_path</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">import_setting</span><span class="plain">));</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">gitignore_setting</span><span class="plain">)</span>
+            <span class="identifier">Analyser::write_gitignore</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">gitignore_setting</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">advance_switch</span><span class="plain">)</span>
+            <span class="identifier">BuildFiles::advance_for_web</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">md</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">scan_switch</span><span class="plain">)</span>
+            <span class="identifier">Analyser::scan_line_categories</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_range</span><span class="plain">);</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP7_3">&#167;7.3</a>.</p>
+
+<p class="inwebparagraph"><a id="SP7_3_2"></a><b>&#167;7.3.2.  </b>We can tangle to any one of what might be several targets, numbered upwards
 from 0. Target 0 always exists, and is the main program forming the web. For
 many webs, this will in fact be the only target, but Inweb also allows
 marked sections of a web to be independent targets &mdash; the idea here is to
@@ -288,172 +307,172 @@ line , but otherwise we impose a sensible choice based on the target.
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Tangle the web</span> <span class="cwebmacronumber">7.2.2</span>&gt; =
+&lt;<span class="cwebmacrodefn">Tangle the web</span> <span class="cwebmacronumber">7.3.2</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">);</span>
-        <span class="reserved">tangle_target</span><span class="plain"> *</span><span class="identifier">tn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_range</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"0"</span><span class="plain">)) {</span>
-            &lt;<span class="cwebmacro">Work out main tangle destination</span> <span class="cwebmacronumber">7.2.2.1</span>&gt;<span class="plain">;</span>
-        <span class="plain">} </span><span class="identifier">else</span><span class="plain"> </span><span class="identifier">if</span><span class="plain"> (</span><span class="functiontext">Reader::get_section_for_range</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_range</span><span class="plain">)) {</span>
-            &lt;<span class="cwebmacro">Work out an independent tangle destination, from one section of the web</span> <span class="cwebmacronumber">7.2.2.2</span>&gt;<span class="plain">;</span>
+        <span class="identifier">tangle_target</span><span class="plain"> *</span><span class="identifier">tn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_range</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"0"</span><span class="plain">)) {</span>
+            &lt;<span class="cwebmacro">Work out main tangle destination</span> <span class="cwebmacronumber">7.3.2.1</span>&gt;<span class="plain">;</span>
+        <span class="plain">} </span><span class="identifier">else</span><span class="plain"> </span><span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Reader::get_section_for_range</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_range</span><span class="plain">)) {</span>
+            &lt;<span class="cwebmacro">Work out an independent tangle destination, from one section of the web</span> <span class="cwebmacronumber">7.3.2.2</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) { </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"no tangle destination known"</span><span class="plain">); }</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">Errors::fatal</span><span class="plain">(</span><span class="string">"no tangle destination known"</span><span class="plain">); }</span>
 
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">tangle_to</span><span class="plain"> = </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">tangle_setting</span><span class="plain">;</span>
+        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">tangle_to</span><span class="plain"> = </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">tangle_setting</span><span class="plain">;</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">tangle_to</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Reader::tangled_folder</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">-&gt;</span><span class="identifier">single_file</span><span class="plain">) </span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Filenames::get_path_to</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">-&gt;</span><span class="element">single_file</span><span class="plain">);</span>
-            <span class="identifier">tangle_to</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">tangle_leaf</span><span class="plain">);</span>
+            <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Reader::tangled_folder</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">md</span><span class="plain">-&gt;</span><span class="identifier">single_file</span><span class="plain">) </span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">Filenames::get_path_to</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">md</span><span class="plain">-&gt;</span><span class="identifier">single_file</span><span class="plain">);</span>
+            <span class="identifier">tangle_to</span><span class="plain"> = </span><span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">tangle_leaf</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">tn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">tn</span><span class="plain"> = </span><span class="functiontext">Tangler::primary_target</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="functiontext">Tangler::go</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">tn</span><span class="plain">, </span><span class="identifier">tangle_to</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">tn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">tn</span><span class="plain"> = </span><span class="identifier">Tangler::primary_target</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="identifier">Tangler::go</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">tn</span><span class="plain">, </span><span class="identifier">tangle_to</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP7_2">&#167;7.2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP7_3">&#167;7.3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP7_2_2_1"></a><b>&#167;7.2.2.1.  </b>Here the target number is 0, and the tangle is of the main part of the web,
+<p class="inwebparagraph"><a id="SP7_3_2_1"></a><b>&#167;7.3.2.1.  </b>Here the target number is 0, and the tangle is of the main part of the web,
 which for many small webs will be the entire thing.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Work out main tangle destination</span> <span class="cwebmacronumber">7.2.2.1</span>&gt; =
+&lt;<span class="cwebmacrodefn">Work out main tangle destination</span> <span class="cwebmacronumber">7.3.2.1</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
         <span class="identifier">tn</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="functiontext">Bibliographic::data_exists</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">))</span>
-            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">));</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Bibliographic::data_exists</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">))</span>
+            <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="identifier">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">));</span>
         <span class="identifier">else</span>
-            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Title"</span><span class="plain">));</span>
-        <span class="functiontext">Str::concatenate</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">main_language</span><span class="plain">-&gt;</span><span class="element">file_extension</span><span class="plain">);</span>
+            <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="identifier">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Title"</span><span class="plain">));</span>
+        <span class="identifier">Str::concatenate</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">main_language</span><span class="plain">-&gt;</span><span class="identifier">file_extension</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP7_2_2">&#167;7.2.2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP7_3_2">&#167;7.3.2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP7_2_2_2"></a><b>&#167;7.2.2.2.  </b>If someone tangles, say, <code class="display"><span class="extract">2/eg</span></code> then the default filename is "Example Section".
+<p class="inwebparagraph"><a id="SP7_3_2_2"></a><b>&#167;7.3.2.2.  </b>If someone tangles, say, <code class="display"><span class="extract">2/eg</span></code> then the default filename is "Example Section".
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Work out an independent tangle destination, from one section of the web</span> <span class="cwebmacronumber">7.2.2.2</span>&gt; =
+&lt;<span class="cwebmacrodefn">Work out an independent tangle destination, from one section of the web</span> <span class="cwebmacronumber">7.3.2.2</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="functiontext">Reader::get_section_for_range</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_range</span><span class="plain">);</span>
-        <span class="identifier">tn</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">sect_target</span><span class="plain">;</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">tn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"section cannot be independently tangled"</span><span class="plain">);</span>
-        <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="functiontext">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">-&gt;</span><span class="element">source_file_for_section</span><span class="plain">));</span>
+        <span class="identifier">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">Reader::get_section_for_range</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_range</span><span class="plain">);</span>
+        <span class="identifier">tn</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="identifier">sect_target</span><span class="plain">;</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">tn</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Errors::fatal</span><span class="plain">(</span><span class="string">"section cannot be independently tangled"</span><span class="plain">);</span>
+        <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">tangle_leaf</span><span class="plain">, </span><span class="identifier">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="identifier">md</span><span class="plain">-&gt;</span><span class="identifier">source_file_for_section</span><span class="plain">));</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP7_2_2">&#167;7.2.2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP7_3_2">&#167;7.3.2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP7_2_3"></a><b>&#167;7.2.3.  </b>Weaving is not actually easier, it's just more thoroughly delegated:
+<p class="inwebparagraph"><a id="SP7_3_3"></a><b>&#167;7.3.3.  </b>Weaving is not actually easier, it's just more thoroughly delegated:
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Weave the web</span> <span class="cwebmacronumber">7.2.3</span>&gt; =
+&lt;<span class="cwebmacrodefn">Weave the web</span> <span class="cwebmacronumber">7.3.3</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="functiontext">Numbering::number_web</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_docs</span><span class="plain">) </span>&lt;<span class="cwebmacro">Prepare a docs weave</span> <span class="cwebmacronumber">7.2.3.1</span>&gt;<span class="plain">;</span>
+        <span class="identifier">Numbering::number_web</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_docs</span><span class="plain">) </span>&lt;<span class="cwebmacro">Prepare a docs weave</span> <span class="cwebmacronumber">7.3.3.1</span>&gt;<span class="plain">;</span>
 
-        <span class="reserved">theme_tag</span><span class="plain"> *</span><span class="identifier">tag</span><span class="plain"> = </span><span class="functiontext">Tags::find_by_name</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">tag_setting</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> ((</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">tag_setting</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">tag</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
-            <span class="functiontext">Errors::fatal_with_text</span><span class="plain">(</span><span class="string">"no such theme as '%S'"</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">tag_setting</span><span class="plain">);</span>
+        <span class="identifier">theme_tag</span><span class="plain"> *</span><span class="identifier">tag</span><span class="plain"> = </span><span class="identifier">Tags::find_by_name</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">tag_setting</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">tag_setting</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">tag</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
+            <span class="identifier">Errors::fatal_with_text</span><span class="plain">(</span><span class="string">"no such theme as '%S'"</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">tag_setting</span><span class="plain">);</span>
 
-        <span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">pattern</span><span class="plain"> = </span><span class="functiontext">Patterns::find</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="reserved">weave_pattern</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_range_actually_chosen</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_file</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
-            <span class="functiontext">Configuration::set_range</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="element">default_range</span><span class="plain">);</span>
+        <span class="identifier">weave_pattern</span><span class="plain"> *</span><span class="identifier">pattern</span><span class="plain"> = </span><span class="identifier">Patterns::find</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_pattern</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_range_actually_chosen</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_file</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
+            <span class="identifier">Configuration::set_range</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="identifier">default_range</span><span class="plain">);</span>
 
-        <span class="identifier">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain"> = </span><span class="functiontext">Formats::begin_weaving</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain"> != </span><span class="constant">SWARM_OFF_SWM</span><span class="plain">) </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">swarm_mode</span><span class="plain"> = </span><span class="identifier">r</span><span class="plain">;</span>
-        &lt;<span class="cwebmacro">Assign section numbers for printing purposes</span> <span class="cwebmacronumber">7.2.3.2</span>&gt;<span class="plain">;</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">swarm_mode</span><span class="plain"> == </span><span class="constant">SWARM_OFF_SWM</span><span class="plain">) {</span>
-            <span class="identifier">int</span><span class="plain"> </span><span class="identifier">shall_we_open</span><span class="plain"> = </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">open_pdf_switch</span><span class="plain">;</span>
-            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">shall_we_open</span><span class="plain"> == </span><span class="constant">NOT_APPLICABLE</span><span class="plain">) { </span><span class="comment">i.e., if it wasn't set at the command line</span>
-                <span class="identifier">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="element">open_command</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">shall_we_open</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-                <span class="identifier">else</span><span class="plain"> </span><span class="identifier">shall_we_open</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="identifier">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain"> = </span><span class="identifier">Formats::begin_weaving</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">r</span><span class="plain"> != </span><span class="identifier">SWARM_OFF_SWM</span><span class="plain">) </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">swarm_mode</span><span class="plain"> = </span><span class="identifier">r</span><span class="plain">;</span>
+        &lt;<span class="cwebmacro">Assign section numbers for printing purposes</span> <span class="cwebmacronumber">7.3.3.2</span>&gt;<span class="plain">;</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">swarm_mode</span><span class="plain"> == </span><span class="identifier">SWARM_OFF_SWM</span><span class="plain">) {</span>
+            <span class="identifier">int</span><span class="plain"> </span><span class="identifier">shall_we_open</span><span class="plain"> = </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">open_pdf_switch</span><span class="plain">;</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">shall_we_open</span><span class="plain"> == </span><span class="identifier">NOT_APPLICABLE</span><span class="plain">) { </span><span class="comment">i.e., if it wasn't set at the command line</span>
+                <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="identifier">open_command</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">shall_we_open</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+                <span class="identifier">else</span><span class="plain"> </span><span class="identifier">shall_we_open</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="functiontext">Swarm::weave_subset</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_range</span><span class="plain">, </span><span class="identifier">shall_we_open</span><span class="plain">, </span><span class="identifier">tag</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">,</span>
-                <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_to_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_into_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_docs</span><span class="plain">,</span>
-                <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">breadcrumb_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">navigation_setting</span><span class="plain">);</span>
+            <span class="identifier">Swarm::weave_subset</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_range</span><span class="plain">, </span><span class="identifier">shall_we_open</span><span class="plain">, </span><span class="identifier">tag</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">,</span>
+                <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_to_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_into_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_docs</span><span class="plain">,</span>
+                <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">breadcrumb_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">navigation_setting</span><span class="plain">);</span>
         <span class="plain">} </span><span class="identifier">else</span><span class="plain"> {</span>
-            <span class="functiontext">Swarm::weave</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_range</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">swarm_mode</span><span class="plain">, </span><span class="identifier">tag</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">,</span>
-                <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_to_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_into_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_docs</span><span class="plain">,</span>
-                <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">breadcrumb_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">navigation_setting</span><span class="plain">);</span>
+            <span class="identifier">Swarm::weave</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_range</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">swarm_mode</span><span class="plain">, </span><span class="identifier">tag</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">,</span>
+                <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_to_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_into_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_docs</span><span class="plain">,</span>
+                <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">breadcrumb_setting</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">navigation_setting</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Formats::end_weaving</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">);</span>
+        <span class="identifier">Formats::end_weaving</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP7_2">&#167;7.2</a>.</p>
+<p class="endnote">This code is used in <a href="#SP7_3">&#167;7.3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP7_2_3_1"></a><b>&#167;7.2.3.1.  </b>If the <code class="display"><span class="extract">-weave-docs</span></code> option was used, we have to weave into a subfolder of
+<p class="inwebparagraph"><a id="SP7_3_3_1"></a><b>&#167;7.3.3.1.  </b>If the <code class="display"><span class="extract">-weave-docs</span></code> option was used, we have to weave into a subfolder of
 <code class="display"><span class="extract">docs</span></code>, and we'll create it if it doesn't already exist.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Prepare a docs weave</span> <span class="cwebmacronumber">7.2.3.1</span>&gt; =
+&lt;<span class="cwebmacrodefn">Prepare a docs weave</span> <span class="cwebmacronumber">7.3.3.1</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_into_setting</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">docs</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"docs"</span><span class="plain">);</span>
-            <span class="functiontext">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">docs</span><span class="plain">);</span>
-            <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leaf</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
-            <span class="identifier">if</span><span class="plain"> (</span><span class="functiontext">Bibliographic::data_exists</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">))</span>
-                <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">));</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_into_setting</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">docs</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">md</span><span class="plain">-&gt;</span><span class="identifier">path_to_web</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"docs"</span><span class="plain">);</span>
+            <span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">docs</span><span class="plain">);</span>
+            <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">leaf</span><span class="plain"> = </span><span class="identifier">Str::new</span><span class="plain">();</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Bibliographic::data_exists</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">))</span>
+                <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="identifier">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Short Title"</span><span class="plain">));</span>
             <span class="identifier">else</span>
-                <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Title"</span><span class="plain">));</span>
-            <span class="identifier">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
-                <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_into_setting</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">docs</span><span class="plain">, </span><span class="identifier">leaf</span><span class="plain">);</span>
-                <span class="functiontext">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_into_setting</span><span class="plain">);</span>
-            <span class="plain">} </span><span class="identifier">else</span><span class="plain"> </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_into_setting</span><span class="plain"> = </span><span class="identifier">docs</span><span class="plain">;</span>
+                <span class="identifier">Str::copy</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">, </span><span class="identifier">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Title"</span><span class="plain">));</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">leaf</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_into_setting</span><span class="plain"> = </span><span class="identifier">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">docs</span><span class="plain">, </span><span class="identifier">leaf</span><span class="plain">);</span>
+                <span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_into_setting</span><span class="plain">);</span>
+            <span class="plain">} </span><span class="identifier">else</span><span class="plain"> </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_into_setting</span><span class="plain"> = </span><span class="identifier">docs</span><span class="plain">;</span>
         <span class="plain">} </span><span class="identifier">else</span><span class="plain"> {</span>
-            <span class="functiontext">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_into_setting</span><span class="plain">);</span>
+            <span class="identifier">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_into_setting</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">redirect_weaves_to</span><span class="plain"> = </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">weave_into_setting</span><span class="plain">;</span>
-        <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="reserved">weave_pattern</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"GitHubPages"</span><span class="plain">;</span>
+        <span class="identifier">W</span><span class="plain">-&gt;</span><span class="identifier">redirect_weaves_to</span><span class="plain"> = </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_into_setting</span><span class="plain">;</span>
+        <span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">weave_pattern</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"GitHubPages"</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP7_2_3">&#167;7.2.3</a>.</p>
+<p class="endnote">This code is used in <a href="#SP7_3_3">&#167;7.3.3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP7_2_3_2"></a><b>&#167;7.2.3.2.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Assign section numbers for printing purposes</span> <span class="cwebmacronumber">7.2.3.2</span>&gt; =
+<p class="inwebparagraph"><a id="SP7_3_3_2"></a><b>&#167;7.3.3.2.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Assign section numbers for printing purposes</span> <span class="cwebmacronumber">7.3.3.2</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">; </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">section</span><span class="plain">)</span>
-            <span class="identifier">if</span><span class="plain"> (</span><span class="functiontext">Reader::range_within</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">sect_range</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="element">chosen_range</span><span class="plain">))</span>
-                <span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">printed_number</span><span class="plain"> = </span><span class="identifier">k</span><span class="plain">++;</span>
+        <span class="identifier">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">; </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">section</span><span class="plain">)</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Reader::range_within</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="identifier">sect_range</span><span class="plain">, </span><span class="identifier">ins</span><span class="plain">-&gt;</span><span class="identifier">chosen_range</span><span class="plain">))</span>
+                <span class="identifier">S</span><span class="plain">-&gt;</span><span class="identifier">printed_number</span><span class="plain"> = </span><span class="identifier">k</span><span class="plain">++;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP7_2_3">&#167;7.2.3</a>.</p>
+<p class="endnote">This code is used in <a href="#SP7_3_3">&#167;7.3.3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Error messages. </b>The Foundation module provides convenient functions to issue error messages,
 but we'll use the following wrapper when issuing an error at a line of web
@@ -462,12 +481,12 @@ source:
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">sl</span><span class="plain">) {</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Main::error_in_web</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">source_line</span><span class="plain"> *</span><span class="identifier">sl</span><span class="plain">) {</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">sl</span><span class="plain">) {</span>
-            <span class="functiontext">Errors::in_text_file_S</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, &amp;(</span><span class="identifier">sl</span><span class="plain">-&gt;</span><span class="element">source</span><span class="plain">));</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"%07d  %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">sl</span><span class="plain">-&gt;</span><span class="element">source</span><span class="plain">.</span><span class="element">line_count</span><span class="plain">, </span><span class="identifier">sl</span><span class="plain">-&gt;</span><span class="element">text</span><span class="plain">);</span>
+            <span class="identifier">Errors::in_text_file_S</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, &amp;(</span><span class="identifier">sl</span><span class="plain">-&gt;</span><span class="identifier">source</span><span class="plain">));</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"%07d  %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">sl</span><span class="plain">-&gt;</span><span class="identifier">source</span><span class="plain">.</span><span class="identifier">line_count</span><span class="plain">, </span><span class="identifier">sl</span><span class="plain">-&gt;</span><span class="identifier">text</span><span class="plain">);</span>
         <span class="plain">} </span><span class="identifier">else</span><span class="plain"> {</span>
-            <span class="functiontext">Errors::in_text_file_S</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="identifier">Errors::in_text_file_S</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">no_inweb_errors</span><span class="plain">++;</span>
     <span class="plain">}</span>

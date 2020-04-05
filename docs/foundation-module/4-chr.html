@@ -32,30 +32,30 @@
 
 
 <pre class="display">
-    <span class="identifier">wchar_t</span><span class="plain"> </span><span class="functiontext">Characters::tolower</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
+    <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">Characters::tolower</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="identifier">return</span><span class="plain"> (</span><span class="identifier">wchar_t</span><span class="plain">) </span><span class="identifier">tolower</span><span class="plain">((</span><span class="identifier">int</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">);</span>
     <span class="plain">}</span>
-    <span class="identifier">wchar_t</span><span class="plain"> </span><span class="functiontext">Characters::toupper</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
+    <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">Characters::toupper</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="identifier">return</span><span class="plain"> (</span><span class="identifier">wchar_t</span><span class="plain">) </span><span class="identifier">toupper</span><span class="plain">((</span><span class="identifier">int</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">);</span>
     <span class="plain">}</span>
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Characters::isalpha</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Characters::isalpha</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">isalpha</span><span class="plain">((</span><span class="identifier">int</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">);</span>
     <span class="plain">}</span>
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Characters::isdigit</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Characters::isdigit</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">isdigit</span><span class="plain">((</span><span class="identifier">int</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">);</span>
     <span class="plain">}</span>
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Characters::isupper</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Characters::isupper</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">isupper</span><span class="plain">((</span><span class="identifier">int</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">);</span>
     <span class="plain">}</span>
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Characters::islower</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Characters::islower</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">islower</span><span class="plain">((</span><span class="identifier">int</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">);</span>
     <span class="plain">}</span>
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Characters::isalnum</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Characters::isalnum</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">isalnum</span><span class="plain">((</span><span class="identifier">int</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">);</span>
     <span class="plain">}</span>
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Characters::vowel</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
-        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'a'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'e'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'i'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'o'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'u'</span><span class="plain">)) </span><span class="identifier">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="identifier">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Characters::vowel</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
+        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'a'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'e'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'i'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'o'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'u'</span><span class="plain">)) </span><span class="identifier">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -82,13 +82,13 @@
 
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Characters::is_space_or_tab</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
-        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">t</span><span class="character">'</span><span class="plain">)) </span><span class="identifier">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="identifier">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Characters::is_space_or_tab</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
+        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">t</span><span class="character">'</span><span class="plain">)) </span><span class="identifier">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Characters::is_whitespace</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
-        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">t</span><span class="character">'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">)) </span><span class="identifier">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="identifier">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Characters::is_whitespace</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
+        <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">t</span><span class="character">'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">n</span><span class="character">'</span><span class="plain">)) </span><span class="identifier">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -105,10 +105,10 @@ iFiction records.
 
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Characters::is_babel_whitespace</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Characters::is_babel_whitespace</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">t</span><span class="character">'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">x</span><span class="character">0a'</span><span class="plain">)</span>
-            <span class="plain">|| (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">x</span><span class="character">0d'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">NEWLINE_IN_STRING</span><span class="plain">)) </span><span class="identifier">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="identifier">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+            <span class="plain">|| (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\</span><span class="plain">x</span><span class="character">0d'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="identifier">NEWLINE_IN_STRING</span><span class="plain">)) </span><span class="identifier">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -122,7 +122,7 @@ sufficient correctly to handle all characters in the ZSCII set.
 
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Characters::combine_accent</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">accent</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">letter</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Characters::combine_accent</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">accent</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">letter</span><span class="plain">) {</span>
         <span class="identifier">switch</span><span class="plain">(</span><span class="identifier">accent</span><span class="plain">) {</span>
             <span class="identifier">case</span><span class="plain"> </span><span class="constant">0x0300</span><span class="identifier">:</span><span class="plain"> </span><span class="comment">Unicode combining grave</span>
                 <span class="identifier">switch</span><span class="plain">(</span><span class="identifier">letter</span><span class="plain">) {</span>
@@ -182,8 +182,8 @@ the more obvious accents from it.
 
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Characters::make_filename_safe</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">charcode</span><span class="plain">) {</span>
-        <span class="identifier">charcode</span><span class="plain"> = </span><span class="functiontext">Characters::remove_accent</span><span class="plain">(</span><span class="identifier">charcode</span><span class="plain">);</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Characters::make_filename_safe</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">charcode</span><span class="plain">) {</span>
+        <span class="identifier">charcode</span><span class="plain"> = </span><span class="identifier">Characters::remove_accent</span><span class="plain">(</span><span class="identifier">charcode</span><span class="plain">);</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">charcode</span><span class="plain"> &gt;= </span><span class="constant">128</span><span class="plain">) </span><span class="identifier">charcode</span><span class="plain"> = </span><span class="character">'-'</span><span class="plain">;</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">charcode</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -198,7 +198,7 @@ the more obvious accents from it.
 
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Characters::remove_accent</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">charcode</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Characters::remove_accent</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">charcode</span><span class="plain">) {</span>
         <span class="identifier">switch</span><span class="plain"> (</span><span class="identifier">charcode</span><span class="plain">) {</span>
             <span class="identifier">case</span><span class="plain"> </span><span class="constant">0xC0</span><span class="identifier">:</span><span class="plain"> </span><span class="identifier">case</span><span class="plain"> </span><span class="constant">0xC1</span><span class="identifier">:</span><span class="plain"> </span><span class="identifier">case</span><span class="plain"> </span><span class="constant">0xC2</span><span class="identifier">:</span><span class="plain"> </span><span class="identifier">case</span><span class="plain"> </span><span class="constant">0xC3</span><span class="identifier">:</span>
             <span class="identifier">case</span><span class="plain"> </span><span class="constant">0xC4</span><span class="identifier">:</span><span class="plain"> </span><span class="identifier">case</span><span class="plain"> </span><span class="constant">0xC5</span><span class="identifier">:</span><span class="plain"> </span><span class="identifier">charcode</span><span class="plain"> = </span><span class="character">'A'</span><span class="plain">; </span><span class="identifier">break</span><span class="plain">;</span>

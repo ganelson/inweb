@@ -15,6 +15,7 @@ Manual
 	How to Write a Web
 	The InC Dialect
 	Advanced Weaving with Patterns
+	Supporting Programming Languages
 	Reference Card
 
 Chapter 1: Top Level
@@ -51,6 +52,7 @@ in different programming languages."
 	Programming Languages
 	Language Methods
 	ACME Support
+	The Painter
 	C-Like Languages
 	InC Support
 

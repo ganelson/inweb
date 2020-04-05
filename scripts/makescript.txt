@@ -109,6 +109,7 @@ commit:
 .PHONY: pages
 pages:
 	$(INWEB) -help > $(ME)/Figures/help.txt
+	$(INWEB) -show-languages > $(ME)/Figures/languages.txt
 	$(INWEB) -advance-build-file $(ME)/build.txt
 	mkdir -p $(ME)/docs
 	rm -f $(ME)/docs/*.html

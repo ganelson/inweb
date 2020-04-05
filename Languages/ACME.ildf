@@ -16,11 +16,12 @@ colouring {
 			(all) => !reserved
 			prefix . => !identifier
 			prefix ! => !element
-			keyword !reserved => !macro
+			keyword !reserved => !definition
 		}
 		characters {
 			+ => !identifier
 			- => !identifier
+			! => !element
 		}
 	}
 }

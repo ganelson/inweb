@@ -339,15 +339,7 @@ void LanguageMethods::reset_syntax_colouring(programming_language *pl) {
 	VMETHOD_CALLV(pl, RESET_SYNTAX_COLOURING_WEA_MTID);
 }
 
-@ And this is where colouring is done. The model here is that the code to
-be coloured is in |matter|. A parallel text called |colouring| matches it
-up, chatacter for character. For example, a language might colour like so:
-
-	|int x = 55;|
-	|rrrpipppnnp|
-
-The initial state is |ppp...p|, everything "plain", unless the following
-method does something to change that.
+@ And this is where colouring is done.
 
 @e SYNTAX_COLOUR_WEA_MTID
 
@@ -441,4 +433,14 @@ int LanguageMethods::share_element(programming_language *pl, text_stream *elemen
 	int rv = FALSE;
 	IMETHOD_CALL(rv, pl, SHARE_ELEMENT_ANA_MTID, element_name);
 	return rv;
+}
+
+@h What we support.
+
+=
+int LanguageMethods::supports_definitions(programming_language *pl) {
+	if (Str::len(pl->start_definition) > 0) return TRUE;
+	if (Str::len(pl->prolong_definition) > 0) return TRUE;
+	if (Str::len(pl->end_definition) > 0) return TRUE;
+	return FALSE;
 }

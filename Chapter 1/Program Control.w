@@ -99,6 +99,7 @@ void Main::follow_instructions(inweb_instructions *ins) {
 	}
 	if (no_inweb_errors == 0) {
 		if (ins->inweb_mode == TRANSLATE_MODE) @<Translate a makefile@>
+		else if (ins->show_languages_switch) @<List available programming languages@>
 		else if (ins->inweb_mode != NO_MODE) @<Analyse, tangle or weave an existing web@>;
 	}
 }
@@ -121,6 +122,12 @@ void Main::follow_instructions(inweb_instructions *ins) {
 		BuildFiles::advance(ins->advance_setting);
 	else if (ins->writeme_setting)
 		Readme::write(ins->prototype_setting, ins->writeme_setting);
+
+@ As is this:
+
+@<List available programming languages@> =
+	Languages::read_definitions(NULL);
+	Languages::show(STDOUT);
 
 @ But otherwise we do something with the given web:
 

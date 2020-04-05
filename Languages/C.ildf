@@ -1,6 +1,6 @@
-Name: C++
-Details: The C++ programming language
-Extension: .cpp
+Name: C
+Details: The C programming language
+Extension: .c
 Multiline Comment Open: /*
 Multiline Comment Close: */
 Line Comment: //
@@ -9,12 +9,19 @@ String Literal Escape: \
 Character Literal: '
 Character Literal Escape: \
 C-Like: true
-Supports Enumerations: true
+
+# C does in fact support octal literals, marking them as starting with an
+# unnecessary initial zero. This is practically obsolete now, and in any case
+# makes no difference to syntax-colouring. Binary literals were in theory
+# rejected by the C standards body as useless, but are so useful that gcc
+# and clang support them anyway.
+
 Hexadecimal Literal Prefix: 0x
+Binary Literal Prefix: 0b
 Negative Literal Prefix: -
 
-Before Macro Expansion: \n{\n
-After Macro Expansion: }\n
+Before Named Paragraph Expansion: \n{\n
+After Named Paragraph Expansion: }\n
 Start Ifdef: #ifdef %S\n
 End Ifdef: #endif /* %S */\n
 Start Ifndef: #ifndef %S\n

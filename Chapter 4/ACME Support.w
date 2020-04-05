@@ -46,7 +46,13 @@ void ACMESupport::add_fallbacks(programming_language *pl) {
 		METHOD_ADD(pl, SYNTAX_COLOUR_WEA_MTID, ACMESupport::syntax_colour);
 }
 
-void ACMESupport::expand(OUTPUT_STREAM, text_stream *prototype, text_stream *S, int N, filename *F) {
+@ This utility does a very limited |WRITE|-like job. (We don't want to use
+the actual |WRITE| because that would make it possible for malicious language
+files to crash Inweb.)
+
+=
+void ACMESupport::expand(OUTPUT_STREAM, text_stream *prototype, text_stream *S,
+	int N, filename *F) {
 	if (Str::len(prototype) > 0) {
 		for (int i=0; i<Str::len(prototype); i++) {
 			wchar_t c = Str::get_at(prototype, i);
@@ -69,7 +75,8 @@ void ACMESupport::expand(OUTPUT_STREAM, text_stream *prototype, text_stream *S, 
 @h Tangling methods.
 
 =
-void ACMESupport::shebang(programming_language *pl, text_stream *OUT, web *W, tangle_target *target) {
+void ACMESupport::shebang(programming_language *pl, text_stream *OUT, web *W,
+	tangle_target *target) {
 	ACMESupport::expand(OUT, pl->shebang, NULL, -1, NULL);
 }
 
@@ -85,30 +92,38 @@ void ACMESupport::after_macro_expansion(programming_language *pl,
 
 int ACMESupport::start_definition(programming_language *pl, text_stream *OUT,
 	text_stream *term, text_stream *start, section *S, source_line *L) {
-	ACMESupport::expand(OUT, pl->start_definition, term, -1, NULL);
-	Tangler::tangle_code(OUT, start, S, L);
+	if (LanguageMethods::supports_definitions(pl)) {
+		ACMESupport::expand(OUT, pl->start_definition, term, -1, NULL);
+		Tangler::tangle_code(OUT, start, S, L);
+	}
 	return TRUE;
 }
 
 int ACMESupport::prolong_definition(programming_language *pl,
 	text_stream *OUT, text_stream *more, section *S, source_line *L) {
-	ACMESupport::expand(OUT, pl->prolong_definition, NULL, -1, NULL);
-	Tangler::tangle_code(OUT, more, S, L);
+	if (LanguageMethods::supports_definitions(pl)) {
+		ACMESupport::expand(OUT, pl->prolong_definition, NULL, -1, NULL);
+		Tangler::tangle_code(OUT, more, S, L);
+	}
 	return TRUE;
 }
 
 int ACMESupport::end_definition(programming_language *pl,
 	text_stream *OUT, section *S, source_line *L) {
-	ACMESupport::expand(OUT, pl->end_definition, NULL, -1, NULL);
+	if (LanguageMethods::supports_definitions(pl)) {
+		ACMESupport::expand(OUT, pl->end_definition, NULL, -1, NULL);
+	}
 	return TRUE;
 }
 
-void ACMESupport::I6_open_ifdef(programming_language *pl, text_stream *OUT, text_stream *symbol, int sense) {
+void ACMESupport::I6_open_ifdef(programming_language *pl,
+	text_stream *OUT, text_stream *symbol, int sense) {
 	if (sense) ACMESupport::expand(OUT, pl->start_ifdef, symbol, -1, NULL);
 	else ACMESupport::expand(OUT, pl->start_ifndef, symbol, -1, NULL);
 }
 
-void ACMESupport::I6_close_ifdef(programming_language *pl, text_stream *OUT, text_stream *symbol, int sense) {
+void ACMESupport::I6_close_ifdef(programming_language *pl,
+	text_stream *OUT, text_stream *symbol, int sense) {
 	if (sense) ACMESupport::expand(OUT, pl->end_ifdef, symbol, -1, NULL);
 	else ACMESupport::expand(OUT, pl->end_ifndef, symbol, -1, NULL);
 }
@@ -126,9 +141,11 @@ void ACMESupport::comment(programming_language *pl,
 		WRITE(" %S ", comm);
 		ACMESupport::expand(OUT, pl->multiline_comment_close, NULL, -1, NULL);
 		WRITE("\n");
-	}
-	else if (Str::len(pl->line_comment) > 0) {
+	} else if (Str::len(pl->line_comment) > 0) {
 		ACMESupport::expand(OUT, pl->line_comment, NULL, -1, NULL);
+		WRITE(" %S\n", comm);
+	} else if (Str::len(pl->whole_line_comment) > 0) {
+		ACMESupport::expand(OUT, pl->whole_line_comment, NULL, -1, NULL);
 		WRITE(" %S\n", comm);
 	}
 }
@@ -162,13 +179,26 @@ int ACMESupport::parse_comment(programming_language *pl,
 				c_mode = 1; c_position = i; c_end = Str::len(line); non_white_space = FALSE;
 				i += Str::len(pl->line_comment) - 1;
 			}
+			if (ACMESupport::text_at(line, i, pl->whole_line_comment)) {
+				int material_exists = FALSE;
+				for (int j=0; j<i; j++)
+					if (!(Characters::is_whitespace(Str::get_at(line, j))))
+						material_exists = TRUE;
+				if (material_exists == FALSE) {
+					c_mode = 1; c_position = i; c_end = Str::len(line);
+					non_white_space = FALSE;
+					i += Str::len(pl->whole_line_comment) - 1;
+				}
+			}
 		}
 	}
 	if ((c_position >= 0) && (non_white_space == FALSE)) {
 		Str::clear(part_before_comment);
-		for (int i=0; i<c_position; i++) PUT_TO(part_before_comment, Str::get_at(line, i));
+		for (int i=0; i<c_position; i++)
+			PUT_TO(part_before_comment, Str::get_at(line, i));
 		Str::clear(part_within_comment);
-		for (int i=c_position + 2; i<c_end; i++) PUT_TO(part_within_comment, Str::get_at(line, i));
+		for (int i=c_position + 2; i<c_end; i++)
+			PUT_TO(part_within_comment, Str::get_at(line, i));
 		Str::trim_white_space(part_within_comment);
 		return TRUE;
 	}
@@ -199,220 +229,18 @@ int ACMESupport::suppress_disclaimer(programming_language *pl) {
 void ACMESupport::begin_weave(programming_language *pl, section *S, weave_target *wv) {
 	reserved_word *rw;
 	LOOP_OVER_LINKED_LIST(rw, reserved_word, pl->reserved_words)
-		Analyser::mark_reserved_word(S, rw->word, rw->colour);
+		Analyser::mark_reserved_word_for_section(S, rw->word, rw->colour);
 }
 
-@h Syntax colouring.
-This is a very simple syntax colouring algorithm. The state at any given
-time is a single variable, the current category of code being looked at:
+@ ACME has all of its syntax-colouring done by the default engine:
 
 =
 void ACMESupport::reset_syntax_colouring(programming_language *pl) {
-	colouring_state = PLAIN_COLOUR;
+	Painter::reset_syntax_colouring(pl);
 }
 
-@ =
 int ACMESupport::syntax_colour(programming_language *pl, text_stream *OUT, weave_target *wv,
 	web *W, chapter *C, section *S, source_line *L, text_stream *matter,
 	text_stream *colouring) {
-	@<Make preliminary colouring@>;
-	@<Spot literal numerical constants@>;
-	ACMESupport::execute(S, pl->program, matter, colouring, 0, Str::len(matter));
-	return FALSE;
-}
-
-@<Make preliminary colouring@> =
-	int squote = Str::get_first_char(pl->character_literal);
-	int squote_escape = Str::get_first_char(pl->character_literal_escape);
-	int dquote = Str::get_first_char(pl->string_literal);
-	int dquote_escape = Str::get_first_char(pl->string_literal_escape);
-	for (int i=0; i < Str::len(matter); i++) {
-		int skip = 0, one_off = -1, will_be = -1;
-		switch (colouring_state) {
-			case PLAIN_COLOUR: {
-				wchar_t c = Str::get_at(matter, i);
-				if (c == dquote) {
-					colouring_state = STRING_COLOUR;
-					break;
-				}
-				if (c == squote) {
-					colouring_state = CHAR_LITERAL_COLOUR;
-					break;
-				}
-				if (ACMESupport::identifier_at(pl, matter, colouring, i))
-					one_off = IDENTIFIER_COLOUR;
-				break;
-			}
-			case CHAR_LITERAL_COLOUR: {
-				wchar_t c = Str::get_at(matter, i);
-				if (c == squote) will_be = PLAIN_COLOUR;
-				if (c == squote_escape) skip = 1;
-				break;
-			}
-			case STRING_COLOUR: {
-				wchar_t c = Str::get_at(matter, i);
-				if (c == dquote) will_be = PLAIN_COLOUR;
-				if (c == dquote_escape) skip = 1;
-				break;
-			}
-		}
-		if (one_off >= 0) Str::put_at(colouring, i, (char) one_off);
-		else Str::put_at(colouring, i, (char) colouring_state);
-		if (will_be >= 0) colouring_state = (char) will_be;
-		if (skip > 0) i += skip;
-	}
-
-@<Spot literal numerical constants@> =
-	int base = -1, dec_possible = TRUE;
-	for (int i=0; i < Str::len(matter); i++) {
-		if ((Str::get_at(colouring, i) == PLAIN_COLOUR) ||
-			(Str::get_at(colouring, i) == IDENTIFIER_COLOUR)) {
-			wchar_t c = Str::get_at(matter, i);
-			if (ACMESupport::text_at(matter, i, pl->binary_literal_prefix)) {
-				base = 2;
-				for (int j=0; j<Str::len(pl->binary_literal_prefix); j++)
-					Str::put_at(colouring, i+j, (char) CONSTANT_COLOUR);
-				dec_possible = TRUE;
-				continue;
-			} else if (ACMESupport::text_at(matter, i, pl->octal_literal_prefix)) {
-				base = 8;
-				for (int j=0; j<Str::len(pl->octal_literal_prefix); j++)
-					Str::put_at(colouring, i+j, (char) CONSTANT_COLOUR);
-				dec_possible = TRUE;
-				continue;
-			} else if (ACMESupport::text_at(matter, i, pl->hexadecimal_literal_prefix)) {
-				base = 16;
-				for (int j=0; j<Str::len(pl->hexadecimal_literal_prefix); j++)
-					Str::put_at(colouring, i+j, (char) CONSTANT_COLOUR);
-				dec_possible = TRUE;
-				continue;
-			} 
-			if ((ACMESupport::text_at(matter, i, pl->negative_literal_prefix)) &&
-				(dec_possible) && (base == 0)) {
-				base = 10;
-				Str::put_at(colouring, i, (char) CONSTANT_COLOUR);
-				continue;
-			}
-			int pass = FALSE;
-			switch (base) {
-				case -1: 
-					if ((dec_possible) && (Characters::isdigit(c))) {
-						base = 10; pass = TRUE;
-					}
-					break;
-				case 2: if ((c == '0') || (c == '1')) pass = TRUE; break;
-				case 10: if (Characters::isdigit(c)) pass = TRUE; break;
-				case 16: if (Characters::isdigit(c)) pass = TRUE;
-					int d = Characters::tolower(c);
-					if ((d == 'a') || (d == 'b') || (d == 'c') ||
-						(d == 'd') || (d == 'e') || (d == 'f')) pass = TRUE;
-					break;
-			}
-			if (pass) {
-				Str::put_at(colouring, i, (char) CONSTANT_COLOUR);
-			} else {
-				if (Characters::is_whitespace(c)) dec_possible = TRUE;
-				else dec_possible = FALSE;
-				base = -1;
-			}
-		}
-	}
-
-@
-
-=
-int ACMESupport::identifier_at(programming_language *pl, text_stream *matter, text_stream *colouring, int i) {
-	wchar_t c = Str::get_at(matter, i);
-	if ((i > 0) && (Str::get_at(colouring, i-1) == IDENTIFIER_COLOUR)) {
-		if ((c == '_') ||
-			((c >= 'A') && (c <= 'Z')) ||
-			((c >= 'a') && (c <= 'z')) ||
-			((c >= '0') && (c <= '9'))) return TRUE;
-		if ((c == ':') && (pl->supports_namespaces)) return TRUE;
-	} else {
-		wchar_t d = 0;
-		if (i > 0) d = Str::get_at(matter, i);
-		if ((d >= '0') && (d <= '9')) return FALSE;
-		if ((c == '_') ||
-			((c >= 'A') && (c <= 'Z')) ||
-			((c >= 'a') && (c <= 'z'))) return TRUE;
-	}
-	return FALSE;
-}
-
-@ 
-
-=
-void ACMESupport::execute(section *S, colouring_language_block *block, text_stream *matter,
-	text_stream *colouring, int from, int to) {
-	if (block == NULL) internal_error("no block");
-	colouring_rule *rule;
-	LOOP_OVER_LINKED_LIST(rule, colouring_rule, block->rules) {
-		if (block->run == CHARACTERS_CRULE_RUN) {
-			for (int i=from; i<=to; i++)
-				ACMESupport::execute_rule(S, rule, matter, colouring, i, i);
-		} else if (block->run == WHOLE_LINE_CRULE_RUN) {
-			ACMESupport::execute_rule(S, rule, matter, colouring, from, to);
-		} else {
-			int ident_from = -1;
-			for (int i=from; i<=to; i++) {
-				int col = Str::get_at(colouring, i);
-				if ((col == block->run) ||
-					((block->run == UNQUOTED_COLOUR) &&
-						((col != STRING_COLOUR) && (col != CHAR_LITERAL_COLOUR)))) {
-					if (ident_from == -1) ident_from = i;
-				} else {
-					if (ident_from >= 0)
-						ACMESupport::execute_rule(S, rule, matter, colouring, ident_from, i-1);
-					ident_from = -1;
-				}
-			}
-			if (ident_from >= 0)
-				ACMESupport::execute_rule(S, rule, matter, colouring, ident_from, to);
-		}
-	}
-}
-
-void ACMESupport::execute_rule(section *S, colouring_rule *rule, text_stream *matter,
-	text_stream *colouring, int from, int to) {
-	if (ACMESupport::satisfies(S, rule, matter, colouring, from, to))
-		ACMESupport::follow(S, rule, matter, colouring, from, to);
-}
-
-int ACMESupport::satisfies(section *S, colouring_rule *rule, text_stream *matter,
-	text_stream *colouring, int from, int to) {
-	if (Str::len(rule->match_text) > 0) {
-		if (rule->match_prefix != NOT_A_RULE_PREFIX) {
-			int pos = from;
-			if (rule->match_prefix != UNSPACED_RULE_PREFIX) {
-				while ((pos > 0) && (Characters::is_whitespace(pos-1))) pos--;
-				if ((rule->match_prefix == SPACED_RULE_PREFIX) && (pos == from))
-					return FALSE;
-			}
-			if (ACMESupport::text_at(matter, pos-Str::len(rule->match_text), rule->match_text) == FALSE)
-				return FALSE;
-		} else {
-			if (Str::ne(matter, rule->match_text)) return FALSE;
-		}
-	} else if (rule->match_keyword_of_colour != NOT_A_COLOUR) {
-		TEMPORARY_TEXT(id);
-		Str::substr(id, Str::at(matter, from), Str::at(matter, to+1));
-		int rw = Analyser::is_reserved_word(S, id, rule->match_keyword_of_colour);
-		DISCARD_TEXT(id);
-		if (rw == FALSE) return FALSE;
-	} else if (rule->match_colour != NOT_A_COLOUR) {
-		for (int i=from; i<=to; i++)
-			if (Str::get_at(colouring, i) != rule->match_colour)
-				return FALSE;
-	}
-	return TRUE;
-}
-
-void ACMESupport::follow(section *S, colouring_rule *rule, text_stream *matter,
-	text_stream *colouring, int from, int to) {
-	if (rule->execute_block)
-		ACMESupport::execute(S, rule->execute_block, matter, colouring, from, to);
-	else 
-		for (int i=from; i<=to; i++)
-			Str::put_at(colouring, i, rule->set_to_colour);
+	return Painter::syntax_colour(pl, OUT, &(S->sect_target->symbols), matter, colouring, FALSE);
 }

@@ -21,6 +21,7 @@ typedef struct inweb_instructions {
 	struct text_stream *weave_pattern; /* |-weave-to X|: for example, |-weave-to HTML| */
 	int weave_docs; /* |-docs|: for GitHub Pages */
 
+	int show_languages_switch; /* |-show-languages|: print list of available PLs */
 	int catalogue_switch; /* |-catalogue|: print catalogue of sections */
 	int functions_switch; /* |-functions|: print catalogue of functions within sections */
 	int structures_switch; /* |-structures|: print catalogue of structures within sections */
@@ -76,6 +77,7 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 @<Initialise the args@> =
 	args.inweb_mode = NO_MODE;
 	args.swarm_mode = SWARM_OFF_SWM;
+	args.show_languages_switch = FALSE;
 	args.catalogue_switch = FALSE;
 	args.functions_switch = FALSE;
 	args.structures_switch = FALSE;
@@ -111,6 +113,14 @@ provides automatically.
 @e VERBOSE_CLSW
 @e IMPORT_FROM_CLSW
 
+@e LANGUAGES_CLSG
+
+@e LANGUAGE_CLSW
+@e LANGUAGES_CLSW
+@e SHOW_LANGUAGES_CLSW
+
+@e ANALYSIS_CLSG
+
 @e CATALOGUE_CLSW
 @e FUNCTIONS_CLSW
 @e STRUCTURES_CLSW
@@ -122,6 +132,8 @@ provides automatically.
 @e PROTOTYPE_CLSW
 @e SCAN_CLSW
 
+@e WEAVING_CLSG
+
 @e WEAVE_CLSW
 @e WEAVE_INTO_CLSW
 @e WEAVE_TO_CLSW
@@ -132,6 +144,9 @@ provides automatically.
 @e WEAVE_DOCS_CLSW
 @e BREADCRUMB_CLSW
 @e NAVIGATION_CLSW
+
+@e TANGLING_CLSG
+
 @e TANGLE_CLSW
 @e TANGLE_TO_CLSW
 
@@ -150,11 +165,18 @@ provides automatically.
 		L"   chapters: to weave all chapters as individual documents\n"
 		L"   sections: ditto with sections\n");
 
-	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
-		L"explain what inweb is doing", FALSE);
-	CommandLine::declare_switch(IMPORT_FROM_CLSW, L"import-from", 2,
-		L"specify that imported modules are at pathname X");
+	CommandLine::begin_group(LANGUAGES_CLSG,
+		I"for locating programming language definitions");
+	CommandLine::declare_switch(LANGUAGE_CLSW, L"read-language", 2,
+		L"read language definition from file X");
+	CommandLine::declare_switch(LANGUAGES_CLSW, L"read-languages", 2,
+		L"read all language definitions in path X");
+	CommandLine::declare_switch(SHOW_LANGUAGES_CLSW, L"show-languages", 1,
+		L"list programming languages supported by Inweb");
+	CommandLine::end_group();
 
+	CommandLine::begin_group(ANALYSIS_CLSG,
+		I"for analysing a web");
 	CommandLine::declare_switch(CATALOGUE_CLSW, L"catalogue", 1,
 		L"list the sections in the web");
 	CommandLine::declare_switch(CATALOGUE_CLSW, L"catalog", 1,
@@ -177,9 +199,12 @@ provides automatically.
 		L"increment daily build code for the web");
 	CommandLine::declare_switch(SCAN_CLSW, L"scan", 1,
 		L"scan the web");
+	CommandLine::end_group();
 
+	CommandLine::begin_group(WEAVING_CLSG,
+		I"for weaving a web");
 	CommandLine::declare_switch(WEAVE_DOCS_CLSW, L"weave-docs", 1,
-		L"weave the web for use at GutHub Pages");
+		L"weave the web for use at GitHub Pages");
 	CommandLine::declare_switch(WEAVE_CLSW, L"weave", 1,
 		L"weave the web into human-readable form");
 	CommandLine::declare_switch(WEAVE_INTO_CLSW, L"weave-into", 2,
@@ -198,10 +223,20 @@ provides automatically.
 		L"use the text X as a breadcrumb in overhead navigation");
 	CommandLine::declare_switch(NAVIGATION_CLSW, L"navigation", 2,
 		L"use the file X as a column of navigation links");
+	CommandLine::end_group();
+
+	CommandLine::begin_group(TANGLING_CLSG,
+		I"for tangling a web");
 	CommandLine::declare_switch(TANGLE_CLSW, L"tangle", 1,
 		L"tangle the web into machine-compilable form");
 	CommandLine::declare_switch(TANGLE_TO_CLSW, L"tangle-to", 2,
 		L"tangle, but to filename X");
+	CommandLine::end_group();
+
+	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
+		L"explain what inweb is doing", FALSE);
+	CommandLine::declare_switch(IMPORT_FROM_CLSW, L"import-from", 2,
+		L"specify that imported modules are at pathname X");
 
 @ Foundation calls this on any |-switch| argument read:
 
@@ -214,6 +249,13 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 		case IMPORT_FROM_CLSW: args->import_setting = Pathnames::from_text(arg); break;
 
 		/* Analysis */
+		case LANGUAGE_CLSW:
+			Languages::read_definition(Filenames::from_text(arg)); break;
+		case LANGUAGES_CLSW:
+			Languages::read_definitions(Pathnames::from_text(arg)); break;
+		case SHOW_LANGUAGES_CLSW:
+			args->show_languages_switch = TRUE;
+			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
 		case CATALOGUE_CLSW:
 			args->catalogue_switch = TRUE;
 			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;

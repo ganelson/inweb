@@ -374,8 +374,13 @@ void HTMLFormat::bar(weave_format *self, text_stream *OUT, weave_target *wv) {
 }
 
 @ =
+typedef struct HTML_figure_state {
+	text_stream *OUT;
+	programming_language *colour_as;
+} HTML_figure_state;
+
 void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
-	text_stream *figname, int w, int h) {
+	text_stream *figname, int w, int h, programming_language *pl) {
 	HTMLFormat::exit_current_paragraph(OUT);
 	filename *F = Filenames::in_folder(
 		Pathnames::subfolder(wv->weave_web->md->path_to_web, I"Figures"),
@@ -384,10 +389,16 @@ void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
 	TEMPORARY_TEXT(ext);
 	Filenames::write_extension(ext, RF);
 	if (Str::eq_insensitive(ext, I".txt")) {
-		HTMLFormat::pre(OUT, NULL);
-		TextFiles::read(F, FALSE, "unable to read file of test cases", TRUE,
-			&HTMLFormat::text_file_helper, NULL, OUT);
-		HTMLFormat::cpre(OUT);
+		if (pl == NULL) HTMLFormat::pre(OUT, NULL);
+		else HTMLFormat::pre(OUT, NULL);
+		if (pl) Painter::reset_syntax_colouring(pl);
+		HTML_figure_state hfs;
+		hfs.OUT = OUT;
+		hfs.colour_as = pl;
+		TextFiles::read(F, FALSE, "unable to read file of textual figure", TRUE,
+			&HTMLFormat::text_file_helper, NULL, &hfs);
+		if (pl == NULL) HTMLFormat::cpre(OUT);
+		else HTMLFormat::cpre(OUT);
 	} else {
 		HTML_OPEN("center");
 		HTML::image(OUT, RF);
@@ -399,8 +410,14 @@ void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
 }
 
 void HTMLFormat::text_file_helper(text_stream *text, text_file_position *tfp, void *state) {
-	text_stream *OUT = (text_stream *) state;
-	WRITE("%S\n", text);
+	HTML_figure_state *hfs = (HTML_figure_state *) state;
+	TEMPORARY_TEXT(colouring);
+	LOOP_THROUGH_TEXT(pos, text) PUT_TO(colouring, PLAIN_COLOUR);
+	if (hfs->colour_as) Painter::syntax_colour(hfs->colour_as, hfs->OUT,
+		NULL, text, colouring, TRUE);
+	WRITE_TO(hfs->OUT, "%S\n", text);
+	if (hfs->colour_as) WRITE_TO(hfs->OUT, "%S\n", colouring);
+	DISCARD_TEXT(colouring);
 }
 
 @ =
@@ -509,7 +526,7 @@ void HTMLFormat::change_colour(weave_format *self, text_stream *OUT, weave_targe
 	int col, int in_code) {
 	char *cl = "plain";
 	switch (col) {
-		case MACRO_COLOUR: 			cl = "cwebmacrotext"; break;
+		case DEFINITION_COLOUR: 			cl = "cwebmacrotext"; break;
 		case FUNCTION_COLOUR: 		cl = "functiontext"; break;
 		case IDENTIFIER_COLOUR: 	cl = "identifier"; break;
 		case ELEMENT_COLOUR:		cl = "element"; break;

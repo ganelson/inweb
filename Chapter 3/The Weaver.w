@@ -172,17 +172,22 @@ at us; but we don't weave them into the output, that's for sure.
 	if (Regexp::match(&mr, figname, L"(%d+)cm: (%c+)")) {
 		if (S->md->using_syntax > V1_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "[[Figure: Xcm:...]]", V1_SYNTAX);
-		Formats::figure(OUT, wv, mr.exp[1], Str::atoi(mr.exp[0], 0), -1);
+		Formats::figure(OUT, wv, mr.exp[1], Str::atoi(mr.exp[0], 0), -1, NULL);
 	} else if (Regexp::match(&mr, figname, L"(%c+) width (%d+)cm")) {
 		if (S->md->using_syntax < V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "[[F width Xcm]]", V2_SYNTAX);
-		Formats::figure(OUT, wv, mr.exp[0], Str::atoi(mr.exp[1], 0), -1);
+		Formats::figure(OUT, wv, mr.exp[0], Str::atoi(mr.exp[1], 0), -1, NULL);
 	} else if (Regexp::match(&mr, figname, L"(%c+) height (%d+)cm")) {
 		if (S->md->using_syntax < V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "[[F height Xcm]]", V2_SYNTAX);
-		Formats::figure(OUT, wv, mr.exp[0], -1, Str::atoi(mr.exp[1], 0));
+		Formats::figure(OUT, wv, mr.exp[0], -1, Str::atoi(mr.exp[1], 0), NULL);
+	} else if (Regexp::match(&mr, figname, L"(%c+txt) as (%c+)")) {
+		if (S->md->using_syntax < V2_SYNTAX)
+			Parser::wrong_version(S->md->using_syntax, L, "[[F as L]]", V2_SYNTAX);
+		programming_language *pl = Languages::find_by_name(mr.exp[1]);
+		Formats::figure(OUT, wv, mr.exp[0], -1, -1, pl);
 	} else {
-		Formats::figure(OUT, wv, figname, -1, -1);
+		Formats::figure(OUT, wv, figname, -1, -1, NULL);
 	}
 	Regexp::dispose_of(&mr);
 
@@ -703,7 +708,8 @@ void Weaver::show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *wv
 @<Show endnote on where this function is used@> =
 	Formats::endnote(OUT, wv, 1);
 	hash_table_entry *hte =
-		Analyser::find_hash_entry(fn->function_header_at->owning_section, fn->function_name, FALSE);
+		Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,
+			fn->function_name, FALSE);
 	Formats::text(OUT, wv, I"The function ");
 	Formats::text(OUT, wv, fn->function_name);
 	int used_flag = FALSE;
@@ -750,7 +756,8 @@ void Weaver::show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *wv
 	structure_element *elt;
 	LOOP_OVER_LINKED_LIST(elt, structure_element, st->elements) {
 		hash_table_entry *hte =
-			Analyser::find_hash_entry(elt->element_created_at->owning_section, elt->element_name, FALSE);
+			Analyser::find_hash_entry_for_section(elt->element_created_at->owning_section,
+				elt->element_name, FALSE);
 		if (hte) {
 			hash_table_entry_usage *hteu;
 			LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)

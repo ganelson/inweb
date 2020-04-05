@@ -874,7 +874,8 @@ void InCSupport::weave_grammar_index(OUTPUT_STREAM) {
 @<List where the nonterminal is called from Inform code@> =
 	section *S;
 	LOOP_OVER(S, section) S->scratch_flag = FALSE;
-	hash_table_entry *hte = Analyser::find_hash_entry(pnt->where_defined->owning_section, pnt->unangled_name, FALSE);
+	hash_table_entry *hte = Analyser::find_hash_entry_for_section(
+		pnt->where_defined->owning_section, pnt->unangled_name, FALSE);
 	hash_table_entry_usage *hteu;
 	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
 		if (hteu->form_of_usage & PREFORM_IN_CODE_USAGE)
@@ -898,7 +899,8 @@ void InCSupport::weave_grammar_index(OUTPUT_STREAM) {
 @<List where the nonterminal appears in other Preform declarations@> =
 	section *S;
 	LOOP_OVER(S, section) S->scratch_flag = FALSE;
-	hash_table_entry *hte = Analyser::find_hash_entry(pnt->where_defined->owning_section, pnt->unangled_name, FALSE);
+	hash_table_entry *hte = Analyser::find_hash_entry_for_section(
+		pnt->where_defined->owning_section, pnt->unangled_name, FALSE);
 	hash_table_entry_usage *hteu;
 	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
 		if (hteu->form_of_usage & PREFORM_IN_GRAMMAR_USAGE)
@@ -965,7 +967,8 @@ void InCSupport::new_tag_declared(programming_language *self, theme_tag *tag) {
 void InCSupport::analyse_code(programming_language *self, web *W) {
 	preform_nonterminal *pnt;
 	LOOP_OVER(pnt, preform_nonterminal)
-		Analyser::find_hash_entry(pnt->where_defined->owning_section, pnt->unangled_name, TRUE);
+		Analyser::find_hash_entry_for_section(pnt->where_defined->owning_section,
+			pnt->unangled_name, TRUE);
 }
 
 int InCSupport::share_element(programming_language *self, text_stream *elname) {

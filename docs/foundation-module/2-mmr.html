@@ -63,7 +63,7 @@ IDs; and they cannot be iterated over.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MEMORY_MANAGEMENT</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">MEMORY_MANAGEMENT</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">allocation_id</span><span class="plain">; </span><span class="comment">Numbered from 0 upwards in creation order</span>
         <span class="identifier">void</span><span class="plain"> *</span><span class="identifier">next_structure</span><span class="plain">; </span><span class="comment">Next object in double-linked list</span>
         <span class="identifier">void</span><span class="plain"> *</span><span class="identifier">prev_structure</span><span class="plain">; </span><span class="comment">Previous object in double-linked list</span>
@@ -79,38 +79,38 @@ with the memory system. The ones here are those needed by Foundation.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">filename_MT</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">pathname_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">string_storage_area_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">scan_directory_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">ebook_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">ebook_datum_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">ebook_volume_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">ebook_chapter_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">ebook_page_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">ebook_image_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">HTML_file_state_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">HTML_tag_array_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">text_stream_array_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">command_line_switch_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">dictionary_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">dict_entry_array_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">debugging_aspect_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">linked_list_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">linked_list_item_array_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">match_avinue_array_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">match_trie_array_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">method_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">method_set_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">ebook_mark_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">semantic_version_number_holder_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">semver_range_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">web_md_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">chapter_md_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">section_md_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">web_bibliographic_datum_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">module_MT</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">module_search_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">filename_MT</span><span class="definitionkeyword"> from </span><span class="identifier">0</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">pathname_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">string_storage_area_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">scan_directory_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">ebook_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">ebook_datum_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">ebook_volume_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">ebook_chapter_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">ebook_page_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">ebook_image_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">HTML_file_state_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">HTML_tag_array_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">text_stream_array_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">command_line_switch_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">dictionary_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">dict_entry_array_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">debugging_aspect_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">linked_list_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">linked_list_item_array_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">match_avinue_array_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">match_trie_array_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">method_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">method_set_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">ebook_mark_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">semantic_version_number_holder_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">semver_range_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">web_md_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">chapter_md_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">section_md_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">web_bibliographic_datum_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">module_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">module_search_MT</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>For each type of object to be allocated, a single structure of the
 following design is maintained. Types which are allocated individually,
@@ -123,7 +123,7 @@ the doubly linked list is of the arrays.
 
 
 <pre class="display">
-    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="reserved">allocation_status_structure</span><span class="plain"> {</span>
+    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="identifier">allocation_status_structure</span><span class="plain"> {</span>
         <span class="comment">actually needed for allocation purposes:</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">objects_allocated</span><span class="plain">; </span><span class="comment">total number of objects (or arrays) ever allocated</span>
         <span class="identifier">void</span><span class="plain"> *</span><span class="identifier">first_in_memory</span><span class="plain">; </span><span class="comment">head of doubly linked list</span>
@@ -134,7 +134,7 @@ the doubly linked list is of the arrays.
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">bytes_allocated</span><span class="plain">; </span><span class="comment">total allocation for this type of object, not counting overhead</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">objects_count</span><span class="plain">; </span><span class="comment">total number currently in existence (i.e., undeleted)</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">no_allocated_together</span><span class="plain">; </span><span class="comment">number of objects in each array of this type of object</span>
-    <span class="plain">} </span><span class="reserved">allocation_status_structure</span><span class="plain">;</span>
+    <span class="plain">} </span><span class="identifier">allocation_status_structure</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -148,19 +148,19 @@ begin as soon as this is initialised.
 
 
 <pre class="display">
-    <span class="reserved">allocation_status_structure</span><span class="plain"> </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">];</span>
+    <span class="identifier">allocation_status_structure</span><span class="plain"> </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">];</span>
 
-    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Memory::start</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Memory::start</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
         <span class="identifier">for</span><span class="plain"> (</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">first_in_memory</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">last_in_memory</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">objects_allocated</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">objects_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">bytes_allocated</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">no_allocated_together</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
-            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">name_of_type</span><span class="plain"> = </span><span class="string">"unused"</span><span class="plain">;</span>
+            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">first_in_memory</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">last_in_memory</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">objects_allocated</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">objects_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">bytes_allocated</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">no_allocated_together</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">name_of_type</span><span class="plain"> = </span><span class="string">"unused"</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="functiontext">Memory::name_fundamental_reasons</span><span class="plain">();</span>
+        <span class="identifier">Memory::name_fundamental_reasons</span><span class="plain">();</span>
     <span class="plain">}</span>
 </pre>
 
@@ -195,8 +195,8 @@ the debugging log.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">SAFETY_MARGIN</span><span class="plain"> </span><span class="constant">128</span>
-    <span class="definitionkeyword">define</span> <span class="constant">BLANK_END_SIZE</span><span class="plain"> </span><span class="constant">256</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">SAFETY_MARGIN</span><span class="plain"> </span><span class="constant">128</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">BLANK_END_SIZE</span><span class="plain"> </span><span class="constant">256</span>
 </pre>
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>At present <code class="display"><span class="extract">MEMORY_GRANULARITY</span></code> is 800K. This is the quantity of memory
 allocated by each individual <code class="display"><span class="extract">malloc</span></code> call.
@@ -212,8 +212,8 @@ unable to get the GUI responsive enough to kill the process.)
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_BLOCKS_ALLOWED</span><span class="plain"> </span><span class="constant">15000</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MEMORY_GRANULARITY</span><span class="plain"> </span><span class="constant">100</span><span class="plain">*1024*8 </span><span class="comment">which must be divisible by 1024</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">MAX_BLOCKS_ALLOWED</span><span class="plain"> </span><span class="constant">15000</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">MEMORY_GRANULARITY</span><span class="plain"> </span><span class="constant">100</span><span class="plain">*1024*8 </span><span class="comment">which must be divisible by 1024</span>
 </pre>
 
 <pre class="display">
@@ -231,11 +231,11 @@ null bytes, followed by actual data.
 
 
 <pre class="display">
-    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="reserved">memblock_header</span><span class="plain"> {</span>
+    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="identifier">memblock_header</span><span class="plain"> {</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">block_number</span><span class="plain">;</span>
-        <span class="identifier">struct</span><span class="plain"> </span><span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">next</span><span class="plain">;</span>
+        <span class="identifier">struct</span><span class="plain"> </span><span class="identifier">memblock_header</span><span class="plain"> *</span><span class="identifier">next</span><span class="plain">;</span>
         <span class="identifier">char</span><span class="plain"> *</span><span class="identifier">the_memory</span><span class="plain">;</span>
-    <span class="plain">} </span><span class="reserved">memblock_header</span><span class="plain">;</span>
+    <span class="plain">} </span><span class="identifier">memblock_header</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -246,8 +246,8 @@ null bytes, followed by actual data.
 
 
 <pre class="display">
-    <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">first_memblock_header</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">head of list of memory blocks</span>
-    <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">current_memblock_header</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">tail of list of memory blocks</span>
+    <span class="identifier">memblock_header</span><span class="plain"> *</span><span class="identifier">first_memblock_header</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">head of list of memory blocks</span>
+    <span class="identifier">memblock_header</span><span class="plain"> *</span><span class="identifier">current_memblock_header</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">tail of list of memory blocks</span>
 
     <span class="identifier">int</span><span class="plain"> </span><span class="identifier">used_in_current_memblock</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">number of bytes so far used in the tail memory block</span>
 </pre>
@@ -260,15 +260,15 @@ pair of routines.
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Memory::allocate_another_block</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Memory::allocate_another_block</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
         <span class="identifier">unsigned</span><span class="plain"> </span><span class="identifier">char</span><span class="plain"> *</span><span class="identifier">cp</span><span class="plain">;</span>
-        <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">mh</span><span class="plain">;</span>
+        <span class="identifier">memblock_header</span><span class="plain"> *</span><span class="identifier">mh</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Allocate and zero out a block of memory, making cp point to it</span> <span class="cwebmacronumber">11.1</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">mh</span><span class="plain"> = (</span><span class="reserved">memblock_header</span><span class="plain"> *) </span><span class="identifier">cp</span><span class="plain">;</span>
-        <span class="identifier">used_in_current_memblock</span><span class="plain"> = </span><span class="identifier">sizeof</span><span class="plain">(</span><span class="reserved">memblock_header</span><span class="plain">) + </span><span class="constant">SAFETY_MARGIN</span><span class="plain">;</span>
-        <span class="identifier">mh</span><span class="plain">-&gt;</span><span class="element">the_memory</span><span class="plain"> = (</span><span class="identifier">void</span><span class="plain"> *) (</span><span class="identifier">cp</span><span class="plain"> + </span><span class="identifier">used_in_current_memblock</span><span class="plain">);</span>
+        <span class="identifier">mh</span><span class="plain"> = (</span><span class="identifier">memblock_header</span><span class="plain"> *) </span><span class="identifier">cp</span><span class="plain">;</span>
+        <span class="identifier">used_in_current_memblock</span><span class="plain"> = </span><span class="identifier">sizeof</span><span class="plain">(</span><span class="identifier">memblock_header</span><span class="plain">) + </span><span class="identifier">SAFETY_MARGIN</span><span class="plain">;</span>
+        <span class="identifier">mh</span><span class="plain">-&gt;</span><span class="identifier">the_memory</span><span class="plain"> = (</span><span class="identifier">void</span><span class="plain"> *) (</span><span class="identifier">cp</span><span class="plain"> + </span><span class="identifier">used_in_current_memblock</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">Add new block to the tail of the list of memory blocks</span> <span class="cwebmacronumber">11.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
@@ -290,14 +290,14 @@ pointer types as far as the C compiler is concerned.
 
 <pre class="displaydefn">
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">no_blocks_allocated</span><span class="plain">++ &gt;= </span><span class="constant">MAX_BLOCKS_ALLOWED</span><span class="plain">)</span>
-            <span class="functiontext">Errors::fatal</span><span class="plain">(</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">no_blocks_allocated</span><span class="plain">++ &gt;= </span><span class="identifier">MAX_BLOCKS_ALLOWED</span><span class="plain">)</span>
+            <span class="identifier">Errors::fatal</span><span class="plain">(</span>
                 <span class="string">"the memory manager has halted inweb, which seems to be generating "</span>
                 <span class="string">"endless structures. Presumably it is trapped in a loop"</span><span class="plain">);</span>
-        <span class="functiontext">Memory::check_memory_integrity</span><span class="plain">();</span>
-        <span class="identifier">cp</span><span class="plain"> = (</span><span class="identifier">unsigned</span><span class="plain"> </span><span class="identifier">char</span><span class="plain"> *) (</span><span class="functiontext">Memory::paranoid_calloc</span><span class="plain">(</span><span class="constant">MEMORY_GRANULARITY</span><span class="plain">, </span><span class="constant">1</span><span class="plain">));</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">cp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"Run out of memory: malloc failed"</span><span class="plain">);</span>
-        <span class="identifier">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MEMORY_GRANULARITY</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">cp</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">Memory::check_memory_integrity</span><span class="plain">();</span>
+        <span class="identifier">cp</span><span class="plain"> = (</span><span class="identifier">unsigned</span><span class="plain"> </span><span class="identifier">char</span><span class="plain"> *) (</span><span class="identifier">Memory::paranoid_calloc</span><span class="plain">(</span><span class="identifier">MEMORY_GRANULARITY</span><span class="plain">, </span><span class="constant">1</span><span class="plain">));</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">cp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Errors::fatal</span><span class="plain">(</span><span class="string">"Run out of memory: malloc failed"</span><span class="plain">);</span>
+        <span class="identifier">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">MEMORY_GRANULARITY</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">cp</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -316,11 +316,11 @@ their allocation.
 
 <pre class="displaydefn">
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">current_memblock_header</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">mh</span><span class="plain">-&gt;</span><span class="element">block_number</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="identifier">mh</span><span class="plain">-&gt;</span><span class="identifier">block_number</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="identifier">first_memblock_header</span><span class="plain"> = </span><span class="identifier">mh</span><span class="plain">;</span>
         <span class="plain">} </span><span class="identifier">else</span><span class="plain"> {</span>
-            <span class="identifier">mh</span><span class="plain">-&gt;</span><span class="element">block_number</span><span class="plain"> = </span><span class="identifier">current_memblock_header</span><span class="plain">-&gt;</span><span class="element">block_number</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">;</span>
-            <span class="identifier">current_memblock_header</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">mh</span><span class="plain">;</span>
+            <span class="identifier">mh</span><span class="plain">-&gt;</span><span class="identifier">block_number</span><span class="plain"> = </span><span class="identifier">current_memblock_header</span><span class="plain">-&gt;</span><span class="identifier">block_number</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">;</span>
+            <span class="identifier">current_memblock_header</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain"> = </span><span class="identifier">mh</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">current_memblock_header</span><span class="plain"> = </span><span class="identifier">mh</span><span class="plain">;</span>
 </pre>
@@ -336,11 +336,11 @@ block.
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Memory::free</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
-        <span class="functiontext">Memory::free_ssas</span><span class="plain">();</span>
-        <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">mh</span><span class="plain"> = </span><span class="identifier">first_memblock_header</span><span class="plain">;</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Memory::free</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
+        <span class="identifier">Memory::free_ssas</span><span class="plain">();</span>
+        <span class="identifier">memblock_header</span><span class="plain"> *</span><span class="identifier">mh</span><span class="plain"> = </span><span class="identifier">first_memblock_header</span><span class="plain">;</span>
         <span class="identifier">while</span><span class="plain"> (</span><span class="identifier">mh</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">next_mh</span><span class="plain"> = </span><span class="identifier">mh</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
+            <span class="identifier">memblock_header</span><span class="plain"> *</span><span class="identifier">next_mh</span><span class="plain"> = </span><span class="identifier">mh</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain">;</span>
             <span class="identifier">void</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = (</span><span class="identifier">void</span><span class="plain"> *) </span><span class="identifier">mh</span><span class="plain">;</span>
             <span class="identifier">free</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
             <span class="identifier">mh</span><span class="plain"> = </span><span class="identifier">next_mh</span><span class="plain">;</span>
@@ -361,16 +361,16 @@ a single large object, or a single array of small objects.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">INTEGRITY_NUMBER</span><span class="plain"> </span><span class="constant">0x12345678</span><span class="plain"> </span><span class="comment">a value unlikely to be in memory just by chance</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">INTEGRITY_NUMBER</span><span class="plain"> </span><span class="constant">0x12345678</span><span class="plain"> </span><span class="comment">a value unlikely to be in memory just by chance</span>
 </pre>
 
 <pre class="display">
-    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="reserved">memory_frame</span><span class="plain"> {</span>
+    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="identifier">memory_frame</span><span class="plain"> {</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">integrity_check</span><span class="plain">; </span><span class="comment">this should always contain the <code class="display"><span class="extract">INTEGRITY_NUMBER</span></code></span>
-        <span class="identifier">struct</span><span class="plain"> </span><span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">next_frame</span><span class="plain">; </span><span class="comment">next frame in the list of memory frames</span>
+        <span class="identifier">struct</span><span class="plain"> </span><span class="identifier">memory_frame</span><span class="plain"> *</span><span class="identifier">next_frame</span><span class="plain">; </span><span class="comment">next frame in the list of memory frames</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">mem_type</span><span class="plain">; </span><span class="comment">type of object stored in this frame</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">allocation_id</span><span class="plain">; </span><span class="comment">allocation ID number of object stored in this frame</span>
-    <span class="plain">} </span><span class="reserved">memory_frame</span><span class="plain">;</span>
+    <span class="plain">} </span><span class="identifier">memory_frame</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -384,8 +384,8 @@ blocks, but we don't need to worry about that.)
 
 
 <pre class="display">
-    <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">first_memory_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">earliest memory frame ever allocated</span>
-    <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">last_memory_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;  </span><span class="comment">most recent memory frame allocated</span>
+    <span class="identifier">memory_frame</span><span class="plain"> *</span><span class="identifier">first_memory_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">earliest memory frame ever allocated</span>
+    <span class="identifier">memory_frame</span><span class="plain"> *</span><span class="identifier">last_memory_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;  </span><span class="comment">most recent memory frame allocated</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -401,25 +401,25 @@ amount of storage n allocated.
 
 <pre class="display">
     <span class="identifier">int</span><span class="plain"> </span><span class="identifier">calls_to_cmi</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Memory::check_memory_integrity</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Memory::check_memory_integrity</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
-        <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">mf</span><span class="plain">;</span>
+        <span class="identifier">memory_frame</span><span class="plain"> *</span><span class="identifier">mf</span><span class="plain">;</span>
         <span class="identifier">c</span><span class="plain"> = </span><span class="identifier">calls_to_cmi</span><span class="plain">++;</span>
         <span class="identifier">if</span><span class="plain"> (!((</span><span class="identifier">c</span><span class="plain">&lt;10) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">100</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">1000</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">10000</span><span class="plain">))) </span><span class="identifier">return</span><span class="plain">;</span>
 
-        <span class="identifier">for</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">mf</span><span class="plain"> = </span><span class="identifier">first_memory_frame</span><span class="plain">; </span><span class="identifier">mf</span><span class="plain">; </span><span class="identifier">c</span><span class="plain">++, </span><span class="identifier">mf</span><span class="plain"> = </span><span class="identifier">mf</span><span class="plain">-&gt;</span><span class="element">next_frame</span><span class="plain">)</span>
-            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">mf</span><span class="plain">-&gt;</span><span class="element">integrity_check</span><span class="plain"> != </span><span class="constant">INTEGRITY_NUMBER</span><span class="plain">)</span>
-                <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"Memory manager failed integrity check"</span><span class="plain">);</span>
+        <span class="identifier">for</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">mf</span><span class="plain"> = </span><span class="identifier">first_memory_frame</span><span class="plain">; </span><span class="identifier">mf</span><span class="plain">; </span><span class="identifier">c</span><span class="plain">++, </span><span class="identifier">mf</span><span class="plain"> = </span><span class="identifier">mf</span><span class="plain">-&gt;</span><span class="identifier">next_frame</span><span class="plain">)</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">mf</span><span class="plain">-&gt;</span><span class="identifier">integrity_check</span><span class="plain"> != </span><span class="identifier">INTEGRITY_NUMBER</span><span class="plain">)</span>
+                <span class="identifier">Errors::fatal</span><span class="plain">(</span><span class="string">"Memory manager failed integrity check"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Memory::debug_memory_frames</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">to</span><span class="plain">) {</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Memory::debug_memory_frames</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">to</span><span class="plain">) {</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
-        <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">mf</span><span class="plain">;</span>
-        <span class="identifier">for</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">mf</span><span class="plain"> = </span><span class="identifier">first_memory_frame</span><span class="plain">; (</span><span class="identifier">mf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="identifier">to</span><span class="plain">); </span><span class="identifier">c</span><span class="plain">++, </span><span class="identifier">mf</span><span class="plain"> = </span><span class="identifier">mf</span><span class="plain">-&gt;</span><span class="element">next_frame</span><span class="plain">)</span>
+        <span class="identifier">memory_frame</span><span class="plain"> *</span><span class="identifier">mf</span><span class="plain">;</span>
+        <span class="identifier">for</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">mf</span><span class="plain"> = </span><span class="identifier">first_memory_frame</span><span class="plain">; (</span><span class="identifier">mf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="identifier">to</span><span class="plain">); </span><span class="identifier">c</span><span class="plain">++, </span><span class="identifier">mf</span><span class="plain"> = </span><span class="identifier">mf</span><span class="plain">-&gt;</span><span class="identifier">next_frame</span><span class="plain">)</span>
             <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="identifier">from</span><span class="plain">) {</span>
                 <span class="identifier">char</span><span class="plain"> *</span><span class="identifier">desc</span><span class="plain"> = </span><span class="string">"corrupt"</span><span class="plain">;</span>
-                <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">mf</span><span class="plain">-&gt;</span><span class="element">integrity_check</span><span class="plain"> == </span><span class="constant">INTEGRITY_NUMBER</span><span class="plain">)</span>
-                    <span class="identifier">desc</span><span class="plain"> = </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mf</span><span class="plain">-&gt;</span><span class="element">mem_type</span><span class="plain">].</span><span class="element">name_of_type</span><span class="plain">;</span>
+                <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">mf</span><span class="plain">-&gt;</span><span class="identifier">integrity_check</span><span class="plain"> == </span><span class="identifier">INTEGRITY_NUMBER</span><span class="plain">)</span>
+                    <span class="identifier">desc</span><span class="plain"> = </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mf</span><span class="plain">-&gt;</span><span class="identifier">mem_type</span><span class="plain">].</span><span class="identifier">name_of_type</span><span class="plain">;</span>
             <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
@@ -438,28 +438,28 @@ memory frame is created by the following function:
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> *</span><span class="functiontext">Memory::allocate</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">mem_type</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">extent</span><span class="plain">) {</span>
+    <span class="identifier">void</span><span class="plain"> *</span><span class="identifier">Memory::allocate</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">mem_type</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">extent</span><span class="plain">) {</span>
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
 
         <span class="identifier">unsigned</span><span class="plain"> </span><span class="identifier">char</span><span class="plain"> *</span><span class="identifier">cp</span><span class="plain">;</span>
-        <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">mf</span><span class="plain">;</span>
+        <span class="identifier">memory_frame</span><span class="plain"> *</span><span class="identifier">mf</span><span class="plain">;</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">bytes_free_in_current_memblock</span><span class="plain">, </span><span class="identifier">extent_without_overheads</span><span class="plain"> = </span><span class="identifier">extent</span><span class="plain">;</span>
 
-        <span class="identifier">extent</span><span class="plain"> += </span><span class="identifier">sizeof</span><span class="plain">(</span><span class="reserved">memory_frame</span><span class="plain">); </span><span class="comment">each allocation is preceded by a memory frame</span>
-        <span class="identifier">extent</span><span class="plain"> += </span><span class="constant">SAFETY_MARGIN</span><span class="plain">; </span><span class="comment">each allocation is followed by <code class="display"><span class="extract">SAFETY_MARGIN</span></code> null bytes</span>
+        <span class="identifier">extent</span><span class="plain"> += </span><span class="identifier">sizeof</span><span class="plain">(</span><span class="identifier">memory_frame</span><span class="plain">); </span><span class="comment">each allocation is preceded by a memory frame</span>
+        <span class="identifier">extent</span><span class="plain"> += </span><span class="identifier">SAFETY_MARGIN</span><span class="plain">; </span><span class="comment">each allocation is followed by <code class="display"><span class="extract">SAFETY_MARGIN</span></code> null bytes</span>
 
         &lt;<span class="cwebmacro">Ensure that the current memory block has room for this many bytes</span> <span class="cwebmacronumber">16.1</span>&gt;<span class="plain">;</span>
 
-        <span class="identifier">cp</span><span class="plain"> = ((</span><span class="identifier">unsigned</span><span class="plain"> </span><span class="identifier">char</span><span class="plain"> *) (</span><span class="identifier">current_memblock_header</span><span class="plain">-&gt;</span><span class="element">the_memory</span><span class="plain">)) + </span><span class="identifier">used_in_current_memblock</span><span class="plain">;</span>
+        <span class="identifier">cp</span><span class="plain"> = ((</span><span class="identifier">unsigned</span><span class="plain"> </span><span class="identifier">char</span><span class="plain"> *) (</span><span class="identifier">current_memblock_header</span><span class="plain">-&gt;</span><span class="identifier">the_memory</span><span class="plain">)) + </span><span class="identifier">used_in_current_memblock</span><span class="plain">;</span>
         <span class="identifier">used_in_current_memblock</span><span class="plain"> += </span><span class="identifier">extent</span><span class="plain">;</span>
 
-        <span class="identifier">mf</span><span class="plain"> = (</span><span class="reserved">memory_frame</span><span class="plain"> *) </span><span class="identifier">cp</span><span class="plain">; </span><span class="comment">the new memory frame,</span>
-        <span class="identifier">cp</span><span class="plain"> = </span><span class="identifier">cp</span><span class="plain"> + </span><span class="identifier">sizeof</span><span class="plain">(</span><span class="reserved">memory_frame</span><span class="plain">); </span><span class="comment">following which is the actual allocated data</span>
+        <span class="identifier">mf</span><span class="plain"> = (</span><span class="identifier">memory_frame</span><span class="plain"> *) </span><span class="identifier">cp</span><span class="plain">; </span><span class="comment">the new memory frame,</span>
+        <span class="identifier">cp</span><span class="plain"> = </span><span class="identifier">cp</span><span class="plain"> + </span><span class="identifier">sizeof</span><span class="plain">(</span><span class="identifier">memory_frame</span><span class="plain">); </span><span class="comment">following which is the actual allocated data</span>
 
-        <span class="identifier">mf</span><span class="plain">-&gt;</span><span class="element">integrity_check</span><span class="plain"> = </span><span class="constant">INTEGRITY_NUMBER</span><span class="plain">;</span>
-        <span class="identifier">mf</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain"> = </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mem_type</span><span class="plain">].</span><span class="element">objects_allocated</span><span class="plain">;</span>
-        <span class="identifier">mf</span><span class="plain">-&gt;</span><span class="element">mem_type</span><span class="plain"> = </span><span class="identifier">mem_type</span><span class="plain">;</span>
+        <span class="identifier">mf</span><span class="plain">-&gt;</span><span class="identifier">integrity_check</span><span class="plain"> = </span><span class="identifier">INTEGRITY_NUMBER</span><span class="plain">;</span>
+        <span class="identifier">mf</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> = </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mem_type</span><span class="plain">].</span><span class="identifier">objects_allocated</span><span class="plain">;</span>
+        <span class="identifier">mf</span><span class="plain">-&gt;</span><span class="identifier">mem_type</span><span class="plain"> = </span><span class="identifier">mem_type</span><span class="plain">;</span>
 
         &lt;<span class="cwebmacro">Add the new memory frame to the big linked list of all frames</span> <span class="cwebmacronumber">16.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Update the allocation status for this type of object</span> <span class="cwebmacronumber">16.3</span>&gt;<span class="plain">;</span>
@@ -487,12 +487,12 @@ for a user with a particularly long and involved source text to discover.
 
 
 <pre class="displaydefn">
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">current_memblock_header</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Memory::allocate_another_block</span><span class="plain">();</span>
-        <span class="identifier">bytes_free_in_current_memblock</span><span class="plain"> = </span><span class="constant">MEMORY_GRANULARITY</span><span class="plain"> - (</span><span class="identifier">used_in_current_memblock</span><span class="plain"> + </span><span class="identifier">extent</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">bytes_free_in_current_memblock</span><span class="plain"> &lt; </span><span class="constant">BLANK_END_SIZE</span><span class="plain">) {</span>
-            <span class="functiontext">Memory::allocate_another_block</span><span class="plain">();</span>
-            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">extent</span><span class="plain">+</span><span class="constant">BLANK_END_SIZE</span><span class="plain"> &gt;= </span><span class="constant">MEMORY_GRANULARITY</span><span class="plain">)</span>
-                <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"Memory manager failed because granularity too low"</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">current_memblock_header</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">Memory::allocate_another_block</span><span class="plain">();</span>
+        <span class="identifier">bytes_free_in_current_memblock</span><span class="plain"> = </span><span class="identifier">MEMORY_GRANULARITY</span><span class="plain"> - (</span><span class="identifier">used_in_current_memblock</span><span class="plain"> + </span><span class="identifier">extent</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">bytes_free_in_current_memblock</span><span class="plain"> &lt; </span><span class="identifier">BLANK_END_SIZE</span><span class="plain">) {</span>
+            <span class="identifier">Memory::allocate_another_block</span><span class="plain">();</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">extent</span><span class="plain">+</span><span class="identifier">BLANK_END_SIZE</span><span class="plain"> &gt;= </span><span class="identifier">MEMORY_GRANULARITY</span><span class="plain">)</span>
+                <span class="identifier">Errors::fatal</span><span class="plain">(</span><span class="string">"Memory manager failed because granularity too low"</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -510,9 +510,9 @@ for a user with a particularly long and involved source text to discover.
 
 
 <pre class="displaydefn">
-        <span class="identifier">mf</span><span class="plain">-&gt;</span><span class="element">next_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">mf</span><span class="plain">-&gt;</span><span class="identifier">next_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">first_memory_frame</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">first_memory_frame</span><span class="plain"> = </span><span class="identifier">mf</span><span class="plain">;</span>
-        <span class="identifier">else</span><span class="plain"> </span><span class="identifier">last_memory_frame</span><span class="plain">-&gt;</span><span class="element">next_frame</span><span class="plain"> = </span><span class="identifier">mf</span><span class="plain">;</span>
+        <span class="identifier">else</span><span class="plain"> </span><span class="identifier">last_memory_frame</span><span class="plain">-&gt;</span><span class="identifier">next_frame</span><span class="plain"> = </span><span class="identifier">mf</span><span class="plain">;</span>
         <span class="identifier">last_memory_frame</span><span class="plain"> = </span><span class="identifier">mf</span><span class="plain">;</span>
 </pre>
 
@@ -530,11 +530,11 @@ for a user with a particularly long and involved source text to discover.
 
 
 <pre class="displaydefn">
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mem_type</span><span class="plain">].</span><span class="element">first_in_memory</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mem_type</span><span class="plain">].</span><span class="element">first_in_memory</span><span class="plain"> = (</span><span class="identifier">void</span><span class="plain"> *) </span><span class="identifier">cp</span><span class="plain">;</span>
-        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mem_type</span><span class="plain">].</span><span class="element">last_in_memory</span><span class="plain"> = (</span><span class="identifier">void</span><span class="plain"> *) </span><span class="identifier">cp</span><span class="plain">;</span>
-        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mem_type</span><span class="plain">].</span><span class="element">objects_allocated</span><span class="plain">++;</span>
-        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mem_type</span><span class="plain">].</span><span class="element">bytes_allocated</span><span class="plain"> += </span><span class="identifier">extent_without_overheads</span><span class="plain">;</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mem_type</span><span class="plain">].</span><span class="identifier">first_in_memory</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
+            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mem_type</span><span class="plain">].</span><span class="identifier">first_in_memory</span><span class="plain"> = (</span><span class="identifier">void</span><span class="plain"> *) </span><span class="identifier">cp</span><span class="plain">;</span>
+        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mem_type</span><span class="plain">].</span><span class="identifier">last_in_memory</span><span class="plain"> = (</span><span class="identifier">void</span><span class="plain"> *) </span><span class="identifier">cp</span><span class="plain">;</span>
+        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mem_type</span><span class="plain">].</span><span class="identifier">objects_allocated</span><span class="plain">++;</span>
+        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">mem_type</span><span class="plain">].</span><span class="identifier">bytes_allocated</span><span class="plain"> += </span><span class="identifier">extent_without_overheads</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -560,11 +560,11 @@ because of the <code class="display"><span class="extract">##</span></code>. (Se
     <span class="definitionkeyword">define</span> <span class="identifier">COPY</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">type_name</span><span class="plain">) (</span><span class="identifier">copy_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">))</span>
     <span class="definitionkeyword">define</span> <span class="identifier">CREATE_BEFORE</span><span class="plain">(</span><span class="identifier">existing</span><span class="plain">, </span><span class="identifier">type_name</span><span class="plain">) (</span><span class="identifier">allocate_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_before</span><span class="plain">(</span><span class="identifier">existing</span><span class="plain">))</span>
     <span class="definitionkeyword">define</span> <span class="identifier">DESTROY</span><span class="plain">(</span><span class="identifier">this</span><span class="plain">, </span><span class="identifier">type_name</span><span class="plain">) (</span><span class="identifier">deallocate_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">(</span><span class="identifier">this</span><span class="plain">))</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">FIRST_OBJECT</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">) ((</span><span class="identifier">type_name</span><span class="plain"> *) </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="element">first_in_memory</span><span class="plain">)</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">LAST_OBJECT</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">) ((</span><span class="identifier">type_name</span><span class="plain"> *) </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="element">last_in_memory</span><span class="plain">)</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">FIRST_OBJECT</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">) ((</span><span class="identifier">type_name</span><span class="plain"> *) </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="identifier">first_in_memory</span><span class="plain">)</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">LAST_OBJECT</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">) ((</span><span class="identifier">type_name</span><span class="plain"> *) </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="identifier">last_in_memory</span><span class="plain">)</span>
     <span class="definitionkeyword">define</span> <span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">this</span><span class="plain">, </span><span class="identifier">type_name</span><span class="plain">) ((</span><span class="identifier">type_name</span><span class="plain"> *) (</span><span class="identifier">this</span><span class="plain">-&gt;</span><span class="identifier">next_structure</span><span class="plain">))</span>
     <span class="definitionkeyword">define</span> <span class="identifier">PREV_OBJECT</span><span class="plain">(</span><span class="identifier">this</span><span class="plain">, </span><span class="identifier">type_name</span><span class="plain">) ((</span><span class="identifier">type_name</span><span class="plain"> *) (</span><span class="identifier">this</span><span class="plain">-&gt;</span><span class="identifier">prev_structure</span><span class="plain">))</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">) (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="element">objects_count</span><span class="plain">)</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">NUMBER_CREATED</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">) (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="identifier">objects_count</span><span class="plain">)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b>The following macros are widely used (well, the first one is, anyway)
 for looking through the double linked list of existing objects of a
@@ -590,21 +590,21 @@ double-quotes.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="identifier">NEW_OBJECT</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">) ((</span><span class="identifier">type_name</span><span class="plain"> *) </span><span class="functiontext">Memory::allocate</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">, </span><span class="identifier">sizeof</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">)))</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">NEW_OBJECT</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">) ((</span><span class="identifier">type_name</span><span class="plain"> *) </span><span class="identifier">Memory::allocate</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">, </span><span class="identifier">sizeof</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">)))</span>
     <span class="definitionkeyword">define</span> <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">)</span>
     <span class="identifier">MAKE_REFERENCE_ROUTINES</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">, </span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">)</span>
     <span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">allocate_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
-        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="element">name_of_type</span><span class="plain"> = #</span><span class="identifier">type_name</span><span class="plain">;</span>
+        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="identifier">name_of_type</span><span class="plain"> = #</span><span class="identifier">type_name</span><span class="plain">;</span>
         <span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">prev_obj</span><span class="plain"> = </span><span class="identifier">LAST_OBJECT</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">);</span>
         <span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">new_obj</span><span class="plain"> = </span><span class="identifier">NEW_OBJECT</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">);</span>
-        <span class="identifier">new_obj</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain"> = </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="element">objects_allocated</span><span class="plain">-1;</span>
+        <span class="identifier">new_obj</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> = </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="identifier">objects_allocated</span><span class="plain">-1;</span>
         <span class="identifier">new_obj</span><span class="plain">-&gt;</span><span class="identifier">next_structure</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">prev_obj</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="identifier">prev_obj</span><span class="plain">-&gt;</span><span class="identifier">next_structure</span><span class="plain"> = (</span><span class="identifier">void</span><span class="plain"> *) </span><span class="identifier">new_obj</span><span class="plain">;</span>
         <span class="identifier">new_obj</span><span class="plain">-&gt;</span><span class="identifier">prev_structure</span><span class="plain"> = </span><span class="identifier">prev_obj</span><span class="plain">;</span>
-        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="element">objects_count</span><span class="plain">++;</span>
+        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="identifier">objects_count</span><span class="plain">++;</span>
         <span class="identifier">UNLOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">new_obj</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -614,16 +614,16 @@ double-quotes.
         <span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">prev_obj</span><span class="plain"> = </span><span class="identifier">PREV_OBJECT</span><span class="plain">(</span><span class="identifier">kill_me</span><span class="plain">, </span><span class="identifier">type_name</span><span class="plain">);</span>
         <span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">next_obj</span><span class="plain"> = </span><span class="identifier">NEXT_OBJECT</span><span class="plain">(</span><span class="identifier">kill_me</span><span class="plain">, </span><span class="identifier">type_name</span><span class="plain">);</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">prev_obj</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="element">first_in_memory</span><span class="plain"> = </span><span class="identifier">next_obj</span><span class="plain">;</span>
+            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="identifier">first_in_memory</span><span class="plain"> = </span><span class="identifier">next_obj</span><span class="plain">;</span>
         <span class="plain">} </span><span class="identifier">else</span><span class="plain"> {</span>
             <span class="identifier">prev_obj</span><span class="plain">-&gt;</span><span class="identifier">next_structure</span><span class="plain"> = </span><span class="identifier">next_obj</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">next_obj</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="element">last_in_memory</span><span class="plain"> = </span><span class="identifier">prev_obj</span><span class="plain">;</span>
+            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="identifier">last_in_memory</span><span class="plain"> = </span><span class="identifier">prev_obj</span><span class="plain">;</span>
         <span class="plain">} </span><span class="identifier">else</span><span class="plain"> {</span>
             <span class="identifier">next_obj</span><span class="plain">-&gt;</span><span class="identifier">prev_structure</span><span class="plain"> = </span><span class="identifier">prev_obj</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="element">objects_count</span><span class="plain">--;</span>
+        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="identifier">objects_count</span><span class="plain">--;</span>
         <span class="identifier">UNLOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
     <span class="plain">}</span>
     <span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">allocate_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_before</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">existing</span><span class="plain">) {</span>
@@ -634,10 +634,10 @@ double-quotes.
         <span class="identifier">new_obj</span><span class="plain">-&gt;</span><span class="identifier">prev_structure</span><span class="plain"> = </span><span class="identifier">existing</span><span class="plain">-&gt;</span><span class="identifier">prev_structure</span><span class="plain">;</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">existing</span><span class="plain">-&gt;</span><span class="identifier">prev_structure</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">)</span>
             <span class="plain">((</span><span class="identifier">type_name</span><span class="plain"> *) </span><span class="identifier">existing</span><span class="plain">-&gt;</span><span class="identifier">prev_structure</span><span class="plain">)-&gt;</span><span class="identifier">next_structure</span><span class="plain"> = </span><span class="identifier">new_obj</span><span class="plain">;</span>
-        <span class="identifier">else</span><span class="plain"> </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="element">first_in_memory</span><span class="plain"> = (</span><span class="identifier">void</span><span class="plain"> *) </span><span class="identifier">new_obj</span><span class="plain">;</span>
+        <span class="identifier">else</span><span class="plain"> </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="identifier">first_in_memory</span><span class="plain"> = (</span><span class="identifier">void</span><span class="plain"> *) </span><span class="identifier">new_obj</span><span class="plain">;</span>
         <span class="identifier">new_obj</span><span class="plain">-&gt;</span><span class="identifier">next_structure</span><span class="plain"> = </span><span class="identifier">existing</span><span class="plain">;</span>
         <span class="identifier">existing</span><span class="plain">-&gt;</span><span class="identifier">prev_structure</span><span class="plain"> = </span><span class="identifier">new_obj</span><span class="plain">;</span>
-        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="element">objects_count</span><span class="plain">++;</span>
+        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">].</span><span class="identifier">objects_count</span><span class="plain">++;</span>
         <span class="identifier">UNLOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">new_obj</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -646,9 +646,9 @@ double-quotes.
         <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">prev_obj</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">-&gt;</span><span class="identifier">prev_structure</span><span class="plain">;</span>
         <span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">next_obj</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">-&gt;</span><span class="identifier">next_structure</span><span class="plain">;</span>
-        <span class="identifier">int</span><span class="plain"> </span><span class="identifier">aid</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain">;</span>
+        <span class="identifier">int</span><span class="plain"> </span><span class="identifier">aid</span><span class="plain"> = </span><span class="identifier">to</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain">;</span>
         <span class="plain">*</span><span class="identifier">to</span><span class="plain"> = *</span><span class="identifier">from</span><span class="plain">;</span>
-        <span class="identifier">to</span><span class="plain">-&gt;</span><span class="element">allocation_id</span><span class="plain"> = </span><span class="identifier">aid</span><span class="plain">;</span>
+        <span class="identifier">to</span><span class="plain">-&gt;</span><span class="identifier">allocation_id</span><span class="plain"> = </span><span class="identifier">aid</span><span class="plain">;</span>
         <span class="identifier">to</span><span class="plain">-&gt;</span><span class="identifier">next_structure</span><span class="plain"> = </span><span class="identifier">next_obj</span><span class="plain">;</span>
         <span class="identifier">to</span><span class="plain">-&gt;</span><span class="identifier">prev_structure</span><span class="plain"> = </span><span class="identifier">prev_obj</span><span class="plain">;</span>
         <span class="identifier">UNLOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
@@ -670,7 +670,7 @@ allocating in blocks.
     <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_array</span><span class="plain"> {</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">used</span><span class="plain">;</span>
         <span class="identifier">struct</span><span class="plain"> </span><span class="identifier">type_name</span><span class="plain"> </span><span class="identifier">array</span><span class="plain">[</span><span class="identifier">NO_TO_ALLOCATE_TOGETHER</span><span class="plain">];</span>
-        <span class="constant">MEMORY_MANAGEMENT</span>
+        <span class="identifier">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_array</span><span class="plain">;</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_array</span><span class="plain">)</span>
     <span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_array</span><span class="plain"> *</span><span class="identifier">next_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_array</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -679,7 +679,7 @@ allocating in blocks.
         <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">next_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_array</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) ||</span>
             <span class="plain">(</span><span class="identifier">next_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_array</span><span class="plain">-&gt;</span><span class="identifier">used</span><span class="plain"> &gt;= </span><span class="identifier">NO_TO_ALLOCATE_TOGETHER</span><span class="plain">)) {</span>
-            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_array_MT</span><span class="plain">].</span><span class="element">no_allocated_together</span><span class="plain"> = </span><span class="identifier">NO_TO_ALLOCATE_TOGETHER</span><span class="plain">;</span>
+            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_array_MT</span><span class="plain">].</span><span class="identifier">no_allocated_together</span><span class="plain"> = </span><span class="identifier">NO_TO_ALLOCATE_TOGETHER</span><span class="plain">;</span>
             <span class="identifier">next_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_array</span><span class="plain"> = </span><span class="identifier">allocate_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_array</span><span class="plain">();</span>
             <span class="identifier">next_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_array</span><span class="plain">-&gt;</span><span class="identifier">used</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -722,39 +722,39 @@ used in the lower levels.
 
 
 <pre class="display">
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">string_storage_area</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">scan_directory</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">ebook</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">ebook_datum</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">ebook_volume</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">ebook_chapter</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">ebook_page</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">ebook_image</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">HTML_file_state</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">command_line_switch</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">dictionary</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">debugging_aspect</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">linked_list</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">method</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">method_set</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">ebook_mark</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">semantic_version_number_holder</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">semver_range</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">web_bibliographic_datum</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">web_md</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">chapter_md</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">section_md</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">module</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">module_search</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">filename</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">pathname</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">string_storage_area</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">scan_directory</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">ebook</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">ebook_datum</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">ebook_volume</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">ebook_chapter</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">ebook_page</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">ebook_image</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">HTML_file_state</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">command_line_switch</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">dictionary</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">debugging_aspect</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">linked_list</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">method</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">method_set</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">ebook_mark</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">semantic_version_number_holder</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">semver_range</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">web_bibliographic_datum</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">web_md</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">chapter_md</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">section_md</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">module</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">module_search</span><span class="plain">)</span>
 
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">dict_entry</span><span class="plain">, </span><span class="constant">100</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">HTML_tag</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">linked_list_item</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">match_avinue</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">match_trie</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
-    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain">, </span><span class="constant">100</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="identifier">dict_entry</span><span class="plain">, </span><span class="constant">100</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="identifier">HTML_tag</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="identifier">linked_list_item</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="identifier">match_avinue</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="identifier">match_trie</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain">, </span><span class="constant">100</span><span class="plain">)</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -765,20 +765,20 @@ we need to use the equivalent of traditional <code class="display"><span class="
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">STREAM_MREASON</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">FILENAME_STORAGE_MREASON</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">STRING_STORAGE_MREASON</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">DICTIONARY_MREASON</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">CLS_SORTING_MREASON</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">STREAM_MREASON</span><span class="definitionkeyword"> from </span><span class="identifier">0</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">FILENAME_STORAGE_MREASON</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">STRING_STORAGE_MREASON</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">DICTIONARY_MREASON</span>
+    <span class="definitionkeyword">enum</span> <span class="identifier">CLS_SORTING_MREASON</span>
 </pre>
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Memory::name_fundamental_reasons</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
-        <span class="functiontext">Memory::reason_name</span><span class="plain">(</span><span class="constant">STREAM_MREASON</span><span class="plain">, </span><span class="string">"text stream storage"</span><span class="plain">);</span>
-        <span class="functiontext">Memory::reason_name</span><span class="plain">(</span><span class="constant">FILENAME_STORAGE_MREASON</span><span class="plain">, </span><span class="string">"filename/pathname storage"</span><span class="plain">);</span>
-        <span class="functiontext">Memory::reason_name</span><span class="plain">(</span><span class="constant">STRING_STORAGE_MREASON</span><span class="plain">, </span><span class="string">"string storage"</span><span class="plain">);</span>
-        <span class="functiontext">Memory::reason_name</span><span class="plain">(</span><span class="constant">DICTIONARY_MREASON</span><span class="plain">, </span><span class="string">"dictionary storage"</span><span class="plain">);</span>
-        <span class="functiontext">Memory::reason_name</span><span class="plain">(</span><span class="constant">CLS_SORTING_MREASON</span><span class="plain">, </span><span class="string">"sorting"</span><span class="plain">);</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Memory::name_fundamental_reasons</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
+        <span class="identifier">Memory::reason_name</span><span class="plain">(</span><span class="identifier">STREAM_MREASON</span><span class="plain">, </span><span class="string">"text stream storage"</span><span class="plain">);</span>
+        <span class="identifier">Memory::reason_name</span><span class="plain">(</span><span class="identifier">FILENAME_STORAGE_MREASON</span><span class="plain">, </span><span class="string">"filename/pathname storage"</span><span class="plain">);</span>
+        <span class="identifier">Memory::reason_name</span><span class="plain">(</span><span class="identifier">STRING_STORAGE_MREASON</span><span class="plain">, </span><span class="string">"string storage"</span><span class="plain">);</span>
+        <span class="identifier">Memory::reason_name</span><span class="plain">(</span><span class="identifier">DICTIONARY_MREASON</span><span class="plain">, </span><span class="string">"dictionary storage"</span><span class="plain">);</span>
+        <span class="identifier">Memory::reason_name</span><span class="plain">(</span><span class="identifier">CLS_SORTING_MREASON</span><span class="plain">, </span><span class="string">"sorting"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -793,12 +793,12 @@ we need to use the equivalent of traditional <code class="display"><span class="
 <pre class="display">
     <span class="identifier">char</span><span class="plain"> *</span><span class="identifier">memory_needs</span><span class="plain">[</span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">];</span>
 
-    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Memory::reason_name</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">, </span><span class="identifier">char</span><span class="plain"> *</span><span class="identifier">reason</span><span class="plain">) {</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Memory::reason_name</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">, </span><span class="identifier">char</span><span class="plain"> *</span><span class="identifier">reason</span><span class="plain">) {</span>
         <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">r</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">r</span><span class="plain"> &gt;= </span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"MR out of range"</span><span class="plain">);</span>
         <span class="identifier">memory_needs</span><span class="plain">[</span><span class="identifier">r</span><span class="plain">] = </span><span class="identifier">reason</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="identifier">char</span><span class="plain"> *</span><span class="functiontext">Memory::description_of_reason</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">) {</span>
+    <span class="identifier">char</span><span class="plain"> *</span><span class="identifier">Memory::description_of_reason</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">) {</span>
         <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">r</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">r</span><span class="plain"> &gt;= </span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"MR out of range"</span><span class="plain">);</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">memory_needs</span><span class="plain">[</span><span class="identifier">r</span><span class="plain">];</span>
     <span class="plain">}</span>
@@ -837,11 +837,11 @@ values of these functions are always non-<code class="display"><span class="extr
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> *</span><span class="functiontext">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">how_many</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain">) {</span>
-        <span class="identifier">return</span><span class="plain"> </span><span class="functiontext">Memory::I7_alloc</span><span class="plain">(</span><span class="identifier">how_many</span><span class="plain">, </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="identifier">reason</span><span class="plain">);</span>
+    <span class="identifier">void</span><span class="plain"> *</span><span class="identifier">Memory::I7_calloc</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">how_many</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain">) {</span>
+        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">Memory::I7_alloc</span><span class="plain">(</span><span class="identifier">how_many</span><span class="plain">, </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="identifier">reason</span><span class="plain">);</span>
     <span class="plain">}</span>
-    <span class="identifier">void</span><span class="plain"> *</span><span class="functiontext">Memory::I7_malloc</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain">) {</span>
-        <span class="identifier">return</span><span class="plain"> </span><span class="functiontext">Memory::I7_alloc</span><span class="plain">(-1, </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="identifier">reason</span><span class="plain">);</span>
+    <span class="identifier">void</span><span class="plain"> *</span><span class="identifier">Memory::I7_malloc</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain">) {</span>
+        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">Memory::I7_alloc</span><span class="plain">(-1, </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="identifier">reason</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -856,7 +856,7 @@ values of these functions are always non-<code class="display"><span class="extr
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> *</span><span class="functiontext">Memory::I7_alloc</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">) {</span>
+    <span class="identifier">void</span><span class="plain"> *</span><span class="identifier">Memory::I7_alloc</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">) {</span>
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">void</span><span class="plain"> *</span><span class="identifier">pointer</span><span class="plain">;</span>
@@ -887,14 +887,14 @@ allocates a tiny but positive amount of memory, just to be safe.
 
 <pre class="displaydefn">
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
-            <span class="identifier">pointer</span><span class="plain"> = </span><span class="functiontext">Memory::paranoid_calloc</span><span class="plain">((</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">N</span><span class="plain">, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">S</span><span class="plain">);</span>
+            <span class="identifier">pointer</span><span class="plain"> = </span><span class="identifier">Memory::paranoid_calloc</span><span class="plain">((</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">N</span><span class="plain">, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="identifier">bytes_needed</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">*</span><span class="identifier">S</span><span class="plain">;</span>
         <span class="plain">} </span><span class="identifier">else</span><span class="plain"> {</span>
-            <span class="identifier">pointer</span><span class="plain"> = </span><span class="functiontext">Memory::paranoid_calloc</span><span class="plain">(1, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">S</span><span class="plain">);</span>
+            <span class="identifier">pointer</span><span class="plain"> = </span><span class="identifier">Memory::paranoid_calloc</span><span class="plain">(1, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="identifier">bytes_needed</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">pointer</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="functiontext">Errors::fatal_with_C_string</span><span class="plain">(</span><span class="string">"Out of memory for %s"</span><span class="plain">, </span><span class="functiontext">Memory::description_of_reason</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">));</span>
+            <span class="identifier">Errors::fatal_with_C_string</span><span class="plain">(</span><span class="string">"Out of memory for %s"</span><span class="plain">, </span><span class="identifier">Memory::description_of_reason</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">));</span>
         <span class="plain">}</span>
 </pre>
 
@@ -948,7 +948,7 @@ rarely and to allocate large blocks of memory.
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Memory::I7_free</span><span class="plain">(</span><span class="identifier">void</span><span class="plain"> *</span><span class="identifier">pointer</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">bytes_freed</span><span class="plain">) {</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Memory::I7_free</span><span class="plain">(</span><span class="identifier">void</span><span class="plain"> *</span><span class="identifier">pointer</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">bytes_freed</span><span class="plain">) {</span>
         <span class="identifier">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">R</span><span class="plain"> &gt;= </span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no such memory reason"</span><span class="plain">);</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">pointer</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't free NULL memory"</span><span class="plain">);</span>
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
@@ -958,8 +958,8 @@ rarely and to allocate large blocks of memory.
         <span class="identifier">UNLOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Memory::I7_array_free</span><span class="plain">(</span><span class="identifier">void</span><span class="plain"> *</span><span class="identifier">pointer</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">num_cells</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">cell_size</span><span class="plain">) {</span>
-        <span class="functiontext">Memory::I7_free</span><span class="plain">(</span><span class="identifier">pointer</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">num_cells</span><span class="plain">*((</span><span class="identifier">int</span><span class="plain">) </span><span class="identifier">cell_size</span><span class="plain">));</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Memory::I7_array_free</span><span class="plain">(</span><span class="identifier">void</span><span class="plain"> *</span><span class="identifier">pointer</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">num_cells</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">cell_size</span><span class="plain">) {</span>
+        <span class="identifier">Memory::I7_free</span><span class="plain">(</span><span class="identifier">pointer</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">num_cells</span><span class="plain">*((</span><span class="identifier">int</span><span class="plain">) </span><span class="identifier">cell_size</span><span class="plain">));</span>
     <span class="plain">}</span>
 </pre>
 
@@ -974,17 +974,17 @@ rarely and to allocate large blocks of memory.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">SSA_CAPACITY</span><span class="plain"> </span><span class="constant">64</span><span class="plain">*1024</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">SSA_CAPACITY</span><span class="plain"> </span><span class="constant">64</span><span class="plain">*1024</span>
 </pre>
 
 <pre class="display">
-    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="reserved">string_storage_area</span><span class="plain"> {</span>
+    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="identifier">string_storage_area</span><span class="plain"> {</span>
         <span class="identifier">char</span><span class="plain"> *</span><span class="identifier">storage_at</span><span class="plain">;</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">first_free_byte</span><span class="plain">;</span>
-        <span class="constant">MEMORY_MANAGEMENT</span>
-    <span class="plain">} </span><span class="reserved">string_storage_area</span><span class="plain">;</span>
+        <span class="identifier">MEMORY_MANAGEMENT</span>
+    <span class="plain">} </span><span class="identifier">string_storage_area</span><span class="plain">;</span>
 
-    <span class="reserved">string_storage_area</span><span class="plain"> *</span><span class="identifier">current_ssa</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="identifier">string_storage_area</span><span class="plain"> *</span><span class="identifier">current_ssa</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -998,18 +998,18 @@ to write to the result.
 
 
 <pre class="display">
-    <span class="identifier">char</span><span class="plain"> *</span><span class="functiontext">Memory::new_string</span><span class="plain">(</span><span class="identifier">char</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
+    <span class="identifier">char</span><span class="plain"> *</span><span class="identifier">Memory::new_string</span><span class="plain">(</span><span class="identifier">char</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">length_needed</span><span class="plain"> = (</span><span class="identifier">int</span><span class="plain">) </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) + </span><span class="constant">1</span><span class="plain">;</span>
         <span class="identifier">if</span><span class="plain"> (!((</span><span class="identifier">current_ssa</span><span class="plain">) &amp;&amp;</span>
-            <span class="plain">(</span><span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="element">first_free_byte</span><span class="plain"> + </span><span class="identifier">length_needed</span><span class="plain"> &lt; </span><span class="constant">SSA_CAPACITY</span><span class="plain">))) {</span>
-            <span class="identifier">current_ssa</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">string_storage_area</span><span class="plain">);</span>
-            <span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="element">storage_at</span><span class="plain"> = </span><span class="functiontext">Memory::I7_malloc</span><span class="plain">(</span><span class="constant">SSA_CAPACITY</span><span class="plain">, </span><span class="constant">STRING_STORAGE_MREASON</span><span class="plain">);</span>
-            <span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="element">first_free_byte</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+            <span class="plain">(</span><span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="identifier">first_free_byte</span><span class="plain"> + </span><span class="identifier">length_needed</span><span class="plain"> &lt; </span><span class="identifier">SSA_CAPACITY</span><span class="plain">))) {</span>
+            <span class="identifier">current_ssa</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="identifier">string_storage_area</span><span class="plain">);</span>
+            <span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="identifier">storage_at</span><span class="plain"> = </span><span class="identifier">Memory::I7_malloc</span><span class="plain">(</span><span class="identifier">SSA_CAPACITY</span><span class="plain">, </span><span class="identifier">STRING_STORAGE_MREASON</span><span class="plain">);</span>
+            <span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="identifier">first_free_byte</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="identifier">char</span><span class="plain"> *</span><span class="identifier">rp</span><span class="plain"> = </span><span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="element">storage_at</span><span class="plain"> + </span><span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="element">first_free_byte</span><span class="plain">;</span>
-        <span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="element">first_free_byte</span><span class="plain"> += </span><span class="identifier">length_needed</span><span class="plain">;</span>
+        <span class="identifier">char</span><span class="plain"> *</span><span class="identifier">rp</span><span class="plain"> = </span><span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="identifier">storage_at</span><span class="plain"> + </span><span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="identifier">first_free_byte</span><span class="plain">;</span>
+        <span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="identifier">first_free_byte</span><span class="plain"> += </span><span class="identifier">length_needed</span><span class="plain">;</span>
         <span class="identifier">strcpy</span><span class="plain">(</span><span class="identifier">rp</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">);</span>
         <span class="identifier">UNLOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">rp</span><span class="plain">;</span>
@@ -1025,10 +1025,10 @@ to write to the result.
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Memory::free_ssas</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
-        <span class="reserved">string_storage_area</span><span class="plain"> *</span><span class="identifier">ssa</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ssa</span><span class="plain">, </span><span class="reserved">string_storage_area</span><span class="plain">)</span>
-            <span class="functiontext">Memory::I7_free</span><span class="plain">(</span><span class="identifier">ssa</span><span class="plain">-&gt;</span><span class="element">storage_at</span><span class="plain">, </span><span class="constant">STRING_STORAGE_MREASON</span><span class="plain">, </span><span class="constant">SSA_CAPACITY</span><span class="plain">);</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Memory::free_ssas</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
+        <span class="identifier">string_storage_area</span><span class="plain"> *</span><span class="identifier">ssa</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ssa</span><span class="plain">, </span><span class="identifier">string_storage_area</span><span class="plain">)</span>
+            <span class="identifier">Memory::I7_free</span><span class="plain">(</span><span class="identifier">ssa</span><span class="plain">-&gt;</span><span class="identifier">storage_at</span><span class="plain">, </span><span class="identifier">STRING_STORAGE_MREASON</span><span class="plain">, </span><span class="identifier">SSA_CAPACITY</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1042,15 +1042,15 @@ report in the debugging log (for which, see below).
 
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Memory::log_usage</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Memory::log_usage</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain">) {</span>
         <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">total_claimed_simply</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">t</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="identifier">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">t</span><span class="plain"> += </span><span class="identifier">max_memory_at_once_for_each_need</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">total</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"0.%03d: %s - %d bytes in %d claim(s)\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-                    <span class="functiontext">Memory::proportion</span><span class="plain">(</span><span class="identifier">max_memory_at_once_for_each_need</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">total</span><span class="plain">),</span>
-                    <span class="functiontext">Memory::description_of_reason</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">),</span>
+                    <span class="identifier">Memory::proportion</span><span class="plain">(</span><span class="identifier">max_memory_at_once_for_each_need</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">total</span><span class="plain">),</span>
+                    <span class="identifier">Memory::description_of_reason</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">),</span>
                     <span class="identifier">max_memory_at_once_for_each_need</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">],</span>
                     <span class="identifier">number_of_claims_for_each_need</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
         <span class="plain">}</span>
@@ -1067,9 +1067,9 @@ report in the debugging log (for which, see below).
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Memory::log_statistics</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
-        <span class="identifier">int</span><span class="plain"> </span><span class="identifier">total_for_objects</span><span class="plain"> = </span><span class="constant">MEMORY_GRANULARITY</span><span class="plain">*</span><span class="identifier">no_blocks_allocated</span><span class="plain">; </span><span class="comment">usage in bytes</span>
-        <span class="identifier">int</span><span class="plain"> </span><span class="identifier">total_for_SMAs</span><span class="plain"> = </span><span class="functiontext">Memory::log_usage</span><span class="plain">(0); </span><span class="comment">usage in bytes</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Memory::log_statistics</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
+        <span class="identifier">int</span><span class="plain"> </span><span class="identifier">total_for_objects</span><span class="plain"> = </span><span class="identifier">MEMORY_GRANULARITY</span><span class="plain">*</span><span class="identifier">no_blocks_allocated</span><span class="plain">; </span><span class="comment">usage in bytes</span>
+        <span class="identifier">int</span><span class="plain"> </span><span class="identifier">total_for_SMAs</span><span class="plain"> = </span><span class="identifier">Memory::log_usage</span><span class="plain">(0); </span><span class="comment">usage in bytes</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">sorted_usage</span><span class="plain">[</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">]; </span><span class="comment">memory type numbers, in usage order</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain"> = (</span><span class="identifier">total_for_objects</span><span class="plain"> + </span><span class="identifier">total_for_SMAs</span><span class="plain">)/1024; </span><span class="comment">total memory usage in KB</span>
 
@@ -1096,13 +1096,13 @@ report in the debugging log (for which, see below).
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">;</span>
         <span class="identifier">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
             <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">sorted_usage</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">];</span>
-            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">objects_allocated</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) {</span>
-                <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">no_allocated_together</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">objects_allocated</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">no_allocated_together</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">)</span>
                     <span class="identifier">total_objects</span><span class="plain"> += </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">objects_allocated</span><span class="plain">;</span>
                 <span class="identifier">else</span>
                     <span class="identifier">total_objects</span><span class="plain"> += </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">objects_allocated</span><span class="plain">*</span>
-                                        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">no_allocated_together</span><span class="plain">;</span>
-                <span class="identifier">total_for_objects_used</span><span class="plain"> += </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">bytes_allocated</span><span class="plain">;</span>
+                                        <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">no_allocated_together</span><span class="plain">;</span>
+                <span class="identifier">total_for_objects_used</span><span class="plain"> += </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">bytes_allocated</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
 </pre>
@@ -1124,7 +1124,7 @@ order of total number of bytes allocated.
 <pre class="displaydefn">
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="identifier">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">sorted_usage</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="identifier">qsort</span><span class="plain">(</span><span class="identifier">sorted_usage</span><span class="plain">, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">, </span><span class="identifier">sizeof</span><span class="plain">(</span><span class="identifier">int</span><span class="plain">), </span><span class="functiontext">Memory::compare_usage</span><span class="plain">);</span>
+        <span class="identifier">qsort</span><span class="plain">(</span><span class="identifier">sorted_usage</span><span class="plain">, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">, </span><span class="identifier">sizeof</span><span class="plain">(</span><span class="identifier">int</span><span class="plain">), </span><span class="identifier">Memory::compare_usage</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1146,29 +1146,29 @@ order of total number of bytes allocated.
             <span class="identifier">total</span><span class="plain">, (</span><span class="identifier">total</span><span class="plain">+512)/1024);</span>
 
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"0.%03d: %d objects in %d frames in %d memory blocks (of %dK each):\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="functiontext">Memory::proportion</span><span class="plain">(</span><span class="identifier">total_for_objects</span><span class="plain">, </span><span class="identifier">total</span><span class="plain">),</span>
-            <span class="identifier">total_objects</span><span class="plain">, </span><span class="identifier">total_objects_allocated</span><span class="plain">, </span><span class="identifier">no_blocks_allocated</span><span class="plain">, </span><span class="constant">MEMORY_GRANULARITY</span><span class="plain">/1024);</span>
+            <span class="identifier">Memory::proportion</span><span class="plain">(</span><span class="identifier">total_for_objects</span><span class="plain">, </span><span class="identifier">total</span><span class="plain">),</span>
+            <span class="identifier">total_objects</span><span class="plain">, </span><span class="identifier">total_objects_allocated</span><span class="plain">, </span><span class="identifier">no_blocks_allocated</span><span class="plain">, </span><span class="identifier">MEMORY_GRANULARITY</span><span class="plain">/1024);</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"    0.%03d: memory manager overhead - %d bytes\</span><span class="plain">n</span><span class="string">"</span><span class="plain">,</span>
-            <span class="functiontext">Memory::proportion</span><span class="plain">(</span><span class="identifier">overhead_for_objects</span><span class="plain">, </span><span class="identifier">total</span><span class="plain">), </span><span class="identifier">overhead_for_objects</span><span class="plain">);</span>
+            <span class="identifier">Memory::proportion</span><span class="plain">(</span><span class="identifier">overhead_for_objects</span><span class="plain">, </span><span class="identifier">total</span><span class="plain">), </span><span class="identifier">overhead_for_objects</span><span class="plain">);</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">;</span>
         <span class="identifier">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
             <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">sorted_usage</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">];</span>
-            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">objects_allocated</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">objects_allocated</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"    0.%03d: %s  -  "</span><span class="plain">,</span>
-                    <span class="functiontext">Memory::proportion</span><span class="plain">(</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">bytes_allocated</span><span class="plain">, </span><span class="identifier">total</span><span class="plain">),</span>
-                    <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">name_of_type</span><span class="plain">);</span>
-                <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">no_allocated_together</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
-                    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%d "</span><span class="plain">, </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">objects_count</span><span class="plain">);</span>
-                    <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">objects_count</span><span class="plain"> != </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">objects_allocated</span><span class="plain">)</span>
+                    <span class="identifier">Memory::proportion</span><span class="plain">(</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">bytes_allocated</span><span class="plain">, </span><span class="identifier">total</span><span class="plain">),</span>
+                    <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">name_of_type</span><span class="plain">);</span>
+                <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">no_allocated_together</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
+                    <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%d "</span><span class="plain">, </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">objects_count</span><span class="plain">);</span>
+                    <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">objects_count</span><span class="plain"> != </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">objects_allocated</span><span class="plain">)</span>
                         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"(+%d deleted) "</span><span class="plain">,</span>
-                            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">objects_allocated</span><span class="plain"> - </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">objects_count</span><span class="plain">);</span>
+                            <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">objects_allocated</span><span class="plain"> - </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">objects_count</span><span class="plain">);</span>
                 <span class="plain">} </span><span class="identifier">else</span><span class="plain"> </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%d blocks of %d = %d "</span><span class="plain">,</span>
-                    <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">objects_allocated</span><span class="plain">, </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">no_allocated_together</span><span class="plain">,</span>
-                    <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">objects_allocated</span><span class="plain">*</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">no_allocated_together</span><span class="plain">);</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"objects, %d bytes\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">bytes_allocated</span><span class="plain">);</span>
+                    <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">objects_allocated</span><span class="plain">, </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">no_allocated_together</span><span class="plain">,</span>
+                    <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">objects_allocated</span><span class="plain">*</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">no_allocated_together</span><span class="plain">);</span>
+                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"objects, %d bytes\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="identifier">bytes_allocated</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="functiontext">Memory::log_usage</span><span class="plain">(</span><span class="identifier">total</span><span class="plain">);</span>
+        <span class="identifier">Memory::log_usage</span><span class="plain">(</span><span class="identifier">total</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1179,10 +1179,10 @@ order of total number of bytes allocated.
 
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Memory::compare_usage</span><span class="plain">(</span><span class="identifier">const</span><span class="plain"> </span><span class="identifier">void</span><span class="plain"> *</span><span class="identifier">ent1</span><span class="plain">, </span><span class="identifier">const</span><span class="plain"> </span><span class="identifier">void</span><span class="plain"> *</span><span class="identifier">ent2</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Memory::compare_usage</span><span class="plain">(</span><span class="identifier">const</span><span class="plain"> </span><span class="identifier">void</span><span class="plain"> *</span><span class="identifier">ent1</span><span class="plain">, </span><span class="identifier">const</span><span class="plain"> </span><span class="identifier">void</span><span class="plain"> *</span><span class="identifier">ent2</span><span class="plain">) {</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">ix1</span><span class="plain"> = *((</span><span class="identifier">const</span><span class="plain"> </span><span class="identifier">int</span><span class="plain"> *) </span><span class="identifier">ent1</span><span class="plain">);</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">ix2</span><span class="plain"> = *((</span><span class="identifier">const</span><span class="plain"> </span><span class="identifier">int</span><span class="plain"> *) </span><span class="identifier">ent2</span><span class="plain">);</span>
-        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">ix2</span><span class="plain">].</span><span class="element">bytes_allocated</span><span class="plain"> - </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">ix1</span><span class="plain">].</span><span class="element">bytes_allocated</span><span class="plain">;</span>
+        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">ix2</span><span class="plain">].</span><span class="identifier">bytes_allocated</span><span class="plain"> - </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">ix1</span><span class="plain">].</span><span class="identifier">bytes_allocated</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1196,7 +1196,7 @@ usage. Recall that <code class="display"><span class="extract">bytes</span></cod
 
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Memory::proportion</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">bytes</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain">) {</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Memory::proportion</span><span class="plain">(</span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">bytes</span><span class="plain">, </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain">) {</span>
         <span class="identifier">float</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> = (</span><span class="identifier">float</span><span class="plain">) </span><span class="identifier">bytes</span><span class="plain">, </span><span class="identifier">T</span><span class="plain"> = (</span><span class="identifier">float</span><span class="plain">) </span><span class="identifier">total</span><span class="plain">;</span>
         <span class="identifier">float</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> = (1000*</span><span class="identifier">B</span><span class="plain">)/(1024*</span><span class="identifier">T</span><span class="plain">);</span>
         <span class="identifier">return</span><span class="plain"> (</span><span class="identifier">int</span><span class="plain">) </span><span class="identifier">P</span><span class="plain">;</span>
@@ -1211,7 +1211,7 @@ usage. Recall that <code class="display"><span class="extract">bytes</span></cod
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> *</span><span class="functiontext">Memory::paranoid_calloc</span><span class="plain">(</span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">) {</span>
+    <span class="identifier">void</span><span class="plain"> *</span><span class="identifier">Memory::paranoid_calloc</span><span class="plain">(</span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">void</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">calloc</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
@@ -1247,25 +1247,25 @@ structure.
 </li></ul>
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">NULL_GENERAL_POINTER</span><span class="plain"> (</span><span class="functiontext">Memory::store_gp_null</span><span class="plain">())</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">GENERAL_POINTER_IS_NULL</span><span class="plain">(</span><span class="identifier">gp</span><span class="plain">) (</span><span class="functiontext">Memory::test_gp_null</span><span class="plain">(</span><span class="identifier">gp</span><span class="plain">))</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">NULL_GENERAL_POINTER</span><span class="plain"> (</span><span class="identifier">Memory::store_gp_null</span><span class="plain">())</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">GENERAL_POINTER_IS_NULL</span><span class="plain">(</span><span class="identifier">gp</span><span class="plain">) (</span><span class="identifier">Memory::test_gp_null</span><span class="plain">(</span><span class="identifier">gp</span><span class="plain">))</span>
 </pre>
 
 <pre class="display">
-    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="reserved">general_pointer</span><span class="plain"> {</span>
+    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="identifier">general_pointer</span><span class="plain"> {</span>
         <span class="identifier">void</span><span class="plain"> *</span><span class="identifier">pointer_to_data</span><span class="plain">;</span>
         <span class="identifier">int</span><span class="plain"> </span><span class="identifier">run_time_type_code</span><span class="plain">;</span>
-    <span class="plain">} </span><span class="reserved">general_pointer</span><span class="plain">;</span>
+    <span class="plain">} </span><span class="identifier">general_pointer</span><span class="plain">;</span>
 
-    <span class="reserved">general_pointer</span><span class="plain"> </span><span class="functiontext">Memory::store_gp_null</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
-        <span class="reserved">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">;</span>
-        <span class="identifier">gp</span><span class="plain">.</span><span class="element">pointer_to_data</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">gp</span><span class="plain">.</span><span class="element">run_time_type_code</span><span class="plain"> = -1; </span><span class="comment">guaranteed to differ from all <code class="display"><span class="extract">_MT</span></code> values</span>
+    <span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">Memory::store_gp_null</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
+        <span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">;</span>
+        <span class="identifier">gp</span><span class="plain">.</span><span class="identifier">pointer_to_data</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">gp</span><span class="plain">.</span><span class="identifier">run_time_type_code</span><span class="plain"> = -1; </span><span class="comment">guaranteed to differ from all <code class="display"><span class="extract">_MT</span></code> values</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">;</span>
     <span class="plain">}</span>
-    <span class="identifier">int</span><span class="plain"> </span><span class="functiontext">Memory::test_gp_null</span><span class="plain">(</span><span class="reserved">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">) {</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">.</span><span class="element">run_time_type_code</span><span class="plain"> == -1) </span><span class="identifier">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="identifier">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Memory::test_gp_null</span><span class="plain">(</span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">) {</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">.</span><span class="identifier">run_time_type_code</span><span class="plain"> == -1) </span><span class="identifier">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -1286,9 +1286,9 @@ objects and to help with interpreting output from GDB, so we abstract that too.
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="identifier">COMPARE_GENERAL_POINTERS</span><span class="plain">(</span><span class="identifier">gp1</span><span class="plain">, </span><span class="identifier">gp2</span><span class="plain">)</span>
-        <span class="plain">(</span><span class="identifier">gp1</span><span class="plain">.</span><span class="element">pointer_to_data</span><span class="plain"> == </span><span class="identifier">gp2</span><span class="plain">.</span><span class="element">pointer_to_data</span><span class="plain">)</span>
+        <span class="plain">(</span><span class="identifier">gp1</span><span class="plain">.</span><span class="identifier">pointer_to_data</span><span class="plain"> == </span><span class="identifier">gp2</span><span class="plain">.</span><span class="identifier">pointer_to_data</span><span class="plain">)</span>
     <span class="definitionkeyword">define</span> <span class="identifier">GENERAL_POINTER_AS_INT</span><span class="plain">(</span><span class="identifier">gp</span><span class="plain">)</span>
-        <span class="plain">((</span><span class="identifier">pointer_sized_int</span><span class="plain">) </span><span class="identifier">gp</span><span class="plain">.</span><span class="element">pointer_to_data</span><span class="plain">)</span>
+        <span class="plain">((</span><span class="identifier">pointer_sized_int</span><span class="plain">) </span><span class="identifier">gp</span><span class="plain">.</span><span class="identifier">pointer_to_data</span><span class="plain">)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP38"></a><b>&#167;38.  </b>If we have a pointer to <code class="display"><span class="extract">circus</span></code> (say) then <code class="display"><span class="extract">g=STORE_POINTER_circus(p)</span></code>
 returns a <code class="display"><span class="extract">general_pointer</span></code> with <code class="display"><span class="extract">p</span></code> as the actual pointer, but will not
@@ -1300,29 +1300,29 @@ which is other than <code class="display"><span class="extract">void *</span></c
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="identifier">MAKE_REFERENCE_ROUTINES</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">, </span><span class="identifier">id_code</span><span class="plain">)</span>
-    <span class="reserved">general_pointer</span><span class="plain"> </span><span class="identifier">STORE_POINTER_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">data</span><span class="plain">) {</span>
-        <span class="reserved">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">;</span>
-        <span class="identifier">gp</span><span class="plain">.</span><span class="element">pointer_to_data</span><span class="plain"> = (</span><span class="identifier">void</span><span class="plain"> *) </span><span class="identifier">data</span><span class="plain">;</span>
-        <span class="identifier">gp</span><span class="plain">.</span><span class="element">run_time_type_code</span><span class="plain"> = </span><span class="identifier">id_code</span><span class="plain">;</span>
+    <span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">STORE_POINTER_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">data</span><span class="plain">) {</span>
+        <span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">;</span>
+        <span class="identifier">gp</span><span class="plain">.</span><span class="identifier">pointer_to_data</span><span class="plain"> = (</span><span class="identifier">void</span><span class="plain"> *) </span><span class="identifier">data</span><span class="plain">;</span>
+        <span class="identifier">gp</span><span class="plain">.</span><span class="identifier">run_time_type_code</span><span class="plain"> = </span><span class="identifier">id_code</span><span class="plain">;</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">;</span>
     <span class="plain">}</span>
-    <span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">RETRIEVE_POINTER_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">(</span><span class="reserved">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">) {</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">.</span><span class="element">run_time_type_code</span><span class="plain"> != </span><span class="identifier">id_code</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Wanted ID code %d, found %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">id_code</span><span class="plain">, </span><span class="identifier">gp</span><span class="plain">.</span><span class="element">run_time_type_code</span><span class="plain">);</span>
+    <span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">RETRIEVE_POINTER_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">(</span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">) {</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">.</span><span class="identifier">run_time_type_code</span><span class="plain"> != </span><span class="identifier">id_code</span><span class="plain">) {</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Wanted ID code %d, found %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">id_code</span><span class="plain">, </span><span class="identifier">gp</span><span class="plain">.</span><span class="identifier">run_time_type_code</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"attempt to retrieve wrong pointer type as "</span><span class="plain"> #</span><span class="identifier">type_name</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">return</span><span class="plain"> (</span><span class="identifier">type_name</span><span class="plain"> *) </span><span class="identifier">gp</span><span class="plain">.</span><span class="element">pointer_to_data</span><span class="plain">;</span>
+        <span class="identifier">return</span><span class="plain"> (</span><span class="identifier">type_name</span><span class="plain"> *) </span><span class="identifier">gp</span><span class="plain">.</span><span class="identifier">pointer_to_data</span><span class="plain">;</span>
     <span class="plain">}</span>
-    <span class="reserved">general_pointer</span><span class="plain"> </span><span class="identifier">PASS_POINTER_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">(</span><span class="reserved">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">) {</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">.</span><span class="element">run_time_type_code</span><span class="plain"> != </span><span class="identifier">id_code</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Wanted ID code %d, found %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">id_code</span><span class="plain">, </span><span class="identifier">gp</span><span class="plain">.</span><span class="element">run_time_type_code</span><span class="plain">);</span>
+    <span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">PASS_POINTER_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">(</span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">) {</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">.</span><span class="identifier">run_time_type_code</span><span class="plain"> != </span><span class="identifier">id_code</span><span class="plain">) {</span>
+            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Wanted ID code %d, found %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">id_code</span><span class="plain">, </span><span class="identifier">gp</span><span class="plain">.</span><span class="identifier">run_time_type_code</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"attempt to pass wrong pointer type as "</span><span class="plain"> #</span><span class="identifier">type_name</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">return</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">;</span>
     <span class="plain">}</span>
-    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">VALID_POINTER_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">(</span><span class="reserved">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">) {</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">.</span><span class="element">run_time_type_code</span><span class="plain"> == </span><span class="identifier">id_code</span><span class="plain">) </span><span class="identifier">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="identifier">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">VALID_POINTER_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">(</span><span class="identifier">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">) {</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">.</span><span class="identifier">run_time_type_code</span><span class="plain"> == </span><span class="identifier">id_code</span><span class="plain">) </span><span class="identifier">return</span><span class="plain"> </span><span class="identifier">TRUE</span><span class="plain">;</span>
+        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 <p class="inwebparagraph"><a id="SP39"></a><b>&#167;39.  </b>Suitable <code class="display"><span class="extract">MAKE_REFERENCE_ROUTINES</span></code> were expanded for all of the memory

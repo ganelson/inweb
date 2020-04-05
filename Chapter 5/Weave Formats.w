@@ -267,10 +267,11 @@ of the web.
 
 =
 VMETHOD_TYPE(FIGURE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
-	text_stream *figname, int w, int h)
-void Formats::figure(OUTPUT_STREAM, weave_target *wv, text_stream *figname, int w, int h) {
+	text_stream *figname, int w, int h, programming_language *pl)
+void Formats::figure(OUTPUT_STREAM, weave_target *wv, text_stream *figname,
+	int w, int h, programming_language *pl) {
 	weave_format *wf = wv->format;
-	VMETHOD_CALL(wf, FIGURE_FOR_MTID, OUT, wv, figname, w, h);
+	VMETHOD_CALL(wf, FIGURE_FOR_MTID, OUT, wv, figname, w, h, pl);
 }
 
 @ This method weaves an angle-bracketed paragraph macro name. |defn| is set

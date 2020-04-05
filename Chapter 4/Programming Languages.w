@@ -23,9 +23,9 @@ programming_language *Languages::find_by_name(text_stream *lname) {
 			return pl;
 
 @<Read the language definition file with this name@> =
-	pathname *P = Pathnames::subfolder(path_to_inweb, I"Languages");
+	pathname *P = Languages::default_directory();
 	TEMPORARY_TEXT(leaf);
-	WRITE_TO(leaf, "%S.txt", lname);
+	WRITE_TO(leaf, "%S.ildf", lname);
 	filename *F = Filenames::in_folder(P, leaf);
 	DISCARD_TEXT(leaf);
 	if (TextFiles::exists(F) == FALSE)
@@ -40,6 +40,34 @@ programming_language *Languages::default(void) {
 	return Languages::find_by_name(I"C");
 }
 
+void Languages::show(OUTPUT_STREAM) {
+	WRITE("Inweb can see the following programming language definitions:\n\n");
+	programming_language *pl;
+	LOOP_OVER(pl, programming_language)
+		WRITE("%S: %S\n", pl->language_name, pl->language_details);
+}
+
+@ We can read every language in a directory:
+
+=
+void Languages::read_definitions(pathname *P) {
+	if (P == NULL) P = Languages::default_directory();
+	scan_directory *D = Directories::open(P);
+	TEMPORARY_TEXT(leafname);
+	while (Directories::next(D, leafname)) {
+		if (Str::get_last_char(leafname) != FOLDER_SEPARATOR) {
+			filename *F = Filenames::in_folder(P, leafname);
+			Languages::read_definition(F);
+		}
+	}
+	DISCARD_TEXT(leafname);
+	Directories::close(D);
+}
+
+pathname *Languages::default_directory(void) {
+	return Pathnames::subfolder(path_to_inweb, I"Languages");
+}
+
 @ So, then, languages are defined by files which are read in, and parsed
 into the following structure (one per language):
 
@@ -50,9 +78,9 @@ typedef struct programming_language {
 	/* then a great many fields set directly in the definition file: */
 	text_stream *file_extension; /* by default output to a file whose name has this extension */
 	text_stream *language_details; /* brief explanation of what language is */
-	int supports_enumerations;
 	int supports_namespaces;
 	text_stream *line_comment;
+	text_stream *whole_line_comment;
 	text_stream *multiline_comment_open;
 	text_stream *multiline_comment_close;
 	text_stream *string_literal;
@@ -101,8 +129,8 @@ programming_language *Languages::read_definition(filename *F) {
 	language_reader_state lrs;
 	lrs.defining = pl;
 	lrs.current_block = NULL;
-	TextFiles::read(F, FALSE, "can't open cover sheet file", TRUE,
-		Languages::read_definition_line, NULL, (void *) &lrs);
+	TextFiles::read(F, FALSE, "can't open programming language definition file",
+		TRUE, Languages::read_definition_line, NULL, (void *) &lrs);
 	@<Add method calls to the language@>;
 	return pl;
 }
@@ -110,9 +138,9 @@ programming_language *Languages::read_definition(filename *F) {
 @<Initialise the language to a plain-text state@> =
 	pl->language_name = NULL;
 	pl->file_extension = NULL;
-	pl->supports_enumerations = FALSE;
 	pl->supports_namespaces = FALSE;
 	pl->line_comment = NULL;
+	pl->whole_line_comment = NULL;
 	pl->multiline_comment_open = NULL;
 	pl->multiline_comment_close = NULL;
 	pl->string_literal = NULL;
@@ -179,7 +207,7 @@ declare a reserved keyword, or set a key to a value.
 		if (pl->program) Errors::in_text_file("duplicate colouring program", tfp);
 		pl->program = Languages::new_block(NULL, WHOLE_LINE_CRULE_RUN);
 		state->current_block = pl->program;
-	} else if (Regexp::match(&mr, line, L"keyword (%C+) *=> *(%c+?)")) {
+	} else if (Regexp::match(&mr, line, L"keyword (%C+) of (%c+?)")) {
 		Languages::reserved(pl, mr.exp[0], Languages::colour(mr.exp[1], tfp), tfp);
 	} else if (Regexp::match(&mr, line, L"keyword (%C+)")) {
 		Languages::reserved(pl, mr.exp[0], PLAIN_COLOUR, tfp);
@@ -192,6 +220,8 @@ declare a reserved keyword, or set a key to a value.
 			pl->file_extension = Languages::text(value, tfp);
 		else if (Str::eq(key, I"Line Comment"))
 			pl->line_comment = Languages::text(value, tfp);
+		else if (Str::eq(key, I"Whole Line Comment"))
+			pl->whole_line_comment = Languages::text(value, tfp);
 		else if (Str::eq(key, I"Multiline Comment Open"))
 			pl->multiline_comment_open = Languages::text(value, tfp);
 		else if (Str::eq(key, I"Multiline Comment Close"))
@@ -216,12 +246,10 @@ declare a reserved keyword, or set a key to a value.
 			pl->shebang = Languages::text(value, tfp);
 		else if (Str::eq(key, I"Line Marker"))
 			pl->line_marker = Languages::text(value, tfp);
-		else if (Str::eq(key, I"Before Macro Expansion"))
+		else if (Str::eq(key, I"Before Named Paragraph Expansion"))
 			pl->before_macro_expansion = Languages::text(value, tfp);
-		else if (Str::eq(key, I"After Macro Expansion"))
+		else if (Str::eq(key, I"After Named Paragraph Expansion"))
 			pl->after_macro_expansion = Languages::text(value, tfp);
-		else if (Str::eq(key, I"Supports Enumerations"))
-			pl->supports_enumerations = Languages::boolean(value, tfp);
 		else if (Str::eq(key, I"Start Definition"))
 			pl->start_definition = Languages::text(value, tfp);
 		else if (Str::eq(key, I"Prolong Definition"))
@@ -267,10 +295,30 @@ runs of a given colour, or give an if-X-then-Y rule:
 		if (Str::ne(mr.exp[0], I"unquoted")) r = Languages::colour(mr.exp[0], tfp);
 		rule->execute_block = Languages::new_block(state->current_block, r);
 		state->current_block = rule->execute_block;
-	} else if (Regexp::match(&mr, line, L"(%c+?) => (%c+)")) {
-		Languages::parse_rule(state, mr.exp[0], mr.exp[1], tfp);
+	} else if (Regexp::match(&mr, line, L"instances of (%c+) {")) {
+		colouring_rule *rule = Languages::new_rule(state->current_block);
+		rule->execute_block = Languages::new_block(state->current_block, INSTANCES_CRULE_RUN);
+		rule->execute_block->run_instance = Languages::text(mr.exp[0], tfp);
+		state->current_block = rule->execute_block;
 	} else {
-		Errors::in_text_file("line in colouring block illegible", tfp);
+		int at = -1, quoted = FALSE;
+		for (int i=0; i<Str::len(line)-1; i++) {
+			if (Str::get_at(line, i) == '"') quoted = quoted?FALSE:TRUE;
+			if ((quoted) && (Str::get_at(line, i) == '\\')) i++;
+			if ((quoted == FALSE) &&
+				(Str::get_at(line, i) == '=') && (Str::get_at(line, i+1) == '>')) at = i;
+		}
+		if (at >= 0) {
+			TEMPORARY_TEXT(premiss);
+			TEMPORARY_TEXT(conclusion);
+			Str::substr(premiss, Str::start(line), Str::at(line, at));
+			Str::substr(conclusion, Str::at(line, at+2), Str::end(line));
+			Languages::parse_rule(state, premiss, conclusion, tfp);
+			DISCARD_TEXT(conclusion);
+			DISCARD_TEXT(premiss);
+		} else {
+			Errors::in_text_file("line in colouring block illegible", tfp);
+		}
 	}
 
 @h Blocks.
@@ -279,12 +327,14 @@ represents a complete program.
 
 @d WHOLE_LINE_CRULE_RUN -1 /* This block applies to the whole snippet being coloured */
 @d CHARACTERS_CRULE_RUN -2 /* This block applies to each character in turn */
+@d INSTANCES_CRULE_RUN -3 /* This block applies to each instance in turn */
 
 =
 typedef struct colouring_language_block {
 	struct linked_list *rules; /* of |colouring_rule| */
 	struct colouring_language_block *parent; /* or |NULL| for the topmost one */
 	int run; /* one of the |*_CRULE_RUN| values, or else a colour */
+	struct text_stream *run_instance; /* used only for |INSTANCES_CRULE_RUN| */
 	MEMORY_MANAGEMENT
 } colouring_language_block;
 
@@ -294,6 +344,7 @@ colouring_language_block *Languages::new_block(colouring_language_block *within,
 	block->rules = NEW_LINKED_LIST(colouring_rule);
 	block->parent = within;
 	block->run = r;
+	block->run_instance = NULL;
 	return block;
 }
 
@@ -308,6 +359,9 @@ Note that rules can be unconditional, in that the premiss always passes.
 @d UNSPACED_RULE_PREFIX 2 /* for |prefix P| */
 @d SPACED_RULE_PREFIX 3 /* for |spaced prefix P| */
 @d OPTIONALLY_SPACED_RULE_PREFIX 4 /* for |optionally spaced prefix P| */
+@d UNSPACED_RULE_SUFFIX 5 /* for |suffix P| */
+@d SPACED_RULE_SUFFIX 6 /* for |spaced suffix P| */
+@d OPTIONALLY_SPACED_RULE_SUFFIX 7 /* for |optionally spaced suffix P| */
 
 =
 typedef struct colouring_rule {
@@ -350,21 +404,32 @@ void Languages::parse_rule(language_reader_state *state, text_stream *premiss,
 }
 
 @<Parse the premiss@> =
-	if (Regexp::match(&mr, premiss, L"keyword (%c+)")) {
+	if (Regexp::match(&mr, premiss, L"keyword of (%c+)")) {
 		rule->match_keyword_of_colour = Languages::colour(mr.exp[0], tfp);
+	} else if (Regexp::match(&mr, premiss, L"keyword")) {
+		Errors::in_text_file("ambiguous: make it keyword of !reserved or \"keyword\"", tfp);
 	} else if (Regexp::match(&mr, premiss, L"prefix (%c+)")) {
 		rule->match_prefix = UNSPACED_RULE_PREFIX;
-		rule->match_text = Str::duplicate(mr.exp[0]);
+		rule->match_text = Languages::text(mr.exp[0], tfp);
 	} else if (Regexp::match(&mr, premiss, L"spaced prefix (%c+)")) {
 		rule->match_prefix = SPACED_RULE_PREFIX;
-		rule->match_text = Str::duplicate(mr.exp[0]);
+		rule->match_text = Languages::text(mr.exp[0], tfp);
 	} else if (Regexp::match(&mr, premiss, L"optionally spaced prefix (%c+)")) {
 		rule->match_prefix = OPTIONALLY_SPACED_RULE_PREFIX;
-		rule->match_text = Str::duplicate(mr.exp[0]);
+		rule->match_text = Languages::text(mr.exp[0], tfp);
+	} else if (Regexp::match(&mr, premiss, L"suffix (%c+)")) {
+		rule->match_prefix = UNSPACED_RULE_SUFFIX;
+		rule->match_text = Languages::text(mr.exp[0], tfp);
+	} else if (Regexp::match(&mr, premiss, L"spaced suffix (%c+)")) {
+		rule->match_prefix = SPACED_RULE_SUFFIX;
+		rule->match_text = Languages::text(mr.exp[0], tfp);
+	} else if (Regexp::match(&mr, premiss, L"optionally spaced suffix (%c+)")) {
+		rule->match_prefix = OPTIONALLY_SPACED_RULE_SUFFIX;
+		rule->match_text = Languages::text(mr.exp[0], tfp);
 	} else if (Regexp::match(&mr, premiss, L"colou*r (%c+)")) {
 		rule->match_colour = Languages::colour(mr.exp[0], tfp);
-	} else if (Str::ne(premiss, I"(all)")) {
-		rule->match_text = Str::duplicate(premiss);
+	} else if (Str::len(premiss) > 0) {
+		rule->match_text = Languages::text(premiss, tfp);
 	}
 
 @<Parse the conclusion@> =
@@ -407,7 +472,7 @@ Language definition files have three types of data: colours, booleans, and
 text. Colours first. Note that there are two pseudo-colours used above,
 but which are not expressible in the syntax of this file.
 
-@d MACRO_COLOUR 		'm'
+@d DEFINITION_COLOUR 	'd'
 @d FUNCTION_COLOUR		'f'
 @d RESERVED_COLOUR		'r'
 @d ELEMENT_COLOUR		'e'
@@ -430,7 +495,7 @@ int Languages::colour(text_stream *T, text_file_position *tfp) {
 	}
 	if (Str::eq(T, I"!string")) return STRING_COLOUR;
 	else if (Str::eq(T, I"!function")) return FUNCTION_COLOUR;
-	else if (Str::eq(T, I"!macro")) return MACRO_COLOUR;
+	else if (Str::eq(T, I"!definition")) return DEFINITION_COLOUR;
 	else if (Str::eq(T, I"!reserved")) return RESERVED_COLOUR;
 	else if (Str::eq(T, I"!element")) return ELEMENT_COLOUR;
 	else if (Str::eq(T, I"!identifier")) return IDENTIFIER_COLOUR;
@@ -464,22 +529,35 @@ literal backslash.
 =
 text_stream *Languages::text(text_stream *T, text_file_position *tfp) {
 	text_stream *V = Str::new();
-	for (int i=0; i<Str::len(T); i++) {
-		wchar_t c = Str::get_at(T, i);
-		if ((c == '\\') && (Str::get_at(T, i+1) == 'n')) {
-			PUT_TO(V, '\n');
-			i++;
-		} else if ((c == '\\') && (Str::get_at(T, i+1) == 's')) {
-			PUT_TO(V, ' ');
-			i++;
-		} else if ((c == '\\') && (Str::get_at(T, i+1) == 't')) {
-			PUT_TO(V, '\t');
-			i++;
-		} else if ((c == '\\') && (Str::get_at(T, i+1) == '\\')) {
-			PUT_TO(V, '\\');
-			i++;
-		} else {
-			PUT_TO(V, c);
+	if (Str::len(T) > 0) {
+		int bareword = TRUE, from = 0, to = Str::len(T)-1;
+		if ((to > from) &&
+			(Str::get_at(T, from) == '"') && (Str::get_at(T, to) == '"')) {
+			bareword = FALSE; from++; to--;
+		}
+		for (int i=from; i<=to; i++) {
+			wchar_t c = Str::get_at(T, i);
+			if ((c == '\\') && (Str::get_at(T, i+1) == 'n')) {
+				PUT_TO(V, '\n');
+				i++;
+			} else if ((c == '\\') && (Str::get_at(T, i+1) == 's')) {
+				PUT_TO(V, ' ');
+				i++;
+			} else if ((c == '\\') && (Str::get_at(T, i+1) == 't')) {
+				PUT_TO(V, '\t');
+				i++;
+			} else if ((c == '\\') && (Str::get_at(T, i+1) == '\\')) {
+				PUT_TO(V, '\\');
+				i++;
+			} else if ((bareword == FALSE) && (c == '\\') && (Str::get_at(T, i+1) == '"')) {
+				PUT_TO(V, '"');
+				i++;
+			} else if ((bareword == FALSE) && (c == '"')) {
+				Errors::in_text_file(
+					"backslash needed before internal double-quotation mark", tfp);
+			} else {
+				PUT_TO(V, c);
+			}
 		}
 	}
 	return V;

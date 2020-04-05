@@ -230,7 +230,7 @@ void TeX::change_colour_PDF(weave_format *self, text_stream *OUT, weave_target *
 	char *inout = "";
 	if (in_code) inout = "|";
 	switch (col) {
-		case MACRO_COLOUR:
+		case DEFINITION_COLOUR:
 			WRITE("%s\\pdfliteral direct{1 1 0 0 k}%s", inout, inout); break;
 		case FUNCTION_COLOUR:
 			WRITE("%s\\pdfliteral direct{0 1 1 0 k}%s", inout, inout); break;
@@ -273,7 +273,7 @@ to a given width, into the text at the current position.
 
 =
 void TeX::figure_PDF(weave_format *self, text_stream *OUT, weave_target *wv,
-	text_stream *figname, int w, int h) {
+	text_stream *figname, int w, int h, programming_language *pl) {
 	WRITE("\\pdfximage");
 	if (w >= 0)
 		WRITE(" width %d cm{../Figures/%S}\n", w, figname);
@@ -306,7 +306,7 @@ void TeX::para_macro_PDF_1(weave_format *self, text_stream *OUT, weave_target *w
 void TeX::para_macro(weave_format *self, text_stream *OUT, weave_target *wv,
 	para_macro *pmac, int defn) {
 	WRITE("$\\langle${\\xreffont");
-	Formats::change_colour(OUT, wv, MACRO_COLOUR, FALSE);
+	Formats::change_colour(OUT, wv, DEFINITION_COLOUR, FALSE);
 	WRITE("%S ", pmac->macro_name);
 	WRITE("{\\sevenss %S}}", pmac->defining_paragraph->paragraph_number);
 	Formats::change_colour(OUT, wv, PLAIN_COLOUR, FALSE);

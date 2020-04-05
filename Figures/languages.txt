@@ -1,0 +1,12 @@
+Inweb can see the following programming language definitions:
+
+Inform 7: The natural-language based language Inform 7
+InC: The Inform-tools extension to the C programming language
+Inform 6: The C-like interactive fiction language Inform 6
+C++: The C++ programming language
+None: For programs in languages not yet supported by Inweb
+ILDF: The Inweb Language Definition File format
+Plain Text: For text files which are not programs
+Perl: The scripting language Perl 5
+C: The C programming language
+ACME: The ACME assembly language for 6502 and related CPUs
