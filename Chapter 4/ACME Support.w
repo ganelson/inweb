@@ -217,8 +217,7 @@ int ACMESupport::syntax_colour(programming_language *pl, text_stream *OUT, weave
 	text_stream *colouring) {
 	@<Make preliminary colouring@>;
 	@<Spot literal numerical constants@>;
-	linked_list *rules = pl->program->rules;
-	ACMESupport::execute(S, rules, matter, colouring, 0, Str::len(matter));
+	ACMESupport::execute(S, pl->program, matter, colouring, 0, Str::len(matter));
 	return FALSE;
 }
 
@@ -344,65 +343,76 @@ int ACMESupport::identifier_at(programming_language *pl, text_stream *matter, te
 @ 
 
 =
-void ACMESupport::execute(section *S, linked_list *rules, text_stream *matter,
+void ACMESupport::execute(section *S, colouring_language_block *block, text_stream *matter,
 	text_stream *colouring, int from, int to) {
+	if (block == NULL) internal_error("no block");
 	colouring_rule *rule;
-	LOOP_OVER_LINKED_LIST(rule, colouring_rule, rules) {
-		if (rule->run == CHARACTERS_CRULE_RUN) {
+	LOOP_OVER_LINKED_LIST(rule, colouring_rule, block->rules) {
+		if (block->run == CHARACTERS_CRULE_RUN) {
 			for (int i=from; i<=to; i++)
-				ACMESupport::execute(S, rule->block->rules, matter, colouring, i, i);
-		} else if (rule->run == WHOLE_LINE_CRULE_RUN) {
-			if (ACMESupport::satisfies(S, rule, matter, colouring, from, to))
-				ACMESupport::follow(S, rule, matter, colouring, from, to);
+				ACMESupport::execute_rule(S, rule, matter, colouring, i, i);
+		} else if (block->run == WHOLE_LINE_CRULE_RUN) {
+			ACMESupport::execute_rule(S, rule, matter, colouring, from, to);
 		} else {
 			int ident_from = -1;
 			for (int i=from; i<=to; i++) {
 				int col = Str::get_at(colouring, i);
-				if ((col == rule->run) ||
-					((rule->run == UNQUOTED_COLOUR) &&
+				if ((col == block->run) ||
+					((block->run == UNQUOTED_COLOUR) &&
 						((col != STRING_COLOUR) && (col != CHAR_LITERAL_COLOUR)))) {
 					if (ident_from == -1) ident_from = i;
 				} else {
 					if (ident_from >= 0)
-						ACMESupport::execute(S, rule->block->rules, matter, colouring, ident_from, i-1);
+						ACMESupport::execute_rule(S, rule, matter, colouring, ident_from, i-1);
 					ident_from = -1;
 				}
 			}
 			if (ident_from >= 0)
-				ACMESupport::execute(S, rule->block->rules, matter, colouring, ident_from, to);
+				ACMESupport::execute_rule(S, rule, matter, colouring, ident_from, to);
 		}
 	}
 }
 
+void ACMESupport::execute_rule(section *S, colouring_rule *rule, text_stream *matter,
+	text_stream *colouring, int from, int to) {
+	if (ACMESupport::satisfies(S, rule, matter, colouring, from, to))
+		ACMESupport::follow(S, rule, matter, colouring, from, to);
+}
+
 int ACMESupport::satisfies(section *S, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to) {
-	if (Str::len(rule->on) > 0) {
-		if (rule->prefix != NOT_A_RULE_PREFIX) {
+	if (Str::len(rule->match_text) > 0) {
+		if (rule->match_prefix != NOT_A_RULE_PREFIX) {
 			int pos = from;
-			if (rule->prefix != UNSPACED_RULE_PREFIX) {
+			if (rule->match_prefix != UNSPACED_RULE_PREFIX) {
 				while ((pos > 0) && (Characters::is_whitespace(pos-1))) pos--;
-				if ((rule->prefix == SPACED_RULE_PREFIX) && (pos == from))
+				if ((rule->match_prefix == SPACED_RULE_PREFIX) && (pos == from))
 					return FALSE;
 			}
-			if (ACMESupport::text_at(matter, pos-Str::len(rule->on), rule->on) == FALSE)
+			if (ACMESupport::text_at(matter, pos-Str::len(rule->match_text), rule->match_text) == FALSE)
 				return FALSE;
 		} else {
-			if (Str::ne(matter, rule->on)) return FALSE;
+			if (Str::ne(matter, rule->match_text)) return FALSE;
 		}
-	} else if (rule->keyword_colour != NOT_A_COLOUR) {
+	} else if (rule->match_keyword_of_colour != NOT_A_COLOUR) {
 		TEMPORARY_TEXT(id);
 		Str::substr(id, Str::at(matter, from), Str::at(matter, to+1));
-		int rw = Analyser::is_reserved_word(S, id, rule->keyword_colour);
+		int rw = Analyser::is_reserved_word(S, id, rule->match_keyword_of_colour);
 		DISCARD_TEXT(id);
 		if (rw == FALSE) return FALSE;
+	} else if (rule->match_colour != NOT_A_COLOUR) {
+		for (int i=from; i<=to; i++)
+			if (Str::get_at(colouring, i) != rule->match_colour)
+				return FALSE;
 	}
 	return TRUE;
 }
 
 void ACMESupport::follow(section *S, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to) {
-	if (rule->block) ACMESupport::execute(S, rule->block->rules, matter, colouring, from, to);
+	if (rule->execute_block)
+		ACMESupport::execute(S, rule->execute_block, matter, colouring, from, to);
 	else 
 		for (int i=from; i<=to; i++)
-			Str::put_at(colouring, i, rule->colour);
+			Str::put_at(colouring, i, rule->set_to_colour);
 }

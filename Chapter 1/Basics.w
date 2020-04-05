@@ -23,7 +23,7 @@ case, |_array_MT| appended. MT stands for "memory type".
 @e function_MT
 @e hash_table_entry_MT
 @e hash_table_entry_usage_MT
-@e language_block_MT
+@e colouring_language_block_MT
 @e macro_MT
 @e macro_tokens_MT
 @e macro_usage_MT
@@ -61,7 +61,7 @@ ALLOCATE_INDIVIDUALLY(enumeration_set)
 ALLOCATE_INDIVIDUALLY(function)
 ALLOCATE_INDIVIDUALLY(hash_table_entry_usage)
 ALLOCATE_INDIVIDUALLY(hash_table_entry)
-ALLOCATE_INDIVIDUALLY(language_block)
+ALLOCATE_INDIVIDUALLY(colouring_language_block)
 ALLOCATE_INDIVIDUALLY(macro_tokens)
 ALLOCATE_INDIVIDUALLY(macro_usage)
 ALLOCATE_INDIVIDUALLY(macro)

@@ -726,7 +726,7 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define function_MT 37
 #define hash_table_entry_MT 38
 #define hash_table_entry_usage_MT 39
-#define language_block_MT 40
+#define colouring_language_block_MT 40
 #define macro_MT 41
 #define macro_tokens_MT 42
 #define macro_usage_MT 43
@@ -846,14 +846,12 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
     		LOOP_OVER_LINKED_LIST(S, section, C->sections)\
     			if (S->sect_target == T)\
     				LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
-#define NOT_A_RULE_PREFIX 1
-#define UNSPACED_RULE_PREFIX 2
-#define SPACED_RULE_PREFIX 3
-#define OPTIONALLY_SPACED_RULE_PREFIX 4
-#define WHOLE_LINE_CRULE_RUN -1
-#define CHARACTERS_CRULE_RUN -2
-#define NOT_A_COLOUR ' '
-#define UNQUOTED_COLOUR '_'
+#define WHOLE_LINE_CRULE_RUN -1 /* This block applies to the whole snippet being coloured */
+#define CHARACTERS_CRULE_RUN -2 /* This block applies to each character in turn */
+#define NOT_A_RULE_PREFIX 1 /* this isn't a prefix rule */
+#define UNSPACED_RULE_PREFIX 2 /* for |prefix P| */
+#define SPACED_RULE_PREFIX 3 /* for |spaced prefix P| */
+#define OPTIONALLY_SPACED_RULE_PREFIX 4 /* for |optionally spaced prefix P| */
 #define MACRO_COLOUR 'm'
 #define FUNCTION_COLOUR 'f'
 #define RESERVED_COLOUR 'r'
@@ -865,6 +863,8 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define PLAIN_COLOUR 'p'
 #define EXTRACT_COLOUR 'x'
 #define COMMENT_COLOUR '!'
+#define NOT_A_COLOUR ' '
+#define UNQUOTED_COLOUR '_'
 #define FURTHER_PARSING_PAR_MTID 2
 #define SUBCATEGORISE_LINE_PAR_MTID 3
 #define PARSE_COMMENT_TAN_MTID 4
@@ -1636,13 +1636,15 @@ typedef struct weaver_state {
 	struct text_stream *chaptermark;
 	struct text_stream *sectionmark;
 } weaver_state;
-#line 46 "inweb/Chapter 4/Programming Languages.w"
+#line 47 "inweb/Chapter 4/Programming Languages.w"
 typedef struct programming_language {
-	text_stream *language_name;
+	text_stream *language_name; /* identifies it: see above */
+
+	/* then a great many fields set directly in the definition file: */
 	text_stream *file_extension; /* by default output to a file whose name has this extension */
 	text_stream *language_details; /* brief explanation of what language is */
-	int supports_enumerations; /* as it will, if it belongs to the C family of languages */
-	int supports_namespaces; /* really just for InC */
+	int supports_enumerations;
+	int supports_namespaces;
 	text_stream *line_comment;
 	text_stream *multiline_comment_open;
 	text_stream *multiline_comment_close;
@@ -1665,41 +1667,45 @@ typedef struct programming_language {
 	text_stream *end_ifdef;
 	text_stream *start_ifndef;
 	text_stream *end_ifndef;
-	int C_like;
-	struct linked_list *reserved_words; /* of |reserved_word| */
 	int suppress_disclaimer;
-	struct language_block *program; /* algorithm for syntax colouring */
+	int C_like; /* languages with this set have access to extra features */
+
+	struct linked_list *reserved_words; /* of |reserved_word| */
+	struct colouring_language_block *program; /* algorithm for syntax colouring */
 	METHOD_CALLS
 	MEMORY_MANAGEMENT
 } programming_language;
-#line 82 "inweb/Chapter 4/Programming Languages.w"
+#line 93 "inweb/Chapter 4/Programming Languages.w"
+typedef struct language_reader_state {
+	struct programming_language *defining;
+	struct colouring_language_block *current_block;
+} language_reader_state;
+#line 284 "inweb/Chapter 4/Programming Languages.w"
+typedef struct colouring_language_block {
+	struct linked_list *rules; /* of |colouring_rule| */
+	struct colouring_language_block *parent; /* or |NULL| for the topmost one */
+	int run; /* one of the |*_CRULE_RUN| values, or else a colour */
+	MEMORY_MANAGEMENT
+} colouring_language_block;
+#line 313 "inweb/Chapter 4/Programming Languages.w"
+typedef struct colouring_rule {
+	/* the premiss: */
+	int match_colour; /* for |colour C|, or else |NOT_A_COLOUR| */
+	int match_keyword_of_colour; /* for |keyword C|, or else |NOT_A_COLOUR| */
+	struct text_stream *match_text; /* or length 0 to mean "anything" */
+	int match_prefix; /* one of the |*_RULE_PREFIX| values above */
+
+	/* the conclusion: */
+	struct colouring_language_block *execute_block; /* or |NULL|, in which case... */
+	int set_to_colour; /* ...paint the snippet in this colour */
+	MEMORY_MANAGEMENT
+} colouring_rule;
+#line 385 "inweb/Chapter 4/Programming Languages.w"
 typedef struct reserved_word {
 	struct text_stream *word;
 	int colour;
 	MEMORY_MANAGEMENT
 } reserved_word;
-#line 96 "inweb/Chapter 4/Programming Languages.w"
-typedef struct colouring_rule {
-	int colour_match;
-	int run;
-	struct text_stream *on;
-	int colour;
-	int prefix;
-	int keyword_colour;
-	struct language_block *block;
-	MEMORY_MANAGEMENT
-} colouring_rule;
-#line 107 "inweb/Chapter 4/Programming Languages.w"
-typedef struct language_block {
-	struct linked_list *rules; /* of |colouring_rule| */
-	struct language_block *parent;
-	MEMORY_MANAGEMENT
-} language_block;
-#line 113 "inweb/Chapter 4/Programming Languages.w"
-typedef struct language_reader_state {
-	struct programming_language *defining;
-	struct language_block *current_block;
-} language_reader_state;
 #line 122 "inweb/Chapter 4/C-Like Languages.w"
 typedef struct c_structure {
 	struct text_stream *structure_name;
@@ -3151,19 +3157,23 @@ tangle_target * Tangler__primary_target(web *W) ;
 programming_language * Languages__find_by_name(text_stream *lname) ;
 #line 39 "inweb/Chapter 4/Programming Languages.w"
 programming_language * Languages__default(void) ;
-#line 118 "inweb/Chapter 4/Programming Languages.w"
+#line 98 "inweb/Chapter 4/Programming Languages.w"
 programming_language * Languages__read_definition(filename *F) ;
-#line 170 "inweb/Chapter 4/Programming Languages.w"
-colouring_rule * Languages__new_rule(language_block *within) ;
-#line 184 "inweb/Chapter 4/Programming Languages.w"
-language_block * Languages__new_block(language_block *within) ;
-#line 191 "inweb/Chapter 4/Programming Languages.w"
+#line 160 "inweb/Chapter 4/Programming Languages.w"
 void  Languages__read_definition_line(text_stream *line, text_file_position *tfp, void *v_state) ;
-#line 324 "inweb/Chapter 4/Programming Languages.w"
+#line 292 "inweb/Chapter 4/Programming Languages.w"
+colouring_language_block * Languages__new_block(colouring_language_block *within, int r) ;
+#line 327 "inweb/Chapter 4/Programming Languages.w"
+colouring_rule * Languages__new_rule(colouring_language_block *within) ;
+#line 342 "inweb/Chapter 4/Programming Languages.w"
+void  Languages__parse_rule(language_reader_state *state, text_stream *premiss, 	text_stream *action, text_file_position *tfp) ;
+#line 391 "inweb/Chapter 4/Programming Languages.w"
+reserved_word * Languages__reserved(programming_language *pl, text_stream *W, int C, 	text_file_position *tfp) ;
+#line 426 "inweb/Chapter 4/Programming Languages.w"
 int  Languages__colour(text_stream *T, text_file_position *tfp) ;
-#line 346 "inweb/Chapter 4/Programming Languages.w"
+#line 451 "inweb/Chapter 4/Programming Languages.w"
 int  Languages__boolean(text_stream *T, text_file_position *tfp) ;
-#line 355 "inweb/Chapter 4/Programming Languages.w"
+#line 465 "inweb/Chapter 4/Programming Languages.w"
 text_stream * Languages__text(text_stream *T, text_file_position *tfp) ;
 #line 39 "inweb/Chapter 4/Language Methods.w"
 void  LanguageMethods__further_parsing(web *W, programming_language *pl) ;
@@ -3267,13 +3277,15 @@ void  ACMESupport__begin_weave(programming_language *pl, section *S, weave_targe
 void  ACMESupport__reset_syntax_colouring(programming_language *pl) ;
 #line 215 "inweb/Chapter 4/ACME Support.w"
 int  ACMESupport__syntax_colour(programming_language *pl, text_stream *OUT, weave_target *wv, 	web *W, chapter *C, section *S, source_line *L, text_stream *matter, 	text_stream *colouring) ;
-#line 325 "inweb/Chapter 4/ACME Support.w"
+#line 324 "inweb/Chapter 4/ACME Support.w"
 int  ACMESupport__identifier_at(programming_language *pl, text_stream *matter, text_stream *colouring, int i) ;
-#line 347 "inweb/Chapter 4/ACME Support.w"
-void  ACMESupport__execute(section *S, linked_list *rules, text_stream *matter, 	text_stream *colouring, int from, int to) ;
-#line 377 "inweb/Chapter 4/ACME Support.w"
+#line 346 "inweb/Chapter 4/ACME Support.w"
+void  ACMESupport__execute(section *S, colouring_language_block *block, text_stream *matter, 	text_stream *colouring, int from, int to) ;
+#line 376 "inweb/Chapter 4/ACME Support.w"
+void  ACMESupport__execute_rule(section *S, colouring_rule *rule, text_stream *matter, 	text_stream *colouring, int from, int to) ;
+#line 382 "inweb/Chapter 4/ACME Support.w"
 int  ACMESupport__satisfies(section *S, colouring_rule *rule, text_stream *matter, 	text_stream *colouring, int from, int to) ;
-#line 402 "inweb/Chapter 4/ACME Support.w"
+#line 411 "inweb/Chapter 4/ACME Support.w"
 void  ACMESupport__follow(section *S, colouring_rule *rule, text_stream *matter, 	text_stream *colouring, int from, int to) ;
 #line 9 "inweb/Chapter 4/C-Like Languages.w"
 void  CLike__make_c_like(programming_language *pl) ;
@@ -6893,7 +6905,7 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "4 April 2020";
+			char *d = "5 April 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -12922,7 +12934,7 @@ ALLOCATE_INDIVIDUALLY(enumeration_set)
 ALLOCATE_INDIVIDUALLY(function)
 ALLOCATE_INDIVIDUALLY(hash_table_entry_usage)
 ALLOCATE_INDIVIDUALLY(hash_table_entry)
-ALLOCATE_INDIVIDUALLY(language_block)
+ALLOCATE_INDIVIDUALLY(colouring_language_block)
 ALLOCATE_INDIVIDUALLY(macro_tokens)
 ALLOCATE_INDIVIDUALLY(macro_usage)
 ALLOCATE_INDIVIDUALLY(macro)
@@ -17548,22 +17560,18 @@ programming_language *Languages__default(void) {
 	return Languages__find_by_name(TL_IS_213);
 }
 
-#line 81 "inweb/Chapter 4/Programming Languages.w"
+#line 85 "inweb/Chapter 4/Programming Languages.w"
 
-#line 87 "inweb/Chapter 4/Programming Languages.w"
-
-#line 106 "inweb/Chapter 4/Programming Languages.w"
-
-#line 112 "inweb/Chapter 4/Programming Languages.w"
-
-#line 117 "inweb/Chapter 4/Programming Languages.w"
+#line 97 "inweb/Chapter 4/Programming Languages.w"
 
 programming_language *Languages__read_definition(filename *F) {
 	programming_language *pl = CREATE(programming_language);
+	
+{
+#line 111 "inweb/Chapter 4/Programming Languages.w"
 	pl->language_name = NULL;
 	pl->file_extension = NULL;
 	pl->supports_enumerations = FALSE;
-	pl->methods = Methods__new_set();
 	pl->supports_namespaces = FALSE;
 	pl->line_comment = NULL;
 	pl->multiline_comment_open = NULL;
@@ -17589,163 +17597,243 @@ programming_language *Languages__read_definition(filename *F) {
 	pl->end_ifndef = NULL;
 	pl->C_like = FALSE;
 	pl->suppress_disclaimer = FALSE;
+
 	pl->reserved_words = NEW_LINKED_LIST(reserved_word);
+	pl->program = NULL;
+	pl->methods = Methods__new_set();
+
+}
+#line 100 "inweb/Chapter 4/Programming Languages.w"
+;
 	language_reader_state lrs;
 	lrs.defining = pl;
 	lrs.current_block = NULL;
 	TextFiles__read(F, FALSE, "can't open cover sheet file", TRUE,
 		Languages__read_definition_line, NULL, (void *) &lrs);
+	
+{
+#line 153 "inweb/Chapter 4/Programming Languages.w"
 	if (pl->C_like) CLike__make_c_like(pl);
 	if (Str__eq(pl->language_name, TL_IS_214)) InCSupport__add_features(pl);
 	ACMESupport__add_fallbacks(pl);
+
+}
+#line 106 "inweb/Chapter 4/Programming Languages.w"
+;
 	return pl;
 }
 
-#line 170 "inweb/Chapter 4/Programming Languages.w"
-colouring_rule *Languages__new_rule(language_block *within) {
-	if (within == NULL) internal_error("rule outside block");
-	colouring_rule *rule = CREATE(colouring_rule);
-	ADD_TO_LINKED_LIST(rule, colouring_rule, within->rules);
-	rule->colour_match = PLAIN_COLOUR;
-	rule->run = WHOLE_LINE_CRULE_RUN;
-	rule->on = NULL;
-	rule->colour = PLAIN_COLOUR;
-	rule->block = NULL;
-	rule->prefix = NOT_A_RULE_PREFIX;
-	rule->keyword_colour = NOT_A_COLOUR;
-	return rule;
-}
-
-language_block *Languages__new_block(language_block *within) {
-	language_block *block = CREATE(language_block);
-	block->rules = NEW_LINKED_LIST(colouring_rule);
-	block->parent = within;
-	return block;
-}
-
+#line 160 "inweb/Chapter 4/Programming Languages.w"
 void Languages__read_definition_line(text_stream *line, text_file_position *tfp, void *v_state) {
 	language_reader_state *state = (language_reader_state *) v_state;
 	programming_language *pl = state->defining;
-	Str__trim_white_space(line);
-	if (Str__len(line) == 0) return;
-	if (Str__get_first_char(line) == '#') return;
-	match_results mr = Regexp__create_mr(), mr2 = Regexp__create_mr();
-	if (state->current_block) {
-		if (Str__eq(line, TL_IS_215)) {
-			state->current_block = state->current_block->parent;
-		} else if (Regexp__match(&mr, line, L"characters {")) {
-			colouring_rule *rule = Languages__new_rule(state->current_block);
-			rule->block = Languages__new_block(state->current_block);
-			rule->run = CHARACTERS_CRULE_RUN;
-			state->current_block = rule->block;
-		} else if (Regexp__match(&mr, line, L"runs of (%c+) {")) {
-			colouring_rule *rule = Languages__new_rule(state->current_block);
-			rule->block = Languages__new_block(state->current_block);
-			if (Str__eq(mr.exp[0], TL_IS_216)) rule->run = UNQUOTED_COLOUR;
-			else rule->run = Languages__colour(mr.exp[0], tfp);
-			state->current_block = rule->block;
-		} else if (Regexp__match(&mr, line, L"(%c+?) => (%c+)")) {
-			
-{
-#line 279 "inweb/Chapter 4/Programming Languages.w"
-	text_stream *premiss = mr.exp[0], *action = Str__duplicate(mr.exp[1]);
 
+	Str__trim_white_space(line); /* ignore trailing space */
+	if (Str__len(line) == 0) return; /* ignore blank lines */
+	if (Str__get_first_char(line) == '#') return; /* lines opening with |#| are comments */
+
+	match_results mr = Regexp__create_mr();
+	if (state->current_block) 
+{
+#line 257 "inweb/Chapter 4/Programming Languages.w"
+	if (Str__eq(line, TL_IS_244)) {
+		state->current_block = state->current_block->parent;
+	} else if (Regexp__match(&mr, line, L"characters {")) {
+		colouring_rule *rule = Languages__new_rule(state->current_block);
+		rule->execute_block =
+			Languages__new_block(state->current_block, CHARACTERS_CRULE_RUN);
+		state->current_block = rule->execute_block;
+	} else if (Regexp__match(&mr, line, L"runs of (%c+) {")) {
+		colouring_rule *rule = Languages__new_rule(state->current_block);
+		int r = UNQUOTED_COLOUR;
+		if (Str__ne(mr.exp[0], TL_IS_245)) r = Languages__colour(mr.exp[0], tfp);
+		rule->execute_block = Languages__new_block(state->current_block, r);
+		state->current_block = rule->execute_block;
+	} else if (Regexp__match(&mr, line, L"(%c+?) => (%c+)")) {
+		Languages__parse_rule(state, mr.exp[0], mr.exp[1], tfp);
+	} else {
+		Errors__in_text_file("line in colouring block illegible", tfp);
+	}
+
+}
+#line 169 "inweb/Chapter 4/Programming Languages.w"
+
+	else 
+{
+#line 178 "inweb/Chapter 4/Programming Languages.w"
+	if (Regexp__match(&mr, line, L"colouring {")) {
+		if (pl->program) Errors__in_text_file("duplicate colouring program", tfp);
+		pl->program = Languages__new_block(NULL, WHOLE_LINE_CRULE_RUN);
+		state->current_block = pl->program;
+	} else if (Regexp__match(&mr, line, L"keyword (%C+) *=> *(%c+?)")) {
+		Languages__reserved(pl, mr.exp[0], Languages__colour(mr.exp[1], tfp), tfp);
+	} else if (Regexp__match(&mr, line, L"keyword (%C+)")) {
+		Languages__reserved(pl, mr.exp[0], PLAIN_COLOUR, tfp);
+	} else if (Regexp__match(&mr, line, L"(%c+) *: *(%c+?)")) {
+		text_stream *key = mr.exp[0], *value = Str__duplicate(mr.exp[1]);
+		if (Str__eq(key, TL_IS_215)) pl->language_name = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_216))
+			pl->language_details = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_217))
+			pl->file_extension = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_218))
+			pl->line_comment = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_219))
+			pl->multiline_comment_open = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_220))
+			pl->multiline_comment_close = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_221))
+			pl->string_literal = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_222))
+			pl->string_literal_escape = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_223))
+			pl->character_literal = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_224))
+			pl->character_literal_escape = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_225))
+			pl->binary_literal_prefix = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_226))
+			pl->octal_literal_prefix = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_227))
+			pl->hexadecimal_literal_prefix = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_228))
+			pl->negative_literal_prefix = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_229))
+			pl->shebang = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_230))
+			pl->line_marker = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_231))
+			pl->before_macro_expansion = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_232))
+			pl->after_macro_expansion = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_233))
+			pl->supports_enumerations = Languages__boolean(value, tfp);
+		else if (Str__eq(key, TL_IS_234))
+			pl->start_definition = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_235))
+			pl->prolong_definition = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_236))
+			pl->end_definition = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_237))
+			pl->start_ifdef = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_238))
+			pl->start_ifndef = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_239))
+			pl->end_ifdef = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_240))
+			pl->end_ifndef = Languages__text(value, tfp);
+		else if (Str__eq(key, TL_IS_241))
+			pl->C_like = Languages__boolean(value, tfp);
+		else if (Str__eq(key, TL_IS_242))
+			pl->suppress_disclaimer = Languages__boolean(value, tfp);
+		else if (Str__eq(key, TL_IS_243))
+			pl->supports_namespaces = Languages__boolean(value, tfp);
+		else {
+			Errors__in_text_file("unknown property name before ':'", tfp);
+		}
+	} else {
+		Errors__in_text_file("line in language definition illegible", tfp);
+	}
+
+}
+#line 170 "inweb/Chapter 4/Programming Languages.w"
+;
+	Regexp__dispose_of(&mr);
+}
+
+#line 290 "inweb/Chapter 4/Programming Languages.w"
+
+#line 292 "inweb/Chapter 4/Programming Languages.w"
+colouring_language_block *Languages__new_block(colouring_language_block *within, int r) {
+	colouring_language_block *block = CREATE(colouring_language_block);
+	block->rules = NEW_LINKED_LIST(colouring_rule);
+	block->parent = within;
+	block->run = r;
+	return block;
+}
+
+#line 325 "inweb/Chapter 4/Programming Languages.w"
+
+#line 327 "inweb/Chapter 4/Programming Languages.w"
+colouring_rule *Languages__new_rule(colouring_language_block *within) {
+	if (within == NULL) internal_error("rule outside block");
+	colouring_rule *rule = CREATE(colouring_rule);
+	ADD_TO_LINKED_LIST(rule, colouring_rule, within->rules);
+	rule->match_colour = NOT_A_COLOUR;
+	rule->match_text = NULL;
+	rule->match_prefix = NOT_A_RULE_PREFIX;
+	rule->match_keyword_of_colour = NOT_A_COLOUR;
+
+	rule->set_to_colour = PLAIN_COLOUR;
+	rule->execute_block = NULL;
+	return rule;
+}
+
+#line 342 "inweb/Chapter 4/Programming Languages.w"
+void Languages__parse_rule(language_reader_state *state, text_stream *premiss,
+	text_stream *action, text_file_position *tfp) {
+	match_results mr = Regexp__create_mr();
 	colouring_rule *rule = Languages__new_rule(state->current_block);
 	Str__trim_white_space(premiss); Str__trim_white_space(action);
-	if (Regexp__match(&mr2, premiss, L"keyword (%c+)")) {
-		rule->keyword_colour = Languages__colour(mr2.exp[0], tfp);
-	} else if (Regexp__match(&mr2, premiss, L"prefix (%c+)")) {
-		rule->prefix = UNSPACED_RULE_PREFIX;
-		rule->on = Str__duplicate(mr2.exp[0]);
-	} else if (Regexp__match(&mr2, premiss, L"spaced prefix (%c+)")) {
-		rule->prefix = SPACED_RULE_PREFIX;
-		rule->on = Str__duplicate(mr2.exp[0]);
-	} else if (Regexp__match(&mr2, premiss, L"optionally spaced prefix (%c+)")) {
-		rule->prefix = OPTIONALLY_SPACED_RULE_PREFIX;
-		rule->on = Str__duplicate(mr2.exp[0]);
+	
+{
+#line 353 "inweb/Chapter 4/Programming Languages.w"
+	if (Regexp__match(&mr, premiss, L"keyword (%c+)")) {
+		rule->match_keyword_of_colour = Languages__colour(mr.exp[0], tfp);
+	} else if (Regexp__match(&mr, premiss, L"prefix (%c+)")) {
+		rule->match_prefix = UNSPACED_RULE_PREFIX;
+		rule->match_text = Str__duplicate(mr.exp[0]);
+	} else if (Regexp__match(&mr, premiss, L"spaced prefix (%c+)")) {
+		rule->match_prefix = SPACED_RULE_PREFIX;
+		rule->match_text = Str__duplicate(mr.exp[0]);
+	} else if (Regexp__match(&mr, premiss, L"optionally spaced prefix (%c+)")) {
+		rule->match_prefix = OPTIONALLY_SPACED_RULE_PREFIX;
+		rule->match_text = Str__duplicate(mr.exp[0]);
+	} else if (Regexp__match(&mr, premiss, L"colou*r (%c+)")) {
+		rule->match_colour = Languages__colour(mr.exp[0], tfp);
 	} else if (Str__ne(premiss, TL_IS_246)) {
-		rule->on = Str__duplicate(premiss);
+		rule->match_text = Str__duplicate(premiss);
 	}
+
+}
+#line 347 "inweb/Chapter 4/Programming Languages.w"
+;
+	
+{
+#line 371 "inweb/Chapter 4/Programming Languages.w"
 	if (Str__eq(action, TL_IS_247)) {
-		language_block *block = CREATE(language_block);
-		block->rules = NEW_LINKED_LIST(colouring_rule);
-		block->parent = state->current_block;
-		rule->block = block;
-		state->current_block = block;
+		rule->execute_block =
+			Languages__new_block(state->current_block, WHOLE_LINE_CRULE_RUN);
+		state->current_block = rule->execute_block;
 	} else if (Str__get_first_char(action) == '!') {
-		rule->colour = Languages__colour(action, tfp);
+		rule->set_to_colour = Languages__colour(action, tfp);
 	} else {
 		Errors__in_text_file("action after '=>' illegible", tfp);
 	}
 
 }
-#line 213 "inweb/Chapter 4/Programming Languages.w"
+#line 348 "inweb/Chapter 4/Programming Languages.w"
 ;
-		} else {
-			Errors__in_text_file("line in colouring block illegible", tfp);
-		}
-	} else {
-		if (Regexp__match(&mr, line, L"colouring {")) {
-			if (pl->program) {
-				Errors__in_text_file("duplicate colouring block", tfp);
-			}
-			pl->program = Languages__new_block(NULL);
-			state->current_block = pl->program;
-		} else if (Regexp__match(&mr, line, L"keyword (%C+) *=> *(%c+?)")) {
-			reserved_word *rw;
-			LOOP_OVER_LINKED_LIST(rw, reserved_word, pl->reserved_words)
-				if (Str__eq(rw->word, mr.exp[0])) {
-					Errors__in_text_file("duplicate reserved word", tfp);
-				}
-			rw = CREATE(reserved_word);
-			rw->word = Str__duplicate(mr.exp[0]);
-			rw->colour = Languages__colour(mr.exp[1], tfp);
-			ADD_TO_LINKED_LIST(rw, reserved_word, pl->reserved_words);
-		} else if (Regexp__match(&mr, line, L"(%c+) *: *(%c+?)")) {
-			text_stream *key = mr.exp[0], *value = Str__duplicate(mr.exp[1]);
-			if (Str__eq(key, TL_IS_217)) pl->language_name = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_218)) pl->language_details = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_219)) pl->file_extension = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_220)) pl->line_comment = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_221)) pl->multiline_comment_open = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_222)) pl->multiline_comment_close = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_223)) pl->string_literal = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_224)) pl->string_literal_escape = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_225)) pl->character_literal = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_226)) pl->character_literal_escape = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_227)) pl->binary_literal_prefix = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_228)) pl->octal_literal_prefix = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_229)) pl->hexadecimal_literal_prefix = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_230)) pl->negative_literal_prefix = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_231)) pl->shebang = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_232)) pl->line_marker = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_233)) pl->before_macro_expansion = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_234)) pl->after_macro_expansion = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_235)) pl->supports_enumerations = Languages__boolean(value, tfp);
-			else if (Str__eq(key, TL_IS_236)) pl->start_definition = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_237)) pl->prolong_definition = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_238)) pl->end_definition = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_239)) pl->start_ifdef = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_240)) pl->start_ifndef = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_241)) pl->end_ifdef = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_242)) pl->end_ifndef = Languages__text(value, tfp);
-			else if (Str__eq(key, TL_IS_243))
-				pl->C_like = Languages__boolean(value, tfp);
-			else if (Str__eq(key, TL_IS_244))
-				pl->suppress_disclaimer = Languages__boolean(value, tfp);
-			else if (Str__eq(key, TL_IS_245))
-				pl->supports_namespaces = Languages__boolean(value, tfp);
-			else {
-				Errors__in_text_file("unknown property in list of language properties", tfp);
-			}
-		} else {
-			Errors__in_text_file("line in language definition illegible", tfp);
-		}
-	}
-	Regexp__dispose_of(&mr); Regexp__dispose_of(&mr2);
+	Regexp__dispose_of(&mr);
 }
 
-#line 324 "inweb/Chapter 4/Programming Languages.w"
+#line 390 "inweb/Chapter 4/Programming Languages.w"
+
+reserved_word *Languages__reserved(programming_language *pl, text_stream *W, int C,
+	text_file_position *tfp) {
+	reserved_word *rw;
+	LOOP_OVER_LINKED_LIST(rw, reserved_word, pl->reserved_words)
+		if (Str__eq(rw->word, W)) {
+			Errors__in_text_file("duplicate reserved word", tfp);
+		}
+	rw = CREATE(reserved_word);
+	rw->word = Str__duplicate(W);
+	rw->colour = C;
+	ADD_TO_LINKED_LIST(rw, reserved_word, pl->reserved_words);
+	return rw;
+}
+
+#line 426 "inweb/Chapter 4/Programming Languages.w"
 int Languages__colour(text_stream *T, text_file_position *tfp) {
 	if (Str__get_first_char(T) != '!') {
 		Errors__in_text_file("colour names must begin with !", tfp);
@@ -17768,6 +17856,7 @@ int Languages__colour(text_stream *T, text_file_position *tfp) {
 	}
 }
 
+#line 451 "inweb/Chapter 4/Programming Languages.w"
 int Languages__boolean(text_stream *T, text_file_position *tfp) {
 	if (Str__eq(T, TL_IS_259)) return TRUE;
 	else if (Str__eq(T, TL_IS_260)) return FALSE;
@@ -17777,6 +17866,7 @@ int Languages__boolean(text_stream *T, text_file_position *tfp) {
 	}
 }
 
+#line 465 "inweb/Chapter 4/Programming Languages.w"
 text_stream *Languages__text(text_stream *T, text_file_position *tfp) {
 	text_stream *V = Str__new();
 	for (int i=0; i<Str__len(T); i++) {
@@ -18281,7 +18371,7 @@ int ACMESupport__syntax_colour(programming_language *pl, text_stream *OUT, weave
 	text_stream *colouring) {
 	
 {
-#line 226 "inweb/Chapter 4/ACME Support.w"
+#line 225 "inweb/Chapter 4/ACME Support.w"
 	int squote = Str__get_first_char(pl->character_literal);
 	int squote_escape = Str__get_first_char(pl->character_literal_escape);
 	int dquote = Str__get_first_char(pl->string_literal);
@@ -18327,7 +18417,7 @@ int ACMESupport__syntax_colour(programming_language *pl, text_stream *OUT, weave
 ;
 	
 {
-#line 267 "inweb/Chapter 4/ACME Support.w"
+#line 266 "inweb/Chapter 4/ACME Support.w"
 	int base = -1, dec_possible = TRUE;
 	for (int i=0; i < Str__len(matter); i++) {
 		if ((Str__get_at(colouring, i) == PLAIN_COLOUR) ||
@@ -18386,12 +18476,11 @@ int ACMESupport__syntax_colour(programming_language *pl, text_stream *OUT, weave
 }
 #line 219 "inweb/Chapter 4/ACME Support.w"
 ;
-	linked_list *rules = pl->program->rules;
-	ACMESupport__execute(S, rules, matter, colouring, 0, Str__len(matter));
+	ACMESupport__execute(S, pl->program, matter, colouring, 0, Str__len(matter));
 	return FALSE;
 }
 
-#line 325 "inweb/Chapter 4/ACME Support.w"
+#line 324 "inweb/Chapter 4/ACME Support.w"
 int ACMESupport__identifier_at(programming_language *pl, text_stream *matter, text_stream *colouring, int i) {
 	wchar_t c = Str__get_at(matter, i);
 	if ((i > 0) && (Str__get_at(colouring, i-1) == IDENTIFIER_COLOUR)) {
@@ -18411,68 +18500,79 @@ int ACMESupport__identifier_at(programming_language *pl, text_stream *matter, te
 	return FALSE;
 }
 
-#line 347 "inweb/Chapter 4/ACME Support.w"
-void ACMESupport__execute(section *S, linked_list *rules, text_stream *matter,
+#line 346 "inweb/Chapter 4/ACME Support.w"
+void ACMESupport__execute(section *S, colouring_language_block *block, text_stream *matter,
 	text_stream *colouring, int from, int to) {
+	if (block == NULL) internal_error("no block");
 	colouring_rule *rule;
-	LOOP_OVER_LINKED_LIST(rule, colouring_rule, rules) {
-		if (rule->run == CHARACTERS_CRULE_RUN) {
+	LOOP_OVER_LINKED_LIST(rule, colouring_rule, block->rules) {
+		if (block->run == CHARACTERS_CRULE_RUN) {
 			for (int i=from; i<=to; i++)
-				ACMESupport__execute(S, rule->block->rules, matter, colouring, i, i);
-		} else if (rule->run == WHOLE_LINE_CRULE_RUN) {
-			if (ACMESupport__satisfies(S, rule, matter, colouring, from, to))
-				ACMESupport__follow(S, rule, matter, colouring, from, to);
+				ACMESupport__execute_rule(S, rule, matter, colouring, i, i);
+		} else if (block->run == WHOLE_LINE_CRULE_RUN) {
+			ACMESupport__execute_rule(S, rule, matter, colouring, from, to);
 		} else {
 			int ident_from = -1;
 			for (int i=from; i<=to; i++) {
 				int col = Str__get_at(colouring, i);
-				if ((col == rule->run) ||
-					((rule->run == UNQUOTED_COLOUR) &&
+				if ((col == block->run) ||
+					((block->run == UNQUOTED_COLOUR) &&
 						((col != STRING_COLOUR) && (col != CHAR_LITERAL_COLOUR)))) {
 					if (ident_from == -1) ident_from = i;
 				} else {
 					if (ident_from >= 0)
-						ACMESupport__execute(S, rule->block->rules, matter, colouring, ident_from, i-1);
+						ACMESupport__execute_rule(S, rule, matter, colouring, ident_from, i-1);
 					ident_from = -1;
 				}
 			}
 			if (ident_from >= 0)
-				ACMESupport__execute(S, rule->block->rules, matter, colouring, ident_from, to);
+				ACMESupport__execute_rule(S, rule, matter, colouring, ident_from, to);
 		}
 	}
 }
 
+void ACMESupport__execute_rule(section *S, colouring_rule *rule, text_stream *matter,
+	text_stream *colouring, int from, int to) {
+	if (ACMESupport__satisfies(S, rule, matter, colouring, from, to))
+		ACMESupport__follow(S, rule, matter, colouring, from, to);
+}
+
 int ACMESupport__satisfies(section *S, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to) {
-	if (Str__len(rule->on) > 0) {
-		if (rule->prefix != NOT_A_RULE_PREFIX) {
+	if (Str__len(rule->match_text) > 0) {
+		if (rule->match_prefix != NOT_A_RULE_PREFIX) {
 			int pos = from;
-			if (rule->prefix != UNSPACED_RULE_PREFIX) {
+			if (rule->match_prefix != UNSPACED_RULE_PREFIX) {
 				while ((pos > 0) && (Characters__is_whitespace(pos-1))) pos--;
-				if ((rule->prefix == SPACED_RULE_PREFIX) && (pos == from))
+				if ((rule->match_prefix == SPACED_RULE_PREFIX) && (pos == from))
 					return FALSE;
 			}
-			if (ACMESupport__text_at(matter, pos-Str__len(rule->on), rule->on) == FALSE)
+			if (ACMESupport__text_at(matter, pos-Str__len(rule->match_text), rule->match_text) == FALSE)
 				return FALSE;
 		} else {
-			if (Str__ne(matter, rule->on)) return FALSE;
+			if (Str__ne(matter, rule->match_text)) return FALSE;
 		}
-	} else if (rule->keyword_colour != NOT_A_COLOUR) {
+	} else if (rule->match_keyword_of_colour != NOT_A_COLOUR) {
 		TEMPORARY_TEXT(id);
 		Str__substr(id, Str__at(matter, from), Str__at(matter, to+1));
-		int rw = Analyser__is_reserved_word(S, id, rule->keyword_colour);
+		int rw = Analyser__is_reserved_word(S, id, rule->match_keyword_of_colour);
 		DISCARD_TEXT(id);
 		if (rw == FALSE) return FALSE;
+	} else if (rule->match_colour != NOT_A_COLOUR) {
+		for (int i=from; i<=to; i++)
+			if (Str__get_at(colouring, i) != rule->match_colour)
+				return FALSE;
 	}
 	return TRUE;
 }
 
 void ACMESupport__follow(section *S, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to) {
-	if (rule->block) ACMESupport__execute(S, rule->block->rules, matter, colouring, from, to);
+	if (rule->execute_block)
+		ACMESupport__execute(S, rule->execute_block, matter, colouring, from, to);
 	else
 		for (int i=from; i<=to; i++)
-			Str__put_at(colouring, i, rule->colour);
+			Str__put_at(colouring, i, rule->set_to_colour);
 }
 
 #line 9 "inweb/Chapter 4/C-Like Languages.w"
@@ -23121,37 +23221,37 @@ void register_tangled_text_literals(void) {
     TL_IS_212 = Str__literal(L"Languages");
     TL_IS_213 = Str__literal(L"C");
     TL_IS_214 = Str__literal(L"InC");
-    TL_IS_215 = Str__literal(L"}");
-    TL_IS_216 = Str__literal(L"unquoted");
-    TL_IS_217 = Str__literal(L"Name");
-    TL_IS_218 = Str__literal(L"Details");
-    TL_IS_219 = Str__literal(L"Extension");
-    TL_IS_220 = Str__literal(L"Line Comment");
-    TL_IS_221 = Str__literal(L"Multiline Comment Open");
-    TL_IS_222 = Str__literal(L"Multiline Comment Close");
-    TL_IS_223 = Str__literal(L"String Literal");
-    TL_IS_224 = Str__literal(L"String Literal Escape");
-    TL_IS_225 = Str__literal(L"Character Literal");
-    TL_IS_226 = Str__literal(L"Character Literal Escape");
-    TL_IS_227 = Str__literal(L"Binary Literal Prefix");
-    TL_IS_228 = Str__literal(L"Octal Literal Prefix");
-    TL_IS_229 = Str__literal(L"Hexadecimal Literal Prefix");
-    TL_IS_230 = Str__literal(L"Negative Literal Prefix");
-    TL_IS_231 = Str__literal(L"Shebang");
-    TL_IS_232 = Str__literal(L"Line Marker");
-    TL_IS_233 = Str__literal(L"Before Macro Expansion");
-    TL_IS_234 = Str__literal(L"After Macro Expansion");
-    TL_IS_235 = Str__literal(L"Supports Enumerations");
-    TL_IS_236 = Str__literal(L"Start Definition");
-    TL_IS_237 = Str__literal(L"Prolong Definition");
-    TL_IS_238 = Str__literal(L"End Definition");
-    TL_IS_239 = Str__literal(L"Start Ifdef");
-    TL_IS_240 = Str__literal(L"Start Ifndef");
-    TL_IS_241 = Str__literal(L"End Ifdef");
-    TL_IS_242 = Str__literal(L"End Ifndef");
-    TL_IS_243 = Str__literal(L"C-Like");
-    TL_IS_244 = Str__literal(L"Suppress Disclaimer");
-    TL_IS_245 = Str__literal(L"Supports Namespaces");
+    TL_IS_215 = Str__literal(L"Name");
+    TL_IS_216 = Str__literal(L"Details");
+    TL_IS_217 = Str__literal(L"Extension");
+    TL_IS_218 = Str__literal(L"Line Comment");
+    TL_IS_219 = Str__literal(L"Multiline Comment Open");
+    TL_IS_220 = Str__literal(L"Multiline Comment Close");
+    TL_IS_221 = Str__literal(L"String Literal");
+    TL_IS_222 = Str__literal(L"String Literal Escape");
+    TL_IS_223 = Str__literal(L"Character Literal");
+    TL_IS_224 = Str__literal(L"Character Literal Escape");
+    TL_IS_225 = Str__literal(L"Binary Literal Prefix");
+    TL_IS_226 = Str__literal(L"Octal Literal Prefix");
+    TL_IS_227 = Str__literal(L"Hexadecimal Literal Prefix");
+    TL_IS_228 = Str__literal(L"Negative Literal Prefix");
+    TL_IS_229 = Str__literal(L"Shebang");
+    TL_IS_230 = Str__literal(L"Line Marker");
+    TL_IS_231 = Str__literal(L"Before Macro Expansion");
+    TL_IS_232 = Str__literal(L"After Macro Expansion");
+    TL_IS_233 = Str__literal(L"Supports Enumerations");
+    TL_IS_234 = Str__literal(L"Start Definition");
+    TL_IS_235 = Str__literal(L"Prolong Definition");
+    TL_IS_236 = Str__literal(L"End Definition");
+    TL_IS_237 = Str__literal(L"Start Ifdef");
+    TL_IS_238 = Str__literal(L"Start Ifndef");
+    TL_IS_239 = Str__literal(L"End Ifdef");
+    TL_IS_240 = Str__literal(L"End Ifndef");
+    TL_IS_241 = Str__literal(L"C-Like");
+    TL_IS_242 = Str__literal(L"Suppress Disclaimer");
+    TL_IS_243 = Str__literal(L"Supports Namespaces");
+    TL_IS_244 = Str__literal(L"}");
+    TL_IS_245 = Str__literal(L"unquoted");
     TL_IS_246 = Str__literal(L"(all)");
     TL_IS_247 = Str__literal(L"{");
     TL_IS_248 = Str__literal(L"!string");

@@ -38,40 +38,40 @@ End Definition: \n
 # FILE gets in even though it's not technically reserved but only a type
 # name, defined in the standard C library.
 
-keyword FILE => !reserved
+keyword FILE
 
-keyword auto => !reserved
-keyword break => !reserved
-keyword case => !reserved
-keyword char => !reserved
-keyword const => !reserved
-keyword continue => !reserved
-keyword default => !reserved
-keyword do => !reserved
-keyword double => !reserved
-keyword else => !reserved
-keyword enum => !reserved
-keyword extern => !reserved
-keyword float => !reserved
-keyword for => !reserved
-keyword goto => !reserved
-keyword if => !reserved
-keyword int => !reserved
-keyword long => !reserved
-keyword register => !reserved
-keyword return => !reserved
-keyword short => !reserved
-keyword signed => !reserved
-keyword sizeof => !reserved
-keyword static => !reserved
-keyword struct => !reserved
-keyword switch => !reserved
-keyword typedef => !reserved
-keyword union => !reserved
-keyword unsigned => !reserved
-keyword void => !reserved
-keyword volatile => !reserved
-keyword while => !reserved
+keyword auto
+keyword break
+keyword case
+keyword char
+keyword const
+keyword continue
+keyword default
+keyword do
+keyword double
+keyword else
+keyword enum
+keyword extern
+keyword float
+keyword for
+keyword goto
+keyword if
+keyword int
+keyword long
+keyword register
+keyword return
+keyword short
+keyword signed
+keyword sizeof
+keyword static
+keyword struct
+keyword switch
+keyword typedef
+keyword union
+keyword unsigned
+keyword void
+keyword volatile
+keyword while
 
 colouring {
 	runs of unquoted {

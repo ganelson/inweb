@@ -33,11 +33,11 @@
 
 
 <pre class="display">
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">para_macro</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">macro_name</span><span class="plain">; </span><span class="comment">usually long, like "Create a paragraph macro here"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">defining_paragraph</span><span class="plain">; </span><span class="comment">as printed in small type after the name in any usage</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">defn_start</span><span class="plain">; </span><span class="comment">it ends at the end of its defining paragraph</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">macro_usages</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">macro_usage</span></code>: only computed for weaves</span>
+    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="reserved">para_macro</span><span class="plain"> {</span>
+        <span class="identifier">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">macro_name</span><span class="plain">; </span><span class="comment">usually long, like "Create a paragraph macro here"</span>
+        <span class="identifier">struct</span><span class="plain"> </span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">defining_paragraph</span><span class="plain">; </span><span class="comment">as printed in small type after the name in any usage</span>
+        <span class="identifier">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">defn_start</span><span class="plain">; </span><span class="comment">it ends at the end of its defining paragraph</span>
+        <span class="identifier">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">macro_usages</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">macro_usage</span></code>: only computed for weaves</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">para_macro</span><span class="plain">;</span>
 </pre>
@@ -60,7 +60,7 @@ the usage of these is always a single section.
         <span class="identifier">pmac</span><span class="plain">-&gt;</span><span class="element">defn_start</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">next_line</span><span class="plain">;</span>
         <span class="identifier">pmac</span><span class="plain">-&gt;</span><span class="element">macro_usages</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">macro_usage</span><span class="plain">);</span>
         <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">pmac</span><span class="plain">, </span><span class="reserved">para_macro</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">macros</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pmac</span><span class="plain">;</span>
+        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">pmac</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -79,9 +79,9 @@ much faster.
     <span class="reserved">para_macro</span><span class="plain"> *</span><span class="functiontext">Macros::find_by_name</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">scope</span><span class="plain">) {</span>
         <span class="reserved">para_macro</span><span class="plain"> *</span><span class="identifier">pmac</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">pmac</span><span class="plain">, </span><span class="reserved">para_macro</span><span class="plain">, </span><span class="identifier">scope</span><span class="plain">-&gt;</span><span class="element">macros</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">pmac</span><span class="plain">-&gt;</span><span class="element">macro_name</span><span class="plain">))</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pmac</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">pmac</span><span class="plain">-&gt;</span><span class="element">macro_name</span><span class="plain">))</span>
+                <span class="identifier">return</span><span class="plain"> </span><span class="identifier">pmac</span><span class="plain">;</span>
+        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 

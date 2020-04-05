@@ -130,7 +130,7 @@ compromise in practice:
 
 
 <pre class="display">
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pointer_sized_int</span><span class="plain">;</span>
+    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">long</span><span class="plain"> </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">pointer_sized_int</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -145,7 +145,7 @@ that is, literal <code class="display"><span class="extract">text_stream *</span
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Foundation::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Foundation::start</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
         <span class="functiontext">Memory::start</span><span class="plain">();</span>
         &lt;<span class="cwebmacro">Register the default stream writers</span> <span class="cwebmacronumber">8.1</span>&gt;<span class="plain">;</span>
         <span class="plain">[[</span><span class="identifier">textliterals</span><span class="plain">]];</span>
@@ -280,8 +280,8 @@ safety problems.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Foundation::end</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Log::aspect_switched_on</span><span class="plain">(</span><span class="constant">MEMORY_USAGE_DA</span><span class="plain">)) </span><span class="functiontext">Memory::log_statistics</span><span class="plain">();</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Foundation::end</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="functiontext">Log::aspect_switched_on</span><span class="plain">(</span><span class="constant">MEMORY_USAGE_DA</span><span class="plain">)) </span><span class="functiontext">Memory::log_statistics</span><span class="plain">();</span>
         <span class="functiontext">Log::close</span><span class="plain">();</span>
         <span class="functiontext">Memory::free</span><span class="plain">();</span>
     <span class="plain">}</span>

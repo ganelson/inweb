@@ -38,12 +38,12 @@ increments sequentially in definition order.
 
 
 <pre class="display">
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">enumeration_set</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">postfix</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stub</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">first_value</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">next_free_value</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">last_observed_at</span><span class="plain">;</span>
+    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="reserved">enumeration_set</span><span class="plain"> {</span>
+        <span class="identifier">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">postfix</span><span class="plain">;</span>
+        <span class="identifier">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stub</span><span class="plain">;</span>
+        <span class="identifier">int</span><span class="plain"> </span><span class="identifier">first_value</span><span class="plain">;</span>
+        <span class="identifier">int</span><span class="plain"> </span><span class="identifier">next_free_value</span><span class="plain">;</span>
+        <span class="identifier">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">last_observed_at</span><span class="plain">;</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">enumeration_set</span><span class="plain">;</span>
 </pre>
@@ -61,9 +61,9 @@ compare all against all:
     <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="functiontext">Enumerations::find</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">post</span><span class="plain">) {</span>
         <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="identifier">es</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">es</span><span class="plain">, </span><span class="reserved">enumeration_set</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">post</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">postfix</span><span class="plain">))</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">es</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">post</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">postfix</span><span class="plain">))</span>
+                <span class="identifier">return</span><span class="plain"> </span><span class="identifier">es</span><span class="plain">;</span>
+        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -78,15 +78,15 @@ a further constant in what ought to be an existing set.
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Enumerations::define</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">symbol</span><span class="plain">,</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Enumerations::define</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">symbol</span><span class="plain">,</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Find the postfix in this symbol name</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="identifier">es</span><span class="plain"> = </span><span class="functiontext">Enumerations::find</span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Continue existing set</span> <span class="cwebmacronumber">3.2</span>&gt;
-        <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Begin new set</span> <span class="cwebmacronumber">3.3</span>&gt;<span class="plain">;</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Continue existing set</span> <span class="cwebmacronumber">3.2</span>&gt;
+        <span class="identifier">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Begin new set</span> <span class="cwebmacronumber">3.3</span>&gt;<span class="plain">;</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">) </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">last_observed_at</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">;</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">) </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">last_observed_at</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
@@ -105,8 +105,8 @@ a further constant in what ought to be an existing set.
 
 <pre class="displaydefn">
         <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">symbol</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%c*_(%C+?)"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
-        <span class="reserved">else</span><span class="plain"> {</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">symbol</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%c*_(%C+?)"</span><span class="plain">)) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+        <span class="identifier">else</span><span class="plain"> {</span>
             <span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"enumeration constants must belong to a _FAMILY"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">, </span><span class="string">"BOGUS"</span><span class="plain">);</span>
         <span class="plain">}</span>
@@ -123,11 +123,11 @@ a further constant in what ought to be an existing set.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(%S+"</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">) {</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(%S+"</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">);</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">next_free_value</span><span class="plain">++);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"this enumeration _FAMILY is unknown"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
+            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="identifier">else</span><span class="plain"> </span><span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"this enumeration _FAMILY is unknown"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -140,25 +140,25 @@ a further constant in what ought to be an existing set.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">) </span><span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"this enumeration _FAMILY already exists"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> {</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">) </span><span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"this enumeration _FAMILY already exists"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
+        <span class="identifier">else</span><span class="plain"> {</span>
             <span class="identifier">es</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">enumeration_set</span><span class="plain">);</span>
             <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">postfix</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
             <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) &lt; </span><span class="constant">8</span><span class="plain">) &amp;&amp;</span>
+            <span class="identifier">if</span><span class="plain"> ((</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) &lt; </span><span class="constant">8</span><span class="plain">) &amp;&amp;</span>
                 <span class="plain">((</span><span class="functiontext">Regexp::match</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%d+"</span><span class="plain">)) ||</span>
                     <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"-%d+"</span><span class="plain">)))) {</span>
                 <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">first_value</span><span class="plain"> = </span><span class="functiontext">Str::atoi</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">next_free_value</span><span class="plain"> = </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">first_value</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">;</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="plain">} </span><span class="identifier">else</span><span class="plain"> {</span>
                 <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
                 <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">first_value</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">next_free_value</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(%S+"</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(%S+"</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">first_value</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -172,8 +172,8 @@ the code at the last line on which an <code class="display"><span class="extract
 
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Enumerations::define_extents</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">tangle_target</span><span class="plain"> *</span><span class="identifier">target</span><span class="plain">, </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">lang</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">lang</span><span class="plain">-&gt;</span><span class="identifier">supports_enumerations</span><span class="plain">) {</span>
+    <span class="identifier">void</span><span class="plain"> </span><span class="functiontext">Enumerations::define_extents</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">tangle_target</span><span class="plain"> *</span><span class="identifier">target</span><span class="plain">, </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">lang</span><span class="plain">) {</span>
+        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">lang</span><span class="plain">-&gt;</span><span class="identifier">supports_enumerations</span><span class="plain">) {</span>
             <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="identifier">es</span><span class="plain">;</span>
             <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">es</span><span class="plain">, </span><span class="reserved">enumeration_set</span><span class="plain">) {</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">symbol</span><span class="plain">);</span>
