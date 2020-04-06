@@ -146,11 +146,11 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbos
 	W->analysed = FALSE;
 	W->as_ebook = NULL;
 	W->redirect_weaves_to = NULL;
-	W->main_language = Languages::default();
+	W->main_language = Languages::default(W);
 	W->no_lines = 0; W->no_paragraphs = 0; 
 	text_stream *language_name = Bibliographic::get_datum(W->md, I"Language");
 	if (Str::len(language_name) > 0)
-		W->main_language = Languages::find_by_name(language_name);
+		W->main_language = Languages::find_by_name(language_name, W);
 	main_target = Reader::add_tangle_target(W, W->main_language);
 
 @<Initialise the rest of the chapter structure@> =
@@ -159,7 +159,7 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbos
 	C->sections = NEW_LINKED_LIST(section);
 	C->ch_language = W->main_language;
 	if (Str::len(Cm->ch_language_name) > 0)
-		C->ch_language = Languages::find_by_name(Cm->ch_language_name);
+		C->ch_language = Languages::find_by_name(Cm->ch_language_name, W);
 
 @<Initialise the rest of the section structure@> =
 	S->sect_extent = 0;
@@ -176,10 +176,10 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbos
 	S->owning_web = W;
 	S->sect_language = C->ch_language;
 	if (Str::len(S->md->sect_language_name) > 0)
-		S->sect_language = Languages::find_by_name(S->md->sect_language_name);
+		S->sect_language = Languages::find_by_name(S->md->sect_language_name, W);
 	if (Str::len(S->md->sect_independent_language) > 0) {
 		programming_language *pl =
-			Languages::find_by_name(S->md->sect_independent_language);
+			Languages::find_by_name(S->md->sect_independent_language, W);
 		S->sect_language = pl;
 		S->sect_target = Reader::add_tangle_target(W, pl);
 	} else {

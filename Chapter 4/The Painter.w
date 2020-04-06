@@ -207,24 +207,53 @@ void Painter::execute(hash_table *HT, colouring_language_block *block, text_stre
 	LOOP_OVER_LINKED_LIST(rule, colouring_rule, block->rules) {
 		switch (block->run) {
 			case WHOLE_LINE_CRULE_RUN:
-				Painter::execute_rule(HT, rule, matter, colouring, from, to);
+				Painter::execute_rule(HT, rule, matter, colouring, from, to, 1);
 				break;
 			case CHARACTERS_CRULE_RUN:
 				for (int i=from; i<=to; i++)
-					Painter::execute_rule(HT, rule, matter, colouring, i, i);
+					Painter::execute_rule(HT, rule, matter, colouring, i, i, i-from+1);
+				break;
+			case CHARACTERS_IN_CRULE_RUN:
+				for (int count=1, i=from; i<=to; i++)
+					for (int j=0; j<Str::len(block->char_set); j++)
+						if (Str::get_at(matter, i) == Str::get_at(block->char_set, j) ) {
+							Painter::execute_rule(HT, rule, matter, colouring, i, i, count++);
+							break;
+						}
 				break;
 			case INSTANCES_CRULE_RUN: {
 				int L = Str::len(block->run_instance) - 1;
 				if (L >= 0)
-					for (int i=from; i<=to - L; i++)
+					for (int count=1, i=from; i<=to - L; i++)
 						if (ACMESupport::text_at(matter, i, block->run_instance)) {
-							Painter::execute_rule(HT, rule, matter, colouring, i, i+L);
+							Painter::execute_rule(HT, rule, matter, colouring, i, i+L, count++);
 							i += L;
 						}
 				break;
 			}
+			case MATCHES_CRULE_RUN:
+				for (int count=1, i=from; i<=to; i++) {
+					int L = Regexp::match_from(&(block->mr), matter, block->match_regexp_text, i, TRUE);
+					if (L > 0) {
+						Painter::execute_rule(HT, rule, matter, colouring, i, i+L-1, count++);
+						i += L-1;
+					}
+				}
+				break;
+			case BRACKETS_CRULE_RUN:
+				for (int i=0; i<MAX_BRACKETED_SUBEXPRESSIONS; i++)
+					if (block->mr.exp[i])
+						Str::clear(block->mr.exp[i]);
+				if (Regexp::match(&(block->mr), matter, block->match_regexp_text))
+					for (int count=1, i=0; i<MAX_BRACKETED_SUBEXPRESSIONS; i++)
+						if (block->mr.exp_at[i] >= 0)
+							Painter::execute_rule(HT, rule, matter, colouring,
+								block->mr.exp_at[i],
+								block->mr.exp_at[i] + Str::len(block->mr.exp[i])-1,
+								count++);
+				break;
 			default: {
-				int ident_from = -1;
+				int ident_from = -1, count = 1;
 				for (int i=from; i<=to; i++) {
 					int col = Str::get_at(colouring_at_start, i);
 					if ((col == block->run) ||
@@ -233,12 +262,12 @@ void Painter::execute(hash_table *HT, colouring_language_block *block, text_stre
 						if (ident_from == -1) ident_from = i;
 					} else {
 						if (ident_from >= 0)
-							Painter::execute_rule(HT, rule, matter, colouring, ident_from, i-1);
+							Painter::execute_rule(HT, rule, matter, colouring, ident_from, i-1, count++);
 						ident_from = -1;
 					}
 				}
 				if (ident_from >= 0)
-					Painter::execute_rule(HT, rule, matter, colouring, ident_from, to);
+					Painter::execute_rule(HT, rule, matter, colouring, ident_from, to, count++);
 				break;
 			}
 		}
@@ -250,8 +279,8 @@ void Painter::execute(hash_table *HT, colouring_language_block *block, text_stre
 
 =
 void Painter::execute_rule(hash_table *HT, colouring_rule *rule, text_stream *matter,
-	text_stream *colouring, int from, int to) {
-	if (Painter::satisfies(HT, rule, matter, colouring, from, to))
+	text_stream *colouring, int from, int to, int N) {
+	if (Painter::satisfies(HT, rule, matter, colouring, from, to, N) == rule->sense)
 		Painter::follow(HT, rule, matter, colouring, from, to);
 }
 
@@ -267,8 +296,13 @@ void Painter::execute_rule(hash_table *HT, colouring_rule *rule, text_stream *ma
 
 =
 int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter,
-	text_stream *colouring, int from, int to) {
-	if (Str::len(rule->match_text) > 0) {
+	text_stream *colouring, int from, int to, int N) {
+	if (rule->number > 0) {
+		if (rule->number != N) return FALSE;
+	} else if (rule->match_regexp_text[0]) {
+		if (Regexp::match(&(rule->mr), matter, rule->match_regexp_text) == FALSE)
+			return FALSE;
+	} else if (Str::len(rule->match_text) > 0) {
 		if ((rule->match_prefix == UNSPACED_RULE_PREFIX) ||
 			(rule->match_prefix == SPACED_RULE_PREFIX) ||
 			(rule->match_prefix == OPTIONALLY_SPACED_RULE_PREFIX)) {
@@ -295,7 +329,11 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 				return FALSE;
 			rule->fix_position = pos;
 		} else {
-			if (Str::ne(matter, rule->match_text)) return FALSE;
+			if (Str::len(rule->match_text) != to-from+1)
+				return FALSE;
+			for (int i=from; i<=to; i++)
+				if (Str::get_at(matter, i) != Str::get_at(rule->match_text, i-from))
+					return FALSE;
 		}
 	} else if (rule->match_keyword_of_colour != NOT_A_COLOUR) {
 		TEMPORARY_TEXT(id);

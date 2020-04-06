@@ -1,14 +1,14 @@
-Name: ACME
-Details: The ACME assembly language for 6502 and related CPUs
-Extension: .a
-Line Comment: ;
+Name: "ACME"
+Details: "The ACME assembly language for 6502 and related CPUs"
+Extension: ".a"
+Line Comment: ";"
 String Literal: "\""
-String Literal Escape: \
-Character Literal: '
-Character Literal Escape: \
-Binary Literal Prefix: %
-Hexadecimal Literal Prefix: $
-Negative Literal Prefix: -
+String Literal Escape: "\\"
+Character Literal: "'"
+Character Literal Escape: "\\"
+Binary Literal Prefix: "%"
+Hexadecimal Literal Prefix: "$"
+Negative Literal Prefix: "-"
 
 colouring {
 	runs of unquoted {

@@ -1,0 +1,7 @@
+Name: "VowelsExample"
+colouring {
+	=> !plain
+	characters in "AEIOUaeiou" {
+		=> !function
+	}
+}

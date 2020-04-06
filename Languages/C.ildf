@@ -1,13 +1,13 @@
-Name: C
-Details: The C programming language
-Extension: .c
-Multiline Comment Open: /*
-Multiline Comment Close: */
-Line Comment: //
+Name: "C"
+Details: "The C programming language"
+Extension: ".c"
+Multiline Comment Open: "/*"
+Multiline Comment Close: "*/"
+Line Comment: "//"
 String Literal: "\""
-String Literal Escape: \
-Character Literal: '
-Character Literal Escape: \
+String Literal Escape: "\\"
+Character Literal: "'"
+Character Literal Escape: "\\"
 C-Like: true
 
 # C does in fact support octal literals, marking them as starting with an
@@ -16,21 +16,21 @@ C-Like: true
 # rejected by the C standards body as useless, but are so useful that gcc
 # and clang support them anyway.
 
-Hexadecimal Literal Prefix: 0x
-Binary Literal Prefix: 0b
-Negative Literal Prefix: -
+Hexadecimal Literal Prefix: "0x"
+Binary Literal Prefix: "0b"
+Negative Literal Prefix: "-"
 
-Before Named Paragraph Expansion: \n{\n
-After Named Paragraph Expansion: }\n
-Start Ifdef: #ifdef %S\n
-End Ifdef: #endif /* %S */\n
-Start Ifndef: #ifndef %S\n
-End Ifndef: #endif /* %S */\n
+Before Named Paragraph Expansion: "\n{\n"
+After Named Paragraph Expansion: "}\n"
+Start Ifdef: "#ifdef %S\n"
+End Ifdef: "#endif /* %S */\n"
+Start Ifndef: "#ifndef %S\n"
+End Ifndef: "#endif /* %S */\n"
 Line Marker: "#line %d \"%f\"\n"
 
-Start Definition: #define %S\s
-Prolong Definition: \\\n\s\s\s\s
-End Definition: \n
+Start Definition: "#define %S\s"
+Prolong Definition: "\\\n\s\s\s\s"
+End Definition: "\n"
 
 keyword auto
 keyword break

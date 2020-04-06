@@ -185,7 +185,7 @@ at us; but we don't weave them into the output, that's for sure.
 	} else if (Regexp::match(&mr, figname, L"(%c+) as (%c+)")) {
 		if (S->md->using_syntax < V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "[[F as L]]", V2_SYNTAX);
-		programming_language *pl = Languages::find_by_name(mr.exp[1]);
+		programming_language *pl = Languages::find_by_name(mr.exp[1], W);
 		Formats::figure(OUT, wv, mr.exp[0], -1, -1, pl);
 	} else {
 		Formats::figure(OUT, wv, figname, -1, -1, NULL);

@@ -1,14 +1,14 @@
-Name: InC
-Details: The Inform-tools extension to the C programming language
-Extension: .c
+Name: "InC"
+Details: "The Inform-tools extension to the C programming language"
+Extension: ".c"
 Supports Namespaces: true
-Multiline Comment Open: /*
-Multiline Comment Close: */
-Line Comment: //
+Multiline Comment Open: "/*"
+Multiline Comment Close: "*/"
+Line Comment: "//"
 String Literal: "\""
-String Literal Escape: \
-Character Literal: '
-Character Literal Escape: \
+String Literal Escape: "\\"
+Character Literal: "'"
+Character Literal Escape: "\\"
 C-Like: true
 
 # C does in fact support octal literals, marking them as starting with an
@@ -17,30 +17,28 @@ C-Like: true
 # rejected by the C standards body as useless, but are so useful that gcc
 # and clang support them anyway.
 
-Hexadecimal Literal Prefix: 0x
-Binary Literal Prefix: 0b
-Negative Literal Prefix: -
+Hexadecimal Literal Prefix: "0x"
+Binary Literal Prefix: "0b"
+Negative Literal Prefix: "-"
 
 # The "shebang" routine for a language is called to add anything it wants to
 # at the very top of the tangled code. (For a scripting language such as
-# Perl or Python, that might be a shebang: hence the name.)
+# Perl or Python, that might be a shebang: "hence the name.)"
 # But we will use it to defime the constant PLATFORM_POSIX everywhere except
 # Windows. This needs to happen right at the top, because the "very early
 # code" in a tangle may contain material conditional on whether it is defined.
 
-Shebang: #ifndef PLATFORM_WINDOWS\n#define PLATFORM_POSIX\n#endif\n
-
-Before Named Paragraph Expansion: \n{\n
-After Named Paragraph Expansion: }\n
-Start Ifdef: #ifdef %S\n
-End Ifdef: #endif /* %S */\n
-Start Ifndef: #ifndef %S\n
-End Ifndef: #endif /* %S */\n
+Shebang: "#ifndef PLATFORM_WINDOWS\n#define PLATFORM_POSIX\n#endif\n"
+Before Named Paragraph Expansion: "\n{\n"
+After Named Paragraph Expansion: "}\n"
+Start Ifdef: "#ifdef %S\n"
+End Ifdef: "#endif /* %S */\n"
+Start Ifndef: "#ifndef %S\n"
+End Ifndef: "#endif /* %S */\n"
 Line Marker: "#line %d \"%f\"\n"
-
-Start Definition: #define %S\s
-Prolong Definition: \\\n\s\s\s\s
-End Definition: \n
+Start Definition: "#define %S\s"
+Prolong Definition: "\\\n\s\s\s\s"
+End Definition: "\n"
 
 # FILE gets in even though it's not technically reserved but only a type
 # name, defined in the standard C library.

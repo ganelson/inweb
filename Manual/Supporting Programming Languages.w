@@ -46,7 +46,9 @@ This section of the manual is about how to do it.
 
 Once you have written a definition, use |-read-language L| at the command
 line, where |L| is the file defining it. If you have many custom languages,
-|-read-languages D| reads all of the definitions in a directory |D|.
+|-read-languages D| reads all of the definitions in a directory |D|. Or, if
+the language in question is really quite specific to a single web, you can
+make a |Private Languages| subdirectory of the web and put it in there.
 
 @h Structure of language definitions.
 Each language is defined by a single ILDF file. ("Inweb Language Definition
@@ -57,7 +59,7 @@ trailing whitespace on each line is ignored; blank lines are ignored; and
 so are comments, which are lines beginning with a |#| character.
 
 The ILD contains three sorts of thing:
-(a) Properties, set by lines in the form |Name: C++|.
+(a) Properties, set by lines in the form |Name: "C++"|.
 (b) Keywords, set by lines in the form |keyword int|.
 (c) A colouring program, introduced by |colouring {| and continuing until the
 last block of it is closed with a |}|.
@@ -66,15 +68,15 @@ Everything in an ILD is optional, so a minimal ILD is in principle empty. In
 practice, though, every ILD should open like so:
 
 = (sample ILDF code)
-Name: C
-Details: The C programming language
-Extension: .c
+Name: "C"
+Details: "The C programming language"
+Extension: ".c"
 
 @h Properties.
 Inevitably, there's a miscellaneous shopping list of these, but let's start
 with the semi-compulsory ones.
 
-|Name|. This is the one used by webs in their |Language: X| lines, and should
+|Name|. This is the one used by webs in their |Language: "X"| lines, and should
 match the ILD's own filename: wherever it is stored, the ILD for langauge |X|
 should be filenamed |X.ildf|.
 
@@ -102,9 +104,9 @@ as a pair or not at all, is the notation for multiline comments.
 For example, C defines:
 
 = (sample ILDF code)
-    Multiline Comment Open: /*
-    Multiline Comment Close: */
-    Line Comment: //
+    Multiline Comment Open: "/*"
+    Multiline Comment Close: "*/"
+    Line Comment: "//"
 
 @ As noted, comments occur only outside of string or character literals. We
 can give notations for these as follows:
@@ -121,9 +123,9 @@ Here, C defines:
 
 = (sample ILDF code)
     String Literal: "\""
-    String Literal Escape: \
-    Character Literal: '
-    Character Literal Escape: \
+    String Literal Escape: "\\"
+    Character Literal: "'"
+    Character Literal Escape: "\\"
 
 @ Next, numeric literals, like |0xFE45| in C, or |$$10011110| in Inform 6.
 It's assumed that every language allows non-negative decimal numbers.
@@ -136,16 +138,16 @@ are notations for non-decimal numbers, if they exist.
 Here, C has:
 
 = (sample ILDF code)
-    Hexadecimal Literal Prefix: 0x
-    Binary Literal Prefix: 0b
-    Negative Literal Prefix: -
+    Hexadecimal Literal Prefix: "0x"
+    Binary Literal Prefix: "0b"
+    Negative Literal Prefix: "-"
 
 @ |Shebang| is used only in tangling, and is a probably short text added at
 the very beginning of a tangled program. This is useful for scripting languages
 in Unix, where the opening line must be a "shebang" indicating their language.
 For example, Perl defines:
 = (sample ILDF code)
-    Shebang: #!/usr/bin/perl\n\n
+    Shebang: "#!/usr/bin/perl\n\n"
 =
 Most languages do not have a shebang.
 
@@ -170,8 +172,8 @@ matter added. This material is in |Before Named Paragraph Expansion| and
 
 For C and all similar languages, we recommend this:
 = (sample ILDF code)
-    Before Named Paragraph Expansion: \n{\n
-    After Named Paragraph Expansion: }\n
+    Before Named Paragraph Expansion: "\n{\n"
+    After Named Paragraph Expansion: "}\n"
 =
 The effect of this is to ensure that code such as:
 = (not code)
@@ -200,12 +202,12 @@ It can only do so if the language provides a notation for that.
 continue a multiline definition (if they are allowed); and |End Definition|,
 if given, places any ending notation. For example, Inform 6 defines:
 = (sample ILDF code)
-    Start Definition: Constant %S =\s
-    End Definition: ;\n
+    Start Definition: "Constant %S =\s"
+    End Definition: ";\n"
 =
 where |%S| expands to the name of the term to be defined. Thus, we might tangle
 out to:
-= (sample ILDF code)
+= (not code)
     Constant TAXICAB = 1729;\n
 =
 Inweb ignores all definitions unless one of these three properties is given.
@@ -216,10 +218,10 @@ makes use of this to handle code dependent on the operating system in use.
 If the language supports it, the notation is in |Start Ifdef| and |End Ifdef|,
 and in |Start Ifndef| and |End Ifndef|. For example, Inform 6 has:
 = (sample ILDF code)
-    Start Ifdef: #ifdef %S;\n
-    End Ifdef: #endif; ! %S\n
-    Start Ifndef: #ifndef %S;\n
-    End Ifndef: #endif; ! %S\n
+    Start Ifdef: "#ifdef %S;\n"
+    End Ifdef: "#endif; ! %S\n"
+    Start Ifndef: "#ifndef %S;\n"
+    End Ifndef: "#endif; ! %S\n"
 =
 which is a subtly different notation from the C one. Again, |%S| expands to
 the name of the term we are conditionally compiling on.
@@ -310,88 +312,215 @@ block, that's a line of source code. Blocks normally contain one or more
 "rules":
 = (sample ILDF code)
     colouring {
-        marble => !extract
+        marble => !function
     }
 =
 Rules take the form of "if X, then Y", and the |=>| divides the X from the Y.
 This one says that if the snippet consists of the word "marble", then colour
-it |!extract|. Of course this is not very useful, since it would only catch
+it |!function|. Of course this is not very useful, since it would only catch
 lines containing only that one word. So we really want to narrow in on smaller
-snippets:
+snippets. This, for example, applies its rule to each individual character
+in turn:
 = (sample ILDF code)
     colouring {
         characters {
-            X => !extract
+            K => !identifier
         }
     }
 =
-The effect of the |characters {| ... |}| block is to apply all its rules to
-each character of the snippet owning it. Inside the block, then, the snippet
-is always just a single character, and our rule tells us to paint the letter X
-wherever it occurs.
 
-@ The block |instances of X| narrows in on each usage of the text |X| inside
+@ In the above examples, |K| and |marble| appeared without quotation marks,
+but they were only allowed to do that because (a) they were single words,
+(b) those words had no other meaning, and (c) they didn't contain any
+awkward characters. For any more complicated texts, always use quotation
+marks. For example, in
+= (sample ILDF code)
+	"=>" => !reserved
+=
+the |=>| in quotes is just text, whereas the one outside quotes is being
+used to divide a rule.
+
+If you need a literal double quote inside the double-quotes, use |\"|; and
+use |\\| for a literal backslash. For example:
+= (sample ILDF code)
+    "\\\"" => !reserved
+=
+actually matches the text |\"|.
+
+@h The six splits.
+|characters| is an example of a "split", which splits up the original snippet
+of text -- say, the line |let K = 2| -- into smaller, non-overlapping snippets
+-- in this case, nine of them: |l|, |e|, |t|, | |, |K|, | |, |=|, | |, and |2|.
+Every split is followed by a block of rules, which is applied to each of the
+pieces in turn. Inweb works sideways-first: thus, if the block contains rules
+R1, R2, ..., then R1 is applied to each piece first, then R2 to each piece,
+and so on.
+
+There are several different ways to split, all of them written in the
+plural, to emphasize that they work on what are usually multiple things.
+Rules, on the other hand, are written in the singular. Splits are not allowed
+to be followed by |=>|: they always begin a block.
+
+1. |characters| splits the snippet into each of its characters.
+
+2. |characters in T| splits the snippet into each of its characters which
+lie inside the text |T|. For example, here is a not very useful ILD for
+plain text in which all vowels are in red:
+
+[[../Private Languages/VowelsExample.ildf as ILDF]]
+
+Given the text:
+= (not code)
+A noir, E blanc, I rouge, U vert, O bleu : voyelles,
+Je dirai quelque jour vos naissances latentes :
+A, noir corset velu des mouches éclatantes
+Qui bombinent autour des puanteurs cruelles,
+=
+this produces:
+= (sample VowelsExample code)
+A noir, E blanc, I rouge, U vert, O bleu : voyelles,
+Je dirai quelque jour vos naissances latentes :
+A, noir corset velu des mouches éclatantes
+Qui bombinent autour des puanteurs cruelles,
+=
+
+3. The split |instances of X| narrows in on each usage of the text |X| inside
 the snippet. For example,
-= (sample ILDF code)
-    colouring {
-        instances of == {
-            => !reserved
-        }
-    }
+[[../Private Languages/LineageExample.ildf as ILDF]]
+acts on the text:
+= (not code)
+Jacob first appears in the Book of Genesis, the son of Isaac and Rebecca, the
+grandson of Abraham, Sarah and Bethuel, the nephew of Ishmael.
 =
-gives every usage of |==| the colour |!reserved|. Note that it never runs in
-an overlapping way: the snippet |===| would be considered as having only one
-instance of |==| (the first two characters), while |====| would have two.
+to produce:
+= (sample LineageExample code)
+Jacob first appears in the Book of Genesis, the son of Isaac and Rebecca, the
+grandson of Abraham, Sarah and Bethuel, the nephew of Ishmael.
+=
+Note that it never runs in an overlapping way: the snippet |===| would be
+considered as having only one instance of |==| (the first two characters),
+while |====| would have two.
 
-@ Another kind of block is |runs of C|, where |C| is a colour. For example:
-= (sample ILDF code)
-    colouring {
-        runs of !identifier {
-            printf => !function
-            sscanf => !function
-        }
-    }
+4. The split |runs of C|, where |C| describes a colour, splits the snippet
+into non-overlapping contiguous pieces which have that colour. For example:
+[[../Private Languages/RunningExample.ildf as ILDF]]
+acts on:
+= (not code)
+Napoleon Bonaparte (1769-1821) took 167 scientists to Egypt in 1798,
+who published their so-called Memoirs over the period 1798-1801.
 =
-If this runs on the line |if (x == 1) printf("Hello!");|, then the inner
-block will run three times: its snippet will be |if|, then |x|, then |printf|.
-The rules inside the block will take effect only on the third time, when it
-will paint the word |printf| in |!function| colour.
+to produce:
+= (sample RunningExample code)
+Napoleon Bonaparte (1769-1821) took 167 scientists to Egypt in 1798,
+who published their so-called Memoirs over the period 1798-1801.
+=
+Here the hyphens in number ranges have been coloured, but not the hyphen
+in "so-called".
+
+A more computer-science sort of example would be:
+[[../Private Languages/StdioExample.ildf as ILDF]]
+which acts on:
+= (not code)
+if (x == 1) printf("Hello!");
+=
+to produce:
+= (sample StdioExample code)
+if (x == 1) printf("Hello!");
+=
+The split divides the line up into three runs, and the inner block runs three
+times: on |if|, then |x|, then |printf|. Only the third time has any effect.
 
 As a special form, |runs of unquoted| means "runs of characters not painted
 either with |!string| or |!character|". This is special because |unquoted| is
 not a colour.
 
-@ It remains to specify what rules can do. As noted, they take the form
-"if X, then Y". The following are the possibilities for X, the condition:
+5. The split |matches of /E/|, where |/E/| is a regular expression (see below),
+splits the snippet up into non-overlapping pieces which match it: possibly
+none at all, of course, in which case the block of rules is never used.
+This is easier to demonstrate than explain:
+[[../Private Languages/AssemblageExample.ildf as ILDF]]
+which acts on:
+= (not code)
+		JSR .initialise
+		LDR A, #.data
+		RTS
+	.initialise
+		TAX
+=
+to produce:
+= (sample AssemblageExample code)
+		JSR .initialise
+		LDR A, #.data
+		RTS
+	.initialise
+		TAX
+=
 
-1. X can be omitted altogether, and then the rule always applies. For example,
-this somewhat nihilistic program gets rid of colouring entirely:
+6. Lastly, the split |brackets in /E/| matches the snippet against the
+regular expression |E|, and then runs the rules on each bracketed
+subexpression in turn. (If there is no match, or there are no bracketed
+terms in |E|, nothing happens.)
+[[../Private Languages/EquationsExample.ildf as ILDF]]
+acts on:
+= (not code)
+	A = 2716
+	B=3
+	C =715 + B
+	D < 14
+=
+to produce:
+= (sample EquationsExample code)
+	A = 2716
+	B=3
+	C =715 + B
+	D < 14
+=
+What happens here is that the expression has two bracketed terms, one for
+the letter, one for the number; the rule is run first on the letter, then
+on the number, and both are turned to |!function|.
+
+@h The seven ways rules can apply.
+Rules are the lines with a |=>| in. As noted, they take the form "if X, then
+Y". The following are the possibilities for X, the condition.
+
+1. The easiest thing is to give nothing at all, and then the rule always
+applies. For example, this somewhat nihilistic program gets rid of colouring
+entirely:
 = (sample ILDF code)
     colouring {
         => !plain
     }
 =
-2. X can require the whole snippet to be of a particular colour, by writing
-|colour C|. For example:
+
+2. If X is a piece of literal text, the rule applies when the snippet is
+exactly that text. For example,
+= (sample ILDF code)
+    printf => !function
+=
+
+3. X can require the whole snippet to be of a particular colour, by writing
+|coloured C|. For example:
 = (sample ILDF code)
     colouring {
         characters {
-            colour !character => !plain
+            coloured !character => !plain
         }
     }
 =
 removes the syntax colouring on character literals.
 
-3. X can require the snippet to be one of the language's known keywords, as
+4. X can require the snippet to be one of the language's known keywords, as
 declared earlier in the ILD by a |keyword| command. The syntax here is
 |keyword of C|, where |C| is a colour. For example:
 = (sample ILDF code)
     keyword of !element => !element
 =
 says: if the snippet is a keyword declared as being of colour |!element|,
-then actually colour it that way.
+then actually colour it that way. (This is much faster than making many
+comparison rules in a row, one for each keyword in the language; Inweb has
+put all of the registered keywords into a hash table for rapid lookup.)
 
-4. X can look at a little context before or after the snippet, testing it
+5. X can look at a little context before or after the snippet, testing it
 with one of the following: |prefix P|, |spaced prefix P|,
 |optionally spaced prefix P|. These qualifiers have to do with whether white
 space must appear after |P| and before the snippet. For example,
@@ -403,12 +532,69 @@ space must appear after |P| and before the snippet. For example,
 means that any identifier occurring after a |->| token will be coloured
 as |!element|. Similarly for |suffix|.
 
-5. And otherwise X is literal text, and the rule applies if and only if
-the snippet is exactly that text. For example,
+6. X can test the snippet against a regular expression, with |matching /E/|.
+For example:
 = (sample ILDF code)
-    printf => !function
+    runs of !identifier {
+        matching /.*x.*/ => !element
+    }
+=
+...turns any identifier containing a lower-case |x| into |!element| colour.
+Note that |matching /x/| would not have worked, because our regular expression
+is required to match the entire snippet, not just somewhere inside.
+= (sample ILDF code)
+    characters in "0123456789" {
+        matching /\d\d\d\d/ => !element
+    }
+=
+...colours all four-digit numbers, but no others.
 
-@ Now let's look at the conclusion Y of a rule. Here the possibilities are
+7. Whenever a split takes place, Inweb keeps count of how many pieces there are,
+and different rules can apply to differently numbered pieces. The notation
+is |number N|, where |N| is the number, counting from 1. For example,
+[[../Private Languages/ThirdExample.ildf as ILDF]]
+acts on:
+= (not code)
+With how sad steps, O Moon, thou climb'st the skies! 
+How silently, and with how wan a face! 
+What, may it be that even in heav'nly place 
+That busy archer his sharp arrows tries! 
+Sure, if that long-with love-acquainted eyes 
+Can judge of love, thou feel'st a lover's case, 
+I read it in thy looks; thy languish'd grace 
+To me, that feel the like, thy state descries. 
+Then, ev'n of fellowship, O Moon, tell me, 
+Is constant love deem'd there but want of wit? 
+Are beauties there as proud as here they be? 
+Do they above love to be lov'd, and yet 
+Those lovers scorn whom that love doth possess? 
+Do they call virtue there ungratefulness?
+=
+to produce:
+= (sample ThirdExample code)
+With how sad steps, O Moon, thou climb'st the skies! 
+How silently, and with how wan a face! 
+What, may it be that even in heav'nly place 
+That busy archer his sharp arrows tries! 
+Sure, if that long-with love-acquainted eyes 
+Can judge of love, thou feel'st a lover's case, 
+I read it in thy looks; thy languish'd grace 
+To me, that feel the like, thy state descries. 
+Then, ev'n of fellowship, O Moon, tell me, 
+Is constant love deem'd there but want of wit? 
+Are beauties there as proud as here they be? 
+Do they above love to be lov'd, and yet 
+Those lovers scorn whom that love doth possess? 
+Do they call virtue there ungratefulness?
+=
+
+@ Any condition can be reversed by preceding it with |not|. For example,
+= (sample ILDF code)
+    not coloured !string => !plain
+=
+
+@h The three ways rules can take effect.
+Now let's look at the conclusion Y of a rule. Here the possibilities are
 simpler:
 
 1. If Y is the name of a colour, the snippet is painted in that colour.
@@ -429,17 +615,17 @@ rules (see above), it can also be applied to the prefix or suffix: use
 the notation |=> C on both| or |=> C on suffix| or |=> C on prefix|.
 
 3. If Y is the word |debug|, then the current snippet and its colouring
-are printed out on the command line.
-
-@ The syntax of ILDs tends to avoid superfluous quotation marks as confusing,
-but sometimes you need to be pedantic. If you want to match the text |=>|,
-for example, that could lead to ambiguity with the rule marker |=>|. For
-such occasions, simply put the text in double quotes, and change any literal
-double quote in it to |\"|, and use |\\| for a literal backslash. For example:
+are printed out on the command line. Thus:
 = (sample ILDF code)
-    "keyword" => !reserved
+    colouring {
+        matches of /\d\S+/ {
+            => debug
+        }
+    }
+=
+The rule |=> debug| is unconditional, and will print whenever it's reached.
 
-@h Example.
+@h The worm, Ouroboros.
 Inweb Language Definition Format is a kind of language in itself, and in
 fact Inweb is supplied with an ILD for ILDF itself, which Inweb used to
 syntax-colour the examples above. Here it is, as syntax-coloured by itself:

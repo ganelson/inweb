@@ -1,0 +1,7 @@
+Name: "ThirdExample"
+colouring {
+	=> !plain
+	matches of /\S+/ {
+		number 3 => !function
+	}
+}

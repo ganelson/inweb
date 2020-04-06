@@ -389,7 +389,7 @@ division in the current section.
 			extract_mode = TRUE;
 		} else if ((current_paragraph) && (Regexp::match(&mr2, mr.exp[0], L"%(sample (%c+) code%)"))) {
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
-			code_pl_for_body = Languages::find_by_name(mr2.exp[0]);
+			code_pl_for_body = Languages::find_by_name(mr2.exp[0], W);
 			extract_mode = TRUE;
 		} else if ((current_paragraph) && (Regexp::match(&mr2, mr.exp[0], L"%(sample code%)"))) {
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;

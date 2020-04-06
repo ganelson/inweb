@@ -1,17 +1,44 @@
-Name: ILDF
-Details: The Inweb Language Definition File format
-Extension: .ildf
-Whole Line Comment: #
+Name: "ILDF"
+Details: "The Inweb Language Definition File format"
+Extension: ".ildf"
+Whole Line Comment: "#"
+Supports Namespaces: false
 
 String Literal: "\""
-String Literal Escape: \
+String Literal Escape: "\\"
 
-keyword unquoted of !element
+# Regular expressions are handled here as if character literals
+Character Literal: "/"
+Character Literal Escape: "\\"
+
+keyword "both"
+keyword "brackets"
+keyword "characters"
+keyword "coloured"
+keyword "colouring"
+keyword "debug"
+keyword "false"
+keyword "in"
+keyword "instances"
+keyword "keyword"
+keyword "matches"
+keyword "matching"
+keyword "not"
+keyword "of"
+keyword "on"
+keyword "optionally"
+keyword "prefix"
+keyword "runs"
+keyword "spaced"
+keyword "suffix"
+keyword "true"
+keyword "unquoted" of !element
 
 colouring {
 	runs of !identifier {
-		prefix ! => !element
+		prefix "!" => !element on both
 		keyword of !element => !element
+		keyword of !reserved => !reserved
 	}
 	runs of unquoted {
 		instances of "=>" {
@@ -23,5 +50,17 @@ colouring {
 		instances of "}" {
 			=> !reserved
 		}
+	}
+	characters {
+		# Anything left of these colours will be unquoted strings, so...
+		coloured !constant => !string
+		coloured !identifier => !string
+		# Regular expressions, now coloured !character, are more like functions
+		coloured !character => !function
+	}
+	# Detect Property: Value lines, not being fooled by a colon inside quotes
+	brackets in /\s*([A-Z][^"]*):.*/ {
+		# Uncolour only the bracketed part, i.e., the Property part
+		=> !plain
 	}
 }

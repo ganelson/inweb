@@ -1,17 +1,17 @@
-Name: Perl
-Details: The scripting language Perl 5
-Extension: .pl
-Line Comment: #
+Name: "Perl"
+Details: "The scripting language Perl 5"
+Extension: ".pl"
+Line Comment: "#"
 String Literal: "\""
-String Literal Escape: \
-Character Literal: '
-Character Literal Escape: \
+String Literal Escape: "\\"
+Character Literal: "'"
+Character Literal Escape: "\\"
 
-Shebang: #!/usr/bin/perl\n\n
-Before Named Paragraph Expansion: \n{\n
-After Named Paragraph Expansion: }\n
-Start Definition: %S =
-End Definition: \n;\n
+Shebang: "#!/usr/bin/perl\n\n"
+Before Named Paragraph Expansion: "\n{\n"
+After Named Paragraph Expansion: "}\n"
+Start Definition: "%S ="
+End Definition: "\n;\n"
 
 # In its usual zany way, Perl recognises the same #line syntax as C, thus in
 # principle overloading its comment notation #:

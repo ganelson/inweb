@@ -131,6 +131,7 @@ typedef struct match_results {
 	int no_matched_texts;
 	struct match_result exp_storage[MAX_BRACKETED_SUBEXPRESSIONS];
 	struct text_stream *exp[MAX_BRACKETED_SUBEXPRESSIONS];
+	int exp_at[MAX_BRACKETED_SUBEXPRESSIONS];
 } match_results;
 
 @ Match result objects are inherently ephemeral, and we can expect to be
@@ -143,8 +144,10 @@ deallocate.
 match_results Regexp::create_mr(void) {
 	match_results mr;
 	mr.no_matched_texts = 0;
-	for (int i=0; i<MAX_BRACKETED_SUBEXPRESSIONS; i++)
+	for (int i=0; i<MAX_BRACKETED_SUBEXPRESSIONS; i++) {
 		mr.exp[i] = NULL;
+		mr.exp_at[i] = -1;
+	}
 	return mr;
 }
 
@@ -169,10 +172,27 @@ int Regexp::match(match_results *mr, text_stream *text, wchar_t *pattern) {
 	return rv;
 }
 
+int Regexp::match_from(match_results *mr, text_stream *text, wchar_t *pattern,
+	int x, int allow_partial) {
+	int match_to = x;
+	if (x < Str::len(text)) {
+		if (mr) Regexp::prepare(mr);
+		match_position at;
+		at.tpos = x; at.ppos = 0; at.bc = 0; at.bl = 0;
+		match_to = Regexp::match_r(mr, text, pattern, &at, allow_partial);
+		if (match_to == -1) {
+			match_to = x;
+			if (mr) Regexp::dispose_of(mr);
+		}
+	}
+	return match_to - x;
+}
+
 void Regexp::prepare(match_results *mr) {
 	if (mr) {
 		mr->no_matched_texts = 0;
 		for (int i=0; i<MAX_BRACKETED_SUBEXPRESSIONS; i++) {
+			mr->exp_at[i] = -1;
 			if (mr->exp[i]) STREAM_CLOSE(mr->exp[i]);
 			mr->exp_storage[i].match_text_struct =
 				Streams::new_buffer(
@@ -276,6 +296,7 @@ to implement numeric repetition counts, which we won't need:
 			Str::clear(mr->exp[i]);
 			for (int j = at.brackets_start[i]; j <= at.brackets_end[i]; j++)
 				PUT_TO(mr->exp[i], Str::get_at(text, j));
+			mr->exp_at[i] = at.brackets_start[i];
 		}
 		mr->no_matched_texts = at.bc;
 	}
@@ -290,8 +311,9 @@ says |q|, the only match is with a lower-case letter "q"), except that:
 (e) |%i| means any character from the identifier class (see above);
 (f) |%p| means any character which can be used in the name of a Preform
 nonterminal, which is to say, an identifier character or a hyphen;
-(g) |%P| means the same or else a colon.
-(h) |%t| means a tab.
+(g) |%P| means the same or else a colon;
+(h) |%t| means a tab;
+(i) |%q| means a double-quote.
 
 |%| otherwise makes a literal escape; a space means any whitespace character;
 square brackets enclose literal alternatives, and note as usual with grep
@@ -330,9 +352,10 @@ int Regexp::get_cclass(wchar_t *pattern, int ppos, int *len, int *from, int *to,
 			}
 			*from = ppos; *to = ppos; return LITERAL_CLASS;
 		case '[':
-			*from = ppos+2;
+			*from = ppos+1;
+			ppos += 2;
 			while ((pattern[ppos]) && (pattern[ppos] != ']')) ppos++;
-			*to = ppos - 1; *len = ppos - *from + 1;
+			*to = ppos - 1; *len = ppos - *from + 2;
 			return LITERAL_CLASS;
 		case ' ':
 			*len = 1; return WHITESPACE_CLASS;
@@ -358,6 +381,9 @@ int Regexp::test_cclass(int c, int chcl, int range_from, int range_to, wchar_t *
 			((c >= 'a') && (c <= 'z')) ||
 			((c >= '0') && (c <= '9'))) match = TRUE; break;
 		case LITERAL_CLASS:
+			if ((range_to > range_from) && (drawn_from[range_from] == '^')) {
+				range_from++; reverse = reverse?FALSE:TRUE;
+			}
 			for (int j = range_from; j <= range_to; j++) {
 				int c1 = drawn_from[j], c2 = c1;
 				if ((j+1 < range_to) && (drawn_from[j+1] == '-')) { c2 = drawn_from[j+2]; j += 2; }
