@@ -45,7 +45,6 @@ structures of type <code class="display"><span class="extract">thingummy</span><
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">typedef struct thingummy {</span>
         <span class="plain">    int whatsit;</span>
@@ -121,7 +120,6 @@ to the number of objects in each completed array (so, typically 100) and
 the doubly linked list is of the arrays.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">allocation_status_structure</span><span class="plain"> {</span>
         <span class="comment">actually needed for allocation purposes:</span>
@@ -145,7 +143,6 @@ the doubly linked list is of the arrays.
 fairly small array of the structures defined above. The allocator can safely
 begin as soon as this is initialised.
 </p>
-
 
 <pre class="display">
     <span class="reserved">allocation_status_structure</span><span class="plain"> </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">];</span>
@@ -229,7 +226,6 @@ Each memory block consists of a header structure, followed by <code class="displ
 null bytes, followed by actual data.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">memblock_header</span><span class="plain"> {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">block_number</span><span class="plain">;</span>
@@ -244,7 +240,6 @@ null bytes, followed by actual data.
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">first_memblock_header</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">head of list of memory blocks</span>
     <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">current_memblock_header</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">tail of list of memory blocks</span>
@@ -257,7 +252,6 @@ null bytes, followed by actual data.
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>The actual allocation and deallocation is performed by the following
 pair of routines.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::allocate_another_block</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -334,7 +328,6 @@ in turn, but of course being careful to avoid following links in a just-freed
 block.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::free</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="functiontext">Memory::free_ssas</span><span class="plain">();</span>
@@ -382,7 +375,6 @@ a single large object, or a single array of small objects.
 blocks, but we don't need to worry about that.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">first_memory_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">earliest memory frame ever allocated</span>
     <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">last_memory_frame</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;  </span><span class="comment">most recent memory frame allocated</span>
@@ -397,7 +389,6 @@ prevent this: since the number of calls would be roughly proportional to
 memory usage, we would implicitly have an O(n^2) running time in the
 amount of storage n allocated.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">calls_to_cmi</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
@@ -435,7 +426,6 @@ list of memory frames will live inside those blocks; we have seen how the
 list is checked for integrity; but we not seen how it is built. Every
 memory frame is created by the following function:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::allocate</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">mem_type</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">extent</span><span class="plain">) {</span>
@@ -720,7 +710,6 @@ used in the lower levels.
 <p class="inwebparagraph">Here goes, then.
 </p>
 
-
 <pre class="display">
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain">)</span>
@@ -789,7 +778,6 @@ we need to use the equivalent of traditional <code class="display"><span class="
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23.  </b>And here is the (very simple) implementation.
 </p>
 
-
 <pre class="display">
     <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">memory_needs</span><span class="plain">[</span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">];</span>
 
@@ -818,7 +806,6 @@ therefore the best estimate of how well we're doing is the "maximum memory
 claimed" &mdash; the highest recorded net usage count over the run.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_memory_at_once_for_each_need</span><span class="plain">[</span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">],</span>
         <span class="identifier">memory_claimed_for_each_need</span><span class="plain">[</span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">],</span>
@@ -834,7 +821,6 @@ needed, and where any failure to allocate memory is tidily dealt with. We will
 exit on any such failure, so that the caller can be certain that the return
 values of these functions are always non-<code class="display"><span class="extract">NULL</span></code> pointers.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::I7_calloc</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">how_many</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain">) {</span>
@@ -853,7 +839,6 @@ values of these functions are always non-<code class="display"><span class="extr
 
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b>And this, then, is the joint routine implementing both.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::I7_alloc</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">) {</span>
@@ -946,7 +931,6 @@ rarely and to allocate large blocks of memory.
 <p class="inwebparagraph"><a id="SP27"></a><b>&#167;27.  </b>We also provide our own wrapper for <code class="display"><span class="extract">free</span></code>:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::I7_free</span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">pointer</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">bytes_freed</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">R</span><span class="plain"> &gt;= </span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no such memory reason"</span><span class="plain">);</span>
@@ -996,7 +980,6 @@ safe in memory. Since the length can't be extended, it's usually unsafe
 to write to the result.
 </p>
 
-
 <pre class="display">
     <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Memory::new_string</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
@@ -1023,7 +1006,6 @@ to write to the result.
 <p class="inwebparagraph"><a id="SP30"></a><b>&#167;30.  </b>And here we free any SSAs needed in the course of the run.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::free_ssas</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">string_storage_area</span><span class="plain"> *</span><span class="identifier">ssa</span><span class="plain">;</span>
@@ -1039,7 +1021,6 @@ to write to the result.
 <p class="inwebparagraph"><a id="SP31"></a><b>&#167;31.  </b>And the following provides statistics, and a mini-report, for the memory
 report in the debugging log (for which, see below).
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Memory::log_usage</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain">) {</span>
@@ -1064,7 +1045,6 @@ report in the debugging log (for which, see below).
 
 <p class="inwebparagraph"><a id="SP32"></a><b>&#167;32. Memory usage report. </b>A small utility routine to help keep track of our unquestioned profligacy.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::log_statistics</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -1177,7 +1157,6 @@ order of total number of bytes allocated.
 
 <p class="inwebparagraph"><a id="SP33"></a><b>&#167;33.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Memory::compare_usage</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ent1</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ent2</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ix1</span><span class="plain"> = *((</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *) </span><span class="identifier">ent1</span><span class="plain">);</span>
@@ -1194,7 +1173,6 @@ order of total number of bytes allocated.
 usage. Recall that <code class="display"><span class="extract">bytes</span></code> is measured in bytes, but <code class="display"><span class="extract">total</span></code> in kilobytes.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Memory::proportion</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">bytes</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain">) {</span>
         <span class="reserved">float</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> = (</span><span class="reserved">float</span><span class="plain">) </span><span class="identifier">bytes</span><span class="plain">, </span><span class="identifier">T</span><span class="plain"> = (</span><span class="reserved">float</span><span class="plain">) </span><span class="identifier">total</span><span class="plain">;</span>
@@ -1208,7 +1186,6 @@ usage. Recall that <code class="display"><span class="extract">bytes</span></cod
 <p class="endnote">The function Memory::proportion is used in <a href="#SP31">&#167;31</a>, <a href="#SP32_3">&#167;32.3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP35"></a><b>&#167;35.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::paranoid_calloc</span><span class="plain">(</span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">) {</span>
@@ -1328,7 +1305,6 @@ which is other than <code class="display"><span class="extract">void *</span></c
 <p class="inwebparagraph"><a id="SP39"></a><b>&#167;39.  </b>Suitable <code class="display"><span class="extract">MAKE_REFERENCE_ROUTINES</span></code> were expanded for all of the memory
 allocated objects above; so that leaves only humble <code class="display"><span class="extract">char *</span></code> pointers:
 </p>
-
 
 <pre class="display">
     <span class="identifier">MAKE_REFERENCE_ROUTINES</span><span class="plain">(</span><span class="reserved">char</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>

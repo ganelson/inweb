@@ -64,7 +64,6 @@ tagged functions attached to it dynamically: those, we'll call "methods".
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>A "method set" is simply a linked list of methods:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">method_set</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">method</span><span class="plain"> *</span><span class="identifier">first_method</span><span class="plain">;</span>
@@ -180,7 +179,6 @@ attach it to an object with a method set, using the <code class="display"><span 
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">IMETHOD_CALL(some_object, UNUSED_METHOD_ID_MTID, I"Hello", 17)</span>

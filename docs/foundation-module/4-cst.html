@@ -55,7 +55,6 @@ the maximum length of a pathname, which is 1024 on Mac OS X.
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Occasionally we need access to the real, unbounded strlen:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CStrings::strlen_unbounded</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
@@ -72,7 +71,6 @@ result in a malformatted shell command being passed to the operating system,
 which we cannot risk.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CStrings::check_len</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">n</span><span class="plain"> &gt; </span><span class="constant">MAX_STRING_LENGTH</span><span class="plain">) || (</span><span class="identifier">n</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">)) </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"String overflow\n"</span><span class="plain">);</span>
@@ -87,7 +85,6 @@ which we cannot risk.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The following is then protected from reading out of range if given a
 non-terminated string, though this should never actually happen.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CStrings::len</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">str</span><span class="plain">) {</span>
@@ -106,7 +103,6 @@ non-terminated string, though this should never actually happen.
 bounds-checked:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CStrings::copy</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
         <span class="functiontext">CStrings::check_len</span><span class="plain">(</span><span class="functiontext">CStrings::len</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">));</span>
@@ -123,7 +119,6 @@ bounds-checked:
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>String comparisons will be done with the following, not <code class="display"><span class="extract">strcmp</span></code> directly:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CStrings::ne</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> (</span><span class="functiontext">CStrings::cmp</span><span class="plain">(</span><span class="identifier">A</span><span class="plain">, </span><span class="identifier">B</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)?</span><span class="identifier">FALSE:TRUE</span><span class="plain">;</span>
@@ -136,7 +131,6 @@ bounds-checked:
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>On the rare occasions when we need to sort alphabetically we'll also call:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CStrings::cmp</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">) {</span>
@@ -156,7 +150,6 @@ bounds-checked:
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>And the following is needed to deal with extension filenames on platforms
 whose locale is encoded as UTF-8.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CStrings::transcode_ISO_string_to_UTF8</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">dest</span><span class="plain">) {</span>
@@ -184,7 +177,6 @@ if the string to be copied is larger than the buffer to write to: the
 result is therefore not a well-formed string and we have to fix matters by
 hand. This I think makes for opaque code. So:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CStrings::truncated_strcpy</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">max</span><span class="plain">) {</span>

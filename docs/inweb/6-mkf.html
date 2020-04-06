@@ -30,7 +30,6 @@
 following a "prototype".
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">makefile_state</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">for_web</span><span class="plain">;</span>
@@ -79,7 +78,6 @@ following a "prototype".
 <p class="endnote">The structure makefile_state is accessed in 6/gs and here.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Makefiles::scan_makefile_line</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">) {</span>
@@ -509,7 +507,6 @@ following a "prototype".
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Makefiles::pathname_slashed</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">PT</span><span class="plain">)</span>
@@ -577,7 +574,6 @@ following a "prototype".
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And finally, the following handles repetitions both of blocks and of spans:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Makefiles::repeat</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">prefix</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">every_time</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">matter</span><span class="plain">,</span>

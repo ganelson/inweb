@@ -348,7 +348,6 @@ it there.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Single nodes are matched thus:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tries::matches</span><span class="plain">(</span><span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">pos</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain"> == </span><span class="constant">TRIE_ANYTHING</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
@@ -387,7 +386,6 @@ it there.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Where:
 </p>
 
-
 <pre class="display">
     <span class="reserved">match_trie</span><span class="plain"> *</span><span class="functiontext">Tries::new</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">mc</span><span class="plain">) {</span>
         <span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">match_trie</span><span class="plain">);</span>
@@ -410,7 +408,6 @@ start again with the next, and so on. Inform therefore often matches text
 against a linked list of tries: we'll call that an "avinue".
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">match_avinue</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">the_trie</span><span class="plain">;</span>
@@ -425,7 +422,6 @@ against a linked list of tries: we'll call that an "avinue".
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>An avinue starts out with a single trie, which itself has just a single
 head node (of either sort).
 </p>
-
 
 <pre class="display">
     <span class="reserved">match_avinue</span><span class="plain"> *</span><span class="functiontext">Tries::new_avinue</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">from_start</span><span class="plain">) {</span>
@@ -451,7 +447,6 @@ head node (of either sort).
 tries.
 </p>
 
-
 <pre class="display">
     <span class="reserved">match_avinue</span><span class="plain"> *</span><span class="functiontext">Tries::duplicate_avinue</span><span class="plain">(</span><span class="reserved">match_avinue</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">) {</span>
         <span class="reserved">match_avinue</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">FL</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -476,7 +471,6 @@ tries.
 trie in turn until one matches (if it does).
 </p>
 
-
 <pre class="display">
     <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="functiontext">Tries::search_avinue</span><span class="plain">(</span><span class="reserved">match_avinue</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">result</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -493,7 +487,6 @@ trie in turn until one matches (if it does).
 <p class="endnote">The function Tries::search_avinue appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Logging. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tries::log_avinue</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vA</span><span class="plain">) {</span>

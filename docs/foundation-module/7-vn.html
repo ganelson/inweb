@@ -62,7 +62,6 @@ time of the Reykjavik summit between Presidents Gorbachev and Reagan:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Moonmist</span>
         <span class="plain">Infocom interactive fiction - a mystery story</span>
@@ -126,7 +125,6 @@ Instead they are used to represent the absence of a version number.
 (In particular, a string of <code class="display"><span class="extract">-1</span></code>s is null.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="functiontext">VersionNumbers::null</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
     <span class="plain">#</span><span class="identifier">pragma</span><span class="plain"> </span><span class="identifier">clang</span><span class="plain"> </span><span class="identifier">diagnostic</span><span class="plain"> </span><span class="identifier">push</span>
@@ -159,7 +157,6 @@ Instead they are used to represent the absence of a version number.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Printing and parsing. </b>Printing is simple enough:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">VersionNumbers::to_text</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">VersionNumbers::is_null</span><span class="plain">(</span><span class="identifier">V</span><span class="plain">)) { </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"null"</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
@@ -188,7 +185,6 @@ using this to pass a pointer to the version, not the version itself;
 variadic macros are not carefully enough type-checked by <code class="display"><span class="extract">clang</span></code> or <code class="display"><span class="extract">gcc</span></code>
 to catch this sort of slip.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">VersionNumbers::writer</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">format_string</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vE</span><span class="plain">) {</span>
@@ -303,7 +299,6 @@ of digits only, and alphabetically otherwise; and finally the number of
 prerelease elements. Build metadata is disregarded entirely.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VersionNumbers::le</span><span class="plain">(</span><span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="identifier">V1</span><span class="plain">, </span><span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="identifier">V2</span><span class="plain">) {</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">SEMVER_NUMBER_DEPTH</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
@@ -346,7 +341,6 @@ prerelease elements. Build metadata is disregarded entirely.
 as if they were 0:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VersionNumbers::floor</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
@@ -362,7 +356,6 @@ as if they were 0:
 otherwise. If the value has more than about 10 digits, then the result will
 not be meaningful, which I think is a technical violation of the standard.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VersionNumbers::strict_atoi</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">) {</span>
@@ -384,7 +377,6 @@ These are trichotomous, that is, for each pair <code class="display"><span class
 <code class="display"><span class="extract">VersionNumbers::eq(V1, V2)</span></code>, <code class="display"><span class="extract">VersionNumbers::gt(V1, V2)</span></code>, <code class="display"><span class="extract">VersionNumbers::lt(V1, V2)</span></code>
 is true.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VersionNumbers::eq</span><span class="plain">(</span><span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="identifier">V1</span><span class="plain">, </span><span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="identifier">V2</span><span class="plain">) {</span>
@@ -424,7 +416,6 @@ is true.
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>And the following can be used for sorting, following the <code class="display"><span class="extract">strcmp</span></code> convention.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VersionNumbers::cmp</span><span class="plain">(</span><span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="identifier">V1</span><span class="plain">, </span><span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="identifier">V2</span><span class="plain">) {</span>

@@ -31,7 +31,6 @@
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Clock. </b>From the local environment, we'll extract the time at which we're running.
 </p>
 
-
 <pre class="display">
     <span class="identifier">time_t</span><span class="plain"> </span><span class="identifier">right_now</span><span class="plain">;</span>
     <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">tm</span><span class="plain"> *</span><span class="identifier">the_present</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -54,7 +53,6 @@ makes it easier to automate testing, since we can compare output generated
 in one session with output generated another, even though that was on two
 different dates.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Time::fix</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

@@ -1,4 +1,5 @@
 -cases [Inweb] 'inweb/Tests/Test Cases'
+-cases [Painter] 'inweb/Tests/Test Painter'
 
 -recipe [Inweb]
 	set: $INWEB = inweb/Tangled/inweb
@@ -38,6 +39,27 @@
 	show: $SA
 	match text: $SA $SI
 	or: 'produced the wrong scan'
+
+	pass: 'passed'
+
+-end
+
+-recipe [Painter]
+	set: $INWEB = inweb/Tangled/inweb
+	set: $LANGUAGES = inweb/Dialects
+	set: $INTERNAL = Internal
+
+	set: $CANVAS = $PATH/$CASE.txt
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+	mkdir: $PATH/_Results_Console
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	step: $INWEB -test-language-on $CANVAS -test-language $LANGUAGES/$CASE.ildf >$A 2>&1
+	or: 'failed inweb' $A
+	show: $A
+	match text: $A $I
+	or: 'produced the wrong painting'
 
 	pass: 'passed'
 

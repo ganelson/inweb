@@ -34,7 +34,6 @@ pointers to some external structure. Often these will also be texts, but
 not necessarily.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">dictionary</span><span class="plain"> {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">textual</span><span class="plain">; </span><span class="comment">values are texts?</span>
@@ -62,7 +61,6 @@ not necessarily.
 efficiency's sake the caller can set them up with an initial size of her choice.
 </p>
 
-
 <pre class="display">
     <span class="reserved">dictionary</span><span class="plain"> *</span><span class="functiontext">Dictionaries::new</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">textual</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> &lt; </span><span class="constant">2</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"dictionary too small"</span><span class="plain">);</span>
@@ -85,7 +83,6 @@ efficiency's sake the caller can set them up with an initial size of her choice.
 <p class="endnote">The function Dictionaries::new is used in <a href="#SP7_2">&#167;7.2</a>, 3/cla (<a href="3-cla.html#SP5">&#167;5</a>), 4/sm (<a href="4-sm.html#SP26_1">&#167;26.1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Logging. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Dictionaries::log</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">) {</span>
@@ -112,7 +109,6 @@ here. If there are <code class="display"><span class="extract">N</span></code> s
 (from 0 to <code class="display"><span class="extract">N-1</span></code>) a given key value belongs in.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Dictionaries::hash</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">hash</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
@@ -131,7 +127,6 @@ a given key value, and then do something to/with it. Note that these pointers
 remain valid only until somebody writes a new value into the dictionary;
 so be careful if thread safety's an issue.
 </p>
-
 
 <pre class="display">
     <span class="reserved">dict_entry</span><span class="plain"> *</span><span class="functiontext">Dictionaries::find</span><span class="plain">(</span><span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">) {</span>
@@ -157,7 +152,6 @@ so be careful if thread safety's an issue.
 as wide text (so that we can use literals like <code class="display"><span class="extract">L"my-key"</span></code>) instead of text
 streams. So we also offer versions suffixed <code class="display"><span class="extract">_literal</span></code>:
 </p>
-
 
 <pre class="display">
     <span class="reserved">dict_entry</span><span class="plain"> *</span><span class="functiontext">Dictionaries::find_literal</span><span class="plain">(</span><span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">lit</span><span class="plain">) {</span>
@@ -193,7 +187,6 @@ streams. So we also offer versions suffixed <code class="display"><span class="e
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>So, then, find an entry (if <code class="display"><span class="extract">change</span></code> is <code class="display"><span class="extract">0</span></code>), create it (if <code class="display"><span class="extract">+1</span></code>) or delete
 it (if <code class="display"><span class="extract">-1</span></code>).
 </p>
-
 
 <pre class="display">
     <span class="reserved">dict_entry</span><span class="plain"> *</span><span class="functiontext">Dictionaries::find_p</span><span class="plain">(</span><span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">K</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">change</span><span class="plain">) {</span>
@@ -335,7 +328,6 @@ same dictionary if deletions are a possibility.
 values which are arbitrary pointers, so we have to use void pointers:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Dictionaries::read_value</span><span class="plain">(</span><span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">key</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -386,7 +378,6 @@ values which are arbitrary pointers, so we have to use void pointers:
 so we provide convenient wrappers with the correct C types.
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="functiontext">Dictionaries::create_text</span><span class="plain">(</span><span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">key</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">D</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"wrote to null dictionary"</span><span class="plain">);</span>
@@ -411,7 +402,6 @@ so we provide convenient wrappers with the correct C types.
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>We only need a read operation, because the caller can write to the dictionary
 entry by reading the text pointer and then using <code class="display"><span class="extract">WRITE_TO</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="functiontext">Dictionaries::get_text</span><span class="plain">(</span><span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">key</span><span class="plain">) {</span>
@@ -440,7 +430,6 @@ entry by reading the text pointer and then using <code class="display"><span cla
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Disposal. </b>If a dictionary was only needed temporarily then we should dispose of it
 and free the memory when done:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Dictionaries::dispose_of</span><span class="plain">(</span><span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">) {</span>

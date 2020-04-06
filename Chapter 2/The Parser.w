@@ -387,14 +387,29 @@ division in the current section.
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_pl_for_body = NULL;
 			extract_mode = TRUE;
-		} else if ((current_paragraph) && (Regexp::match(&mr2, mr.exp[0], L"%(sample (%c+) code%)"))) {
+		} else if ((current_paragraph) &&
+			(Regexp::match(&mr2, mr.exp[0], L"%(sample (%c+) code%)"))) {
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_pl_for_body = Languages::find_by_name(mr2.exp[0], W);
 			extract_mode = TRUE;
-		} else if ((current_paragraph) && (Regexp::match(&mr2, mr.exp[0], L"%(sample code%)"))) {
+		} else if ((current_paragraph) &&
+			(Regexp::match(&mr2, mr.exp[0], L"%(sample code%)"))) {
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_pl_for_body = S->sect_language;
 			extract_mode = TRUE;
+		} else if ((current_paragraph) &&
+			(Regexp::match(&mr2, mr.exp[0], L"%(text from (%c+) as (%c+)%)"))) {
+			code_pl_for_body = Languages::find_by_name(mr2.exp[1], W);
+			@<Spool from file@>;
+		} else if ((current_paragraph) &&
+			(Regexp::match(&mr2, mr.exp[0], L"%(text from (%c+)%)"))) {
+			code_pl_for_body = NULL;
+			@<Spool from file@>;
+		} else if ((current_paragraph) &&
+			(Regexp::match(&mr2, mr.exp[0], L"%(undisplayed text from (%c+)%)"))) {
+			code_pl_for_body = NULL;
+			L->plainer = TRUE;
+			@<Spool from file@>;
 		} else {
 			Main::error_in_web(I"unknown bracketed annotation", L);
 		}
@@ -404,6 +419,26 @@ division in the current section.
 	Regexp::dispose_of(&mr);
 	Regexp::dispose_of(&mr2);
 	continue;
+
+@<Spool from file@> =
+	L->category = BEGIN_CODE_LCAT;
+	pathname *P = W->md->path_to_web;
+	filename *F = Filenames::from_text_relative(P, mr2.exp[0]);
+	linked_list *lines = Painter::lines(F);
+	text_stream *T;
+	source_line *latest = L;
+	LOOP_OVER_LINKED_LIST(T, text_stream, lines) {
+		source_line *TL = Lines::new_source_line(T, &(L->source));
+		TL->next_line = latest->next_line;
+		TL->plainer = L->plainer;
+		latest->next_line = TL;
+		latest = TL;
+	}
+	source_line *EEL = Lines::new_source_line(I"=", &(L->source));
+	EEL->next_line = latest->next_line;
+	latest->next_line = EEL;
+	code_lcat_for_body = TEXT_EXTRACT_LCAT;
+	extract_mode = TRUE;
 
 @ So here we have the possibilities which start with a column-1 |@| sign.
 There appear to be hordes of these, but in fact most of them were removed

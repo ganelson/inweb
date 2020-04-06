@@ -22,6 +22,8 @@ for locating programming language definitions:
   -read-language X       read language definition from file X
   -read-languages X      read all language definitions in path X
   -show-languages        list programming languages supported by Inweb
+  -test-language X       test language X on...
+  -test-language-on X    ...the code in the file X
 
 for analysing a web:
   -advance-build         increment daily build code for the web

@@ -340,11 +340,12 @@ weaver and turned into something else (such as list items).
 
 =
 VMETHOD_TYPE(CHANGE_MATERIAL_FOR_MTID, weave_format *wf, text_stream *OUT,
-	weave_target *wv, int old_material, int new_material, int content)
+	weave_target *wv, int old_material, int new_material, int content, int plainly)
 void Formats::change_material(OUTPUT_STREAM, weave_target *wv,
-	int old_material, int new_material, int content) {
+	int old_material, int new_material, int content, int plainly) {
 	weave_format *wf = wv->format;
-	VMETHOD_CALL(wf, CHANGE_MATERIAL_FOR_MTID, OUT, wv, old_material, new_material, content);
+	VMETHOD_CALL(wf, CHANGE_MATERIAL_FOR_MTID, OUT, wv, old_material, new_material,
+		content, plainly);
 }
 
 @ This is called on a change of colour. "Colour" is really a shorthand way

@@ -30,7 +30,6 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Character classes. </b></p>
 
-
 <pre class="display">
     <span class="identifier">wchar_t</span><span class="plain"> </span><span class="functiontext">Characters::tolower</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">wchar_t</span><span class="plain">) </span><span class="identifier">tolower</span><span class="plain">((</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">);</span>
@@ -80,7 +79,6 @@
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>White space classes:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Characters::is_space_or_tab</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\t'</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
@@ -103,7 +101,6 @@ sense of the Treaty of Babel rules on leading and trailing spaces in
 iFiction records.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Characters::is_babel_whitespace</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\t'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\x0a'</span><span class="plain">)</span>
@@ -119,7 +116,6 @@ iFiction records.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Unicode composition. </b>A routine which converts the Unicode combining accents with letters,
 sufficient correctly to handle all characters in the ZSCII set.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Characters::combine_accent</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">accent</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">letter</span><span class="plain">) {</span>
@@ -180,7 +176,6 @@ sufficient correctly to handle all characters in the ZSCII set.
 the more obvious accents from it.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Characters::make_filename_safe</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">charcode</span><span class="plain">) {</span>
         <span class="identifier">charcode</span><span class="plain"> = </span><span class="functiontext">Characters::remove_accent</span><span class="plain">(</span><span class="identifier">charcode</span><span class="plain">);</span>
@@ -195,7 +190,6 @@ the more obvious accents from it.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>The following strips the accent, if present, from an ISO Latin-1 character:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Characters::remove_accent</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">charcode</span><span class="plain">) {</span>

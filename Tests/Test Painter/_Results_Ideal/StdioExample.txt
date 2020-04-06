@@ -1,0 +1,5 @@
+Test of colouring for language StdioExample:
+if (x == 1) printf("Hello!");
+
+iippippppnppffffffppiiiiipppp
+

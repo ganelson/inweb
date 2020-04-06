@@ -31,7 +31,6 @@
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>We store these like so:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">para_macro</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">macro_name</span><span class="plain">; </span><span class="comment">usually long, like "Create a paragraph macro here"</span>
@@ -49,7 +48,6 @@
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Each section has its own linked list of paragraph macros, since the scope for
 the usage of these is always a single section.
 </p>
-
 
 <pre class="display">
     <span class="reserved">para_macro</span><span class="plain"> *</span><span class="functiontext">Macros::create</span><span class="plain">(</span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
@@ -73,7 +71,6 @@ entire web. So you can't expand a macro from another section, but then again,
 you can use the same macro name twice in different sections; and lookup is
 much faster.
 </p>
-
 
 <pre class="display">
     <span class="reserved">para_macro</span><span class="plain"> *</span><span class="functiontext">Macros::find_by_name</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">scope</span><span class="plain">) {</span>

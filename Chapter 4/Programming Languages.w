@@ -25,7 +25,7 @@ programming_language *Languages::find_by_name(text_stream *lname, web *W) {
 @<Read the language definition file with this name@> =
 	filename *F = NULL;
 	if (W) {
-		pathname *P = Pathnames::subfolder(W->md->path_to_web, I"Private Languages");
+		pathname *P = Pathnames::subfolder(W->md->path_to_web, I"Dialects");
 		@<Try P@>;
 	}
 	pathname *P = Languages::default_directory();
@@ -415,6 +415,7 @@ typedef struct colouring_rule {
 	int match_prefix; /* one of the |*_RULE_PREFIX| values above */
 	wchar_t match_regexp_text[MAX_ILDF_REGEXP_LENGTH];
 	int number; /* for |number N| rules; 0 for others */
+	int number_of; /* for |number N of M| rules; 0 for others */
 
 	/* the conclusion: */
 	struct colouring_language_block *execute_block; /* or |NULL|, in which case... */
@@ -440,6 +441,7 @@ colouring_rule *Languages::new_rule(colouring_language_block *within) {
 	rule->match_keyword_of_colour = NOT_A_COLOUR;
 	rule->match_regexp_text[0] = 0;
 	rule->number = 0;
+	rule->number_of = 0;
 
 	rule->set_to_colour = NOT_A_COLOUR;
 	rule->set_prefix_to_colour = NOT_A_COLOUR;
@@ -469,6 +471,9 @@ void Languages::parse_rule(language_reader_state *state, text_stream *premiss,
 	}
 	if (Regexp::match(&mr, premiss, L"number (%d+)")) {
 		rule->number = Str::atoi(mr.exp[0], 0);
+	} else if (Regexp::match(&mr, premiss, L"number (%d+) of (%d+)")) {
+		rule->number = Str::atoi(mr.exp[0], 0);
+		rule->number_of = Str::atoi(mr.exp[1], 0);
 	} else if (Regexp::match(&mr, premiss, L"keyword of (%c+)")) {
 		rule->match_keyword_of_colour = Languages::colour(mr.exp[0], tfp);
 	} else if (Regexp::match(&mr, premiss, L"keyword")) {
@@ -560,6 +565,7 @@ but which are not expressible in the syntax of this file.
 @d PLAIN_COLOUR			'p'
 @d EXTRACT_COLOUR		'x'
 @d COMMENT_COLOUR		'!'
+@d NEWLINE_COLOUR		'\n'
 
 @d NOT_A_COLOUR ' '
 @d UNQUOTED_COLOUR '_'

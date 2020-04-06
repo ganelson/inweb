@@ -47,7 +47,6 @@ of "volumes" (possibly only one), each of which is a series of "chapters"
 essentially individual HTML files, plus some images.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">metadata_list</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">ebook_datum</span></code>: DCMI-standard bibliographic data</span>
@@ -79,7 +78,6 @@ identify ebooks; we need to maintain a small dictionary, and so small that a
 list is entirely sufficient.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_datum</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">key</span><span class="plain">;</span>
@@ -94,7 +92,6 @@ list is entirely sufficient.
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>As noted above, we use the following to stratify the book:
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_volume</span><span class="plain"> {</span>
@@ -123,7 +120,6 @@ list is entirely sufficient.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Now for the actual resources which will end up in the EPUB. Here are the
 pages:
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_page</span><span class="plain"> {</span>
@@ -162,7 +158,6 @@ pages:
 <p class="endnote">The structure ebook_image is private to this section.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Creation. </b></p>
-
 
 <pre class="display">
     <span class="reserved">ebook</span><span class="plain"> *</span><span class="functiontext">Epub::new</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">title</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">prefix</span><span class="plain">) {</span>
@@ -306,7 +301,6 @@ image separately. (This is a little inconvenient, but indoc wants to do it
 that way.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="functiontext">Epub::begin_construction</span><span class="plain">(</span><span class="reserved">ebook</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">cover_image</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -429,7 +423,6 @@ images" at the ThreePress Consulting blog.)
 <p class="endnote">This code is used in <a href="#SP6">&#167;6</a>.</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Epub::end_construction</span><span class="plain">(</span><span class="reserved">ebook</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">) {</span>

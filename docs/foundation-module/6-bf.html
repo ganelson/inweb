@@ -32,7 +32,6 @@
 arranged with most significant byte (MSB) first.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">BinaryFiles::read_int8</span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">binary_file</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">result</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c1</span><span class="plain"> = </span><span class="identifier">getc</span><span class="plain">(</span><span class="identifier">binary_file</span><span class="plain">);</span>
@@ -106,7 +105,6 @@ arranged with most significant byte (MSB) first.
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">BinaryFiles::write_int32</span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">binary_file</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c1</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) ((</span><span class="identifier">val</span><span class="plain"> &gt;&gt; </span><span class="constant">24</span><span class="plain">) &amp; </span><span class="constant">0xFF</span><span class="plain">);</span>
@@ -129,7 +127,6 @@ arranged with most significant byte (MSB) first.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>We will sometimes need to toggle between MSB and LSB representation of
 integers 32 or 64 bits wide:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BinaryFiles::swap_bytes32</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">value</span><span class="plain">) {</span>
@@ -165,7 +162,6 @@ of data plus a most significant bit which marks that a continuation byte
 follows:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">BinaryFiles::read_variable_length_integer</span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">binary_file</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">result</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
@@ -188,7 +184,6 @@ follows:
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Here we read just the mantissa of a particular representation of
 floating-point numbers:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">BinaryFiles::read_float80</span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">binary_file</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">result</span><span class="plain">) {</span>
@@ -221,7 +216,6 @@ then null terminate it to make it valid C string. (<code class="display"><span c
 be at least <code class="display"><span class="extract">length</span></code> plus 1 bytes long.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">BinaryFiles::read_string</span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">binary_file</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">string</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">length</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
@@ -238,7 +232,6 @@ be at least <code class="display"><span class="extract">length</span></code> plu
 <p class="endnote">The function BinaryFiles::read_string is used in 6/sd (<a href="6-sd.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Size. </b></p>
-
 
 <pre class="display">
     <span class="reserved">long</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="functiontext">BinaryFiles::size</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
@@ -261,7 +254,6 @@ be at least <code class="display"><span class="extract">length</span></code> plu
 <p class="endnote">The function BinaryFiles::size appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Opening. </b></p>
-
 
 <pre class="display">
     <span class="reserved">FILE</span><span class="plain"> *</span><span class="functiontext">BinaryFiles::open_for_reading</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
@@ -304,7 +296,6 @@ be at least <code class="display"><span class="extract">length</span></code> plu
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Copying. </b>This achieves a binary copy of a file when we haven't got access to the shell,
 or to system APIs.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">BinaryFiles::copy</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">suppress_error</span><span class="plain">) {</span>

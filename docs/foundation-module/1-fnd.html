@@ -47,7 +47,6 @@ other tools or libraries to speak of, you could do worse.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Import: foundation</span>
 </pre>
@@ -70,7 +69,6 @@ Because pthread is not normally available on Windows, a special header is
 supplied instead for that case.
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">ctype</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
     <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">stdarg</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
@@ -85,7 +83,6 @@ supplied instead for that case.
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">DL</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">Current destination of debugging text: kept <code class="display"><span class="extract">NULL</span></code> until opened</span>
@@ -128,7 +125,6 @@ compromise in practice:
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Very occasionally we'll store a pointer as data:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pointer_sized_int</span><span class="plain">;</span>
 </pre>
@@ -142,7 +138,6 @@ shutting down.
 <p class="inwebparagraph">The Inweb notation <code class="display"><span class="extract">[[textliterals]]</span></code> inserts declarations of I-literals,
 that is, literal <code class="display"><span class="extract">text_stream *</span></code> values written as <code class="display"><span class="extract">I"strings"</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Foundation::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -277,7 +272,6 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 an early termination due to a fatal error, as this may lead to thread
 safety problems.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Foundation::end</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>

@@ -30,7 +30,6 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Creation. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::create</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">wf</span><span class="plain"> = </span><span class="functiontext">Formats::create_weave_format</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"plain"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">".txt"</span><span class="plain">);</span>
@@ -59,7 +58,6 @@
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Methods. </b>For documentation, see "Weave Fornats".
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::top</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">comment</span><span class="plain">) {</span>
@@ -72,7 +70,6 @@
 <p class="endnote">The function PlainText::top is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::subheading</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
@@ -87,7 +84,6 @@
 <p class="endnote">The function PlainText::subheading is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::toc</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain">,</span>
@@ -107,7 +103,6 @@
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::chapter_title_page</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">,</span>
         <span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">, </span><span class="reserved">chapter</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">) {</span>
@@ -124,7 +119,6 @@
 <p class="endnote">The function PlainText::chapter_title_page is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::paragraph_heading</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
@@ -145,7 +139,6 @@
 <p class="endnote">The function PlainText::paragraph_heading is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::source_code</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
@@ -171,7 +164,6 @@
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::display_line</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
@@ -184,7 +176,6 @@
 <p class="endnote">The function PlainText::display_line is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::item</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
@@ -200,7 +191,6 @@
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::bar</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">) {</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n----------------------------------------------------------------------\n\n"</span><span class="plain">);</span>
@@ -212,7 +202,6 @@
 <p class="endnote">The function PlainText::bar is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::para_macro</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
@@ -229,7 +218,6 @@
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::blank_line</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">in_comment</span><span class="plain">) {</span>
@@ -242,7 +230,6 @@
 <p class="endnote">The function PlainText::blank_line is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::endnote</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
@@ -257,7 +244,6 @@
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::commentary_text</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">,</span>
         <span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">id</span><span class="plain">) {</span>
@@ -270,7 +256,6 @@
 <p class="endnote">The function PlainText::commentary_text is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::locale</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
@@ -285,7 +270,6 @@
 <p class="endnote">The function PlainText::locale is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">PlainText::tail</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>

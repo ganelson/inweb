@@ -45,7 +45,6 @@ this auditing. To do that, we atach an <code class="display"><span class="extrac
 text stream.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">HTML_file_state</span><span class="plain"> {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">XHTML_flag</span><span class="plain">; </span><span class="comment">writing strict XHTML for use in epubs</span>
@@ -76,7 +75,6 @@ and in the right order. Thus we can't open body, open div, close body, because
 that would be a div tag which was pushed but not pulled.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">unique_xref</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">HTML_tag</span><span class="plain"> {</span>
@@ -106,7 +104,6 @@ that would be a div tag which was pushed but not pulled.
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::pop_tag</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">tag</span><span class="plain">) {</span>
         <span class="reserved">HTML_file_state</span><span class="plain"> *</span><span class="identifier">hs</span><span class="plain"> = </span><span class="functiontext">Streams::get_HTML_file_state</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
@@ -133,7 +130,6 @@ that would be a div tag which was pushed but not pulled.
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>At the end, therefore, no tags must remain unpulled.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::completed</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">) {</span>
@@ -187,7 +183,6 @@ of which are variadic and have to be written out the old-fashioned way:
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Which themselves depend on these routines:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::tag</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">tag</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">details</span><span class="plain">) {</span>
@@ -269,7 +264,6 @@ of which are variadic and have to be written out the old-fashioned way:
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Head. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::begin_head</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">CSS_file</span><span class="plain">) {</span>
         <span class="reserved">HTML_file_state</span><span class="plain"> *</span><span class="identifier">hs</span><span class="plain"> = </span><span class="functiontext">Streams::get_HTML_file_state</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
@@ -302,7 +296,6 @@ of which are variadic and have to be written out the old-fashioned way:
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::title</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">title</span><span class="plain">) {</span>
         <span class="identifier">HTML_OPEN</span><span class="plain">(</span><span class="string">"title"</span><span class="plain">);</span>
@@ -316,7 +309,6 @@ of which are variadic and have to be written out the old-fashioned way:
 <p class="endnote">The function HTML::title appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Scripts and styles. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::open_javascript</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">define_project</span><span class="plain">) {</span>
@@ -392,7 +384,6 @@ of which are variadic and have to be written out the old-fashioned way:
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>The helper simply performs a textual copy:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::incorporate_helper</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line_of_template</span><span class="plain">,</span>
         <span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">) {</span>
@@ -405,7 +396,6 @@ of which are variadic and have to be written out the old-fashioned way:
 <p class="endnote">The function HTML::incorporate_helper is used in <a href="#SP10">&#167;10</a>.</p>
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Body. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::begin_body</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">class</span><span class="plain">) {</span>
@@ -426,7 +416,6 @@ of which are variadic and have to be written out the old-fashioned way:
 <p class="endnote">The function HTML::end_body is used in 5/ee (<a href="5-ee.html#SP6_3">&#167;6.3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Divisions. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::begin_div_with_id</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">id</span><span class="plain">) {</span>
@@ -487,7 +476,6 @@ of which are variadic and have to be written out the old-fashioned way:
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Images. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::image</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="identifier">HTML_TAG_WITH</span><span class="plain">(</span><span class="string">"img"</span><span class="plain">, </span><span class="string">"src=\"%/f\""</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
@@ -499,7 +487,6 @@ of which are variadic and have to be written out the old-fashioned way:
 <p class="endnote">The function HTML::image appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Links. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::anchor</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">id</span><span class="plain">) {</span>
@@ -554,7 +541,6 @@ of which are variadic and have to be written out the old-fashioned way:
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Tables. </b>Opening a generic bland table with reasonable column spacing:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::begin_plain_html_table</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">) {</span>
         <span class="functiontext">HTML::begin_html_table</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
@@ -573,7 +559,6 @@ of which are variadic and have to be written out the old-fashioned way:
 
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>And some more general code:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::begin_html_table</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">colour</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">full_width</span><span class="plain">,</span>
@@ -792,7 +777,6 @@ of which are variadic and have to be written out the old-fashioned way:
 
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Miscellaneous. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::comment</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">) {</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;!--%S--&gt;\n"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">);</span>
@@ -821,7 +805,6 @@ of which are variadic and have to be written out the old-fashioned way:
 
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. HTML colours. </b>Inform uses these when constructing the map in the World index.
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">colour_translation</span><span class="plain"> {</span>
@@ -985,7 +968,6 @@ of which are variadic and have to be written out the old-fashioned way:
 need to run quickly.
 </p>
 
-
 <pre class="display">
     <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="functiontext">HTML::translate_colour_name</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">original</span><span class="plain">) {</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">=0; </span><span class="functiontext">Wide::cmp</span><span class="plain">(</span><span class="identifier">table_of_translations</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">].</span><span class="element">chip_name</span><span class="plain">, </span><span class="identifier">L</span><span class="string">""</span><span class="plain">); </span><span class="identifier">j</span><span class="plain">++)</span>
@@ -1000,7 +982,6 @@ need to run quickly.
 <p class="endnote">The function HTML::translate_colour_name appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP22"></a><b>&#167;22.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTML::begin_colour</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">col</span><span class="plain">) {</span>

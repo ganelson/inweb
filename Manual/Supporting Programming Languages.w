@@ -9,6 +9,7 @@ is woven, it will look much nicer with syntax-colouring, and that clearly
 can't be done without at least a surface understanding of what programs in
 the language mean.
 
+@
 As we've seen, the Contents section of a web has to specify its language.
 For example,
 
@@ -22,7 +23,7 @@ then its file is |L.ildf|. You can see the languages currently available
 to Inweb by using |-show-languages|. At present, a newly installed Inweb
 replies like so:
 
-[[languages.txt]]
+= (undisplayed text from Figures/languages.txt)
 
 @ So what if you want to write a literate program in a language not on that
 list? One option is to give the language as |None|. (Note that this is
@@ -48,7 +49,14 @@ Once you have written a definition, use |-read-language L| at the command
 line, where |L| is the file defining it. If you have many custom languages,
 |-read-languages D| reads all of the definitions in a directory |D|. Or, if
 the language in question is really quite specific to a single web, you can
-make a |Private Languages| subdirectory of the web and put it in there.
+make a |Dialects| subdirectory of the web and put it in there. (A dialect is,
+after all, a local language.)
+
+For testing purposes, running with |-test-language F -test-language-on G|
+reads in a file |G| of code, and syntax-colours it according to the rules
+for the language defined in the file |F|, then prints a plain-text diagram
+of the results. (This can then be tested with Intest test cases, as indeed
+Inweb does itself.)
 
 @h Structure of language definitions.
 Each language is defined by a single ILDF file. ("Inweb Language Definition
@@ -366,9 +374,7 @@ to be followed by |=>|: they always begin a block.
 2. |characters in T| splits the snippet into each of its characters which
 lie inside the text |T|. For example, here is a not very useful ILD for
 plain text in which all vowels are in red:
-
-[[../Private Languages/VowelsExample.ildf as ILDF]]
-
+= (text from Dialects/VowelsExample.ildf as ILDF)
 Given the text:
 = (not code)
 A noir, E blanc, I rouge, U vert, O bleu : voyelles,
@@ -386,7 +392,7 @@ Qui bombinent autour des puanteurs cruelles,
 
 3. The split |instances of X| narrows in on each usage of the text |X| inside
 the snippet. For example,
-[[../Private Languages/LineageExample.ildf as ILDF]]
+= (text from Dialects/LineageExample.ildf as ILDF)
 acts on the text:
 = (not code)
 Jacob first appears in the Book of Genesis, the son of Isaac and Rebecca, the
@@ -403,7 +409,7 @@ while |====| would have two.
 
 4. The split |runs of C|, where |C| describes a colour, splits the snippet
 into non-overlapping contiguous pieces which have that colour. For example:
-[[../Private Languages/RunningExample.ildf as ILDF]]
+= (text from Dialects/RunningExample.ildf as ILDF)
 acts on:
 = (not code)
 Napoleon Bonaparte (1769-1821) took 167 scientists to Egypt in 1798,
@@ -418,7 +424,7 @@ Here the hyphens in number ranges have been coloured, but not the hyphen
 in "so-called".
 
 A more computer-science sort of example would be:
-[[../Private Languages/StdioExample.ildf as ILDF]]
+= (text from Dialects/StdioExample.ildf as ILDF)
 which acts on:
 = (not code)
 if (x == 1) printf("Hello!");
@@ -438,7 +444,7 @@ not a colour.
 splits the snippet up into non-overlapping pieces which match it: possibly
 none at all, of course, in which case the block of rules is never used.
 This is easier to demonstrate than explain:
-[[../Private Languages/AssemblageExample.ildf as ILDF]]
+= (text from Dialects/AssemblageExample.ildf as ILDF)
 which acts on:
 = (not code)
 		JSR .initialise
@@ -460,7 +466,7 @@ to produce:
 regular expression |E|, and then runs the rules on each bracketed
 subexpression in turn. (If there is no match, or there are no bracketed
 terms in |E|, nothing happens.)
-[[../Private Languages/EquationsExample.ildf as ILDF]]
+= (text from Dialects/EquationsExample.ildf as ILDF)
 acts on:
 = (not code)
 	A = 2716
@@ -552,7 +558,7 @@ is required to match the entire snippet, not just somewhere inside.
 7. Whenever a split takes place, Inweb keeps count of how many pieces there are,
 and different rules can apply to differently numbered pieces. The notation
 is |number N|, where |N| is the number, counting from 1. For example,
-[[../Private Languages/ThirdExample.ildf as ILDF]]
+= (text from Dialects/ThirdExample.ildf as ILDF)
 acts on:
 = (not code)
 With how sad steps, O Moon, thou climb'st the skies! 
@@ -586,6 +592,28 @@ Are beauties there as proud as here they be?
 Do they above love to be lov'd, and yet 
 Those lovers scorn whom that love doth possess? 
 Do they call virtue there ungratefulness?
+=
+We can also cycle through a set of possibilities with |number N of M|,
+where this time the count runs 1, 2, ..., |M|, 1, 2, ..., |M|, 1, ... and
+so on. Thus |number 1 of 3| would work on the 1st, 4th, 7th, ... times;
+|number 2 of 3| on the 2nd, 5th, 8th, ...; |number 3 of 3| on the 3rd, 6th,
+9th, and so on. This, for example, paints the output from the painting
+algorithm in Inweb:
+= (text from Dialects/PainterOutput.ildf as ILDF)
+since alternate lines are plain, for the original text, and then coloured,
+to highlight the colours given to the characters in the original. Thus:
+= (not code)
+	int x = 55; /* a magic number */
+	rrrpipppnnpp!!!!!!!!!!!!!!!!!!!!
+	Imaginary::function(x, beta);
+	fffffffffffffffffffpippiiiipp
+=
+becomes
+= (sample PainterOutput code)
+	int x = 55; /* a magic number */
+	rrrpipppnnpp!!!!!!!!!!!!!!!!!!!!
+	Imaginary::function(x, beta);
+	fffffffffffffffffffpippiiiipp
 =
 
 @ Any condition can be reversed by preceding it with |not|. For example,
@@ -629,5 +657,4 @@ The rule |=> debug| is unconditional, and will print whenever it's reached.
 Inweb Language Definition Format is a kind of language in itself, and in
 fact Inweb is supplied with an ILD for ILDF itself, which Inweb used to
 syntax-colour the examples above. Here it is, as syntax-coloured by itself:
-
-[[../Languages/ILDF.ildf as ILDF]]
+= (text from Languages/ILDF.ildf as ILDF)

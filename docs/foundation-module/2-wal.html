@@ -64,7 +64,6 @@ so we have to do everything three times. (And then we have to do all that twice,
 because the loggers don't use format strings.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">escapes_registered</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">escapes_category</span><span class="plain">[2][128]; </span><span class="comment">one of the <code class="display"><span class="extract">*_ECAT</span></code> values above</span>
@@ -83,7 +82,6 @@ because the loggers don't use format strings.)
 <p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writers::log_escape_usage</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -106,7 +104,6 @@ because the loggers don't use format strings.)
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>That gives us a number of front doors:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writers::register_writer</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">esc</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">f</span><span class="plain">)(</span><span class="reserved">text_stream</span><span class="plain"> *, </span><span class="reserved">char</span><span class="plain"> *, </span><span class="reserved">void</span><span class="plain"> *)) {</span>
@@ -139,7 +136,6 @@ because the loggers don't use format strings.)
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>All leading to:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writers::register_writer_p</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">set</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">esc</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">f</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">cat</span><span class="plain">) {</span>
@@ -200,7 +196,6 @@ for wide strings.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Writing. </b>We can finally get on with that formatted-print function we've all been
 waiting for:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Writers::printf</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">fmt</span><span class="plain">, ...) {</span>

@@ -13,8 +13,10 @@ Because of that, we need to call the following before we begin a run of calls
 to |Painter::syntax_colour|:
 
 =
+int painter_count = 1;
 void Painter::reset_syntax_colouring(programming_language *pl) {
 	colouring_state = PLAIN_COLOUR;
+	painter_count = 1;
 }
 
 @ As we begin, the text to colour is in |matter|, while |colouring| is an
@@ -33,7 +35,7 @@ We get to that by using a language's rules on literals, and then executing
 its colouring program.
 
 =
-int Painter::syntax_colour(programming_language *pl, text_stream *OUT,
+int Painter::syntax_colour(programming_language *pl,
 	hash_table *HT, text_stream *matter, text_stream *colouring, int with_comments) {
 	int from = 0, to = Str::len(matter) - 1;
 	if (with_comments) {
@@ -49,11 +51,11 @@ int Painter::syntax_colour(programming_language *pl, text_stream *OUT,
 		DISCARD_TEXT(part_before_comment);
 		DISCARD_TEXT(part_within_comment);
 	}
-	Painter::syntax_colour_inner(pl, OUT, HT, matter, colouring, from, to);
+	Painter::syntax_colour_inner(pl, HT, matter, colouring, from, to);
 	return FALSE;
 }
 
-void Painter::syntax_colour_inner(programming_language *pl, text_stream *OUT,
+void Painter::syntax_colour_inner(programming_language *pl,
 	hash_table *HT, text_stream *matter, text_stream *colouring, int from, int to) {
 	@<Spot identifiers, literal text and character constants@>;
 	@<Spot literal numerical constants@>;
@@ -190,7 +192,7 @@ takes over.
 
 @<Now run the colouring program@> =
 	if (pl->program)
-		Painter::execute(HT, pl->program, matter, colouring, from, to);
+		Painter::execute(HT, pl->program, matter, colouring, from, to, painter_count++);
 
 @ The run-type for a block determines what the rules in it apply to: the
 whole snippet of text, or each character on its own, or each run of characters
@@ -199,7 +201,7 @@ rule across the whole snippet before moving on to the next.
 
 =
 void Painter::execute(hash_table *HT, colouring_language_block *block, text_stream *matter,
-	text_stream *colouring, int from, int to) {
+	text_stream *colouring, int from, int to, int N) {
 	if (block == NULL) internal_error("no block");
 	TEMPORARY_TEXT(colouring_at_start);
 	Str::copy(colouring_at_start, colouring);
@@ -207,7 +209,8 @@ void Painter::execute(hash_table *HT, colouring_language_block *block, text_stre
 	LOOP_OVER_LINKED_LIST(rule, colouring_rule, block->rules) {
 		switch (block->run) {
 			case WHOLE_LINE_CRULE_RUN:
-				Painter::execute_rule(HT, rule, matter, colouring, from, to, 1);
+				Painter::execute_rule(HT, rule, matter, colouring, from, to,
+					(N == 0)?1:N);
 				break;
 			case CHARACTERS_CRULE_RUN:
 				for (int i=from; i<=to; i++)
@@ -298,7 +301,11 @@ void Painter::execute_rule(hash_table *HT, colouring_rule *rule, text_stream *ma
 int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to, int N) {
 	if (rule->number > 0) {
-		if (rule->number != N) return FALSE;
+		if (rule->number_of > 0) {
+			if (rule->number != ((N-1)%(rule->number_of)) + 1) return FALSE;
+		} else {
+			if (rule->number != N) return FALSE;
+		}
 	} else if (rule->match_regexp_text[0]) {
 		if (Regexp::match(&(rule->mr), matter, rule->match_regexp_text) == FALSE)
 			return FALSE;
@@ -355,7 +362,7 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 void Painter::follow(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to) {
 	if (rule->execute_block)
-		Painter::execute(HT, rule->execute_block, matter, colouring, from, to);
+		Painter::execute(HT, rule->execute_block, matter, colouring, from, to, 0);
 	else if (rule->debug) @<Print some debugging text@>
 	else {
 		if (rule->set_to_colour != NOT_A_COLOUR)
@@ -375,3 +382,60 @@ void Painter::follow(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	for (int i=from; i<=to; i++)
 		PUT_TO(STDOUT, Str::get_at(colouring, i));
 	PRINT("\n");
+
+@h Painting a file.
+
+=
+linked_list *Painter::lines(filename *F) {
+	linked_list *L = NEW_LINKED_LIST(text_stream);
+	TextFiles::read(F, FALSE, "unable to read file of textual extract", TRUE,
+		&Painter::text_file_helper, NULL, L);
+	int n = -1, c = 0;
+	text_stream *T;
+	LOOP_OVER_LINKED_LIST(T, text_stream, L) {
+		c++;
+		if (Str::is_whitespace(T) == FALSE)
+			n = c;
+	}
+	if (n >= 0) {
+		linked_list *R = NEW_LINKED_LIST(text_stream);
+		c = 0;
+		LOOP_OVER_LINKED_LIST(T, text_stream, L)
+			if (++c <= n)
+				ADD_TO_LINKED_LIST(T, text_stream, R);
+		return R;
+	}
+	return L;
+}
+
+void Painter::text_file_helper(text_stream *text, text_file_position *tfp, void *state) {
+	linked_list *L = (linked_list *) state;
+	ADD_TO_LINKED_LIST(Str::duplicate(text), text_stream, L);
+}
+
+void Painter::colour_file(programming_language *pl, filename *F, text_stream *to, text_stream *coloured) {
+	linked_list *L = Painter::lines(F);
+	if (pl) Painter::reset_syntax_colouring(pl);
+	int c = 1;
+	text_stream *T;
+	LOOP_OVER_LINKED_LIST(T, text_stream, L) {
+		if (c++ > 1) { PUT_TO(to, '\n'); PUT_TO(coloured, NEWLINE_COLOUR); }
+		Str::trim_white_space_at_end(T);
+		TEMPORARY_TEXT(ST);
+		TEMPORARY_TEXT(SC);
+		LOOP_THROUGH_TEXT(pos, T)
+			if (Str::get(pos) == '\t')
+				WRITE_TO(ST, "    ");
+			else
+				PUT_TO(ST, Str::get(pos));
+		if (pl) {
+			Painter::syntax_colour(pl, (pl)?(&(pl->built_in_keywords)):NULL, ST, SC, TRUE);
+		} else {
+			LOOP_THROUGH_TEXT(pos, ST)
+				PUT_TO(SC, PLAIN_COLOUR);
+		}
+		WRITE_TO(to, "%S", ST);
+		WRITE_TO(coloured, "%S", SC);
+	}
+	if (c > 0) { PUT_TO(to, '\n'); PUT_TO(coloured, NEWLINE_COLOUR); }
+}

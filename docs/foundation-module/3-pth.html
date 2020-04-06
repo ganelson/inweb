@@ -34,7 +34,6 @@ directory), and "filename" to mean a location of a file. For example:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">/Users/rblackmore/Documents/Fireball</span>
 </pre>
@@ -43,7 +42,6 @@ directory), and "filename" to mean a location of a file. For example:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">/Users/rblackmore/Documents/Fireball/whoosh.aiff</span>
@@ -64,7 +62,6 @@ describe a folder which doesn't exist on disc.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">/Users/rblackmore/Documents/</span>
 </pre>
@@ -80,7 +77,6 @@ with just one exception: the <code class="display"><span class="extract">pathnam
 to begin with <code class="display"><span class="extract">FOLDER_SEPARATOR</span></code> to denote that it's at the root of the
 host file system.
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> {</span>
@@ -99,7 +95,6 @@ host file system.
 <code class="display"><span class="extract">HOME</span></code>, if it exists.
 </p>
 
-
 <pre class="display">
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">home_path</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Pathnames::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -117,7 +112,6 @@ host file system.
 <p class="endnote">The function Pathnames::start is used in 1/fnd (<a href="1-fnd.html#SP8">&#167;8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Installation folder. </b></p>
-
 
 <pre class="display">
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">installation_path</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -159,7 +153,6 @@ host file system.
 then going one level deeper, using the supplied name.
 </p>
 
-
 <pre class="display">
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">folder_name</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Pathnames::primitive</span><span class="plain">(</span><span class="identifier">folder_name</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">folder_name</span><span class="plain">), </span><span class="identifier">P</span><span class="plain">);</span>
@@ -191,7 +184,6 @@ except possibly for an initial slash, so for example <code class="display"><span
 <code class="display"><span class="extract">/paris/roubaix</span></code> is different.
 </p>
 
-
 <pre class="display">
     <span class="reserved">pathname</span><span class="plain"> *</span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">path</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Pathnames::from_text_relative</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">path</span><span class="plain">);</span>
@@ -219,7 +211,6 @@ except possibly for an initial slash, so for example <code class="display"><span
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Writer. </b>Conversely, by the miracle of depth-first recursion:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Pathnames::writer</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">format_string</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vP</span><span class="plain">) {</span>
@@ -250,7 +241,6 @@ for example,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">/Users/rblackmore/Documents/Fireball/tablature</span>
 </pre>
@@ -259,7 +249,6 @@ for example,
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">/Users/rblackmore/Documents/</span>
@@ -270,7 +259,6 @@ for example,
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Fireball/tablature</span>
 </pre>
@@ -279,7 +267,6 @@ for example,
 so it's probably not wise to use it with filenames typed in at the command
 line.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Pathnames::to_text_relative</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
@@ -319,7 +306,6 @@ line.
 on the file system with that path.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Pathnames::create_in_file_system</span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">; </span><span class="comment">the root of the file system always exists</span>
@@ -342,7 +328,6 @@ on the file system with that path.
 the <code class="display"><span class="extract">dest</span></code> tree an exact copy of the <code class="display"><span class="extract">source</span></code> tree (and therefore deletes
 anything different which was originally in <code class="display"><span class="extract">dest</span></code>).
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Pathnames::rsync</span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">source</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">dest</span><span class="plain">) {</span>

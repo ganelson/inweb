@@ -1,0 +1,11 @@
+Test of colouring for language PainterOutput:
+    int x = 55; /* a magic number */
+    rrrpipppnnpp!!!!!!!!!!!!!!!!!!!!
+    Imaginary::function(x, beta);
+    fffffffffffffffffffpippiiiipp
+
+pppppppppppppppppppppppppppppppppppp
+pppprrrpipppnnpp!!!!!!!!!!!!!!!!!!!!
+ppppppppppppppppppppppppppppppppp
+ppppfffffffffffffffffffpippiiiipp
+

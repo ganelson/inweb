@@ -46,7 +46,6 @@ are too wide to display.)
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RunningTeX::post_process_weave</span><span class="plain">(</span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">open_afterwards</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">to_DVI</span><span class="plain">) {</span>
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">console_filename</span><span class="plain"> = </span><span class="functiontext">Filenames::set_extension</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">, </span><span class="string">"console"</span><span class="plain">);</span>
@@ -72,7 +71,6 @@ are too wide to display.)
 <p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b>We're going to have to read in a console file of TeX output to work out
 what happened, and this structure will store what we find:
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">tex_results</span><span class="plain"> {</span>
@@ -204,7 +202,6 @@ for the user to find out what those errors were.
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RunningTeX::scan_console_line</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">,</span>
         <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">res_V</span><span class="plain">) {</span>
@@ -230,7 +227,6 @@ for the user to find out what those errors were.
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Reporting. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RunningTeX::report_on_post_processing</span><span class="plain">(</span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">) {</span>
         <span class="reserved">tex_results</span><span class="plain"> *</span><span class="identifier">res</span><span class="plain"> = </span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">post_processing_results</span><span class="plain">;</span>
@@ -250,7 +246,6 @@ for the user to find out what those errors were.
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>And here are some details to do with the results of post-processing.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">RunningTeX::substitute_post_processing_data</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>

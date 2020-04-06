@@ -463,7 +463,7 @@ simplest method possible.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">RANGE</span><span class="plain"> 100</span>
+    <span class="definitionkeyword">define</span> <span class="constant">RANGE</span><span class="plain"> </span><span class="constant">100</span>
 </pre>
 
 <pre class="display">
@@ -486,7 +486,7 @@ simplest method possible.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">isprime</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">)) &amp;&amp; (</span><span class="functiontext">isprime</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">+2)))</span>
-            <span class="identifier">printf</span><span class="plain">(</span><span class="string">"%d and %d\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+2);</span>
+            <span class="identifier">printf</span><span class="plain">(</span><span class="string">"%d and %d\n"</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+2);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -495,7 +495,6 @@ simplest method possible.
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>This ought to print:
 </p>
-
 
 <pre class="display">
         <span class="plain">3 and 5</span>
@@ -512,15 +511,15 @@ simplest method possible.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">TRUE</span><span class="plain"> 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">FALSE</span><span class="plain"> 0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRUE</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FALSE</span><span class="plain"> </span><span class="constant">0</span>
 </pre>
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">isprime</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt;= 1) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> = 2; </span><span class="identifier">m</span><span class="plain">*</span><span class="identifier">m</span><span class="plain"> &lt;= </span><span class="identifier">n</span><span class="plain">; </span><span class="identifier">m</span><span class="plain">++)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> % </span><span class="identifier">m</span><span class="plain"> == 0)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> &lt;= </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">m</span><span class="plain"> = </span><span class="constant">2</span><span class="plain">; </span><span class="identifier">m</span><span class="plain">*</span><span class="identifier">m</span><span class="plain"> &lt;= </span><span class="identifier">n</span><span class="plain">; </span><span class="identifier">m</span><span class="plain">++)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">n</span><span class="plain"> % </span><span class="identifier">m</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>

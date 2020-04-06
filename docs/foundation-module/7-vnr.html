@@ -73,7 +73,6 @@ no sense for an interval to be empty seen from one end but not the other.
 and <code class="display"><span class="extract">)</span></code> for open ones.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">VersionNumberRanges::write_range</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">semver_range</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no range"</span><span class="plain">);</span>
@@ -98,7 +97,6 @@ and <code class="display"><span class="extract">)</span></code> for open ones.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The "allow anything" range runs from minus to plus infinity. Every version
 number lies in this range.
 </p>
-
 
 <pre class="display">
     <span class="reserved">semver_range</span><span class="plain"> *</span><span class="functiontext">VersionNumberRanges::any_range</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -138,7 +136,6 @@ alphanumeric string gives it lower precendence than all other prerelease
 versions.
 </p>
 
-
 <pre class="display">
     <span class="reserved">semver_range</span><span class="plain"> *</span><span class="functiontext">VersionNumberRanges::compatibility_range</span><span class="plain">(</span><span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">) {</span>
         <span class="reserved">semver_range</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">VersionNumberRanges::any_range</span><span class="plain">();</span>
@@ -164,7 +161,6 @@ versions.
 inclusive:
 </p>
 
-
 <pre class="display">
     <span class="reserved">semver_range</span><span class="plain"> *</span><span class="functiontext">VersionNumberRanges::at_least_range</span><span class="plain">(</span><span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">) {</span>
         <span class="reserved">semver_range</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="functiontext">VersionNumberRanges::any_range</span><span class="plain">();</span>
@@ -189,7 +185,6 @@ inclusive:
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Here we test whether V is at least a given end, and then at most:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VersionNumberRanges::version_ge_end</span><span class="plain">(</span><span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">range_end</span><span class="plain"> </span><span class="identifier">E</span><span class="plain">) {</span>
@@ -234,7 +229,6 @@ inclusive:
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>This allows a simple way to write:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VersionNumberRanges::in_range</span><span class="plain">(</span><span class="reserved">semantic_version_number</span><span class="plain"> </span><span class="identifier">V</span><span class="plain">, </span><span class="reserved">semver_range</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">R</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
@@ -263,7 +257,6 @@ a lower end of <code class="display"><span class="extract">[4, ...]</span></code
 upper end of <code class="display"><span class="extract">[..., 4]</span></code> is not as strict as an upper end of <code class="display"><span class="extract">[..., 3]</span></code>. Where
 the boundary value is the same, open ends are stricter than closed ends.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VersionNumberRanges::stricter</span><span class="plain">(</span><span class="reserved">range_end</span><span class="plain"> </span><span class="identifier">E1</span><span class="plain">, </span><span class="reserved">range_end</span><span class="plain"> </span><span class="identifier">E2</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">lower</span><span class="plain">) {</span>
@@ -294,7 +287,6 @@ included in two different places in the source text, but with possibly
 different version needs.) The return value is true if an actual change took
 place, and false otherwise.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">VersionNumberRanges::intersect_range</span><span class="plain">(</span><span class="reserved">semver_range</span><span class="plain"> *</span><span class="identifier">R1</span><span class="plain">, </span><span class="reserved">semver_range</span><span class="plain"> *</span><span class="identifier">R2</span><span class="plain">) {</span>

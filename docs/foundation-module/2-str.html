@@ -87,7 +87,6 @@ formatted text to the current stream, which could be either a string or a
 file. <code class="display"><span class="extract">PRINT</span></code> does the same but to <code class="display"><span class="extract">STDOUT</span></code>, and is thus essentially <code class="display"><span class="extract">printf</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="plain">#</span><span class="identifier">define</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">...) </span><span class="functiontext">Writers::printf</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">args</span><span class="plain">)</span>
 
@@ -339,7 +338,6 @@ so out of the <code class="display"><span class="extract">chars_capacity</span><
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b>A statistic we keep, since it costs little:
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_file_writes</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">number of text files opened for writing during the run</span>
 </pre>
@@ -357,7 +355,6 @@ The only output file with a sorceror's-apprentice-like ability to grow and
 grow is the debugging file, and if it should reach 2 GB then it deserves to be
 truncated and we will shed no tears.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::initialise</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">) {</span>
@@ -382,7 +379,6 @@ XML (and HTML) escapes of <code class="display"><span class="extract">&amp;amp;<
 angle brackets, will be used automatically on writing. By default this flag
 is clear, that is, no conversion is made.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::enable_XML_escapes</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">) {</span>
@@ -456,7 +452,6 @@ is clear, that is, no conversion is made.
 
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21. Logging. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::log</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vS</span><span class="plain">) {</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain"> = (</span><span class="reserved">text_stream</span><span class="plain"> *) </span><span class="identifier">vS</span><span class="plain">;</span>
@@ -484,7 +479,6 @@ is clear, that is, no conversion is made.
 and returns a <code class="display"><span class="extract">text_stream *</span></code> pointer to it; subsequent calls just return this wrapper.
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">STDOUT_struct</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stdout_wrapper_initialised</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="functiontext">Streams::get_stdout</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -508,7 +502,6 @@ and returns a <code class="display"><span class="extract">text_stream *</span></
 
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23.  </b>And similarly for the standard error file.
 </p>
-
 
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">STDERR_struct</span><span class="plain">; </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stderr_wrapper_initialised</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
@@ -535,7 +528,6 @@ and returns a <code class="display"><span class="extract">text_stream *</span></
 so we return <code class="display"><span class="extract">TRUE</span></code> if and only if successful.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Streams::open_to_file</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">encoding</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stream</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to open NULL stream"</span><span class="plain">);</span>
@@ -560,7 +552,6 @@ so we return <code class="display"><span class="extract">TRUE</span></code> if a
 
 <p class="inwebparagraph"><a id="SP25"></a><b>&#167;25.  </b>Similarly for appending:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Streams::open_to_file_append</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">encoding</span><span class="plain">) {</span>
@@ -588,7 +579,6 @@ the text of the stream; this too can fail for host platform reasons, so again
 we return a success code.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Streams::open_to_memory</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">capacity</span><span class="plain">) {</span>
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
@@ -614,7 +604,6 @@ we return a success code.
 If called validly, this cannot fail.
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> </span><span class="functiontext">Streams::new_buffer</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">capacity</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">at</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to make stream wrapper for NULL string"</span><span class="plain">);</span>
@@ -637,7 +626,6 @@ If called validly, this cannot fail.
 by a C string. First, a wide string (a sequence of 32-bit Unicode code
 points, null terminated):
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Streams::open_from_wide_string</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">c_string</span><span class="plain">) {</span>
@@ -663,7 +651,6 @@ points, null terminated):
 page of the Unicode set, null terminated):
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Streams::open_from_ISO_string</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">c_string</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stream</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"tried to open NULL stream"</span><span class="plain">);</span>
@@ -686,7 +673,6 @@ page of the Unicode set, null terminated):
 
 <p class="inwebparagraph"><a id="SP28_2"></a><b>&#167;28.2.  </b>Finally, a UTF-8 encoded C string:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Streams::open_from_UTF8_string</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">c_string</span><span class="plain">) {</span>
@@ -734,7 +720,6 @@ page of the Unicode set, null terminated):
 <p class="inwebparagraph"><a id="SP29"></a><b>&#167;29. Converting to C strings. </b>Now for the converse problem.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::write_as_wide_string</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">C_string</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">buffer_size</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">buffer_size</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -760,7 +745,6 @@ page of the Unicode set, null terminated):
 ISO string:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::write_as_ISO_string</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">C_string</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">buffer_size</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">buffer_size</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -784,7 +768,6 @@ ISO string:
 <p class="endnote">The function Streams::write_as_ISO_string is used in <a href="#SP32">&#167;32</a>, 4/sm (<a href="4-sm.html#SP6">&#167;6</a>).</p>
 
 <p class="inwebparagraph"><a id="SP31"></a><b>&#167;31.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::write_as_UTF8_string</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">C_string</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">buffer_size</span><span class="plain">) {</span>
@@ -821,7 +804,6 @@ ISO string:
 <p class="endnote">The function Streams::write_as_UTF8_string is used in <a href="#SP32">&#167;32</a>, 4/sm (<a href="4-sm.html#SP6">&#167;6</a>).</p>
 
 <p class="inwebparagraph"><a id="SP32"></a><b>&#167;32. Locale versions. </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Streams::open_from_locale_string</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">C_string</span><span class="plain">) {</span>
@@ -864,7 +846,6 @@ ISO string:
 <code class="display"><span class="extract">NULL</span></code>:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::flush</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stream</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -878,7 +859,6 @@ ISO string:
 
 <p class="inwebparagraph"><a id="SP34"></a><b>&#167;34.  </b>But closing is not allowed for <code class="display"><span class="extract">NULL</span></code> or the standard I/O wrappers:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::close</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">) {</span>
@@ -961,7 +941,6 @@ how continuations are made, below.
 
 <p class="inwebparagraph"><a id="SP35"></a><b>&#167;35. Writing. </b>Our equivalent of <code class="display"><span class="extract">fputc</span></code> reads:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::putc</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">c_int</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">) {</span>
@@ -1100,7 +1079,6 @@ hold any escape sequence when opened.
 <p class="inwebparagraph"><a id="SP36"></a><b>&#167;36.  </b>Literal printing is just printing with XML escapes switched off:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::literal</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stream</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -1120,7 +1098,6 @@ outdent, but error conditions can cause some compilation routines to issue
 problem messages and then leave what they're doing incomplete, so we will
 be a little cautious about assuming that a mismatch means an error.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::indent</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">) {</span>
@@ -1161,7 +1138,6 @@ how much is written to <code class="display"><span class="extract">NULL</span></
 field.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Streams::get_position</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">t</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
@@ -1180,7 +1156,6 @@ field.
 <p class="inwebparagraph"><a id="SP39"></a><b>&#167;39. Memory-stream-only functions. </b>While it would be easy enough to implement this for file streams too, there's
 no point, since it is used only in concert with backspacing.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Streams::latest</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">) {</span>
@@ -1203,7 +1178,6 @@ no point, since it is used only in concert with backspacing.
 <p class="inwebparagraph"><a id="SP40"></a><b>&#167;40.  </b>Accessing characters by index. Note that the stream terminates at the first
 zero byte found, so that putting a zero truncates it.
 </p>
-
 
 <pre class="display">
     <span class="identifier">wchar_t</span><span class="plain"> </span><span class="functiontext">Streams::get_char_at_index</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">position</span><span class="plain">) {</span>
@@ -1251,7 +1225,6 @@ such continuation blocks (which would be inefficient if we immediately had
 to open similar ones again).
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::set_position</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stream</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">position</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stream</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -1282,7 +1255,6 @@ to open similar ones again).
 <code class="display"><span class="extract">NULL</span></code>) but <code class="display"><span class="extract">to</span></code> can be anything (including <code class="display"><span class="extract">NULL</span></code>).
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::copy</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">from</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">to</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -1303,7 +1275,6 @@ to open similar ones again).
 
 <p class="inwebparagraph"><a id="SP43"></a><b>&#167;43. Writer. </b>This writes one stream into another one, which implements <code class="display"><span class="extract">%S</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Streams::writer</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">format_string</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vS</span><span class="plain">) {</span>

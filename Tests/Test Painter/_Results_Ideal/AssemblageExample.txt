@@ -1,0 +1,13 @@
+Test of colouring for language AssemblageExample:
+        JSR .initialise
+        LDR A, #.data
+        RTS
+    .initialise
+        TAX
+
+ppppppppiiipfffffffffff
+ppppppppiiipipppfffff
+ppppppppiii
+ppppfffffffffff
+ppppppppiii
+

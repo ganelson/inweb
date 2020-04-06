@@ -42,6 +42,9 @@ typedef struct inweb_instructions {
 	int verbose_switch; /* |-verbose|: print names of files read to stdout */
 	int targets; /* used only for parsing */
 
+	struct programming_language *test_language_setting; /* |-test-language X| */
+	struct filename *test_language_on_setting; /* |-test-language-on X| */
+
 	struct pathname *import_setting; /* |-import X|: where to find imported webs */
 } inweb_instructions;
 
@@ -105,6 +108,8 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.weave_docs = FALSE;
 	args.import_setting = NULL;
 	args.targets = 0;
+	args.test_language_setting = NULL;
+	args.test_language_on_setting = NULL;
 
 @ The CommandLine section of Foundation needs to be told what command-line
 switches we want, other than the standard set (such as |-help|) which it
@@ -118,6 +123,8 @@ provides automatically.
 @e LANGUAGE_CLSW
 @e LANGUAGES_CLSW
 @e SHOW_LANGUAGES_CLSW
+@e TEST_LANGUAGE_CLSW
+@e TEST_LANGUAGE_ON_CLSW
 
 @e ANALYSIS_CLSG
 
@@ -173,6 +180,10 @@ provides automatically.
 		L"read all language definitions in path X");
 	CommandLine::declare_switch(SHOW_LANGUAGES_CLSW, L"show-languages", 1,
 		L"list programming languages supported by Inweb");
+	CommandLine::declare_switch(TEST_LANGUAGE_CLSW, L"test-language", 2,
+		L"test language X on...");
+	CommandLine::declare_switch(TEST_LANGUAGE_ON_CLSW, L"test-language-on", 2,
+		L"...the code in the file X");
 	CommandLine::end_group();
 
 	CommandLine::begin_group(ANALYSIS_CLSG,
@@ -255,6 +266,13 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 			Languages::read_definitions(Pathnames::from_text(arg)); break;
 		case SHOW_LANGUAGES_CLSW:
 			args->show_languages_switch = TRUE;
+			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
+		case TEST_LANGUAGE_CLSW:
+			args->test_language_setting =
+				Languages::read_definition(Filenames::from_text(arg));
+			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
+		case TEST_LANGUAGE_ON_CLSW:
+			args->test_language_on_setting = Filenames::from_text(arg);
 			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
 		case CATALOGUE_CLSW:
 			args->catalogue_switch = TRUE;

@@ -379,7 +379,7 @@ void TeX::locale(weave_format *self, text_stream *OUT, weave_target *wv,
 
 @ =
 void TeX::change_material(weave_format *self, text_stream *OUT, weave_target *wv,
-	int old_material, int new_material, int content) {
+	int old_material, int new_material, int content, int change_material) {
 	if (old_material != new_material) {
 		switch (old_material) {
 			case REGULAR_MATERIAL:

@@ -73,7 +73,6 @@ different casing; and then repeat within that directory for the extension
 file itself.
 </p>
 
-
 <pre class="display">
     <span class="reserved">FILE</span><span class="plain"> *</span><span class="functiontext">CIFilingSystem::fopen</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">mode</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">topdirpath</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">ciextdirpath</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">cistring</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">ciextname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -279,7 +278,6 @@ return from the function.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">/Users/bobama/Library/Inform/Extensions/Hillary Clinton/Health Care.i7x</span>
 </pre>
@@ -288,7 +286,6 @@ return from the function.
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">topdirpath| is |/Users/bobama/Library/Inform/Extensions</span>
@@ -346,7 +343,6 @@ that many contemporary implementations of <code class="display"><span class="ext
 and in any case the code above contains much larger buffers than needed.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CIFilingSystem::match_in_directory</span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vd</span><span class="plain">,</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">last_match</span><span class="plain">) {</span>
@@ -371,7 +367,6 @@ and in any case the code above contains much larger buffers than needed.)
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Non-POSIX tail. </b>On platforms without POSIX directory handling, we revert to regular <code class="display"><span class="extract">fopen</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">FILE</span><span class="plain"> *</span><span class="functiontext">CIFilingSystem::fopen</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">mode</span><span class="plain">) {</span>

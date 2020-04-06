@@ -374,13 +374,6 @@ void HTMLFormat::bar(weave_format *self, text_stream *OUT, weave_target *wv) {
 }
 
 @ =
-typedef struct HTML_figure_state {
-	struct text_stream *OUT;
-	struct programming_language *colour_as;
-	struct weave_target *wv;
-	struct hash_table *keywords;
-} HTML_figure_state;
-
 void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *figname, int w, int h, programming_language *pl) {
 	HTMLFormat::exit_current_paragraph(OUT);
@@ -388,42 +381,11 @@ void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
 		Pathnames::subfolder(wv->weave_web->md->path_to_web, I"Figures"),
 		figname);
 	filename *RF = Filenames::from_text(figname);
-	TEMPORARY_TEXT(ext);
-	Filenames::write_extension(ext, RF);
-	if ((pl) || (Str::eq_insensitive(ext, I".txt"))) {
-		if (pl == NULL) HTMLFormat::pre(OUT, NULL);
-		else HTMLFormat::pre(OUT, "display");
-		if (pl) Painter::reset_syntax_colouring(pl);
-		HTML_figure_state hfs;
-		hfs.OUT = OUT;
-		hfs.colour_as = pl;
-		hfs.wv = wv;
-		hfs.keywords = (pl)?(&(pl->built_in_keywords)):NULL;
-		TextFiles::read(F, FALSE, "unable to read file of textual figure", TRUE,
-			&HTMLFormat::text_file_helper, NULL, &hfs);
-		if (pl == NULL) HTMLFormat::cpre(OUT);
-		else HTMLFormat::cpre(OUT);
-	} else {
-		HTML_OPEN("center");
-		HTML::image(OUT, RF);
-		Patterns::copy_file_into_weave(wv->weave_web, F);
-		HTML_CLOSE("center");
-	}
-	DISCARD_TEXT(ext);
+	HTML_OPEN("center");
+	HTML::image(OUT, RF);
+	Patterns::copy_file_into_weave(wv->weave_web, F);
+	HTML_CLOSE("center");
 	WRITE("\n");
-}
-
-void HTMLFormat::text_file_helper(text_stream *text, text_file_position *tfp, void *state) {
-	HTML_figure_state *hfs = (HTML_figure_state *) state;
-	TEMPORARY_TEXT(colouring);
-	LOOP_THROUGH_TEXT(pos, text) PUT_TO(colouring, PLAIN_COLOUR);
-	if (hfs->colour_as) {
-		Painter::syntax_colour(hfs->colour_as, hfs->OUT, hfs->keywords, text, colouring, TRUE);
-		Formats::source_code(hfs->OUT, hfs->wv, 0, I"", text, colouring, I"", TRUE, TRUE, TRUE);
-	} else {
-		WRITE_TO(hfs->OUT, "%S\n", text);
-	}
-	DISCARD_TEXT(colouring);
 }
 
 @ =
@@ -461,7 +423,7 @@ void HTMLFormat::blank_line(weave_format *self, text_stream *OUT, weave_target *
 
 @ =
 void HTMLFormat::change_material(weave_format *self, text_stream *OUT, weave_target *wv,
-	int old_material, int new_material, int content) {
+	int old_material, int new_material, int content, int plainly) {
 	if (old_material != new_material) {
 		if (old_material == MACRO_MATERIAL) HTML_CLOSE("code");
 		if ((content) || (new_material != MACRO_MATERIAL))
@@ -471,8 +433,8 @@ void HTMLFormat::change_material(weave_format *self, text_stream *OUT, weave_tar
 			case REGULAR_MATERIAL:
 				switch (new_material) {
 					case CODE_MATERIAL:
-						WRITE("\n");
-						HTMLFormat::pre(OUT, "display");
+						if (plainly) HTMLFormat::pre(OUT, NULL);
+						else HTMLFormat::pre(OUT, "display");
 						break;
 					case DEFINITION_MATERIAL:
 						WRITE("\n");
@@ -510,7 +472,8 @@ void HTMLFormat::change_material(weave_format *self, text_stream *OUT, weave_tar
 				switch (new_material) {
 					case CODE_MATERIAL:
 						WRITE("\n");
-						HTMLFormat::pre(OUT, "display");
+						if (plainly) HTMLFormat::pre(OUT, NULL);
+						else HTMLFormat::pre(OUT, "display");
 						break;
 					case MACRO_MATERIAL:
 						WRITE("\n");

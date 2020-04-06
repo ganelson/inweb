@@ -32,7 +32,6 @@
 through optional method calls.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">weave_format</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">format_name</span><span class="plain">;</span>
@@ -72,7 +71,6 @@ example, PDFs are made by weaving a TeX file and then running this through
 stage produces, even though we will later end up with a <code class="display"><span class="extract">.pdf</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="functiontext">Formats::file_extension</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">wf</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">wf</span><span class="plain">-&gt;</span><span class="identifier">woven_extension</span><span class="plain">;</span>
@@ -85,7 +83,6 @@ stage produces, even though we will later end up with a <code class="display"><s
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Creation. </b>This must be performed very early in Inweb's run.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Formats::create_weave_formats</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -134,9 +131,9 @@ this is helpful for EPUB weaving.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Formats::begin_weaving is used in 1/pc (<a href="1-pc.html#SP7_3_3">&#167;7.3.3</a>).</p>
+<p class="endnote">The function Formats::begin_weaving is used in 1/pc (<a href="1-pc.html#SP7_4_3">&#167;7.4.3</a>).</p>
 
-<p class="endnote">The function Formats::end_weaving is used in 1/pc (<a href="1-pc.html#SP7_3_3">&#167;7.3.3</a>).</p>
+<p class="endnote">The function Formats::end_weaving is used in 1/pc (<a href="1-pc.html#SP7_4_3">&#167;7.4.3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Now the weave output, roughly in order from top to bottom.
 </p>
@@ -317,7 +314,7 @@ been syntax-coloured; there can also be some indentation, and perhaps even some
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Formats::source_code is used in <a href="#SP11">&#167;11</a>, 3/tw (<a href="3-tw.html#SP1_3_3_1_8_4">&#167;1.3.3.1.8.4</a>, <a href="3-tw.html#SP1_3_3_1_9">&#167;1.3.3.1.9</a>, <a href="3-tw.html#SP1_3_3_1_9_6">&#167;1.3.3.1.9.6</a>), 5/hf (<a href="5-hf.html#SP15">&#167;15</a>).</p>
+<p class="endnote">The function Formats::source_code is used in <a href="#SP11">&#167;11</a>, 3/tw (<a href="3-tw.html#SP1_3_3_1_8_4">&#167;1.3.3.1.8.4</a>, <a href="3-tw.html#SP1_3_3_1_9">&#167;1.3.3.1.9</a>, <a href="3-tw.html#SP1_3_3_1_9_6">&#167;1.3.3.1.9.6</a>).</p>
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>More primitively, this method weaves a piece of code which has been coloured
 drably in a uniform <code class="display"><span class="extract">EXTRACT_COLOUR</span></code> colour. This is used for weaving words like
@@ -552,11 +549,12 @@ weaver and turned into something else (such as list items).
 
 <pre class="display">
     <span class="identifier">VMETHOD_TYPE</span><span class="plain">(</span><span class="constant">CHANGE_MATERIAL_FOR_MTID</span><span class="plain">, </span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">wf</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">,</span>
-        <span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">old_material</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">new_material</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">content</span><span class="plain">)</span>
+        <span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">old_material</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">new_material</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">content</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">plainly</span><span class="plain">)</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Formats::change_material</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">old_material</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">new_material</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">content</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">old_material</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">new_material</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">content</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">plainly</span><span class="plain">) {</span>
         <span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">wf</span><span class="plain"> = </span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">format</span><span class="plain">;</span>
-        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">CHANGE_MATERIAL_FOR_MTID</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">old_material</span><span class="plain">, </span><span class="identifier">new_material</span><span class="plain">, </span><span class="identifier">content</span><span class="plain">);</span>
+        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">CHANGE_MATERIAL_FOR_MTID</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">old_material</span><span class="plain">, </span><span class="identifier">new_material</span><span class="plain">,</span>
+            <span class="identifier">content</span><span class="plain">, </span><span class="identifier">plainly</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -593,7 +591,6 @@ that is, <code class="display"><span class="extract">this is inside</span></code
 of it either to <code class="display"><span class="extract">Formats::source_fragment</span></code> or <code class="display"><span class="extract">Formats::text_fragment</span></code>
 as appropriate.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Formats::text</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">id</span><span class="plain">) {</span>

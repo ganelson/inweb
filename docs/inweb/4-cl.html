@@ -32,7 +32,6 @@
 This does:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CLike::make_c_like</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">pl</span><span class="plain">) {</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">, </span><span class="constant">FURTHER_PARSING_PAR_MTID</span><span class="plain">, </span><span class="functiontext">CLike::further_parsing</span><span class="plain">);</span>
@@ -131,7 +130,6 @@ something like this:
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">typedef struct fruit {</span>
         <span class="plain">    struct pip the_pips[5];</span>
@@ -189,7 +187,6 @@ takes care of it automatically.
 
 <p class="inwebparagraph"><a id="SP2_2_1"></a><b>&#167;2.2.1.  </b>For each <code class="display"><span class="extract">typedef struct</span></code> we find, we will make one of these:
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">c_structure</span><span class="plain"> {</span>
@@ -297,7 +294,6 @@ the sake of an illustrative example, let's suppose that line is:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">    unsigned long long int *val;</span>
@@ -433,7 +429,6 @@ has no effect on tangling, so it doesn't change the program. It simply
 affects the reports in the woven code about where structures are used.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">structure_element</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">element_name</span><span class="plain">;</span>
@@ -477,7 +472,6 @@ matches only identifier characters and <code class="display"><span class="extrac
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">    struct fruit *often_confused_with;</span>
@@ -532,7 +526,6 @@ matches only identifier characters and <code class="display"><span class="extrac
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">type identifier(args...</span>
@@ -635,7 +628,6 @@ forms like <code class="display"><span class="extract">static long long int</spa
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">void World::Subjects::make_adj_const_domain(inference_subject *infs,</span>
         <span class="plain">	instance *nc, property *prn) {</span>
@@ -681,7 +673,6 @@ reach an open brace <code class="display"><span class="extract">{</span></code>.
 
 <p class="inwebparagraph"><a id="SP2_4_2_2"></a><b>&#167;2.4.2.2.  </b>Each function definition found results in one of these structures being made:
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">function</span><span class="plain"> {</span>
@@ -784,7 +775,6 @@ part of the function structure. We'll need it when predeclaring the function.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The following
 </p>
 
-
 <pre class="display">
     <span class="reserved">c_structure</span><span class="plain"> *</span><span class="functiontext">CLike::find_structure</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">c_structure</span><span class="plain"> *</span><span class="identifier">str</span><span class="plain">;</span>
@@ -803,7 +793,6 @@ part of the function structure. We'll need it when predeclaring the function.
 category; we can, if we wish, change that for a more exotic one. We simply
 look for a <code class="display"><span class="extract">#include</span></code> of one of the ANSI C standard libraries.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CLike::subcategorise_code</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
@@ -840,7 +829,6 @@ around the inclusions; which Inform (for instance) needs in order to make
 platform-specific details to handle directories without POSIX in Windows.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CLike::additional_early_matter</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">tangle_target</span><span class="plain"> *</span><span class="identifier">target</span><span class="plain">) {</span>
         <span class="reserved">chapter</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">;</span>
@@ -864,7 +852,6 @@ on in the file. We use it first for the structures, and then the functions &mdas
 in that order since the function types likely involve the typedef names for the
 structures.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CLike::additional_predeclarations</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">) {</span>
@@ -934,7 +921,6 @@ finished.
 <p class="inwebparagraph"><a id="SP6_3"></a><b>&#167;6.3.  </b>Using the following recursion, which is therefore terminating:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CLike::tangle_structure</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">c_structure</span><span class="plain"> *</span><span class="identifier">str</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">tangled</span><span class="plain"> != </span><span class="constant">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
@@ -965,7 +951,6 @@ if the line contains a particular comment. For example:
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">#ifdef SOLARIS /* inweb: always predeclare */</span>
@@ -1025,7 +1010,6 @@ our own thing. We decline.
 fprms of section catalogue.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CLike::catalogue</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">functions_too</span><span class="plain">) {</span>
         <span class="reserved">c_structure</span><span class="plain"> *</span><span class="identifier">str</span><span class="plain">;</span>
@@ -1048,7 +1032,6 @@ fprms of section catalogue.
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Having found all those functions and structure elements, we make sure they
 are all known to Inweb's hash table of interesting identifiers:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CLike::analyse_code</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">) {</span>
@@ -1077,7 +1060,6 @@ in other words, we police the rule that functions actually are defined in the
 namespace which their names imply. This can be turned off with a special
 bibliographic variable, but don't do that.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CLike::post_analysis</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">) {</span>

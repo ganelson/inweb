@@ -1,0 +1,5 @@
+		JSR .initialise
+		LDR A, #.data
+		RTS
+	.initialise
+		TAX

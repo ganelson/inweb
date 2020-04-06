@@ -2,7 +2,6 @@ Name: "ILDF"
 Details: "The Inweb Language Definition File format"
 Extension: ".ildf"
 Whole Line Comment: "#"
-Supports Namespaces: false
 
 String Literal: "\""
 String Literal Escape: "\\"

@@ -63,7 +63,6 @@ here is just the size of the initial memory block, which is fastest to
 access.
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="functiontext">Str::new</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Str::new_with_capacity</span><span class="plain">(32);</span>
@@ -93,7 +92,6 @@ we want the duplicate always to be writeable, so that <code class="display"><spa
 duplicated as <code class="display"><span class="extract">NULL</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">E</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">E</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Str::new</span><span class="plain">();</span>
@@ -114,7 +112,6 @@ duplicated as <code class="display"><span class="extract">NULL</span></code>.
 with the capacity of the initial block large enough to hold the whole
 thing plus a little extra, for efficiency's sake.
 </p>
-
 
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="functiontext">Str::new_from_wide_string</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">C_string</span><span class="plain">) {</span>
@@ -155,7 +152,6 @@ thing plus a little extra, for efficiency's sake.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>And sometimes we want to use an existing stream object:
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="functiontext">Str::from_wide_string</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">c_string</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Streams::open_from_wide_string</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">c_string</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -175,7 +171,6 @@ thing plus a little extra, for efficiency's sake.
 <p class="endnote">The function Str::from_locale_string appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Converting to C strings. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Str::copy_to_ISO_string</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">C_string</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">buffer_size</span><span class="plain">) {</span>
@@ -207,7 +202,6 @@ thing plus a little extra, for efficiency's sake.
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Converting to integers. </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Str::atoi</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">index</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">buffer</span><span class="plain">[32];</span>
@@ -227,7 +221,6 @@ thing plus a little extra, for efficiency's sake.
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Length. </b>A puritan would return a <code class="display"><span class="extract">size_t</span></code> here, but I am not a puritan.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Streams::get_position</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
@@ -236,7 +229,7 @@ thing plus a little extra, for efficiency's sake.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Str::len is used in <a href="#SP3">&#167;3</a>, <a href="#SP7">&#167;7</a>, <a href="#SP10">&#167;10</a>, <a href="#SP11">&#167;11</a>, <a href="#SP12">&#167;12</a>, <a href="#SP13">&#167;13</a>, <a href="#SP14">&#167;14</a>, <a href="#SP15">&#167;15</a>, <a href="#SP16">&#167;16</a>, <a href="#SP18">&#167;18</a>, <a href="#SP19">&#167;19</a>, <a href="#SP20">&#167;20</a>, <a href="#SP21">&#167;21</a>, <a href="#SP23">&#167;23</a>, <a href="#SP24">&#167;24</a>, <a href="#SP25">&#167;25</a>, 2/dl (<a href="2-dl.html#SP9">&#167;9</a>), 3/cla (<a href="3-cla.html#SP13">&#167;13</a>, <a href="3-cla.html#SP14">&#167;14</a>, <a href="3-cla.html#SP14_1">&#167;14.1</a>), 3/pth (<a href="3-pth.html#SP4">&#167;4</a>, <a href="3-pth.html#SP5">&#167;5</a>, <a href="3-pth.html#SP7">&#167;7</a>), 3/fln (<a href="3-fln.html#SP2">&#167;2</a>, <a href="3-fln.html#SP3">&#167;3</a>, <a href="3-fln.html#SP5">&#167;5</a>, <a href="3-fln.html#SP9">&#167;9</a>), 4/taa (<a href="4-taa.html#SP2_1">&#167;2.1</a>), 4/pm (<a href="4-pm.html#SP3">&#167;3</a>, <a href="4-pm.html#SP4">&#167;4</a>, <a href="4-pm.html#SP11_3">&#167;11.3</a>, <a href="4-pm.html#SP14">&#167;14</a>), 5/htm (<a href="5-htm.html#SP7">&#167;7</a>, <a href="5-htm.html#SP15">&#167;15</a>), 5/ee (<a href="5-ee.html#SP7_1">&#167;7.1</a>, <a href="5-ee.html#SP7_2_3">&#167;7.2.3</a>, <a href="5-ee.html#SP7_2_4">&#167;7.2.4</a>), 7/vn (<a href="7-vn.html#SP7">&#167;7</a>, <a href="7-vn.html#SP7_1">&#167;7.1</a>, <a href="7-vn.html#SP10">&#167;10</a>), 8/ws (<a href="8-ws.html#SP7_3">&#167;7.3</a>, <a href="8-ws.html#SP7_3_3_1">&#167;7.3.3.1</a>, <a href="8-ws.html#SP7_2_2_3_1">&#167;7.2.2.3.1</a>, <a href="8-ws.html#SP7_2_2_4">&#167;7.2.2.4</a>), 8/bdfw (<a href="8-bdfw.html#SP5">&#167;5</a>, <a href="8-bdfw.html#SP6">&#167;6</a>), 8/bf (<a href="8-bf.html#SP3">&#167;3</a>, <a href="8-bf.html#SP4">&#167;4</a>, <a href="8-bf.html#SP5">&#167;5</a>, <a href="8-bf.html#SP6">&#167;6</a>, <a href="8-bf.html#SP9">&#167;9</a>).</p>
+<p class="endnote">The function Str::len is used in <a href="#SP3">&#167;3</a>, <a href="#SP7">&#167;7</a>, <a href="#SP10">&#167;10</a>, <a href="#SP11">&#167;11</a>, <a href="#SP12">&#167;12</a>, <a href="#SP13">&#167;13</a>, <a href="#SP14">&#167;14</a>, <a href="#SP15">&#167;15</a>, <a href="#SP16">&#167;16</a>, <a href="#SP18">&#167;18</a>, <a href="#SP19">&#167;19</a>, <a href="#SP20">&#167;20</a>, <a href="#SP21">&#167;21</a>, <a href="#SP23">&#167;23</a>, <a href="#SP24">&#167;24</a>, <a href="#SP25">&#167;25</a>, 2/dl (<a href="2-dl.html#SP9">&#167;9</a>), 3/cla (<a href="3-cla.html#SP13">&#167;13</a>, <a href="3-cla.html#SP14">&#167;14</a>, <a href="3-cla.html#SP14_1">&#167;14.1</a>), 3/pth (<a href="3-pth.html#SP4">&#167;4</a>, <a href="3-pth.html#SP5">&#167;5</a>, <a href="3-pth.html#SP7">&#167;7</a>), 3/fln (<a href="3-fln.html#SP2">&#167;2</a>, <a href="3-fln.html#SP3">&#167;3</a>, <a href="3-fln.html#SP5">&#167;5</a>, <a href="3-fln.html#SP9">&#167;9</a>), 4/taa (<a href="4-taa.html#SP2_1">&#167;2.1</a>), 4/pm (<a href="4-pm.html#SP3">&#167;3</a>, <a href="4-pm.html#SP4">&#167;4</a>, <a href="4-pm.html#SP10">&#167;10</a>, <a href="4-pm.html#SP11_3">&#167;11.3</a>, <a href="4-pm.html#SP14">&#167;14</a>), 5/htm (<a href="5-htm.html#SP7">&#167;7</a>, <a href="5-htm.html#SP15">&#167;15</a>), 5/ee (<a href="5-ee.html#SP7_1">&#167;7.1</a>, <a href="5-ee.html#SP7_2_3">&#167;7.2.3</a>, <a href="5-ee.html#SP7_2_4">&#167;7.2.4</a>), 7/vn (<a href="7-vn.html#SP7">&#167;7</a>, <a href="7-vn.html#SP7_1">&#167;7.1</a>, <a href="7-vn.html#SP10">&#167;10</a>), 8/ws (<a href="8-ws.html#SP7_3">&#167;7.3</a>, <a href="8-ws.html#SP7_3_3_1">&#167;7.3.3.1</a>, <a href="8-ws.html#SP7_2_2_3_1">&#167;7.2.2.3.1</a>, <a href="8-ws.html#SP7_2_2_4">&#167;7.2.2.4</a>), 8/bdfw (<a href="8-bdfw.html#SP5">&#167;5</a>, <a href="8-bdfw.html#SP6">&#167;6</a>), 8/bf (<a href="8-bf.html#SP3">&#167;3</a>, <a href="8-bf.html#SP4">&#167;4</a>, <a href="8-bf.html#SP5">&#167;5</a>, <a href="8-bf.html#SP6">&#167;6</a>, <a href="8-bf.html#SP9">&#167;9</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Position markers. </b>A position marker is a lightweight way to refer to a particular position
 in a given string. Position 0 is before the first character; if, for
@@ -245,7 +238,6 @@ the end of the string, after the "o". Negative positions are not allowed,
 but positive ones well past the end of the string are legal. (Doing things
 at those positions may well not be, of course.)
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">string_position</span><span class="plain"> {</span>
@@ -260,7 +252,6 @@ at those positions may well not be, of course.)
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>You can then find a position in a given string thus:
 </p>
-
 
 <pre class="display">
     <span class="reserved">string_position</span><span class="plain"> </span><span class="functiontext">Str::start</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
@@ -288,7 +279,6 @@ at those positions may well not be, of course.)
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>And you can step forwards or backwards:
 </p>
-
 
 <pre class="display">
     <span class="reserved">string_position</span><span class="plain"> </span><span class="functiontext">Str::back</span><span class="plain">(</span><span class="reserved">string_position</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
@@ -345,7 +335,6 @@ at those positions may well not be, of course.)
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Character operations. </b>How to get at individual characters, then, now that we can refer to positions:
 </p>
 
-
 <pre class="display">
     <span class="identifier">wchar_t</span><span class="plain"> </span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="reserved">string_position</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">.</span><span class="element">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">P</span><span class="plain">.</span><span class="element">index</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
@@ -380,7 +369,6 @@ at those positions may well not be, of course.)
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Str::put</span><span class="plain">(</span><span class="reserved">string_position</span><span class="plain"> </span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">C</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">.</span><span class="element">index</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"wrote before start of string"</span><span class="plain">);</span>
@@ -407,7 +395,6 @@ at those positions may well not be, of course.)
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Truncation. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Str::clear</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="functiontext">Str::truncate</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
@@ -426,7 +413,6 @@ at those positions may well not be, of course.)
 <p class="endnote">The function Str::truncate is used in <a href="#SP23">&#167;23</a>, <a href="#SP24">&#167;24</a>, 8/ws (<a href="8-ws.html#SP7_3_3_1">&#167;7.3.3.1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Copying. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Str::concatenate</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S1</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S2</span><span class="plain">) {</span>
@@ -459,7 +445,6 @@ at those positions may well not be, of course.)
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>A subtly different operation is to set a string equal to a given C string:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Str::copy_ISO_string</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">C_string</span><span class="plain">) {</span>
         <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">);</span>
@@ -487,7 +472,6 @@ at those positions may well not be, of course.)
 
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Comparisons. </b>We provide both case sensitive and insensitive versions.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S1</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S2</span><span class="plain">) {</span>
@@ -525,7 +509,6 @@ at those positions may well not be, of course.)
 alphabetic sorting, like <code class="display"><span class="extract">strlen</span></code> in the C standard library.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Str::cmp</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S1</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S2</span><span class="plain">) {</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">string_position</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Str::start</span><span class="plain">(</span><span class="identifier">S1</span><span class="plain">), </span><span class="identifier">Q</span><span class="plain"> = </span><span class="functiontext">Str::start</span><span class="plain">(</span><span class="identifier">S2</span><span class="plain">);</span>
@@ -560,7 +543,6 @@ alphabetic sorting, like <code class="display"><span class="extract">strlen</spa
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">Str::suffix_eq(I"wayzgoose", I"snow goose", N)</span>
 </pre>
@@ -571,7 +553,6 @@ alphabetic sorting, like <code class="display"><span class="extract">strlen</spa
 <p class="inwebparagraph">(The Oxford English Dictionary defines a "wayzgoose" as a holiday outing
 for the staff of a publishing house.)
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Str::prefix_eq</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S1</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S2</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
@@ -623,7 +604,6 @@ for the staff of a publishing house.)
 
 <p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S1</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">S2</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">S1</span><span class="plain">) == (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">wcslen</span><span class="plain">(</span><span class="identifier">S2</span><span class="plain">)) {</span>
@@ -660,7 +640,6 @@ for the staff of a publishing house.)
 
 <p class="inwebparagraph"><a id="SP22"></a><b>&#167;22. White space. </b></p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Str::is_whitespace</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">)</span>
@@ -676,7 +655,6 @@ for the staff of a publishing house.)
 
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23.  </b>This removes spaces and tabs from both ends:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Str::trim_white_space</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
@@ -741,7 +719,6 @@ for the staff of a publishing house.)
 
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24. Deleting characters. </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Str::delete_first_character</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="functiontext">Str::delete_nth_character</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
@@ -779,7 +756,6 @@ for the staff of a publishing house.)
 <p class="endnote">The function Str::delete_n_characters is used in 3/cla (<a href="3-cla.html#SP5_1">&#167;5.1</a>), 3/pth (<a href="3-pth.html#SP7">&#167;7</a>), 3/fln (<a href="3-fln.html#SP5">&#167;5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP25"></a><b>&#167;25. Substrings. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Str::substr</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">string_position</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">string_position</span><span class="plain"> </span><span class="identifier">to</span><span class="plain">) {</span>
@@ -852,7 +828,6 @@ is marked so that the stream value, "fish", cannot be modified at run-time.
 a mutex. There's no real performance concern because the following routine
 is run just once per I-literal in the source code, when the program starts up.
 </p>
-
 
 <pre class="display">
     <span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">string_literals_dictionary</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>

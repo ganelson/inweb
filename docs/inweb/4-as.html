@@ -39,7 +39,6 @@ for comments and syntax colouring. Ironically, this code grew out of a language
 actually called ACME: the 6502 assembler of the same name.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ACMESupport::add_fallbacks</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">pl</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Methods::provided</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="identifier">methods</span><span class="plain">, </span><span class="constant">PARSE_COMMENT_TAN_MTID</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
@@ -84,7 +83,6 @@ the actual <code class="display"><span class="extract">WRITE</span></code> becau
 files to crash Inweb.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ACMESupport::expand</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">prototype</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
@@ -113,7 +111,6 @@ files to crash Inweb.)
 <p class="endnote">The function ACMESupport::expand is used in <a href="#SP3">&#167;3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Tangling methods. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ACMESupport::shebang</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">pl</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">,</span>
@@ -287,7 +284,6 @@ files to crash Inweb.)
 a spurious comment betraying Inweb's involvement in the process.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">ACMESupport::suppress_disclaimer</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">pl</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="identifier">suppress_disclaimer</span><span class="plain">;</span>
@@ -299,7 +295,6 @@ a spurious comment betraying Inweb's involvement in the process.
 <p class="endnote">The function ACMESupport::suppress_disclaimer is used in <a href="#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ACMESupport::begin_weave</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">pl</span><span class="plain">, </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">) {</span>
@@ -316,7 +311,6 @@ a spurious comment betraying Inweb's involvement in the process.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>ACME has all of its syntax-colouring done by the default engine:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">ACMESupport::reset_syntax_colouring</span><span class="plain">(</span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">pl</span><span class="plain">) {</span>
         <span class="functiontext">Painter::reset_syntax_colouring</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">);</span>
@@ -328,7 +322,7 @@ a spurious comment betraying Inweb's involvement in the process.
         <span class="reserved">hash_table</span><span class="plain"> *</span><span class="identifier">ht</span><span class="plain"> = &amp;(</span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">sect_target</span><span class="plain">-&gt;</span><span class="element">symbols</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">category</span><span class="plain"> == </span><span class="constant">TEXT_EXTRACT_LCAT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pl</span><span class="plain"> != </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">sect_language</span><span class="plain">))</span>
             <span class="identifier">ht</span><span class="plain"> = &amp;(</span><span class="identifier">pl</span><span class="plain">-&gt;</span><span class="identifier">built_in_keywords</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Painter::syntax_colour</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">ht</span><span class="plain">, </span><span class="identifier">matter</span><span class="plain">, </span><span class="identifier">colouring</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Painter::syntax_colour</span><span class="plain">(</span><span class="identifier">pl</span><span class="plain">, </span><span class="identifier">ht</span><span class="plain">, </span><span class="identifier">matter</span><span class="plain">, </span><span class="identifier">colouring</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

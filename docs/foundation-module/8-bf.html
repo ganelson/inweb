@@ -32,7 +32,6 @@
 file exists, we look for the same thing in the current working directory.
 </p>
 
-
 <pre class="display">
     <span class="reserved">filename</span><span class="plain"> *</span><span class="functiontext">BuildFiles::build_file_for_web</span><span class="plain">(</span><span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">WS</span><span class="plain">) {</span>
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">WS</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"build.txt"</span><span class="plain">);</span>
@@ -50,7 +49,6 @@ file exists, we look for the same thing in the current working directory.
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The format of such a file is very simple: up to three text fields:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">build_file_data</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">prerelease_text</span><span class="plain">;</span>
@@ -65,7 +63,6 @@ file exists, we look for the same thing in the current working directory.
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Here's how to read in a build file:
 </p>
-
 
 <pre class="display">
     <span class="reserved">build_file_data</span><span class="plain"> </span><span class="functiontext">BuildFiles::read</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
@@ -104,7 +101,6 @@ file exists, we look for the same thing in the current working directory.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And here is how to write one:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BuildFiles::write</span><span class="plain">(</span><span class="reserved">build_file_data</span><span class="plain"> </span><span class="identifier">bfd</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">vr_stream</span><span class="plain">;</span>
@@ -127,7 +123,6 @@ file exists, we look for the same thing in the current working directory.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Bibliographic implications. </b>Whenever a web is read in by Inweb, its build file is looked at in order to
 set some bibliographic data.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BuildFiles::set_bibliographic_data_for</span><span class="plain">(</span><span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">WS</span><span class="plain">) {</span>
@@ -157,7 +152,6 @@ the Contents page to specify all of this.
 <p class="inwebparagraph">If no error occurs, then the expansion <code class="display"><span class="extract">[[Semantic Version Number]]</span></code> is
 guaranteed to produce a semver-legal version number.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BuildFiles::deduce_semver</span><span class="plain">(</span><span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">WS</span><span class="plain">) {</span>
@@ -194,7 +188,6 @@ guaranteed to produce a semver-legal version number.
 number if we find that the date has changed.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BuildFiles::advance_for_web</span><span class="plain">(</span><span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">WS</span><span class="plain">) {</span>
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">BuildFiles::build_file_for_web</span><span class="plain">(</span><span class="identifier">WS</span><span class="plain">);</span>
@@ -221,7 +214,6 @@ number if we find that the date has changed.
 <code class="display"><span class="extract">dateline</span></code> match today's date in this format, we return <code class="display"><span class="extract">TRUE</span></code>; otherwise we
 rewrite <code class="display"><span class="extract">dateline</span></code> to today and return <code class="display"><span class="extract">FALSE</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">BuildFiles::dated_today</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">dateline</span><span class="plain">) {</span>
@@ -255,7 +247,6 @@ then it rolls back around to <code class="display"><span class="extract">A</span
 <p class="inwebparagraph">This allows for 21384 distinct build codes, enough to use one each day for
 some 58 years.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">BuildFiles::increment</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">) {</span>

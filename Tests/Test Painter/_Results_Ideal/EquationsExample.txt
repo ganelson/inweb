@@ -1,0 +1,11 @@
+Test of colouring for language EquationsExample:
+    A = 2716
+    B=3
+    C =715 + B
+    D < 14
+
+ppppfpppffff
+ppppfpf
+ppppfppfffpppp
+pppppppppp
+

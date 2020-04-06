@@ -1,0 +1,11 @@
+Test of colouring for language VowelsExample:
+A noir, E blanc, I rouge, U vert, O bleu : voyelles,
+Je dirai quelque jour vos naissances latentes :
+A, noir corset velu des mouches éclatantes
+Qui bombinent autour des puanteurs cruelles,
+
+fppffpppfpppfppppfppffpfppfppfppppfpppffppppfpfppfpp
+pfppfpffppffppffppffpppfpppffppfppfpppfpfppfppp
+fpppffpppfppfpppfpfppfpppffppfpppppfpfppfp
+pffppfppfpfpppffpffpppfpppffppffpppppffppfpp
+

@@ -31,7 +31,6 @@
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. The DL stream. </b>The debugging log file occupies the following stream:
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">debug_log_file_struct</span><span class="plain">; </span><span class="comment">The actual debugging log file</span>
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">debug_log_file</span><span class="plain"> = &amp;</span><span class="identifier">debug_log_file_struct</span><span class="plain">; </span><span class="comment">The actual debugging log file</span>
@@ -50,7 +49,6 @@ instance, the pseudo-function-call
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">LOGIF(WHATEVER, "Heading %d skipped\n", n);</span>
@@ -75,7 +73,6 @@ unless we ask for it.
 not, as we please. Each has a unique number and a name of up to three words in
 length.
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">debugging_aspect</span><span class="plain"> {</span>
@@ -181,7 +178,6 @@ is possible this has been switched to be <code class="display"><span class="extr
 temporarily the sentence tracing file: but we don't care.
 </p>
 
-
 <pre class="display">
     <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">debug_log_filename</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
@@ -239,7 +235,6 @@ the debugging log can be divided into "phases", subdivided into "stages".
 This is how.
 </p>
 
-
 <pre class="display">
     <span class="reserved">char</span><span class="plain"> </span><span class="identifier">debug_log_phase</span><span class="plain">[32];</span>
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">debug_log_subheading</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
@@ -272,7 +267,6 @@ being logged, and is used by our main macros. Aspect 0 mandates writing to the
 debug log, and is used when errors occur.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Log::aspect_switched_on</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">aspect</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">decision</span><span class="plain"> = </span><span class="identifier">the_debugging_aspects</span><span class="plain">[</span><span class="identifier">aspect</span><span class="plain">].</span><span class="element">on_or_off</span><span class="plain">;</span>
@@ -294,7 +288,6 @@ debug log, and is used when errors occur.
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>We sometimes want to switch everything on, or switch everything off:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Log::set_all_aspects</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">new_state</span><span class="plain">) {</span>
@@ -320,7 +313,6 @@ every space with a hyphen: for instance, <code class="display"><span class="extr
 <code class="display"><span class="extract">everything</span></code> and <code class="display"><span class="extract">nothing</span></code> with the obvious meanings, and <code class="display"><span class="extract">list</span></code> to
 print out a list of debugging aspects to <code class="display"><span class="extract">STDOUT</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Log::set_aspect_from_command_line</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">give_error</span><span class="plain">) {</span>
@@ -358,7 +350,6 @@ print out a list of debugging aspects to <code class="display"><span class="extr
 out again without having lost our earlier settings.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Log::tracing_on</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">starred</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">heading</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">starred</span><span class="plain">) {</span>
@@ -383,7 +374,6 @@ out again without having lost our earlier settings.
 the reader with a list of other things which could have been put into it,
 but weren't.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Log::show_debugging_settings_with_state</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">state</span><span class="plain">) {</span>

@@ -35,7 +35,6 @@ of the arrays and hashes populated. Program Control then sent us straight
 here for the tangling to begin...
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tangler::go</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">tangle_target</span><span class="plain"> *</span><span class="identifier">target</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">dest_file</span><span class="plain">) {</span>
         <span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">lang</span><span class="plain"> = </span><span class="identifier">target</span><span class="plain">-&gt;</span><span class="element">tangle_language</span><span class="plain">;</span>
@@ -55,7 +54,7 @@ here for the tangling to begin...
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Tangler::go is used in 1/pc (<a href="1-pc.html#SP7_3_2">&#167;7.3.2</a>).</p>
+<p class="endnote">The function Tangler::go is used in 1/pc (<a href="1-pc.html#SP7_4_2">&#167;7.4.2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b>All of the sections are tangled together into one big file, the structure
 of which can be seen below.
@@ -183,7 +182,6 @@ act only on <code class="display"><span class="extract">CODE_BODY_LCAT</span></c
 something quirky has been done to support a language feature.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tangler::tangle_paragraph</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="functiontext">Tags::open_ifdefs</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
@@ -236,7 +234,6 @@ else; if so, here's where we use it.
 Almost all of the time, it simply prints <code class="display"><span class="extract">original</span></code> verbatim to the file <code class="display"><span class="extract">OUT</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tangler::tangle_code</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">original</span><span class="plain">, </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mlen</span><span class="plain">, </span><span class="identifier">slen</span><span class="plain">;</span>
@@ -261,7 +258,6 @@ example, we handle
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">if (banana_count == 0) @&lt;Yes, we have no bananas@&gt;;</span>
@@ -323,7 +319,6 @@ So we insert a fresh line marker.
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">printf("This is build [[Build Number]].\n");</span>
 </pre>
@@ -333,7 +328,6 @@ page) and substitutes that, so that we end up with (say)
 </p>
 
 <p class="inwebparagraph"></p>
-
 
 <pre class="display">
         <span class="plain">printf("This is build 5Q47.\n");</span>
@@ -383,7 +377,6 @@ passes straight through. So <code class="display"><span class="extract">[[water]
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Prinary target. </b>The first target in a web is always the one for the main program.
 </p>
 
-
 <pre class="display">
     <span class="reserved">tangle_target</span><span class="plain"> *</span><span class="functiontext">Tangler::primary_target</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">W</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no such web"</span><span class="plain">);</span>
@@ -393,7 +386,7 @@ passes straight through. So <code class="display"><span class="extract">[[water]
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Tangler::primary_target is used in 1/pc (<a href="1-pc.html#SP7_3_2">&#167;7.3.2</a>), 3/ta (<a href="3-ta.html#SP4">&#167;4</a>, <a href="3-ta.html#SP4_1">&#167;4.1</a>), 4/cl (<a href="4-cl.html#SP2">&#167;2</a>, <a href="4-cl.html#SP2_2">&#167;2.2</a>, <a href="4-cl.html#SP6_1">&#167;6.1</a>, <a href="4-cl.html#SP6_4">&#167;6.4</a>), 4/is (<a href="4-is.html#SP3">&#167;3</a>, <a href="4-is.html#SP6">&#167;6</a>, <a href="4-is.html#SP7">&#167;7</a>).</p>
+<p class="endnote">The function Tangler::primary_target is used in 1/pc (<a href="1-pc.html#SP7_4_2">&#167;7.4.2</a>), 3/ta (<a href="3-ta.html#SP4">&#167;4</a>, <a href="3-ta.html#SP4_1">&#167;4.1</a>), 4/cl (<a href="4-cl.html#SP2">&#167;2</a>, <a href="4-cl.html#SP2_2">&#167;2.2</a>, <a href="4-cl.html#SP6_1">&#167;6.1</a>, <a href="4-cl.html#SP6_4">&#167;6.4</a>), 4/is (<a href="4-is.html#SP3">&#167;3</a>, <a href="4-is.html#SP6">&#167;6</a>, <a href="4-is.html#SP7">&#167;7</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="3-tw.html">Back to 'The Weaver'</a></li><li><i>(This section ends Chapter 3: Outputs.)</i></li></ul><hr class="tocbar">

@@ -34,7 +34,6 @@ uses these extra macros, is expanded to the final file, which does not.
 <p class="inwebparagraph">As we scan through the prototype file, we keep track of this:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">write_state</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">;</span>
@@ -69,12 +68,11 @@ uses these extra macros, is expanded to the final file, which does not.
 
 <p class="endnote">The function Readme::write is used in 1/pc (<a href="1-pc.html#SP7_1">&#167;7.1</a>).</p>
 
-<p class="endnote">The structure write_state is accessed in 5/hf and here.</p>
+<p class="endnote">The structure write_state is private to this section.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The file consists of definitions of macros, made one at a time, and
 starting with <code class="display"><span class="extract">@define</span></code> and finishing with <code class="display"><span class="extract">@end</span></code>, and actual material.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Readme::write_helper</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
@@ -114,7 +112,6 @@ starting with <code class="display"><span class="extract">@define</span></code> 
 parameters.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">macro</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">;</span>
@@ -149,7 +146,6 @@ parameters.
 <p class="endnote">The structure macro_tokens is private to this section.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">macro_tokens</span><span class="plain"> </span><span class="functiontext">Readme::parse_token_list</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">chunk</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">) {</span>
@@ -218,7 +214,6 @@ be seen, it passes material straight through, except for instances of the
 notation <code class="display"><span class="extract">@name</span></code>, possibly followed by a bracketed list of parameters.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Readme::expand_material</span><span class="plain">(</span><span class="reserved">write_state</span><span class="plain"> *</span><span class="identifier">ws</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">,</span>
         <span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">) {</span>
@@ -247,7 +242,6 @@ the name of a parameter somewhere in the current stack, either on the top
 frame or on frames lower down. The first match wins... and if there are no
 matches, then it must be a macro name.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Readme::expand_at</span><span class="plain">(</span><span class="reserved">write_state</span><span class="plain"> *</span><span class="identifier">ws</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">macro_name</span><span class="plain">,</span>
@@ -286,7 +280,6 @@ matches, then it must be a macro name.
 <code class="display"><span class="extract">macro_name</span></code> below is set to <code class="display"><span class="extract">example</span></code>, and the current stack frame contains the
 values <code class="display"><span class="extract">5</span></code> and <code class="display"><span class="extract">gold rings</span></code>.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Readme::expand_macro</span><span class="plain">(</span><span class="reserved">write_state</span><span class="plain"> *</span><span class="identifier">ws</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">macro</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">) {</span>
@@ -374,7 +367,6 @@ range of bibliographic data, just the version and date (and we will not
 assume that the version complies with any format).
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">writeme_asset</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">;</span>
@@ -401,7 +393,6 @@ assume that the version complies with any format).
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>That just leaves the business of inspecting assets to obtain their metadata.
 </p>
-
 
 <pre class="display">
     <span class="reserved">writeme_asset</span><span class="plain"> *</span><span class="functiontext">Readme::find_asset</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">program</span><span class="plain">) {</span>
@@ -510,7 +501,6 @@ assume that the version complies with any format).
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>The format for the contents section of a web is documented in Inweb.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Readme::extension_harvester</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
         <span class="reserved">writeme_asset</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain"> = (</span><span class="reserved">writeme_asset</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
@@ -528,7 +518,6 @@ assume that the version complies with any format).
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>Explicit code to read from <code class="display"><span class="extract">header.h</span></code> in the Inform 6 repository.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Readme::header_harvester</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
@@ -549,7 +538,6 @@ assume that the version complies with any format).
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>Explicit code to read from the manifest file of a website template.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Readme::template_harvester</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
@@ -572,7 +560,6 @@ assume that the version complies with any format).
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>And this is needed for <code class="display"><span class="extract">cheapglk</span></code> and <code class="display"><span class="extract">glulxe</span></code> in the Inform repository.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Readme::readme_harvester</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>

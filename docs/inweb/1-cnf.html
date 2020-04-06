@@ -32,7 +32,6 @@
 command line: there will only ever be one of these.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">inweb_instructions</span><span class="plain"> {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">inweb_mode</span><span class="plain">; </span><span class="comment">our main mode of operation: one of the <code class="display"><span class="extract">*_MODE</span></code> constants</span>
@@ -68,6 +67,9 @@ command line: there will only ever be one of these.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">verbose_switch</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">-verbose</span></code>: print names of files read to stdout</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">targets</span><span class="plain">; </span><span class="comment">used only for parsing</span>
 
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">test_language_setting</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">-test-language X</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">test_language_on_setting</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">-test-language-on X</span></code></span>
+
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">import_setting</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">-import X</span></code>: where to find imported webs</span>
     <span class="plain">} </span><span class="reserved">inweb_instructions</span><span class="plain">;</span>
 
@@ -88,7 +90,6 @@ command line: there will only ever be one of these.
 to enumerate constants for the Inweb-specific command line switches, and
 then declare them.
 </p>
-
 
 <pre class="display">
     <span class="reserved">inweb_instructions</span><span class="plain"> </span><span class="functiontext">Configuration::read</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">argv</span><span class="plain">) {</span>
@@ -149,6 +150,8 @@ then declare them.
         <span class="identifier">args</span><span class="plain">.</span><span class="element">weave_docs</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">args</span><span class="plain">.</span><span class="element">import_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">args</span><span class="plain">.</span><span class="element">targets</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">test_language_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">args</span><span class="plain">.</span><span class="element">test_language_on_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -168,6 +171,8 @@ provides automatically.
     <span class="definitionkeyword">enum</span> <span class="constant">LANGUAGE_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">LANGUAGES_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">SHOW_LANGUAGES_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">TEST_LANGUAGE_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">TEST_LANGUAGE_ON_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">ANALYSIS_CLSG</span>
     <span class="definitionkeyword">enum</span> <span class="constant">CATALOGUE_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">FUNCTIONS_CLSW</span>
@@ -222,6 +227,10 @@ provides automatically.
             <span class="identifier">L</span><span class="string">"read all language definitions in path X"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">SHOW_LANGUAGES_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"show-languages"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"list programming languages supported by Inweb"</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">TEST_LANGUAGE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-language"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
+            <span class="identifier">L</span><span class="string">"test language X on..."</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">TEST_LANGUAGE_ON_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-language-on"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
+            <span class="identifier">L</span><span class="string">"...the code in the file X"</span><span class="plain">);</span>
         <span class="functiontext">CommandLine::end_group</span><span class="plain">();</span>
 
         <span class="functiontext">CommandLine::begin_group</span><span class="plain">(</span><span class="constant">ANALYSIS_CLSG</span><span class="plain">,</span>
@@ -295,7 +304,6 @@ provides automatically.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Foundation calls this on any <code class="display"><span class="extract">-switch</span></code> argument read:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Configuration::switch</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
         <span class="reserved">inweb_instructions</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain"> = (</span><span class="reserved">inweb_instructions</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
@@ -311,6 +319,13 @@ provides automatically.
                 <span class="functiontext">Languages::read_definitions</span><span class="plain">(</span><span class="functiontext">Pathnames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">)); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SHOW_LANGUAGES_CLSW:</span>
                 <span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">show_languages_switch</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+                <span class="functiontext">Configuration::set_fundamental_mode</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="constant">ANALYSE_MODE</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_LANGUAGE_CLSW:</span>
+                <span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">test_language_setting</span><span class="plain"> =</span>
+                    <span class="functiontext">Languages::read_definition</span><span class="plain">(</span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">));</span>
+                <span class="functiontext">Configuration::set_fundamental_mode</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="constant">ANALYSE_MODE</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_LANGUAGE_ON_CLSW:</span>
+                <span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">test_language_on_setting</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">);</span>
                 <span class="functiontext">Configuration::set_fundamental_mode</span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="constant">ANALYSE_MODE</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CATALOGUE_CLSW:</span>
                 <span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">catalogue_switch</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
@@ -418,7 +433,6 @@ neither a switch (like <code class="display"><span class="extract">-weave</span>
 the <code class="display"><span class="extract">X</span></code> in <code class="display"><span class="extract">-weave-as X</span></code>).
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Configuration::bareword</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">opt</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
         <span class="reserved">inweb_instructions</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain"> = (</span><span class="reserved">inweb_instructions</span><span class="plain"> *) </span><span class="identifier">state</span><span class="plain">;</span>
@@ -439,7 +453,6 @@ the <code class="display"><span class="extract">X</span></code> in <code class="
 are converted into swarm settings instead. <code class="display"><span class="extract">all</span></code> is simply an alias for <code class="display"><span class="extract">0</span></code>.
 Otherwise, a range is a chapter number/letter, or a section range.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Configuration::set_range</span><span class="plain">(</span><span class="reserved">inweb_instructions</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">opt</span><span class="plain">) {</span>
@@ -474,11 +487,10 @@ Otherwise, a range is a chapter number/letter, or a section range.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Configuration::set_range is used in <a href="#SP4">&#167;4</a>, 1/pc (<a href="1-pc.html#SP7_3_3">&#167;7.3.3</a>).</p>
+<p class="endnote">The function Configuration::set_range is used in <a href="#SP4">&#167;4</a>, 1/pc (<a href="1-pc.html#SP7_4_3">&#167;7.4.3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>We can only be in a single mode at a time:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Configuration::set_fundamental_mode</span><span class="plain">(</span><span class="reserved">inweb_instructions</span><span class="plain"> *</span><span class="identifier">args</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">new_material</span><span class="plain">) {</span>

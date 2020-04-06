@@ -152,6 +152,7 @@ We skip these because we weave their contents in some other way:
 	if (L->category == END_EXTRACT_LCAT) continue;
 	if (L->category == BEGIN_CODE_LCAT) {
 		state->line_break_pending = FALSE;
+		LanguageMethods::reset_syntax_colouring(S->sect_language);
 		continue;
 	}
 
@@ -292,25 +293,25 @@ add a vertical skip between them to show the division more clearly.
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, matter, L"%(...%) (%c*)")) { /* continue single */
 		Formats::change_material(OUT, wv, state->kind_of_material, REGULAR_MATERIAL,
-			state->substantive_comment);
+			state->substantive_comment, FALSE);
 		state->kind_of_material = REGULAR_MATERIAL;
 		Formats::item(OUT, wv, 1, I"");
 		Str::copy(matter, mr.exp[0]);
 	} else if (Regexp::match(&mr, matter, L"%(-...%) (%c*)")) { /* continue double */
 		Formats::change_material(OUT, wv, state->kind_of_material, REGULAR_MATERIAL,
-			state->substantive_comment);
+			state->substantive_comment, FALSE);
 		state->kind_of_material = REGULAR_MATERIAL;
 		Formats::item(OUT, wv, 2, I"");
 		Str::copy(matter, mr.exp[0]);
 	} else if (Regexp::match(&mr, matter, L"%((%i+)%) (%c*)")) { /* begin single */
 		Formats::change_material(OUT, wv, state->kind_of_material, REGULAR_MATERIAL,
-			state->substantive_comment);
+			state->substantive_comment, FALSE);
 		state->kind_of_material = REGULAR_MATERIAL;
 		Formats::item(OUT, wv, 1, mr.exp[0]);
 		Str::copy(matter, mr.exp[1]);
 	} else if (Regexp::match(&mr, matter, L"%(-(%i+)%) (%c*)")) { /* begin double */
 		Formats::change_material(OUT, wv, state->kind_of_material, REGULAR_MATERIAL,
-			state->substantive_comment);
+			state->substantive_comment, FALSE);
 		state->kind_of_material = REGULAR_MATERIAL;
 		Formats::item(OUT, wv, 2, mr.exp[0]);
 		Str::copy(matter, mr.exp[1]);
@@ -324,7 +325,8 @@ in the source is set indented in code style.
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, matter, L"\t|(%c*)|(%c*?)")) {
 		if (state->kind_of_material != CODE_MATERIAL) {
-			Formats::change_material(OUT, wv, state->kind_of_material, CODE_MATERIAL, TRUE);
+			Formats::change_material(OUT, wv, state->kind_of_material, CODE_MATERIAL,
+				TRUE, L->plainer);
 			state->kind_of_material = CODE_MATERIAL;
 		}
 		TEMPORARY_TEXT(original);
@@ -338,7 +340,8 @@ in the source is set indented in code style.
 		DISCARD_TEXT(original);
 		continue;
 	} else if (state->kind_of_material != REGULAR_MATERIAL) {
-		Formats::change_material(OUT, wv, state->kind_of_material, REGULAR_MATERIAL, TRUE);
+		Formats::change_material(OUT, wv, state->kind_of_material, REGULAR_MATERIAL,
+			TRUE, FALSE);
 		state->kind_of_material = REGULAR_MATERIAL;
 	}
 	Regexp::dispose_of(&mr);
@@ -364,7 +367,8 @@ and macro usage is rendered differently.
 		W, C, S, L, matter, concluding_comment)) continue;
 
 	TEMPORARY_TEXT(colouring);
-	LanguageMethods::syntax_colour(OUT, S->sect_language, wv, W, C, S, L, matter, colouring);
+	LanguageMethods::syntax_colour(OUT, S->sect_language, wv, W, C, S, L,
+		 matter, colouring);
 
 	int found = 0;
 	@<Find macro usages and adjust syntax colouring accordingly@>;
@@ -399,7 +403,7 @@ hence the name of the following paragraph:
 		else
 			state->kind_of_material = CODE_MATERIAL;
 		Formats::change_material(OUT, wv, mode_now, state->kind_of_material,
-			state->substantive_comment);
+			state->substantive_comment, L->plainer);
 		state->line_break_pending = FALSE;
 	}
 
@@ -501,7 +505,7 @@ otherwise, they are set flush right.
 		@<Complete any started but not-fully-woven paragraph@>;
 		if (wv->theme_match)
 			@<If this is a paragraph break forced onto a new page, then throw a page@>;
-		LanguageMethods::reset_syntax_colouring(S->sect_language); /* a precaution: limits bad colouring accidents to one para */
+		LanguageMethods::reset_syntax_colouring(S->sect_language);
 		int weight = 0;
 		if (L->category == HEADING_START_LCAT) weight = 1;
 		if (L->category == SECTION_HEADING_LCAT) weight = 2;
@@ -647,7 +651,8 @@ At the end of a paragraph, on the other hand, we do this:
 	int mode_now = state->kind_of_material;
 	if (state->kind_of_material != REGULAR_MATERIAL) {
 		state->kind_of_material = REGULAR_MATERIAL;
-		Formats::change_material(OUT, wv, mode_now, state->kind_of_material, TRUE);
+		Formats::change_material(OUT, wv, mode_now, state->kind_of_material,
+			TRUE, L?(L->plainer):FALSE);
 	}
 	if ((current_paragraph) && (current_paragraph != state->last_endnoted_para)) {
 		state->last_endnoted_para = current_paragraph;

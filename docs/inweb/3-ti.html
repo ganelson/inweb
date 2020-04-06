@@ -33,7 +33,6 @@ cover sheets, and has only simple escapes (except that it has the ability
 to call the fuller indexing service if need be, using <code class="display"><span class="extract">[[Template T]]</span></code>).
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Indexer::cover_sheet_maker</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">unextended_leafname</span><span class="plain">,</span>
         <span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wt</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">halves</span><span class="plain">) {</span>
@@ -96,7 +95,6 @@ the bottom half, of the template; they are divided by the marker <code class="di
 file one by one, passing it a pointer to an instance of the above state
 structure.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Indexer::scan_cover_line</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">v_state</span><span class="plain">) {</span>
@@ -234,7 +232,6 @@ structure.
 <p class="endnote">This code is used in <a href="#SP2_1">&#167;2.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Indexer::nav_column</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">range</span><span class="plain">,</span>
@@ -407,7 +404,6 @@ being accessed directly.
 
 <p class="inwebparagraph"><a id="SP5_3"></a><b>&#167;5.3.  </b>With the following iterator:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Indexer::save_template_line</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">void_cp</span><span class="plain">) {</span>
@@ -656,7 +652,6 @@ on the stack; and similarly for <code class="display"><span class="extract">SECT
 similarly for ending it by popping them again:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Indexer::start_CI_loop</span><span class="plain">(</span><span class="reserved">contents_processor</span><span class="plain"> *</span><span class="identifier">cp</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">level</span><span class="plain">,</span>
         <span class="reserved">linked_list_item</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">linked_list_item</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain">) {</span>
@@ -881,7 +876,6 @@ its square-bracketed parts.
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Indexer::list_module</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">module</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">list_this</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">list_this</span><span class="plain">) {</span>
@@ -903,7 +897,6 @@ its square-bracketed parts.
 <p class="endnote">The function Indexer::list_module is used in <a href="#SP5_1_8_5">&#167;5.1.8.5</a>.</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Transcribing CSS. </b></p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Indexer::transcribe_CSS</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">CSS_file</span><span class="plain">) {</span>

@@ -100,6 +100,7 @@ void Main::follow_instructions(inweb_instructions *ins) {
 	if (no_inweb_errors == 0) {
 		if (ins->inweb_mode == TRANSLATE_MODE) @<Translate a makefile@>
 		else if (ins->show_languages_switch) @<List available programming languages@>
+		else if ((ins->test_language_setting) || (ins->test_language_on_setting)) @<Test a language@>
 		else if (ins->inweb_mode != NO_MODE) @<Analyse, tangle or weave an existing web@>;
 	}
 }
@@ -128,6 +129,22 @@ void Main::follow_instructions(inweb_instructions *ins) {
 @<List available programming languages@> =
 	Languages::read_definitions(NULL);
 	Languages::show(STDOUT);
+
+@ And this:
+
+@<Test a language@> =
+	if ((ins->test_language_setting) && (ins->test_language_on_setting)) {
+		TEMPORARY_TEXT(matter);
+		TEMPORARY_TEXT(coloured);
+		Painter::colour_file(ins->test_language_setting, ins->test_language_on_setting,
+			matter, coloured);
+		PRINT("Test of colouring for language %S:\n%S\n%S\n",
+			ins->test_language_setting->language_name, matter, coloured);
+		DISCARD_TEXT(matter);
+		DISCARD_TEXT(coloured);
+	} else {
+		Errors::fatal("-test-language and -test-language-on must both be given");
+	}
 
 @ But otherwise we do something with the given web:
 

@@ -36,7 +36,6 @@ a "bareword". For example, in
 
 <p class="inwebparagraph"></p>
 
-
 <pre class="display">
         <span class="plain">-log no-memory-usage -fixtime jam marmalade</span>
 </pre>
@@ -101,7 +100,6 @@ in <code class="display"><span class="extract">-help</span></code>. Groups are e
 we'll hash the switch names into the following:
 </p>
 
-
 <pre class="display">
     <span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">cls_dictionary</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 </pre>
@@ -113,7 +111,6 @@ counting the standard set already declared by Foundation (such as <code class="d
 A new <code class="display"><span class="extract">*_CLSW</span></code> value should be enumerated to be the ID referring to this
 swtich, and then the client should call:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">current_switch_group</span><span class="plain"> = -1;</span>
@@ -192,7 +189,6 @@ section. So the sorting version of <code class="display"><span class="extract">n
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Booleans are automatically created in pairs, e.g., <code class="display"><span class="extract">-destroy-world</span></code> and
 <code class="display"><span class="extract">-no-destroy-world</span></code>:
 </p>
-
 
 <pre class="display">
     <span class="reserved">command_line_switch</span><span class="plain"> *</span><span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">,</span>
@@ -317,7 +313,6 @@ through the file if one has by that point been provided.
 holds the filename to read from.
 </p>
 
-
 <pre class="display">
     <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">command_line_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CommandLine::also_read_file</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
@@ -334,7 +329,6 @@ from the debugging log what switches were actually used. But since the log
 might not exist as early as now, we have to record any log entries, and play
 them back later (i.e., when the debugging log does exist).
 </p>
-
 
 <pre class="display">
     <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">command_line_logs</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -367,7 +361,6 @@ Shell conventions on quoting are not used, but the line <code class="display"><s
 is equivalent to <code class="display"><span class="extract">-greet 'Fred Smith'</span></code> on the command line, so there's no
 problem with internal space characters in arguments.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">CommandLine::read_file</span><span class="plain">(</span><span class="reserved">clf_reader_state</span><span class="plain"> *</span><span class="identifier">crs</span><span class="plain">) {</span>
@@ -428,7 +421,6 @@ problem with internal space characters in arguments.
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>We also allow <code class="display"><span class="extract">-setting=X</span></code> as equivalent to <code class="display"><span class="extract">-setting X</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CommandLine::read_pair</span><span class="plain">(</span><span class="reserved">clf_reader_state</span><span class="plain"> *</span><span class="identifier">crs</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">opt</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">opt_p</span><span class="plain">);</span>
@@ -458,7 +450,6 @@ problem with internal space characters in arguments.
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>So at this point we have definitely found what looks like a switch:
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CommandLine::read_pair_p</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">opt</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">opt_val</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">,</span>
@@ -577,7 +568,6 @@ bottom one. (Those are the dull ones.)
 a brief description of the tool's name and purpose.
 </p>
 
-
 <pre class="display">
     <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">cls_heading</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
@@ -660,7 +650,6 @@ a brief description of the tool's name and purpose.
 <p class="endnote">This code is used in <a href="#SP14">&#167;14</a> (three times).</p>
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b></p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CommandLine::compare_names</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ent1</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ent2</span><span class="plain">) {</span>

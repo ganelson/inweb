@@ -47,7 +47,6 @@ actual image: this can have many forms, but in all cases tells us the
 height and width.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">ImageFiles::get_JPEG_dimensions</span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">JPEG_file</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">width</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">height</span><span class="plain">) {</span>
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sig</span><span class="plain">, </span><span class="identifier">length</span><span class="plain">;</span>
@@ -105,7 +104,6 @@ Network Graphics (PNG) Specification", 2nd edition, section 5.2). We only
 need to scan the IHDR chunk, of which the pixel width and height are the
 first two words (section 11.2.2).
 </p>
-
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">ImageFiles::get_PNG_dimensions</span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">PNG_file</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">width</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">height</span><span class="plain">) {</span>

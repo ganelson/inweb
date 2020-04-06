@@ -35,7 +35,6 @@ standard for POSIX, so will work on MacOS and Linux, but on a Windows system
 they would need to be read in a POSIX-style environment like Cygwin.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::quote_path</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">);</span>
@@ -86,7 +85,6 @@ they would need to be read in a POSIX-style environment like Cygwin.
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The generic shell code to apply <code class="display"><span class="extract">command</span></code> to a file <code class="display"><span class="extract">F</span></code>:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::apply</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">command</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">)</span>
@@ -115,7 +113,6 @@ they would need to be read in a POSIX-style environment like Cygwin.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Applications to using <code class="display"><span class="extract">rm</span></code> and <code class="display"><span class="extract">cp</span></code>:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::rm</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="functiontext">Shell::apply</span><span class="plain">(</span><span class="string">"rm"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
@@ -142,7 +139,6 @@ they would need to be read in a POSIX-style environment like Cygwin.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>This writes the traditional Unix shell syntax for redirecting the output
 from both <code class="display"><span class="extract">stdout</span></code> and <code class="display"><span class="extract">stderr</span></code> to the same named file.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::redirect</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>

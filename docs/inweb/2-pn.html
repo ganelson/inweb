@@ -42,7 +42,6 @@ is something we scan for on a weave, but not on a tangle; that's fine, though,
 because tangled code doesn't need to know its own paragraph numbers.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Numbering::number_web</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">) {</span>
         <span class="reserved">chapter</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">;</span>
@@ -58,7 +57,7 @@ because tangled code doesn't need to know its own paragraph numbers.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Numbering::number_web is used in 1/pc (<a href="1-pc.html#SP7_3_3">&#167;7.3.3</a>).</p>
+<p class="endnote">The function Numbering::number_web is used in 1/pc (<a href="1-pc.html#SP7_4_3">&#167;7.4.3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Scan this section to see where paragraph macros are used</span> <span class="cwebmacronumber">1.1</span>&gt; =
@@ -101,7 +100,6 @@ we end up with numbers out of order, since the one after it would have to
 be 1.1.1. Instead this one will be 1.1.1, to place it into the natural
 lexicographic sequence.
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">macro_usage</span><span class="plain"> {</span>
@@ -267,7 +265,6 @@ to end up numbered 2, because it isn't used anywhere and doesn't seem to be
 in the middle of a wider description. But better to keep it in the sequence
 chosen by the author, so 2 it is.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Numbering::settle_paragraph_number</span><span class="plain">(</span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>

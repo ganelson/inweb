@@ -14,8 +14,8 @@ colouring {
 	runs of unquoted {
 		runs of !identifier {
 			=> !reserved
-			prefix . => !identifier on both
-			prefix ! => !element on both
+			prefix "." => !identifier on both
+			prefix "!" => !element on both
 		}
 		characters {
 			+ => !identifier

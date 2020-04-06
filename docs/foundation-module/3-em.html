@@ -32,7 +32,6 @@
 issued. If this returns <code class="display"><span class="extract">FALSE</span></code>, nothing is printed to <code class="display"><span class="extract">stderr</span></code>.
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> (*</span><span class="identifier">errors_handler</span><span class="plain">)(</span><span class="reserved">text_stream</span><span class="plain"> *, </span><span class="reserved">int</span><span class="plain">) = </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> (*</span><span class="identifier">internal_errors_handler</span><span class="plain">)(</span><span class="reserved">void</span><span class="plain"> *, </span><span class="reserved">char</span><span class="plain"> *, </span><span class="reserved">char</span><span class="plain"> *, </span><span class="reserved">int</span><span class="plain">) = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -74,7 +73,6 @@ These two routines (alone) can be caused by failures of the memory allocation
 or streams systems, and therefore must be written with a little care to use
 the temporary stream, not some other string which might need fresh allocation.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>
@@ -155,7 +153,6 @@ occurs unexpectedly, and one way to do that is to force a division by zero.
 (This is only enabled by <code class="display"><span class="extract">-crash</span></code> at the command line and is for debugging only.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">debugger_mode</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Errors::enter_debugger_mode</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -184,7 +181,6 @@ occurs unexpectedly, and one way to do that is to force a division by zero.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Survivable errors. </b>The trick with error messages is to indicate where they occur, and we can
 specify this at three levels of abstraction:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Errors::nowhere</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">) {</span>
@@ -217,7 +213,6 @@ specify this at three levels of abstraction:
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Which funnel through:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Errors::at_position</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">file</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">line</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">ERM</span><span class="plain">)</span>
@@ -246,7 +241,6 @@ specify this at three levels of abstraction:
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Lastly:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Errors::with_file</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>

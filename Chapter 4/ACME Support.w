@@ -245,5 +245,5 @@ int ACMESupport::syntax_colour(programming_language *pl, text_stream *OUT, weave
 	hash_table *ht = &(S->sect_target->symbols);
 	if ((L->category == TEXT_EXTRACT_LCAT) && (pl != S->sect_language))
 		ht = &(pl->built_in_keywords);
-	return Painter::syntax_colour(pl, OUT, ht, matter, colouring, FALSE);
+	return Painter::syntax_colour(pl, ht, matter, colouring, FALSE);
 }

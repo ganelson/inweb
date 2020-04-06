@@ -36,7 +36,6 @@ name following the final underscore, so in this case <code class="display"><span
 increments sequentially in definition order.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">enumeration_set</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">postfix</span><span class="plain">;</span>
@@ -56,7 +55,6 @@ increments sequentially in definition order.
 compare all against all:
 </p>
 
-
 <pre class="display">
     <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="functiontext">Enumerations::find</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">post</span><span class="plain">) {</span>
         <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="identifier">es</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -75,7 +73,6 @@ compare all against all:
 sensible value, this is the start of a new enumeration set; otherwise it's
 a further constant in what ought to be an existing set.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Enumerations::define</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">symbol</span><span class="plain">,</span>
@@ -169,7 +166,6 @@ a further constant in what ought to be an existing set.
 we would have <code class="display"><span class="extract">NO_DEFINED_ST_VALUES</span></code> set to 3. This is notionally placed in
 the code at the last line on which an <code class="display"><span class="extract">*_ST</span></code> value was defined.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Enumerations::define_extents</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">tangle_target</span><span class="plain"> *</span><span class="identifier">target</span><span class="plain">, </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">lang</span><span class="plain">) {</span>

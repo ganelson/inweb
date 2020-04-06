@@ -32,7 +32,6 @@
 result of reading in and parsing the web:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Analyser::scan_line_categories</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">range</span><span class="plain">) {</span>
         <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Scan of source lines for '%S'\n"</span><span class="plain">, </span><span class="identifier">range</span><span class="plain">);</span>
@@ -60,7 +59,7 @@ result of reading in and parsing the web:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Analyser::scan_line_categories is used in 1/pc (<a href="1-pc.html#SP7_3_1">&#167;7.3.1</a>).</p>
+<p class="endnote">The function Analyser::scan_line_categories is used in 1/pc (<a href="1-pc.html#SP7_4_1">&#167;7.4.1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Trace the content and category of this source line</span> <span class="cwebmacronumber">1.1</span>&gt; =
@@ -127,7 +126,7 @@ so that Chapter 4 contains no assumptions about the language.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Analyser::catalogue_the_sections is used in 1/pc (<a href="1-pc.html#SP7_3_1">&#167;7.3.1</a>).</p>
+<p class="endnote">The function Analyser::catalogue_the_sections is used in 1/pc (<a href="1-pc.html#SP7_4_1">&#167;7.4.1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Analysing code. </b>We can't pretend to a full-scale static analysis of the code &mdash; for one thing,
 that would mean knowing more about the syntax of the web's language than we
@@ -155,7 +154,6 @@ these identifiers.
 perform the search here, we don't comment on the results; any action to be
 taken must be handled by <code class="display"><span class="extract">LanguageMethods::late_preweave_analysis</span></code> when we're done.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Analyser::analyse_code</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">) {</span>
@@ -286,7 +284,6 @@ string of <code class="display"><span class="extract">%i</span></code> character
 <code class="display"><span class="extract">fish-&gt;bone</span></code>.)
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Analyser::analyse_as_code</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">mask</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">transf</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">start_at</span><span class="plain"> = -1, </span><span class="identifier">element_follows</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
@@ -366,7 +363,6 @@ in Aho, Sethi and Ullman, "Compilers: Principles, Techniques and Tools"
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>The actual table is stored here:
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">hash_table</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">analysis_hash</span><span class="plain">[</span><span class="constant">HASH_TAB_SIZE</span><span class="plain">]; </span><span class="comment">of <code class="display"><span class="extract">hash_table_entry</span></code></span>
@@ -380,7 +376,6 @@ in Aho, Sethi and Ullman, "Compilers: Principles, Techniques and Tools"
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Where we define:
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">hash_table_entry</span><span class="plain"> {</span>
@@ -400,7 +395,6 @@ in it, as usual with symbols tables. For example, the code to handle C-like
 languages prepares for code analysis by calling this routine on the name
 of each C function.
 </p>
-
 
 <pre class="display">
     <span class="reserved">hash_table_entry</span><span class="plain"> *</span><span class="functiontext">Analyser::find_hash_entry</span><span class="plain">(</span><span class="reserved">hash_table</span><span class="plain"> *</span><span class="identifier">HT</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">create</span><span class="plain">) {</span>
@@ -443,7 +437,6 @@ of each C function.
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>Marking and testing these bits:
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Analyser::mark_reserved_word</span><span class="plain">(</span><span class="reserved">hash_table</span><span class="plain"> *</span><span class="identifier">HT</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">e</span><span class="plain">) {</span>
         <span class="reserved">hash_table_entry</span><span class="plain"> *</span><span class="identifier">hte</span><span class="plain"> = </span><span class="functiontext">Analyser::find_hash_entry</span><span class="plain">(</span><span class="identifier">HT</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
@@ -483,7 +476,6 @@ a function might be both called and used as a constant value within the
 same paragraph of code.
 </p>
 
-
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">hash_table_entry_usage</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">usage_recorded_at</span><span class="plain">;</span>
@@ -498,7 +490,6 @@ same paragraph of code.
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>And here's how we create these usages:
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Analyser::analyse_find</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">identifier</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">u</span><span class="plain">) {</span>
@@ -527,7 +518,6 @@ same paragraph of code.
 folder: failing that, we fall back on a default script belonging to Inweb.
 </p>
 
-
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Analyser::write_makefile</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">module_search</span><span class="plain"> *</span><span class="identifier">I</span><span class="plain">) {</span>
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">prototype</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"makescript.txt"</span><span class="plain">);</span>
@@ -546,9 +536,9 @@ folder: failing that, we fall back on a default script belonging to Inweb.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Analyser::write_makefile is used in 1/pc (<a href="1-pc.html#SP7_3_1">&#167;7.3.1</a>).</p>
+<p class="endnote">The function Analyser::write_makefile is used in 1/pc (<a href="1-pc.html#SP7_4_1">&#167;7.4.1</a>).</p>
 
-<p class="endnote">The function Analyser::write_gitignore is used in 1/pc (<a href="1-pc.html#SP7_3_1">&#167;7.3.1</a>).</p>
+<p class="endnote">The function Analyser::write_gitignore is used in 1/pc (<a href="1-pc.html#SP7_4_1">&#167;7.4.1</a>).</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 3: Outputs.)</i></li><li><a href="3-ts.html">Continue with 'The Swarm'</a></li></ul><hr class="tocbar">

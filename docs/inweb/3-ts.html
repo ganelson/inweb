@@ -40,7 +40,6 @@ of Chapter 25 of "On the Banks of Plum Creek".
 <code class="display"><span class="extract">SWARM_INDEX_SWM</span></code>, so in a non-swarming run it isn't called at all.
 </p>
 
-
 <pre class="display">
     <span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">swarm_leader</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">the most inclusive one we weave</span>
 
@@ -74,13 +73,12 @@ of Chapter 25 of "On the Banks of Plum Creek".
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Swarm::weave is used in 1/pc (<a href="1-pc.html#SP7_3_3">&#167;7.3.3</a>).</p>
+<p class="endnote">The function Swarm::weave is used in 1/pc (<a href="1-pc.html#SP7_4_3">&#167;7.4.3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The following is where an individual weave task begins, whether it comes
 from the swarm, or has been specified at the command line (in which case
 the call comes from Program Control).
 </p>
-
 
 <pre class="display">
     <span class="reserved">weave_target</span><span class="plain"> *</span><span class="functiontext">Swarm::weave_subset</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">range</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">open_afterwards</span><span class="plain">,</span>
@@ -101,11 +99,10 @@ the call comes from Program Control).
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Swarm::weave_subset is used in <a href="#SP1">&#167;1</a>, 1/pc (<a href="1-pc.html#SP7_3_3">&#167;7.3.3</a>).</p>
+<p class="endnote">The function Swarm::weave_subset is used in <a href="#SP1">&#167;1</a>, 1/pc (<a href="1-pc.html#SP7_4_3">&#167;7.4.3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b>Each individual weave generates one of the following sets of instructions:
 </p>
-
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">weave_target</span><span class="plain"> {</span>
@@ -258,7 +255,6 @@ and details of any cover-sheet to use.
 <code class="display"><span class="extract">chaptered-index.html</span></code> or <code class="display"><span class="extract">unchaptered-index.html</span></code>, then fall back on a
 generic <code class="display"><span class="extract">index.html</span></code> if those aren't available in the current pattern.
 </p>
-
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Swarm::weave_index_templates</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">range</span><span class="plain">, </span><span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">pattern</span><span class="plain">,</span>
