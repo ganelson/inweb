@@ -32,25 +32,25 @@ file by following a "prototype".
 
 
 <pre class="display">
-    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">struct</span><span class="plain"> </span><span class="identifier">gitignore_state</span><span class="plain"> {</span>
-        <span class="identifier">struct</span><span class="plain"> </span><span class="identifier">web</span><span class="plain"> *</span><span class="identifier">for_web</span><span class="plain">;</span>
-        <span class="identifier">struct</span><span class="plain"> </span><span class="identifier">text_stream</span><span class="plain"> </span><span class="identifier">to_gitignore</span><span class="plain">;</span>
-        <span class="identifier">int</span><span class="plain"> </span><span class="identifier">last_line_was_blank</span><span class="plain">; </span><span class="comment">used to suppress runs of multiple blank lines</span>
-    <span class="plain">} </span><span class="identifier">gitignore_state</span><span class="plain">;</span>
+    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">gitignore_state</span><span class="plain"> {</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">for_web</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">to_gitignore</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_line_was_blank</span><span class="plain">; </span><span class="comment">used to suppress runs of multiple blank lines</span>
+    <span class="plain">} </span><span class="reserved">gitignore_state</span><span class="plain">;</span>
 
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Git::write_gitignore</span><span class="plain">(</span><span class="identifier">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">prototype</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="identifier">gitignore_state</span><span class="plain"> </span><span class="identifier">MS</span><span class="plain">;</span>
-        <span class="identifier">MS</span><span class="plain">.</span><span class="identifier">for_web</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
-        <span class="identifier">MS</span><span class="plain">.</span><span class="identifier">last_line_was_blank</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = &amp;(</span><span class="identifier">MS</span><span class="plain">.</span><span class="identifier">to_gitignore</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">ISO_ENC</span><span class="plain">) == </span><span class="identifier">FALSE</span><span class="plain">)</span>
-            <span class="identifier">Errors::fatal_with_file</span><span class="plain">(</span><span class="string">"unable to write tangled file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"# This gitignore was automatically written by inweb -gitignore\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"# and is not intended for human editing\</span><span class="plain">n</span><span class="string">\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-        <span class="identifier">TextFiles::read</span><span class="plain">(</span><span class="identifier">prototype</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"can't open prototype file"</span><span class="plain">,</span>
-            <span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">Git::copy_gitignore_line</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="identifier">MS</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Git::write_gitignore</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">prototype</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="reserved">gitignore_state</span><span class="plain"> </span><span class="identifier">MS</span><span class="plain">;</span>
+        <span class="identifier">MS</span><span class="plain">.</span><span class="element">for_web</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
+        <span class="identifier">MS</span><span class="plain">.</span><span class="element">last_line_was_blank</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = &amp;(</span><span class="identifier">MS</span><span class="plain">.</span><span class="element">to_gitignore</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">ISO_ENC</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
+            <span class="functiontext">Errors::fatal_with_file</span><span class="plain">(</span><span class="string">"unable to write tangled file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"# This gitignore was automatically written by inweb -gitignore\n"</span><span class="plain">);</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"# and is not intended for human editing\n\n"</span><span class="plain">);</span>
+        <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">prototype</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open prototype file"</span><span class="plain">,</span>
+            <span class="constant">TRUE</span><span class="plain">, </span><span class="functiontext">Git::copy_gitignore_line</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="identifier">MS</span><span class="plain">);</span>
         <span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDOUT</span><span class="plain">, </span><span class="string">"Wrote gitignore file '%f' from script '%f'\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">prototype</span><span class="plain">);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">, </span><span class="string">"Wrote gitignore file '%f' from script '%f'\n"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">prototype</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -64,14 +64,14 @@ file by following a "prototype".
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Git::copy_gitignore_line</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="identifier">void</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">) {</span>
-        <span class="identifier">gitignore_state</span><span class="plain"> *</span><span class="identifier">MS</span><span class="plain"> = (</span><span class="identifier">gitignore_state</span><span class="plain"> *) </span><span class="identifier">X</span><span class="plain">;</span>
-        <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = &amp;(</span><span class="identifier">MS</span><span class="plain">-&gt;</span><span class="identifier">to_gitignore</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Git::copy_gitignore_line</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">) {</span>
+        <span class="reserved">gitignore_state</span><span class="plain"> *</span><span class="identifier">MS</span><span class="plain"> = (</span><span class="reserved">gitignore_state</span><span class="plain"> *) </span><span class="identifier">X</span><span class="plain">;</span>
+        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = &amp;(</span><span class="identifier">MS</span><span class="plain">-&gt;</span><span class="element">to_gitignore</span><span class="plain">);</span>
 
-        <span class="identifier">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="identifier">Regexp::create_mr</span><span class="plain">();</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *#%c*"</span><span class="plain">)) { </span><span class="identifier">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">); </span><span class="identifier">return</span><span class="plain">; }</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{basics} *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Expand basics</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
-        <span class="identifier">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *#%c*"</span><span class="plain">)) { </span><span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{basics} *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Expand basics</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
+        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">And otherwise copy the line straight through</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
@@ -87,12 +87,12 @@ file by following a "prototype".
 
 
 <pre class="displaydefn">
-        <span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">prototype</span><span class="plain"> =</span>
-            <span class="identifier">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">path_to_inweb_materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"gitignorescript.txt"</span><span class="plain">);</span>
-        <span class="identifier">TextFiles::read</span><span class="plain">(</span><span class="identifier">prototype</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="string">"can't open make settings file"</span><span class="plain">,</span>
-            <span class="identifier">TRUE</span><span class="plain">, </span><span class="identifier">Git::copy_gitignore_line</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">);</span>
-        <span class="identifier">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
-        <span class="identifier">return</span><span class="plain">;</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">prototype</span><span class="plain"> =</span>
+            <span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">path_to_inweb_materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"gitignorescript.txt"</span><span class="plain">);</span>
+        <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">prototype</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open make settings file"</span><span class="plain">,</span>
+            <span class="constant">TRUE</span><span class="plain">, </span><span class="functiontext">Git::copy_gitignore_line</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">);</span>
+        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -105,12 +105,12 @@ file by following a "prototype".
 
 
 <pre class="displaydefn">
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Str::len</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) {</span>
-            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">MS</span><span class="plain">-&gt;</span><span class="identifier">last_line_was_blank</span><span class="plain"> == </span><span class="identifier">FALSE</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\</span><span class="plain">n</span><span class="string">"</span><span class="plain">);</span>
-            <span class="identifier">MS</span><span class="plain">-&gt;</span><span class="identifier">last_line_was_blank</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
-        <span class="plain">} </span><span class="identifier">else</span><span class="plain"> {</span>
-            <span class="identifier">MS</span><span class="plain">-&gt;</span><span class="identifier">last_line_was_blank</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">MS</span><span class="plain">-&gt;</span><span class="element">last_line_was_blank</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
+            <span class="identifier">MS</span><span class="plain">-&gt;</span><span class="element">last_line_was_blank</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
+            <span class="identifier">MS</span><span class="plain">-&gt;</span><span class="element">last_line_was_blank</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S\n"</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 

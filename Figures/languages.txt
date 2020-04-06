@@ -1,4 +1,3 @@
-Keyw of !reserved
 Inweb can see the following programming language definitions:
 
 Inform 7: The natural-language based language Inform 7

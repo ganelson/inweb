@@ -112,6 +112,10 @@ int Shell::run(OUTPUT_STREAM) {
 	LOGIF(SHELL_USAGE, "shell: %S\n", OUT);
 	char spool[SPOOL_LENGTH];
 	Streams::write_as_locale_string(spool, OUT, SPOOL_LENGTH);
+	if (debugger_mode) {
+		WRITE_TO(STDOUT, "debugger mode suppressing shell command: %S\n", OUT);
+		return 0;
+	}
 	int rv = Platform::system(spool);
 	if (rv == -1) {
 		WRITE_TO(STDERR, "shell: %S\n", OUT);

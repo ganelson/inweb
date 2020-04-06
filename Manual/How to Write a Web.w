@@ -174,7 +174,14 @@ supports, we can instead write, for example:
 	|= (sample ACME code)|
 
 to say that this is an extract of code in ACME format, and should be
-coloured accordingly.
+coloured accordingly. Samples of code are, uniquely, allowed to end
+mid-way in a paragraph (unlike real code): placing a |=| on the left
+margin allows the commentary to resume. For example,
+
+	|= (sample ACME code)|
+	|    BEQ .adjustXRegister|
+	|=|
+	|...which is essential in order to restore the state of|
 
 @ One last feature, but it's the most important. Some code extracts are
 given names, in angle brackets. If so, then the paragraph is the definition

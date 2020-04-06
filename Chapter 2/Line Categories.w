@@ -83,6 +83,7 @@ version 1 syntax; version 2 removed the need for |BAR_LCAT|,
 @e COMMENT_BODY_LCAT       /* text following a paragraph header, which is all comment */
 @e CONT_DEFINITION_LCAT    /* subsequent lines of an |@d| definition */
 @e DEFINITIONS_LCAT        /* line holding the |@Definitions:| heading */
+@e END_EXTRACT_LCAT        /* an |=| line used to mark the end of an extract */
 @e HEADING_START_LCAT      /* |@h| paragraph start: TO is title, TO2 is rest of line */
 @e INTERFACE_BODY_LCAT     /* line within the interface, under this heading */
 @e INTERFACE_LCAT          /* line holding the |@Interface:| heading */
@@ -115,6 +116,7 @@ char *Lines::category_name(int cat) {
 		case COMMENT_BODY_LCAT: return "COMMENT_BODY";
 		case CONT_DEFINITION_LCAT: return "CONT_DEFINITION";
 		case DEFINITIONS_LCAT: return "DEFINITIONS";
+		case END_EXTRACT_LCAT: return "END_EXTRACT";
 		case HEADING_START_LCAT: return "PB_PARAGRAPH_START";
 		case INTERFACE_BODY_LCAT: return "INTERFACE_BODY";
 		case INTERFACE_LCAT: return "INTERFACE";

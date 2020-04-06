@@ -37,36 +37,36 @@ they would need to be read in a POSIX-style environment like Cygwin.
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Shell::quote_path</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::quote_path</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">, </span><span class="string">"%p"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="identifier">Shell::quote_text</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">FN</span><span class="plain">);</span>
+        <span class="functiontext">Shell::quote_text</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">FN</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Shell::quote_file</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::quote_file</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">, </span><span class="string">"%f"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="identifier">Shell::quote_text</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">FN</span><span class="plain">);</span>
+        <span class="functiontext">Shell::quote_text</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">FN</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Shell::plain</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">char</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::plain</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">) {</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%s"</span><span class="plain">, </span><span class="identifier">raw</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Shell::plain_text</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::plain_text</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">) {</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">raw</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Shell::quote_text</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">) {</span>
-        <span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">SHELL_QUOTE_CHARACTER</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::quote_text</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">) {</span>
+        <span class="identifier">PUT</span><span class="plain">(</span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">);</span>
         <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">raw</span><span class="plain">) {</span>
-            <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
-            <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="identifier">SHELL_QUOTE_CHARACTER</span><span class="plain">) </span><span class="identifier">PUT</span><span class="plain">(</span><span class="character">'\</span><span class="plain">\</span><span class="character">'</span><span class="plain">);</span>
+            <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">) </span><span class="identifier">PUT</span><span class="plain">(</span><span class="character">'\\'</span><span class="plain">);</span>
             <span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">SHELL_QUOTE_CHARACTER</span><span class="plain">);</span>
+        <span class="identifier">PUT</span><span class="plain">(</span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">);</span>
         <span class="identifier">PUT</span><span class="plain">(</span><span class="character">' '</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -88,20 +88,20 @@ they would need to be read in a POSIX-style environment like Cygwin.
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Shell::apply</span><span class="plain">(</span><span class="identifier">char</span><span class="plain"> *</span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::apply</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">command</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">)</span>
-        <span class="identifier">Shell::plain</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">);</span>
-        <span class="identifier">Shell::plain</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="string">" "</span><span class="plain">);</span>
-        <span class="identifier">Shell::quote_file</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="identifier">Shell::run</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">);</span>
+        <span class="functiontext">Shell::plain</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">);</span>
+        <span class="functiontext">Shell::plain</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="string">" "</span><span class="plain">);</span>
+        <span class="functiontext">Shell::quote_file</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="functiontext">Shell::run</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">)</span>
     <span class="plain">}</span>
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Shell::apply_S</span><span class="plain">(</span><span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">command</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::apply_S</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">command</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">)</span>
-        <span class="identifier">Shell::plain_text</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">);</span>
-        <span class="identifier">Shell::plain</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="string">" "</span><span class="plain">);</span>
-        <span class="identifier">Shell::quote_file</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="identifier">Shell::run</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">);</span>
+        <span class="functiontext">Shell::plain_text</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">);</span>
+        <span class="functiontext">Shell::plain</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="string">" "</span><span class="plain">);</span>
+        <span class="functiontext">Shell::quote_file</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="functiontext">Shell::run</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">)</span>
     <span class="plain">}</span>
 </pre>
@@ -117,18 +117,18 @@ they would need to be read in a POSIX-style environment like Cygwin.
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Shell::rm</span><span class="plain">(</span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="identifier">Shell::apply</span><span class="plain">(</span><span class="string">"rm"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::rm</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="functiontext">Shell::apply</span><span class="plain">(</span><span class="string">"rm"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Shell::copy</span><span class="plain">(</span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">pathname</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="identifier">char</span><span class="plain"> *</span><span class="identifier">options</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::copy</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">options</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">)</span>
-        <span class="identifier">Shell::plain</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="string">"cp "</span><span class="plain">);</span>
-        <span class="identifier">Shell::plain</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">options</span><span class="plain">);</span>
-        <span class="identifier">Shell::plain</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="string">" "</span><span class="plain">);</span>
-        <span class="identifier">Shell::quote_file</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="identifier">Shell::quote_path</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
-        <span class="identifier">Shell::run</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">);</span>
+        <span class="functiontext">Shell::plain</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="string">"cp "</span><span class="plain">);</span>
+        <span class="functiontext">Shell::plain</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">options</span><span class="plain">);</span>
+        <span class="functiontext">Shell::plain</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="string">" "</span><span class="plain">);</span>
+        <span class="functiontext">Shell::quote_file</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="functiontext">Shell::quote_path</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
+        <span class="functiontext">Shell::run</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">)</span>
     <span class="plain">}</span>
 </pre>
@@ -145,10 +145,10 @@ from both <code class="display"><span class="extract">stdout</span></code> and <
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Shell::redirect</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">, </span><span class="identifier">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="identifier">Shell::plain</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"&gt;"</span><span class="plain">);</span>
-        <span class="identifier">Shell::quote_file</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="identifier">Shell::plain</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"2&gt;&amp;1"</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::redirect</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="functiontext">Shell::plain</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"&gt;"</span><span class="plain">);</span>
+        <span class="functiontext">Shell::quote_file</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="functiontext">Shell::plain</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"2&gt;&amp;1"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -166,30 +166,34 @@ all transcoded to UTF-8 in the most unlucky way imaginable.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="identifier">SPOOL_LENGTH</span><span class="plain"> </span><span class="constant">4</span><span class="plain">*8*</span><span class="identifier">MAX_FILENAME_LENGTH</span>
+    <span class="definitionkeyword">define</span> <span class="constant">SPOOL_LENGTH</span><span class="plain"> </span><span class="constant">4</span><span class="plain">*8*</span><span class="constant">MAX_FILENAME_LENGTH</span>
 </pre>
 
 <pre class="display">
-    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">shell_verbosity</span><span class="plain"> = </span><span class="identifier">FALSE</span><span class="plain">;</span>
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Shell::verbose</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
-        <span class="identifier">shell_verbosity</span><span class="plain"> = </span><span class="identifier">TRUE</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">shell_verbosity</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::verbose</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="identifier">shell_verbosity</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="identifier">int</span><span class="plain"> </span><span class="identifier">Shell::run</span><span class="plain">(</span><span class="identifier">OUTPUT_STREAM</span><span class="plain">) {</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">shell_verbosity</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"shell: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SHELL_USAGE</span><span class="plain">, </span><span class="string">"shell: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
-        <span class="identifier">char</span><span class="plain"> </span><span class="identifier">spool</span><span class="plain">[</span><span class="identifier">SPOOL_LENGTH</span><span class="plain">];</span>
-        <span class="identifier">Streams::write_as_locale_string</span><span class="plain">(</span><span class="identifier">spool</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">SPOOL_LENGTH</span><span class="plain">);</span>
-        <span class="identifier">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">Platform::system</span><span class="plain">(</span><span class="identifier">spool</span><span class="plain">);</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == -1) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"shell: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Shell::run</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shell_verbosity</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"shell: %S\n"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
+        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SHELL_USAGE</span><span class="plain">, </span><span class="string">"shell: %S\n"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
+        <span class="reserved">char</span><span class="plain"> </span><span class="identifier">spool</span><span class="plain">[</span><span class="constant">SPOOL_LENGTH</span><span class="plain">];</span>
+        <span class="functiontext">Streams::write_as_locale_string</span><span class="plain">(</span><span class="identifier">spool</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">SPOOL_LENGTH</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">debugger_mode</span><span class="plain">) {</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">, </span><span class="string">"debugger mode suppressing shell command: %S\n"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
+        <span class="plain">}</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext">Platform::system</span><span class="plain">(</span><span class="identifier">spool</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == -1) {</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"shell: %S\n"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"OS shell error"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">127</span><span class="plain">) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">STDERR</span><span class="plain">, </span><span class="string">"shell: %S\</span><span class="plain">n</span><span class="string">"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">127</span><span class="plain">) {</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"shell: %S\n"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Execution of the shell failed"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="identifier">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 

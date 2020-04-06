@@ -149,6 +149,7 @@ We skip these because we weave their contents in some other way:
 @<Certain categories of line are excluded from the weave@> =
 	if (L->category == INTERFACE_BODY_LCAT) continue;
 	if (L->category == PURPOSE_BODY_LCAT) continue;
+	if (L->category == END_EXTRACT_LCAT) continue;
 	if (L->category == BEGIN_CODE_LCAT) {
 		state->line_break_pending = FALSE;
 		continue;
@@ -181,7 +182,7 @@ at us; but we don't weave them into the output, that's for sure.
 		if (S->md->using_syntax < V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "[[F height Xcm]]", V2_SYNTAX);
 		Formats::figure(OUT, wv, mr.exp[0], -1, Str::atoi(mr.exp[1], 0), NULL);
-	} else if (Regexp::match(&mr, figname, L"(%c+txt) as (%c+)")) {
+	} else if (Regexp::match(&mr, figname, L"(%c+) as (%c+)")) {
 		if (S->md->using_syntax < V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "[[F as L]]", V2_SYNTAX);
 		programming_language *pl = Languages::find_by_name(mr.exp[1]);
@@ -467,22 +468,25 @@ otherwise, they are set flush right.
 @<Find macro usages and adjust syntax colouring accordingly@> =
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, matter, L"(%c*?)%@%<(%c*?)%@%>(%c*)")) {
-		Str::copy(matter, mr.exp[2]);
 		para_macro *pmac = Macros::find_by_name(mr.exp[1], S);
-		Formats::source_code(OUT, wv, tab_stops_of_indentation, prefatory,
-			mr.exp[0], colouring, concluding_comment, (found == 0)?TRUE:FALSE, FALSE, TRUE);
-		LanguageMethods::reset_syntax_colouring(S->sect_language);
-		found++;
-		int defn = (L->owning_paragraph == pmac->defining_paragraph)?TRUE:FALSE;
-		if (defn) state->in_run_of_definitions = FALSE;
-		Formats::para_macro(OUT, wv, pmac, defn);
-		if (defn) Str::clear(matter);
-		TEMPORARY_TEXT(temp);
-		int L = Str::len(colouring);
-		for (int i = L - Str::len(matter); i < L; i++)
-			PUT_TO(temp, Str::get_at(colouring, i));
-		Str::copy(colouring, temp);
-		DISCARD_TEXT(temp);
+		if (pmac) {
+			Str::copy(matter, mr.exp[2]);
+			Formats::source_code(OUT, wv, tab_stops_of_indentation, prefatory,
+				mr.exp[0], colouring, concluding_comment, (found == 0)?TRUE:FALSE, FALSE, TRUE);
+			LanguageMethods::reset_syntax_colouring(S->sect_language);
+			found++;
+			int defn = FALSE;
+			if (pmac) defn = (L->owning_paragraph == pmac->defining_paragraph)?TRUE:FALSE;
+			if (defn) state->in_run_of_definitions = FALSE;
+			if (pmac) Formats::para_macro(OUT, wv, pmac, defn);
+			if (defn) Str::clear(matter);
+			TEMPORARY_TEXT(temp);
+			int L = Str::len(colouring);
+			for (int i = L - Str::len(matter); i < L; i++)
+				PUT_TO(temp, Str::get_at(colouring, i));
+			Str::copy(colouring, temp);
+			DISCARD_TEXT(temp);
+		} else break;
 	}
 	Regexp::dispose_of(&mr);
 

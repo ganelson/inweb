@@ -2,7 +2,7 @@ Name: Inform 6
 Details: The C-like interactive fiction language Inform 6
 Extension: .i6
 Line Comment: !
-String Literal: "
+String Literal: "\""
 String Literal Escape: \
 Character Literal: '
 Character Literal Escape: \
@@ -80,10 +80,10 @@ keyword youngest
 colouring {
 	runs of unquoted {
 		runs of !identifier {
-			keyword !reserved => !reserved
-			keyword !function => !function
-			keyword !constant => !constant
-			keyword !element => {
+			keyword of !reserved => !reserved
+			keyword of !function => !function
+			keyword of !constant => !constant
+			keyword of !element => {
 				optionally spaced prefix . => !element
 				optionally spaced prefix -> => !element
 			}

@@ -88,7 +88,7 @@ supplied instead for that case.
 
 
 <pre class="display">
-    <span class="identifier">text_stream</span><span class="plain"> *</span><span class="identifier">DL</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">Current destination of debugging text: kept <code class="display"><span class="extract">NULL</span></code> until opened</span>
+    <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">DL</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment">Current destination of debugging text: kept <code class="display"><span class="extract">NULL</span></code> until opened</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -98,17 +98,17 @@ supplied instead for that case.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="identifier">TRUE</span><span class="plain"> </span><span class="constant">1</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">FALSE</span><span class="plain"> </span><span class="constant">0</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">NOT_APPLICABLE</span><span class="plain"> </span><span class="constant">2</span>
+    <span class="definitionkeyword">define</span> <span class="constant">TRUE</span><span class="plain"> </span><span class="constant">1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FALSE</span><span class="plain"> </span><span class="constant">0</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NOT_APPLICABLE</span><span class="plain"> </span><span class="constant">2</span>
 </pre>
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>And we recognise two different encodings for narrow (i.e., <code class="display"><span class="extract">char *</span></code>) C strings.
 </p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="identifier">UTF8_ENC</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">Write as UTF-8 without BOM</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">ISO_ENC</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">Write as ISO Latin-1 (i.e., no conversion needed)</span>
+    <span class="definitionkeyword">define</span> <span class="constant">UTF8_ENC</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">Write as UTF-8 without BOM</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ISO_ENC</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">Write as ISO Latin-1 (i.e., no conversion needed)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>It is assumed that our host filing system can manage at least 30-character
 filenames, that space is legal as a character in a filename, and that trailing
@@ -123,14 +123,14 @@ compromise in practice:
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="identifier">MAX_FILENAME_LENGTH</span><span class="plain"> </span><span class="constant">1025</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MAX_FILENAME_LENGTH</span><span class="plain"> </span><span class="constant">1025</span>
 </pre>
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Very occasionally we'll store a pointer as data:
 </p>
 
 
 <pre class="display">
-    <span class="identifier">typedef</span><span class="plain"> </span><span class="identifier">long</span><span class="plain"> </span><span class="identifier">int</span><span class="plain"> </span><span class="identifier">pointer_sized_int</span><span class="plain">;</span>
+    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">pointer_sized_int</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -145,12 +145,12 @@ that is, literal <code class="display"><span class="extract">text_stream *</span
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Foundation::start</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
-        <span class="identifier">Memory::start</span><span class="plain">();</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Foundation::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="functiontext">Memory::start</span><span class="plain">();</span>
         &lt;<span class="cwebmacro">Register the default stream writers</span> <span class="cwebmacronumber">8.1</span>&gt;<span class="plain">;</span>
         <span class="plain">[[</span><span class="identifier">textliterals</span><span class="plain">]];</span>
-        <span class="identifier">Time::begin</span><span class="plain">();</span>
-        <span class="identifier">Pathnames::start</span><span class="plain">();</span>
+        <span class="functiontext">Time::begin</span><span class="plain">();</span>
+        <span class="functiontext">Pathnames::start</span><span class="plain">();</span>
         &lt;<span class="cwebmacro">Register the default debugging log aspects</span> <span class="cwebmacronumber">8.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Register the default debugging log writers</span> <span class="cwebmacronumber">8.3</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Register the default command line switches</span> <span class="cwebmacronumber">8.5</span>&gt;<span class="plain">;</span>
@@ -174,10 +174,10 @@ prints a filename by calling <code class="display"><span class="extract">Filenam
 
 
 <pre class="displaydefn">
-        <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'f'</span><span class="plain">, &amp;</span><span class="identifier">Filenames::writer</span><span class="plain">);</span>
-        <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'p'</span><span class="plain">, &amp;</span><span class="identifier">Pathnames::writer</span><span class="plain">);</span>
-        <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'v'</span><span class="plain">, &amp;</span><span class="identifier">VersionNumbers::writer</span><span class="plain">);</span>
-        <span class="identifier">Writers::register_writer</span><span class="plain">(</span><span class="character">'S'</span><span class="plain">, &amp;</span><span class="identifier">Streams::writer</span><span class="plain">);</span>
+        <span class="functiontext">Writers::register_writer</span><span class="plain">(</span><span class="character">'f'</span><span class="plain">, &amp;</span><span class="functiontext">Filenames::writer</span><span class="plain">);</span>
+        <span class="functiontext">Writers::register_writer</span><span class="plain">(</span><span class="character">'p'</span><span class="plain">, &amp;</span><span class="functiontext">Pathnames::writer</span><span class="plain">);</span>
+        <span class="functiontext">Writers::register_writer</span><span class="plain">(</span><span class="character">'v'</span><span class="plain">, &amp;</span><span class="functiontext">VersionNumbers::writer</span><span class="plain">);</span>
+        <span class="functiontext">Writers::register_writer</span><span class="plain">(</span><span class="character">'S'</span><span class="plain">, &amp;</span><span class="functiontext">Streams::writer</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -197,10 +197,10 @@ The following are always provided, but are all off by default.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="identifier">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"debugging log inclusions"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="identifier">SHELL_USAGE_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"shell usage"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="identifier">MEMORY_USAGE_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"memory usage"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">Log::declare_aspect</span><span class="plain">(</span><span class="identifier">TEXT_FILES_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"text files"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
+        <span class="functiontext">Log::declare_aspect</span><span class="plain">(</span><span class="constant">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"debugging log inclusions"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="functiontext">Log::declare_aspect</span><span class="plain">(</span><span class="constant">SHELL_USAGE_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"shell usage"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="functiontext">Log::declare_aspect</span><span class="plain">(</span><span class="constant">MEMORY_USAGE_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"memory usage"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="functiontext">Log::declare_aspect</span><span class="plain">(</span><span class="constant">TEXT_FILES_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"text files"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -220,8 +220,8 @@ state of a stream.
 
 
 <pre class="displaydefn">
-        <span class="identifier">Writers::register_logger</span><span class="plain">(</span><span class="character">'a'</span><span class="plain">, &amp;</span><span class="identifier">Tries::log_avinue</span><span class="plain">);</span>
-        <span class="identifier">Writers::register_logger</span><span class="plain">(</span><span class="character">'S'</span><span class="plain">, &amp;</span><span class="identifier">Streams::log</span><span class="plain">);</span>
+        <span class="functiontext">Writers::register_logger</span><span class="plain">(</span><span class="character">'a'</span><span class="plain">, &amp;</span><span class="functiontext">Tries::log_avinue</span><span class="plain">);</span>
+        <span class="functiontext">Writers::register_logger</span><span class="plain">(</span><span class="character">'S'</span><span class="plain">, &amp;</span><span class="functiontext">Streams::log</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -239,12 +239,12 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="identifier">LOG_CLSW</span><span class="definitionkeyword"> from </span><span class="identifier">0</span>
-    <span class="definitionkeyword">enum</span> <span class="identifier">VERSION_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="identifier">CRASH_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="identifier">HELP_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="identifier">FIXTIME_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="identifier">AT_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">LOG_CLSW</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">VERSION_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">CRASH_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">HELP_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">FIXTIME_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">AT_CLSW</span>
 </pre>
 <p class="inwebparagraph"><a id="SP8_5"></a><b>&#167;8.5.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Register the default command line switches</span> <span class="cwebmacronumber">8.5</span>&gt; =
@@ -252,20 +252,20 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 
 
 <pre class="displaydefn">
-        <span class="identifier">CommandLine::begin_group</span><span class="plain">(</span><span class="identifier">FOUNDATION_CLSG</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="identifier">LOG_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"log"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
+        <span class="functiontext">CommandLine::begin_group</span><span class="plain">(</span><span class="constant">FOUNDATION_CLSG</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">LOG_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"log"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"write the debugging log to include diagnostics on X"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="identifier">VERSION_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"version"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">VERSION_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"version"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"print out version number"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="identifier">CRASH_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"crash"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
-            <span class="identifier">L</span><span class="string">"intentionally crash on internal errors, for backtracing"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="identifier">HELP_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"help"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
+        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">CRASH_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"crash"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
+            <span class="identifier">L</span><span class="string">"intentionally crash on internal errors, for backtracing"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">HELP_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"help"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"print this help information"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="identifier">FIXTIME_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"fixtime"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
-            <span class="identifier">L</span><span class="string">"pretend the time is 11 a.m. on 28 March 2016 for testing"</span><span class="plain">, </span><span class="identifier">FALSE</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::declare_switch</span><span class="plain">(</span><span class="identifier">AT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"at"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
+        <span class="functiontext">CommandLine::declare_boolean_switch</span><span class="plain">(</span><span class="constant">FIXTIME_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"fixtime"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
+            <span class="identifier">L</span><span class="string">"pretend the time is 11 a.m. on 28 March 2016 for testing"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="functiontext">CommandLine::declare_switch</span><span class="plain">(</span><span class="constant">AT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"at"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"specify that this tool is installed at X"</span><span class="plain">);</span>
-        <span class="identifier">CommandLine::end_group</span><span class="plain">();</span>
+        <span class="functiontext">CommandLine::end_group</span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -280,10 +280,10 @@ safety problems.
 
 
 <pre class="display">
-    <span class="identifier">void</span><span class="plain"> </span><span class="identifier">Foundation::end</span><span class="plain">(</span><span class="identifier">void</span><span class="plain">) {</span>
-        <span class="identifier">if</span><span class="plain"> (</span><span class="identifier">Log::aspect_switched_on</span><span class="plain">(</span><span class="identifier">MEMORY_USAGE_DA</span><span class="plain">)) </span><span class="identifier">Memory::log_statistics</span><span class="plain">();</span>
-        <span class="identifier">Log::close</span><span class="plain">();</span>
-        <span class="identifier">Memory::free</span><span class="plain">();</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Foundation::end</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Log::aspect_switched_on</span><span class="plain">(</span><span class="constant">MEMORY_USAGE_DA</span><span class="plain">)) </span><span class="functiontext">Memory::log_statistics</span><span class="plain">();</span>
+        <span class="functiontext">Log::close</span><span class="plain">();</span>
+        <span class="functiontext">Memory::free</span><span class="plain">();</span>
     <span class="plain">}</span>
 </pre>
 

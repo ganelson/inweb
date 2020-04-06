@@ -390,9 +390,9 @@ void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
 	filename *RF = Filenames::from_text(figname);
 	TEMPORARY_TEXT(ext);
 	Filenames::write_extension(ext, RF);
-	if (Str::eq_insensitive(ext, I".txt")) {
+	if ((pl) || (Str::eq_insensitive(ext, I".txt"))) {
 		if (pl == NULL) HTMLFormat::pre(OUT, NULL);
-		else HTMLFormat::pre(OUT, NULL);
+		else HTMLFormat::pre(OUT, "display");
 		if (pl) Painter::reset_syntax_colouring(pl);
 		HTML_figure_state hfs;
 		hfs.OUT = OUT;
@@ -419,7 +419,7 @@ void HTMLFormat::text_file_helper(text_stream *text, text_file_position *tfp, vo
 	LOOP_THROUGH_TEXT(pos, text) PUT_TO(colouring, PLAIN_COLOUR);
 	if (hfs->colour_as) {
 		Painter::syntax_colour(hfs->colour_as, hfs->OUT, hfs->keywords, text, colouring, TRUE);
-		Formats::source_code(hfs->OUT, hfs->wv, 1, I"", text, colouring, I"", TRUE, TRUE, TRUE);
+		Formats::source_code(hfs->OUT, hfs->wv, 0, I"", text, colouring, I"", TRUE, TRUE, TRUE);
 	} else {
 		WRITE_TO(hfs->OUT, "%S\n", text);
 	}

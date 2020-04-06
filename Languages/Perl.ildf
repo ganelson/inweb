@@ -2,7 +2,7 @@ Name: Perl
 Details: The scripting language Perl 5
 Extension: .pl
 Line Comment: #
-String Literal: "
+String Literal: "\""
 String Literal Escape: \
 Character Literal: '
 Character Literal Escape: \
@@ -16,4 +16,4 @@ End Definition: \n;\n
 # In its usual zany way, Perl recognises the same #line syntax as C, thus in
 # principle overloading its comment notation #:
 
-Line Marker: #line %d "%f"\n
+Line Marker: "#line %d \"%f\"\n"

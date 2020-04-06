@@ -215,57 +215,57 @@ declare a reserved keyword, or set a key to a value.
 		Languages::reserved(pl, mr.exp[0], RESERVED_COLOUR, tfp);
 	} else if (Regexp::match(&mr, line, L"(%c+) *: *(%c+?)")) {
 		text_stream *key = mr.exp[0], *value = Str::duplicate(mr.exp[1]);
-		if (Str::eq(key, I"Name")) pl->language_name = Languages::text(value, tfp);
+		if (Str::eq(key, I"Name")) pl->language_name = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Details"))
-			pl->language_details = Languages::text(value, tfp);
+			pl->language_details = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Extension"))
-			pl->file_extension = Languages::text(value, tfp);
+			pl->file_extension = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Line Comment"))
-			pl->line_comment = Languages::text(value, tfp);
+			pl->line_comment = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Whole Line Comment"))
-			pl->whole_line_comment = Languages::text(value, tfp);
+			pl->whole_line_comment = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Multiline Comment Open"))
-			pl->multiline_comment_open = Languages::text(value, tfp);
+			pl->multiline_comment_open = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Multiline Comment Close"))
-			pl->multiline_comment_close = Languages::text(value, tfp);
+			pl->multiline_comment_close = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"String Literal"))
-			pl->string_literal = Languages::text(value, tfp);
+			pl->string_literal = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"String Literal Escape"))
-			pl->string_literal_escape = Languages::text(value, tfp);
+			pl->string_literal_escape = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Character Literal"))
-			pl->character_literal = Languages::text(value, tfp);
+			pl->character_literal = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Character Literal Escape"))
-			pl->character_literal_escape = Languages::text(value, tfp);
+			pl->character_literal_escape = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Binary Literal Prefix"))
-			pl->binary_literal_prefix = Languages::text(value, tfp);
+			pl->binary_literal_prefix = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Octal Literal Prefix"))
-			pl->octal_literal_prefix = Languages::text(value, tfp);
+			pl->octal_literal_prefix = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Hexadecimal Literal Prefix"))
-			pl->hexadecimal_literal_prefix = Languages::text(value, tfp);
+			pl->hexadecimal_literal_prefix = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Negative Literal Prefix"))
-			pl->negative_literal_prefix = Languages::text(value, tfp);
+			pl->negative_literal_prefix = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Shebang"))
-			pl->shebang = Languages::text(value, tfp);
+			pl->shebang = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Line Marker"))
-			pl->line_marker = Languages::text(value, tfp);
+			pl->line_marker = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Before Named Paragraph Expansion"))
-			pl->before_macro_expansion = Languages::text(value, tfp);
+			pl->before_macro_expansion = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"After Named Paragraph Expansion"))
-			pl->after_macro_expansion = Languages::text(value, tfp);
+			pl->after_macro_expansion = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Start Definition"))
-			pl->start_definition = Languages::text(value, tfp);
+			pl->start_definition = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Prolong Definition"))
-			pl->prolong_definition = Languages::text(value, tfp);
+			pl->prolong_definition = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"End Definition"))
-			pl->end_definition = Languages::text(value, tfp);
+			pl->end_definition = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Start Ifdef"))
-			pl->start_ifdef = Languages::text(value, tfp);
+			pl->start_ifdef = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Start Ifndef"))
-			pl->start_ifndef = Languages::text(value, tfp);
+			pl->start_ifndef = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"End Ifdef"))
-			pl->end_ifdef = Languages::text(value, tfp);
+			pl->end_ifdef = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"End Ifndef"))
-			pl->end_ifndef = Languages::text(value, tfp);
+			pl->end_ifndef = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"C-Like"))
 			pl->C_like = Languages::boolean(value, tfp);
 		else if (Str::eq(key, I"Suppress Disclaimer"))
@@ -300,7 +300,7 @@ runs of a given colour, or give an if-X-then-Y rule:
 	} else if (Regexp::match(&mr, line, L"instances of (%c+) {")) {
 		colouring_rule *rule = Languages::new_rule(state->current_block);
 		rule->execute_block = Languages::new_block(state->current_block, INSTANCES_CRULE_RUN);
-		rule->execute_block->run_instance = Languages::text(mr.exp[0], tfp);
+		rule->execute_block->run_instance = Languages::text(mr.exp[0], tfp, FALSE);
 		state->current_block = rule->execute_block;
 	} else {
 		int at = -1, quoted = FALSE;
@@ -414,32 +414,31 @@ void Languages::parse_rule(language_reader_state *state, text_stream *premiss,
 
 @<Parse the premiss@> =
 	if (Regexp::match(&mr, premiss, L"keyword of (%c+)")) {
-PRINT("Keyw of %S\n", mr.exp[0]);
 		rule->match_keyword_of_colour = Languages::colour(mr.exp[0], tfp);
 	} else if (Regexp::match(&mr, premiss, L"keyword")) {
 		Errors::in_text_file("ambiguous: make it keyword of !reserved or \"keyword\"", tfp);
 	} else if (Regexp::match(&mr, premiss, L"prefix (%c+)")) {
 		rule->match_prefix = UNSPACED_RULE_PREFIX;
-		rule->match_text = Languages::text(mr.exp[0], tfp);
+		rule->match_text = Languages::text(mr.exp[0], tfp, FALSE);
 	} else if (Regexp::match(&mr, premiss, L"spaced prefix (%c+)")) {
 		rule->match_prefix = SPACED_RULE_PREFIX;
-		rule->match_text = Languages::text(mr.exp[0], tfp);
+		rule->match_text = Languages::text(mr.exp[0], tfp, FALSE);
 	} else if (Regexp::match(&mr, premiss, L"optionally spaced prefix (%c+)")) {
 		rule->match_prefix = OPTIONALLY_SPACED_RULE_PREFIX;
-		rule->match_text = Languages::text(mr.exp[0], tfp);
+		rule->match_text = Languages::text(mr.exp[0], tfp, FALSE);
 	} else if (Regexp::match(&mr, premiss, L"suffix (%c+)")) {
 		rule->match_prefix = UNSPACED_RULE_SUFFIX;
-		rule->match_text = Languages::text(mr.exp[0], tfp);
+		rule->match_text = Languages::text(mr.exp[0], tfp, FALSE);
 	} else if (Regexp::match(&mr, premiss, L"spaced suffix (%c+)")) {
 		rule->match_prefix = SPACED_RULE_SUFFIX;
-		rule->match_text = Languages::text(mr.exp[0], tfp);
+		rule->match_text = Languages::text(mr.exp[0], tfp, FALSE);
 	} else if (Regexp::match(&mr, premiss, L"optionally spaced suffix (%c+)")) {
 		rule->match_prefix = OPTIONALLY_SPACED_RULE_SUFFIX;
-		rule->match_text = Languages::text(mr.exp[0], tfp);
+		rule->match_text = Languages::text(mr.exp[0], tfp, FALSE);
 	} else if (Regexp::match(&mr, premiss, L"colou*r (%c+)")) {
 		rule->match_colour = Languages::colour(mr.exp[0], tfp);
 	} else if (Str::len(premiss) > 0) {
-		rule->match_text = Languages::text(premiss, tfp);
+		rule->match_text = Languages::text(premiss, tfp, FALSE);
 	}
 
 @<Parse the conclusion@> =
@@ -547,16 +546,17 @@ can be given in the ordinary way inside a text in any case. |\\| is a
 literal backslash.
 
 =
-text_stream *Languages::text(text_stream *T, text_file_position *tfp) {
+text_stream *Languages::text(text_stream *T, text_file_position *tfp, int allow) {
 	text_stream *V = Str::new();
 	if (Str::len(T) > 0) {
-		int bareword = TRUE, from = 0, to = Str::len(T)-1;
+		int bareword = TRUE, spaced = FALSE, from = 0, to = Str::len(T)-1;
 		if ((to > from) &&
 			(Str::get_at(T, from) == '"') && (Str::get_at(T, to) == '"')) {
 			bareword = FALSE; from++; to--;
 		}
 		for (int i=from; i<=to; i++) {
 			wchar_t c = Str::get_at(T, i);
+			if (c == ' ') spaced = TRUE;
 			if ((c == '\\') && (Str::get_at(T, i+1) == 'n')) {
 				PUT_TO(V, '\n');
 				i++;
@@ -575,9 +575,18 @@ text_stream *Languages::text(text_stream *T, text_file_position *tfp) {
 			} else if ((bareword == FALSE) && (c == '"')) {
 				Errors::in_text_file(
 					"backslash needed before internal double-quotation mark", tfp);
+			} else if ((bareword) && (c == '"')) {
+				Errors::in_text_file(
+					"double-quotation marks can only be used in quoted strings", tfp);
 			} else {
 				PUT_TO(V, c);
 			}
+		}
+		if ((bareword) && (spaced) && (allow == FALSE)) {
+			TEMPORARY_TEXT(err);
+			WRITE_TO(err, "'%S' seems to be literal text, but if so it needs double-quotation marks", T);
+			Errors::in_text_file_S(err, tfp);
+			DISCARD_TEXT(err);			
 		}
 	}
 	return V;

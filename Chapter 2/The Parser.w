@@ -33,7 +33,7 @@ enough, but is made more elaborate by supporting both version 1 and version 2
 markup syntax, and trying to detect incorrect uses of one within the other.
 
 @<Parse a section@> =
-	int comment_mode = TRUE;
+	int comment_mode = TRUE, extract_mode = FALSE;
 	int code_lcat_for_body = NO_LCAT;
 	programming_language *code_pl_for_body = NULL;
 	int before_bar = TRUE;
@@ -149,7 +149,8 @@ code, definition, what?
 	if (Str::get_first_char(L->text) == '=') {
 		if (S->md->using_syntax < V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "column-1 '=' as code divider", V2_SYNTAX);
-		@<Parse the line as an equals structural marker@>;
+		if (extract_mode) @<Exit extract mode@>
+		else @<Parse the line as an equals structural marker@>;
 	}
 	if ((Str::get_first_char(L->text) == '@') &&
 		(Str::get_at(L->text, 1) != '<') &&
@@ -164,6 +165,7 @@ come literally from the source web.
 @<Parse the line as a probable chapter heading@> =
 	if (Str::eq_wide_string(L->text, L"Chapter Heading")) {
 		comment_mode = TRUE;
+		extract_mode = FALSE;
 		L->is_commentary = TRUE;
 		L->category = CHAPTER_HEADING_LCAT;
 	}
@@ -332,7 +334,7 @@ handling. We'll call these "paragraph macros".
 		if (current_paragraph == NULL)
 			Main::error_in_web(I"<...> definition begins outside of a paragraph", L);
 		else Macros::create(S, current_paragraph, L, para_macro_name);
-		comment_mode = FALSE;
+		comment_mode = FALSE; extract_mode = FALSE;
 		L->is_commentary = FALSE;
 		code_lcat_for_body = CODE_BODY_LCAT; /* code follows on subsequent lines */
 		code_pl_for_body = NULL;
@@ -360,7 +362,14 @@ division in the current section.
 	Regexp::dispose_of(&mr);
 	continue;
 
-@ An equals sign in column 1 is also a structural marker:
+@ An equals sign in column 1 can just mean the end of an extract, so:
+
+@<Exit extract mode@> =
+	L->category = END_EXTRACT_LCAT;
+	comment_mode = TRUE;
+	extract_mode = FALSE;
+
+@ But more usually an equals sign in column 1 is a structural marker:
 
 @<Parse the line as an equals structural marker@> =
 	L->category = BEGIN_CODE_LCAT;
@@ -377,9 +386,15 @@ division in the current section.
 		} else if ((current_paragraph) && (Str::eq(mr.exp[0], I"(not code)"))) {
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_pl_for_body = NULL;
+			extract_mode = TRUE;
 		} else if ((current_paragraph) && (Regexp::match(&mr2, mr.exp[0], L"%(sample (%c+) code%)"))) {
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_pl_for_body = Languages::find_by_name(mr2.exp[0]);
+			extract_mode = TRUE;
+		} else if ((current_paragraph) && (Regexp::match(&mr2, mr.exp[0], L"%(sample code%)"))) {
+			code_lcat_for_body = TEXT_EXTRACT_LCAT;
+			code_pl_for_body = S->sect_language;
+			extract_mode = TRUE;
 		} else {
 			Main::error_in_web(I"unknown bracketed annotation", L);
 		}
@@ -397,6 +412,7 @@ long forms |@define|, |@enum| and |@heading|, and plain old |@| remain.
 (But |@e| has a different meaning from in version 1.)
 
 @<Deal with a structural marker@> =
+	extract_mode = FALSE;
 	if (Str::eq_wide_string(command_text, L"Purpose:")) @<Deal with Purpose@>
 	else if (Str::eq_wide_string(command_text, L"Interface:")) @<Deal with Interface@>
 	else if (Str::eq_wide_string(command_text, L"Definitions:")) @<Deal with Definitions@>

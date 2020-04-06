@@ -2,7 +2,7 @@ Name: ACME
 Details: The ACME assembly language for 6502 and related CPUs
 Extension: .a
 Line Comment: ;
-String Literal: "
+String Literal: "\""
 String Literal Escape: \
 Character Literal: '
 Character Literal Escape: \
@@ -14,8 +14,8 @@ colouring {
 	runs of unquoted {
 		runs of !identifier {
 			=> !reserved
-			unspaced prefix . => !identifier on both
-			unspaced prefix ! => !element on both
+			prefix . => !identifier on both
+			prefix ! => !element on both
 		}
 		characters {
 			+ => !identifier

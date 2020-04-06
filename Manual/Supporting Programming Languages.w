@@ -49,9 +49,8 @@ line, where |L| is the file defining it. If you have many custom languages,
 |-read-languages D| reads all of the definitions in a directory |D|.
 
 @h Structure of language definitions.
-Each language is defined by a single ILDF file. (Inweb Language Definition
-Format: and there is in fact an ILDF file for ILDF itself.) In this section,
-we'll call it the ILD.
+Each language is defined by a single ILDF file. ("Inweb Language Definition
+Format".) In this section, we'll call it the ILD.
 
 The ILD is a plain text file, which is read in line by line. Leading and
 trailing whitespace on each line is ignored; blank lines are ignored; and
@@ -70,16 +69,6 @@ practice, though, every ILD should open like so:
 Name: C
 Details: The C programming language
 Extension: .c
-
-@ Blah.
-
-= (sample ACME code)
-	!byte %.##..##.
-    STA .romNumberActiveLastBRK                         ; and store it
-
-@ Example:
-
-[[perl.txt as ILDF]]
 
 @h Properties.
 Inevitably, there's a miscellaneous shopping list of these, but let's start
@@ -112,9 +101,10 @@ as a pair or not at all, is the notation for multiline comments.
 
 For example, C defines:
 
-	|Multiline Comment Open: /*|
-	|Multiline Comment Close: */|
-	|Line Comment: //|
+= (sample ILDF code)
+    Multiline Comment Open: /*
+    Multiline Comment Close: */
+    Line Comment: //
 
 @ As noted, comments occur only outside of string or character literals. We
 can give notations for these as follows:
@@ -129,10 +119,11 @@ character literals.
 
 Here, C defines:
 
-	|String Literal: "|
-	|String Literal Escape: \|
-	|Character Literal: '|
-	|Character Literal Escape: \|
+= (sample ILDF code)
+    String Literal: "\""
+    String Literal Escape: \
+    Character Literal: '
+    Character Literal Escape: \
 
 @ Next, numeric literals, like |0xFE45| in C, or |$$10011110| in Inform 6.
 It's assumed that every language allows non-negative decimal numbers.
@@ -144,17 +135,18 @@ are notations for non-decimal numbers, if they exist.
 
 Here, C has:
 
-	|Hexadecimal Literal Prefix: 0x|
-	|Binary Literal Prefix: 0b|
-	|Negative Literal Prefix: -|
+= (sample ILDF code)
+    Hexadecimal Literal Prefix: 0x
+    Binary Literal Prefix: 0b
+    Negative Literal Prefix: -
 
 @ |Shebang| is used only in tangling, and is a probably short text added at
 the very beginning of a tangled program. This is useful for scripting languages
 in Unix, where the opening line must be a "shebang" indicating their language.
 For example, Perl defines:
-
-	|Shebang: #!/usr/bin/perl\n\n|
-
+= (sample ILDF code)
+    Shebang: #!/usr/bin/perl\n\n
+=
 Most languages do not have a shebang.
 
 @ In order for C compilers to report C syntax errors on the correct line,
@@ -166,9 +158,9 @@ which most users never use.
 When tangling, Inweb is just such a rearranging tool, and it inserts line
 markers automatically for languages which support them: |Line Marker| specifies
 that this language does, and gives the notation. For example, C provides:
-
-	|Line Marker: #line %d "%f"\n|
-
+= (sample ILDF code)
+    Line Marker: "#line %d \"%f\"\n"
+=
 Here |%d| expands to the line number, and |%f| the filename, of origin.
 
 @ When a named paragraph is used in code, and the tangler is "expanding" it
@@ -177,21 +169,21 @@ matter added. This material is in |Before Named Paragraph Expansion| and
 |After Named Paragraph Expansion|, which are by default empty.
 
 For C and all similar languages, we recommend this:
-
-	|Before Named Paragraph Expansion: \n{\n|
-	|After Named Paragraph Expansion: }\n|
-
+= (sample ILDF code)
+    Before Named Paragraph Expansion: \n{\n
+    After Named Paragraph Expansion: }\n
+=
 The effect of this is to ensure that code such as:
-
-	|if (x == y) @<Do something dramatic@>;|
-
+= (not code)
+    if (x == y) @<Do something dramatic@>;
+=
 tangles to something like this:
-
-	|if (x == y)|
-	|{|
-	|...|
-	|}|
-
+= (not code)
+    if (x == y)
+    {
+    ...
+    }
+=
 so that any variables defined inside "Do something dramatic" have limited
 scope, and so that multi-line macros are treated as a single statement by |if|,
 |while| and so on.
@@ -207,15 +199,15 @@ It can only do so if the language provides a notation for that.
 |Start Definition| begins; |Prolong Definition|, if given, shows how to
 continue a multiline definition (if they are allowed); and |End Definition|,
 if given, places any ending notation. For example, Inform 6 defines:
-
-	|Start Definition: Constant %S =\s|
-	|End Definition: ;\n|
-
+= (sample ILDF code)
+    Start Definition: Constant %S =\s
+    End Definition: ;\n
+=
 where |%S| expands to the name of the term to be defined. Thus, we might tangle
 out to:
-
-	|Constant TAXICAB = 1729;\n|
-
+= (sample ILDF code)
+    Constant TAXICAB = 1729;\n
+=
 Inweb ignores all definitions unless one of these three properties is given.
 
 @ Inweb needs a notation for conditional compilation in order to handle some
@@ -223,12 +215,12 @@ of its advanced features for tangling tagged material: the Inform project
 makes use of this to handle code dependent on the operating system in use.
 If the language supports it, the notation is in |Start Ifdef| and |End Ifdef|,
 and in |Start Ifndef| and |End Ifndef|. For example, Inform 6 has:
-
-	|Start Ifdef: #ifdef %S;\n|
-	|End Ifdef: #endif; ! %S\n|
-	|Start Ifndef: #ifndef %S;\n|
-	|End Ifndef: #endif; ! %S\n|
-
+= (sample ILDF code)
+    Start Ifdef: #ifdef %S;\n
+    End Ifdef: #endif; ! %S\n
+    Start Ifndef: #ifndef %S;\n
+    End Ifndef: #endif; ! %S\n
+=
 which is a subtly different notation from the C one. Again, |%S| expands to
 the name of the term we are conditionally compiling on.
 
@@ -265,15 +257,15 @@ Syntax colouring is greatly helped by knowing that certain identifier names
 are special: for example, |void| is special in C. These are often called
 "reserved words", in that they can't be used as variable or function names
 in the language in question. For C, then, we include the line:
-
-	|keyword void|
-
+= (sample ILDF code)
+    keyword void
+=
 Keywords can be declared in a number of categories, which are identified by
 colour name: the default is |!reserved|, the colour for reserved words. But
 for example:
-
-	|keyword isdigit of !function|
-
+= (sample ILDF code)
+    keyword isdigit of !function
+=
 makes a keyword of colour |!function|.
 
 @h Syntax colouring program.
@@ -283,10 +275,10 @@ ILDs have no control over what colours or typefaces are used: that's all
 controllable, but is done by changing the weave pattern. So we can't colour
 a word "green": instead we colour it semantically, from the following
 palette of possibilities:
-
-|!string|, |!function|, |!definition|, |!reserved|, |!element|, |!identifier|,
-|!character|, |!constant|, |!plain|, |!extract|, |!comment|
-
+= (sample ILDF code)
+!character  !comment     !constant  !definition  !element  !extract
+!function   !identifier  !plain     !reserved    !string
+=
 Each character has its own colour. At the start of the process, every
 character is |!plain|.
 
@@ -308,31 +300,31 @@ and |!plain|.
 
 @ A colouring program begins with |colouring {| and ends with |}|. The
 empty program is legal but does nothing:
-
-	|colouring {|
-	|}|
-
+= (sample ILDF code)
+    colouring {
+    }
+=
 The material between the braces is called a "block". Each block runs on a
 given stretch of contiguous text, called the "snippet". For the outermost
 block, that's a line of source code. Blocks normally contain one or more
 "rules":
-
-	|colouring {|
-	|    marble => !extract|
-	|}|
-
+= (sample ILDF code)
+    colouring {
+        marble => !extract
+    }
+=
 Rules take the form of "if X, then Y", and the |=>| divides the X from the Y.
 This one says that if the snippet consists of the word "marble", then colour
 it |!extract|. Of course this is not very useful, since it would only catch
 lines containing only that one word. So we really want to narrow in on smaller
 snippets:
-
-	|colouring {|
-	|    characters {|
-	|        X => !extract|
-	|    }|
-	|}|
-
+= (sample ILDF code)
+    colouring {
+        characters {
+            X => !extract
+        }
+    }
+=
 The effect of the |characters {| ... |}| block is to apply all its rules to
 each character of the snippet owning it. Inside the block, then, the snippet
 is always just a single character, and our rule tells us to paint the letter X
@@ -340,26 +332,26 @@ wherever it occurs.
 
 @ The block |instances of X| narrows in on each usage of the text |X| inside
 the snippet. For example,
-
-	|colouring {|
-	|    instances of == {|
-	|        => !reserved|
-	|    }|
-	|}|
-	
+= (sample ILDF code)
+    colouring {
+        instances of == {
+            => !reserved
+        }
+    }
+=
 gives every usage of |==| the colour |!reserved|. Note that it never runs in
 an overlapping way: the snippet |===| would be considered as having only one
 instance of |==| (the first two characters), while |====| would have two.
 
 @ Another kind of block is |runs of C|, where |C| is a colour. For example:
-
-	|colouring {|
-	|    runs of !identifier {|
-	|        printf => !function|
-	|        sscanf => !function|
-	|    }|
-	|}|
-
+= (sample ILDF code)
+    colouring {
+        runs of !identifier {
+            printf => !function
+            sscanf => !function
+        }
+    }
+=
 If this runs on the line |if (x == 1) printf("Hello!");|, then the inner
 block will run three times: its snippet will be |if|, then |x|, then |printf|.
 The rules inside the block will take effect only on the third time, when it
@@ -374,28 +366,28 @@ not a colour.
 
 1. X can be omitted altogether, and then the rule always applies. For example,
 this somewhat nihilistic program gets rid of colouring entirely:
-
-	|colouring {|
-	|    => !plain|
-	|}|
-
+= (sample ILDF code)
+    colouring {
+        => !plain
+    }
+=
 2. X can require the whole snippet to be of a particular colour, by writing
 |colour C|. For example:
-
-	|colouring {|
-	|    characters {|
-	|        colour !character => !plain|
-	|    }|
-	|}|
-
+= (sample ILDF code)
+    colouring {
+        characters {
+            colour !character => !plain
+        }
+    }
+=
 removes the syntax colouring on character literals.
 
 3. X can require the snippet to be one of the language's known keywords, as
 declared earlier in the ILD by a |keyword| command. The syntax here is
 |keyword of C|, where |C| is a colour. For example:
-
-	|keyword of !element => !element|
-
+= (sample ILDF code)
+    keyword of !element => !element
+=
 says: if the snippet is a keyword declared as being of colour |!element|,
 then actually colour it that way.
 
@@ -403,18 +395,18 @@ then actually colour it that way.
 with one of the following: |prefix P|, |spaced prefix P|,
 |optionally spaced prefix P|. These qualifiers have to do with whether white
 space must appear after |P| and before the snippet. For example,
-
-	|runs of !identifier {|
-	|    prefix optionally spaced -> => !element|
-	|}|
-
+= (sample ILDF code)
+    runs of !identifier {
+        prefix optionally spaced -> => !element
+    }
+=
 means that any identifier occurring after a |->| token will be coloured
 as |!element|. Similarly for |suffix|.
 
 5. And otherwise X is literal text, and the rule applies if and only if
 the snippet is exactly that text. For example,
-
-	|printf => !function|
+= (sample ILDF code)
+    printf => !function
 
 @ Now let's look at the conclusion Y of a rule. Here the possibilities are
 simpler:
@@ -423,12 +415,12 @@ simpler:
 
 2. If Y is an open brace |{|, then it introduces a block of rules which are
 applied to the snippet only if this rule has matched. For example,
-
-	|keyword !element => {|
-	|    optionally spaced prefix . => !element|
-	|    optionally spaced prefix -> => !element|
-	|}|
-
+= (sample ILDF code)
+    keyword !element => {
+        optionally spaced prefix . => !element
+        optionally spaced prefix -> => !element
+    }
+=
 means that if the original condition |keyword !element| applies, then two
 further rules are applied.
 
@@ -444,5 +436,12 @@ but sometimes you need to be pedantic. If you want to match the text |=>|,
 for example, that could lead to ambiguity with the rule marker |=>|. For
 such occasions, simply put the text in double quotes, and change any literal
 double quote in it to |\"|, and use |\\| for a literal backslash. For example:
+= (sample ILDF code)
+    "keyword" => !reserved
 
-	|"keyword" => !reserved|
+@h Example.
+Inweb Language Definition Format is a kind of language in itself, and in
+fact Inweb is supplied with an ILD for ILDF itself, which Inweb used to
+syntax-colour the examples above. Here it is, as syntax-coloured by itself:
+
+[[../Languages/ILDF.ildf as ILDF]]

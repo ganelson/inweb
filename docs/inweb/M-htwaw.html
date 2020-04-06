@@ -324,8 +324,22 @@ supports, we can instead write, for example:
 </pre>
 
 <p class="inwebparagraph">to say that this is an extract of code in ACME format, and should be
-coloured accordingly.
+coloured accordingly. Samples of code are, uniquely, allowed to end
+mid-way in a paragraph (unlike real code): placing a <code class="display"><span class="extract">=</span></code> on the left
+margin allows the commentary to resume. For example,
 </p>
+
+<p class="inwebparagraph"></p>
+
+
+<pre class="display">
+        <span class="plain">= (sample ACME code)</span>
+        <span class="plain">    BEQ .adjustXRegister</span>
+        <span class="plain">=</span>
+        <span class="plain">...which is essential in order to restore the state of</span>
+</pre>
+
+<p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>One last feature, but it's the most important. Some code extracts are
 given names, in angle brackets. If so, then the paragraph is the definition

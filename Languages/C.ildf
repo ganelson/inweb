@@ -4,7 +4,7 @@ Extension: .c
 Multiline Comment Open: /*
 Multiline Comment Close: */
 Line Comment: //
-String Literal: "
+String Literal: "\""
 String Literal Escape: \
 Character Literal: '
 Character Literal Escape: \
@@ -26,7 +26,7 @@ Start Ifdef: #ifdef %S\n
 End Ifdef: #endif /* %S */\n
 Start Ifndef: #ifndef %S\n
 End Ifndef: #endif /* %S */\n
-Line Marker: #line %d "%f"\n
+Line Marker: "#line %d \"%f\"\n"
 
 Start Definition: #define %S\s
 Prolong Definition: \\\n\s\s\s\s
@@ -68,10 +68,10 @@ keyword while
 colouring {
 	runs of unquoted {
 		runs of !identifier {
-			keyword !reserved => !reserved
-			keyword !function => !function
-			keyword !constant => !constant
-			keyword !element => {
+			keyword of !reserved => !reserved
+			keyword of !function => !function
+			keyword of !constant => !constant
+			keyword of !element => {
 				optionally spaced prefix . => !element
 				optionally spaced prefix -> => !element
 			}
