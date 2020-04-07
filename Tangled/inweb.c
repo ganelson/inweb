@@ -3340,15 +3340,15 @@ void  ACMESupport__insert_line_marker(programming_language *pl, 	text_stream *OU
 void  ACMESupport__comment(programming_language *pl, 	text_stream *OUT, text_stream *comm) ;
 #line 153 "inweb/Chapter 4/ACME Support.w"
 int  ACMESupport__parse_comment(programming_language *pl, 	text_stream *line, text_stream *part_before_comment, text_stream *part_within_comment) ;
-#line 208 "inweb/Chapter 4/ACME Support.w"
+#line 210 "inweb/Chapter 4/ACME Support.w"
 int  ACMESupport__text_at(text_stream *line, int i, text_stream *pattern) ;
-#line 222 "inweb/Chapter 4/ACME Support.w"
+#line 224 "inweb/Chapter 4/ACME Support.w"
 int  ACMESupport__suppress_disclaimer(programming_language *pl) ;
-#line 229 "inweb/Chapter 4/ACME Support.w"
+#line 231 "inweb/Chapter 4/ACME Support.w"
 void  ACMESupport__begin_weave(programming_language *pl, section *S, weave_target *wv) ;
-#line 238 "inweb/Chapter 4/ACME Support.w"
+#line 240 "inweb/Chapter 4/ACME Support.w"
 void  ACMESupport__reset_syntax_colouring(programming_language *pl) ;
-#line 242 "inweb/Chapter 4/ACME Support.w"
+#line 244 "inweb/Chapter 4/ACME Support.w"
 int  ACMESupport__syntax_colour(programming_language *pl, text_stream *OUT, weave_target *wv, 	web *W, chapter *C, section *S, source_line *L, text_stream *matter, 	text_stream *colouring) ;
 #line 17 "inweb/Chapter 4/The Painter.w"
 void  Painter__reset_syntax_colouring(programming_language *pl) ;
@@ -19057,7 +19057,7 @@ void ACMESupport__comment(programming_language *pl,
 
 int ACMESupport__parse_comment(programming_language *pl,
 	text_stream *line, text_stream *part_before_comment, text_stream *part_within_comment) {
-	int q_mode = 0, c_mode = FALSE, non_white_space = FALSE, c_position = -1, c_end = -1;
+	int q_mode = 0, c_mode = 0, non_white_space = FALSE, c_position = -1, c_end = -1;
 	for (int i=0; i<Str__len(line); i++) {
 		wchar_t c = Str__get_at(line, i);
 		if (c_mode == 2) {
@@ -19080,19 +19080,21 @@ int ACMESupport__parse_comment(programming_language *pl,
 				c_mode = 2; c_position = i; non_white_space = FALSE;
 				i += Str__len(pl->multiline_comment_open) - 1;
 			}
-			if (ACMESupport__text_at(line, i, pl->line_comment)) {
-				c_mode = 1; c_position = i; c_end = Str__len(line); non_white_space = FALSE;
-				i += Str__len(pl->line_comment) - 1;
-			}
-			if (ACMESupport__text_at(line, i, pl->whole_line_comment)) {
-				int material_exists = FALSE;
-				for (int j=0; j<i; j++)
-					if (!(Characters__is_whitespace(Str__get_at(line, j))))
-						material_exists = TRUE;
-				if (material_exists == FALSE) {
-					c_mode = 1; c_position = i; c_end = Str__len(line);
-					non_white_space = FALSE;
-					i += Str__len(pl->whole_line_comment) - 1;
+			if (c_mode == 0) {
+				if (ACMESupport__text_at(line, i, pl->line_comment)) {
+					c_mode = 1; c_position = i; c_end = Str__len(line); non_white_space = FALSE;
+					i += Str__len(pl->line_comment) - 1;
+				}
+				if (ACMESupport__text_at(line, i, pl->whole_line_comment)) {
+					int material_exists = FALSE;
+					for (int j=0; j<i; j++)
+						if (!(Characters__is_whitespace(Str__get_at(line, j))))
+							material_exists = TRUE;
+					if (material_exists == FALSE) {
+						c_mode = 1; c_position = i; c_end = Str__len(line);
+						non_white_space = FALSE;
+						i += Str__len(pl->whole_line_comment) - 1;
+					}
 				}
 			}
 		}
@@ -19120,19 +19122,19 @@ int ACMESupport__text_at(text_stream *line, int i, text_stream *pattern) {
 	return TRUE;
 }
 
-#line 222 "inweb/Chapter 4/ACME Support.w"
+#line 224 "inweb/Chapter 4/ACME Support.w"
 int ACMESupport__suppress_disclaimer(programming_language *pl) {
 	return pl->suppress_disclaimer;
 }
 
-#line 229 "inweb/Chapter 4/ACME Support.w"
+#line 231 "inweb/Chapter 4/ACME Support.w"
 void ACMESupport__begin_weave(programming_language *pl, section *S, weave_target *wv) {
 	reserved_word *rw;
 	LOOP_OVER_LINKED_LIST(rw, reserved_word, pl->reserved_words)
 		Analyser__mark_reserved_word_for_section(S, rw->word, rw->colour);
 }
 
-#line 238 "inweb/Chapter 4/ACME Support.w"
+#line 240 "inweb/Chapter 4/ACME Support.w"
 void ACMESupport__reset_syntax_colouring(programming_language *pl) {
 	Painter__reset_syntax_colouring(pl);
 }

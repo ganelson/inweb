@@ -152,7 +152,7 @@ void ACMESupport::comment(programming_language *pl,
 
 int ACMESupport::parse_comment(programming_language *pl,
 	text_stream *line, text_stream *part_before_comment, text_stream *part_within_comment) {
-	int q_mode = 0, c_mode = FALSE, non_white_space = FALSE, c_position = -1, c_end = -1;
+	int q_mode = 0, c_mode = 0, non_white_space = FALSE, c_position = -1, c_end = -1;
 	for (int i=0; i<Str::len(line); i++) {
 		wchar_t c = Str::get_at(line, i);
 		if (c_mode == 2) {
@@ -175,19 +175,21 @@ int ACMESupport::parse_comment(programming_language *pl,
 				c_mode = 2; c_position = i; non_white_space = FALSE;
 				i += Str::len(pl->multiline_comment_open) - 1;
 			}
-			if (ACMESupport::text_at(line, i, pl->line_comment)) {
-				c_mode = 1; c_position = i; c_end = Str::len(line); non_white_space = FALSE;
-				i += Str::len(pl->line_comment) - 1;
-			}
-			if (ACMESupport::text_at(line, i, pl->whole_line_comment)) {
-				int material_exists = FALSE;
-				for (int j=0; j<i; j++)
-					if (!(Characters::is_whitespace(Str::get_at(line, j))))
-						material_exists = TRUE;
-				if (material_exists == FALSE) {
-					c_mode = 1; c_position = i; c_end = Str::len(line);
-					non_white_space = FALSE;
-					i += Str::len(pl->whole_line_comment) - 1;
+			if (c_mode == 0) {
+				if (ACMESupport::text_at(line, i, pl->line_comment)) {
+					c_mode = 1; c_position = i; c_end = Str::len(line); non_white_space = FALSE;
+					i += Str::len(pl->line_comment) - 1;
+				}
+				if (ACMESupport::text_at(line, i, pl->whole_line_comment)) {
+					int material_exists = FALSE;
+					for (int j=0; j<i; j++)
+						if (!(Characters::is_whitespace(Str::get_at(line, j))))
+							material_exists = TRUE;
+					if (material_exists == FALSE) {
+						c_mode = 1; c_position = i; c_end = Str::len(line);
+						non_white_space = FALSE;
+						i += Str::len(pl->whole_line_comment) - 1;
+					}
 				}
 			}
 		}
