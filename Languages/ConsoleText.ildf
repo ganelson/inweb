@@ -1,0 +1,19 @@
+Name: "ConsoleText"
+Details: "For styling command line text in documentation"
+Extension: ".txt"
+
+colouring {
+	=> !plain
+	brackets in /(\$) (.*)/ {
+		number 1 => !element
+		number 2 => {
+			=> !plain
+			matches of / -[A-Za-z0-9-]+/ {
+				=> !identifier
+			}
+			matches of /\S+/ {
+				number 1 => !function
+			}
+		}
+	}
+}

@@ -276,8 +276,6 @@ return from the function.
 <p class="inwebparagraph"><a id="SP3_7"></a><b>&#167;3.7.  </b>And here we break up a pathname like
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">/Users/bobama/Library/Inform/Extensions/Hillary Clinton/Health Care.i7x</span>
 </pre>
@@ -285,14 +283,10 @@ return from the function.
 <p class="inwebparagraph">into three components:
 </p>
 
-<p class="inwebparagraph"></p>
-
-<pre class="display">
-        <span class="plain">topdirpath| is |/Users/bobama/Library/Inform/Extensions</span>
-    , and its casing is correct    <span class="plain">ciextdirpath| is |Hillary Clinton</span>
-    , but its casing may not be correct    <span class="plain">ciextname| is |Health Care.i7x</span>
-    , but its casing may not be correct</pre>
-
+<ul class="items"><li>(a) <code class="display"><span class="extract">topdirpath</span></code> is <code class="display"><span class="extract">/Users/bobama/Library/Inform/Extensions</span></code>, and its casing is correct.
+</li><li>(b) <code class="display"><span class="extract">ciextdirpath</span></code> is <code class="display"><span class="extract">Hillary Clinton</span></code>, but its casing may not be correct.
+</li><li>(c) <code class="display"><span class="extract">ciextname</span></code> is <code class="display"><span class="extract">Health Care.i7x</span></code>, but its casing may not be correct.
+</li></ul>
 <p class="inwebparagraph">The contents of <code class="display"><span class="extract">workstring</span></code> are not significant afterwards.
 </p>
 

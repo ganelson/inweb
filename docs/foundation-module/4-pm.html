@@ -130,15 +130,13 @@ and I didn't want to complicate the build process by linking to it.)
 short texts against particularly simple patterns. Here is an example of use:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">match_results mr = Regexp::create_mr();</span>
-        <span class="plain">if (Regexp::match(&amp;mr, text, L"fish (%d+) ([a-zA-Z_][a-zA-Z0-9_]*) *") {</span>
-        <span class="plain">    PRINT("Fish number: %S\n", mr.exp[0]);</span>
-        <span class="plain">    PRINT("Fish name: %S\n", mr.exp[1]);</span>
+        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"fish (%d+) ([a-zA-Z_][a-zA-Z0-9_]*) *"</span><span class="plain">) {</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Fish number: %S\n"</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Fish name: %S\n"</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
         <span class="plain">}</span>
-        <span class="plain">Regexp::dispose_of(&amp;mr);</span>
+        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph">Note the <code class="display"><span class="extract">L</span></code> at the front of the regex itself: this is a wide string.
@@ -590,10 +588,8 @@ from the start right to the end), and multiple replacements can be made.
 For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">Regexp::replace(text, L"[aeiou]", L"!", REP_REPEATING);</span>
+        <span class="functiontext">Regexp::replace</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"[aeiou]"</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"!"</span><span class="plain">, </span><span class="constant">REP_REPEATING</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph">will turn the <code class="display"><span class="extract">text</span></code> "goose eggs" into "g!!s! !ggs".

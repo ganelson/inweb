@@ -28,13 +28,13 @@ forms of version number: either just |N|, which fits the scheme above, or
 reasons: IF enthusiasts know it well from the banner text of the Infocom
 titles of the 1980s. This story file, for instance, was compiled at the
 time of the Reykjavik summit between Presidents Gorbachev and Reagan:
-
-	|Moonmist|
-	|Infocom interactive fiction - a mystery story|
-	|Copyright (c) 1986 by Infocom, Inc. All rights reserved.|
-	|Moonmist is a trademark of Infocom, Inc.|
-	|Release number 9 / Serial number 861022|
-
+= (text)
+	Moonmist
+	Infocom interactive fiction - a mystery story
+	Copyright (c) 1986 by Infocom, Inc. All rights reserved.
+	Moonmist is a trademark of Infocom, Inc.
+	Release number 9 / Serial number 861022
+=
 Story file collectors customarily abbreviate this in catalogues to |9/861022|.
 
 We will therefore allow this notation, and convert it silently each way.

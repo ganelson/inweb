@@ -69,15 +69,18 @@ directory to be the one in which Inweb is stored - that is, not the <code class=
 directory itself, but its parent. Then type one of the following:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ make -f inweb/inweb.mk macos</span>
-        <span class="plain">$ make -f inweb/inweb.mk macos32</span>
-        <span class="plain">$ make -f inweb/inweb.mk linux</span>
-        <span class="plain">$ make -f inweb/inweb.mk windows</span>
-        <span class="plain">$ make -f inweb/inweb.mk unix</span>
-        <span class="plain">$ make -f inweb/inweb.mk android</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk macos</span>
+
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk macos32</span>
+
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk linux</span>
+
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk windows</span>
+
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk unix</span>
+
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk android</span>
 </pre>
 
 <p class="inwebparagraph">Unix is for any generic version of Unix, non-Linux, non-MacOS: Solaris, for
@@ -91,8 +94,6 @@ the default macos unless you need to build for an old version of MacOS.
 <p class="inwebparagraph">You should see some typical make chatter, ending in a reply such as:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">=== Platform set to 64-bit MacOS. Now: make -f inweb/inweb.mk initial ===</span>
 </pre>
@@ -105,10 +106,8 @@ included in the Git repository for Inweb, in order to oblige users to choose
 a platform before doing anything else.) Anyway, next do as instructed:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ make -f inweb/inweb.mk initial</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk initial</span>
 </pre>
 
 <p class="inwebparagraph">With that done, make should go on to compile the Inweb executable, leaving
@@ -116,10 +115,8 @@ you with a working copy of the software. You need never run that
 platform-specific command, or make as <code class="display"><span class="extract">initial</span></code>, again: you can simply:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ make -f inweb/inweb.mk</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk</span>
 </pre>
 
 <p class="inwebparagraph">if you want to alter and recompile Inweb.
@@ -128,20 +125,16 @@ platform-specific command, or make as <code class="display"><span class="extract
 <p class="inwebparagraph">To test that all is well:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inweb/Tangled/inweb -help</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inweb/Tangled/inweb</span><span class="identifier"> -help</span>
 </pre>
 
 <p class="inwebparagraph">That location is where the compiled tool ended up. Users of, for example,
 the <code class="display"><span class="extract">bash</span></code> shell may want to
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ alias inweb='inweb/Tangled/inweb'</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">alias</span><span class="plain"> inweb='inweb/Tangled/inweb'</span>
 </pre>
 
 <p class="inwebparagraph">to save a little typing, but in this documentation we always spell it out.

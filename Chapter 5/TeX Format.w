@@ -738,8 +738,19 @@ we also look out for |{}^3\sqrt{N}| for cube root.
 	else if (Str::eq(macro, I"sum")) PUT((wchar_t) 0x03A3);
 	else if (Str::eq(macro, I"prod")) PUT((wchar_t) 0x03A0);
 	else {
-		if (Str::len(macro) > 0)
-			PRINT("Passing through unknown TeX macro \\%S:  %S", macro, text);
+		if (Str::len(macro) > 0) {
+			int suspect = TRUE;
+			LOOP_THROUGH_TEXT(pos, macro) {
+				wchar_t c = Str::get(pos);
+				if ((c >= 'A') && (c <= 'Z')) continue;
+				if ((c >= 'a') && (c <= 'z')) continue;
+				suspect = FALSE;
+			}
+			if (Str::eq(macro, I"n")) suspect = FALSE;
+			if (Str::eq(macro, I"t")) suspect = FALSE;
+			if (suspect)
+				PRINT("[Passing through unknown TeX macro \\%S:\n  %S\n", macro, text);
+		}
 		WRITE("\\%S", macro);
 	}
 

@@ -1,13 +1,20 @@
 Inweb can see the following programming language definitions:
 
-Inform 7: The natural-language based language Inform 7
-InC: The Inform-tools extension to the C programming language
-Inform 6: The C-like interactive fiction language Inform 6
-C++: The C++ programming language
-None: For programs in languages not yet supported by Inweb
-ILDF: The Inweb Language Definition File format
-Plain Text: For text files which are not programs
-Perl: The scripting language Perl 5
-C: The C programming language
-BoxArt: For styling ASCII-art diagrams with boxes and lines
 ACME: The ACME assembly language for 6502 and related CPUs
+Blurb: The Blorb packaging specification language
+BoxArt: For styling ASCII-art diagrams with boxes and lines
+C: The C programming language
+C++: The C++ programming language
+ConsoleText: For styling command line text in documentation
+Delia: For defining test recipes in Intest
+ILDF: The Inweb Language Definition File format
+InC: The Inform-tools extension to the C programming language
+Indoc: The markup syntax for the Indoc documentation tool
+Inform 6: The C-like interactive fiction language Inform 6
+Inform 7: The natural-language based language Inform 7
+Inter: The textual form of intermediate Inform code
+Inter Pipeline: For pipelines of Inform code-generation stages
+Inweb: The markup language for the Inweb literate programming system
+None: For programs in languages not yet supported by Inweb
+Perl: The scripting language Perl 5
+Plain Text: For text files which are not programs

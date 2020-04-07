@@ -48,7 +48,7 @@ This does:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CLike::make_c_like is used in 4/pl (<a href="4-pl.html#SP6_2">&#167;6.2</a>).</p>
+<p class="endnote">The function CLike::make_c_like is used in 4/pl (<a href="4-pl.html#SP7_2">&#167;7.2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Parsing. </b>After a web has been read in and then parsed, code supporting its language
 is then called to do any further parsing it might want to. The code below
@@ -128,15 +128,13 @@ source line being scanned lies within.
 something like this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">typedef struct fruit {</span>
-        <span class="plain">    struct pip the_pips[5];</span>
-        <span class="plain">    struct fruit *often_confused_with;</span>
-        <span class="plain">    struct tree_species *grows_on;</span>
-        <span class="plain">    int typical_weight;</span>
-        <span class="plain">} fruit;</span>
+        <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="identifier">fruit</span><span class="plain"> {</span>
+            <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">pip</span><span class="plain"> </span><span class="identifier">the_pips</span><span class="plain">[5];</span>
+            <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">fruit</span><span class="plain"> *</span><span class="identifier">often_confused_with</span><span class="plain">;</span>
+            <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">tree_species</span><span class="plain"> *</span><span class="identifier">grows_on</span><span class="plain">;</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">typical_weight</span><span class="plain">;</span>
+        <span class="plain">} </span><span class="identifier">fruit</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph">which adopts the traditional layout conventions of Kernighan and Ritchie.
@@ -293,10 +291,8 @@ takes care of it automatically.
 the sake of an illustrative example, let's suppose that line is:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">    unsigned long long int *val;</span>
+        <span class="plain">unsigned long long int *val;</span>
 </pre>
 
 <p class="inwebparagraph">We need to extract the element name, <code class="display"><span class="extract">val</span></code>, and make a note of it.
@@ -471,10 +467,8 @@ before <code class="display"><span class="extract">struct S</span></code> in the
 matches only identifier characters and <code class="display"><span class="extract">*</span></code> is not one of those, a line like
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">    struct fruit *often_confused_with;</span>
+        <span class="plain">struct fruit *often_confused_with;</span>
 </pre>
 
 <p class="inwebparagraph">will not trip the switch here.
@@ -524,8 +518,6 @@ matches only identifier characters and <code class="display"><span class="extrac
 
 <p class="inwebparagraph"><a id="SP2_4"></a><b>&#167;2.4. Functions. </b>Second round: we recognise a C function as being a line which takes the form
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">type identifier(args...</span>
@@ -626,11 +618,9 @@ forms like <code class="display"><span class="extract">static long long int</spa
 <p class="inwebparagraph"><a id="SP2_4_2_1"></a><b>&#167;2.4.2.1.  </b>In some cases the function's declaration runs over several lines:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">void World::Subjects::make_adj_const_domain(inference_subject *infs,</span>
-        <span class="plain">	instance *nc, property *prn) {</span>
+        <span class="reserved">void</span><span class="plain"> </span><span class="identifier">World::Subjects::make_adj_const_domain</span><span class="plain">(</span><span class="identifier">inference_subject</span><span class="plain"> *</span><span class="identifier">infs</span><span class="plain">,|</span>
+            <span class="identifier">instance</span><span class="plain"> *</span><span class="identifier">nc</span><span class="plain">, </span><span class="identifier">property</span><span class="plain"> *</span><span class="identifier">prn</span><span class="plain">) {|</span>
 </pre>
 
 <p class="inwebparagraph">Having read the first line, <code class="display"><span class="extract">arguments</span></code> would contain <code class="display"><span class="extract">inference_subject *infs,</span></code>
@@ -949,8 +939,6 @@ defined within some number of nested <code class="display"><span class="extract"
 we reproduce those around the predeclaration: except, as a special trick,
 if the line contains a particular comment. For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">#ifdef SOLARIS /* inweb: always predeclare */</span>

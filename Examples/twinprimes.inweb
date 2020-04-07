@@ -2,8 +2,6 @@ Title: twinprimes
 Author: Graham Nelson
 Purpose: A single-file test web for inweb.
 Language: C
-Web Syntax Version: 2
-Licence: This is a free, open-source program published under the Artistic License 2.0.
 
 @h The conjecture.
 It is widely believed that there are an infinite number of twin primes, that
@@ -28,8 +26,7 @@ int main(int argc, char *argv[]) {
 		printf("%d and %d\n", i, i+2);
 
 @ This ought to print:
-
-= (not code)
+= (text)
 	3 and 5
 	5 and 7
 	11 and 13

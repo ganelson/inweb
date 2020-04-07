@@ -113,9 +113,9 @@ Method calls are also done with a macro, but it has to come in four variants:
 (d) |VMETHOD_CALLV| for a method without arguments which returns nothing.
 
 For example:
-
-	|IMETHOD_CALL(some_object, UNUSED_METHOD_ID_MTID, I"Hello", 17)|
-
+= (text as code)
+	IMETHOD_CALL(some_object, UNUSED_METHOD_ID_MTID, I"Hello", 17)
+=
 Note that it's entirely possible for the |upon| object to have multiple methods
 added for the same ID -- or none. In the |V| (void) cases, what we then do is
 to call each of them in turn. In the |I| (int) cases, we call each in turn, but

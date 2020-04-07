@@ -75,14 +75,14 @@ void CLike::further_parsing(programming_language *self, web *W) {
 @h Structures.
 We're going to assume that the C source code uses structures looking
 something like this:
-
-	|typedef struct fruit {|
-	|    struct pip the_pips[5];|
-	|    struct fruit *often_confused_with;|
-	|    struct tree_species *grows_on;|
-	|    int typical_weight;|
-	|} fruit;|
-
+= (text as C)
+	typedef struct fruit {
+	    struct pip the_pips[5];
+	    struct fruit *often_confused_with;
+	    struct tree_species *grows_on;
+	    int typical_weight;
+	} fruit;
+=
 which adopts the traditional layout conventions of Kernighan and Ritchie.
 The structure definitions in this Inweb web all take the required form,
 of course, and provide many more examples.
@@ -176,9 +176,9 @@ typedef struct c_structure {
 
 @ At this point we're reading a line within the structure's definition; for
 the sake of an illustrative example, let's suppose that line is:
-
-	|    unsigned long long int *val;|
-
+= (text)
+	unsigned long long int *val;
+=
 We need to extract the element name, |val|, and make a note of it.
 
 @<Work through the a line in the structure definition@> =
@@ -272,9 +272,9 @@ before |struct S| in the tangled output.
 It's important to note that |struct S| merely having a member of type
 |struct *T| does not create a dependency. In the code below, because |%i|
 matches only identifier characters and |*| is not one of those, a line like
-
-	|    struct fruit *often_confused_with;|
-
+= (text)
+    struct fruit *often_confused_with;
+=
 will not trip the switch here.
 
 @<Work out which structs contain which others@> =
@@ -300,9 +300,9 @@ will not trip the switch here.
 
 @h Functions.
 Second round: we recognise a C function as being a line which takes the form
-
-	|type identifier(args...|
-
+= (text)
+	type identifier(args...
+=
 where we parse |type| only minimally. In InC (only), the identifier can
 contain namespace dividers written |::|. Function declarations, we will assume,
 always begin on column 1 of their source files, and we expect them to take
@@ -362,10 +362,10 @@ forms like |static long long int| will work.
 		@<Check that the function has its namespace correctly declared@>;
 
 @ In some cases the function's declaration runs over several lines:
-
-	|void World::Subjects::make_adj_const_domain(inference_subject *infs,|
-	|	instance *nc, property *prn) {|
-
+= (text as code)
+	void World::Subjects::make_adj_const_domain(inference_subject *infs,|
+		instance *nc, property *prn) {|
+=		
 Having read the first line, |arguments| would contain |inference_subject *infs,|
 and would thus be incomplete. We continue across subsequent lines until we
 reach an open brace |{|.
@@ -577,9 +577,9 @@ void CLike::tangle_structure(OUTPUT_STREAM, programming_language *self, c_struct
 defined within some number of nested |#ifdef| or |#ifndef| directives, then
 we reproduce those around the predeclaration: except, as a special trick,
 if the line contains a particular comment. For example:
-
-	|#ifdef SOLARIS /* inweb: always predeclare */|
-
+= (text)
+	#ifdef SOLARIS /* inweb: always predeclare */
+=
 That exempts any functions inside this condition from meeting the condition
 in order to be predeclared. It's a trick used in the foundation module just
 a couple of times: the idea is that although a definition of the functions

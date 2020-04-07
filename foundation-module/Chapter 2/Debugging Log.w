@@ -18,9 +18,9 @@ To write to the debugging log, we must in principle write to a stream called
 |DL|. In practice we more often use a pair of pseudo-functions called |LOG|
 and |LOGIF|, which are macros defined in the section on Streams. For
 instance, the pseudo-function-call
-
-	|LOGIF(WHATEVER, "Heading %d skipped\n", n);|
-
+= (text)
+	LOGIF(WHATEVER, "Heading %d skipped\n", n);
+=
 prints the line in question to the debugging log only if the aspect |WHATEVER|
 is currently switched on. Plain |LOG| does the same, but unconditionally.
 

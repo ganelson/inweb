@@ -622,33 +622,39 @@ division in the current section.
                 <span class="identifier">current_paragraph</span><span class="plain">-&gt;</span><span class="element">placed_very_early</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">current_paragraph</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"(early code)"</span><span class="plain">))) {</span>
                 <span class="identifier">current_paragraph</span><span class="plain">-&gt;</span><span class="element">placed_early</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">current_paragraph</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"(not code)"</span><span class="plain">))) {</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">current_paragraph</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">L</span><span class="string">"%((%c*?) *text%)"</span><span class="plain">))) {</span>
+                &lt;<span class="cwebmacro">Make plainer</span> <span class="cwebmacronumber">1.1.6.7.1</span>&gt;<span class="plain">;</span>
                 <span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="constant">TEXT_EXTRACT_LCAT</span><span class="plain">;</span>
                 <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
                 <span class="identifier">extract_mode</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">current_paragraph</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">L</span><span class="string">"%(sample (%c+) code%)"</span><span class="plain">))) {</span>
-                <span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="constant">TEXT_EXTRACT_LCAT</span><span class="plain">;</span>
-                <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="functiontext">Languages::find_by_name</span><span class="plain">(</span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">W</span><span class="plain">);</span>
-                <span class="identifier">extract_mode</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">current_paragraph</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">L</span><span class="string">"%(sample code%)"</span><span class="plain">))) {</span>
+                <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">L</span><span class="string">"%((%c*?) *text as code%)"</span><span class="plain">))) {</span>
+                &lt;<span class="cwebmacro">Make plainer</span> <span class="cwebmacronumber">1.1.6.7.1</span>&gt;<span class="plain">;</span>
                 <span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="constant">TEXT_EXTRACT_LCAT</span><span class="plain">;</span>
                 <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">sect_language</span><span class="plain">;</span>
                 <span class="identifier">extract_mode</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">current_paragraph</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">L</span><span class="string">"%(text from (%c+) as (%c+)%)"</span><span class="plain">))) {</span>
+                <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">L</span><span class="string">"%((%c*?) *text as (%c+)%)"</span><span class="plain">))) {</span>
+                &lt;<span class="cwebmacro">Make plainer</span> <span class="cwebmacronumber">1.1.6.7.1</span>&gt;<span class="plain">;</span>
+                <span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="constant">TEXT_EXTRACT_LCAT</span><span class="plain">;</span>
                 <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="functiontext">Languages::find_by_name</span><span class="plain">(</span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1], </span><span class="identifier">W</span><span class="plain">);</span>
-                &lt;<span class="cwebmacro">Spool from file</span> <span class="cwebmacronumber">1.1.6.7.1</span>&gt;<span class="plain">;</span>
+                <span class="identifier">extract_mode</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">current_paragraph</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">L</span><span class="string">"%(text from (%c+)%)"</span><span class="plain">))) {</span>
-                <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-                &lt;<span class="cwebmacro">Spool from file</span> <span class="cwebmacronumber">1.1.6.7.1</span>&gt;<span class="plain">;</span>
+                <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">L</span><span class="string">"%((%c*?) *text from (%c+) as code%)"</span><span class="plain">))) {</span>
+                &lt;<span class="cwebmacro">Make plainer</span> <span class="cwebmacronumber">1.1.6.7.1</span>&gt;<span class="plain">;</span>
+                <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">sect_language</span><span class="plain">;</span>
+                &lt;<span class="cwebmacro">Spool from file</span> <span class="cwebmacronumber">1.1.6.7.2</span>&gt;<span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">current_paragraph</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">L</span><span class="string">"%(undisplayed text from (%c+)%)"</span><span class="plain">))) {</span>
+                <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">L</span><span class="string">"%((%c*?) *text from (%c+) as (%c+)%)"</span><span class="plain">))) {</span>
+                &lt;<span class="cwebmacro">Make plainer</span> <span class="cwebmacronumber">1.1.6.7.1</span>&gt;<span class="plain">;</span>
+                <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="functiontext">Languages::find_by_name</span><span class="plain">(</span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[2], </span><span class="identifier">W</span><span class="plain">);</span>
+                &lt;<span class="cwebmacro">Spool from file</span> <span class="cwebmacronumber">1.1.6.7.2</span>&gt;<span class="plain">;</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">current_paragraph</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">(</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">L</span><span class="string">"%((%c*?) *text from (%c+)%)"</span><span class="plain">))) {</span>
+                &lt;<span class="cwebmacro">Make plainer</span> <span class="cwebmacronumber">1.1.6.7.1</span>&gt;<span class="plain">;</span>
                 <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-                <span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">plainer</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-                &lt;<span class="cwebmacro">Spool from file</span> <span class="cwebmacronumber">1.1.6.7.1</span>&gt;<span class="plain">;</span>
+                &lt;<span class="cwebmacro">Spool from file</span> <span class="cwebmacronumber">1.1.6.7.2</span>&gt;<span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"unknown bracketed annotation"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
             <span class="plain">}</span>
@@ -665,14 +671,30 @@ division in the current section.
 <p class="endnote">This code is used in <a href="#SP1_1_6">&#167;1.1.6</a>.</p>
 
 <p class="inwebparagraph"><a id="SP1_1_6_7_1"></a><b>&#167;1.1.6.7.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Spool from file</span> <span class="cwebmacronumber">1.1.6.7.1</span>&gt; =
+&lt;<span class="cwebmacrodefn">Make plainer</span> <span class="cwebmacronumber">1.1.6.7.1</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">plainer</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"undisplayed"</span><span class="plain">)) </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">plainer</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]) &gt; </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"only 'undisplayed' can precede 'text' here"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP1_1_6_7">&#167;1.1.6.7</a> (6 times).</p>
+
+<p class="inwebparagraph"><a id="SP1_1_6_7_2"></a><b>&#167;1.1.6.7.2.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Spool from file</span> <span class="cwebmacronumber">1.1.6.7.2</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
         <span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">category</span><span class="plain"> = </span><span class="constant">BEGIN_CODE_LCAT</span><span class="plain">;</span>
         <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">;</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text_relative</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Filenames::from_text_relative</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
         <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">lines</span><span class="plain"> = </span><span class="functiontext">Painter::lines</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">);</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">;</span>
         <span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">latest</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">;</span>
@@ -968,8 +990,6 @@ retained the stream-based style of CWEB, where escape characters can appear
 anywhere in a line and line breaks are not significant. Thus
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">@h The chronology of French weaving. Auguste de Papillon (1734-56) soon</span>
 </pre>
@@ -977,8 +997,6 @@ anywhere in a line and line breaks are not significant. Thus
 <p class="inwebparagraph">is split into two, so that the title of the paragraph is just "The chronology
 of French weaving" and the remainder,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">Auguste de Papillon (1734-56) soon</span>
@@ -1161,7 +1179,7 @@ is not elegant but handles the back end of both possibilities.
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">prologue</span><span class="plain">);</span>
         <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">XL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">XL</span><span class="plain">-&gt;</span><span class="element">next_line</span><span class="plain">) &amp;&amp; (</span><span class="identifier">XL</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain"> == </span><span class="identifier">S</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(((</span><span class="identifier">adjust</span><span class="plain">) &amp;&amp; (</span><span class="identifier">isalnum</span><span class="plain">(</span><span class="functiontext">Str::get_first_char</span><span class="plain">(</span><span class="identifier">XL</span><span class="plain">-&gt;</span><span class="element">text</span><span class="plain">)))) ||</span>
-            <span class="plain">((!</span><span class="identifier">adjust</span><span class="plain">) &amp;&amp; (</span><span class="identifier">XL</span><span class="plain">-&gt;</span><span class="element">category</span><span class="plain"> == </span><span class="constant">COMMENT_BODY_LCAT</span><span class="plain">)))) {</span>
+            <span class="plain"> ((!</span><span class="identifier">adjust</span><span class="plain">) &amp;&amp; (</span><span class="identifier">XL</span><span class="plain">-&gt;</span><span class="element">category</span><span class="plain"> == </span><span class="constant">COMMENT_BODY_LCAT</span><span class="plain">)))) {</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="string">" %S"</span><span class="plain">, </span><span class="identifier">XL</span><span class="plain">-&gt;</span><span class="element">text</span><span class="plain">);</span>
             <span class="identifier">XL</span><span class="plain">-&gt;</span><span class="element">category</span><span class="plain"> = </span><span class="constant">PURPOSE_BODY_LCAT</span><span class="plain">;</span>
             <span class="identifier">XL</span><span class="plain">-&gt;</span><span class="element">is_commentary</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>

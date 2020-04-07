@@ -207,9 +207,9 @@ After a line like |<action-clause> ::=|, Preform grammar follows on subsequent
 lines until we hit the end of the paragraph, or a white-space line, whichever
 comes first. Each line of grammar is categorised |PREFORM_GRAMMAR_LCAT|.
 If we have a line with an arrow, like so:
-
-	|porcupine tree  ==>  2|
-
+= (text)
+	porcupine tree  ==>  2
+=
 then the text on the left goes into |text_operand| and the right into
 |text_operand2|, with the arrow itself (and white space around it) cut out.
 
@@ -233,9 +233,9 @@ then the text on the left goes into |text_operand| and the right into
 	}
 
 @ In case we have a comment at the end of the grammar, like this:
-
-	|porcupine tree  /* what happens now? */|
-
+= (text)
+	porcupine tree  /* what happens now? */
+=
 we want to remove it. The regular expression here isn't terribly legible, but
 trust me, it's correct.
 
@@ -335,9 +335,9 @@ typedef struct text_literal {
 } text_literal;
 
 @ So suppose we've got a line of web such as
-
-	|text_stream *T = I"quartz";|
-
+= (text)
+	text_stream *T = I"quartz";
+=
 We create the necessary I-literal, and splice the line so that it now reads
 |text_stream *T = TL_IS_123;|. (That's why we don't call any of this on a
 weave run; we're actually amending the code of the web.)
@@ -482,13 +482,13 @@ int InCSupport::will_insert_in_tangle(programming_language *self, source_line *L
 
 @ ...and this is how. As can be seen, each nonterminal turns into a C function.
 In the case of an internal definition, like
-
-	|<k-kind-for-template> internal {|
-
+= (text)
+	<k-kind-for-template> internal {
+=
 we tangle this opening line to
-
-	|int k_kind_for_template_NTM(wording W, int *X, void **XP) {|
-
+= (text as code)
+	int k_kind_for_template_NTM(wording W, int *X, void **XP) {
+=
 that is, to a function which returns |TRUE| if it makes a match on the text
 excerpt in Inform's source text, |FALSE| otherwise; if it matches and produces
 an integer and/or pointer result, these are copied into |*X| and |*XP|. The
@@ -511,13 +511,13 @@ void InCSupport::insert_in_tangle(programming_language *self, text_stream *OUT, 
 
 @ On the other hand, a grammar nonterminal tangles to a "compositor function".
 Thus the opening line
-
-	|<action-clause> ::=|
-
+= (text)
+	<action-clause> ::=
+=
 tangles to a function header:
-
-	|int action_clause_NTMC(int *X, void **XP, int *R, void **RP, wording *FW, wording W) {|
-
+= (text as code)
+	int action_clause_NTMC(int *X, void **XP, int *R, void **RP, wording *FW, wording W) {
+=
 Subsequent lines of the nonterminal are categorised |PREFORM_GRAMMAR_LCAT|
 and thus won't tangle to code at all, by the usual rules; so we tangle from
 them directly here.
@@ -531,18 +531,18 @@ nonterminal has in principle both an integer and a pointer result, though
 often one or both is undefined.
 
 A simple example would be
-
-	|<cardinal-number> + <cardinal-number> ==> R[1] + R[2]|
-
+= (text)
+	<cardinal-number> + <cardinal-number> ==> R[1] + R[2]
+=
 where the composition function would be called on a match of, say, "$5 + 7$",
 and would find the values 5 and 7 in |R[1]| and |R[2]| respectively. It would
 then add these together, store 12 in |*X|, and return |TRUE| to show that all
 was well.
 
 A more typical example, drawn from the actual Inform 7 web, is:
-
-	|<k-kind-of-kind> <k-formal-kind-variable> ==> Kinds::variable_construction(R[2], RP[1])|
-
+= (text)
+	<k-kind-of-kind> <k-formal-kind-variable> ==> Kinds::variable_construction(R[2], RP[1])
+=
 which says that the composite result -- the right-hand formula -- is formed by
 calling a particular routine on the integer result of subexpression 2
 (|<k-formal-kind-variable>|) and the pointer result of subexpression 1
@@ -600,9 +600,9 @@ assume, set |*X| and/or |*XP| in some ingenious way of its own.)
 Within the body of the formula, we allow a pseudo-macro to work: |WR[n]|
 expands to word range |n| in the match which we're compositing. This actually
 expands like so:
-
-	|action_clause_NTM->range_result[n]|
-
+= (text as code)
+	action_clause_NTM->range_result[n]
+=
 which saves a good deal of typing. (A regular C preprocessor macro couldn't
 easily do this, because it needs to include the identifier name of the
 nonterminal being parsed.)
@@ -652,24 +652,18 @@ void InCSupport::tangle_code(programming_language *self, text_stream *OUT, text_
 	}
 }
 
-@ For example, a function name like:
-
-	|Text::Parsing::get_next|
-
-must be rewritten as
-
-	|Text__Parsing__get_next|
-
-since colons aren't valid in C identifiers. The following is prone to all
-kinds of misreadings, of course; it picks up any use of |::| between an
-alphanumberic character and a letter. In particular, code like
-
-	|printf("Trying Text::Parsing::get_next now.\n");|
-
+@ For example, a function name like |Text::Parsing::get_next| must be rewritten
+as |Text__Parsing__get_next| since colons aren't valid in C identifiers. The
+following is prone to all kinds of misreadings, of course; it picks up any use
+of |::| between an alphanumberic character and a letter. In particular, code
+like
+= (text)
+	printf("Trying Text::Parsing::get_next now.\n");
+=
 will be rewritten as
-
-	|printf("Trying Text__Parsing__get_next now.\n");|
-
+= (text as code)
+	printf("Trying Text__Parsing__get_next now.\n");
+=
 This is probably unwanted, but it doesn't matter, because these Inform-only
 extension features of Inweb aren't intended for general use: only for
 Inform, where no misreadings occur.
@@ -705,13 +699,13 @@ just |<<fish>>|.
 
 @ Similarly for nonterminals; |<k-kind>| might become |k_kind_NTM|.
 Here, though, there's a complication:
-
-	|if (<k-kind>(W)) { ...|
-
+= (text)
+	if (<k-kind>(W)) { ...
+=
 must expand to:
-
-	|if (Text__Languages__parse_nt_against_word_range(k_kind_NTM, W, NULL, NULL)) { ...|
-
+= (text as code)
+	if (Text__Languages__parse_nt_against_word_range(k_kind_NTM, W, NULL, NULL)) { ...
+=
 This is all syntactic sugar to make it easier to see parsing in action.
 Anyway, it means we have to set |fcall_pos| to remember to add in the
 two |NULL| arguments when we hit the |)| a little later. We're doing all
@@ -816,9 +810,9 @@ right-hand side of the arrow in a grammar line uses a paragraph macro which
 mentions a problem message, then we transcribe a Preform comment to that
 effect. (This really is a comment: Inform ignores it, but it makes the
 file more comprehensible to human eyes.) For example,
-
-	|<article> kind ==> @<Issue C8PropertyOfKind problem@>|
-
+= (text)
+	<article> kind ==> @<Issue C8PropertyOfKind problem@>
+=
 (The code in this paragraph macro will indeed issue this problem message, we
 assume.)
 

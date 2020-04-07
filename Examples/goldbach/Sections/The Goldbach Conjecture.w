@@ -25,8 +25,7 @@ int main(int argc, char *argv[]) {
 }
 
 @ This ought to print:
-
-= (not code)
+= (text)
 	4 = 2+2
 	6 = 3+3
 	8 = 3+5
@@ -34,8 +33,8 @@ int main(int argc, char *argv[]) {
 	12 = 5+7
 	14 = 3+11 7+7
 	...
-
-@ We'll print each different pair of primes adding up to i. We
+=
+We'll print each different pair of primes adding up to i. We
 only check in the range $2 \leq j \leq i/2$ to avoid counting pairs
 twice over (thus $8 = 3+5 = 5+3$, but that's hardly two different ways).
 

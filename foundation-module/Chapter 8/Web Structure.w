@@ -126,8 +126,8 @@ web_md *WebMetadata::get(pathname *P, filename *alt_F, int syntax_version,
 
 @<Consolidate the bibliographic data@> =
 	Bibliographic::check_required_data(Wm);
-	BuildFiles::deduce_semver(Wm);
 	BuildFiles::set_bibliographic_data_for(Wm);
+	BuildFiles::deduce_semver(Wm);
 
 @h Reading the contents page.
 Making the web begins by reading the contents section, which really isn't a

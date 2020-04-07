@@ -338,6 +338,10 @@ in the source is set indented in code style.
 		Formats::text(OUT, wv, matter);
 		DISCARD_TEXT(colouring);
 		DISCARD_TEXT(original);
+if (no_inweb_errors == 0) {
+	Main::error_in_web(I"Old-style pipes here", L);
+	no_inweb_errors = 0;
+}
 		continue;
 	} else if (state->kind_of_material != REGULAR_MATERIAL) {
 		Formats::change_material(OUT, wv, state->kind_of_material, REGULAR_MATERIAL,
@@ -438,6 +442,14 @@ number of tab steps of indentation, rating 1 tab = 4 spaces:
 		}
 		Str::delete_first_character(matter);
 	}
+	if (spaces_in > 0) {
+		TEMPORARY_TEXT(respaced);
+		while (spaces_in > 0) { PUT_TO(respaced, ' '); spaces_in--; }
+		WRITE_TO(respaced, "%S", matter);
+		Str::clear(matter);
+		Str::copy(matter, respaced);
+		DISCARD_TEXT(respaced);
+	}
 
 @ Comments which run to the end of a line are set in italic type. If the
 only item on their lines, they are presented at the code tab stop;
@@ -459,15 +471,19 @@ otherwise, they are set flush right.
 @ Set the |@d| definition escape very slightly more fancily:
 
 @<Give constant definition lines slightly fancier openings@> =
-	match_results mr = Regexp::create_mr();
-	if ((Regexp::match(&mr, matter, L"@d (%c*)")) || (Regexp::match(&mr, matter, L"@define (%c*)"))) {
-		Str::copy(prefatory, I"define");
-		Str::copy(matter, mr.exp[0]);
-	} else if ((Regexp::match(&mr, matter, L"@e (%c*)")) || (Regexp::match(&mr, matter, L"@enum (%c*)"))) {
-		Str::copy(prefatory, I"enum");
-		Str::copy(matter, mr.exp[0]);
+	if (L->category == BEGIN_DEFINITION_LCAT) {
+		match_results mr = Regexp::create_mr();
+		if ((Regexp::match(&mr, matter, L"@d (%c*)")) ||
+			(Regexp::match(&mr, matter, L"@define (%c*)"))) {
+			Str::copy(prefatory, I"define");
+			Str::copy(matter, mr.exp[0]);
+		} else if ((Regexp::match(&mr, matter, L"@e (%c*)")) ||
+			(Regexp::match(&mr, matter, L"@enum (%c*)"))) {
+			Str::copy(prefatory, I"enum");
+			Str::copy(matter, mr.exp[0]);
+		}
+		Regexp::dispose_of(&mr);
 	}
-	Regexp::dispose_of(&mr);
 
 @<Find macro usages and adjust syntax colouring accordingly@> =
 	match_results mr = Regexp::create_mr();
@@ -476,7 +492,8 @@ otherwise, they are set flush right.
 		if (pmac) {
 			Str::copy(matter, mr.exp[2]);
 			Formats::source_code(OUT, wv, tab_stops_of_indentation, prefatory,
-				mr.exp[0], colouring, concluding_comment, (found == 0)?TRUE:FALSE, FALSE, TRUE);
+				mr.exp[0], colouring, concluding_comment, (found == 0)?TRUE:FALSE,
+				FALSE, TRUE);
 			LanguageMethods::reset_syntax_colouring(S->sect_language);
 			found++;
 			int defn = FALSE;
@@ -562,12 +579,12 @@ in TeX's deeply peculiar font encoding system.
 @ We want to have different heading styles for different weights, and TeX is
 horrible at using macro parameters as function arguments, so we don't want
 to pass the weight that way. Instead we use
-
-	|\weavesection|
-	|\weavesections|
-	|\weavesectionss|
-	|\weavesectionsss|
-
+= (text)
+	\weavesection
+	\weavesections
+	\weavesectionss
+	\weavesectionsss
+=
 where the weight is the number of terminal |s|s, 0 to 3. (TeX macros,
 lamentably, are not allowed digits in their name.) In the cases 0 and 1, we
 also have variants |\nsweavesection| and |\nsweavesections| which are
@@ -665,7 +682,8 @@ The endnotes describe function calls from far away, or unexpected
 structure usage, or how |CWEB|-style code substitutions were made.
 
 =
-void Weaver::show_endnotes_on_previous_paragraph(OUTPUT_STREAM, weave_target *wv, paragraph *P) {
+void Weaver::show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
+	weave_target *wv, paragraph *P) {
 	Tags::show_endnote_on_ifdefs(OUT, wv, P);
 	if (P->defines_macro)
 		@<Show endnote on where paragraph macro is used@>;

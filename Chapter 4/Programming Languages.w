@@ -53,9 +53,25 @@ programming_language *Languages::default(web *W) {
 
 void Languages::show(OUTPUT_STREAM) {
 	WRITE("Inweb can see the following programming language definitions:\n\n");
-	programming_language *pl;
-	LOOP_OVER(pl, programming_language)
+	int N = NUMBER_CREATED(programming_language);
+	programming_language **sorted_table =
+		Memory::I7_calloc(N, (int) sizeof(programming_language *), CLS_SORTING_MREASON);
+	int i=0; programming_language *pl;
+	LOOP_OVER(pl, programming_language) sorted_table[i++] = pl;
+	qsort(sorted_table, (size_t) N, sizeof(programming_language *), Languages::compare_names);
+
+	for (int i=0; i<N; i++) {
+		programming_language *pl = sorted_table[i];
 		WRITE("%S: %S\n", pl->language_name, pl->language_details);
+	}
+	Memory::I7_free(sorted_table, CLS_SORTING_MREASON, N*((int) sizeof(programming_language *)));
+}
+
+@ =
+int Languages::compare_names(const void *ent1, const void *ent2) {
+	text_stream *tx1 = (*((const programming_language **) ent1))->language_name;
+	text_stream *tx2 = (*((const programming_language **) ent2))->language_name;
+	return Str::cmp_insensitive(tx1, tx2);
 }
 
 @ We can read every language in a directory:

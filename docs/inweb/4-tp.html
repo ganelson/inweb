@@ -57,8 +57,6 @@ equal-length text where each character represents the colour of its
 corresponding character in <code class="display"><span class="extract">matter</span></code>. For example, we might start as:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">int x = 55;</span>
         <span class="plain">ppppppppppp</span>
@@ -67,11 +65,9 @@ corresponding character in <code class="display"><span class="extract">matter</s
 <p class="inwebparagraph">with every character having <code class="display"><span class="extract">PLAIN_COLOUR</span></code>, but end up with:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">int x = 55;</span>
-        <span class="plain">rrrpipppnnp</span>
+        <span class="reserved">rrr</span><span class="plain">p</span><span class="identifier">i</span><span class="plain">ppp</span><span class="constant">nn</span><span class="plain">p</span>
 </pre>
 
 <p class="inwebparagraph">We get to that by using a language's rules on literals, and then executing
@@ -399,7 +395,6 @@ rule across the whole snippet before moving on to the next.
     <span class="definitionkeyword">define</span> <span class="constant">UNSPACED_RULE_SUFFIX</span><span class="plain"> </span><span class="constant">5</span><span class="plain"> </span><span class="comment">for <code class="display"><span class="extract">suffix P</span></code></span>
     <span class="definitionkeyword">define</span> <span class="constant">SPACED_RULE_SUFFIX</span><span class="plain"> </span><span class="constant">6</span><span class="plain"> </span><span class="comment">for <code class="display"><span class="extract">spaced suffix P</span></code></span>
     <span class="definitionkeyword">define</span> <span class="constant">OPTIONALLY_SPACED_RULE_SUFFIX</span><span class="plain"> </span><span class="constant">7</span><span class="plain"> </span><span class="comment">for <code class="display"><span class="extract">optionally spaced suffix P</span></code></span>
-
 </pre>
 
 <pre class="display">
@@ -572,7 +567,7 @@ rule across the whole snippet before moving on to the next.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Painter::lines is used in 2/tp (<a href="2-tp.html#SP1_1_6_7_1">&#167;1.1.6.7.1</a>).</p>
+<p class="endnote">The function Painter::lines is used in 2/tp (<a href="2-tp.html#SP1_1_6_7_2">&#167;1.1.6.7.2</a>).</p>
 
 <p class="endnote">The function Painter::text_file_helper appears nowhere else.</p>
 

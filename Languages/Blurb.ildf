@@ -1,0 +1,10 @@
+Name: "Blurb"
+Details: "The Blorb packaging specification language"
+Extension: ".blurb"
+
+String Literal: "\""
+String Literal Escape: "\\"
+
+colouring {
+	=> !plain
+}

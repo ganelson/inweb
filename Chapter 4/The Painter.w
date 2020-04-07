@@ -22,15 +22,15 @@ void Painter::reset_syntax_colouring(programming_language *pl) {
 @ As we begin, the text to colour is in |matter|, while |colouring| is an
 equal-length text where each character represents the colour of its
 corresponding character in |matter|. For example, we might start as:
-
-	|int x = 55;|
-	|ppppppppppp|
-
+= (text as PainterOutput)
+	int x = 55;
+	ppppppppppp
+=
 with every character having |PLAIN_COLOUR|, but end up with:
-
-	|int x = 55;|
-	|rrrpipppnnp|
-
+= (text as PainterOutput)
+	int x = 55;
+	rrrpipppnnp
+=
 We get to that by using a language's rules on literals, and then executing
 its colouring program.
 
@@ -295,7 +295,6 @@ void Painter::execute_rule(hash_table *HT, colouring_rule *rule, text_stream *ma
 @d UNSPACED_RULE_SUFFIX 5 /* for |suffix P| */
 @d SPACED_RULE_SUFFIX 6 /* for |spaced suffix P| */
 @d OPTIONALLY_SPACED_RULE_SUFFIX 7 /* for |optionally spaced suffix P| */
-
 
 =
 int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter,

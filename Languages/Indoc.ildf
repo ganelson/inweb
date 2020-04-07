@@ -1,0 +1,7 @@
+Name: "Indoc"
+Details: "The markup syntax for the Indoc documentation tool"
+Extension: ".indoc"
+
+colouring {
+	=> !plain
+}

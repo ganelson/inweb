@@ -35,16 +35,12 @@ looks to see if the web in question defines a custom pattern of that name.
 For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">$ inweb/Tangled/inweb inweb/Examples/goldbach -weave-as Tapestry</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inweb/Tangled/inweb</span><span class="plain"> inweb/Examples/goldbach</span><span class="identifier"> -weave-as</span><span class="plain"> Tapestry</span>
 </pre>
 
 <p class="inwebparagraph">would look for a directory called:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">inweb/Examples/goldbach/Patterns/Tapestry</span>
@@ -53,8 +49,6 @@ For example,
 <p class="inwebparagraph">If that is found, Inweb expects it to define <code class="display"><span class="extract">Tapestry</span></code>. If not, Inweb next
 tries:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">inweb/Patterns/Tapestry</span>
@@ -73,8 +67,6 @@ series of simple one-line commands.
 <p class="inwebparagraph">Most custom patterns open with the command:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">from Whatever</span>
 </pre>
@@ -89,8 +81,6 @@ only contain actual differences.
 
 <p class="inwebparagraph">There should then always be a command reading:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">format = HTML</span>
@@ -140,8 +130,6 @@ same web. For example:
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The command:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
         <span class="plain">use X</span>
 </pre>
@@ -149,8 +137,6 @@ same web. For example:
 <p class="inwebparagraph">tells Inweb that the file X, also stored in the pattern directory, should
 be copied into any website being woven. For example, the HTML pattern says
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">use crumbs.gif</span>
@@ -162,8 +148,6 @@ copied over.
 
 <p class="inwebparagraph">Finally, the command
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">embed css</span>
@@ -188,10 +172,8 @@ double-square brackets can be used to represent values from the bibliographic
 data at the top of the web's Contents section. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">\noindent{{\stitlefont [[Author]]}}</span>
+        <span class="plain">\noindent{{\stitlefont </span><span class="functiontext">[[Author]]</span><span class="plain">}}</span>
 </pre>
 
 <p class="inwebparagraph">In addition:
@@ -231,7 +213,7 @@ value <code class="display"><span class="extract">...</span></code>, which can b
 <ul class="items"><li>(b) One of the following details about the entire-web PDF (see below):
 </li></ul>
 <pre class="display">
-        <span class="plain">[[Complete Leafname]]  [[Complete Extent]]  [[Complete PDF Size]]</span>
+        <span class="functiontext">[[Complete Leafname]]</span><span class="plain">  </span><span class="functiontext">[[Complete Extent]]</span><span class="plain">  </span><span class="functiontext">[[Complete PDF Size]]</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -239,8 +221,8 @@ value <code class="display"><span class="extract">...</span></code>, which can b
 <ul class="items"><li>(b) One of the following details about the "current chapter" (again, see below):
 </li></ul>
 <pre class="display">
-        <span class="plain">[[Chapter Title]]  [[Chapter Purpose]]  [[Chapter Leafname]]</span>
-        <span class="plain">[[Chapter Extent]]  [[Chapter PDF Size]]  [[Chapter Errors]]</span>
+        <span class="functiontext">[[Chapter Title]]</span><span class="plain">  </span><span class="functiontext">[[Chapter Purpose]]</span><span class="plain">  </span><span class="functiontext">[[Chapter Leafname]]</span>
+        <span class="functiontext">[[Chapter Extent]]</span><span class="plain">  </span><span class="functiontext">[[Chapter PDF Size]]</span><span class="plain">  </span><span class="functiontext">[[Chapter Errors]]</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -251,10 +233,10 @@ the errors result is a usually blank report.
 <ul class="items"><li>(c) One of the following details about the "current section" (again, see below):
 </li></ul>
 <pre class="display">
-        <span class="plain">[[Section Title]]  [[Section Purpose]]  [[Section Leafname]]</span>
-        <span class="plain">[[Section Extent]]  [[Section PDF Size]]  [[Section Errors]]</span>
-        <span class="plain">[[Section Lines]]  [[Section Paragraphs]]  [[Section Mean]]</span>
-        <span class="plain">[[Section Source]]</span>
+        <span class="functiontext">[[Section Title]]</span><span class="plain">  </span><span class="functiontext">[[Section Purpose]]</span><span class="plain">  </span><span class="functiontext">[[Section Leafname]]</span>
+        <span class="functiontext">[[Section Extent]]</span><span class="plain">  </span><span class="functiontext">[[Section PDF Size]]</span><span class="plain">  </span><span class="functiontext">[[Section Errors]]</span>
+        <span class="functiontext">[[Section Lines]]</span><span class="plain">  </span><span class="functiontext">[[Section Paragraphs]]</span><span class="plain">  </span><span class="functiontext">[[Section Mean]]</span>
+        <span class="functiontext">[[Section Source]]</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -283,30 +265,26 @@ a repetition, but happens just once, for the named chapter or section.
 <p class="inwebparagraph">For example, the following pattern:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">To take chapter 3 as an example, for instance, we find:</span>
-        <span class="plain">[[Select 3]]</span>
-        <span class="plain">[[Repeat Section]]</span>
-        <span class="plain">    Section [[Section Title]]: [[Section Code]]: [[Section Lines]] lines.</span>
-        <span class="plain">[[End Repeat]]</span>
-        <span class="plain">[[End Select]]</span>
+        <span class="plain">To take chapter 3 as an example, for instance, we find -</span>
+        <span class="functiontext">[[Select 3]]</span>
+        <span class="functiontext">[[Repeat Section]]</span>
+            <span class="plain">Section </span><span class="functiontext">[[Section Title]]</span><span class="plain">, </span><span class="functiontext">[[Section Code]]</span><span class="plain">, </span><span class="functiontext">[[Section Lines]]</span><span class="plain"> lines.</span>
+        <span class="functiontext">[[End Repeat]]</span>
+        <span class="functiontext">[[End Select]]</span>
 </pre>
 
 <p class="inwebparagraph">weaves a report somewhat like this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">To take chapter 3 as an example, for instance, we find:</span>
-        <span class="plain">    Section Lexer: 3/lex: 1011 lines.</span>
-        <span class="plain">    Section Read Source Text: 3/read: 394 lines.</span>
-        <span class="plain">    Section Lexical Writing Back: 3/lwb: 376 lines.</span>
-        <span class="plain">    Section Lexical Services: 3/lexs: 606 lines.</span>
-        <span class="plain">    Section Vocabulary: 3/vocab: 338 lines.</span>
-        <span class="plain">    Section Built-In Words: 3/words: 1207 lines.</span>
+        <span class="plain">To take chapter 3 as an example, for instance, we find -</span>
+            <span class="plain">Section Lexer, 3/lex, 1011 lines.</span>
+            <span class="plain">Section Read Source Text, 3/read, 394 lines.</span>
+            <span class="plain">Section Lexical Writing Back, 3/lwb, 376 lines.</span>
+            <span class="plain">Section Lexical Services, 3/lexs, 606 lines.</span>
+            <span class="plain">Section Vocabulary, 3/vocab, 338 lines.</span>
+            <span class="plain">Section Built-In Words, 3/words, 1207 lines.</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -338,16 +316,12 @@ links to the relevant GitHub repository home page.) Any number can be
 supplied. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">-breadcrumb 'Groceries:groc.html' -breadcrumb Produce</span>
+        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inweb/Tangled/inweb</span><span class="plain"> ...</span><span class="identifier"> -breadcrumb</span><span class="plain"> 'Groceries:groc.html'</span><span class="identifier"> -breadcrumb</span><span class="plain"> Produce</span>
 </pre>
 
 <p class="inwebparagraph">produces the trail
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">Groceries &gt; Produce &gt; ...</span>

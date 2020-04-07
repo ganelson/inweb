@@ -357,9 +357,9 @@ int Str::cmp_insensitive(text_stream *S1, text_stream *S2) {
 
 @ It's sometimes useful to see whether two strings agree on their last
 |N| characters, or their first |N|. For example,
-
-	|Str::suffix_eq(I"wayzgoose", I"snow goose", N)|
-
+= (text as code)
+	Str::suffix_eq(I"wayzgoose", I"snow goose", N)
+=
 will return |TRUE| for |N| equal to 0 to 5, and |FALSE| thereafter.
 
 (The Oxford English Dictionary defines a "wayzgoose" as a holiday outing

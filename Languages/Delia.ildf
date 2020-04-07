@@ -1,0 +1,22 @@
+Name: "Delia"
+Details: "For defining test recipes in Intest"
+Extension: ".intest"
+
+colouring {
+	=> !plain
+	brackets in /(.*?):.*/ {
+		=> !reserved
+	}
+	brackets in /(-\S+).*/ {
+		=> !identifier
+	}
+	matches of /\$[A-Z]+[A-Z0-9]*/ {
+		=> !function
+	}
+	matches of /\s*else\s*/ {
+		=> !reserved
+	}
+	matches of /\s*endif\s*/ {
+		=> !reserved
+	}
+}

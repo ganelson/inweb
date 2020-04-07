@@ -9,19 +9,13 @@ is woven, it will look much nicer with syntax-colouring, and that clearly
 can't be done without at least a surface understanding of what programs in
 the language mean.
 
-@
-As we've seen, the Contents section of a web has to specify its language.
-For example,
-
-	|Language: Perl|
-
-declares that the program expressed by the web is a Perl script. The language
-name must be one which Inweb knows, or, more exactly, one for which it can
-find a "language definition file". These are stored in the |Languages|
-subdirectory of the |inweb| distribution, and if a language is called |L|
-then its file is |L.ildf|. You can see the languages currently available
-to Inweb by using |-show-languages|. At present, a newly installed Inweb
-replies like so:
+The Contents section of each web specifies its language with a line like
+|Language: C|. This language name has to be one which Inweb knows, or, more
+exactly, one for which it can find a "language definition file". These are
+stored in the |Languages| subdirectory of the |inweb| distribution, and if a
+language is called |L| then its file is |L.ildf|. You can see the languages
+currently available to Inweb by using |-show-languages|. At present, a newly
+installed Inweb replies like so:
 
 = (undisplayed text from Figures/languages.txt)
 
@@ -75,7 +69,7 @@ last block of it is closed with a |}|.
 Everything in an ILD is optional, so a minimal ILD is in principle empty. In
 practice, though, every ILD should open like so:
 
-= (sample ILDF code)
+= (text as ILDF)
 Name: "C"
 Details: "The C programming language"
 Extension: ".c"
@@ -111,7 +105,7 @@ as a pair or not at all, is the notation for multiline comments.
 
 For example, C defines:
 
-= (sample ILDF code)
+= (text as ILDF)
     Multiline Comment Open: "/*"
     Multiline Comment Close: "*/"
     Line Comment: "//"
@@ -129,7 +123,7 @@ character literals.
 
 Here, C defines:
 
-= (sample ILDF code)
+= (text as ILDF)
     String Literal: "\""
     String Literal Escape: "\\"
     Character Literal: "'"
@@ -145,7 +139,7 @@ are notations for non-decimal numbers, if they exist.
 
 Here, C has:
 
-= (sample ILDF code)
+= (text as ILDF)
     Hexadecimal Literal Prefix: "0x"
     Binary Literal Prefix: "0b"
     Negative Literal Prefix: "-"
@@ -154,7 +148,7 @@ Here, C has:
 the very beginning of a tangled program. This is useful for scripting languages
 in Unix, where the opening line must be a "shebang" indicating their language.
 For example, Perl defines:
-= (sample ILDF code)
+= (text as ILDF)
     Shebang: "#!/usr/bin/perl\n\n"
 =
 Most languages do not have a shebang.
@@ -168,7 +162,7 @@ which most users never use.
 When tangling, Inweb is just such a rearranging tool, and it inserts line
 markers automatically for languages which support them: |Line Marker| specifies
 that this language does, and gives the notation. For example, C provides:
-= (sample ILDF code)
+= (text as ILDF)
     Line Marker: "#line %d \"%f\"\n"
 =
 Here |%d| expands to the line number, and |%f| the filename, of origin.
@@ -179,16 +173,16 @@ matter added. This material is in |Before Named Paragraph Expansion| and
 |After Named Paragraph Expansion|, which are by default empty.
 
 For C and all similar languages, we recommend this:
-= (sample ILDF code)
+= (text as ILDF)
     Before Named Paragraph Expansion: "\n{\n"
     After Named Paragraph Expansion: "}\n"
 =
 The effect of this is to ensure that code such as:
-= (not code)
+= (text)
     if (x == y) @<Do something dramatic@>;
 =
 tangles to something like this:
-= (not code)
+= (text)
     if (x == y)
     {
     ...
@@ -209,13 +203,13 @@ It can only do so if the language provides a notation for that.
 |Start Definition| begins; |Prolong Definition|, if given, shows how to
 continue a multiline definition (if they are allowed); and |End Definition|,
 if given, places any ending notation. For example, Inform 6 defines:
-= (sample ILDF code)
+= (text as ILDF)
     Start Definition: "Constant %S =\s"
     End Definition: ";\n"
 =
 where |%S| expands to the name of the term to be defined. Thus, we might tangle
 out to:
-= (not code)
+= (text)
     Constant TAXICAB = 1729;\n
 =
 Inweb ignores all definitions unless one of these three properties is given.
@@ -225,7 +219,7 @@ of its advanced features for tangling tagged material: the Inform project
 makes use of this to handle code dependent on the operating system in use.
 If the language supports it, the notation is in |Start Ifdef| and |End Ifdef|,
 and in |Start Ifndef| and |End Ifndef|. For example, Inform 6 has:
-= (sample ILDF code)
+= (text as ILDF)
     Start Ifdef: "#ifdef %S;\n"
     End Ifdef: "#endif; ! %S\n"
     Start Ifndef: "#ifndef %S;\n"
@@ -267,13 +261,13 @@ Syntax colouring is greatly helped by knowing that certain identifier names
 are special: for example, |void| is special in C. These are often called
 "reserved words", in that they can't be used as variable or function names
 in the language in question. For C, then, we include the line:
-= (sample ILDF code)
+= (text as ILDF)
     keyword void
 =
 Keywords can be declared in a number of categories, which are identified by
 colour name: the default is |!reserved|, the colour for reserved words. But
 for example:
-= (sample ILDF code)
+= (text as ILDF)
     keyword isdigit of !function
 =
 makes a keyword of colour |!function|.
@@ -285,7 +279,7 @@ ILDs have no control over what colours or typefaces are used: that's all
 controllable, but is done by changing the weave pattern. So we can't colour
 a word "green": instead we colour it semantically, from the following
 palette of possibilities:
-= (sample ILDF code)
+= (text as ILDF)
 !character  !comment     !constant  !definition  !element  !extract
 !function   !identifier  !plain     !reserved    !string
 =
@@ -310,7 +304,7 @@ and |!plain|.
 
 @ A colouring program begins with |colouring {| and ends with |}|. The
 empty program is legal but does nothing:
-= (sample ILDF code)
+= (text as ILDF)
     colouring {
     }
 =
@@ -318,7 +312,7 @@ The material between the braces is called a "block". Each block runs on a
 given stretch of contiguous text, called the "snippet". For the outermost
 block, that's a line of source code. Blocks normally contain one or more
 "rules":
-= (sample ILDF code)
+= (text as ILDF)
     colouring {
         marble => !function
     }
@@ -329,7 +323,7 @@ it |!function|. Of course this is not very useful, since it would only catch
 lines containing only that one word. So we really want to narrow in on smaller
 snippets. This, for example, applies its rule to each individual character
 in turn:
-= (sample ILDF code)
+= (text as ILDF)
     colouring {
         characters {
             K => !identifier
@@ -342,7 +336,7 @@ but they were only allowed to do that because (a) they were single words,
 (b) those words had no other meaning, and (c) they didn't contain any
 awkward characters. For any more complicated texts, always use quotation
 marks. For example, in
-= (sample ILDF code)
+= (text as ILDF)
 	"=>" => !reserved
 =
 the |=>| in quotes is just text, whereas the one outside quotes is being
@@ -350,7 +344,7 @@ used to divide a rule.
 
 If you need a literal double quote inside the double-quotes, use |\"|; and
 use |\\| for a literal backslash. For example:
-= (sample ILDF code)
+= (text as ILDF)
     "\\\"" => !reserved
 =
 actually matches the text |\"|.
@@ -376,14 +370,14 @@ lie inside the text |T|. For example, here is a not very useful ILD for
 plain text in which all vowels are in red:
 = (text from Dialects/VowelsExample.ildf as ILDF)
 Given the text:
-= (not code)
+= (text)
 A noir, E blanc, I rouge, U vert, O bleu : voyelles,
 Je dirai quelque jour vos naissances latentes :
 A, noir corset velu des mouches éclatantes
 Qui bombinent autour des puanteurs cruelles,
 =
 this produces:
-= (sample VowelsExample code)
+= (text as VowelsExample)
 A noir, E blanc, I rouge, U vert, O bleu : voyelles,
 Je dirai quelque jour vos naissances latentes :
 A, noir corset velu des mouches éclatantes
@@ -394,12 +388,12 @@ Qui bombinent autour des puanteurs cruelles,
 the snippet. For example,
 = (text from Dialects/LineageExample.ildf as ILDF)
 acts on the text:
-= (not code)
+= (text)
 Jacob first appears in the Book of Genesis, the son of Isaac and Rebecca, the
 grandson of Abraham, Sarah and Bethuel, the nephew of Ishmael.
 =
 to produce:
-= (sample LineageExample code)
+= (text as LineageExample)
 Jacob first appears in the Book of Genesis, the son of Isaac and Rebecca, the
 grandson of Abraham, Sarah and Bethuel, the nephew of Ishmael.
 =
@@ -411,12 +405,12 @@ while |====| would have two.
 into non-overlapping contiguous pieces which have that colour. For example:
 = (text from Dialects/RunningExample.ildf as ILDF)
 acts on:
-= (not code)
+= (text)
 Napoleon Bonaparte (1769-1821) took 167 scientists to Egypt in 1798,
 who published their so-called Memoirs over the period 1798-1801.
 =
 to produce:
-= (sample RunningExample code)
+= (text as RunningExample)
 Napoleon Bonaparte (1769-1821) took 167 scientists to Egypt in 1798,
 who published their so-called Memoirs over the period 1798-1801.
 =
@@ -426,11 +420,11 @@ in "so-called".
 A more computer-science sort of example would be:
 = (text from Dialects/StdioExample.ildf as ILDF)
 which acts on:
-= (not code)
+= (text)
 if (x == 1) printf("Hello!");
 =
 to produce:
-= (sample StdioExample code)
+= (text as StdioExample)
 if (x == 1) printf("Hello!");
 =
 The split divides the line up into three runs, and the inner block runs three
@@ -446,7 +440,7 @@ none at all, of course, in which case the block of rules is never used.
 This is easier to demonstrate than explain:
 = (text from Dialects/AssemblageExample.ildf as ILDF)
 which acts on:
-= (not code)
+= (text)
 		JSR .initialise
 		LDR A, #.data
 		RTS
@@ -454,7 +448,7 @@ which acts on:
 		TAX
 =
 to produce:
-= (sample AssemblageExample code)
+= (text as AssemblageExample)
 		JSR .initialise
 		LDR A, #.data
 		RTS
@@ -468,14 +462,14 @@ subexpression in turn. (If there is no match, or there are no bracketed
 terms in |E|, nothing happens.)
 = (text from Dialects/EquationsExample.ildf as ILDF)
 acts on:
-= (not code)
+= (text)
 	A = 2716
 	B=3
 	C =715 + B
 	D < 14
 =
 to produce:
-= (sample EquationsExample code)
+= (text as EquationsExample)
 	A = 2716
 	B=3
 	C =715 + B
@@ -492,7 +486,7 @@ Y". The following are the possibilities for X, the condition.
 1. The easiest thing is to give nothing at all, and then the rule always
 applies. For example, this somewhat nihilistic program gets rid of colouring
 entirely:
-= (sample ILDF code)
+= (text as ILDF)
     colouring {
         => !plain
     }
@@ -500,13 +494,13 @@ entirely:
 
 2. If X is a piece of literal text, the rule applies when the snippet is
 exactly that text. For example,
-= (sample ILDF code)
+= (text as ILDF)
     printf => !function
 =
 
 3. X can require the whole snippet to be of a particular colour, by writing
 |coloured C|. For example:
-= (sample ILDF code)
+= (text as ILDF)
     colouring {
         characters {
             coloured !character => !plain
@@ -518,7 +512,7 @@ removes the syntax colouring on character literals.
 4. X can require the snippet to be one of the language's known keywords, as
 declared earlier in the ILD by a |keyword| command. The syntax here is
 |keyword of C|, where |C| is a colour. For example:
-= (sample ILDF code)
+= (text as ILDF)
     keyword of !element => !element
 =
 says: if the snippet is a keyword declared as being of colour |!element|,
@@ -530,7 +524,7 @@ put all of the registered keywords into a hash table for rapid lookup.)
 with one of the following: |prefix P|, |spaced prefix P|,
 |optionally spaced prefix P|. These qualifiers have to do with whether white
 space must appear after |P| and before the snippet. For example,
-= (sample ILDF code)
+= (text as ILDF)
     runs of !identifier {
         prefix optionally spaced -> => !element
     }
@@ -540,7 +534,7 @@ as |!element|. Similarly for |suffix|.
 
 6. X can test the snippet against a regular expression, with |matching /E/|.
 For example:
-= (sample ILDF code)
+= (text as ILDF)
     runs of !identifier {
         matching /.*x.*/ => !element
     }
@@ -548,7 +542,7 @@ For example:
 ...turns any identifier containing a lower-case |x| into |!element| colour.
 Note that |matching /x/| would not have worked, because our regular expression
 is required to match the entire snippet, not just somewhere inside.
-= (sample ILDF code)
+= (text as ILDF)
     characters in "0123456789" {
         matching /\d\d\d\d/ => !element
     }
@@ -560,7 +554,7 @@ and different rules can apply to differently numbered pieces. The notation
 is |number N|, where |N| is the number, counting from 1. For example,
 = (text from Dialects/ThirdExample.ildf as ILDF)
 acts on:
-= (not code)
+= (text)
 With how sad steps, O Moon, thou climb'st the skies! 
 How silently, and with how wan a face! 
 What, may it be that even in heav'nly place 
@@ -577,7 +571,7 @@ Those lovers scorn whom that love doth possess?
 Do they call virtue there ungratefulness?
 =
 to produce:
-= (sample ThirdExample code)
+= (text as ThirdExample)
 With how sad steps, O Moon, thou climb'st the skies! 
 How silently, and with how wan a face! 
 What, may it be that even in heav'nly place 
@@ -602,14 +596,14 @@ algorithm in Inweb:
 = (text from Dialects/PainterOutput.ildf as ILDF)
 since alternate lines are plain, for the original text, and then coloured,
 to highlight the colours given to the characters in the original. Thus:
-= (not code)
+= (text)
 	int x = 55; /* a magic number */
 	rrrpipppnnpp!!!!!!!!!!!!!!!!!!!!
 	Imaginary::function(x, beta);
 	fffffffffffffffffffpippiiiipp
 =
 becomes
-= (sample PainterOutput code)
+= (text as PainterOutput)
 	int x = 55; /* a magic number */
 	rrrpipppnnpp!!!!!!!!!!!!!!!!!!!!
 	Imaginary::function(x, beta);
@@ -617,7 +611,7 @@ becomes
 =
 
 @ Any condition can be reversed by preceding it with |not|. For example,
-= (sample ILDF code)
+= (text as ILDF)
     not coloured !string => !plain
 =
 
@@ -629,7 +623,7 @@ simpler:
 
 2. If Y is an open brace |{|, then it introduces a block of rules which are
 applied to the snippet only if this rule has matched. For example,
-= (sample ILDF code)
+= (text as ILDF)
     keyword !element => {
         optionally spaced prefix . => !element
         optionally spaced prefix -> => !element
@@ -644,7 +638,7 @@ the notation |=> C on both| or |=> C on suffix| or |=> C on prefix|.
 
 3. If Y is the word |debug|, then the current snippet and its colouring
 are printed out on the command line. Thus:
-= (sample ILDF code)
+= (text as ILDF)
     colouring {
         matches of /\d\S+/ {
             => debug

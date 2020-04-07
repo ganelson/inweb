@@ -44,16 +44,12 @@ avoided altogether.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Each section of an InC web can, optionally, begin:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">[Namespace::] The Title of This Section.</span>
+        <span class="identifier">[Namespace::]</span><span class="plain"> The Title of This Section.</span>
 </pre>
 
 <p class="inwebparagraph">rather than, as normal,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">The Title of This Section.</span>
@@ -63,11 +59,9 @@ avoided altogether.
 begins with <code class="display"><span class="extract">Namespace::</span></code>. For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">int Namespace::initialise(void) {</span>
-        <span class="plain">    ....</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">Namespace::initialise</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+            <span class="plain">....</span>
         <span class="plain">}</span>
 </pre>
 
@@ -85,10 +79,8 @@ the <code class="display"><span class="extract">::</span></code> to <code class=
 <p class="inwebparagraph">Namespaces can be "nested", in the sense that, for example, we could have:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">[Errors::Fatal::] Handling fatal errors.</span>
+        <span class="identifier">[Errors::Fatal::]</span><span class="plain"> Handling fatal errors.</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -98,8 +90,6 @@ strings and streams of text. These are unified in a structure called
 <code class="display"><span class="extract">text_stream</span></code>, so that strings in InC webs are almost all values of type
 <code class="display"><span class="extract">text_stream *</span></code>. InC provides one convenient feature for this: the notation
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="display">
         <span class="plain">text_stream *excuse = I"The compiler is not feeling well today.";</span>

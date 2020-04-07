@@ -17,14 +17,14 @@ a plain |int| is not an object. The memory manager can only deal with
 a given type of |struct| if it contains three special elements, and we
 define those using a macro. Thus, if the user wants to allocate larger
 structures of type |thingummy|, then it needs to be defined like so:
-
-	|typedef struct thingummy {|
-	|    int whatsit;|
-	|    struct text_stream *doobrey;|
-	|    ...|
-	|    MEMORY_MANAGEMENT|
-	|}|
-
+= (text as code)
+	typedef struct thingummy {
+	    int whatsit;
+	    struct text_stream *doobrey;
+	    ...
+	    MEMORY_MANAGEMENT
+	}
+=
 The caveat about "larger structures" is that smaller objects can instead be
 stored in arrays, to reduce memory and speed overheads. Their structure
 declarations do not include the following macro; they do not have unique

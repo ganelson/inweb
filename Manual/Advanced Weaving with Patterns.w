@@ -8,18 +8,18 @@ As noted, the two most useful weave patterns are |-weave-as HTML| and
 weave something with |-weave-as P|, for some pattern name |P|, Inweb first
 looks to see if the web in question defines a custom pattern of that name.
 For example,
-
-	|$ inweb/Tangled/inweb inweb/Examples/goldbach -weave-as Tapestry|
-
+= (text as ConsoleText)
+	$ inweb/Tangled/inweb inweb/Examples/goldbach -weave-as Tapestry
+=
 would look for a directory called:
-
-	|inweb/Examples/goldbach/Patterns/Tapestry|
-
+= (text)
+	inweb/Examples/goldbach/Patterns/Tapestry
+=
 If that is found, Inweb expects it to define |Tapestry|. If not, Inweb next
 tries:
-
-	|inweb/Patterns/Tapestry|
-	
+= (text)
+	inweb/Patterns/Tapestry
+=
 since |inweb/Patterns| is where the built-in patterns are kept. If it can't
 find either, Inweb issues an error.
 
@@ -29,9 +29,9 @@ to contain a configuration file called |pattern.txt|. This consists of a
 series of simple one-line commands.
 
 Most custom patterns open with the command:
-
-	|from Whatever|
-
+= (text)
+	from Whatever
+=
 which tells Inweb that this new pattern inherits from an existing one named
 |Whatever|. (Do not get these into loops, with A inheriting from B and B
 also inheriting from A.) The rule is then that if Inweb needs a file to do
@@ -40,9 +40,9 @@ that, in the pattern inherited from. As a result, the custom pattern need
 only contain actual differences.
 
 There should then always be a command reading:
-
-	|format = HTML|
-
+= (text)
+	format = HTML
+=
 or whatever other file format is required (for the TeX pattern, for example,
 this reads |format = PDF|). A few other settings can also be made with |=|.
 
@@ -72,27 +72,27 @@ HTML pattern sets |default-range = sections|.)
 for the web. These changes are only temporary for the period in which the weave
 is going on; they enable us to give custom titles to different weaves from the
 same web. For example:
-
-	|Title = Grammar|
-	|Booklet Title = A formal grammar for Inform 7|
-	|Author = The Inform Project|
-
+= (text)
+	Title = Grammar
+	Booklet Title = A formal grammar for Inform 7
+	Author = The Inform Project
+=
 @ The command:
-
-	|use X|
-
+= (text)
+	use X
+=
 tells Inweb that the file X, also stored in the pattern directory, should
 be copied into any website being woven. For example, the HTML pattern says
-
-	|use crumbs.gif|
-
+= (text)
+	use crumbs.gif
+=
 to instruct Inweb that an image used by the pages generated needs to be
 copied over.
 
 Finally, the command
-
-	|embed css|
-
+= (text)
+	embed css
+=
 tells Inweb that in any HTML file produced, the CSS necessary should be
 embedded into the HTML, not linked as an external file. This is tidier for
 patterns like TeX, where there will only be at most one HTML file produced,
@@ -109,9 +109,9 @@ The template for the cover sheet should be given in a file in the pattern
 folder called |cover-sheet.tex|, |cover-sheet.html| or similar. Within it,
 double-square brackets can be used to represent values from the bibliographic
 data at the top of the web's Contents section. For example:
-
-	|\noindent{{\stitlefont [[Author]]}}|
-
+= (text as Inweb)
+	\noindent{{\stitlefont [[Author]]}}
+=
 In addition:
 (a) |[[Cover Sheet]]| expands to the parent pattern's cover sheet -- this is
 convenient if all you want to do is to add a note at the bottom of the
@@ -141,24 +141,24 @@ value |...|, which can be any of:
 (a) A bibliographic variable, set at the top of the |Contents.w| section.
 
 (b) One of the following details about the entire-web PDF (see below):
-
-	|[[Complete Leafname]]  [[Complete Extent]]  [[Complete PDF Size]]|
-
+= (text as Inweb)
+	[[Complete Leafname]]  [[Complete Extent]]  [[Complete PDF Size]]
+=
 (b) One of the following details about the "current chapter" (again, see below):
-
-	|[[Chapter Title]]  [[Chapter Purpose]]  [[Chapter Leafname]]|
-	|[[Chapter Extent]]  [[Chapter PDF Size]]  [[Chapter Errors]]|
-
+= (text as Inweb)
+	[[Chapter Title]]  [[Chapter Purpose]]  [[Chapter Leafname]]
+	[[Chapter Extent]]  [[Chapter PDF Size]]  [[Chapter Errors]]
+=
 (...) The leafname is that of the typeset PDF; the extent is a page count;
 the errors result is a usually blank report.
 
 (c) One of the following details about the "current section" (again, see below):
-
-	|[[Section Title]]  [[Section Purpose]]  [[Section Leafname]]|
-	|[[Section Extent]]  [[Section PDF Size]]  [[Section Errors]]|
-	|[[Section Lines]]  [[Section Paragraphs]]  [[Section Mean]]|
-	|[[Section Source]]|
-
+= (text as Inweb)
+	[[Section Title]]  [[Section Purpose]]  [[Section Leafname]]
+	[[Section Extent]]  [[Section PDF Size]]  [[Section Errors]]
+	[[Section Lines]]  [[Section Paragraphs]]  [[Section Mean]]
+	[[Section Source]]
+=
 (...) Lines and Paragraphs are counts of the number of each; the Source
 substitution is the leafname of the original |.w| file. The Mean is the
 average number of lines per paragraph: where this is large, the section
@@ -178,24 +178,24 @@ loop of that description.
 a repetition, but happens just once, for the named chapter or section.
 
 For example, the following pattern:
-
-	|To take chapter 3 as an example, for instance, we find:|
-	|[[Select 3]]|
-	|[[Repeat Section]]|
-	|    Section [[Section Title]]: [[Section Code]]: [[Section Lines]] lines.|
-	|[[End Repeat]]|
-	|[[End Select]]|
-
+= (text as Inweb)
+	To take chapter 3 as an example, for instance, we find -
+	[[Select 3]]
+	[[Repeat Section]]
+	    Section [[Section Title]], [[Section Code]], [[Section Lines]] lines.
+	[[End Repeat]]
+	[[End Select]]
+=
 weaves a report somewhat like this:
-
-	|To take chapter 3 as an example, for instance, we find:|
-	|    Section Lexer: 3/lex: 1011 lines.|
-	|    Section Read Source Text: 3/read: 394 lines.|
-	|    Section Lexical Writing Back: 3/lwb: 376 lines.|
-	|    Section Lexical Services: 3/lexs: 606 lines.|
-	|    Section Vocabulary: 3/vocab: 338 lines.|
-	|    Section Built-In Words: 3/words: 1207 lines.|
-
+= (text)
+	To take chapter 3 as an example, for instance, we find -
+	    Section Lexer, 3/lex, 1011 lines.
+	    Section Read Source Text, 3/read, 394 lines.
+	    Section Lexical Writing Back, 3/lwb, 376 lines.
+	    Section Lexical Services, 3/lexs, 606 lines.
+	    Section Vocabulary, 3/vocab, 338 lines.
+	    Section Built-In Words, 3/words, 1207 lines.
+=
 @h Navigation and breadcrumbs.
 When assembling large numbers of woven websites together, as is needed for
 example by the main Inform repository's GitHub pages, we need to navigate
@@ -218,13 +218,13 @@ customised from the command line, in that the prefatory breadcrumbs can
 be explicitly chosen. (If they are not chosen, there's just a star, which
 links to the relevant GitHub repository home page.) Any number can be
 supplied. For example:
-
-	|-breadcrumb 'Groceries:groc.html' -breadcrumb Produce|
-
+= (text as ConsoleText)
+	$ inweb/Tangled/inweb ... -breadcrumb 'Groceries:groc.html' -breadcrumb Produce
+=
 produces the trail
-
-	|Groceries > Produce > ...|
-
+= (text)
+	Groceries > Produce > ...
+=
 with the links being to |groc.html| and |Produce.html| respectively. (The
 colon is optional, and needed only if the link is not to the text with |.html|
 appended.)

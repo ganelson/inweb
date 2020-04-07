@@ -383,32 +383,38 @@ division in the current section.
 			current_paragraph->placed_very_early = TRUE;
 		} else if ((current_paragraph) && (Str::eq(mr.exp[0], I"(early code)"))) {
 			current_paragraph->placed_early = TRUE;
-		} else if ((current_paragraph) && (Str::eq(mr.exp[0], I"(not code)"))) {
+		} else if ((current_paragraph) &&
+			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text%)"))) {
+			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_pl_for_body = NULL;
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(sample (%c+) code%)"))) {
-			code_lcat_for_body = TEXT_EXTRACT_LCAT;
-			code_pl_for_body = Languages::find_by_name(mr2.exp[0], W);
-			extract_mode = TRUE;
-		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(sample code%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text as code%)"))) {
+			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_pl_for_body = S->sect_language;
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(text from (%c+) as (%c+)%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text as (%c+)%)"))) {
+			@<Make plainer@>;
+			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_pl_for_body = Languages::find_by_name(mr2.exp[1], W);
+			extract_mode = TRUE;
+		} else if ((current_paragraph) &&
+			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text from (%c+) as code%)"))) {
+			@<Make plainer@>;
+			code_pl_for_body = S->sect_language;
 			@<Spool from file@>;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(text from (%c+)%)"))) {
-			code_pl_for_body = NULL;
+			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text from (%c+) as (%c+)%)"))) {
+			@<Make plainer@>;
+			code_pl_for_body = Languages::find_by_name(mr2.exp[2], W);
 			@<Spool from file@>;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(undisplayed text from (%c+)%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text from (%c+)%)"))) {
+			@<Make plainer@>;
 			code_pl_for_body = NULL;
-			L->plainer = TRUE;
 			@<Spool from file@>;
 		} else {
 			Main::error_in_web(I"unknown bracketed annotation", L);
@@ -420,10 +426,16 @@ division in the current section.
 	Regexp::dispose_of(&mr2);
 	continue;
 
+@<Make plainer@> =
+	L->plainer = FALSE;
+	if (Str::eq(mr2.exp[0], I"undisplayed")) L->plainer = TRUE;
+	else if (Str::len(mr2.exp[0]) > 0)
+		Main::error_in_web(I"only 'undisplayed' can precede 'text' here", L);
+
 @<Spool from file@> =
 	L->category = BEGIN_CODE_LCAT;
 	pathname *P = W->md->path_to_web;
-	filename *F = Filenames::from_text_relative(P, mr2.exp[0]);
+	filename *F = Filenames::from_text_relative(P, mr2.exp[1]);
 	linked_list *lines = Painter::lines(F);
 	text_stream *T;
 	source_line *latest = L;
@@ -619,14 +631,14 @@ The noteworthy thing here is the way we fool around with the text on the line
 of the paragraph opening. This is one of the few cases where Inweb has
 retained the stream-based style of CWEB, where escape characters can appear
 anywhere in a line and line breaks are not significant. Thus
-
-	|@h The chronology of French weaving. Auguste de Papillon (1734-56) soon|
-
+= (text)
+	@h The chronology of French weaving. Auguste de Papillon (1734-56) soon
+=
 is split into two, so that the title of the paragraph is just "The chronology
 of French weaving" and the remainder,
-
-	|Auguste de Papillon (1734-56) soon|
-
+= (text)
+	Auguste de Papillon (1734-56) soon
+=
 will be woven exactly as the succeeding lines will be.
 
 @d ORDINARY_WEIGHT 0 /* an ordinary paragraph has this "weight" */

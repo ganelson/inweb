@@ -161,14 +161,13 @@ We use six strings to hold full or partial pathnames.
 	if (length < 1) { errno = ENOENT; return NULL; }
 
 @ And here we break up a pathname like
-
-	|/Users/bobama/Library/Inform/Extensions/Hillary Clinton/Health Care.i7x|
-
+= (text)
+	/Users/bobama/Library/Inform/Extensions/Hillary Clinton/Health Care.i7x
+=
 into three components:
-
-	|topdirpath| is |/Users/bobama/Library/Inform/Extensions|, and its casing is correct
-	|ciextdirpath| is |Hillary Clinton|, but its casing may not be correct
-	|ciextname| is |Health Care.i7x|, but its casing may not be correct
+(a) |topdirpath| is |/Users/bobama/Library/Inform/Extensions|, and its casing is correct.
+(b) |ciextdirpath| is |Hillary Clinton|, but its casing may not be correct.
+(c) |ciextname| is |Health Care.i7x|, but its casing may not be correct.
 
 The contents of |workstring| are not significant afterwards.
 

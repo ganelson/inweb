@@ -156,9 +156,9 @@ void Tangler::tangle_code(OUTPUT_STREAM, text_stream *original, section *S, sour
 
 @ The first form of escape is a paragraph macro in the middle of code. For
 example, we handle
-
-	|if (banana_count == 0) @<Yes, we have no bananas@>;|
-
+= (text)
+	if (banana_count == 0) @<Yes, we have no bananas@>;
+=
 by calling the lower-level tangler on |if (banana_count == 0) | (a substring
 which we know can't involve any macros, since we are detecting macros from
 left to right, and this is to the left of the one we found); then by tangling
@@ -198,14 +198,14 @@ So we insert a fresh line marker.
 	DISCARD_TEXT(temp);
 
 @ This is a similar matter, except that it expands bibliographic data:
-
-	|printf("This is build [[Build Number]].\n");|
-
+= (text)
+	printf("This is build [[Build Number]].\n");
+=
 takes the bibliographic data for "Build Number" (as set on the web's contents
 page) and substitutes that, so that we end up with (say)
-
-	|printf("This is build 5Q47.\n");|
-
+= (text as C)
+	printf("This is build 5Q47.\n");
+=
 In some languages there are also special expansions (for example, in
 InC |[[nonterminals]]| has a special meaning).
 

@@ -17,9 +17,9 @@ need to write a command-line utility in ANSI C with no dependencies on
 other tools or libraries to speak of, you could do worse.
 
 To use |foundation|, the Contents section of a web should include:
-
-	|Import: foundation|
-
+= (text)
+	Import: foundation
+=
 before beginning the chapter rundown. There are then a few conventions
 which must be followed. The |main| routine for the client should, as one
 of its very first acts, call |Foundation::start()|, and should similarly, just

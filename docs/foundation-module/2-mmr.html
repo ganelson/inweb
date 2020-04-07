@@ -43,14 +43,12 @@ define those using a macro. Thus, if the user wants to allocate larger
 structures of type <code class="display"><span class="extract">thingummy</span></code>, then it needs to be defined like so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="display">
-        <span class="plain">typedef struct thingummy {</span>
-        <span class="plain">    int whatsit;</span>
-        <span class="plain">    struct text_stream *doobrey;</span>
-        <span class="plain">    ...</span>
-        <span class="plain">    MEMORY_MANAGEMENT</span>
+        <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="identifier">thingummy</span><span class="plain"> {</span>
+            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">whatsit</span><span class="plain">;</span>
+            <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">doobrey</span><span class="plain">;</span>
+            <span class="plain">...</span>
+            <span class="constant">MEMORY_MANAGEMENT</span>
         <span class="plain">}</span>
 </pre>
 

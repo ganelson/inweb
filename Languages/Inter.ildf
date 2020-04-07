@@ -1,0 +1,59 @@
+Name: "Inter"
+Details: "The textual form of intermediate Inform code"
+Extension: ".intert"
+
+String Literal: "\""
+String Literal Escape: "\\"
+
+keyword "append"
+keyword "cast"
+keyword "code"
+keyword "constant"
+keyword "defaultvalue"
+keyword "enum"
+keyword "evaluation"
+keyword "external"
+keyword "instance"
+keyword "int32"
+keyword "inv"
+keyword "kind"
+keyword "lab"
+keyword "link"
+keyword "list"
+keyword "local"
+keyword "metadata"
+keyword "misc"
+keyword "of"
+keyword "package"
+keyword "packagetype"
+keyword "permission"
+keyword "pragma"
+keyword "primitive"
+keyword "private"
+keyword "property"
+keyword "propertyvalue"
+keyword "public"
+keyword "ref"
+keyword "reference"
+keyword "response"
+keyword "splat"
+keyword "symbol"
+keyword "text"
+keyword "undef"
+keyword "val"
+keyword "variable"
+keyword "version"
+keyword "void"
+
+colouring {
+	runs of !identifier {
+		=> !plain
+		keyword of !reserved => !reserved
+		matching /._.*/ => !identifier
+		prefix "`" => !element on both
+		prefix "!" => !function on both
+	}
+	instances of "-->" {
+		=> !reserved
+	}
+}

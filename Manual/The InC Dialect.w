@@ -15,20 +15,20 @@ be declared before use. In this way, the need for header files can be
 avoided altogether.
 
 @ Each section of an InC web can, optionally, begin:
-
-	|[Namespace::] The Title of This Section.|
-
+= (text as Inweb)
+	[Namespace::] The Title of This Section.
+=
 rather than, as normal,
-
-	|The Title of This Section.|
-
+= (text as Inweb)
+	The Title of This Section.
+=
 That declares that all functions in this section must be have a name which
 begins with |Namespace::|. For example,
-
-	|int Namespace::initialise(void) {|
-	|    ....|
-	|}|
-
+= (text as InC)
+	int Namespace::initialise(void) {
+	    ....
+	}
+=
 Inweb will not allow a function with the wrong namespace (or with none) to
 be declared in the section. This rudimentary feature enables the different
 sections of the web to behave like packages or modules in languages which
@@ -39,16 +39,16 @@ the |::| to |__|, so in a debugger, the above function would look like
 |Namespace__initialise|.
 
 Namespaces can be "nested", in the sense that, for example, we could have:
-
-	|[Errors::Fatal::] Handling fatal errors.|
-
+= (text as Inweb)
+	[Errors::Fatal::] Handling fatal errors.
+=
 @ The |foundation| module contains a suite of utility functions for handling
 strings and streams of text. These are unified in a structure called
 |text_stream|, so that strings in InC webs are almost all values of type
 |text_stream *|. InC provides one convenient feature for this: the notation
-
-	|text_stream *excuse = I"The compiler is not feeling well today.";|
-
+= (text as Inweb)
+	text_stream *excuse = I"The compiler is not feeling well today.";
+=
 creates a string literal of this type. (This is analogous to ANSI C's little
 used syntax for "long strings", which is |L"like so"|.)
 
@@ -59,7 +59,7 @@ paragraph whose code section makes use of this feature is automatically
 tagged |^"Preform"|. This is not the place to document what Preform
 notation means, but for example:
 
-= (not code)
+= (text)
 	<declaration> ::=
 		declare <dominion> independent	==>	R[1]
 

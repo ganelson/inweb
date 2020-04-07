@@ -5,13 +5,13 @@ To manage references to locations in the host computer's file system.
 @h About pathnames.
 We use the word "pathname" to mean a file-system location of a folder (or
 directory), and "filename" to mean a location of a file. For example:
-
-	|/Users/rblackmore/Documents/Fireball|
-
+= (text)
+	/Users/rblackmore/Documents/Fireball
+=
 is a pathname, whereas
-
-	|/Users/rblackmore/Documents/Fireball/whoosh.aiff|
-
+= (text)
+	/Users/rblackmore/Documents/Fireball/whoosh.aiff
+=
 is a filename. All references to folder locations in the filing system will be
 held internally as |pathname| objects, and all references to file locations as
 |filename| objects. Once created, these are never destroyed or modified,
@@ -21,9 +21,9 @@ Note that a pathname may well be hypothetical, that is, it may well
 describe a folder which doesn't exist on disc.
 
 A full path is a linked list, but reverse-ordered: thus,
-
-	|/Users/rblackmore/Documents/|
-
+= (text)
+	/Users/rblackmore/Documents/
+=
 would be represented as a pointer to the |pathname| for "Documents", which
 in turn points to one for "rblackmore", which in turn points to "/Users".
 Thus the root of the filing system is represented by the null pointer.
@@ -156,17 +156,17 @@ void Pathnames::writer_r(OUTPUT_STREAM, pathname *P, int divider) {
 @h Relative pathnames.
 Occasionally we want to shorten a pathname relative to another one:
 for example,
-
-	|/Users/rblackmore/Documents/Fireball/tablature|
-
+= (text)
+	/Users/rblackmore/Documents/Fireball/tablature
+=
 relative to
-
-	|/Users/rblackmore/Documents/|
-
+= (text)
+	/Users/rblackmore/Documents/
+=
 would be
-
-	|Fireball/tablature|
-
+= (text)
+	Fireball/tablature
+=
 Note that this does not correctly handle symlinks, |.|, |..| and so on,
 so it's probably not wise to use it with filenames typed in at the command
 line.

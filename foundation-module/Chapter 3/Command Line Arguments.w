@@ -8,9 +8,9 @@ Our scheme is that the command line syntax will contain an optional
 series of dashed switches. Some switches appear alone, others must be
 followed by an argument. Anything not part of the switches is termed
 a "bareword". For example, in
-
-	|-log no-memory-usage -fixtime jam marmalade|
-
+= (text)
+	-log no-memory-usage -fixtime jam marmalade
+=
 there are two switches, |-log| taking an argument (it has valency 2
 in the terminology below), |-fixtime| not (valency 1). There are
 then two barewords, |jam| and |marmalade|.

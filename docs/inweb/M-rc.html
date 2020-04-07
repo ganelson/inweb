@@ -37,54 +37,54 @@
     <span class="plain">WEB must be a directory holding a literate program (a 'web')</span>
 
     <span class="plain">The legal RANGEs are:</span>
-    <span class="plain">all: complete web (the default if no TARGETS set)</span>
-    <span class="plain">P: all preliminaries</span>
-    <span class="plain">1: Chapter 1 (and so on)</span>
-    <span class="plain">A: Appendix A (and so on, up to Appendix O)</span>
-    <span class="plain">3/eg: section with abbreviated name "3/eg" (and so on)</span>
+    <span class="plain">   all: complete web (the default if no TARGETS set)</span>
+    <span class="plain">   P: all preliminaries</span>
+    <span class="plain">   1: Chapter 1 (and so on)</span>
+    <span class="plain">   A: Appendix A (and so on, up to Appendix O)</span>
+    <span class="plain">   3/eg: section with abbreviated name "3/eg" (and so on)</span>
     <span class="plain">You can also, or instead, specify:</span>
-    <span class="plain">index: to weave an HTML page indexing the project</span>
-    <span class="plain">chapters: to weave all chapters as individual documents</span>
-    <span class="plain">sections: ditto with sections</span>
+    <span class="plain">   index: to weave an HTML page indexing the project</span>
+    <span class="plain">   chapters: to weave all chapters as individual documents</span>
+    <span class="plain">   sections: ditto with sections</span>
 
     <span class="plain">-import-from X           specify that imported modules are at pathname X</span>
     <span class="plain">-verbose                 explain what inweb is doing (default is -no-verbose)</span>
 
     <span class="plain">for locating programming language definitions:</span>
-    <span class="plain">-read-language X       read language definition from file X</span>
-    <span class="plain">-read-languages X      read all language definitions in path X</span>
-    <span class="plain">-show-languages        list programming languages supported by Inweb</span>
-    <span class="plain">-test-language X       test language X on...</span>
-    <span class="plain">-test-language-on X    ...the code in the file X</span>
+    <span class="plain">  -read-language X       read language definition from file X</span>
+    <span class="plain">  -read-languages X      read all language definitions in path X</span>
+    <span class="plain">  -show-languages        list programming languages supported by Inweb</span>
+    <span class="plain">  -test-language X       test language X on...</span>
+    <span class="plain">  -test-language-on X    ...the code in the file X</span>
 
     <span class="plain">for analysing a web:</span>
-    <span class="plain">-advance-build         increment daily build code for the web</span>
-    <span class="plain">-advance-build-file X  increment daily build code in file X</span>
-    <span class="plain">-catalog               same as '-catalogue'</span>
-    <span class="plain">-catalogue             list the sections in the web</span>
-    <span class="plain">-functions             catalogue the functions in the web</span>
-    <span class="plain">-gitignore X           write a .gitignore file for this web and store it in X</span>
-    <span class="plain">-makefile X            write a makefile for this web and store it in X</span>
-    <span class="plain">-prototype X           translate makefile from prototype X</span>
-    <span class="plain">-scan                  scan the web</span>
-    <span class="plain">-structures            catalogue the structures in the web</span>
-    <span class="plain">-write-me X            write a read-me file following instructions in file X</span>
+    <span class="plain">  -advance-build         increment daily build code for the web</span>
+    <span class="plain">  -advance-build-file X  increment daily build code in file X</span>
+    <span class="plain">  -catalog               same as '-catalogue'</span>
+    <span class="plain">  -catalogue             list the sections in the web</span>
+    <span class="plain">  -functions             catalogue the functions in the web</span>
+    <span class="plain">  -gitignore X           write a .gitignore file for this web and store it in X</span>
+    <span class="plain">  -makefile X            write a makefile for this web and store it in X</span>
+    <span class="plain">  -prototype X           translate makefile from prototype X</span>
+    <span class="plain">  -scan                  scan the web</span>
+    <span class="plain">  -structures            catalogue the structures in the web</span>
+    <span class="plain">  -write-me X            write a read-me file following instructions in file X</span>
 
     <span class="plain">for weaving a web:</span>
-    <span class="plain">-breadcrumb X          use the text X as a breadcrumb in overhead navigation</span>
-    <span class="plain">-navigation X          use the file X as a column of navigation links</span>
-    <span class="plain">-open                  weave then open woven file</span>
-    <span class="plain">-sequential            name woven leaves with sequential numbering (default is -no-sequential)</span>
-    <span class="plain">-weave                 weave the web into human-readable form</span>
-    <span class="plain">-weave-as X            set weave pattern to X (default is 'HTML')</span>
-    <span class="plain">-weave-docs            weave the web for use at GitHub Pages</span>
-    <span class="plain">-weave-into X          weave, but into directory X</span>
-    <span class="plain">-weave-tag X           weave, but only using material tagged as X</span>
-    <span class="plain">-weave-to X            weave, but to filename X (for single files only)</span>
+    <span class="plain">  -breadcrumb X          use the text X as a breadcrumb in overhead navigation</span>
+    <span class="plain">  -navigation X          use the file X as a column of navigation links</span>
+    <span class="plain">  -open                  weave then open woven file</span>
+    <span class="plain">  -sequential            name woven leaves with sequential numbering (default is -no-sequential)</span>
+    <span class="plain">  -weave                 weave the web into human-readable form</span>
+    <span class="plain">  -weave-as X            set weave pattern to X (default is 'HTML')</span>
+    <span class="plain">  -weave-docs            weave the web for use at GitHub Pages</span>
+    <span class="plain">  -weave-into X          weave, but into directory X</span>
+    <span class="plain">  -weave-tag X           weave, but only using material tagged as X</span>
+    <span class="plain">  -weave-to X            weave, but to filename X (for single files only)</span>
 
     <span class="plain">for tangling a web:</span>
-    <span class="plain">-tangle                tangle the web into machine-compilable form</span>
-    <span class="plain">-tangle-to X           tangle, but to filename X</span>
+    <span class="plain">  -tangle                tangle the web into machine-compilable form</span>
+    <span class="plain">  -tangle-to X           tangle, but to filename X</span>
 
     <span class="plain">-at X                    specify that this tool is installed at X</span>
     <span class="plain">-crash                   intentionally crash on internal errors, for backtracing (default is -no-crash)</span>
@@ -104,17 +104,24 @@ distribution:
 <pre>
     <span class="plain">Inweb can see the following programming language definitions:</span>
 
-    <span class="plain">Inform 7: The natural-language based language Inform 7</span>
-    <span class="plain">InC: The Inform-tools extension to the C programming language</span>
-    <span class="plain">Inform 6: The C-like interactive fiction language Inform 6</span>
-    <span class="plain">C++: The C++ programming language</span>
-    <span class="plain">None: For programs in languages not yet supported by Inweb</span>
-    <span class="plain">ILDF: The Inweb Language Definition File format</span>
-    <span class="plain">Plain Text: For text files which are not programs</span>
-    <span class="plain">Perl: The scripting language Perl 5</span>
-    <span class="plain">C: The C programming language</span>
-    <span class="plain">BoxArt: For styling ASCII-art diagrams with boxes and lines</span>
     <span class="plain">ACME: The ACME assembly language for 6502 and related CPUs</span>
+    <span class="plain">Blurb: The Blorb packaging specification language</span>
+    <span class="plain">BoxArt: For styling ASCII-art diagrams with boxes and lines</span>
+    <span class="plain">C: The C programming language</span>
+    <span class="plain">C++: The C++ programming language</span>
+    <span class="plain">ConsoleText: For styling command line text in documentation</span>
+    <span class="plain">Delia: For defining test recipes in Intest</span>
+    <span class="plain">ILDF: The Inweb Language Definition File format</span>
+    <span class="plain">InC: The Inform-tools extension to the C programming language</span>
+    <span class="plain">Indoc: The markup syntax for the Indoc documentation tool</span>
+    <span class="plain">Inform 6: The C-like interactive fiction language Inform 6</span>
+    <span class="plain">Inform 7: The natural-language based language Inform 7</span>
+    <span class="plain">Inter: The textual form of intermediate Inform code</span>
+    <span class="plain">Inter Pipeline: For pipelines of Inform code-generation stages</span>
+    <span class="plain">Inweb: The markup language for the Inweb literate programming system</span>
+    <span class="plain">None: For programs in languages not yet supported by Inweb</span>
+    <span class="plain">Perl: The scripting language Perl 5</span>
+    <span class="plain">Plain Text: For text files which are not programs</span>
 </pre>
 
 <p class="inwebparagraph">It's easy to make new language definitions, and contributions of these are
