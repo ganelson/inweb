@@ -3362,13 +3362,13 @@ void  Painter__execute(hash_table *HT, colouring_language_block *block, text_str
 void  Painter__execute_rule(hash_table *HT, colouring_rule *rule, text_stream *matter, 	text_stream *colouring, int from, int to, int N) ;
 #line 301 "inweb/Chapter 4/The Painter.w"
 int  Painter__satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter, 	text_stream *colouring, int from, int to, int N) ;
-#line 362 "inweb/Chapter 4/The Painter.w"
+#line 365 "inweb/Chapter 4/The Painter.w"
 void  Painter__follow(hash_table *HT, colouring_rule *rule, text_stream *matter, 	text_stream *colouring, int from, int to) ;
-#line 389 "inweb/Chapter 4/The Painter.w"
+#line 392 "inweb/Chapter 4/The Painter.w"
 linked_list * Painter__lines(filename *F) ;
-#line 411 "inweb/Chapter 4/The Painter.w"
+#line 414 "inweb/Chapter 4/The Painter.w"
 void  Painter__text_file_helper(text_stream *text, text_file_position *tfp, void *state) ;
-#line 416 "inweb/Chapter 4/The Painter.w"
+#line 419 "inweb/Chapter 4/The Painter.w"
 void  Painter__colour_file(programming_language *pl, filename *F, text_stream *to, text_stream *coloured) ;
 #line 9 "inweb/Chapter 4/C-Like Languages.w"
 void  CLike__make_c_like(programming_language *pl) ;
@@ -7013,7 +7013,7 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "6 April 2020";
+			char *d = "7 April 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -19307,8 +19307,11 @@ int Painter__satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 			if (rule->number != N) return FALSE;
 		}
 	} else if (rule->match_regexp_text[0]) {
-		if (Regexp__match(&(rule->mr), matter, rule->match_regexp_text) == FALSE)
-			return FALSE;
+		TEMPORARY_TEXT(T);
+		for (int j=from; j<=to; j++) PUT_TO(T, Str__get_at(matter, j));
+		int rv = Regexp__match(&(rule->mr), T, rule->match_regexp_text);
+		DISCARD_TEXT(T);
+		if (rv == FALSE) return FALSE;
 	} else if (Str__len(rule->match_text) > 0) {
 		if ((rule->match_prefix == UNSPACED_RULE_PREFIX) ||
 			(rule->match_prefix == SPACED_RULE_PREFIX) ||
@@ -19326,7 +19329,7 @@ int Painter__satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 		} else if ((rule->match_prefix == UNSPACED_RULE_SUFFIX) ||
 			(rule->match_prefix == SPACED_RULE_SUFFIX) ||
 			(rule->match_prefix == OPTIONALLY_SPACED_RULE_SUFFIX)) {
-			int pos = from + Str__len(rule->match_text);
+			int pos = to + 1;
 			if (rule->match_prefix != UNSPACED_RULE_SUFFIX) {
 				while ((pos < Str__len(rule->match_text)) && (Characters__is_whitespace(pos))) pos++;
 				if ((rule->match_prefix == SPACED_RULE_SUFFIX) && (pos == from))
@@ -19356,14 +19359,14 @@ int Painter__satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 	return TRUE;
 }
 
-#line 362 "inweb/Chapter 4/The Painter.w"
+#line 365 "inweb/Chapter 4/The Painter.w"
 void Painter__follow(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to) {
 	if (rule->execute_block)
 		Painter__execute(HT, rule->execute_block, matter, colouring, from, to, 0);
 	else if (rule->debug) 
 {
-#line 378 "inweb/Chapter 4/The Painter.w"
+#line 381 "inweb/Chapter 4/The Painter.w"
 	PRINT("[%d, %d] text: ", from, to);
 	for (int i=from; i<=to; i++)
 		PUT_TO(STDOUT, Str__get_at(matter, i));
@@ -19373,7 +19376,7 @@ void Painter__follow(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	PRINT("\n");
 
 }
-#line 366 "inweb/Chapter 4/The Painter.w"
+#line 369 "inweb/Chapter 4/The Painter.w"
 
 	else {
 		if (rule->set_to_colour != NOT_A_COLOUR)
@@ -19385,7 +19388,7 @@ void Painter__follow(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	}
 }
 
-#line 389 "inweb/Chapter 4/The Painter.w"
+#line 392 "inweb/Chapter 4/The Painter.w"
 linked_list *Painter__lines(filename *F) {
 	linked_list *L = NEW_LINKED_LIST(text_stream);
 	TextFiles__read(F, FALSE, "unable to read file of textual extract", TRUE,

@@ -307,8 +307,11 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 			if (rule->number != N) return FALSE;
 		}
 	} else if (rule->match_regexp_text[0]) {
-		if (Regexp::match(&(rule->mr), matter, rule->match_regexp_text) == FALSE)
-			return FALSE;
+		TEMPORARY_TEXT(T);
+		for (int j=from; j<=to; j++) PUT_TO(T, Str::get_at(matter, j));
+		int rv = Regexp::match(&(rule->mr), T, rule->match_regexp_text);
+		DISCARD_TEXT(T);
+		if (rv == FALSE) return FALSE;
 	} else if (Str::len(rule->match_text) > 0) {
 		if ((rule->match_prefix == UNSPACED_RULE_PREFIX) ||
 			(rule->match_prefix == SPACED_RULE_PREFIX) ||
@@ -326,7 +329,7 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 		} else if ((rule->match_prefix == UNSPACED_RULE_SUFFIX) ||
 			(rule->match_prefix == SPACED_RULE_SUFFIX) ||
 			(rule->match_prefix == OPTIONALLY_SPACED_RULE_SUFFIX)) {
-			int pos = from + Str::len(rule->match_text);
+			int pos = to + 1;
 			if (rule->match_prefix != UNSPACED_RULE_SUFFIX) {
 				while ((pos < Str::len(rule->match_text)) && (Characters::is_whitespace(pos))) pos++;
 				if ((rule->match_prefix == SPACED_RULE_SUFFIX) && (pos == from))

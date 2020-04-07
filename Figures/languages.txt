@@ -9,4 +9,5 @@ ILDF: The Inweb Language Definition File format
 Plain Text: For text files which are not programs
 Perl: The scripting language Perl 5
 C: The C programming language
+BoxArt: For styling ASCII-art diagrams with boxes and lines
 ACME: The ACME assembly language for 6502 and related CPUs
