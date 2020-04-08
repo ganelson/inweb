@@ -413,8 +413,12 @@ VMETHOD_TYPE(COMMENTARY_TEXT_FOR_MTID, weave_format *wf, text_stream *OUT,
 void Formats::text_fragment(OUTPUT_STREAM, weave_target *wv, text_stream *fragment) {
 	weave_format *wf = wv->format;
 	TEMPORARY_TEXT(matter);
-	int rv = FALSE;
-	IMETHOD_CALL(rv, wf, PRESERVE_MATH_MODE_FOR_MTID, matter, fragment);
+	int rv = TRUE;
+	if (Str::eq_wide_string(
+		Bibliographic::get_datum(wv->weave_web->md, I"TeX Mathematics Notation"), L"On")) {
+		rv = FALSE;
+		IMETHOD_CALL(rv, wf, PRESERVE_MATH_MODE_FOR_MTID, matter, fragment);
+	}
 	if (rv == FALSE) TeX::remove_math_mode(matter, fragment);
 	else Str::copy(matter, fragment);
 	VMETHOD_CALL(wf, COMMENTARY_TEXT_FOR_MTID, OUT, wv, matter);

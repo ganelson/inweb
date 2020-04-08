@@ -367,3 +367,9 @@ the weave is to TeX, but a few very approximate attempts are made by Inweb
 so that the HTML version may also make sense. For example, |$x \leq y$| would
 be rendered in HTML as |x <= y|.
 
+In some webs, this will be inconvenient, because the dollar sign is wanted
+for something else (such as money, or hexadecimal). So this feature can be
+deactivated by writing the following in the Contents section of a web:
+= (text as Inweb)
+	TeX Mathematics Notation: Off
+=
