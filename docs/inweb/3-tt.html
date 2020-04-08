@@ -75,7 +75,7 @@ of which can be seen below.
 
 
 <pre class="displaydefn">
-        <span class="comment">(a) The shebang line, a header for scripting languages, and other heading matter</span>
+        <span class="comment"> (a) The shebang line, a header for scripting languages, and other heading matter</span>
         <span class="functiontext">LanguageMethods::shebang</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">lang</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">target</span><span class="plain">);</span>
         <span class="functiontext">LanguageMethods::disclaimer</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">lang</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">target</span><span class="plain">);</span>
         <span class="functiontext">LanguageMethods::additional_early_matter</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">lang</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">target</span><span class="plain">);</span>
@@ -84,23 +84,23 @@ of which can be seen below.
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">placed_very_early</span><span class="plain">) &amp;&amp; (</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">defines_macro</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
                 <span class="functiontext">Tangler::tangle_paragraph</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
 
-        <span class="comment">(b) Results of <code class="display"><span class="extract">@d</span></code> declarations</span>
+        <span class="comment"> (b) Results of <code class="display"><span class="extract">@d</span></code> declarations</span>
         &lt;<span class="cwebmacro">Tangle all the constant definitions in section order</span> <span class="cwebmacronumber">1.1.1</span>&gt;<span class="plain">;</span>
 
-        <span class="comment">(c) Miscellaneous automated C predeclarations</span>
+        <span class="comment"> (c) Miscellaneous automated C predeclarations</span>
         <span class="functiontext">LanguageMethods::additional_predeclarations</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">lang</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
 
-        <span class="comment">(d) Above-the-bar code from all of the sections (global variables, and such)</span>
+        <span class="comment"> (d) Above-the-bar code from all of the sections (global variables, and such)</span>
         <span class="identifier">LOOP_OVER_PARAGRAPHS</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">target</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">placed_early</span><span class="plain">) &amp;&amp; (</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">defines_macro</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
                 <span class="functiontext">Tangler::tangle_paragraph</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
 
-        <span class="comment">(e) Below-the-bar code: the bulk of the program itself</span>
+        <span class="comment"> (e) Below-the-bar code: the bulk of the program itself</span>
         <span class="identifier">LOOP_OVER_PARAGRAPHS</span><span class="plain">(</span><span class="identifier">C</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">, </span><span class="identifier">target</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">placed_early</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">placed_very_early</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">defines_macro</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">))</span>
                 <span class="functiontext">Tangler::tangle_paragraph</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
 
-        <span class="comment">(f) Opposite of the shebang: a footer</span>
+        <span class="comment"> (f) Opposite of the shebang: a footer</span>
         <span class="functiontext">LanguageMethods::gnabehs</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">lang</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">);</span>
 </pre>
 
@@ -245,7 +245,7 @@ Almost all of the time, it simply prints <code class="display"><span class="extr
         <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">spos</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)</span>
             &lt;<span class="cwebmacro">Expand a double-square command</span> <span class="cwebmacronumber">3.2</span>&gt;
         <span class="reserved">else</span>
-            <span class="functiontext">LanguageMethods::tangle_code</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">sect_language</span><span class="plain">, </span><span class="identifier">original</span><span class="plain">); </span><span class="comment">this is usually what happens</span>
+            <span class="functiontext">LanguageMethods::tangle_code</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">sect_language</span><span class="plain">, </span><span class="identifier">original</span><span class="plain">); </span><span class="comment"> this is usually what happens</span>
     <span class="plain">}</span>
 </pre>
 
@@ -299,7 +299,7 @@ So we insert a fresh line marker.
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"unknown macro"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"Macro is '%S'\n"</span><span class="plain">, </span><span class="identifier">temp</span><span class="plain">);</span>
-            <span class="functiontext">LanguageMethods::comment</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">lang</span><span class="plain">, </span><span class="identifier">temp</span><span class="plain">); </span><span class="comment">recover by putting macro name in comment</span>
+            <span class="functiontext">LanguageMethods::comment</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">lang</span><span class="plain">, </span><span class="identifier">temp</span><span class="plain">); </span><span class="comment"> recover by putting macro name in comment</span>
         <span class="plain">}</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">rest</span><span class="plain">);</span>
         <span class="functiontext">Str::substr</span><span class="plain">(</span><span class="identifier">rest</span><span class="plain">, </span><span class="functiontext">Str::at</span><span class="plain">(</span><span class="identifier">original</span><span class="plain">, </span><span class="identifier">mpos</span><span class="plain"> + </span><span class="identifier">mlen</span><span class="plain">), </span><span class="functiontext">Str::end</span><span class="plain">(</span><span class="identifier">original</span><span class="plain">));</span>

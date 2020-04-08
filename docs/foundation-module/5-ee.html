@@ -49,22 +49,22 @@ essentially individual HTML files, plus some images.
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">metadata_list</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">ebook_datum</span></code>: DCMI-standard bibliographic data</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">prefix</span><span class="plain">; </span><span class="comment">to apply to the page leafnames</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">CSS_file_throughout</span><span class="plain">; </span><span class="comment">where to find a CSS file to be used for all volumes</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">metadata_list</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">ebook_datum</span></code>: DCMI-standard bibliographic data</span>
+        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">prefix</span><span class="plain">; </span><span class="comment"> to apply to the page leafnames</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">CSS_file_throughout</span><span class="plain">; </span><span class="comment"> where to find a CSS file to be used for all volumes</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">eventual_epub</span><span class="plain">; </span><span class="comment">filename of the final <code class="display"><span class="extract">*.epub</span></code> to be made</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">holder</span><span class="plain">; </span><span class="comment">directory to put the ingredients into</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">OEBPS_path</span><span class="plain">; </span><span class="comment">subdirectory which mysteriously has to be called <code class="display"><span class="extract">OEBPS</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">eventual_epub</span><span class="plain">; </span><span class="comment"> filename of the final <code class="display"><span class="extract">*.epub</span></code> to be made</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">holder</span><span class="plain">; </span><span class="comment"> directory to put the ingredients into</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">OEBPS_path</span><span class="plain">; </span><span class="comment"> subdirectory which mysteriously has to be called <code class="display"><span class="extract">OEBPS</span></code></span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">ebook_volume_list</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">ebook_volume</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_volume</span><span class="plain"> *</span><span class="identifier">current_volume</span><span class="plain">; </span><span class="comment">the one to which chapters are now being added</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">ebook_volume_list</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">ebook_volume</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_volume</span><span class="plain"> *</span><span class="identifier">current_volume</span><span class="plain">; </span><span class="comment"> the one to which chapters are now being added</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">ebook_chapter_list</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">ebook_chapter</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_chapter</span><span class="plain"> *</span><span class="identifier">current_chapter</span><span class="plain">; </span><span class="comment">the one to which pages are now being added</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">ebook_chapter_list</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">ebook_chapter</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_chapter</span><span class="plain"> *</span><span class="identifier">current_chapter</span><span class="plain">; </span><span class="comment"> the one to which pages are now being added</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">ebook_page_list</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">book_page</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">ebook_image_list</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">ebook_image</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">ebook_page_list</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">book_page</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">ebook_image_list</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">ebook_image</span></code></span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">ebook</span><span class="plain">;</span>
 </pre>
@@ -96,16 +96,16 @@ list is entirely sufficient.
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_volume</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">volume_title</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_page</span><span class="plain"> *</span><span class="identifier">volume_starts</span><span class="plain">; </span><span class="comment">on which page the volume starts</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">CSS_file</span><span class="plain">; </span><span class="comment">where to find the CSS file to be included</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_page</span><span class="plain"> *</span><span class="identifier">volume_starts</span><span class="plain">; </span><span class="comment"> on which page the volume starts</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">CSS_file</span><span class="plain">; </span><span class="comment"> where to find the CSS file to be included</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">ebook_volume</span><span class="plain">;</span>
 
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_chapter</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">chapter_title</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_volume</span><span class="plain"> *</span><span class="identifier">in_volume</span><span class="plain">; </span><span class="comment">to which volume this chapter belongs</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_page</span><span class="plain"> *</span><span class="identifier">chapter_starts</span><span class="plain">; </span><span class="comment">on which page the chapter starts</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">ebook_mark_list</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">ebook_mark</span></code>: for when multiple navigable points exist within this</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_volume</span><span class="plain"> *</span><span class="identifier">in_volume</span><span class="plain">; </span><span class="comment"> to which volume this chapter belongs</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_page</span><span class="plain"> *</span><span class="identifier">chapter_starts</span><span class="plain">; </span><span class="comment"> on which page the chapter starts</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">ebook_mark_list</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">ebook_mark</span></code>: for when multiple navigable points exist within this</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">start_URL</span><span class="plain">;</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">ebook_chapter</span><span class="plain">;</span>
@@ -127,12 +127,12 @@ pages:
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">page_type</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">page_ID</span><span class="plain">;</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">relative_URL</span><span class="plain">; </span><span class="comment">eventual URL of this page within the ebook</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">relative_URL</span><span class="plain">; </span><span class="comment"> eventual URL of this page within the ebook</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_volume</span><span class="plain"> *</span><span class="identifier">in_volume</span><span class="plain">; </span><span class="comment">to which volume this page belongs</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_chapter</span><span class="plain"> *</span><span class="identifier">in_chapter</span><span class="plain">; </span><span class="comment">to which chapter this page belongs</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_volume</span><span class="plain"> *</span><span class="identifier">in_volume</span><span class="plain">; </span><span class="comment"> to which volume this page belongs</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_chapter</span><span class="plain"> *</span><span class="identifier">in_chapter</span><span class="plain">; </span><span class="comment"> to which chapter this page belongs</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nav_entry_written</span><span class="plain">; </span><span class="comment">keep track of what we've written to the navigation tree</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nav_entry_written</span><span class="plain">; </span><span class="comment"> keep track of what we've written to the navigation tree</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">ebook_page</span><span class="plain">;</span>
 
@@ -144,7 +144,7 @@ pages:
 
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook_image</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">image_ID</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">relative_URL</span><span class="plain">; </span><span class="comment">eventual URL of this image within the ebook</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">relative_URL</span><span class="plain">; </span><span class="comment"> eventual URL of this image within the ebook</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">ebook_image</span><span class="plain">;</span>
 </pre>
@@ -339,7 +339,7 @@ that way.)
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Mimetype</span><span class="plain">, </span><span class="constant">ISO_ENC</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
             <span class="functiontext">Errors::fatal_with_file</span><span class="plain">(</span><span class="string">"unable to open mimetype file for output: %f"</span><span class="plain">,</span>
                 <span class="identifier">Mimetype</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"application/epub+zip"</span><span class="plain">); </span><span class="comment">EPUB requires there be no newline here</span>
+        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"application/epub+zip"</span><span class="plain">); </span><span class="comment"> EPUB requires there be no newline here</span>
         <span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
 </pre>
 
@@ -667,7 +667,7 @@ impaired people.
         <span class="string">WRITE("</span><span class="plain">	\</span><span class="string">"http:</span><span class="comment">www.daisy.org/z3986/2005/ncx-2005-1.dtd\"&gt;\n");</span>
         <span class="string">WRITE("</span><span class="plain">&lt;</span><span class="identifier">ncx</span><span class="plain"> </span><span class="identifier">xmlns</span><span class="plain">=\</span><span class="string">"http:</span><span class="comment">www.daisy.org/z3986/2005/ncx/\" version=\"2005-1\"&gt;\n");</span>
 
-        <span class="string">int depth = 1; </span><span class="comment">there are surely at least sections</span>
+        <span class="string">int depth = 1; </span><span class="comment"> there are surely at least sections</span>
         <span class="string">if (LinkedLists::len(B-&gt;ebook_chapter_list) &gt; 0) depth = 2;</span>
         <span class="string">if (LinkedLists::len(B-&gt;ebook_volume_list) &gt; 0) depth = 3;</span>
 

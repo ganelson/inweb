@@ -382,6 +382,7 @@ and macro usage is rendered differently.
 		if (state->in_run_of_definitions) Formats::after_definitions(OUT, wv);
 		state->in_run_of_definitions = FALSE;
 	}
+
 	Formats::source_code(OUT, wv, tab_stops_of_indentation, prefatory,
 		matter, colouring, concluding_comment, (found == 0)?TRUE:FALSE, TRUE, TRUE);
 	DISCARD_TEXT(colouring);

@@ -36,17 +36,17 @@ not necessarily.
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">dictionary</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">textual</span><span class="plain">; </span><span class="comment">values are texts?</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_entries</span><span class="plain">; </span><span class="comment">total number of key-value pairs currently stored here</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">hash_table_size</span><span class="plain">; </span><span class="comment">size of array...</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">dict_entry</span><span class="plain"> *</span><span class="identifier">hash_table</span><span class="plain">; </span><span class="comment">...of linked lists of dictionary entries</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">textual</span><span class="plain">; </span><span class="comment"> values are texts?</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_entries</span><span class="plain">; </span><span class="comment"> total number of key-value pairs currently stored here</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">hash_table_size</span><span class="plain">; </span><span class="comment"> size of array...</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">dict_entry</span><span class="plain"> *</span><span class="identifier">hash_table</span><span class="plain">; </span><span class="comment"> ...of linked lists of dictionary entries</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">dictionary</span><span class="plain">;</span>
 
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">dict_entry</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">vacant</span><span class="plain">; </span><span class="comment">a "vacant" entry is not currently used to store a k-v pair</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">key</span><span class="plain">; </span><span class="comment">for non-vacant entries only: the key text</span>
-        <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">value</span><span class="plain">; </span><span class="comment">for non-vacant entries only: the value, some kind of pointer</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">vacant</span><span class="plain">; </span><span class="comment"> a "vacant" entry is not currently used to store a k-v pair</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">key</span><span class="plain">; </span><span class="comment"> for non-vacant entries only: the key text</span>
+        <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">value</span><span class="plain">; </span><span class="comment"> for non-vacant entries only: the value, some kind of pointer</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">dict_entry</span><span class="plain"> *</span><span class="identifier">next_in_entry</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">dict_entry</span><span class="plain">;</span>
 </pre>

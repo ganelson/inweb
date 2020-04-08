@@ -143,12 +143,12 @@ these identifiers.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">ELEMENT_ACCESS_USAGE</span><span class="plain">     </span><span class="constant">0x00000001</span><span class="plain"> </span><span class="comment">C-like languages: access via <code class="display"><span class="extract">-&gt;</span></code> or <code class="display"><span class="extract">.</span></code> operators to structure element</span>
-    <span class="definitionkeyword">define</span> <span class="constant">FCALL_USAGE</span><span class="plain">              </span><span class="constant">0x00000002</span><span class="plain"> </span><span class="comment">C-like languages: function call made using brackets, <code class="display"><span class="extract">name(args)</span></code></span>
-    <span class="definitionkeyword">define</span> <span class="constant">PREFORM_IN_CODE_USAGE</span><span class="plain">    </span><span class="constant">0x00000004</span><span class="plain"> </span><span class="comment">InC only: use of a Preform nonterminal as a C "constant"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">PREFORM_IN_GRAMMAR_USAGE</span><span class="plain"> </span><span class="constant">0x00000008</span><span class="plain"> </span><span class="comment">InC only: ditto, but within Preform production rather than C code</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MISC_USAGE</span><span class="plain">               </span><span class="constant">0x00000010</span><span class="plain"> </span><span class="comment">any other appearance as an identifier</span>
-    <span class="definitionkeyword">define</span> <span class="constant">ANY_USAGE</span><span class="plain">                </span><span class="constant">0x7fffffff</span><span class="plain"> </span><span class="comment">any of the above</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ELEMENT_ACCESS_USAGE</span><span class="plain">     </span><span class="constant">0x00000001</span><span class="plain"> </span><span class="comment"> C-like languages: access via <code class="display"><span class="extract">-&gt;</span></code> or <code class="display"><span class="extract">.</span></code> operators to structure element</span>
+    <span class="definitionkeyword">define</span> <span class="constant">FCALL_USAGE</span><span class="plain">              </span><span class="constant">0x00000002</span><span class="plain"> </span><span class="comment"> C-like languages: function call made using brackets, <code class="display"><span class="extract">name(args)</span></code></span>
+    <span class="definitionkeyword">define</span> <span class="constant">PREFORM_IN_CODE_USAGE</span><span class="plain">    </span><span class="constant">0x00000004</span><span class="plain"> </span><span class="comment"> InC only: use of a Preform nonterminal as a C "constant"</span>
+    <span class="definitionkeyword">define</span> <span class="constant">PREFORM_IN_GRAMMAR_USAGE</span><span class="plain"> </span><span class="constant">0x00000008</span><span class="plain"> </span><span class="comment"> InC only: ditto, but within Preform production rather than C code</span>
+    <span class="definitionkeyword">define</span> <span class="constant">MISC_USAGE</span><span class="plain">               </span><span class="constant">0x00000010</span><span class="plain"> </span><span class="comment"> any other appearance as an identifier</span>
+    <span class="definitionkeyword">define</span> <span class="constant">ANY_USAGE</span><span class="plain">                </span><span class="constant">0x7fffffff</span><span class="plain"> </span><span class="comment"> any of the above</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The main analysis routine goes through a web as follows. Note that we only
 perform the search here, we don't comment on the results; any action to be
@@ -330,8 +330,8 @@ in Aho, Sethi and Ullman, "Compilers: Principles, Techniques and Tools"
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">HASH_TAB_SIZE</span><span class="plain"> </span><span class="constant">1000</span><span class="plain"> </span><span class="comment">the possible hash codes are 0 up to this minus 1</span>
-    <span class="definitionkeyword">define</span> <span class="constant">NUMBER_HASH</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="comment">literal decimal integers, and no other words, have this hash code</span>
+    <span class="definitionkeyword">define</span> <span class="constant">HASH_TAB_SIZE</span><span class="plain"> </span><span class="constant">1000</span><span class="plain"> </span><span class="comment"> the possible hash codes are 0 up to this minus 1</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NUMBER_HASH</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="comment"> literal decimal integers, and no other words, have this hash code</span>
 </pre>
 
 <pre class="display">
@@ -339,12 +339,12 @@ in Aho, Sethi and Ullman, "Compilers: Principles, Techniques and Tools"
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">hash_code</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">string_position</span><span class="plain"> </span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">Str::start</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain">(</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">)) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="character">'-'</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">) == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">; </span><span class="comment">an isolated minus sign is an ordinary word</span>
-                <span class="comment">and otherwise fall into...</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="character">'-'</span><span class="plain">: </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">) == </span><span class="constant">1</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">; </span><span class="comment"> an isolated minus sign is an ordinary word</span>
+                <span class="comment"> and otherwise fall into...</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="character">'0'</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="character">'1'</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="character">'2'</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="character">'3'</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="character">'4'</span><span class="plain">:</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="character">'5'</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="character">'6'</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="character">'7'</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="character">'8'</span><span class="plain">: </span><span class="reserved">case</span><span class="plain"> </span><span class="character">'9'</span><span class="plain">: {</span>
                 <span class="reserved">int</span><span class="plain"> </span><span class="identifier">numeric</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-                <span class="comment">the first character may prove to be the start of a number: is this true?</span>
+                <span class="comment"> the first character may prove to be the start of a number: is this true?</span>
                 <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">Str::forward</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">); </span><span class="functiontext">Str::in_range</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">); </span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">Str::forward</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">))</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">isdigit</span><span class="plain">(</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">)) == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">numeric</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">numeric</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">NUMBER_HASH</span><span class="plain">;</span>
@@ -352,7 +352,7 @@ in Aho, Sethi and Ullman, "Compilers: Principles, Techniques and Tools"
         <span class="plain">}</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">=</span><span class="functiontext">Str::start</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">); </span><span class="functiontext">Str::in_range</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">); </span><span class="identifier">p</span><span class="plain"> = </span><span class="functiontext">Str::forward</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">))</span>
             <span class="identifier">hash_code</span><span class="plain"> = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain">) ((</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">hash_code</span><span class="plain">*30011) + (</span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">)));</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain">) (1+(</span><span class="identifier">hash_code</span><span class="plain"> % (</span><span class="constant">HASH_TAB_SIZE</span><span class="plain">-1))); </span><span class="comment">result of X 30011, plus 1</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain">) (1+(</span><span class="identifier">hash_code</span><span class="plain"> % (</span><span class="constant">HASH_TAB_SIZE</span><span class="plain">-1))); </span><span class="comment"> result of X 30011, plus 1</span>
     <span class="plain">}</span>
 </pre>
 
@@ -365,8 +365,8 @@ in Aho, Sethi and Ullman, "Compilers: Principles, Techniques and Tools"
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">hash_table</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">analysis_hash</span><span class="plain">[</span><span class="constant">HASH_TAB_SIZE</span><span class="plain">]; </span><span class="comment">of <code class="display"><span class="extract">hash_table_entry</span></code></span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">analysis_hash_initialised</span><span class="plain">; </span><span class="comment">when we start up, array's contents are undefined</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">analysis_hash</span><span class="plain">[</span><span class="constant">HASH_TAB_SIZE</span><span class="plain">]; </span><span class="comment"> of <code class="display"><span class="extract">hash_table_entry</span></code></span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">analysis_hash_initialised</span><span class="plain">; </span><span class="comment"> when we start up, array's contents are undefined</span>
     <span class="plain">} </span><span class="reserved">hash_table</span><span class="plain">;</span>
 </pre>
 
@@ -380,8 +380,8 @@ in Aho, Sethi and Ullman, "Compilers: Principles, Techniques and Tools"
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">hash_table_entry</span><span class="plain"> {</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">hash_key</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="reserved">reserved_word</span><span class="plain">; </span><span class="comment">in the language currently being woven, that is</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">usages</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">hash_table_entry_usage</span></code></span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="reserved">reserved_word</span><span class="plain">; </span><span class="comment"> in the language currently being woven, that is</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">usages</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">hash_table_entry_usage</span></code></span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">hash_table_entry</span><span class="plain">;</span>
 </pre>
@@ -479,7 +479,7 @@ same paragraph of code.
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">hash_table_entry_usage</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">usage_recorded_at</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">form_of_usage</span><span class="plain">; </span><span class="comment">bitmap of the <code class="display"><span class="extract">*_USAGE</span></code> constants defined above</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">form_of_usage</span><span class="plain">; </span><span class="comment"> bitmap of the <code class="display"><span class="extract">*_USAGE</span></code> constants defined above</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">hash_table_entry_usage</span><span class="plain">;</span>
 </pre>

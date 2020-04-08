@@ -111,15 +111,15 @@ but in fact that's fine here.)
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">HTML_OUT</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="comment">write position in HTML file is currently outside of p, pre, li</span>
-    <span class="definitionkeyword">define</span> <span class="constant">HTML_IN_P</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment">write position in HTML file is currently outside p</span>
-    <span class="definitionkeyword">define</span> <span class="constant">HTML_IN_PRE</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment">write position in HTML file is currently outside pre</span>
-    <span class="definitionkeyword">define</span> <span class="constant">HTML_IN_LI</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="comment">write position in HTML file is currently outside li</span>
+    <span class="definitionkeyword">define</span> <span class="constant">HTML_OUT</span><span class="plain"> </span><span class="constant">0</span><span class="plain"> </span><span class="comment"> write position in HTML file is currently outside of p, pre, li</span>
+    <span class="definitionkeyword">define</span> <span class="constant">HTML_IN_P</span><span class="plain"> </span><span class="constant">1</span><span class="plain"> </span><span class="comment"> write position in HTML file is currently outside p</span>
+    <span class="definitionkeyword">define</span> <span class="constant">HTML_IN_PRE</span><span class="plain"> </span><span class="constant">2</span><span class="plain"> </span><span class="comment"> write position in HTML file is currently outside pre</span>
+    <span class="definitionkeyword">define</span> <span class="constant">HTML_IN_LI</span><span class="plain"> </span><span class="constant">3</span><span class="plain"> </span><span class="comment"> write position in HTML file is currently outside li</span>
 </pre>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">html_in_para</span><span class="plain"> = </span><span class="constant">HTML_OUT</span><span class="plain">; </span><span class="comment">one of the above</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">item_depth</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment">for <code class="display"><span class="extract">HTML_IN_LI</span></code> only: how many lists we're nested inside</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">html_in_para</span><span class="plain"> = </span><span class="constant">HTML_OUT</span><span class="plain">; </span><span class="comment"> one of the above</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">item_depth</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment"> for <code class="display"><span class="extract">HTML_IN_LI</span></code> only: how many lists we're nested inside</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTMLFormat::p</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">class</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">class</span><span class="plain">) </span><span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"p"</span><span class="plain">, </span><span class="string">"class=\"%s\""</span><span class="plain">, </span><span class="identifier">class</span><span class="plain">)</span>
@@ -337,7 +337,7 @@ the page, and this drops one.
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">heading_text</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">chaptermark</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">sectionmark</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">weight</span><span class="plain">) {</span>
         <span class="identifier">page_section</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">weight</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment">Skip chapter headings</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">weight</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">; </span><span class="comment"> Skip chapter headings</span>
         <span class="functiontext">HTMLFormat::exit_current_paragraph</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">) {</span>
             <span class="functiontext">HTMLFormat::p</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"inwebparagraph"</span><span class="plain">);</span>

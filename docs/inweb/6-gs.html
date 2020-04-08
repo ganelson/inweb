@@ -34,7 +34,7 @@ file by following a "prototype".
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">gitignore_state</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">for_web</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">to_gitignore</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_line_was_blank</span><span class="plain">; </span><span class="comment">used to suppress runs of multiple blank lines</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">last_line_was_blank</span><span class="plain">; </span><span class="comment"> used to suppress runs of multiple blank lines</span>
     <span class="plain">} </span><span class="reserved">gitignore_state</span><span class="plain">;</span>
 
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Git::write_gitignore</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">prototype</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>

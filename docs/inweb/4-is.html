@@ -112,7 +112,7 @@ of grammar are <code class="display"><span class="extract">PREFORM_GRAMMAR_LCAT<
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">form</span><span class="plain"> = </span><span class="constant">NOT_A_NONTERMINAL</span><span class="plain">; </span><span class="comment">one of the four values above, or a non-negative word count</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">form</span><span class="plain"> = </span><span class="constant">NOT_A_NONTERMINAL</span><span class="plain">; </span><span class="comment"> one of the four values above, or a non-negative word count</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pntname</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">header</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Parse a Preform nonterminal header line</span> <span class="cwebmacronumber">3.1.1</span>&gt;<span class="plain">;</span>
@@ -169,14 +169,14 @@ structures to be created:
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">preform_nonterminal</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">nt_name</span><span class="plain">; </span><span class="comment">e.g., <code class="display"><span class="extract">&lt;action-clause&gt;</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">unangled_name</span><span class="plain">; </span><span class="comment">e.g., <code class="display"><span class="extract">action-clause</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">as_C_identifier</span><span class="plain">; </span><span class="comment">e.g., <code class="display"><span class="extract">action_clause_NTM</span></code></span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">as_function</span><span class="plain">; </span><span class="comment">defined internally, that is, parsed by a C function</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">voracious</span><span class="plain">; </span><span class="comment">a voracious nonterminal: see "The English Syntax of Inform"</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">min_word_count</span><span class="plain">; </span><span class="comment">for internals only</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">nt_name</span><span class="plain">; </span><span class="comment"> e.g., <code class="display"><span class="extract">&lt;action-clause&gt;</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">unangled_name</span><span class="plain">; </span><span class="comment"> e.g., <code class="display"><span class="extract">action-clause</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">as_C_identifier</span><span class="plain">; </span><span class="comment"> e.g., <code class="display"><span class="extract">action_clause_NTM</span></code></span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">as_function</span><span class="plain">; </span><span class="comment"> defined internally, that is, parsed by a C function</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">voracious</span><span class="plain">; </span><span class="comment"> a voracious nonterminal: see "The English Syntax of Inform"</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">min_word_count</span><span class="plain">; </span><span class="comment"> for internals only</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">max_word_count</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">takes_pointer_result</span><span class="plain">; </span><span class="comment">right-hand formula defines <code class="display"><span class="extract">*XP</span></code>, not <code class="display"><span class="extract">*X</span></code></span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">takes_pointer_result</span><span class="plain">; </span><span class="comment"> right-hand formula defines <code class="display"><span class="extract">*XP</span></code>, not <code class="display"><span class="extract">*X</span></code></span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">where_defined</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">preform_nonterminal</span><span class="plain"> *</span><span class="identifier">next_pnt_alphabetically</span><span class="plain">;</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
@@ -459,10 +459,10 @@ has identifier <code class="display"><span class="extract">"kind_ref_NTMV"</span
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">nonterminal_variable</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ntv_name</span><span class="plain">; </span><span class="comment">e.g., <code class="display"><span class="extract">"num"</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ntv_type</span><span class="plain">; </span><span class="comment">e.g., <code class="display"><span class="extract">"int"</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ntv_identifier</span><span class="plain">; </span><span class="comment">e.g., <code class="display"><span class="extract">"num_NTMV"</span></code></span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">first_mention</span><span class="plain">; </span><span class="comment">first usage</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ntv_name</span><span class="plain">; </span><span class="comment"> e.g., <code class="display"><span class="extract">"num"</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ntv_type</span><span class="plain">; </span><span class="comment"> e.g., <code class="display"><span class="extract">"int"</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ntv_identifier</span><span class="plain">; </span><span class="comment"> e.g., <code class="display"><span class="extract">"num_NTMV"</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">first_mention</span><span class="plain">; </span><span class="comment"> first usage</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">nonterminal_variable</span><span class="plain">;</span>
 </pre>

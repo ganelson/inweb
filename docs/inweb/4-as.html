@@ -239,7 +239,7 @@ files to crash Inweb.)
             <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">part_within_comment</span><span class="plain">);</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=</span><span class="identifier">c_position</span><span class="plain"> + </span><span class="constant">2</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">c_end</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++)</span>
                 <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">part_within_comment</span><span class="plain">, </span><span class="functiontext">Str::get_at</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">));</span>
-            <span class="functiontext">Str::trim_white_space</span><span class="plain">(</span><span class="identifier">part_within_comment</span><span class="plain">);</span>
+            <span class="functiontext">Str::trim_white_space_at_end</span><span class="plain">(</span><span class="identifier">part_within_comment</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>

@@ -201,7 +201,7 @@ int ACMESupport::parse_comment(programming_language *pl,
 		Str::clear(part_within_comment);
 		for (int i=c_position + 2; i<c_end; i++)
 			PUT_TO(part_within_comment, Str::get_at(line, i));
-		Str::trim_white_space(part_within_comment);
+		Str::trim_white_space_at_end(part_within_comment);
 		return TRUE;
 	}
 	return FALSE;

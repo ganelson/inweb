@@ -146,12 +146,12 @@ fairly low numbers, and this we now do.
         <span class="identifier">d</span><span class="plain"> = </span><span class="identifier">l</span><span class="plain">+28-31*(</span><span class="identifier">m</span><span class="plain">/4);</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_month</span><span class="plain"> == </span><span class="identifier">m</span><span class="plain">) &amp;&amp; (</span><span class="identifier">this_day</span><span class="plain"> &gt;= </span><span class="identifier">d</span><span class="plain">-2) &amp;&amp; (</span><span class="identifier">this_day</span><span class="plain"> &lt;= </span><span class="identifier">d</span><span class="plain">+1))</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="constant">EASTER_FEAST</span><span class="plain">; </span><span class="comment">that is, Good Friday to Easter Monday</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="constant">EASTER_FEAST</span><span class="plain">; </span><span class="comment"> that is, Good Friday to Easter Monday</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_year</span><span class="plain"> == </span><span class="constant">2018</span><span class="plain">) &amp;&amp; (</span><span class="identifier">this_month</span><span class="plain"> == </span><span class="constant">3</span><span class="plain">) &amp;&amp; (</span><span class="identifier">this_day</span><span class="plain"> &gt;= </span><span class="constant">30</span><span class="plain">))</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="constant">EASTER_FEAST</span><span class="plain">; </span><span class="comment">Easter Sunday falls on 1 April in 2018</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="constant">EASTER_FEAST</span><span class="plain">; </span><span class="comment"> Easter Sunday falls on 1 April in 2018</span>
 
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">this_month</span><span class="plain"> == </span><span class="constant">12</span><span class="plain">) &amp;&amp; (</span><span class="identifier">this_day</span><span class="plain"> &gt;= </span><span class="constant">25</span><span class="plain">))</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="constant">CHRISTMAS_FEAST</span><span class="plain">; </span><span class="comment">that is, Christmas Day to New Year's Eve</span>
+            <span class="reserved">return</span><span class="plain"> </span><span class="constant">CHRISTMAS_FEAST</span><span class="plain">; </span><span class="comment"> that is, Christmas Day to New Year's Eve</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">NON_FEAST</span><span class="plain">;</span>
     <span class="plain">}</span>

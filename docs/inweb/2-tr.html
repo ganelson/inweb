@@ -55,20 +55,20 @@ each of which has a list of <code class="display"><span class="extract">section<
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">web</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">md</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">chapters</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">chapter</span></code> (including Sections, Preliminaries, etc.)</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">chapters</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">chapter</span></code> (including Sections, Preliminaries, etc.)</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_lines</span><span class="plain">; </span><span class="comment">total lines in literate source, excluding contents</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_paragraphs</span><span class="plain">; </span><span class="comment">this will be at least 1</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_lines</span><span class="plain">; </span><span class="comment"> total lines in literate source, excluding contents</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_paragraphs</span><span class="plain">; </span><span class="comment"> this will be at least 1</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">main_language</span><span class="plain">; </span><span class="comment">in which most of the sections are written</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">tangle_targets</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">tangle_target</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">main_language</span><span class="plain">; </span><span class="comment"> in which most of the sections are written</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">tangle_targets</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">tangle_target</span></code></span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">headers</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">filename</span></code>: additional header files</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">analysed</span><span class="plain">; </span><span class="comment">has this been scanned for function usage and such?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">c_structures</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">c_structure</span></code>: used only for C-like languages</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">headers</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">filename</span></code>: additional header files</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">analysed</span><span class="plain">; </span><span class="comment"> has this been scanned for function usage and such?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">c_structures</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">c_structure</span></code>: used only for C-like languages</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook</span><span class="plain"> *</span><span class="identifier">as_ebook</span><span class="plain">; </span><span class="comment">when being woven to an ebook</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">redirect_weaves_to</span><span class="plain">; </span><span class="comment">ditto</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">ebook</span><span class="plain"> *</span><span class="identifier">as_ebook</span><span class="plain">; </span><span class="comment"> when being woven to an ebook</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">redirect_weaves_to</span><span class="plain">; </span><span class="comment"> ditto</span>
 
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">web</span><span class="plain">;</span>
@@ -85,11 +85,11 @@ each of which has a list of <code class="display"><span class="extract">section<
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">chapter</span><span class="plain"> {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">chapter_md</span><span class="plain"> *</span><span class="identifier">md</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">owning_web</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">sections</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">section</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">sections</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">section</span></code></span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">ch_weave</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">NULL</span></code> unless this chapter produces a weave of its own</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">titling_line_inserted</span><span class="plain">; </span><span class="comment">has an interleaved chapter heading been added yet?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">ch_language</span><span class="plain">; </span><span class="comment">in which this chapter is written</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">ch_weave</span><span class="plain">; </span><span class="comment"> <code class="display"><span class="extract">NULL</span></code> unless this chapter produces a weave of its own</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">titling_line_inserted</span><span class="plain">; </span><span class="comment"> has an interleaved chapter heading been added yet?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">ch_language</span><span class="plain">; </span><span class="comment"> in which this chapter is written</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">chapter</span><span class="plain">;</span>
 </pre>
@@ -107,27 +107,27 @@ each of which has a list of <code class="display"><span class="extract">section<
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">owning_web</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">chapter</span><span class="plain"> *</span><span class="identifier">owning_chapter</span><span class="plain">;</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">sect_namespace</span><span class="plain">; </span><span class="comment">e.g., "Text::Languages::"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">sect_purpose</span><span class="plain">; </span><span class="comment">e.g., "To manage the zoo, and feed all penguins"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">sect_range</span><span class="plain">; </span><span class="comment">e.g., "9/tfto"</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">barred</span><span class="plain">; </span><span class="comment">if version 1 syntax, contains a dividing bar?</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">sect_language</span><span class="plain">; </span><span class="comment">in which this section is written</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">tangle_target</span><span class="plain"> *</span><span class="identifier">sect_target</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">NULL</span></code> unless this section produces a tangle of its own</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">sect_weave</span><span class="plain">; </span><span class="comment"><code class="display"><span class="extract">NULL</span></code> unless this section produces a weave of its own</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">sect_namespace</span><span class="plain">; </span><span class="comment"> e.g., "Text::Languages::"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">sect_purpose</span><span class="plain">; </span><span class="comment"> e.g., "To manage the zoo, and feed all penguins"</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">sect_range</span><span class="plain">; </span><span class="comment"> e.g., "9/tfto"</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">barred</span><span class="plain">; </span><span class="comment"> if version 1 syntax, contains a dividing bar?</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">sect_language</span><span class="plain">; </span><span class="comment"> in which this section is written</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">tangle_target</span><span class="plain"> *</span><span class="identifier">sect_target</span><span class="plain">; </span><span class="comment"> <code class="display"><span class="extract">NULL</span></code> unless this section produces a tangle of its own</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">sect_weave</span><span class="plain">; </span><span class="comment"> <code class="display"><span class="extract">NULL</span></code> unless this section produces a weave of its own</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sect_extent</span><span class="plain">; </span><span class="comment">total number of lines in this section</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">first_line</span><span class="plain">; </span><span class="comment">for efficiency's sake not held as a <code class="display"><span class="extract">linked_list</span></code>,</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">last_line</span><span class="plain">; </span><span class="comment">but that's what it is, all the same</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sect_extent</span><span class="plain">; </span><span class="comment"> total number of lines in this section</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">first_line</span><span class="plain">; </span><span class="comment"> for efficiency's sake not held as a <code class="display"><span class="extract">linked_list</span></code>,</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">last_line</span><span class="plain">; </span><span class="comment"> but that's what it is, all the same</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sect_paragraphs</span><span class="plain">; </span><span class="comment">total number of paragraphs in this section</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">paragraphs</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">paragraph</span></code>: the content of this section</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">theme_tag</span><span class="plain"> *</span><span class="identifier">tag_with</span><span class="plain">; </span><span class="comment">automatically tag paras in this section thus</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sect_paragraphs</span><span class="plain">; </span><span class="comment"> total number of paragraphs in this section</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">paragraphs</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">paragraph</span></code>: the content of this section</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">theme_tag</span><span class="plain"> *</span><span class="identifier">tag_with</span><span class="plain">; </span><span class="comment"> automatically tag paras in this section thus</span>
 
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">macros</span><span class="plain">; </span><span class="comment">of <code class="display"><span class="extract">para_macro</span></code>: those defined in this section</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">macros</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">para_macro</span></code>: those defined in this section</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scratch_flag</span><span class="plain">; </span><span class="comment">temporary workspace</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">paused_until_at</span><span class="plain">; </span><span class="comment">ignore the top half of the file, until the first <code class="display"><span class="extract">@</span></code> sign</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">printed_number</span><span class="plain">; </span><span class="comment">temporary again: sometimes used in weaving</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">scratch_flag</span><span class="plain">; </span><span class="comment"> temporary workspace</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">paused_until_at</span><span class="plain">; </span><span class="comment"> ignore the top half of the file, until the first <code class="display"><span class="extract">@</span></code> sign</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">printed_number</span><span class="plain">; </span><span class="comment"> temporary again: sometimes used in weaving</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">section</span><span class="plain">;</span>
 </pre>
@@ -421,16 +421,16 @@ tangled for.
 <pre class="displaydefn">
         <span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">sl</span><span class="plain"> = </span><span class="functiontext">Lines::new_source_line</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
 
-        <span class="comment">enter this in its section's linked list of lines:</span>
+        <span class="comment"> enter this in its section's linked list of lines:</span>
         <span class="identifier">sl</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">first_line</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">first_line</span><span class="plain"> = </span><span class="identifier">sl</span><span class="plain">;</span>
         <span class="reserved">else</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">last_line</span><span class="plain">-&gt;</span><span class="element">next_line</span><span class="plain"> = </span><span class="identifier">sl</span><span class="plain">;</span>
         <span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">last_line</span><span class="plain"> = </span><span class="identifier">sl</span><span class="plain">;</span>
 
-        <span class="comment">we haven't detected paragraph boundaries yet, so:</span>
+        <span class="comment"> we haven't detected paragraph boundaries yet, so:</span>
         <span class="identifier">sl</span><span class="plain">-&gt;</span><span class="element">owning_paragraph</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
-        <span class="comment">and keep count:</span>
+        <span class="comment"> and keep count:</span>
         <span class="identifier">sl</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain">-&gt;</span><span class="element">sect_extent</span><span class="plain">++;</span>
         <span class="identifier">sl</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain">-&gt;</span><span class="element">owning_chapter</span><span class="plain">-&gt;</span><span class="element">owning_web</span><span class="plain">-&gt;</span><span class="element">no_lines</span><span class="plain">++;</span>
 </pre>
@@ -558,8 +558,8 @@ a web contains just one target, which contains all of the sections.
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">tangle_target</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">tangle_language</span><span class="plain">; </span><span class="comment">common to the entire contents</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">hash_table</span><span class="plain"> </span><span class="identifier">symbols</span><span class="plain">; </span><span class="comment">a table of identifiable names in this program</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">tangle_language</span><span class="plain">; </span><span class="comment"> common to the entire contents</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">hash_table</span><span class="plain"> </span><span class="identifier">symbols</span><span class="plain">; </span><span class="comment"> a table of identifiable names in this program</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">tangle_target</span><span class="plain">;</span>
 </pre>
