@@ -433,7 +433,7 @@ void HTMLFormat::change_material(weave_format *self, text_stream *OUT, weave_tar
 			case REGULAR_MATERIAL:
 				switch (new_material) {
 					case CODE_MATERIAL:
-						if (plainly) HTMLFormat::pre(OUT, NULL);
+						if (plainly) HTMLFormat::pre(OUT, "undisplay");
 						else HTMLFormat::pre(OUT, "display");
 						break;
 					case DEFINITION_MATERIAL:
@@ -472,7 +472,7 @@ void HTMLFormat::change_material(weave_format *self, text_stream *OUT, weave_tar
 				switch (new_material) {
 					case CODE_MATERIAL:
 						WRITE("\n");
-						if (plainly) HTMLFormat::pre(OUT, NULL);
+						if (plainly) HTMLFormat::pre(OUT, "undisplay");
 						else HTMLFormat::pre(OUT, "display");
 						break;
 					case MACRO_MATERIAL:

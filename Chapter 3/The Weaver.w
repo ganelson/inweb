@@ -149,7 +149,12 @@ We skip these because we weave their contents in some other way:
 @<Certain categories of line are excluded from the weave@> =
 	if (L->category == INTERFACE_BODY_LCAT) continue;
 	if (L->category == PURPOSE_BODY_LCAT) continue;
-	if (L->category == END_EXTRACT_LCAT) continue;
+	if (L->category == END_EXTRACT_LCAT) {
+		Formats::change_material(OUT, wv, state->kind_of_material, REGULAR_MATERIAL,
+			TRUE, FALSE);
+		state->kind_of_material = REGULAR_MATERIAL;
+		continue;
+	}
 	if (L->category == BEGIN_CODE_LCAT) {
 		state->line_break_pending = FALSE;
 		LanguageMethods::reset_syntax_colouring(S->sect_language);

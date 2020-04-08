@@ -1544,7 +1544,7 @@ typedef struct source_line {
 	struct source_line *next_line; /* within the owning section's linked list */
 	struct paragraph *owning_paragraph; /* for lines falling under paragraphs; |NULL| if not */
 } source_line;
-#line 673 "inweb/Chapter 2/The Parser.w"
+#line 676 "inweb/Chapter 2/The Parser.w"
 typedef struct paragraph {
 	int above_bar; /* placed above the dividing bar in its section (in Version 1 syntax) */
 	int placed_early; /* should appear early in the tangled code */
@@ -3104,9 +3104,9 @@ source_line * Lines__new_source_line(text_stream *line, text_file_position *tfp)
 char * Lines__category_name(int cat) ;
 #line 17 "inweb/Chapter 2/The Parser.w"
 void  Parser__parse_web(web *W, int inweb_mode, int sequential) ;
-#line 760 "inweb/Chapter 2/The Parser.w"
+#line 764 "inweb/Chapter 2/The Parser.w"
 text_stream * Parser__extract_purpose(text_stream *prologue, source_line *XL, section *S, source_line **adjust) ;
-#line 781 "inweb/Chapter 2/The Parser.w"
+#line 785 "inweb/Chapter 2/The Parser.w"
 void  Parser__wrong_version(int using, source_line *L, char *feature, int need) ;
 #line 20 "inweb/Chapter 2/Paragraph Macros.w"
 para_macro * Macros__create(section *S, paragraph *P, source_line *L, text_stream *name) ;
@@ -3198,9 +3198,9 @@ void  Indexer__transcribe_CSS(OUTPUT_STREAM, filename *CSS_file) ;
 void  Indexer__copy_CSS(text_stream *line, text_file_position *tfp, void *X) ;
 #line 16 "inweb/Chapter 3/The Weaver.w"
 int  Weaver__weave_source(web *W, weave_target *wv) ;
-#line 686 "inweb/Chapter 3/The Weaver.w"
+#line 691 "inweb/Chapter 3/The Weaver.w"
 void  Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM, 	weave_target *wv, paragraph *P) ;
-#line 824 "inweb/Chapter 3/The Weaver.w"
+#line 829 "inweb/Chapter 3/The Weaver.w"
 int  Weaver__weave_table_of_contents(OUTPUT_STREAM, weave_target *wv, section *S) ;
 #line 14 "inweb/Chapter 3/The Tangler.w"
 void  Tangler__go(web *W, tangle_target *target, filename *dest_file) ;
@@ -14389,7 +14389,7 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 {
 #line 36 "inweb/Chapter 2/The Parser.w"
 	int comment_mode = TRUE, extract_mode = FALSE;
-	int code_lcat_for_body = NO_LCAT;
+	int code_lcat_for_body = NO_LCAT, code_plainness_for_body = FALSE;
 	programming_language *code_pl_for_body = NULL;
 	int before_bar = TRUE;
 	int next_par_number = 1;
@@ -14748,6 +14748,7 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 		L->is_commentary = FALSE;
 		code_lcat_for_body = CODE_BODY_LCAT; /* code follows on subsequent lines */
 		code_pl_for_body = NULL;
+		code_plainness_for_body = FALSE;
 		DISCARD_TEXT(para_macro_name);
 		continue;
 	}
@@ -14761,7 +14762,7 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 			Parser__wrong_version(S->md->using_syntax, L, "column-1 '=' as code divider", V2_SYNTAX);
 		if (extract_mode) 
 {
-#line 368 "inweb/Chapter 2/The Parser.w"
+#line 369 "inweb/Chapter 2/The Parser.w"
 	L->category = END_EXTRACT_LCAT;
 	comment_mode = TRUE;
 	extract_mode = FALSE;
@@ -14771,8 +14772,9 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 
 		else 
 {
-#line 375 "inweb/Chapter 2/The Parser.w"
+#line 376 "inweb/Chapter 2/The Parser.w"
 	L->category = BEGIN_CODE_LCAT;
+	L->plainer = FALSE;
 	code_lcat_for_body = CODE_BODY_LCAT;
 	code_pl_for_body = NULL;
 	comment_mode = FALSE;
@@ -14787,14 +14789,13 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 			(Regexp__match(&mr2, mr.exp[0], L"%((%c*?) *text%)"))) {
 			
 {
-#line 430 "inweb/Chapter 2/The Parser.w"
-	L->plainer = FALSE;
+#line 433 "inweb/Chapter 2/The Parser.w"
 	if (Str__eq(mr2.exp[0], TL_IS_127)) L->plainer = TRUE;
 	else if (Str__len(mr2.exp[0]) > 0)
 		Main__error_in_web(TL_IS_128, L);
 
 }
-#line 388 "inweb/Chapter 2/The Parser.w"
+#line 390 "inweb/Chapter 2/The Parser.w"
 ;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_pl_for_body = NULL;
@@ -14803,14 +14804,13 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 			(Regexp__match(&mr2, mr.exp[0], L"%((%c*?) *text as code%)"))) {
 			
 {
-#line 430 "inweb/Chapter 2/The Parser.w"
-	L->plainer = FALSE;
+#line 433 "inweb/Chapter 2/The Parser.w"
 	if (Str__eq(mr2.exp[0], TL_IS_127)) L->plainer = TRUE;
 	else if (Str__len(mr2.exp[0]) > 0)
 		Main__error_in_web(TL_IS_128, L);
 
 }
-#line 394 "inweb/Chapter 2/The Parser.w"
+#line 396 "inweb/Chapter 2/The Parser.w"
 ;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_pl_for_body = S->sect_language;
@@ -14819,14 +14819,13 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 			(Regexp__match(&mr2, mr.exp[0], L"%((%c*?) *text as (%c+)%)"))) {
 			
 {
-#line 430 "inweb/Chapter 2/The Parser.w"
-	L->plainer = FALSE;
+#line 433 "inweb/Chapter 2/The Parser.w"
 	if (Str__eq(mr2.exp[0], TL_IS_127)) L->plainer = TRUE;
 	else if (Str__len(mr2.exp[0]) > 0)
 		Main__error_in_web(TL_IS_128, L);
 
 }
-#line 400 "inweb/Chapter 2/The Parser.w"
+#line 402 "inweb/Chapter 2/The Parser.w"
 ;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_pl_for_body = Languages__find_by_name(mr2.exp[1], W);
@@ -14835,19 +14834,18 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 			(Regexp__match(&mr2, mr.exp[0], L"%((%c*?) *text from (%c+) as code%)"))) {
 			
 {
-#line 430 "inweb/Chapter 2/The Parser.w"
-	L->plainer = FALSE;
+#line 433 "inweb/Chapter 2/The Parser.w"
 	if (Str__eq(mr2.exp[0], TL_IS_127)) L->plainer = TRUE;
 	else if (Str__len(mr2.exp[0]) > 0)
 		Main__error_in_web(TL_IS_128, L);
 
 }
-#line 406 "inweb/Chapter 2/The Parser.w"
+#line 408 "inweb/Chapter 2/The Parser.w"
 ;
 			code_pl_for_body = S->sect_language;
 			
 {
-#line 436 "inweb/Chapter 2/The Parser.w"
+#line 438 "inweb/Chapter 2/The Parser.w"
 	L->category = BEGIN_CODE_LCAT;
 	pathname *P = W->md->path_to_web;
 	filename *F = Filenames__from_text_relative(P, mr2.exp[1]);
@@ -14868,25 +14866,24 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	extract_mode = TRUE;
 
 }
-#line 408 "inweb/Chapter 2/The Parser.w"
+#line 410 "inweb/Chapter 2/The Parser.w"
 ;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], L"%((%c*?) *text from (%c+) as (%c+)%)"))) {
 			
 {
-#line 430 "inweb/Chapter 2/The Parser.w"
-	L->plainer = FALSE;
+#line 433 "inweb/Chapter 2/The Parser.w"
 	if (Str__eq(mr2.exp[0], TL_IS_127)) L->plainer = TRUE;
 	else if (Str__len(mr2.exp[0]) > 0)
 		Main__error_in_web(TL_IS_128, L);
 
 }
-#line 411 "inweb/Chapter 2/The Parser.w"
+#line 413 "inweb/Chapter 2/The Parser.w"
 ;
 			code_pl_for_body = Languages__find_by_name(mr2.exp[2], W);
 			
 {
-#line 436 "inweb/Chapter 2/The Parser.w"
+#line 438 "inweb/Chapter 2/The Parser.w"
 	L->category = BEGIN_CODE_LCAT;
 	pathname *P = W->md->path_to_web;
 	filename *F = Filenames__from_text_relative(P, mr2.exp[1]);
@@ -14907,25 +14904,24 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	extract_mode = TRUE;
 
 }
-#line 413 "inweb/Chapter 2/The Parser.w"
+#line 415 "inweb/Chapter 2/The Parser.w"
 ;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], L"%((%c*?) *text from (%c+)%)"))) {
 			
 {
-#line 430 "inweb/Chapter 2/The Parser.w"
-	L->plainer = FALSE;
+#line 433 "inweb/Chapter 2/The Parser.w"
 	if (Str__eq(mr2.exp[0], TL_IS_127)) L->plainer = TRUE;
 	else if (Str__len(mr2.exp[0]) > 0)
 		Main__error_in_web(TL_IS_128, L);
 
 }
-#line 416 "inweb/Chapter 2/The Parser.w"
+#line 418 "inweb/Chapter 2/The Parser.w"
 ;
 			code_pl_for_body = NULL;
 			
 {
-#line 436 "inweb/Chapter 2/The Parser.w"
+#line 438 "inweb/Chapter 2/The Parser.w"
 	L->category = BEGIN_CODE_LCAT;
 	pathname *P = W->md->path_to_web;
 	filename *F = Filenames__from_text_relative(P, mr2.exp[1]);
@@ -14946,7 +14942,7 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	extract_mode = TRUE;
 
 }
-#line 418 "inweb/Chapter 2/The Parser.w"
+#line 420 "inweb/Chapter 2/The Parser.w"
 ;
 		} else {
 			Main__error_in_web(TL_IS_125, L);
@@ -14954,6 +14950,7 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	} else if (Regexp__match(&mr, L->text, L"= *%C%c*")) {
 		Main__error_in_web(TL_IS_126, L);
 	}
+	code_plainness_for_body = L->plainer;
 	Regexp__dispose_of(&mr);
 	Regexp__dispose_of(&mr2);
 	continue;
@@ -14967,7 +14964,7 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 		(L->category != MACRO_DEFINITION_LCAT))
 		
 {
-#line 350 "inweb/Chapter 2/The Parser.w"
+#line 351 "inweb/Chapter 2/The Parser.w"
 	TEMPORARY_TEXT(command_text);
 	Str__copy(command_text, L->text);
 	Str__delete_first_character(command_text); /* i.e., strip the at-sign from the front */
@@ -14979,11 +14976,11 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	}
 	
 {
-#line 462 "inweb/Chapter 2/The Parser.w"
+#line 464 "inweb/Chapter 2/The Parser.w"
 	extract_mode = FALSE;
 	if (Str__eq_wide_string(command_text, L"Purpose:")) 
 {
-#line 510 "inweb/Chapter 2/The Parser.w"
+#line 512 "inweb/Chapter 2/The Parser.w"
 	if (before_bar == FALSE) Main__error_in_web(TL_IS_131, L);
 	if (S->md->using_syntax >= V2_SYNTAX)
 		Parser__wrong_version(S->md->using_syntax, L, "'@Purpose'", V1_SYNTAX);
@@ -14993,11 +14990,11 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	S->sect_purpose = Parser__extract_purpose(remainder, L->next_line, L->owning_section, &L);
 
 }
-#line 463 "inweb/Chapter 2/The Parser.w"
+#line 465 "inweb/Chapter 2/The Parser.w"
 
 	else if (Str__eq_wide_string(command_text, L"Interface:")) 
 {
-#line 519 "inweb/Chapter 2/The Parser.w"
+#line 521 "inweb/Chapter 2/The Parser.w"
 	if (S->md->using_syntax >= V2_SYNTAX)
 		Parser__wrong_version(S->md->using_syntax, L, "'@Interface'", V1_SYNTAX);
 	if (before_bar == FALSE) Main__error_in_web(TL_IS_132, L);
@@ -15012,11 +15009,11 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	}
 
 }
-#line 464 "inweb/Chapter 2/The Parser.w"
+#line 466 "inweb/Chapter 2/The Parser.w"
 
 	else if (Str__eq_wide_string(command_text, L"Definitions:")) 
 {
-#line 533 "inweb/Chapter 2/The Parser.w"
+#line 535 "inweb/Chapter 2/The Parser.w"
 	if (S->md->using_syntax >= V2_SYNTAX)
 		Parser__wrong_version(S->md->using_syntax, L, "'@Definitions' headings", V1_SYNTAX);
 	if (before_bar == FALSE) Main__error_in_web(TL_IS_133, L);
@@ -15026,11 +15023,11 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	next_par_number = 1;
 
 }
-#line 465 "inweb/Chapter 2/The Parser.w"
+#line 467 "inweb/Chapter 2/The Parser.w"
 
 	else if (Regexp__match(&mr, command_text, L"----+")) 
 {
-#line 545 "inweb/Chapter 2/The Parser.w"
+#line 547 "inweb/Chapter 2/The Parser.w"
 	if (S->md->using_syntax >= V2_SYNTAX)
 		Parser__wrong_version(S->md->using_syntax, L, "the bar '----...'", V1_SYNTAX);
 	if (before_bar == FALSE) Main__error_in_web(TL_IS_134, L);
@@ -15042,14 +15039,14 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	next_par_number = 1;
 
 }
-#line 466 "inweb/Chapter 2/The Parser.w"
+#line 468 "inweb/Chapter 2/The Parser.w"
 
 	else if ((Str__eq_wide_string(command_text, L"c")) ||
 			(Str__eq_wide_string(command_text, L"x")) ||
 			((S->md->using_syntax == V1_SYNTAX) && (Str__eq_wide_string(command_text, L"e"))))
 				
 {
-#line 562 "inweb/Chapter 2/The Parser.w"
+#line 564 "inweb/Chapter 2/The Parser.w"
 	if (S->md->using_syntax > V1_SYNTAX)
 		Parser__wrong_version(S->md->using_syntax, L, "'@c' and '@x'", V1_SYNTAX);
 	L->category = BEGIN_CODE_LCAT;
@@ -15059,13 +15056,14 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	else code_lcat_for_body = CODE_BODY_LCAT;
 	code_pl_for_body = NULL;
 	comment_mode = FALSE;
+	code_plainness_for_body = FALSE;
 
 }
-#line 470 "inweb/Chapter 2/The Parser.w"
+#line 472 "inweb/Chapter 2/The Parser.w"
 
 	else if (Str__eq_wide_string(command_text, L"d")) 
 {
-#line 576 "inweb/Chapter 2/The Parser.w"
+#line 579 "inweb/Chapter 2/The Parser.w"
 	L->category = BEGIN_DEFINITION_LCAT;
 	code_lcat_for_body = CONT_DEFINITION_LCAT;
 	code_pl_for_body = NULL;
@@ -15083,14 +15081,14 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 471 "inweb/Chapter 2/The Parser.w"
+#line 473 "inweb/Chapter 2/The Parser.w"
 
 	else if (Str__eq_wide_string(command_text, L"define")) {
 		if (S->md->using_syntax < V2_SYNTAX)
 			Parser__wrong_version(S->md->using_syntax, L, "'@define' for definitions (use '@d' instead)", V2_SYNTAX);
 		
 {
-#line 576 "inweb/Chapter 2/The Parser.w"
+#line 579 "inweb/Chapter 2/The Parser.w"
 	L->category = BEGIN_DEFINITION_LCAT;
 	code_lcat_for_body = CONT_DEFINITION_LCAT;
 	code_pl_for_body = NULL;
@@ -15108,7 +15106,7 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 475 "inweb/Chapter 2/The Parser.w"
+#line 477 "inweb/Chapter 2/The Parser.w"
 ;
 	} else if (Str__eq_wide_string(command_text, L"default")) {
 		if (S->md->using_syntax < V2_SYNTAX)
@@ -15116,7 +15114,7 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 		L->default_defn = TRUE;
 		
 {
-#line 576 "inweb/Chapter 2/The Parser.w"
+#line 579 "inweb/Chapter 2/The Parser.w"
 	L->category = BEGIN_DEFINITION_LCAT;
 	code_lcat_for_body = CONT_DEFINITION_LCAT;
 	code_pl_for_body = NULL;
@@ -15134,45 +15132,11 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 480 "inweb/Chapter 2/The Parser.w"
+#line 482 "inweb/Chapter 2/The Parser.w"
 ;
 	} else if (Str__eq_wide_string(command_text, L"enum")) 
 {
-#line 596 "inweb/Chapter 2/The Parser.w"
-	L->category = BEGIN_DEFINITION_LCAT;
-	text_stream *from = NULL;
-	match_results mr = Regexp__create_mr();
-	L->text_operand = Str__duplicate(remainder); /* name of term defined */
-	TEMPORARY_TEXT(before);
-	TEMPORARY_TEXT(after);
-	if (LanguageMethods__parse_comment(S->sect_language, L->text_operand,
-		before, after)) {
-		Str__copy(L->text_operand, before);
-	}
-	DISCARD_TEXT(before);
-	DISCARD_TEXT(after);
-	Str__trim_white_space(L->text_operand);
-	if (Regexp__match(&mr, L->text_operand, L"(%C+) from (%c+)")) {
-		from = mr.exp[1];
-		Str__copy(L->text_operand, mr.exp[0]);
-	} else if (Regexp__match(&mr, L->text_operand, L"(%C+) (%c+)")) {
-		Main__error_in_web(TL_IS_135, L);
-	}
-	L->text_operand2 = Str__new();
-	if (inweb_mode == TANGLE_MODE)
-		Enumerations__define(L->text_operand2, L->text_operand, from, L);
-	Analyser__mark_reserved_word_for_section(S, L->text_operand, CONSTANT_COLOUR);
-	comment_mode = FALSE;
-	L->is_commentary = FALSE;
-	Regexp__dispose_of(&mr);
-
-}
-#line 481 "inweb/Chapter 2/The Parser.w"
-
-	else if ((Str__eq_wide_string(command_text, L"e")) && (S->md->using_syntax >= V2_SYNTAX))
-		
-{
-#line 596 "inweb/Chapter 2/The Parser.w"
+#line 599 "inweb/Chapter 2/The Parser.w"
 	L->category = BEGIN_DEFINITION_LCAT;
 	text_stream *from = NULL;
 	match_results mr = Regexp__create_mr();
@@ -15203,6 +15167,40 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 }
 #line 483 "inweb/Chapter 2/The Parser.w"
 
+	else if ((Str__eq_wide_string(command_text, L"e")) && (S->md->using_syntax >= V2_SYNTAX))
+		
+{
+#line 599 "inweb/Chapter 2/The Parser.w"
+	L->category = BEGIN_DEFINITION_LCAT;
+	text_stream *from = NULL;
+	match_results mr = Regexp__create_mr();
+	L->text_operand = Str__duplicate(remainder); /* name of term defined */
+	TEMPORARY_TEXT(before);
+	TEMPORARY_TEXT(after);
+	if (LanguageMethods__parse_comment(S->sect_language, L->text_operand,
+		before, after)) {
+		Str__copy(L->text_operand, before);
+	}
+	DISCARD_TEXT(before);
+	DISCARD_TEXT(after);
+	Str__trim_white_space(L->text_operand);
+	if (Regexp__match(&mr, L->text_operand, L"(%C+) from (%c+)")) {
+		from = mr.exp[1];
+		Str__copy(L->text_operand, mr.exp[0]);
+	} else if (Regexp__match(&mr, L->text_operand, L"(%C+) (%c+)")) {
+		Main__error_in_web(TL_IS_135, L);
+	}
+	L->text_operand2 = Str__new();
+	if (inweb_mode == TANGLE_MODE)
+		Enumerations__define(L->text_operand2, L->text_operand, from, L);
+	Analyser__mark_reserved_word_for_section(S, L->text_operand, CONSTANT_COLOUR);
+	comment_mode = FALSE;
+	L->is_commentary = FALSE;
+	Regexp__dispose_of(&mr);
+
+}
+#line 485 "inweb/Chapter 2/The Parser.w"
+
 	else {
 		int weight = -1, new_page = FALSE;
 		if (Str__eq_wide_string(command_text, L"")) weight = ORDINARY_WEIGHT;
@@ -15223,7 +15221,7 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 		}
 		if (weight >= 0) 
 {
-#line 648 "inweb/Chapter 2/The Parser.w"
+#line 651 "inweb/Chapter 2/The Parser.w"
 	comment_mode = TRUE;
 	L->is_commentary = TRUE;
 	L->category = PARAGRAPH_START_LCAT;
@@ -15242,7 +15240,7 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	}
 	
 {
-#line 695 "inweb/Chapter 2/The Parser.w"
+#line 698 "inweb/Chapter 2/The Parser.w"
 	paragraph *P = CREATE(paragraph);
 	if (S->md->using_syntax > V1_SYNTAX) {
 		P->above_bar = FALSE;
@@ -15275,7 +15273,7 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	current_paragraph = P;
 
 }
-#line 664 "inweb/Chapter 2/The Parser.w"
+#line 667 "inweb/Chapter 2/The Parser.w"
 ;
 
 	L->owning_paragraph = current_paragraph;
@@ -15283,13 +15281,13 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 502 "inweb/Chapter 2/The Parser.w"
+#line 504 "inweb/Chapter 2/The Parser.w"
 
 		else Main__error_in_web(TL_IS_130, L);
 	}
 
 }
-#line 359 "inweb/Chapter 2/The Parser.w"
+#line 360 "inweb/Chapter 2/The Parser.w"
 ;
 	DISCARD_TEXT(remainder);
 	DISCARD_TEXT(command_text);
@@ -15301,7 +15299,7 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 ;
 	if (comment_mode) 
 {
-#line 729 "inweb/Chapter 2/The Parser.w"
+#line 732 "inweb/Chapter 2/The Parser.w"
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, L->text, L">> (%c+)")) {
 		L->category = SOURCE_DISPLAY_LCAT;
@@ -15314,9 +15312,10 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 ;
 	if (comment_mode == FALSE) 
 {
-#line 741 "inweb/Chapter 2/The Parser.w"
+#line 744 "inweb/Chapter 2/The Parser.w"
 	if ((L->category != BEGIN_DEFINITION_LCAT) && (L->category != COMMAND_LCAT)) {
 		L->category = code_lcat_for_body;
+		L->plainer = code_plainness_for_body;
 		if (L->category == TEXT_EXTRACT_LCAT) L->colour_as = code_pl_for_body;
 	}
 
@@ -15372,9 +15371,9 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	LanguageMethods__further_parsing(W, W->main_language);
 }
 
-#line 693 "inweb/Chapter 2/The Parser.w"
+#line 696 "inweb/Chapter 2/The Parser.w"
 
-#line 760 "inweb/Chapter 2/The Parser.w"
+#line 764 "inweb/Chapter 2/The Parser.w"
 text_stream *Parser__extract_purpose(text_stream *prologue, source_line *XL, section *S, source_line **adjust) {
 	text_stream *P = Str__duplicate(prologue);
 	while ((XL) && (XL->next_line) && (XL->owning_section == S) &&
@@ -15390,7 +15389,7 @@ text_stream *Parser__extract_purpose(text_stream *prologue, source_line *XL, sec
 	return P;
 }
 
-#line 781 "inweb/Chapter 2/The Parser.w"
+#line 785 "inweb/Chapter 2/The Parser.w"
 void Parser__wrong_version(int using, source_line *L, char *feature, int need) {
 	TEMPORARY_TEXT(warning);
 	WRITE_TO(warning, "%s is a feature available only in version %d syntax (you're using version %d)",
@@ -16925,7 +16924,12 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 #line 150 "inweb/Chapter 3/The Weaver.w"
 	if (L->category == INTERFACE_BODY_LCAT) continue;
 	if (L->category == PURPOSE_BODY_LCAT) continue;
-	if (L->category == END_EXTRACT_LCAT) continue;
+	if (L->category == END_EXTRACT_LCAT) {
+		Formats__change_material(OUT, wv, state->kind_of_material, REGULAR_MATERIAL,
+			TRUE, FALSE);
+		state->kind_of_material = REGULAR_MATERIAL;
+		continue;
+	}
 	if (L->category == BEGIN_CODE_LCAT) {
 		state->line_break_pending = FALSE;
 		LanguageMethods__reset_syntax_colouring(S->sect_language);
@@ -16937,13 +16941,13 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 ;
 	
 {
-#line 163 "inweb/Chapter 3/The Weaver.w"
+#line 168 "inweb/Chapter 3/The Weaver.w"
 	if (L->category == COMMAND_LCAT) {
 		if (L->command_code == PAGEBREAK_CMD) Formats__pagebreak(OUT, wv);
 		if (L->command_code == GRAMMAR_INDEX_CMD) InCSupport__weave_grammar_index(OUT);
 		if (L->command_code == FIGURE_CMD) 
 {
-#line 172 "inweb/Chapter 3/The Weaver.w"
+#line 177 "inweb/Chapter 3/The Weaver.w"
 	text_stream *figname = L->text_operand;
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, figname, L"(%d+)cm: (%c+)")) {
@@ -16969,7 +16973,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 166 "inweb/Chapter 3/The Weaver.w"
+#line 171 "inweb/Chapter 3/The Weaver.w"
 ;
 		/* Otherwise assume it was a tangler command, and ignore it here */
 		continue;
@@ -16982,7 +16986,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	/* Some of the more baroque front matter of a section... */
 	
 {
-#line 202 "inweb/Chapter 3/The Weaver.w"
+#line 207 "inweb/Chapter 3/The Weaver.w"
 	if (L->category == PURPOSE_LCAT) {
 		Formats__subheading(OUT, wv, 2, S->sect_purpose, NULL);
 		Weaver__weave_table_of_contents(OUT, wv, S);
@@ -16994,7 +16998,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 ;
 	
 {
-#line 211 "inweb/Chapter 3/The Weaver.w"
+#line 216 "inweb/Chapter 3/The Weaver.w"
 	if ((state->show_section_toc_soon == 1) && (Regexp__string_is_white_space(L->text))) {
 		state->show_section_toc_soon = FALSE;
 		if (Weaver__weave_table_of_contents(OUT, wv, S))
@@ -17008,7 +17012,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 ;
 	
 {
-#line 223 "inweb/Chapter 3/The Weaver.w"
+#line 228 "inweb/Chapter 3/The Weaver.w"
 	if (L->category == INTERFACE_LCAT) {
 		state->horizontal_rule_just_drawn = FALSE;
 		continue;
@@ -17019,7 +17023,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 ;
 	
 {
-#line 231 "inweb/Chapter 3/The Weaver.w"
+#line 236 "inweb/Chapter 3/The Weaver.w"
 	if (L->category == DEFINITIONS_LCAT) {
 		Formats__subheading(OUT, wv, 2, TL_IS_174, NULL);
 		state->next_heading_without_vertical_skip = TRUE;
@@ -17032,11 +17036,11 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 ;
 	
 {
-#line 243 "inweb/Chapter 3/The Weaver.w"
+#line 248 "inweb/Chapter 3/The Weaver.w"
 	if (L->category == BAR_LCAT) {
 		
 {
-#line 669 "inweb/Chapter 3/The Weaver.w"
+#line 674 "inweb/Chapter 3/The Weaver.w"
 	int mode_now = state->kind_of_material;
 	if (state->kind_of_material != REGULAR_MATERIAL) {
 		state->kind_of_material = REGULAR_MATERIAL;
@@ -17050,7 +17054,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	if (L) current_paragraph = L->owning_paragraph;
 
 }
-#line 244 "inweb/Chapter 3/The Weaver.w"
+#line 249 "inweb/Chapter 3/The Weaver.w"
 ;
 		state->kind_of_material = REGULAR_MATERIAL;
 		state->next_heading_without_vertical_skip = TRUE;
@@ -17065,7 +17069,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	/* The crucial junction point between modes... */
 	
 {
-#line 518 "inweb/Chapter 3/The Weaver.w"
+#line 523 "inweb/Chapter 3/The Weaver.w"
 	if ((L->category == HEADING_START_LCAT) ||
 		(L->category == PARAGRAPH_START_LCAT) ||
 		(L->category == CHAPTER_HEADING_LCAT) ||
@@ -17073,7 +17077,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 		state->in_run_of_definitions = FALSE;
 		
 {
-#line 669 "inweb/Chapter 3/The Weaver.w"
+#line 674 "inweb/Chapter 3/The Weaver.w"
 	int mode_now = state->kind_of_material;
 	if (state->kind_of_material != REGULAR_MATERIAL) {
 		state->kind_of_material = REGULAR_MATERIAL;
@@ -17087,17 +17091,17 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	if (L) current_paragraph = L->owning_paragraph;
 
 }
-#line 523 "inweb/Chapter 3/The Weaver.w"
+#line 528 "inweb/Chapter 3/The Weaver.w"
 ;
 		if (wv->theme_match)
 			
 {
-#line 553 "inweb/Chapter 3/The Weaver.w"
+#line 558 "inweb/Chapter 3/The Weaver.w"
 	if ((L->owning_paragraph) &&
 		(L->owning_paragraph->starts_on_new_page)) Formats__pagebreak(OUT, wv);
 
 }
-#line 525 "inweb/Chapter 3/The Weaver.w"
+#line 530 "inweb/Chapter 3/The Weaver.w"
 ;
 		LanguageMethods__reset_syntax_colouring(S->sect_language);
 		int weight = 0;
@@ -17107,7 +17111,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 
 		
 {
-#line 566 "inweb/Chapter 3/The Weaver.w"
+#line 571 "inweb/Chapter 3/The Weaver.w"
 	if (weight == 3) {
 		Str__copy(state->chaptermark, L->text_operand);
 		Str__clear(state->sectionmark);
@@ -17123,13 +17127,13 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	}
 
 }
-#line 532 "inweb/Chapter 3/The Weaver.w"
+#line 537 "inweb/Chapter 3/The Weaver.w"
 ;
 
 		text_stream *TeX_macro = NULL;
 		
 {
-#line 596 "inweb/Chapter 3/The Weaver.w"
+#line 601 "inweb/Chapter 3/The Weaver.w"
 	switch (weight) {
 		case 0: TeX_macro = TL_IS_182; break;
 		case 1: TeX_macro = TL_IS_183; break;
@@ -17138,7 +17142,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	}
 	if (wv->theme_match) 
 {
-#line 615 "inweb/Chapter 3/The Weaver.w"
+#line 620 "inweb/Chapter 3/The Weaver.w"
 	switch (weight) {
 		case 0: TeX_macro = TL_IS_188; break;
 		case 1: TeX_macro = TL_IS_189; break;
@@ -17159,7 +17163,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	}
 
 }
-#line 602 "inweb/Chapter 3/The Weaver.w"
+#line 607 "inweb/Chapter 3/The Weaver.w"
 ;
 	if ((state->next_heading_without_vertical_skip) && (weight < 2)) {
 		state->next_heading_without_vertical_skip = FALSE;
@@ -17170,13 +17174,13 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	}
 
 }
-#line 535 "inweb/Chapter 3/The Weaver.w"
+#line 540 "inweb/Chapter 3/The Weaver.w"
 ;
 
 		TEMPORARY_TEXT(heading_text);
 		
 {
-#line 635 "inweb/Chapter 3/The Weaver.w"
+#line 640 "inweb/Chapter 3/The Weaver.w"
 	if (weight == 3) {
 		TEMPORARY_TEXT(brief_title);
 		match_results mr = Regexp__create_mr();
@@ -17196,7 +17200,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	}
 
 }
-#line 538 "inweb/Chapter 3/The Weaver.w"
+#line 543 "inweb/Chapter 3/The Weaver.w"
 ;
 		Formats__paragraph_heading(OUT, wv, TeX_macro, S, L->owning_paragraph,
 			heading_text, state->chaptermark, state->sectionmark, weight);
@@ -17207,7 +17211,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 
 		
 {
-#line 657 "inweb/Chapter 3/The Weaver.w"
+#line 662 "inweb/Chapter 3/The Weaver.w"
 	if (Str__len(L->text_operand2) > 0) {
 		TEMPORARY_TEXT(matter);
 		WRITE_TO(matter, "%S\n", L->text_operand2);
@@ -17217,7 +17221,7 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	}
 
 }
-#line 546 "inweb/Chapter 3/The Weaver.w"
+#line 551 "inweb/Chapter 3/The Weaver.w"
 ;
 
 		if (weight == 3) Formats__chapter_title_page(OUT, wv, C);
@@ -17232,21 +17236,21 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	TEMPORARY_TEXT(matter); Str__copy(matter, L->text);
 	if (L->is_commentary) 
 {
-#line 256 "inweb/Chapter 3/The Weaver.w"
+#line 261 "inweb/Chapter 3/The Weaver.w"
 	
 {
-#line 268 "inweb/Chapter 3/The Weaver.w"
+#line 273 "inweb/Chapter 3/The Weaver.w"
 	if (L->category == SOURCE_DISPLAY_LCAT) {
 		Formats__display_line(OUT, wv, L->text_operand);
 		continue;
 	}
 
 }
-#line 256 "inweb/Chapter 3/The Weaver.w"
+#line 261 "inweb/Chapter 3/The Weaver.w"
 ;
 	
 {
-#line 277 "inweb/Chapter 3/The Weaver.w"
+#line 282 "inweb/Chapter 3/The Weaver.w"
 	if (Regexp__string_is_white_space(matter)) {
 		if ((L->next_line) && (L->next_line->category == COMMENT_BODY_LCAT) &&
 			(state->substantive_comment)) {
@@ -17260,11 +17264,11 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	}
 
 }
-#line 257 "inweb/Chapter 3/The Weaver.w"
+#line 262 "inweb/Chapter 3/The Weaver.w"
 ;
 	
 {
-#line 293 "inweb/Chapter 3/The Weaver.w"
+#line 298 "inweb/Chapter 3/The Weaver.w"
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, matter, L"%(...%) (%c*)")) { /* continue single */
 		Formats__change_material(OUT, wv, state->kind_of_material, REGULAR_MATERIAL,
@@ -17294,11 +17298,11 @@ int Weaver__weave_source(web *W, weave_target *wv) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 258 "inweb/Chapter 3/The Weaver.w"
+#line 263 "inweb/Chapter 3/The Weaver.w"
 ;
 	
 {
-#line 325 "inweb/Chapter 3/The Weaver.w"
+#line 330 "inweb/Chapter 3/The Weaver.w"
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, matter, L"\t|(%c*)|(%c*?)")) {
 		if (state->kind_of_material != CODE_MATERIAL) {
@@ -17328,7 +17332,7 @@ if (no_inweb_errors == 0) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 259 "inweb/Chapter 3/The Weaver.w"
+#line 264 "inweb/Chapter 3/The Weaver.w"
 ;
 	state->substantive_comment = TRUE;
 	WRITE_TO(matter, "\n");
@@ -17340,10 +17344,10 @@ if (no_inweb_errors == 0) {
 
 	else 
 {
-#line 359 "inweb/Chapter 3/The Weaver.w"
+#line 364 "inweb/Chapter 3/The Weaver.w"
 	
 {
-#line 397 "inweb/Chapter 3/The Weaver.w"
+#line 402 "inweb/Chapter 3/The Weaver.w"
 	int mode_now = state->kind_of_material;
 	if (state->kind_of_material != CODE_MATERIAL) {
 		if (L->category == MACRO_DEFINITION_LCAT)
@@ -17363,11 +17367,11 @@ if (no_inweb_errors == 0) {
 	}
 
 }
-#line 359 "inweb/Chapter 3/The Weaver.w"
+#line 364 "inweb/Chapter 3/The Weaver.w"
 ;
 	
 {
-#line 419 "inweb/Chapter 3/The Weaver.w"
+#line 424 "inweb/Chapter 3/The Weaver.w"
 	if (state->line_break_pending) {
 		Formats__blank_line(OUT, wv, FALSE);
 		state->line_break_pending = FALSE;
@@ -17378,13 +17382,13 @@ if (no_inweb_errors == 0) {
 	}
 
 }
-#line 360 "inweb/Chapter 3/The Weaver.w"
+#line 365 "inweb/Chapter 3/The Weaver.w"
 ;
 
 	int tab_stops_of_indentation = 0;
 	
 {
-#line 432 "inweb/Chapter 3/The Weaver.w"
+#line 437 "inweb/Chapter 3/The Weaver.w"
 	int spaces_in = 0;
 	while (Characters__is_space_or_tab(Str__get_first_char(matter))) {
 		if (Str__get_first_char(matter) == '\t') {
@@ -17409,14 +17413,14 @@ if (no_inweb_errors == 0) {
 	}
 
 }
-#line 363 "inweb/Chapter 3/The Weaver.w"
+#line 368 "inweb/Chapter 3/The Weaver.w"
 ;
 
 	TEMPORARY_TEXT(prefatory);
 	TEMPORARY_TEXT(concluding_comment);
 	
 {
-#line 460 "inweb/Chapter 3/The Weaver.w"
+#line 465 "inweb/Chapter 3/The Weaver.w"
 	TEMPORARY_TEXT(part_before_comment);
 	TEMPORARY_TEXT(part_within_comment);
 	programming_language *pl = S->sect_language;
@@ -17430,11 +17434,11 @@ if (no_inweb_errors == 0) {
 	DISCARD_TEXT(part_within_comment);
 
 }
-#line 367 "inweb/Chapter 3/The Weaver.w"
+#line 372 "inweb/Chapter 3/The Weaver.w"
 ;
 	
 {
-#line 475 "inweb/Chapter 3/The Weaver.w"
+#line 480 "inweb/Chapter 3/The Weaver.w"
 	if (L->category == BEGIN_DEFINITION_LCAT) {
 		match_results mr = Regexp__create_mr();
 		if ((Regexp__match(&mr, matter, L"@d (%c*)")) ||
@@ -17450,7 +17454,7 @@ if (no_inweb_errors == 0) {
 	}
 
 }
-#line 368 "inweb/Chapter 3/The Weaver.w"
+#line 373 "inweb/Chapter 3/The Weaver.w"
 ;
 
 	if (LanguageMethods__weave_code_line(OUT, S->sect_language, wv,
@@ -17463,7 +17467,7 @@ if (no_inweb_errors == 0) {
 	int found = 0;
 	
 {
-#line 490 "inweb/Chapter 3/The Weaver.w"
+#line 495 "inweb/Chapter 3/The Weaver.w"
 	match_results mr = Regexp__create_mr();
 	while (Regexp__match(&mr, matter, L"(%c*?)%@%<(%c*?)%@%>(%c*)")) {
 		para_macro *pmac = Macros__find_by_name(mr.exp[1], S);
@@ -17490,7 +17494,7 @@ if (no_inweb_errors == 0) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 378 "inweb/Chapter 3/The Weaver.w"
+#line 383 "inweb/Chapter 3/The Weaver.w"
 ;
 	if (Str__len(prefatory) > 0) {
 		state->in_run_of_definitions = TRUE;
@@ -17519,7 +17523,7 @@ if (no_inweb_errors == 0) {
 	source_line *L = NULL;
 	
 {
-#line 669 "inweb/Chapter 3/The Weaver.w"
+#line 674 "inweb/Chapter 3/The Weaver.w"
 	int mode_now = state->kind_of_material;
 	if (state->kind_of_material != REGULAR_MATERIAL) {
 		state->kind_of_material = REGULAR_MATERIAL;
@@ -17576,14 +17580,14 @@ if (no_inweb_errors == 0) {
 
 #line 97 "inweb/Chapter 3/The Weaver.w"
 
-#line 686 "inweb/Chapter 3/The Weaver.w"
+#line 691 "inweb/Chapter 3/The Weaver.w"
 void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 	weave_target *wv, paragraph *P) {
 	Tags__show_endnote_on_ifdefs(OUT, wv, P);
 	if (P->defines_macro)
 		
 {
-#line 700 "inweb/Chapter 3/The Weaver.w"
+#line 705 "inweb/Chapter 3/The Weaver.w"
 	Formats__endnote(OUT, wv, 1);
 	Formats__text(OUT, wv, TL_IS_193);
 	int ct = 0;
@@ -17623,13 +17627,13 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 	Formats__endnote(OUT, wv, 2);
 
 }
-#line 690 "inweb/Chapter 3/The Weaver.w"
+#line 695 "inweb/Chapter 3/The Weaver.w"
 ;
 	function *fn;
 	LOOP_OVER_LINKED_LIST(fn, function, P->functions)
 		
 {
-#line 739 "inweb/Chapter 3/The Weaver.w"
+#line 744 "inweb/Chapter 3/The Weaver.w"
 	Formats__endnote(OUT, wv, 1);
 	hash_table_entry *hte =
 		Analyser__find_hash_entry_for_section(fn->function_header_at->owning_section,
@@ -17645,7 +17649,7 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 			(P->under_section == hteu->usage_recorded_at->under_section))
 			
 {
-#line 763 "inweb/Chapter 3/The Weaver.w"
+#line 768 "inweb/Chapter 3/The Weaver.w"
 	if (used_flag == FALSE) Formats__text(OUT, wv, TL_IS_207);
 	used_flag = TRUE;
 	section *S = hteu->usage_recorded_at->under_section;
@@ -17663,13 +17667,13 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 	last_cited_in = hteu->usage_recorded_at->under_section;
 
 }
-#line 752 "inweb/Chapter 3/The Weaver.w"
+#line 757 "inweb/Chapter 3/The Weaver.w"
 ;
 	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
 		if (P->under_section != hteu->usage_recorded_at->under_section)
 			
 {
-#line 763 "inweb/Chapter 3/The Weaver.w"
+#line 768 "inweb/Chapter 3/The Weaver.w"
 	if (used_flag == FALSE) Formats__text(OUT, wv, TL_IS_207);
 	used_flag = TRUE;
 	section *S = hteu->usage_recorded_at->under_section;
@@ -17687,7 +17691,7 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 	last_cited_in = hteu->usage_recorded_at->under_section;
 
 }
-#line 755 "inweb/Chapter 3/The Weaver.w"
+#line 760 "inweb/Chapter 3/The Weaver.w"
 ;
 	if (used_flag == FALSE) Formats__text(OUT, wv, TL_IS_204);
 	if ((last_cited_in != P->under_section) && (last_cited_in))
@@ -17696,13 +17700,13 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 	Formats__endnote(OUT, wv, 2);
 
 }
-#line 693 "inweb/Chapter 3/The Weaver.w"
+#line 698 "inweb/Chapter 3/The Weaver.w"
 ;
 	c_structure *st;
 	LOOP_OVER_LINKED_LIST(st, c_structure, P->structures)
 		
 {
-#line 780 "inweb/Chapter 3/The Weaver.w"
+#line 785 "inweb/Chapter 3/The Weaver.w"
 	Formats__endnote(OUT, wv, 1);
 	Formats__text(OUT, wv, TL_IS_212);
 	Formats__text(OUT, wv, st->structure_name);
@@ -17743,11 +17747,11 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 	Formats__endnote(OUT, wv, 2);
 
 }
-#line 696 "inweb/Chapter 3/The Weaver.w"
+#line 701 "inweb/Chapter 3/The Weaver.w"
 ;
 }
 
-#line 824 "inweb/Chapter 3/The Weaver.w"
+#line 829 "inweb/Chapter 3/The Weaver.w"
 int Weaver__weave_table_of_contents(OUTPUT_STREAM, weave_target *wv, section *S) {
 	int noteworthy = 0;
 	paragraph *P;
@@ -22698,7 +22702,7 @@ void HTMLFormat__change_material(weave_format *self, text_stream *OUT, weave_tar
 			case REGULAR_MATERIAL:
 				switch (new_material) {
 					case CODE_MATERIAL:
-						if (plainly) HTMLFormat__pre(OUT, NULL);
+						if (plainly) HTMLFormat__pre(OUT, "undisplay");
 						else HTMLFormat__pre(OUT, "display");
 						break;
 					case DEFINITION_MATERIAL:
@@ -22737,7 +22741,7 @@ void HTMLFormat__change_material(weave_format *self, text_stream *OUT, weave_tar
 				switch (new_material) {
 					case CODE_MATERIAL:
 						WRITE("\n");
-						if (plainly) HTMLFormat__pre(OUT, NULL);
+						if (plainly) HTMLFormat__pre(OUT, "undisplay");
 						else HTMLFormat__pre(OUT, "display");
 						break;
 					case MACRO_MATERIAL:

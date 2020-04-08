@@ -44,7 +44,7 @@ currently available to Inweb by using <code class="display"><span class="extract
 installed Inweb replies like so:
 </p>
 
-<pre>
+<pre class="undisplay">
     <span class="plain">Inweb can see the following programming language definitions:</span>
 
     <span class="plain">ACME: The ACME assembly language for 6502 and related CPUs</span>
@@ -560,6 +560,8 @@ plain text in which all vowels are in red:
     <span class="plain">Q</span><span class="functiontext">ui</span><span class="plain"> b</span><span class="functiontext">o</span><span class="plain">mb</span><span class="functiontext">i</span><span class="plain">n</span><span class="functiontext">e</span><span class="plain">nt </span><span class="functiontext">au</span><span class="plain">t</span><span class="functiontext">ou</span><span class="plain">r d</span><span class="functiontext">e</span><span class="plain">s p</span><span class="functiontext">ua</span><span class="plain">nt</span><span class="functiontext">eu</span><span class="plain">rs cr</span><span class="functiontext">ue</span><span class="plain">ll</span><span class="functiontext">e</span><span class="plain">s,</span>
 </pre>
 
+<p class="inwebparagraph"></p>
+
 <p class="inwebparagraph">3. The split <code class="display"><span class="extract">instances of X</span></code> narrows in on each usage of the text <code class="display"><span class="extract">X</span></code> inside
 the snippet. For example,
 </p>
@@ -705,6 +707,8 @@ This is easier to demonstrate than explain:
             <span class="identifier">TAX</span>
 </pre>
 
+<p class="inwebparagraph"></p>
+
 <p class="inwebparagraph">6. Lastly, the split <code class="display"><span class="extract">brackets in /E/</span></code> matches the snippet against the
 regular expression <code class="display"><span class="extract">E</span></code>, and then runs the rules on each bracketed
 subexpression in turn. (If there is no match, or there are no bracketed
@@ -761,6 +765,8 @@ entirely:
         <span class="reserved">}</span>
 </pre>
 
+<p class="inwebparagraph"></p>
+
 <p class="inwebparagraph">2. If X is a piece of literal text, the rule applies when the snippet is
 exactly that text. For example,
 </p>
@@ -768,6 +774,8 @@ exactly that text. For example,
 <pre class="display">
         <span class="string">printf</span><span class="plain"> </span><span class="reserved">=&gt;</span><span class="plain"> </span><span class="element">!function</span>
 </pre>
+
+<p class="inwebparagraph"></p>
 
 <p class="inwebparagraph">3. X can require the whole snippet to be of a particular colour, by writing
 <code class="display"><span class="extract">coloured C</span></code>. For example:

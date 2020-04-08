@@ -633,7 +633,7 @@ the page, and this drops one.
                 <span class="reserved">case</span><span class="plain"> </span><span class="identifier">REGULAR_MATERIAL:</span>
                     <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">new_material</span><span class="plain">) {</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CODE_MATERIAL:</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">plainly</span><span class="plain">) </span><span class="functiontext">HTMLFormat::pre</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">plainly</span><span class="plain">) </span><span class="functiontext">HTMLFormat::pre</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"undisplay"</span><span class="plain">);</span>
                             <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">HTMLFormat::pre</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"display"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">DEFINITION_MATERIAL:</span>
@@ -672,7 +672,7 @@ the page, and this drops one.
                     <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">new_material</span><span class="plain">) {</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">CODE_MATERIAL:</span>
                             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
-                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">plainly</span><span class="plain">) </span><span class="functiontext">HTMLFormat::pre</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+                            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">plainly</span><span class="plain">) </span><span class="functiontext">HTMLFormat::pre</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"undisplay"</span><span class="plain">);</span>
                             <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">HTMLFormat::pre</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"display"</span><span class="plain">);</span>
                             <span class="reserved">break</span><span class="plain">;</span>
                         <span class="reserved">case</span><span class="plain"> </span><span class="identifier">MACRO_MATERIAL:</span>
