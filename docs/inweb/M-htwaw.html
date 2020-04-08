@@ -406,13 +406,35 @@ indented one tab stop further in, like so:
 </li></ul>
 </li></ul>
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>Text placed between vertical strokes will be set in a fixed-space, code
-style font, <code class="display"><span class="extract">thus</span></code>.
+style font, <code class="display"><span class="extract">thus</span></code>. This paragraph appears in the web you are reading thus:
 </p>
 
-<p class="inwebparagraph">If a series of lines is indented with tab characters and consists entirely
-of courier-type code extracts, it will be set as a running-on series of
-code lines.
+<pre class="display">
+        <span class="functiontext">@</span><span class="plain"> Text placed between vertical strokes will be set in a fixed-space, code</span>
+        <span class="plain">style font, |thus|. This paragraph appears in the web you are reading thus:</span>
+</pre>
+
+<p class="inwebparagraph">This notation may be inconvenient if you need the vertical stroke character
+for something else, especially as the notation is used both in code comments
+and in paragraph commentary. But both notations can be configured in the
+Contents page of a web, thus:
 </p>
+
+<pre class="display">
+    <span class="element">Code In Code Comments Notation</span><span class="plain">:</span><span class="string"> Off</span>
+    <span class="element">Code In Commentary Notation</span><span class="plain">:</span><span class="string"> %%</span>
+</pre>
+
+<p class="inwebparagraph">This example would turn off the feature in code comments, but allow it in
+paragraph commentary; we would then need to write...
+</p>
+
+<pre class="display">
+        <span class="functiontext">@</span><span class="plain"> Text placed between vertical strokes will be set in a fixed-space, code</span>
+        <span class="plain">style font, %%thus%%. This paragraph appears in the web you are reading thus:</span>
+</pre>
+
+<p class="inwebparagraph"></p>
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>A line written thus:
 </p>

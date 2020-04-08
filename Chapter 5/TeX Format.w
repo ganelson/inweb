@@ -482,7 +482,8 @@ int TeX::preform_document(weave_format *self, text_stream *OUT, web *W, weave_ta
 		WRITE("\\hfill$\\longrightarrow$ {\\ttninepoint\\it %S}", problem);
 	else if (Str::len(concluding_comment) > 0) {
 		WRITE(" \\hfill{\\ttninepoint\\it ");
-		if (concluding_comment) Formats::text(OUT, wv, concluding_comment);
+		if (Str::len(concluding_comment) > 0)
+			Formats::text_comment(OUT, wv, concluding_comment);
 		WRITE("}");
 	}
 	WRITE("\n");

@@ -370,22 +370,30 @@ as appropriate.
 
 =
 void Formats::text(OUTPUT_STREAM, weave_target *wv, text_stream *id) {
-	Formats::text_r(OUT, wv, id, FALSE);
+	Formats::text_r(OUT, wv, id, FALSE, FALSE);
+}
+void Formats::text_comment(OUTPUT_STREAM, weave_target *wv, text_stream *id) {
+	Formats::text_r(OUT, wv, id, FALSE, TRUE);
 }
 
-void Formats::text_r(OUTPUT_STREAM, weave_target *wv, text_stream *id, int within) {
-	for (int i=0; i < Str::len(id); i++) {
-		if (Str::get_at(id, i) == '\\') i++;
-		else if (Str::get_at(id, i) == '|') {
-			TEMPORARY_TEXT(before);
-			Str::copy(before, id); Str::truncate(before, i);
-			TEMPORARY_TEXT(after);
-			Str::substr(after, Str::at(id, i+1), Str::end(id));
-			Formats::text_r(OUT, wv, before, within);
-			Formats::text_r(OUT, wv, after, (within)?FALSE:TRUE);
-			DISCARD_TEXT(before);
-			DISCARD_TEXT(after);
-			return;
+void Formats::text_r(OUTPUT_STREAM, weave_target *wv, text_stream *id,
+	int within, int comments) {
+	text_stream *notation = Bibliographic::get_datum(wv->weave_web->md,
+		(comments)?(I"Code In Code Comments Notation"):(I"Code In Commentary Notation"));
+	if (Str::ne(notation, I"Off")) {
+		for (int i=0; i < Str::len(id); i++) {
+			if (Str::get_at(id, i) == '\\') i += Str::len(notation) - 1;
+			else if (ACMESupport::text_at(id, i, notation)) {
+				TEMPORARY_TEXT(before);
+				Str::copy(before, id); Str::truncate(before, i);
+				TEMPORARY_TEXT(after);
+				Str::substr(after, Str::at(id, i + Str::len(notation)), Str::end(id));
+				Formats::text_r(OUT, wv, before, within, comments);
+				Formats::text_r(OUT, wv, after, (within)?FALSE:TRUE, comments);
+				DISCARD_TEXT(before);
+				DISCARD_TEXT(after);
+				return;
+			}
 		}
 	}
 	if (within) {

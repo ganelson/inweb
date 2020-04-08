@@ -281,11 +281,25 @@ indented one tab stop further in, like so:
 (-d) Pick a song and sing a yellow nectarine. (Scott Weiland)
 
 @ Text placed between vertical strokes will be set in a fixed-space, code
-style font, |thus|.
-
-If a series of lines is indented with tab characters and consists entirely
-of courier-type code extracts, it will be set as a running-on series of
-code lines.
+style font, |thus|. This paragraph appears in the web you are reading thus:
+= (text as Inweb)
+	@ Text placed between vertical strokes will be set in a fixed-space, code
+	style font, |thus|. This paragraph appears in the web you are reading thus:
+=
+This notation may be inconvenient if you need the vertical stroke character
+for something else, especially as the notation is used both in code comments
+and in paragraph commentary. But both notations can be configured in the
+Contents page of a web, thus:
+= (text as Inweb)
+Code In Code Comments Notation: Off
+Code In Commentary Notation: %%
+=
+This example would turn off the feature in code comments, but allow it in
+paragraph commentary; we would then need to write...
+= (text as Inweb)
+	@ Text placed between vertical strokes will be set in a fixed-space, code
+	style font, %%thus%%. This paragraph appears in the web you are reading thus:
+=
 
 @ A line written thus:
 = (text as Inweb)

@@ -322,7 +322,7 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 		if (Str::len(concluding_comment) > 0) {
 			if (!starts) WRITE("    ");
 			HTML_OPEN_WITH("span", "class=\"comment\"");
-			Formats::text(OUT, wv, concluding_comment);
+			Formats::text_comment(OUT, wv, concluding_comment);
 			HTML_CLOSE("span");
 		}
 		WRITE("\n");

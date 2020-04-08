@@ -449,7 +449,7 @@ the page, and this drops one.
             <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">concluding_comment</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="reserved">if</span><span class="plain"> (!</span><span class="identifier">starts</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"    "</span><span class="plain">);</span>
                 <span class="identifier">HTML_OPEN_WITH</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">, </span><span class="string">"class=\"comment\""</span><span class="plain">);</span>
-                <span class="functiontext">Formats::text</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">concluding_comment</span><span class="plain">);</span>
+                <span class="functiontext">Formats::text_comment</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">concluding_comment</span><span class="plain">);</span>
                 <span class="identifier">HTML_CLOSE</span><span class="plain">(</span><span class="string">"span"</span><span class="plain">);</span>
             <span class="plain">}</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
