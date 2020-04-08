@@ -141,11 +141,17 @@ and details of any cover-sheet to use.
 	} else if (Str::eq_wide_string(range, L"P")) {
 		wt->booklet_title = Str::new_from_wide_string(L"Preliminaries");
 		Str::copy(leafname, wt->booklet_title);
-	} else {
-		Str::copy(wt->booklet_title, range);
+	} else if (Str::eq_wide_string(range, L"M")) {
+		wt->booklet_title = Str::new_from_wide_string(L"Manual");
 		Str::copy(leafname, wt->booklet_title);
+	} else {
+		section *S = Reader::get_section_for_range(W, range);
+		if (S) Str::copy(wt->booklet_title, S->md->sect_title);
+		else Str::copy(wt->booklet_title, range);
+		Str::copy(leafname, range);
 		Str::clear(wt->cover_sheet_to_use);
 	}
+	Bibliographic::set_datum(W->md, I"Booklet Title", wt->booklet_title);
 	LOOP_THROUGH_TEXT(P, leafname)
 		if ((Str::get(P) == '/') || (Str::get(P) == ' '))
 			Str::put(P, '-');
