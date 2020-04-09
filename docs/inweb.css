@@ -349,6 +349,16 @@ nav[role="navigation"] ul li a:link {
     padding: 10px 10px 2px 2px
 }
 
+nav[role="navigation"] ul li span.unlink {
+    color: #f25;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    display: block;
+    padding: 10px 10px 2px 2px
+}
+
 nav[role="navigation"] ul li a:visited {
     color: #333
 }

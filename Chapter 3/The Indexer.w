@@ -110,7 +110,8 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 @<Weave in navigation@> =
 	pathname *P = Filenames::get_path_to(state->target->weave_to);
 	Indexer::nav_column(OUT, P, state->target->weave_web, state->target->weave_range,
-		state->target->pattern, state->target->navigation);
+		state->target->pattern, state->target->navigation,
+		Filenames::get_leafname(state->target->weave_to));
 
 @<Weave in an index@> =
 	pathname *P = Filenames::get_path_to(state->target->weave_to);
@@ -120,7 +121,7 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 	else
 		Indexer::run(state->target->weave_web, state->target->weave_range,
 			CF, NULL, OUT, state->target->pattern, P, state->target->navigation,
-			NULL, FALSE);
+			NULL, FALSE, FALSE);
 
 @<Weave in the value of this variable name@> =
 	WRITE("%S", Bibliographic::get_datum(state->target->weave_web->md, command));
@@ -129,21 +130,21 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 
 =
 void Indexer::nav_column(OUTPUT_STREAM, pathname *P, web *W, text_stream *range,
-	weave_pattern *pattern, filename *nav) {
+	weave_pattern *pattern, filename *nav, text_stream *leafname) {
 	if (nav) {
 		if (TextFiles::exists(nav))
-			Indexer::run(W, range, nav, NULL, OUT, pattern, P, NULL, NULL, FALSE);
+			Indexer::run(W, range, nav, leafname, OUT, pattern, P, NULL, NULL, FALSE, TRUE);
 		else
 			Errors::fatal_with_file("unable to find navigation file", nav);
 	} else {
 		if (pattern->hierarchical) {
 			filename *F = Filenames::in_folder(Pathnames::up(P), I"nav.html");
 			if (TextFiles::exists(F))
-				Indexer::run(W, range, F, NULL, OUT, pattern, P, NULL, NULL, FALSE);
+				Indexer::run(W, range, F, leafname, OUT, pattern, P, NULL, NULL, FALSE, TRUE);
 		}
 		filename *F = Filenames::in_folder(P, I"nav.html");
 		if (TextFiles::exists(F))
-			Indexer::run(W, range, F, NULL, OUT, pattern, P, NULL, NULL, FALSE);
+			Indexer::run(W, range, F, leafname, OUT, pattern, P, NULL, NULL, FALSE, TRUE);
 	}
 }
 
@@ -162,6 +163,7 @@ The current state of the processor is recorded in the following.
 
 =
 typedef struct contents_processor {
+	text_stream *leafname;
 	text_stream *tlines[MAX_TEMPLATE_LINES];
 	int no_tlines;
 	int repeat_stack_level[CI_STACK_CAPACITY];
@@ -183,6 +185,7 @@ contents_processor Indexer::new_processor(text_stream *range) {
 	cp.no_tlines = 0;
 	cp.restrict_to_range = Str::duplicate(range);
 	cp.stack_pointer = 0;
+	cp.leafname = Str::new();
 	return cp;
 }
 
@@ -194,7 +197,7 @@ contents_processor Indexer::new_processor(text_stream *range) {
 void Indexer::run(web *W, text_stream *range,
 	filename *template_filename, text_stream *contents_page_leafname,
 	text_stream *write_to, weave_pattern *pattern, pathname *P, filename *nav_file,
-	linked_list *crumbs, int docs) {
+	linked_list *crumbs, int docs, int unlink_selflinks) {
 	contents_processor actual_cp = Indexer::new_processor(range);
 	actual_cp.nav_web = W;
 	actual_cp.nav_pattern = pattern;
@@ -202,6 +205,7 @@ void Indexer::run(web *W, text_stream *range,
 	actual_cp.nav_file = nav_file;
 	actual_cp.crumbs = crumbs;
 	actual_cp.docs_mode = docs;
+	actual_cp.leafname = Str::duplicate(contents_page_leafname);
 	contents_processor *cp = &actual_cp;
 	text_stream TO_struct; text_stream *OUT = &TO_struct;
 	@<Read in the source file containing the contents page template@>;
@@ -230,6 +234,16 @@ void Indexer::run(web *W, text_stream *range,
 		filename *CSS_file = Patterns::obtain_filename(pattern, mr.exp[0]);
 		Indexer::transcribe_CSS(OUT, CSS_file);
 		Str::clear(tl);
+	}
+	if ((unlink_selflinks) &&
+		(Regexp::match(&mr, tl, L"(%c+?)<a href=\"(%c+?)\">(%c+?)</a>(%c*)")) &&
+		(Str::eq_insensitive(mr.exp[1], contents_page_leafname))) {
+		TEMPORARY_TEXT(unlinked);
+		WRITE_TO(unlinked, "%S<span class=\"unlink\">%S</span>%S",
+			mr.exp[0], mr.exp[2], mr.exp[3]);
+		Str::clear(tl);
+		Str::copy(tl, unlinked);
+		DISCARD_TEXT(unlinked);
 	}
 	if ((Regexp::match(&mr, tl, L"%[%[(%c+)%]%]")) ||
 		(Regexp::match(&mr, tl, L" %[%[(%c+)%]%]"))) {
@@ -453,7 +467,7 @@ its square-bracketed parts.
 			@<Substitute any bibliographic datum named@>;
 		} else if (Regexp::match(&mr, varname, L"Navigation")) {
 			Indexer::nav_column(substituted, cp->nav_path, cp->nav_web,
-				cp->restrict_to_range, cp->nav_pattern, cp->nav_file);
+				cp->restrict_to_range, cp->nav_pattern, cp->nav_file, cp->leafname);
 		} else if (Regexp::match(&mr, varname, L"Breadcrumbs")) {
 			HTMLFormat::drop_initial_breadcrumbs(substituted, cp->crumbs, cp->docs_mode);
 		} else if (Regexp::match(&mr, varname, L"Modules")) {

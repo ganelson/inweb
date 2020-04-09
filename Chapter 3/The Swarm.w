@@ -101,6 +101,16 @@ typedef struct weave_target {
 	if (Reader::web_has_one_section(W)) wt->self_contained = TRUE;
 	Str::copy(wt->cover_sheet_to_use, I"cover-sheet");
 
+	int has_content = FALSE;
+	chapter *C;
+	section *S;
+	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
+		LOOP_OVER_LINKED_LIST(S, section, C->sections)
+			if (Reader::range_within(S->sect_range, wt->weave_range))
+				has_content = TRUE;
+	if (has_content == FALSE)
+		Errors::fatal("no sections match that range");
+
 	TEMPORARY_TEXT(leafname);
 	@<Translate the subweb range into details of what to weave@>;
 	pathname *H = W->redirect_weaves_to;
@@ -184,6 +194,6 @@ void Swarm::weave_index_templates(web *W, text_stream *range, weave_pattern *pat
 	else index_leaf = I"unchaptered-index.html";
 	filename *OUT = Patterns::obtain_filename(pattern, index_leaf);
 	if (OUT == NULL) OUT = Patterns::obtain_filename(pattern, I"index.html");
-	if (OUT) Indexer::run(W, range, OUT, I"index.html", NULL, pattern, into, F, crumbs, docs);
+	if (OUT) Indexer::run(W, range, OUT, I"index.html", NULL, pattern, into, F, crumbs, docs, TRUE);
 	if (self_contained == FALSE) Patterns::copy_payloads_into_weave(W, pattern);
 }

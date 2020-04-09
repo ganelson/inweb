@@ -1637,8 +1637,9 @@ typedef struct cover_sheet_state {
 	int halves; /* a bitmap of the above values */
 	struct weave_target *target;
 } cover_sheet_state;
-#line 164 "inweb/Chapter 3/The Indexer.w"
+#line 165 "inweb/Chapter 3/The Indexer.w"
 typedef struct contents_processor {
+	text_stream *leafname;
 	text_stream *tlines[MAX_TEMPLATE_LINES];
 	int no_tlines;
 	int repeat_stack_level[CI_STACK_CAPACITY];
@@ -3170,31 +3171,31 @@ void  Analyser__write_gitignore(web *W, filename *F) ;
 void  Swarm__weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag, 	weave_pattern *pattern, filename *to, pathname *into, int docs_mode, 	linked_list *breadcrumbs, filename *navigation) ;
 #line 52 "inweb/Chapter 3/The Swarm.w"
 weave_target * Swarm__weave_subset(web *W, text_stream *range, int open_afterwards, 	theme_tag *tag, weave_pattern *pattern, filename *to, pathname *into, int docs_mode, 	linked_list *breadcrumbs, filename *navigation) ;
-#line 178 "inweb/Chapter 3/The Swarm.w"
+#line 188 "inweb/Chapter 3/The Swarm.w"
 void  Swarm__weave_index_templates(web *W, text_stream *range, weave_pattern *pattern, 	int self_contained, pathname *into, filename *F, linked_list *crumbs, int docs) ;
 #line 11 "inweb/Chapter 3/The Indexer.w"
 void  Indexer__cover_sheet_maker(OUTPUT_STREAM, web *W, text_stream *unextended_leafname, 	weave_target *wt, int halves) ;
 #line 49 "inweb/Chapter 3/The Indexer.w"
 void  Indexer__scan_cover_line(text_stream *line, text_file_position *tfp, void *v_state) ;
-#line 131 "inweb/Chapter 3/The Indexer.w"
-void  Indexer__nav_column(OUTPUT_STREAM, pathname *P, web *W, text_stream *range, 	weave_pattern *pattern, filename *nav) ;
-#line 181 "inweb/Chapter 3/The Indexer.w"
+#line 132 "inweb/Chapter 3/The Indexer.w"
+void  Indexer__nav_column(OUTPUT_STREAM, pathname *P, web *W, text_stream *range, 	weave_pattern *pattern, filename *nav, text_stream *leafname) ;
+#line 183 "inweb/Chapter 3/The Indexer.w"
 contents_processor  Indexer__new_processor(text_stream *range) ;
-#line 194 "inweb/Chapter 3/The Indexer.w"
-void  Indexer__run(web *W, text_stream *range, 	filename *template_filename, text_stream *contents_page_leafname, 	text_stream *write_to, weave_pattern *pattern, pathname *P, filename *nav_file, 	linked_list *crumbs, int docs) ;
-#line 257 "inweb/Chapter 3/The Indexer.w"
+#line 197 "inweb/Chapter 3/The Indexer.w"
+void  Indexer__run(web *W, text_stream *range, 	filename *template_filename, text_stream *contents_page_leafname, 	text_stream *write_to, weave_pattern *pattern, pathname *P, filename *nav_file, 	linked_list *crumbs, int docs, int unlink_selflinks) ;
+#line 271 "inweb/Chapter 3/The Indexer.w"
 void  Indexer__save_template_line(text_stream *line, text_file_position *tfp, void *void_cp) ;
-#line 409 "inweb/Chapter 3/The Indexer.w"
+#line 423 "inweb/Chapter 3/The Indexer.w"
 linked_list_item * Indexer__heading_topmost_on_stack(contents_processor *cp, int level) ;
-#line 420 "inweb/Chapter 3/The Indexer.w"
+#line 434 "inweb/Chapter 3/The Indexer.w"
 void  Indexer__start_CI_loop(contents_processor *cp, int level, 	linked_list_item *from, linked_list_item *to, int pos) ;
-#line 430 "inweb/Chapter 3/The Indexer.w"
+#line 444 "inweb/Chapter 3/The Indexer.w"
 void  Indexer__end_CI_loop(contents_processor *cp) ;
-#line 566 "inweb/Chapter 3/The Indexer.w"
+#line 580 "inweb/Chapter 3/The Indexer.w"
 void  Indexer__list_module(OUTPUT_STREAM, module *M, int list_this) ;
-#line 583 "inweb/Chapter 3/The Indexer.w"
+#line 597 "inweb/Chapter 3/The Indexer.w"
 void  Indexer__transcribe_CSS(OUTPUT_STREAM, filename *CSS_file) ;
-#line 590 "inweb/Chapter 3/The Indexer.w"
+#line 604 "inweb/Chapter 3/The Indexer.w"
 void  Indexer__copy_CSS(text_stream *line, text_file_position *tfp, void *X) ;
 #line 16 "inweb/Chapter 3/The Weaver.w"
 int  Weaver__weave_source(web *W, weave_target *wv) ;
@@ -16174,10 +16175,20 @@ weave_target *Swarm__weave_subset(web *W, text_stream *range, int open_afterward
 	if (Reader__web_has_one_section(W)) wt->self_contained = TRUE;
 	Str__copy(wt->cover_sheet_to_use, TL_IS_156);
 
+	int has_content = FALSE;
+	chapter *C;
+	section *S;
+	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
+		LOOP_OVER_LINKED_LIST(S, section, C->sections)
+			if (Reader__range_within(S->sect_range, wt->weave_range))
+				has_content = TRUE;
+	if (has_content == FALSE)
+		Errors__fatal("no sections match that range");
+
 	TEMPORARY_TEXT(leafname);
 	
 {
-#line 124 "inweb/Chapter 3/The Swarm.w"
+#line 134 "inweb/Chapter 3/The Swarm.w"
 	match_results mr = Regexp__create_mr();
 	if (Str__eq_wide_string(range, L"0")) {
 		wt->booklet_title = Str__new_from_wide_string(L"Complete Program");
@@ -16188,13 +16199,13 @@ weave_target *Swarm__weave_subset(web *W, text_stream *range, int open_afterward
 		}
 		if (wt->theme_match) 
 {
-#line 162 "inweb/Chapter 3/The Swarm.w"
+#line 172 "inweb/Chapter 3/The Swarm.w"
 	Str__clear(wt->booklet_title);
 	WRITE_TO(wt->booklet_title, "Extracts: %S", wt->theme_match->tag_name);
 	Str__copy(leafname, wt->theme_match->tag_name);
 
 }
-#line 132 "inweb/Chapter 3/The Swarm.w"
+#line 142 "inweb/Chapter 3/The Swarm.w"
 ;
 	} else if (Regexp__match(&mr, range, L"%d+")) {
 		Str__clear(wt->booklet_title);
@@ -16225,7 +16236,7 @@ weave_target *Swarm__weave_subset(web *W, text_stream *range, int open_afterward
 	Regexp__dispose_of(&mr);
 
 }
-#line 105 "inweb/Chapter 3/The Swarm.w"
+#line 115 "inweb/Chapter 3/The Swarm.w"
 ;
 	pathname *H = W->redirect_weaves_to;
 	if (H == NULL) H = into;
@@ -16249,7 +16260,7 @@ weave_target *Swarm__weave_subset(web *W, text_stream *range, int open_afterward
 		Formats__post_process_weave(wt, open_afterwards); /* e.g., run through TeX */
 		
 {
-#line 169 "inweb/Chapter 3/The Swarm.w"
+#line 179 "inweb/Chapter 3/The Swarm.w"
 	PRINT("[%S: %S -> %f", wt->booklet_title, wt->format->format_name, wt->weave_to);
 	Formats__report_on_post_processing(wt);
 	PRINT("]\n");
@@ -16263,7 +16274,7 @@ weave_target *Swarm__weave_subset(web *W, text_stream *range, int open_afterward
 
 #line 86 "inweb/Chapter 3/The Swarm.w"
 
-#line 178 "inweb/Chapter 3/The Swarm.w"
+#line 188 "inweb/Chapter 3/The Swarm.w"
 void Swarm__weave_index_templates(web *W, text_stream *range, weave_pattern *pattern,
 	int self_contained, pathname *into, filename *F, linked_list *crumbs, int docs) {
 	if (!(Bibliographic__data_exists(W->md, TL_IS_158)))
@@ -16273,7 +16284,7 @@ void Swarm__weave_index_templates(web *W, text_stream *range, weave_pattern *pat
 	else index_leaf = TL_IS_162;
 	filename *OUT = Patterns__obtain_filename(pattern, index_leaf);
 	if (OUT == NULL) OUT = Patterns__obtain_filename(pattern, TL_IS_163);
-	if (OUT) Indexer__run(W, range, OUT, TL_IS_164, NULL, pattern, into, F, crumbs, docs);
+	if (OUT) Indexer__run(W, range, OUT, TL_IS_164, NULL, pattern, into, F, crumbs, docs, TRUE);
 	if (self_contained == FALSE) Patterns__copy_payloads_into_weave(W, pattern);
 }
 
@@ -16357,7 +16368,8 @@ void Indexer__scan_cover_line(text_stream *line, text_file_position *tfp, void *
 #line 111 "inweb/Chapter 3/The Indexer.w"
 	pathname *P = Filenames__get_path_to(state->target->weave_to);
 	Indexer__nav_column(OUT, P, state->target->weave_web, state->target->weave_range,
-		state->target->pattern, state->target->navigation);
+		state->target->pattern, state->target->navigation,
+		Filenames__get_leafname(state->target->weave_to));
 
 }
 #line 88 "inweb/Chapter 3/The Indexer.w"
@@ -16365,7 +16377,7 @@ void Indexer__scan_cover_line(text_stream *line, text_file_position *tfp, void *
 	} else if (Regexp__match(&mr2, command, L"Template (%c*?)")) {
 		if (include) 
 {
-#line 116 "inweb/Chapter 3/The Indexer.w"
+#line 117 "inweb/Chapter 3/The Indexer.w"
 	pathname *P = Filenames__get_path_to(state->target->weave_to);
 	filename *CF = Patterns__obtain_filename(state->target->pattern, mr2.exp[0]);
 	if (CF == NULL)
@@ -16373,7 +16385,7 @@ void Indexer__scan_cover_line(text_stream *line, text_file_position *tfp, void *
 	else
 		Indexer__run(state->target->weave_web, state->target->weave_range,
 			CF, NULL, OUT, state->target->pattern, P, state->target->navigation,
-			NULL, FALSE);
+			NULL, FALSE, FALSE);
 
 }
 #line 90 "inweb/Chapter 3/The Indexer.w"
@@ -16381,7 +16393,7 @@ void Indexer__scan_cover_line(text_stream *line, text_file_position *tfp, void *
 	} else if (Bibliographic__data_exists(state->target->weave_web->md, command)) {
 		if (include) 
 {
-#line 126 "inweb/Chapter 3/The Indexer.w"
+#line 127 "inweb/Chapter 3/The Indexer.w"
 	WRITE("%S", Bibliographic__get_datum(state->target->weave_web->md, command));
 
 }
@@ -16403,41 +16415,42 @@ void Indexer__scan_cover_line(text_stream *line, text_file_position *tfp, void *
 	DISCARD_TEXT(matter);
 }
 
-#line 131 "inweb/Chapter 3/The Indexer.w"
+#line 132 "inweb/Chapter 3/The Indexer.w"
 void Indexer__nav_column(OUTPUT_STREAM, pathname *P, web *W, text_stream *range,
-	weave_pattern *pattern, filename *nav) {
+	weave_pattern *pattern, filename *nav, text_stream *leafname) {
 	if (nav) {
 		if (TextFiles__exists(nav))
-			Indexer__run(W, range, nav, NULL, OUT, pattern, P, NULL, NULL, FALSE);
+			Indexer__run(W, range, nav, leafname, OUT, pattern, P, NULL, NULL, FALSE, TRUE);
 		else
 			Errors__fatal_with_file("unable to find navigation file", nav);
 	} else {
 		if (pattern->hierarchical) {
 			filename *F = Filenames__in_folder(Pathnames__up(P), TL_IS_166);
 			if (TextFiles__exists(F))
-				Indexer__run(W, range, F, NULL, OUT, pattern, P, NULL, NULL, FALSE);
+				Indexer__run(W, range, F, leafname, OUT, pattern, P, NULL, NULL, FALSE, TRUE);
 		}
 		filename *F = Filenames__in_folder(P, TL_IS_167);
 		if (TextFiles__exists(F))
-			Indexer__run(W, range, F, NULL, OUT, pattern, P, NULL, NULL, FALSE);
+			Indexer__run(W, range, F, leafname, OUT, pattern, P, NULL, NULL, FALSE, TRUE);
 	}
 }
 
-#line 180 "inweb/Chapter 3/The Indexer.w"
+#line 182 "inweb/Chapter 3/The Indexer.w"
 
 contents_processor Indexer__new_processor(text_stream *range) {
 	contents_processor cp;
 	cp.no_tlines = 0;
 	cp.restrict_to_range = Str__duplicate(range);
 	cp.stack_pointer = 0;
+	cp.leafname = Str__new();
 	return cp;
 }
 
-#line 194 "inweb/Chapter 3/The Indexer.w"
+#line 197 "inweb/Chapter 3/The Indexer.w"
 void Indexer__run(web *W, text_stream *range,
 	filename *template_filename, text_stream *contents_page_leafname,
 	text_stream *write_to, weave_pattern *pattern, pathname *P, filename *nav_file,
-	linked_list *crumbs, int docs) {
+	linked_list *crumbs, int docs, int unlink_selflinks) {
 	contents_processor actual_cp = Indexer__new_processor(range);
 	actual_cp.nav_web = W;
 	actual_cp.nav_pattern = pattern;
@@ -16445,22 +16458,23 @@ void Indexer__run(web *W, text_stream *range,
 	actual_cp.nav_file = nav_file;
 	actual_cp.crumbs = crumbs;
 	actual_cp.docs_mode = docs;
+	actual_cp.leafname = Str__duplicate(contents_page_leafname);
 	contents_processor *cp = &actual_cp;
 	text_stream TO_struct; text_stream *OUT = &TO_struct;
 	
 {
-#line 249 "inweb/Chapter 3/The Indexer.w"
+#line 263 "inweb/Chapter 3/The Indexer.w"
 	TextFiles__read(template_filename, FALSE,
 		"can't find contents template", TRUE, Indexer__save_template_line, NULL, cp);
 	if (TRACE_CI_EXECUTION)
 		PRINT("Read template <%f>: %d line(s)\n", template_filename, cp->no_tlines);
 
 }
-#line 207 "inweb/Chapter 3/The Indexer.w"
+#line 211 "inweb/Chapter 3/The Indexer.w"
 ;
 	
 {
-#line 264 "inweb/Chapter 3/The Indexer.w"
+#line 278 "inweb/Chapter 3/The Indexer.w"
 	pathname *H = W->redirect_weaves_to;
 	if (H == NULL) H = Reader__woven_folder(W);
 	if (write_to) OUT = write_to;
@@ -16474,7 +16488,7 @@ void Indexer__run(web *W, text_stream *range,
 	}
 
 }
-#line 208 "inweb/Chapter 3/The Indexer.w"
+#line 212 "inweb/Chapter 3/The Indexer.w"
 ;
 
 	int lpos = 0; /* This is our program counter: a line number in the template */
@@ -16484,12 +16498,12 @@ void Indexer__run(web *W, text_stream *range,
 		Str__copy(tl, cp->tlines[lpos++]); /* Fetch the line at the program counter and advance */
 		
 {
-#line 225 "inweb/Chapter 3/The Indexer.w"
+#line 229 "inweb/Chapter 3/The Indexer.w"
 	if (Regexp__match(&mr, tl, L"(%c*?) ")) Str__copy(tl, mr.exp[0]); /* Strip trailing spaces */
 	if (TRACE_CI_EXECUTION)
 		
 {
-#line 279 "inweb/Chapter 3/The Indexer.w"
+#line 293 "inweb/Chapter 3/The Indexer.w"
 	PRINT("%04d: %S\nStack:", lpos-1, tl);
 	for (int j=0; j<cp->stack_pointer; j++) {
 		if (cp->repeat_stack_level[j] == CHAPTER_LEVEL)
@@ -16504,7 +16518,7 @@ void Indexer__run(web *W, text_stream *range,
 	PRINT("\n");
 
 }
-#line 227 "inweb/Chapter 3/The Indexer.w"
+#line 231 "inweb/Chapter 3/The Indexer.w"
 ;
 	if ((pattern->embed_CSS) &&
 		(Regexp__match(&mr, tl, L" *%<link href=%\"(%c+?)\"%c*"))) {
@@ -16512,13 +16526,23 @@ void Indexer__run(web *W, text_stream *range,
 		Indexer__transcribe_CSS(OUT, CSS_file);
 		Str__clear(tl);
 	}
+	if ((unlink_selflinks) &&
+		(Regexp__match(&mr, tl, L"(%c+?)<a href=\"(%c+?)\">(%c+?)</a>(%c*)")) &&
+		(Str__eq_insensitive(mr.exp[1], contents_page_leafname))) {
+		TEMPORARY_TEXT(unlinked);
+		WRITE_TO(unlinked, "%S<span class=\"unlink\">%S</span>%S",
+			mr.exp[0], mr.exp[2], mr.exp[3]);
+		Str__clear(tl);
+		Str__copy(tl, unlinked);
+		DISCARD_TEXT(unlinked);
+	}
 	if ((Regexp__match(&mr, tl, L"%[%[(%c+)%]%]")) ||
 		(Regexp__match(&mr, tl, L" %[%[(%c+)%]%]"))) {
 		TEMPORARY_TEXT(command);
 		Str__copy(command, mr.exp[0]);
 		
 {
-#line 297 "inweb/Chapter 3/The Indexer.w"
+#line 311 "inweb/Chapter 3/The Indexer.w"
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, command, L"Select (%c*)")) {
 		chapter *C;
@@ -16543,11 +16567,11 @@ void Indexer__run(web *W, text_stream *range,
 	}
 
 }
-#line 238 "inweb/Chapter 3/The Indexer.w"
+#line 252 "inweb/Chapter 3/The Indexer.w"
 ;
 		
 {
-#line 323 "inweb/Chapter 3/The Indexer.w"
+#line 337 "inweb/Chapter 3/The Indexer.w"
 	int loop_level = 0;
 	if (Regexp__match(&mr, command, L"Repeat Chapter")) loop_level = CHAPTER_LEVEL;
 	if (Regexp__match(&mr, command, L"Repeat Section")) loop_level = SECTION_LEVEL;
@@ -16588,11 +16612,11 @@ void Indexer__run(web *W, text_stream *range,
 	}
 
 }
-#line 239 "inweb/Chapter 3/The Indexer.w"
+#line 253 "inweb/Chapter 3/The Indexer.w"
 ;
 		
 {
-#line 365 "inweb/Chapter 3/The Indexer.w"
+#line 379 "inweb/Chapter 3/The Indexer.w"
 	if ((Regexp__match(&mr, command, L"End Repeat")) || (Regexp__match(&mr, command, L"End Select"))) {
 		if (cp->stack_pointer <= 0)
 			Errors__at_position("stack underflow on contents template", template_filename, lpos);
@@ -16620,13 +16644,13 @@ void Indexer__run(web *W, text_stream *range,
 	}
 
 }
-#line 240 "inweb/Chapter 3/The Indexer.w"
+#line 254 "inweb/Chapter 3/The Indexer.w"
 ;
 		DISCARD_TEXT(command);
 	}
 	
 {
-#line 394 "inweb/Chapter 3/The Indexer.w"
+#line 408 "inweb/Chapter 3/The Indexer.w"
 	for (int rstl = cp->stack_pointer-1; rstl >= 0; rstl--)
 		if (cp->repeat_stack_level[cp->stack_pointer-1] == SECTION_LEVEL) {
 			linked_list_item *SI = cp->repeat_stack_threshold[cp->stack_pointer-1];
@@ -16636,11 +16660,11 @@ void Indexer__run(web *W, text_stream *range,
 		}
 
 }
-#line 243 "inweb/Chapter 3/The Indexer.w"
+#line 257 "inweb/Chapter 3/The Indexer.w"
 ;
 	
 {
-#line 440 "inweb/Chapter 3/The Indexer.w"
+#line 454 "inweb/Chapter 3/The Indexer.w"
 	int slen, spos;
 	while ((spos = Regexp__find_expansion(tl, '[', '[', ']', ']', &slen)) >= 0) {
 		TEMPORARY_TEXT(left_part);
@@ -16656,21 +16680,21 @@ void Indexer__run(web *W, text_stream *range,
 		if (Bibliographic__data_exists(W->md, varname)) {
 			
 {
-#line 495 "inweb/Chapter 3/The Indexer.w"
+#line 509 "inweb/Chapter 3/The Indexer.w"
 	Str__copy(substituted, Bibliographic__get_datum(W->md, varname));
 
 }
-#line 453 "inweb/Chapter 3/The Indexer.w"
+#line 467 "inweb/Chapter 3/The Indexer.w"
 ;
 		} else if (Regexp__match(&mr, varname, L"Navigation")) {
 			Indexer__nav_column(substituted, cp->nav_path, cp->nav_web,
-				cp->restrict_to_range, cp->nav_pattern, cp->nav_file);
+				cp->restrict_to_range, cp->nav_pattern, cp->nav_file, cp->leafname);
 		} else if (Regexp__match(&mr, varname, L"Breadcrumbs")) {
 			HTMLFormat__drop_initial_breadcrumbs(substituted, cp->crumbs, cp->docs_mode);
 		} else if (Regexp__match(&mr, varname, L"Modules")) {
 			
 {
-#line 554 "inweb/Chapter 3/The Indexer.w"
+#line 568 "inweb/Chapter 3/The Indexer.w"
 	module *M = W->md->as_module;
 	int L = LinkedLists__len(M->dependencies);
 	if (L > 0) {
@@ -16683,7 +16707,7 @@ void Indexer__run(web *W, text_stream *range,
 	}
 
 }
-#line 460 "inweb/Chapter 3/The Indexer.w"
+#line 474 "inweb/Chapter 3/The Indexer.w"
 ;
 		} else if (Regexp__match(&mr, varname, L"Chapter (%c+)")) {
 			text_stream *detail = mr.exp[0];
@@ -16694,7 +16718,7 @@ void Indexer__run(web *W, text_stream *range,
 					template_filename, lpos);
 			else 
 {
-#line 507 "inweb/Chapter 3/The Indexer.w"
+#line 521 "inweb/Chapter 3/The Indexer.w"
 	if (Str__eq_wide_string(detail, L"Title")) {
 		Str__copy(substituted, C->md->ch_title);
 	} else if (Str__eq_wide_string(detail, L"Code")) {
@@ -16708,7 +16732,7 @@ void Indexer__run(web *W, text_stream *range,
 	}
 
 }
-#line 468 "inweb/Chapter 3/The Indexer.w"
+#line 482 "inweb/Chapter 3/The Indexer.w"
 ;
 		} else if (Regexp__match(&mr, varname, L"Section (%c+)")) {
 			text_stream *detail = mr.exp[0];
@@ -16719,7 +16743,7 @@ void Indexer__run(web *W, text_stream *range,
 					template_filename, lpos);
 			else 
 {
-#line 522 "inweb/Chapter 3/The Indexer.w"
+#line 536 "inweb/Chapter 3/The Indexer.w"
 	if (Str__eq_wide_string(detail, L"Title")) {
 		Str__copy(substituted, S->md->sect_title);
 	} else if (Str__eq_wide_string(detail, L"Purpose")) {
@@ -16752,19 +16776,19 @@ void Indexer__run(web *W, text_stream *range,
 	}
 
 }
-#line 476 "inweb/Chapter 3/The Indexer.w"
+#line 490 "inweb/Chapter 3/The Indexer.w"
 ;
 		} else if (Regexp__match(&mr, varname, L"Complete (%c+)")) {
 			text_stream *detail = mr.exp[0];
 			
 {
-#line 500 "inweb/Chapter 3/The Indexer.w"
+#line 514 "inweb/Chapter 3/The Indexer.w"
 	if (swarm_leader)
 		if (Formats__substitute_post_processing_data(substituted, swarm_leader, detail, pattern) == FALSE)
 			WRITE_TO(substituted, "%S for complete web", detail);
 
 }
-#line 479 "inweb/Chapter 3/The Indexer.w"
+#line 493 "inweb/Chapter 3/The Indexer.w"
 ;
 		} else {
 			WRITE_TO(substituted, "<b>%S</b>", varname);
@@ -16779,11 +16803,11 @@ void Indexer__run(web *W, text_stream *range,
 	}
 
 }
-#line 244 "inweb/Chapter 3/The Indexer.w"
+#line 258 "inweb/Chapter 3/The Indexer.w"
 ;
 
 }
-#line 215 "inweb/Chapter 3/The Indexer.w"
+#line 219 "inweb/Chapter 3/The Indexer.w"
 ;
 		WRITE("%S\n", tl); /* Copy the now finished line to the output */
 		DISCARD_TEXT(tl);
@@ -16793,14 +16817,14 @@ void Indexer__run(web *W, text_stream *range,
 	if (write_to == NULL) STREAM_CLOSE(OUT);
 }
 
-#line 257 "inweb/Chapter 3/The Indexer.w"
+#line 271 "inweb/Chapter 3/The Indexer.w"
 void Indexer__save_template_line(text_stream *line, text_file_position *tfp, void *void_cp) {
 	contents_processor *cp = (contents_processor *) void_cp;
 	if (cp->no_tlines < MAX_TEMPLATE_LINES)
 		cp->tlines[cp->no_tlines++] = Str__duplicate(line);
 }
 
-#line 409 "inweb/Chapter 3/The Indexer.w"
+#line 423 "inweb/Chapter 3/The Indexer.w"
 linked_list_item *Indexer__heading_topmost_on_stack(contents_processor *cp, int level) {
 	for (int rstl = cp->stack_pointer-1; rstl >= 0; rstl--)
 		if (cp->repeat_stack_level[rstl] == level)
@@ -16808,7 +16832,7 @@ linked_list_item *Indexer__heading_topmost_on_stack(contents_processor *cp, int 
 	return NULL;
 }
 
-#line 420 "inweb/Chapter 3/The Indexer.w"
+#line 434 "inweb/Chapter 3/The Indexer.w"
 void Indexer__start_CI_loop(contents_processor *cp, int level,
 	linked_list_item *from, linked_list_item *to, int pos) {
 	if (cp->stack_pointer < CI_STACK_CAPACITY) {
@@ -16823,7 +16847,7 @@ void Indexer__end_CI_loop(contents_processor *cp) {
 	cp->stack_pointer--;
 }
 
-#line 566 "inweb/Chapter 3/The Indexer.w"
+#line 580 "inweb/Chapter 3/The Indexer.w"
 void Indexer__list_module(OUTPUT_STREAM, module *M, int list_this) {
 	if (list_this) {
 		WRITE("<li><p>%S - ", M->module_name);
@@ -16838,7 +16862,7 @@ void Indexer__list_module(OUTPUT_STREAM, module *M, int list_this) {
 		Indexer__list_module(OUT, N, TRUE);
 }
 
-#line 583 "inweb/Chapter 3/The Indexer.w"
+#line 597 "inweb/Chapter 3/The Indexer.w"
 void Indexer__transcribe_CSS(OUTPUT_STREAM, filename *CSS_file) {
 	WRITE("<style type=\"text/css\">\n");
 	TextFiles__read(CSS_file, FALSE, "can't open CSS file",
