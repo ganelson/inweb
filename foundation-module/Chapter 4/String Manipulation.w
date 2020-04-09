@@ -568,6 +568,16 @@ int Str::includes(text_stream *S, text_stream *T) {
 	return FALSE;
 }
 
+int Str::includes_at(text_stream *line, int i, text_stream *pattern) {
+	if (Str::len(pattern) == 0) return FALSE;
+	if (i < 0) return FALSE;
+	if (i + Str::len(pattern) > Str::len(line)) return FALSE;
+	LOOP_THROUGH_TEXT(pos, pattern)
+		if (Str::get(pos) != Str::get_at(line, i++))
+			return FALSE;
+	return TRUE;
+}
+
 @h Shim for literal storage.
 This is where all of those I-literals created by Inweb are stored at run-time.
 Note that every instance of, say, |I"fish"| would return the same string,

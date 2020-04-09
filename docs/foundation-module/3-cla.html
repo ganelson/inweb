@@ -153,11 +153,11 @@ swtich, and then the client should call:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CommandLine::begin_group is used in 1/fnd (<a href="1-fnd.html#SP8_5">&#167;8.5</a>).</p>
+<p class="endnote">The function CommandLine::begin_group is used in 1/fm (<a href="1-fm.html#SP8_5">&#167;8.5</a>).</p>
 
-<p class="endnote">The function CommandLine::end_group is used in 1/fnd (<a href="1-fnd.html#SP8_5">&#167;8.5</a>).</p>
+<p class="endnote">The function CommandLine::end_group is used in 1/fm (<a href="1-fm.html#SP8_5">&#167;8.5</a>).</p>
 
-<p class="endnote">The function CommandLine::declare_switch is used in <a href="#SP6">&#167;6</a>, 1/fnd (<a href="1-fnd.html#SP8_5">&#167;8.5</a>).</p>
+<p class="endnote">The function CommandLine::declare_switch is used in <a href="#SP6">&#167;6</a>, 1/fm (<a href="1-fm.html#SP8_5">&#167;8.5</a>).</p>
 
 <p class="endnote">The function CommandLine::declare_switch_p is used in <a href="#SP6">&#167;6</a>.</p>
 
@@ -225,7 +225,7 @@ section. So the sorting version of <code class="display"><span class="extract">n
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CommandLine::declare_boolean_switch is used in 1/fnd (<a href="1-fnd.html#SP8_5">&#167;8.5</a>).</p>
+<p class="endnote">The function CommandLine::declare_boolean_switch is used in 1/fm (<a href="1-fm.html#SP8_5">&#167;8.5</a>).</p>
 
 <p class="endnote">The function CommandLine::declare_numerical_switch appears nowhere else.</p>
 
@@ -280,7 +280,7 @@ through the file if one has by that point been provided.
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=1; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">argc</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">switched</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
             <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain"> = </span><span class="identifier">argv</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
-            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">[0] == </span><span class="character">'-'</span><span class="plain">) { </span><span class="identifier">p</span><span class="plain">++; </span><span class="identifier">switched</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; } </span><span class="comment"> allow a doubled-dash as a single</span>
+            <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">p</span><span class="plain">[0] == </span><span class="character">'-'</span><span class="plain">) { </span><span class="identifier">p</span><span class="plain">++; </span><span class="identifier">switched</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; } /* </span><span class="identifier">allow</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">doubled</span><span class="plain">-</span><span class="identifier">dash</span><span class="plain"> </span><span class="identifier">as</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">single</span><span class="plain"> */</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">);</span>
             <span class="functiontext">Streams::write_locale_string</span><span class="plain">(</span><span class="identifier">opt</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">);</span>

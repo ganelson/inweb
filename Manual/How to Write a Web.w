@@ -381,6 +381,51 @@ produces:
 	Compare: https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes
 =
 
+@ Cross-references are also allowed. These are normally written within |//|
+signs and are only available in the commentary of a web. They allow us to
+place cross-references like so:
+= (text)
+	To see how cross-references are implemented, see //Format Methods//,
+	or more generally the whole of //Chapter 5//; to decipher the text,
+	Inweb uses code from //foundation// at //foundation: Web Modules//.
+=
+To see how cross-references are implemented, see //Format Methods//,
+or more generally the whole of //Chapter 5//; to decipher the text,
+Inweb uses code from //foundation// at //foundation: Web Modules//.
+
+What happened in that last sentence is that Inweb noticed the following:
+(a) "Format Methods" is the name of a section of code in the Inweb web;
+(b) The web also has a "Chapter 5";
+(c) It uses a module called "foundation";
+(d) And that module has a section called "Web Modules".
+
+Inweb then made links accordingly. Chapters, which can be referred to either
+numerically, link to the first section in them; modules likewise.
+
+Errors are thrown if these references are in any way ambiguous. They are not
+case sensitive.
+
+Cross-references also work inside text extracts marked as |hyperlinked|.
+= (text)
+	= (hyperlinked text)
+		See the //Manual// for more on this.
+	=
+=
+produces:
+= (hyperlinked text)
+	See the //Manual// for more on this.
+=
+
+This notation may be inconvenient if you need |//| for something else, but it
+can be configured in the Contents page of a web, say like so:
+= (text as Inweb)
+Cross-References Notation: &&&
+=
+It's also possible to disable cross-referencing entirely with:
+= (text as Inweb)
+Cross-References Notation: Off
+=
+
 @ Pictures must be in PNG, JPG or PDF format and can be included with lines
 like:
 = (text as Inweb)

@@ -312,21 +312,13 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 	int current_colour = -1, colour_wanted = PLAIN_COLOUR;
 	for (int i=0; i < Str::len(matter); i++) {
 		colour_wanted = Str::get_at(colouring, i); @<Adjust code colour as necessary@>;
-		if ((linked) &&
-			((ACMESupport::text_at(matter, i, I"http://")) ||
-				(ACMESupport::text_at(matter, i, I"https://")))) {
-				TEMPORARY_TEXT(before);
-				Str::copy(before, matter); Str::truncate(before, i);
-				TEMPORARY_TEXT(after);
-				Str::substr(after, Str::at(matter, i), Str::end(matter));
-				match_results mr = Regexp::create_mr();
-				if (Regexp::match(&mr, after, L"(https*://%C+)(%c*)")) {
-					Formats::url(OUT, wv, mr.exp[0], mr.exp[0], TRUE);
-					i += Str::len(mr.exp[0]);
-				}
-				DISCARD_TEXT(before);
-				DISCARD_TEXT(after);
-			}
+		if (linked) {
+			@<Pick up hyperlinking at the eleventh hour@>;
+			text_stream *xref_notation = Bibliographic::get_datum(wv->weave_web->md,
+				I"Cross-References Notation");
+			if (Str::ne(xref_notation, I"Off"))
+				@<Pick up cross-references at the eleventh hour@>;
+		}
 		if (Str::get_at(matter, i) == '<') WRITE("&lt;");
 		else if (Str::get_at(matter, i) == '>') WRITE("&gt;");
 		else if (Str::get_at(matter, i) == '&') WRITE("&amp;");
@@ -344,6 +336,48 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 		WRITE("\n");
 	}
 }
+
+@<Pick up hyperlinking at the eleventh hour@> =
+	if ((Str::includes_at(matter, i, I"http://")) ||
+		(Str::includes_at(matter, i, I"https://"))) {
+		TEMPORARY_TEXT(before);
+		Str::copy(before, matter); Str::truncate(before, i);
+		TEMPORARY_TEXT(after);
+		Str::substr(after, Str::at(matter, i), Str::end(matter));
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, after, L"(https*://%C+)(%c*)")) {
+			Formats::url(OUT, wv, mr.exp[0], mr.exp[0], TRUE);
+			i += Str::len(mr.exp[0]);
+		}
+		DISCARD_TEXT(before);
+		DISCARD_TEXT(after);
+	}
+
+@<Pick up cross-references at the eleventh hour@> =
+	int N = Str::len(xref_notation);
+	if ((Str::includes_at(matter, i, xref_notation))) {
+		int j = i + N+1;
+		while (j < Str::len(matter)) {
+			if (Str::includes_at(matter, j, xref_notation)) {
+				TEMPORARY_TEXT(reference);
+				Str::substr(reference, Str::at(matter, i + N), Str::at(matter, j));
+				@<Attempt to resolve the cross-reference@>;
+				DISCARD_TEXT(reference);
+			}
+			j++;
+		}
+	}
+
+@<Attempt to resolve the cross-reference@> =
+	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(title);
+	if (Formats::resolve_reference_in_weave(url, title, wv, reference,
+		current_weave_line)) {
+		Formats::url(OUT, wv, url, title, FALSE);
+		i = j + N;
+	}
+	DISCARD_TEXT(url);
+	DISCARD_TEXT(title);
 
 @<Adjust code colour as necessary@> =
 	if (colour_wanted != current_colour) {
@@ -519,7 +553,7 @@ void HTMLFormat::change_colour(weave_format *self, text_stream *OUT, weave_targe
 	int col, int in_code) {
 	char *cl = "plain";
 	switch (col) {
-		case DEFINITION_COLOUR: 			cl = "cwebmacrotext"; break;
+		case DEFINITION_COLOUR: 	cl = "cwebmacrotext"; break;
 		case FUNCTION_COLOUR: 		cl = "functiontext"; break;
 		case IDENTIFIER_COLOUR: 	cl = "identifier"; break;
 		case ELEMENT_COLOUR:		cl = "element"; break;
@@ -581,6 +615,15 @@ void HTMLFormat::locale(weave_format *self, text_stream *OUT, weave_target *wv,
 }
 
 @ =
+void HTMLFormat::section_URL(OUTPUT_STREAM, weave_target *wv, section *from) {
+	TEMPORARY_TEXT(linkto);
+	Str::copy(linkto, from->sect_range);
+	LOOP_THROUGH_TEXT(pos, linkto)
+		if ((Str::get(pos) == '/') || (Str::get(pos) == ' '))
+			Str::put(pos, '-');
+	WRITE_TO(linkto, ".html");
+	WRITE("%S", linkto);
+}
 void HTMLFormat::xref(OUTPUT_STREAM, weave_target *wv, paragraph *P, section *from,
 	int a_link) {
 	TEMPORARY_TEXT(linkto);
@@ -591,14 +634,17 @@ void HTMLFormat::xref(OUTPUT_STREAM, weave_target *wv, paragraph *P, section *fr
 				Str::put(pos, '-');
 		WRITE_TO(linkto, ".html");
 	}
-	WRITE("%S%s%S", linkto, (a_link)?"#":"", P->ornament);
+	WRITE("%S", linkto);
+	if (P) WRITE("%s%S", (a_link)?"#":"", P->ornament);
 	DISCARD_TEXT(linkto);
 
-	WRITE("P");
-	text_stream *N = P->paragraph_number;
-	LOOP_THROUGH_TEXT(pos, N)
-		if (Str::get(pos) == '.') WRITE("_");
-		else PUT(Str::get(pos));
+	if (P) {
+		WRITE("P");
+		text_stream *N = P->paragraph_number;
+		LOOP_THROUGH_TEXT(pos, N)
+			if (Str::get(pos) == '.') WRITE("_");
+			else PUT(Str::get(pos));
+	}
 }
 
 @ =

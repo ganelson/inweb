@@ -13,6 +13,8 @@ where to put the result: and so we arrive at the front door of the routine
 |Weaver::weave_source| below.
 
 =
+source_line *current_weave_line = NULL;
+
 int Weaver::weave_source(web *W, weave_target *wv) {
 	text_stream TO_struct;
 	text_stream *OUT = &TO_struct;
@@ -113,6 +115,7 @@ typedef struct weaver_state {
 @<Weave this section@> =
 	paragraph *current_paragraph = NULL;
 	for (source_line *L = S->first_line; L; L = L->next_line) {
+		current_weave_line = L;
 		if ((Tags::tagged_with(L->owning_paragraph, wv->theme_match)) &&
 			(LanguageMethods::skip_in_weaving(S->sect_language, wv, L) == FALSE)) {
 			lines_woven++;

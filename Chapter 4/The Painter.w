@@ -111,26 +111,26 @@ void Painter::syntax_colour_inner(programming_language *pl,
 		if ((Str::get_at(colouring, i) == PLAIN_COLOUR) ||
 			(Str::get_at(colouring, i) == IDENTIFIER_COLOUR)) {
 			wchar_t c = Str::get_at(matter, i);
-			if (ACMESupport::text_at(matter, i, pl->binary_literal_prefix)) {
+			if (Str::includes_at(matter, i, pl->binary_literal_prefix)) {
 				base = 2;
 				for (int j=0; j<Str::len(pl->binary_literal_prefix); j++)
 					Str::put_at(colouring, i+j, (char) CONSTANT_COLOUR);
 				dec_possible = TRUE;
 				continue;
-			} else if (ACMESupport::text_at(matter, i, pl->octal_literal_prefix)) {
+			} else if (Str::includes_at(matter, i, pl->octal_literal_prefix)) {
 				base = 8;
 				for (int j=0; j<Str::len(pl->octal_literal_prefix); j++)
 					Str::put_at(colouring, i+j, (char) CONSTANT_COLOUR);
 				dec_possible = TRUE;
 				continue;
-			} else if (ACMESupport::text_at(matter, i, pl->hexadecimal_literal_prefix)) {
+			} else if (Str::includes_at(matter, i, pl->hexadecimal_literal_prefix)) {
 				base = 16;
 				for (int j=0; j<Str::len(pl->hexadecimal_literal_prefix); j++)
 					Str::put_at(colouring, i+j, (char) CONSTANT_COLOUR);
 				dec_possible = TRUE;
 				continue;
 			} 
-			if ((ACMESupport::text_at(matter, i, pl->negative_literal_prefix)) &&
+			if ((Str::includes_at(matter, i, pl->negative_literal_prefix)) &&
 				(dec_possible) && (base == 0)) {
 				base = 10;
 				Str::put_at(colouring, i, (char) CONSTANT_COLOUR);
@@ -228,7 +228,7 @@ void Painter::execute(hash_table *HT, colouring_language_block *block, text_stre
 				int L = Str::len(block->run_instance) - 1;
 				if (L >= 0)
 					for (int count=1, i=from; i<=to - L; i++)
-						if (ACMESupport::text_at(matter, i, block->run_instance)) {
+						if (Str::includes_at(matter, i, block->run_instance)) {
 							Painter::execute_rule(HT, rule, matter, colouring, i, i+L, count++);
 							i += L;
 						}
@@ -321,7 +321,7 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 				if ((rule->match_prefix == SPACED_RULE_PREFIX) && (pos == from))
 					return FALSE;
 			}
-			if (ACMESupport::text_at(matter,
+			if (Str::includes_at(matter,
 				pos-Str::len(rule->match_text), rule->match_text) == FALSE)
 				return FALSE;
 			rule->fix_position = pos-Str::len(rule->match_text);
@@ -334,7 +334,7 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 				if ((rule->match_prefix == SPACED_RULE_SUFFIX) && (pos == from))
 					return FALSE;
 			}
-			if (ACMESupport::text_at(matter, pos, rule->match_text) == FALSE)
+			if (Str::includes_at(matter, pos, rule->match_text) == FALSE)
 				return FALSE;
 			rule->fix_position = pos;
 		} else {

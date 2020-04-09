@@ -1,4 +1,4 @@
-[Wide::] Wide Strings.w.
+[Wide::] Wide Strings.
 
 A minimal library for handling wide C strings.
 

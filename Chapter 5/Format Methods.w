@@ -1,7 +1,7 @@
-[Formats::] Weave Formats.
+[Formats::] Format Methods.
 
-To characterise the different weaving output formats (text, typeset,
-web and so on).
+To characterise the relevant differences in behaviour between the
+various weaving formats offered, such as HTML, ePub, or TeX.
 
 @h Formats.
 Exactly as in the previous chapter, each format expresses its behaviour
@@ -168,10 +168,11 @@ VMETHOD_TYPE(PARAGRAPH_HEADING_FOR_MTID, weave_format *wf, text_stream *OUT,
 	weave_target *wv, text_stream *TeX_macro, section *S, paragraph *P,
 	text_stream *heading_text, text_stream *chaptermark, text_stream *sectionmark, int weight)
 void Formats::paragraph_heading(OUTPUT_STREAM, weave_target *wv, text_stream *TeX_macro,
-	section *S, paragraph *P, text_stream *heading_text, text_stream *chaptermark, text_stream *sectionmark,
-	int weight) {
+	section *S, paragraph *P, text_stream *heading_text, text_stream *chaptermark,
+	text_stream *sectionmark, int weight) {
 	weave_format *wf = wv->format;
-	VMETHOD_CALL(wf, PARAGRAPH_HEADING_FOR_MTID, OUT, wv, TeX_macro, S, P, heading_text, chaptermark, sectionmark, weight);
+	VMETHOD_CALL(wf, PARAGRAPH_HEADING_FOR_MTID, OUT, wv, TeX_macro, S, P,
+		heading_text, chaptermark, sectionmark, weight);
 }
 
 @ The following method is expected to weave a piece of code, which has already
@@ -236,7 +237,8 @@ a convenience for Inform 7 code commentary.
 @e DISPLAY_LINE_FOR_MTID
 
 =
-VMETHOD_TYPE(DISPLAY_LINE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv, text_stream *from)
+VMETHOD_TYPE(DISPLAY_LINE_FOR_MTID, weave_format *wf, text_stream *OUT,
+	weave_target *wv, text_stream *from)
 void Formats::display_line(OUTPUT_STREAM, weave_target *wv, text_stream *from) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, DISPLAY_LINE_FOR_MTID, OUT, wv, from);
@@ -395,28 +397,45 @@ void Formats::text_comment(OUTPUT_STREAM, weave_target *wv, text_stream *id) {
 
 void Formats::text_r(OUTPUT_STREAM, weave_target *wv, text_stream *id,
 	int within, int comments) {
-	text_stream *notation = Bibliographic::get_datum(wv->weave_web->md,
+	text_stream *code_in_comments_notation =
+		Bibliographic::get_datum(wv->weave_web->md,
 		(comments)?(I"Code In Code Comments Notation"):(I"Code In Commentary Notation"));
-	if (Str::ne(notation, I"Off")) {
-		for (int i=0; i < Str::len(id); i++) {
-			if (Str::get_at(id, i) == '\\') i += Str::len(notation) - 1;
-			else if (ACMESupport::text_at(id, i, notation)) {
-				TEMPORARY_TEXT(before);
-				Str::copy(before, id); Str::truncate(before, i);
-				TEMPORARY_TEXT(after);
-				Str::substr(after, Str::at(id, i + Str::len(notation)), Str::end(id));
-				Formats::text_r(OUT, wv, before, within, comments);
-				Formats::text_r(OUT, wv, after, (within)?FALSE:TRUE, comments);
-				DISCARD_TEXT(before);
-				DISCARD_TEXT(after);
-				return;
-			}
+	if (Str::ne(code_in_comments_notation, I"Off")) @<Split text and code extracts@>;
+
+	if (within == FALSE) @<Recognose hyperlinks@>;
+
+	text_stream *xref_notation = Bibliographic::get_datum(wv->weave_web->md,
+		I"Cross-References Notation");
+	if (Str::ne(xref_notation, I"Off")) @<Recognise cross-references@>;
+
+	if (within) {
+		Formats::source_fragment(OUT, wv, id);
+	} else {
+		Formats::text_fragment(OUT, wv, id);
+	}
+}
+
+@<Split text and code extracts@> =
+	for (int i=0; i < Str::len(id); i++) {
+		if (Str::get_at(id, i) == '\\') i += Str::len(code_in_comments_notation) - 1;
+		else if (Str::includes_at(id, i, code_in_comments_notation)) {
+			TEMPORARY_TEXT(before);
+			Str::copy(before, id); Str::truncate(before, i);
+			TEMPORARY_TEXT(after);
+			Str::substr(after, Str::at(id,
+				i + Str::len(code_in_comments_notation)), Str::end(id));
+			Formats::text_r(OUT, wv, before, within, comments);
+			Formats::text_r(OUT, wv, after, (within)?FALSE:TRUE, comments);
+			DISCARD_TEXT(before);
+			DISCARD_TEXT(after);
+			return;
 		}
 	}
+
+@<Recognose hyperlinks@> =
 	for (int i=0; i < Str::len(id); i++) {
-		if ((within == FALSE) &&
-			((ACMESupport::text_at(id, i, I"http://")) ||
-				(ACMESupport::text_at(id, i, I"https://")))) {
+		if ((Str::includes_at(id, i, I"http://")) ||
+				(Str::includes_at(id, i, I"https://"))) {
 			TEMPORARY_TEXT(before);
 			Str::copy(before, id); Str::truncate(before, i);
 			TEMPORARY_TEXT(after);
@@ -426,16 +445,90 @@ void Formats::text_r(OUTPUT_STREAM, weave_target *wv, text_stream *id,
 				Formats::text_r(OUT, wv, before, within, comments);
 				Formats::url(OUT, wv, mr.exp[0], mr.exp[0], TRUE);
 				Formats::text_r(OUT, wv, mr.exp[1], within, comments);
+				Regexp::dispose_of(&mr);
 				return;
 			}
+			Regexp::dispose_of(&mr);
 			DISCARD_TEXT(before);
 			DISCARD_TEXT(after);
 		}
 	}
-	if (within) {
-		Formats::source_fragment(OUT, wv, id);
+
+@<Recognise cross-references@> =
+	int N = Str::len(xref_notation);
+	for (int i=0; i < Str::len(id); i++) {
+		if ((within == FALSE) && (Str::includes_at(id, i, xref_notation))) {
+			int j = i + N+1;
+			while (j < Str::len(id)) {
+				if (Str::includes_at(id, j, xref_notation)) {
+					int allow = FALSE;
+					TEMPORARY_TEXT(before);
+					TEMPORARY_TEXT(reference);
+					TEMPORARY_TEXT(after);
+					Str::substr(before, Str::start(id), Str::at(id, i));
+					Str::substr(reference, Str::at(id, i + N), Str::at(id, j));
+					Str::substr(after, Str::at(id, j + N), Str::end(id));
+					@<Attempt to resolve the cross-reference@>;
+					DISCARD_TEXT(before);
+					DISCARD_TEXT(reference);
+					DISCARD_TEXT(after);
+					if (allow) return;
+				}
+				j++;
+			}
+		}
+	}
+
+@<Attempt to resolve the cross-reference@> =
+	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(title);
+	if (Formats::resolve_reference_in_weave(url, title, wv, reference,
+		current_weave_line)) {
+		Formats::text_r(OUT, wv, before, within, comments);
+		Formats::url(OUT, wv, url, title, FALSE);
+		Formats::text_r(OUT, wv, after, within, comments);
+		allow = TRUE;
+	}
+	DISCARD_TEXT(url);
+	DISCARD_TEXT(title);
+
+@ The following must decide what a reference like "Chapter 3" should refer
+to: that is, whether it makes unamgiguous sense, and if so, what URL we should
+link to, and what the full text of the link might be.
+
+=
+int Formats::resolve_reference_in_weave(text_stream *url, text_stream *title,
+	weave_target *wv, text_stream *text, source_line *L) {
+	module *found_M = NULL;
+	section_md *found_Sm = NULL;
+	int named_as_module = FALSE;
+	int N = WebModules::named_reference(&found_M, &found_Sm, &named_as_module,
+		title, wv->weave_web->md->as_module, text, FALSE);
+	if (N == 0) {
+		Main::error_in_web(I"No section has this name", L);
+		return FALSE;
+	} else if (N > 1) {
+		Main::error_in_web(I"Multiple sections might be meant here", L);
+		WebModules::named_reference(&found_M, &found_Sm, &named_as_module,
+			title, wv->weave_web->md->as_module, text, TRUE);
+		return FALSE;
 	} else {
-		Formats::text_fragment(OUT, wv, id);
+		chapter *C;
+		section *S, *found_S = NULL;
+		LOOP_OVER_LINKED_LIST(C, chapter, wv->weave_web->chapters)
+			LOOP_OVER_LINKED_LIST(S, section, C->sections)
+				if (S->md == found_Sm) found_S = S;
+		if (found_S == NULL) internal_error("could not locate S");
+		if (found_M == NULL) internal_error("could not locate M");
+
+		if (found_M != wv->weave_web->md->as_module) {
+			WRITE_TO(url, "../%S-module/", found_M->module_name);
+		}
+		HTMLFormat::section_URL(url, wv, found_S); 
+		if ((named_as_module == FALSE) && (found_M != wv->weave_web->md->as_module)) {
+			WRITE_TO(title, " (in %S)", found_M->module_name);
+		}
+		return TRUE;
 	}
 }
 

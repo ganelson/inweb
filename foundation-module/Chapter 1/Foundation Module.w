@@ -1,4 +1,4 @@
-[Foundation::] Foundation.
+[Foundation::] Foundation Module.
 
 Starting up and shutting down.
 

@@ -22,6 +22,7 @@ typedef struct module {
 	struct linked_list *dependencies; /* of |module|: which other modules does this need? */
 	struct text_stream *module_tag;
 	int origin_marker; /* one of the |*_MOM| values above */
+	struct linked_list *chapters_md; /* of |chapter_md|: just the ones in this module */
 	struct linked_list *sections_md; /* of |section_md|: just the ones in this module */
 	MEMORY_MANAGEMENT
 } module;
@@ -34,6 +35,7 @@ module *WebModules::new(text_stream *name, pathname *at, int m) {
 	M->dependencies = NEW_LINKED_LIST(module);
 	M->origin_marker = m;
 	M->module_tag = I"miscellaneous";
+	M->chapters_md = NEW_LINKED_LIST(chapter_md);
 	M->sections_md = NEW_LINKED_LIST(section_md);
 	return M;
 }
@@ -116,3 +118,93 @@ sought if it looks like a web.
 int WebModules::exists(pathname *P) {
 	return WebMetadata::directory_looks_like_a_web(P);
 }
+
+@h Resolving cross-reference names.
+Suppose we are in module |from_M| and want to understand which section of
+a relevant web |text| might refer to. It could be the name of a module,
+either this one or one dependent on it; or the name of a chapter in one
+of those, or the shortened forms of those; or the name of a section. It
+may match multiple possibilities: we return how many, and if this is
+positive, we write the module in which the first find was made in |*return M|,
+the section in |*return_Sm|, and set the flag |*named_as_module| according
+to whether the reference was a bare module name (say, "foundation") or not.
+
+Note that we consider first the possibilities within |from_M|: we only
+look at other modules if there are none. Thus, an unambiguous result in
+|from_M| is good enough, even if there are other possibilities elsewhere.
+
+A reference in the form |module: reference| is taken to be in the module
+of that name: for example, |"foundation: Web Modules"| would find the
+section of code you are now reading.
+
+=
+int WebModules::named_reference(module **return_M, section_md **return_Sm,
+	int *named_as_module, text_stream *title, module *from_M, text_stream *text, int list) {
+	*return_M = NULL; *return_Sm = NULL; *named_as_module = FALSE;
+	module *M;
+	int finds = 0;
+	if (from_M == NULL) return 0;
+	match_results mr = Regexp::create_mr();
+	text_stream *seek = text;
+	if (Regexp::match(&mr, text, L"(%C+?): *(%c+?) *")) {
+		LOOP_OVER_LINKED_LIST(M, module, from_M->dependencies)
+			if (Str::eq_insensitive(M->module_name, mr.exp[0])) {
+				seek = mr.exp[1];
+				@<Look for references to chapters or sections in M@>;
+			}
+	}
+	Regexp::dispose_of(&mr);
+	seek = text;
+	for (int stage = 1; ((finds == 0) && (stage <= 2)); stage++) {
+		if (stage == 1) {
+			M = from_M;
+			@<Look for references to chapters or sections in M@>;
+		}
+		if (stage == 2) {
+			LOOP_OVER_LINKED_LIST(M, module, from_M->dependencies)
+				@<Look for references to chapters or sections in M@>;
+		}
+	}
+	return finds;
+}
+
+@<Look for references to chapters or sections in M@> =
+	if (M == NULL) internal_error("no module");
+	if (Str::eq_insensitive(M->module_name, seek))
+		@<Found first section in module@>;
+	chapter_md *Cm;
+	section_md *Sm;
+	LOOP_OVER_LINKED_LIST(Cm, chapter_md, M->chapters_md) {
+		if ((Str::eq_insensitive(Cm->ch_title, seek)) ||
+			(Str::eq_insensitive(Cm->ch_basic_title, seek)) ||
+			(Str::eq_insensitive(Cm->ch_decorated_title, seek)))
+			@<Found first section in chapter@>;
+		LOOP_OVER_LINKED_LIST(Sm, section_md, Cm->sections_md)
+			if (Str::eq_insensitive(Sm->sect_title, seek))
+				@<Found section by name@>;
+	}
+
+@<Found first section in module@> =
+	finds++;
+	if (finds == 1) {
+		*return_M = M; *return_Sm = FIRST_IN_LINKED_LIST(section_md, M->sections_md);
+		*named_as_module = TRUE;
+		WRITE_TO(title, "the %S module", M->module_name);
+	}
+	if (list) WRITE_TO(STDERR, "(%d)  Module '%S'\n", finds, M->module_name);
+
+@<Found first section in chapter@> =
+	finds++;
+	if (finds == 1) {
+		*return_M = M; *return_Sm = FIRST_IN_LINKED_LIST(section_md, Cm->sections_md);
+		WRITE_TO(title, "%S", Cm->ch_title);
+	}
+	if (list) WRITE_TO(STDERR, "(%d)  Chapter '%S'\n", finds, Cm->ch_title);
+
+@<Found section by name@> =
+	finds++;
+	if (finds == 1) {
+		*return_M = M; *return_Sm = Sm;
+		WRITE_TO(title, "%S", Sm->sect_title);
+	}
+	if (list) WRITE_TO(STDERR, "(%d)  Section '%S'\n", finds, Sm->sect_title);

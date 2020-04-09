@@ -553,19 +553,19 @@ following a "prototype".
         <span class="plain">}</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">tester</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tester</span><span class="plain">, </span><span class="string">"%p/%S</span>
-        <span class="string">DISCARD_TEXT(leaf_pattern);</span>
-        <span class="string">Filenames::write_extension(tester, F);</span>
-        <span class="string">if (Dictionaries::find(patterns_done, tester) == NULL) {</span>
-            <span class="string">WRITE_TO(Dictionaries::create_text(patterns_done, tester), "</span><span class="identifier">got</span><span class="plain"> </span><span class="identifier">this</span><span class="string">");</span>
-            <span class="string">WRITE("</span><span class="plain"> </span><span class="string">");</span>
-            <span class="string">LOOP_THROUGH_TEXT(pos, tester) {</span>
-                <span class="string">wchar_t c = Str::get(pos);</span>
-                <span class="string">if (c == ' ') PUT('\\');</span>
-                <span class="string">PUT(c);</span>
-            <span class="string">}</span>
-        <span class="string">}</span>
-        <span class="string">DISCARD_TEXT(tester);</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">tester</span><span class="plain">, </span><span class="string">"%p/%S/*"</span><span class="plain">, </span><span class="functiontext">Pathnames::up</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">), </span><span class="identifier">leaf_pattern</span><span class="plain">);</span>
+        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">leaf_pattern</span><span class="plain">);</span>
+        <span class="functiontext">Filenames::write_extension</span><span class="plain">(</span><span class="identifier">tester</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Dictionaries::find</span><span class="plain">(</span><span class="identifier">patterns_done</span><span class="plain">, </span><span class="identifier">tester</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) {</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="functiontext">Dictionaries::create_text</span><span class="plain">(</span><span class="identifier">patterns_done</span><span class="plain">, </span><span class="identifier">tester</span><span class="plain">), </span><span class="string">"got this"</span><span class="plain">);</span>
+            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" "</span><span class="plain">);</span>
+            <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">tester</span><span class="plain">) {</span>
+                <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">Str::get</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">' '</span><span class="plain">) </span><span class="identifier">PUT</span><span class="plain">(</span><span class="character">'\\'</span><span class="plain">);</span>
+                <span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">);</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
+        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">tester</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

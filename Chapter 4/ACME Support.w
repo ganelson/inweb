@@ -156,7 +156,7 @@ int ACMESupport::parse_comment(programming_language *pl,
 	for (int i=0; i<Str::len(line); i++) {
 		wchar_t c = Str::get_at(line, i);
 		if (c_mode == 2) {
-			if (ACMESupport::text_at(line, i, pl->multiline_comment_close)) {
+			if (Str::includes_at(line, i, pl->multiline_comment_close)) {
 				c_mode = 0; c_end = i; i += Str::len(pl->multiline_comment_close) - 1;
 			}
 		} else {
@@ -167,28 +167,30 @@ int ACMESupport::parse_comment(programming_language *pl,
 				if (q_mode == 0) q_mode = 2;
 				else if (q_mode == 2) q_mode = 0;
 			}
-			if (c == Str::get_first_char(pl->character_literal)) {
-				if (q_mode == 0) q_mode = 1;
-				else if (q_mode == 1) q_mode = 0;
-			}
-			if (ACMESupport::text_at(line, i, pl->multiline_comment_open)) {
-				c_mode = 2; c_position = i; non_white_space = FALSE;
-				i += Str::len(pl->multiline_comment_open) - 1;
-			}
-			if (c_mode == 0) {
-				if (ACMESupport::text_at(line, i, pl->line_comment)) {
-					c_mode = 1; c_position = i; c_end = Str::len(line); non_white_space = FALSE;
-					i += Str::len(pl->line_comment) - 1;
+			if (q_mode == 0) {
+				if (c == Str::get_first_char(pl->character_literal)) {
+					if (q_mode == 0) q_mode = 1;
+					else if (q_mode == 1) q_mode = 0;
 				}
-				if (ACMESupport::text_at(line, i, pl->whole_line_comment)) {
-					int material_exists = FALSE;
-					for (int j=0; j<i; j++)
-						if (!(Characters::is_whitespace(Str::get_at(line, j))))
-							material_exists = TRUE;
-					if (material_exists == FALSE) {
-						c_mode = 1; c_position = i; c_end = Str::len(line);
-						non_white_space = FALSE;
-						i += Str::len(pl->whole_line_comment) - 1;
+				if (Str::includes_at(line, i, pl->multiline_comment_open)) {
+					c_mode = 2; c_position = i; non_white_space = FALSE;
+					i += Str::len(pl->multiline_comment_open) - 1;
+				}
+				if (c_mode == 0) {
+					if (Str::includes_at(line, i, pl->line_comment)) {
+						c_mode = 1; c_position = i; c_end = Str::len(line); non_white_space = FALSE;
+						i += Str::len(pl->line_comment) - 1;
+					}
+					if (Str::includes_at(line, i, pl->whole_line_comment)) {
+						int material_exists = FALSE;
+						for (int j=0; j<i; j++)
+							if (!(Characters::is_whitespace(Str::get_at(line, j))))
+								material_exists = TRUE;
+						if (material_exists == FALSE) {
+							c_mode = 1; c_position = i; c_end = Str::len(line);
+							non_white_space = FALSE;
+							i += Str::len(pl->whole_line_comment) - 1;
+						}
 					}
 				}
 			}
@@ -205,16 +207,6 @@ int ACMESupport::parse_comment(programming_language *pl,
 		return TRUE;
 	}
 	return FALSE;
-}
-
-int ACMESupport::text_at(text_stream *line, int i, text_stream *pattern) {
-	if (Str::len(pattern) == 0) return FALSE;
-	if (i < 0) return FALSE;
-	if (i + Str::len(pattern) > Str::len(line)) return FALSE;
-	LOOP_THROUGH_TEXT(pos, pattern)
-		if (Str::get(pos) != Str::get_at(line, i++))
-			return FALSE;
-	return TRUE;
 }
 
 @ This is here so that tangling the Standard Rules extension doesn't insert

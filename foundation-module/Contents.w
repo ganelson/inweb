@@ -6,7 +6,7 @@ Licence: Artistic License 2.0
 
 Chapter 1: Setting Up
 "Absolute basics."
-	Foundation
+	Foundation Module
 	POSIX Platforms ^"ifdef-PLATFORM_POSIX"
 	Windows Platform ^"ifdef-PLATFORM_WINDOWS"
 

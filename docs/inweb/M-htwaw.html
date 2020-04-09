@@ -557,7 +557,74 @@ For example,
 
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>Pictures must be in PNG, JPG or PDF format and can be included with lines
+<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>Cross-references are also allowed. These are normally written within <code class="display"><span class="extract">//</span></code>
+signs and are only available in the commentary of a web. They allow us to
+place cross-references like so:
+</p>
+
+<pre class="display">
+        <span class="plain">To see how cross-references are implemented, see //Format Methods//,</span>
+        <span class="plain">or more generally the whole of //Chapter 5//; to decipher the text,</span>
+        <span class="plain">Inweb uses code from //foundation// at //foundation: Web Modules//.</span>
+</pre>
+
+<p class="inwebparagraph">To see how cross-references are implemented, see <a href="5-fm.html" class="internal">Format Methods</a>,
+or more generally the whole of <a href="5-fm.html" class="internal">Chapter 5: Formats</a>; to decipher the text,
+Inweb uses code from <a href="../foundation-module/1-fm.html" class="internal">the foundation module</a> at <a href="../foundation-module/8-wm.html" class="internal">Web Modules (in foundation)</a>.
+</p>
+
+<p class="inwebparagraph">What happened in that last sentence is that Inweb noticed the following:
+</p>
+
+<ul class="items"><li>(a) "Format Methods" is the name of a section of code in the Inweb web;
+</li><li>(b) The web also has a "Chapter 5";
+</li><li>(c) It uses a module called "foundation";
+</li><li>(d) And that module has a section called "Web Modules".
+</li></ul>
+<p class="inwebparagraph">Inweb then made links accordingly. Chapters, which can be referred to either
+numerically, link to the first section in them; modules likewise.
+</p>
+
+<p class="inwebparagraph">Errors are thrown if these references are in any way ambiguous. They are not
+case sensitive.
+</p>
+
+<p class="inwebparagraph">Cross-references also work inside text extracts marked as <code class="display"><span class="extract">hyperlinked</span></code>.
+</p>
+
+<pre class="display">
+        <span class="plain">= (hyperlinked text)</span>
+            <span class="plain">See the //Manual// for more on this.</span>
+        <span class="plain">=</span>
+</pre>
+
+<p class="inwebparagraph">produces:
+</p>
+
+<pre class="display">
+        <span class="plain">See the <a href="M-iti.html" class="internal">Manual</a> for more on this.</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph">This notation may be inconvenient if you need <code class="display"><span class="extract">//</span></code> for something else, but it
+can be configured in the Contents page of a web, say like so:
+</p>
+
+<pre class="display">
+    <span class="element">Cross-References Notation</span><span class="plain">:</span><span class="string"> &amp;&amp;&amp;</span>
+</pre>
+
+<p class="inwebparagraph">It's also possible to disable cross-referencing entirely with:
+</p>
+
+<pre class="display">
+    <span class="element">Cross-References Notation</span><span class="plain">:</span><span class="string"> Off</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>Pictures must be in PNG, JPG or PDF format and can be included with lines
 like:
 </p>
 
@@ -577,7 +644,7 @@ the web called <code class="display"><span class="extract">Figures</span></code>
 pathname <code class="display"><span class="extract">Figures/Fig_2_3.pdf</span></code>.
 </p>
 
-<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>Mathematical formulae can be typed in TeX notation between dollar signs,
+<p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>Mathematical formulae can be typed in TeX notation between dollar signs,
 as usual for TeX formulae. This can of course only really be rendered if
 the weave is to TeX, but a few very approximate attempts are made by Inweb
 so that the HTML version may also make sense. For example, <code class="display"><span class="extract">$x \leq y$</span></code> would

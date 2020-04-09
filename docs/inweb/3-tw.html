@@ -39,6 +39,8 @@ where to put the result: and so we arrive at the front door of the routine
 </p>
 
 <pre class="display">
+    <span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">current_weave_line</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+
     <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Weaver::weave_source</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">) {</span>
         <span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">TO_struct</span><span class="plain">;</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = &amp;</span><span class="identifier">TO_struct</span><span class="plain">;</span>
@@ -218,6 +220,7 @@ where to put the result: and so we arrive at the front door of the routine
 <pre class="displaydefn">
         <span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">current_paragraph</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">first_line</span><span class="plain">; </span><span class="identifier">L</span><span class="plain">; </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">next_line</span><span class="plain">) {</span>
+            <span class="identifier">current_weave_line</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Tags::tagged_with</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">owning_paragraph</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">theme_match</span><span class="plain">)) &amp;&amp;</span>
                 <span class="plain">(</span><span class="functiontext">LanguageMethods::skip_in_weaving</span><span class="plain">(</span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">sect_language</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)) {</span>
                 <span class="identifier">lines_woven</span><span class="plain">++;</span>

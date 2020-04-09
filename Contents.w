@@ -58,7 +58,7 @@ in different programming languages."
 
 Chapter 5: Formats
 "Weaving to a variety of different human-readable formats."
-	Weave Formats
+	Format Methods
 	Plain Text Format
 	TeX Format
 	HTML Formats

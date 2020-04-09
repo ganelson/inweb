@@ -50,6 +50,8 @@ typedef struct web_md {
 typedef struct chapter_md {
 	struct text_stream *ch_range; /* e.g., |P| for Preliminaries, |7| for Chapter 7, |C| for Appendix C */
 	struct text_stream *ch_title; /* e.g., "Chapter 3: Fresh Water Fish" */
+	struct text_stream *ch_basic_title; /* e.g., "Chapter 3" */
+	struct text_stream *ch_decorated_title; /* e.g., "Fresh Water Fish" */
 	struct text_stream *rubric; /* optional; without double-quotation marks */
 
 	struct text_stream *ch_language_name; /* in which most of the sections are written */
@@ -462,7 +464,17 @@ with the same language as the main web unless stated otherwise.
 @<Create the new chapter with these details@> =
 	chapter_md *Cm = CREATE(chapter_md);
 	Cm->ch_range = Str::duplicate(new_chapter_range);
+	if (line == NULL) PRINT("Nullity!\n");
 	Cm->ch_title = Str::duplicate(line);
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, Cm->ch_title, L"(%c*?): *(%c*)")) {
+		Cm->ch_basic_title = Str::duplicate(mr.exp[0]);
+		Cm->ch_decorated_title = Str::duplicate(mr.exp[1]);
+	} else {
+		Cm->ch_basic_title = Str::duplicate(Cm->ch_title);
+		Cm->ch_decorated_title = Str::new();
+	}
+	Regexp::dispose_of(&mr);
 	Cm->rubric = Str::new();
 	Cm->ch_language_name = language_name;
 	Cm->imported = TRUE;
@@ -470,6 +482,7 @@ with the same language as the main web unless stated otherwise.
 	if (RS->main_web_not_module) Cm->imported = FALSE;
 
 	ADD_TO_LINKED_LIST(Cm, chapter_md, RS->Wm->chapters_md);
+	ADD_TO_LINKED_LIST(Cm, chapter_md, RS->reading_from->chapters_md);
 	RS->chapter_being_scanned = Cm;
 
 @ That's enough on creating chapters. This is the more interesting business
@@ -478,7 +491,6 @@ we also read in and process its file.
 
 @<Read about, and read in, a new section@> =
 	section_md *Sm = CREATE(section_md);
-	Sm = CREATE(section_md);
 	@<Initialise the section structure@>;
 	@<Add the section to the web and the current chapter@>;
 	@<Work out the language and tangle target for the section@>;
