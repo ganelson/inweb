@@ -360,6 +360,27 @@ For example,
 	=
 	...which is essential in order to restore the state of
 =
+
+@ URLs in the web are automatically recognised and a weave to HTML will
+make them into links. For example:
+= (text)
+	For further reading, see: https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships
+=
+For further reading, see: https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships
+
+Note that URLs are considered to continue to the next white space, so don't
+end them with full stops or commas.
+
+URLs will also be recognised in any text extract marked as |hyperlinked|.
+For example,
+= (text)
+	Compare: https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes
+=
+produces:
+= (hyperlinked text)
+	Compare: https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes
+=
+
 @ Pictures must be in PNG, JPG or PDF format and can be included with lines
 like:
 = (text as Inweb)

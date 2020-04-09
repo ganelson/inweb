@@ -72,7 +72,9 @@ markup syntax, and trying to detect incorrect uses of one within the other.
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">comment_mode</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">, </span><span class="identifier">extract_mode</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="constant">NO_LCAT</span><span class="plain">, </span><span class="identifier">code_plainness_for_body</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="constant">NO_LCAT</span><span class="plain">,</span>
+            <span class="identifier">code_plainness_for_body</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">,</span>
+            <span class="identifier">hyperlink_body</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">before_bar</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">next_par_number</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
@@ -542,6 +544,7 @@ handling. We'll call these "paragraph macros".
             <span class="identifier">code_lcat_for_body</span><span class="plain"> = </span><span class="constant">CODE_BODY_LCAT</span><span class="plain">; </span><span class="comment"> code follows on subsequent lines</span>
             <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="identifier">code_plainness_for_body</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+            <span class="identifier">hyperlink_body</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">para_macro_name</span><span class="plain">);</span>
             <span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -664,6 +667,7 @@ division in the current section.
             <span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"unknown material after '='"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">code_plainness_for_body</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">plainer</span><span class="plain">;</span>
+        <span class="identifier">hyperlink_body</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">enable_hyperlinks</span><span class="plain">;</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr2</span><span class="plain">);</span>
         <span class="reserved">continue</span><span class="plain">;</span>
@@ -679,9 +683,20 @@ division in the current section.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"undisplayed"</span><span class="plain">)) </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">plainer</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]) &gt; </span><span class="constant">0</span><span class="plain">)</span>
-            <span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"only 'undisplayed' can precede 'text' here"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
+        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr3</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
+        <span class="reserved">while</span><span class="plain"> (</span><span class="constant">TRUE</span><span class="plain">) {</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr3</span><span class="plain">, </span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">L</span><span class="string">" *(%C+) *(%c*?)"</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr3</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"undisplayed"</span><span class="plain">)) </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">plainer</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+                <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr3</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"hyperlinked"</span><span class="plain">)) </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">enable_hyperlinks</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+                <span class="reserved">else</span><span class="plain"> {</span>
+                    <span class="functiontext">Main::error_in_web</span><span class="plain">(</span>
+                        <span class="identifier">I</span><span class="string">"only 'undisplayed' and/or 'hyperlinked' can precede 'text' here"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
+                <span class="plain">}</span>
+            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+            <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">mr2</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">mr3</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
+        <span class="plain">}</span>
+        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr3</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -898,6 +913,7 @@ follows:
         <span class="identifier">code_pl_for_body</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">comment_mode</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">code_plainness_for_body</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="identifier">hyperlink_body</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1156,6 +1172,7 @@ CWEB, but is needed for languages which don't allow multi-line definitions.)
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">category</span><span class="plain"> != </span><span class="constant">BEGIN_DEFINITION_LCAT</span><span class="plain">) &amp;&amp; (</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">category</span><span class="plain"> != </span><span class="constant">COMMAND_LCAT</span><span class="plain">)) {</span>
             <span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">category</span><span class="plain"> = </span><span class="identifier">code_lcat_for_body</span><span class="plain">;</span>
             <span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">plainer</span><span class="plain"> = </span><span class="identifier">code_plainness_for_body</span><span class="plain">;</span>
+            <span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">enable_hyperlinks</span><span class="plain"> = </span><span class="identifier">hyperlink_body</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">category</span><span class="plain"> == </span><span class="constant">TEXT_EXTRACT_LCAT</span><span class="plain">) </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">colour_as</span><span class="plain"> = </span><span class="identifier">code_pl_for_body</span><span class="plain">;</span>
         <span class="plain">}</span>
 

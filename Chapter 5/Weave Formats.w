@@ -185,14 +185,14 @@ been syntax-coloured; there can also be some indentation, and perhaps even some
 VMETHOD_TYPE(SOURCE_CODE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
 	int tab_stops_of_indentation, text_stream *prefatory, text_stream *matter,
 	text_stream *colouring, text_stream *concluding_comment, int starts, int finishes,
-	int code_mode)
+	int code_mode, int linked)
 
 void Formats::source_code(OUTPUT_STREAM, weave_target *wv, int tab_stops_of_indentation,
 	text_stream *prefatory, text_stream *matter, text_stream *colouring,
-	text_stream *concluding_comment, int starts, int finishes, int code_mode) {
+	text_stream *concluding_comment, int starts, int finishes, int code_mode, int linked) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, SOURCE_CODE_FOR_MTID, OUT, wv, tab_stops_of_indentation,
-		prefatory, matter, colouring, concluding_comment, starts, finishes, code_mode);
+		prefatory, matter, colouring, concluding_comment, starts, finishes, code_mode, linked);
 }
 
 @ More primitively, this method weaves a piece of code which has been coloured
@@ -208,9 +208,26 @@ void Formats::source_fragment(OUTPUT_STREAM, weave_target *wv, text_stream *frag
 	VMETHOD_CALL(wf, INLINE_CODE_FOR_MTID, OUT, wv, TRUE);
 	TEMPORARY_TEXT(colouring);
 	for (int i=0; i< Str::len(fragment); i++) PUT_TO(colouring, EXTRACT_COLOUR);
-	Formats::source_code(OUT, wv, 0, I"", fragment, colouring, I"", FALSE, FALSE, TRUE);
+	Formats::source_code(OUT, wv, 0, I"", fragment, colouring, I"", FALSE, FALSE, TRUE, FALSE);
 	DISCARD_TEXT(colouring);
 	VMETHOD_CALL(wf, INLINE_CODE_FOR_MTID, OUT, wv, FALSE);
+}
+
+@ And this weaves a URL, hyperlinking it where possible.
+
+@e URL_FOR_MTID
+
+=
+VMETHOD_TYPE(URL_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+	text_stream *url, text_stream *content, int external)
+void Formats::url(OUTPUT_STREAM, weave_target *wv, text_stream *url,
+	text_stream *content, int external) {
+	weave_format *wf = wv->format;
+	if (Methods::provided(wf->methods, URL_FOR_MTID)) {
+		VMETHOD_CALL(wf, URL_FOR_MTID, OUT, wv, url, content, external);
+	} else {
+		WRITE("%S", content);
+	}
 }
 
 @ This method produces the |>> Example| bits of example source text, really
@@ -394,6 +411,25 @@ void Formats::text_r(OUTPUT_STREAM, weave_target *wv, text_stream *id,
 				DISCARD_TEXT(after);
 				return;
 			}
+		}
+	}
+	for (int i=0; i < Str::len(id); i++) {
+		if ((within == FALSE) &&
+			((ACMESupport::text_at(id, i, I"http://")) ||
+				(ACMESupport::text_at(id, i, I"https://")))) {
+			TEMPORARY_TEXT(before);
+			Str::copy(before, id); Str::truncate(before, i);
+			TEMPORARY_TEXT(after);
+			Str::substr(after, Str::at(id, i), Str::end(id));
+			match_results mr = Regexp::create_mr();
+			if (Regexp::match(&mr, after, L"(https*://%C+)(%c*)")) {
+				Formats::text_r(OUT, wv, before, within, comments);
+				Formats::url(OUT, wv, mr.exp[0], mr.exp[0], TRUE);
+				Formats::text_r(OUT, wv, mr.exp[1], within, comments);
+				return;
+			}
+			DISCARD_TEXT(before);
+			DISCARD_TEXT(after);
 		}
 	}
 	if (within) {

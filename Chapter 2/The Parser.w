@@ -34,7 +34,9 @@ markup syntax, and trying to detect incorrect uses of one within the other.
 
 @<Parse a section@> =
 	int comment_mode = TRUE, extract_mode = FALSE;
-	int code_lcat_for_body = NO_LCAT, code_plainness_for_body = FALSE;
+	int code_lcat_for_body = NO_LCAT,
+		code_plainness_for_body = FALSE,
+		hyperlink_body = FALSE;
 	programming_language *code_pl_for_body = NULL;
 	int before_bar = TRUE;
 	int next_par_number = 1;
@@ -339,6 +341,7 @@ handling. We'll call these "paragraph macros".
 		code_lcat_for_body = CODE_BODY_LCAT; /* code follows on subsequent lines */
 		code_pl_for_body = NULL;
 		code_plainness_for_body = FALSE;
+		hyperlink_body = FALSE;
 		DISCARD_TEXT(para_macro_name);
 		continue;
 	}
@@ -425,14 +428,26 @@ division in the current section.
 		Main::error_in_web(I"unknown material after '='", L);
 	}
 	code_plainness_for_body = L->plainer;
+	hyperlink_body = L->enable_hyperlinks;
 	Regexp::dispose_of(&mr);
 	Regexp::dispose_of(&mr2);
 	continue;
 
 @<Make plainer@> =
-	if (Str::eq(mr2.exp[0], I"undisplayed")) L->plainer = TRUE;
-	else if (Str::len(mr2.exp[0]) > 0)
-		Main::error_in_web(I"only 'undisplayed' can precede 'text' here", L);
+	match_results mr3 = Regexp::create_mr();
+	while (TRUE) {
+		if (Regexp::match(&mr3, mr2.exp[0], L" *(%C+) *(%c*?)")) {
+			if (Str::eq(mr3.exp[0], I"undisplayed")) L->plainer = TRUE;
+			else if (Str::eq(mr3.exp[0], I"hyperlinked")) L->enable_hyperlinks = TRUE;
+			else {
+				Main::error_in_web(
+					I"only 'undisplayed' and/or 'hyperlinked' can precede 'text' here", L);	
+			}
+		} else break;
+		Str::clear(mr2.exp[0]);
+		Str::copy(mr2.exp[0], mr3.exp[1]);
+	}
+	Regexp::dispose_of(&mr3);
 
 @<Spool from file@> =
 	L->category = BEGIN_CODE_LCAT;
@@ -571,6 +586,7 @@ follows:
 	code_pl_for_body = NULL;
 	comment_mode = FALSE;
 	code_plainness_for_body = FALSE;
+	hyperlink_body = FALSE;
 
 @ This is for |@d| and |@define|. Definitions are intended to translate to
 C preprocessor macros, Inform 6 |Constant|s, and so on.
@@ -744,6 +760,7 @@ CWEB, but is needed for languages which don't allow multi-line definitions.)
 	if ((L->category != BEGIN_DEFINITION_LCAT) && (L->category != COMMAND_LCAT)) {
 		L->category = code_lcat_for_body;
 		L->plainer = code_plainness_for_body;
+		L->enable_hyperlinks = hyperlink_body;
 		if (L->category == TEXT_EXTRACT_LCAT) L->colour_as = code_pl_for_body;
 	}
 

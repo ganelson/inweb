@@ -26,6 +26,7 @@ void HTMLFormat::create(void) {
 	METHOD_ADD(wf, PARAGRAPH_HEADING_FOR_MTID, HTMLFormat::paragraph_heading);
 	METHOD_ADD(wf, SOURCE_CODE_FOR_MTID, HTMLFormat::source_code);
 	METHOD_ADD(wf, INLINE_CODE_FOR_MTID, HTMLFormat::inline_code);
+	METHOD_ADD(wf, URL_FOR_MTID, HTMLFormat::url);
 	METHOD_ADD(wf, DISPLAY_LINE_FOR_MTID, HTMLFormat::display_line);
 	METHOD_ADD(wf, ITEM_FOR_MTID, HTMLFormat::item);
 	METHOD_ADD(wf, BAR_FOR_MTID, HTMLFormat::bar);
@@ -282,7 +283,7 @@ void HTMLFormat::drop_initial_breadcrumbs(OUTPUT_STREAM, linked_list *crumbs, in
 void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target *wv,
 	int tab_stops_of_indentation, text_stream *prefatory, text_stream *matter,
 	text_stream *colouring, text_stream *concluding_comment,
-	int starts, int finishes, int code_mode) {
+	int starts, int finishes, int code_mode, int linked) {
 	if (starts) {
 		if (Str::len(prefatory) > 0) {
 			HTML_OPEN_WITH("span", "class=\"definitionkeyword\"");
@@ -293,12 +294,12 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 				match_results mr = Regexp::create_mr();
 				if (Regexp::match(&mr, matter, L"(%c*) from (%C+) *")) {
 					HTMLFormat::source_code(self, OUT, wv, 0, NULL, mr.exp[0], colouring,
-						concluding_comment, starts, FALSE, code_mode);
+						concluding_comment, starts, FALSE, code_mode, linked);
 					HTML_OPEN_WITH("span", "class=\"definitionkeyword\"");
 					WRITE(" from ");
 					HTML_CLOSE("span");
 					HTMLFormat::source_code(self, OUT, wv, 0, NULL, mr.exp[1], colouring,
-						concluding_comment, FALSE, finishes, code_mode);
+						concluding_comment, FALSE, finishes, code_mode, linked);
 					Regexp::dispose_of(&mr);
 					return;
 				}
@@ -311,6 +312,21 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 	int current_colour = -1, colour_wanted = PLAIN_COLOUR;
 	for (int i=0; i < Str::len(matter); i++) {
 		colour_wanted = Str::get_at(colouring, i); @<Adjust code colour as necessary@>;
+		if ((linked) &&
+			((ACMESupport::text_at(matter, i, I"http://")) ||
+				(ACMESupport::text_at(matter, i, I"https://")))) {
+				TEMPORARY_TEXT(before);
+				Str::copy(before, matter); Str::truncate(before, i);
+				TEMPORARY_TEXT(after);
+				Str::substr(after, Str::at(matter, i), Str::end(matter));
+				match_results mr = Regexp::create_mr();
+				if (Regexp::match(&mr, after, L"(https*://%C+)(%c*)")) {
+					Formats::url(OUT, wv, mr.exp[0], mr.exp[0], TRUE);
+					i += Str::len(mr.exp[0]);
+				}
+				DISCARD_TEXT(before);
+				DISCARD_TEXT(after);
+			}
 		if (Str::get_at(matter, i) == '<') WRITE("&lt;");
 		else if (Str::get_at(matter, i) == '>') WRITE("&gt;");
 		else if (Str::get_at(matter, i) == '&') WRITE("&amp;");
@@ -345,6 +361,14 @@ void HTMLFormat::inline_code(weave_format *self, text_stream *OUT, weave_target 
 	} else {
 		HTML_CLOSE("code");
 	}
+}
+
+@ =
+void HTMLFormat::url(weave_format *self, text_stream *OUT, weave_target *wv,
+	text_stream *url, text_stream *content, int external) {
+	HTML::begin_link_with_class(OUT, (external)?I"external":I"internal", url);
+	WRITE("%S", content);
+	HTML::end_link(OUT);
 }
 
 @ =

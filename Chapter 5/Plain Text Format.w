@@ -79,7 +79,7 @@ void PlainText::paragraph_heading(weave_format *self, text_stream *OUT, weave_ta
 void PlainText::source_code(weave_format *self, text_stream *OUT, weave_target *wv,
 	int tab_stops_of_indentation, text_stream *prefatory, text_stream *matter,
 	text_stream *colouring, text_stream *concluding_comment, int starts,
-	int finishes, int code_mode) {
+	int finishes, int code_mode, int linked) {
 	if (starts) {
 		for (int i=0; i<tab_stops_of_indentation; i++)
 			WRITE("    ");

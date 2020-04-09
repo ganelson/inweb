@@ -304,7 +304,7 @@ mode once again:
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">TeX::source_code</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">tab_stops_of_indentation</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">prefatory</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">matter</span><span class="plain">,</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">colouring</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">concluding_comment</span><span class="plain">,</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">starts</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">finishes</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">code_mode</span><span class="plain">) {</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">starts</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">finishes</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">code_mode</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">linked</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">code_mode</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\\smallskip\\par\\noindent"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">starts</span><span class="plain">) {</span>
             &lt;<span class="cwebmacro">Weave a suitable horizontal advance for that many tab stops</span> <span class="cwebmacronumber">8.1</span>&gt;<span class="plain">;</span>
@@ -857,7 +857,7 @@ To do this, the weaver calls the following.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function TeX::remove_math_mode is used in 5/wf (<a href="5-wf.html#SP23">&#167;23</a>).</p>
+<p class="endnote">The function TeX::remove_math_mode is used in 5/wf (<a href="5-wf.html#SP24">&#167;24</a>).</p>
 
 <p class="endnote">The function TeX::remove_math_mode_range is used in <a href="#SP28_1">&#167;28.1</a>, <a href="#SP28_2">&#167;28.2</a>, <a href="#SP28_3">&#167;28.3</a>.</p>
 

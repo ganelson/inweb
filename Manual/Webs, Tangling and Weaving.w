@@ -623,6 +623,8 @@ or semver, for the web. For example, if the Contents included:
 then the semver would be |6.2.12-alpha.1+6Q26|. This is accessible within
 the web as the variable |Semantic Version Number|.
 
+For more on semvers, see: https://semver.org
+
 @ A special advancing mechanism exists to update build numbers and dates.
 Running Inweb with |-advance-build W| checks the build date for web |W|:
 if it differs from today, then it is changed to today, and the build code

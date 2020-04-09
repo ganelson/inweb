@@ -524,7 +524,40 @@ For example,
 
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>Pictures must be in PNG, JPG or PDF format and can be included with lines
+<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>URLs in the web are automatically recognised and a weave to HTML will
+make them into links. For example:
+</p>
+
+<pre class="display">
+        <span class="plain">For further reading, see: https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships</span>
+</pre>
+
+<p class="inwebparagraph">For further reading, see: <a href="https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships
+" class="external">https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships
+</a></p>
+
+<p class="inwebparagraph">Note that URLs are considered to continue to the next white space, so don't
+end them with full stops or commas.
+</p>
+
+<p class="inwebparagraph">URLs will also be recognised in any text extract marked as <code class="display"><span class="extract">hyperlinked</span></code>.
+For example,
+</p>
+
+<pre class="display">
+        <span class="plain">Compare: https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes</span>
+</pre>
+
+<p class="inwebparagraph">produces:
+</p>
+
+<pre class="display">
+        <span class="plain">Compare: <a href="https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes" class="external">https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes</a></span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>Pictures must be in PNG, JPG or PDF format and can be included with lines
 like:
 </p>
 
@@ -544,7 +577,7 @@ the web called <code class="display"><span class="extract">Figures</span></code>
 pathname <code class="display"><span class="extract">Figures/Fig_2_3.pdf</span></code>.
 </p>
 
-<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>Mathematical formulae can be typed in TeX notation between dollar signs,
+<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>Mathematical formulae can be typed in TeX notation between dollar signs,
 as usual for TeX formulae. This can of course only really be rendered if
 the weave is to TeX, but a few very approximate attempts are made by Inweb
 so that the HTML version may also make sense. For example, <code class="display"><span class="extract">$x \leq y$</span></code> would

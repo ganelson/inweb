@@ -180,7 +180,7 @@ mode once again:
 void TeX::source_code(weave_format *self, text_stream *OUT, weave_target *wv,
 	int tab_stops_of_indentation, text_stream *prefatory, text_stream *matter,
 	text_stream *colouring, text_stream *concluding_comment,
-	int starts, int finishes, int code_mode) {
+	int starts, int finishes, int code_mode, int linked) {
 	if (code_mode == FALSE) WRITE("\\smallskip\\par\\noindent");
 	if (starts) {
 		@<Weave a suitable horizontal advance for that many tab stops@>;

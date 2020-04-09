@@ -339,14 +339,11 @@ in the source is set indented in code style.
 		Str::copy(matter, mr.exp[1]);
 		TEMPORARY_TEXT(colouring);
 		for (int i=0; i<Str::len(original); i++) PUT_TO(colouring, PLAIN_COLOUR);
-		Formats::source_code(OUT, wv, 1, I"", original, colouring, I"", TRUE, TRUE, FALSE);
+		Formats::source_code(OUT, wv, 1, I"", original, colouring, I"", TRUE, TRUE,
+			FALSE, L->enable_hyperlinks);
 		Formats::text(OUT, wv, matter);
 		DISCARD_TEXT(colouring);
 		DISCARD_TEXT(original);
-if (no_inweb_errors == 0) {
-	Main::error_in_web(I"Old-style pipes here", L);
-	no_inweb_errors = 0;
-}
 		continue;
 	} else if (state->kind_of_material != REGULAR_MATERIAL) {
 		Formats::change_material(OUT, wv, state->kind_of_material, REGULAR_MATERIAL,
@@ -389,7 +386,8 @@ and macro usage is rendered differently.
 	}
 
 	Formats::source_code(OUT, wv, tab_stops_of_indentation, prefatory,
-		matter, colouring, concluding_comment, (found == 0)?TRUE:FALSE, TRUE, TRUE);
+		matter, colouring, concluding_comment, (found == 0)?TRUE:FALSE, TRUE,
+		TRUE, L->enable_hyperlinks);
 	DISCARD_TEXT(colouring);
 	DISCARD_TEXT(concluding_comment);
 	DISCARD_TEXT(prefatory);
@@ -499,7 +497,7 @@ otherwise, they are set flush right.
 			Str::copy(matter, mr.exp[2]);
 			Formats::source_code(OUT, wv, tab_stops_of_indentation, prefatory,
 				mr.exp[0], colouring, concluding_comment, (found == 0)?TRUE:FALSE,
-				FALSE, TRUE);
+				FALSE, TRUE, L->enable_hyperlinks);
 			LanguageMethods::reset_syntax_colouring(S->sect_language);
 			found++;
 			int defn = FALSE;
