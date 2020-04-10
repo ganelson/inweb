@@ -451,6 +451,48 @@ In these examples, we constrain the width or the height of the image
 to be exactly that given: it is scaled accordingly. (They can't both be
 constrained, so you can't change the aspect ratio.)
 
+@h Embedded video.
+This makes sense only for some HTML-like weave formats, but we can also
+cause videos to be embedded:
+= (text as Inweb)
+	= (embedded YouTube video GR3aImy7dWw)
+=
+With results like so:
+= (embedded YouTube video GR3aImy7dWw)
+
+The YouTube ID number |GR3aImy7dWw| can be read from its Share URL, which in
+this case was |https://youtu.be/GR3aImy7dWw|.
+
+Similarly for Vimeo:
+= (text as Inweb)
+	= (embedded Vimeo video 204519)
+=
+With results like so:
+= (embedded Vimeo video 204519)
+
+For audio, you may like to try SoundCloud:
+= (text as Inweb)
+	= (embedded SoundCloud audio 42803139)
+=
+With results like so:
+= (embedded SoundCloud audio 42803139)
+
+@ Adding width and height is straightforward; by default the dimensions are
+720 by 405.
+= (text as Inweb)
+	= (embedded Vimeo video 204519 at 400 by 300)
+	= (embedded SoundCloud audio 42803139 at 200)
+=
+The latter sets just the height (of the displayed waveform, that is --
+arguably music has width and not height, but SoundCloud thinks otherwise).
+
+@ It's easy to add services. These are all handled by using prototype code
+for a suitable HTML |<iframe>|, and those prototypes are stored in the
+|Embedding| subdirectory of the Inweb installation. But you can use your
+own prototypes instead, by creating an |Embedding| subdirectory of your own
+web; this overrides the ones built in. If your service is, say, |WebTubeo|,
+then the file would be |W/Embedding/WebTubeo.html|.
+
 @h Mathematics notation.
 Mathematical formulae can be typed in TeX notation between dollar signs,
 as usual for TeX formulae. This can of course only really be rendered if

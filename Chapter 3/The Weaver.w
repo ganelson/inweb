@@ -172,6 +172,7 @@ at us; but we don't weave them into the output, that's for sure.
 		if (L->command_code == PAGEBREAK_CMD) Formats::pagebreak(OUT, wv);
 		if (L->command_code == GRAMMAR_INDEX_CMD) InCSupport::weave_grammar_index(OUT);
 		if (L->command_code == FIGURE_CMD) @<Weave a figure@>;
+		if (L->command_code == EMBED_CMD) @<Embed some Internet material@>;
 		/* Otherwise assume it was a tangler command, and ignore it here */
 		continue;
 	}
@@ -200,6 +201,9 @@ at us; but we don't weave them into the output, that's for sure.
 		Formats::figure(OUT, wv, figname, -1, -1, NULL);
 	}
 	Regexp::dispose_of(&mr);
+
+@<Embed some Internet material@> =
+	Formats::embed(OUT, wv, L->text_operand, L->text_operand2);
 
 @h Headings.
 The purpose is set with a little heading. Its operand is that part of

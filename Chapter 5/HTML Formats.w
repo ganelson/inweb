@@ -31,6 +31,7 @@ void HTMLFormat::create(void) {
 	METHOD_ADD(wf, ITEM_FOR_MTID, HTMLFormat::item);
 	METHOD_ADD(wf, BAR_FOR_MTID, HTMLFormat::bar);
 	METHOD_ADD(wf, FIGURE_FOR_MTID, HTMLFormat::figure);
+	METHOD_ADD(wf, EMBED_FOR_MTID, HTMLFormat::embed);
 	METHOD_ADD(wf, PARA_MACRO_FOR_MTID, HTMLFormat::para_macro);
 	METHOD_ADD(wf, PAGEBREAK_FOR_MTID, HTMLFormat::pagebreak);
 	METHOD_ADD(wf, BLANK_LINE_FOR_MTID, HTMLFormat::blank_line);
@@ -444,6 +445,47 @@ void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
 	Patterns::copy_file_into_weave(wv->weave_web, F);
 	HTML_CLOSE("center");
 	WRITE("\n");
+}
+
+@ =
+void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_target *wv,
+	text_stream *service, text_stream *ID) {
+	text_stream *CH = I"405";
+	text_stream *CW = I"720";
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, ID, L"(%c+) at (%c+) by (%c+)")) {
+		CW = Str::duplicate(mr.exp[1]);
+		CH = Str::duplicate(mr.exp[2]);
+		ID = mr.exp[0];
+	} else if (Regexp::match(&mr, ID, L"(%c+) at (%c+)")) {
+		CH = Str::duplicate(mr.exp[1]);
+		ID = mr.exp[0];
+	}
+	HTMLFormat::exit_current_paragraph(OUT);
+	TEMPORARY_TEXT(embed_leaf);
+	WRITE_TO(embed_leaf, "%S.html", service);
+	filename *F = 
+	Filenames::in_folder(	
+		Pathnames::subfolder(wv->weave_web->md->path_to_web, I"Embedding"), embed_leaf);
+	if (TextFiles::exists(F) == FALSE)
+		F = Filenames::in_folder(	
+			Pathnames::subfolder(path_to_inweb, I"Embedding"), embed_leaf);
+	DISCARD_TEXT(embed_leaf);
+
+	if (TextFiles::exists(F) == FALSE) {
+		PRINT("Tried %f\n", F);
+		Main::error_in_web(I"This is not a supported service", current_weave_line);
+		return;
+	}
+
+	Bibliographic::set_datum(wv->weave_web->md, I"Content ID", ID);
+	Bibliographic::set_datum(wv->weave_web->md, I"Content Width", CW);
+	Bibliographic::set_datum(wv->weave_web->md, I"Content Height", CH);
+	HTML_OPEN("center");
+	Indexer::run(wv->weave_web, I"", F, NULL, OUT, wv->pattern, NULL, NULL, NULL, FALSE, TRUE);
+	HTML_CLOSE("center");
+	WRITE("\n");
+	Regexp::dispose_of(&mr);
 }
 
 @ =

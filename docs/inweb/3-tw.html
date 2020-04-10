@@ -310,6 +310,7 @@ at us; but we don't weave them into the output, that's for sure.
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">command_code</span><span class="plain"> == </span><span class="constant">PAGEBREAK_CMD</span><span class="plain">) </span><span class="functiontext">Formats::pagebreak</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">command_code</span><span class="plain"> == </span><span class="constant">GRAMMAR_INDEX_CMD</span><span class="plain">) </span><span class="functiontext">InCSupport::weave_grammar_index</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">command_code</span><span class="plain"> == </span><span class="constant">FIGURE_CMD</span><span class="plain">) </span>&lt;<span class="cwebmacro">Weave a figure</span> <span class="cwebmacronumber">1.3.3.1.2.1</span>&gt;<span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">command_code</span><span class="plain"> == </span><span class="constant">EMBED_CMD</span><span class="plain">) </span>&lt;<span class="cwebmacro">Embed some Internet material</span> <span class="cwebmacronumber">1.3.3.1.2.2</span>&gt;<span class="plain">;</span>
             <span class="comment"> Otherwise assume it was a tangler command, and ignore it here</span>
             <span class="reserved">continue</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -348,6 +349,19 @@ at us; but we don't weave them into the output, that's for sure.
             <span class="functiontext">Formats::figure</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">figname</span><span class="plain">, -1, -1, </span><span class="identifier">NULL</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP1_3_3_1_2">&#167;1.3.3.1.2</a>.</p>
+
+<p class="inwebparagraph"><a id="SP1_3_3_1_2_2"></a><b>&#167;1.3.3.1.2.2.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Embed some Internet material</span> <span class="cwebmacronumber">1.3.3.1.2.2</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="functiontext">Formats::embed</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">text_operand</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">text_operand2</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>

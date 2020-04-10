@@ -293,6 +293,21 @@ void Formats::figure(OUTPUT_STREAM, weave_target *wv, text_stream *figname,
 	VMETHOD_CALL(wf, FIGURE_FOR_MTID, OUT, wv, figname, w, h, pl);
 }
 
+@ |EMBED_FOR_MTID| has to embed some Internet-sourced content. |service|
+here is something like |YouTube| or |Soundcloud|, and |ID| is whatever code
+that service uses to identify the video/audio in question.
+
+@e EMBED_FOR_MTID
+
+=
+VMETHOD_TYPE(EMBED_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+	text_stream *service, text_stream *ID)
+void Formats::embed(OUTPUT_STREAM, weave_target *wv, text_stream *service,
+	text_stream *ID) {
+	weave_format *wf = wv->format;
+	VMETHOD_CALL(wf, EMBED_FOR_MTID, OUT, wv, service, ID);
+}
+
 @ This method weaves an angle-bracketed paragraph macro name. |defn| is set
 if and only if this is the place where the macro is defined -- the usual
 thing is to render some sort of equals sign after it, if so.
