@@ -6,6 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		
 	</head>
 	<body>
 		<nav role="navigation">
@@ -858,7 +859,7 @@ format does, because it wants to keep the formulae in all their glory.)
 </pre>
 
 <pre class="display">
-    <span class="identifier">IMETHOD_TYPE</span><span class="plain">(</span><span class="constant">PRESERVE_MATH_MODE_FOR_MTID</span><span class="plain">, </span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">wf</span><span class="plain">,</span>
+    <span class="identifier">IMETHOD_TYPE</span><span class="plain">(</span><span class="constant">PRESERVE_MATH_MODE_FOR_MTID</span><span class="plain">, </span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">wf</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">matter</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">id</span><span class="plain">)</span>
     <span class="identifier">VMETHOD_TYPE</span><span class="plain">(</span><span class="constant">COMMENTARY_TEXT_FOR_MTID</span><span class="plain">, </span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">wf</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">,</span>
         <span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">matter</span><span class="plain">)</span>
@@ -870,10 +871,10 @@ format does, because it wants to keep the formulae in all their glory.)
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span>
             <span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_web</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TeX Mathematics Notation"</span><span class="plain">), </span><span class="identifier">L</span><span class="string">"On"</span><span class="plain">)) {</span>
             <span class="identifier">rv</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-            <span class="identifier">IMETHOD_CALL</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">, </span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">PRESERVE_MATH_MODE_FOR_MTID</span><span class="plain">, </span><span class="identifier">matter</span><span class="plain">, </span><span class="identifier">fragment</span><span class="plain">);</span>
+            <span class="identifier">IMETHOD_CALL</span><span class="plain">(</span><span class="identifier">rv</span><span class="plain">, </span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">PRESERVE_MATH_MODE_FOR_MTID</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">matter</span><span class="plain">, </span><span class="identifier">fragment</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="functiontext">TeX::remove_math_mode</span><span class="plain">(</span><span class="identifier">matter</span><span class="plain">, </span><span class="identifier">fragment</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">matter</span><span class="plain">, </span><span class="identifier">fragment</span><span class="plain">);</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">matter</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">matter</span><span class="plain">, </span><span class="identifier">fragment</span><span class="plain">);</span>
         <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">COMMENTARY_TEXT_FOR_MTID</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">matter</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">matter</span><span class="plain">);</span>
     <span class="plain">}</span>

@@ -494,15 +494,47 @@ web; this overrides the ones built in. If your service is, say, |WebTubeo|,
 then the file would be |W/Embedding/WebTubeo.html|.
 
 @h Mathematics notation.
-Mathematical formulae can be typed in TeX notation between dollar signs,
-as usual for TeX formulae. This can of course only really be rendered if
-the weave is to TeX, but a few very approximate attempts are made by Inweb
-so that the HTML version may also make sense. For example, |$x \leq y$| would
-be rendered in HTML as |x <= y|.
+Literate programming is a good technique to justify code which hangs on
+unobvious pieces of mathematics or computer science, and which must therefore
+be explained carefully. Formulae or equations are a real convenience for that.
 
-In some webs, this will be inconvenient, because the dollar sign is wanted
-for something else (such as money, or hexadecimal). So this feature can be
-deactivated by writing the following in the Contents section of a web:
+For example, it's known that the average running time of Euclid's GCD
+algorithm on $a$ and numbers coprime to $a$ is:
+$$ \tau (a)={\frac {12}{\pi ^{2}}}\ln 2\ln a+C+O(a^{-1/6-\varepsilon }) $$
+where $C$ is Porter's constant,
+$$ C=-{\frac {1}{2}}+{\frac {6\ln 2}{\pi ^{2}}}\left(4\gamma -{\frac {24}{\pi ^{2}}}\zeta '(2)+3\ln 2-2\right)\approx 1.467 $$
+which involves evaluating Euler's constant $\gamma$ and the first derivative
+of the Riemann zeta function $\zeta'(z)$ at $z=2$.
+
+That passage was achieved by typing this as the Inweb source:
+= (text as Inweb)
+	For example, it's known that the average running time of Euclid's GCD
+	algorithm on $a$ and numbers coprime to $a$ is:
+	$$ \tau (a)={\frac {12}{\pi ^{2}}}\ln 2\ln a+C+O(a^{-1/6-\varepsilon }) $$
+	where $C$ is Porter's constant,
+	$$ C=-{\frac {1}{2}}+{\frac {6\ln 2}{\pi ^{2}}}
+	\left(4\gamma -{\frac {24}{\pi^{2}}}\zeta '(2)+3\ln 2-2\right)\approx 1.467 $$
+	which involves evaluating Euler's constant $\gamma$ and the first derivative
+	of the Riemann zeta function $\zeta'(z)$ at $z=2$.
+=
+Mathematical formulae can be typed in TeX notation between dollar signs,
+as usual for TeX formulae.
+
+The rendering is done by default via the MathJax3 project, full details
+of which can be found at: https://docs.mathjax.org/en/latest/index.html
+
+Inweb in fact managed this by including a "plugin" with the HTML page you
+are now reading: a plugin called |MathJax3|. Plugins are simply small
+fragments of HTML added to the head of a page, and usually contain Javascript
+code needed for special effects in it. To use a different renderer, simply
+change the value of |TeX Mathematics Plugin| for your web (by default it is
+set to |MathJax3|); or if you don't want to use Javascript at all, change
+this to |None|, but then Inweb can really only make the grossest approximation
+of what you would like to achieve.
+
+In some webs, TeX notation is an unwanted nuisance. So this feature can be
+deactivated entirely by writing the following in the Contents section of a web:
 = (text as Inweb)
 	TeX Mathematics Notation: Off
 =
+(This is always |On|, the default, or |Off|.)

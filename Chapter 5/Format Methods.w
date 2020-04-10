@@ -557,7 +557,7 @@ format does, because it wants to keep the formulae in all their glory.)
 @e PRESERVE_MATH_MODE_FOR_MTID
 
 =
-IMETHOD_TYPE(PRESERVE_MATH_MODE_FOR_MTID, weave_format *wf,
+IMETHOD_TYPE(PRESERVE_MATH_MODE_FOR_MTID, weave_format *wf, weave_target *wv,
 	text_stream *matter, text_stream *id)
 VMETHOD_TYPE(COMMENTARY_TEXT_FOR_MTID, weave_format *wf, text_stream *OUT,
 	weave_target *wv, text_stream *matter)
@@ -569,10 +569,10 @@ void Formats::text_fragment(OUTPUT_STREAM, weave_target *wv, text_stream *fragme
 	if (Str::eq_wide_string(
 		Bibliographic::get_datum(wv->weave_web->md, I"TeX Mathematics Notation"), L"On")) {
 		rv = FALSE;
-		IMETHOD_CALL(rv, wf, PRESERVE_MATH_MODE_FOR_MTID, matter, fragment);
+		IMETHOD_CALL(rv, wf, PRESERVE_MATH_MODE_FOR_MTID, wv, matter, fragment);
 	}
 	if (rv == FALSE) TeX::remove_math_mode(matter, fragment);
-	else Str::copy(matter, fragment);
+	else if (Str::len(matter) == 0) Str::copy(matter, fragment);
 	VMETHOD_CALL(wf, COMMENTARY_TEXT_FOR_MTID, OUT, wv, matter);
 	DISCARD_TEXT(matter);
 }

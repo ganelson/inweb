@@ -22,7 +22,7 @@ void TeX::create(void) {
 	METHOD_ADD(wf, POST_PROCESS_POS_MTID, TeX::post_process_DVI);
 	METHOD_ADD(wf, POST_PROCESS_POS_MTID, TeX::post_process_report);
 	METHOD_ADD(wf, POST_PROCESS_SUBSTITUTE_POS_MTID, TeX::post_process_substitute);
-	METHOD_ADD(wf, PRESERVE_MATH_MODE_FOR_MTID, TeX::yes);
+	METHOD_ADD(wf, PRESERVE_MATH_MODE_FOR_MTID, TeX::preserve_math_mode);
 
 @<Create PDF format@> =
 	weave_format *wf = Formats::create_weave_format(I"PDF", I".tex");
@@ -34,7 +34,7 @@ void TeX::create(void) {
 	METHOD_ADD(wf, POST_PROCESS_POS_MTID, TeX::post_process_PDF);
 	METHOD_ADD(wf, POST_PROCESS_SUBSTITUTE_POS_MTID, TeX::post_process_substitute);
 	METHOD_ADD(wf, INDEX_PDFS_POS_MTID, TeX::yes);
-	METHOD_ADD(wf, PRESERVE_MATH_MODE_FOR_MTID, TeX::yes);
+	METHOD_ADD(wf, PRESERVE_MATH_MODE_FOR_MTID, TeX::preserve_math_mode);
 
 @<Make this format basically TeX@> =
 	METHOD_ADD(wf, TOP_FOR_MTID, TeX::top);
@@ -58,13 +58,18 @@ void TeX::create(void) {
 	METHOD_ADD(wf, TAIL_FOR_MTID, TeX::tail);
 	METHOD_ADD(wf, PREFORM_DOCUMENT_FOR_MTID, TeX::preform_document);
 	METHOD_ADD(wf, POST_PROCESS_SUBSTITUTE_POS_MTID, TeX::post_process_substitute);
-	METHOD_ADD(wf, PRESERVE_MATH_MODE_FOR_MTID, TeX::yes);
+	METHOD_ADD(wf, PRESERVE_MATH_MODE_FOR_MTID, TeX::preserve_math_mode);
 
 @h Methods.
 For documentation, see "Weave Fornats".
 
 =
-int TeX::yes(weave_format *self) {
+int TeX::preserve_math_mode(weave_format *self, weave_target *wv,
+	text_stream *matter, text_stream *id) {
+	return TRUE;
+}
+
+int TeX::yes(weave_format *self, weave_target *wv) {
 	return TRUE;
 }
 

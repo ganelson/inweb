@@ -11,6 +11,7 @@ void HTMLFormat::create(void) {
 @<Create HTML@> =
 	weave_format *wf = Formats::create_weave_format(I"HTML", I".html");
 	METHOD_ADD(wf, TOP_FOR_MTID, HTMLFormat::top);
+	METHOD_ADD(wf, PRESERVE_MATH_MODE_FOR_MTID, HTMLFormat::preserve_math_mode);
 	@<Make this format basically HTML@>;
 
 @<Create EPUB@> =
@@ -153,6 +154,32 @@ void HTMLFormat::top(weave_format *self, text_stream *OUT, weave_target *wv, tex
 	}
 	HTML::comment(OUT, comment);
 	html_in_para = HTML_OUT;
+}
+
+int HTMLFormat::preserve_math_mode(weave_format *self, weave_target *wv,
+	text_stream *matter, text_stream *text) {
+	text_stream *plugin_name =
+		Bibliographic::get_datum(wv->weave_web->md, I"TeX Mathematics Plugin");
+	if (Str::eq_insensitive(plugin_name, I"None")) return FALSE;
+	int math_mode = FALSE, mode_exists = FALSE;
+	for (int i=0; i<Str::len(text); i++) {
+		switch (Str::get_at(text, i)) {
+			case '$':
+				mode_exists = TRUE;
+				if (Str::get_at(text, i+1) == '$') {
+					WRITE_TO(matter, "$$");
+					i++; continue;
+				}
+				math_mode = (math_mode)?FALSE:TRUE;
+				if (math_mode) WRITE_TO(matter, "\\(");
+				else WRITE_TO(matter, "\\)");
+				break;
+			default:
+				PUT_TO(matter, Str::get_at(text, i));
+		}
+	}
+	if (mode_exists) Swarm::ensure_plugin(wv, plugin_name);
+	return TRUE;
 }
 
 void HTMLFormat::top_EPUB(weave_format *self, text_stream *OUT, weave_target *wv, text_stream *comment) {
@@ -464,8 +491,7 @@ void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_target *wv,
 	HTMLFormat::exit_current_paragraph(OUT);
 	TEMPORARY_TEXT(embed_leaf);
 	WRITE_TO(embed_leaf, "%S.html", service);
-	filename *F = 
-	Filenames::in_folder(	
+	filename *F = Filenames::in_folder(	
 		Pathnames::subfolder(wv->weave_web->md->path_to_web, I"Embedding"), embed_leaf);
 	if (TextFiles::exists(F) == FALSE)
 		F = Filenames::in_folder(	
@@ -473,7 +499,6 @@ void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_target *wv,
 	DISCARD_TEXT(embed_leaf);
 
 	if (TextFiles::exists(F) == FALSE) {
-		PRINT("Tried %f\n", F);
 		Main::error_in_web(I"This is not a supported service", current_weave_line);
 		return;
 	}

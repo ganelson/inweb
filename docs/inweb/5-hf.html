@@ -6,6 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		
 	</head>
 	<body>
 		<nav role="navigation">
@@ -49,6 +50,7 @@
 <pre class="displaydefn">
         <span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">wf</span><span class="plain"> = </span><span class="functiontext">Formats::create_weave_format</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"HTML"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">".html"</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">TOP_FOR_MTID</span><span class="plain">, </span><span class="functiontext">HTMLFormat::top</span><span class="plain">);</span>
+        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">PRESERVE_MATH_MODE_FOR_MTID</span><span class="plain">, </span><span class="functiontext">HTMLFormat::preserve_math_mode</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Make this format basically HTML</span> <span class="cwebmacronumber">1.1.1</span>&gt;<span class="plain">;</span>
 </pre>
 
@@ -250,6 +252,32 @@ the page, and this drops one.
         <span class="identifier">html_in_para</span><span class="plain"> = </span><span class="constant">HTML_OUT</span><span class="plain">;</span>
     <span class="plain">}</span>
 
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">HTMLFormat::preserve_math_mode</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
+        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">matter</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">) {</span>
+        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">plugin_name</span><span class="plain"> =</span>
+            <span class="functiontext">Bibliographic::get_datum</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_web</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"TeX Mathematics Plugin"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">plugin_name</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"None"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">math_mode</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">, </span><span class="identifier">mode_exists</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">); </span><span class="identifier">i</span><span class="plain">++) {</span>
+            <span class="reserved">switch</span><span class="plain"> (</span><span class="functiontext">Str::get_at</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">)) {</span>
+                <span class="reserved">case</span><span class="plain"> </span><span class="character">'$'</span><span class="plain">:</span>
+                    <span class="identifier">mode_exists</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get_at</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">+1) == </span><span class="character">'$'</span><span class="plain">) {</span>
+                        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">matter</span><span class="plain">, </span><span class="string">"$$"</span><span class="plain">);</span>
+                        <span class="identifier">i</span><span class="plain">++; </span><span class="reserved">continue</span><span class="plain">;</span>
+                    <span class="plain">}</span>
+                    <span class="identifier">math_mode</span><span class="plain"> = (</span><span class="identifier">math_mode</span><span class="plain">)?</span><span class="identifier">FALSE:TRUE</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">math_mode</span><span class="plain">) </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">matter</span><span class="plain">, </span><span class="string">"\\("</span><span class="plain">);</span>
+                    <span class="reserved">else</span><span class="plain"> </span><span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">matter</span><span class="plain">, </span><span class="string">"\\)"</span><span class="plain">);</span>
+                    <span class="reserved">break</span><span class="plain">;</span>
+                <span class="identifier">default:</span>
+                    <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">matter</span><span class="plain">, </span><span class="functiontext">Str::get_at</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">));</span>
+            <span class="plain">}</span>
+        <span class="plain">}</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mode_exists</span><span class="plain">) </span><span class="functiontext">Swarm::ensure_plugin</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">, </span><span class="identifier">plugin_name</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">HTMLFormat::top_EPUB</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">comment</span><span class="plain">) {</span>
         <span class="functiontext">HTML::declare_as_HTML</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
         <span class="functiontext">Epub::note_page</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_web</span><span class="plain">-&gt;</span><span class="element">as_ebook</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">, </span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">booklet_title</span><span class="plain">, </span><span class="identifier">I</span><span class="string">""</span><span class="plain">);</span>
@@ -262,6 +290,8 @@ the page, and this drops one.
 <p class="inwebparagraph"></p>
 
 <p class="endnote">The function HTMLFormat::top is used in <a href="#SP1_1">&#167;1.1</a>.</p>
+
+<p class="endnote">The function HTMLFormat::preserve_math_mode is used in <a href="#SP1_1">&#167;1.1</a>.</p>
 
 <p class="endnote">The function HTMLFormat::top_EPUB is used in <a href="#SP1_2">&#167;1.2</a>.</p>
 
@@ -680,8 +710,7 @@ the page, and this drops one.
         <span class="functiontext">HTMLFormat::exit_current_paragraph</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">embed_leaf</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">embed_leaf</span><span class="plain">, </span><span class="string">"%S.html"</span><span class="plain">, </span><span class="identifier">service</span><span class="plain">);</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> =</span>
-        <span class="functiontext">Filenames::in_folder</span><span class="plain">(</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span>
             <span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_web</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Embedding"</span><span class="plain">), </span><span class="identifier">embed_leaf</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
             <span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span>
@@ -689,7 +718,6 @@ the page, and this drops one.
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">embed_leaf</span><span class="plain">);</span>
 
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Tried %f\n"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
             <span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"This is not a supported service"</span><span class="plain">, </span><span class="identifier">current_weave_line</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
@@ -1077,7 +1105,7 @@ the page, and this drops one.
 <p class="endnote">The function HTMLFormat::end_weaving_EPUB is used in <a href="#SP1_2">&#167;1.2</a>.</p>
 
 <hr class="tocbar">
-<ul class="toc"><li><a href="5-tf.html">Back to 'TeX Format'</a></li><li><a href="5-rtt.html">Continue with 'Running Through TeX'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-tf.html">Back to 'TeX Format'</a></li><li><a href="5-wp.html">Continue with 'Weave Plugins'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 		</main>
 	</body>

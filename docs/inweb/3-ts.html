@@ -6,6 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		
 	</head>
 	<body>
 		<nav role="navigation">
@@ -119,6 +120,7 @@ the call comes from Program Control).
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">docs_mode</span><span class="plain">; </span><span class="comment"> make as part of a <code class="display"><span class="extract">-weave-docs</span></code> run</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">breadcrumbs</span><span class="plain">; </span><span class="comment"> non-standard breadcrumb trail, if any</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">navigation</span><span class="plain">; </span><span class="comment"> navigation links, or <code class="display"><span class="extract">NULL</span></code> if not supplied</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">plugins</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">weave_plugin</span></code>: these are for HTML extensions</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">weave_target</span><span class="plain">;</span>
 </pre>
@@ -146,6 +148,7 @@ the call comes from Program Control).
         <span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">docs_mode</span><span class="plain"> = </span><span class="identifier">docs_mode</span><span class="plain">;</span>
         <span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">navigation</span><span class="plain"> = </span><span class="identifier">navigation</span><span class="plain">;</span>
         <span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">breadcrumbs</span><span class="plain"> = </span><span class="identifier">breadcrumbs</span><span class="plain">;</span>
+        <span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">plugins</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">weave_plugin</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Reader::web_has_one_section</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">self_contained</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">cover_sheet_to_use</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"cover-sheet"</span><span class="plain">);</span>
 
@@ -267,7 +270,24 @@ and details of any cover-sheet to use.
 
 <p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>After every swarm, we rebuild the index. We first try for a template called
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
+
+<pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Swarm::ensure_plugin</span><span class="plain">(</span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wt</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
+        <span class="reserved">weave_plugin</span><span class="plain"> *</span><span class="identifier">existing</span><span class="plain">;</span>
+        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">existing</span><span class="plain">, </span><span class="reserved">weave_plugin</span><span class="plain">, </span><span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">plugins</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">existing</span><span class="plain">-&gt;</span><span class="element">plugin_name</span><span class="plain">))</span>
+                <span class="reserved">return</span><span class="plain">;</span>
+        <span class="reserved">weave_plugin</span><span class="plain"> *</span><span class="identifier">wp</span><span class="plain"> = </span><span class="functiontext">WeavePlugins::new</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">wp</span><span class="plain">, </span><span class="reserved">weave_plugin</span><span class="plain">, </span><span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">plugins</span><span class="plain">);</span>
+    <span class="plain">}</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">The function Swarm::ensure_plugin is used in 5/hf (<a href="5-hf.html#SP6">&#167;6</a>).</p>
+
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>After every swarm, we rebuild the index. We first try for a template called
 <code class="display"><span class="extract">chaptered-index.html</span></code> or <code class="display"><span class="extract">unchaptered-index.html</span></code>, then fall back on a
 generic <code class="display"><span class="extract">index.html</span></code> if those aren't available in the current pattern.
 </p>

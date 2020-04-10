@@ -68,6 +68,7 @@ void Bibliographic::initialise_data(web_md *Wm) {
 	bd = Bibliographic::set_datum(Wm, I"Namespaces", I"Off"); bd->on_or_off = TRUE;
 	bd = Bibliographic::set_datum(Wm, I"Strict Usage Rules", I"Off"); bd->on_or_off = TRUE;
 	bd = Bibliographic::set_datum(Wm, I"TeX Mathematics Notation", I"On"); bd->on_or_off = TRUE;
+	bd = Bibliographic::set_datum(Wm, I"TeX Mathematics Plugin", I"MathJax3");
 	bd = Bibliographic::set_datum(Wm, I"Code In Commentary Notation", I"|");
 	bd = Bibliographic::set_datum(Wm, I"Code In Code Comments Notation", I"|");
 	bd = Bibliographic::set_datum(Wm, I"Cross-References Notation", I"//");

@@ -6,6 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		
 	</head>
 	<body>
 		<nav role="navigation">
@@ -384,8 +385,8 @@ blocks, but we don't need to worry about that.)
 unlikely that any bug has caused memory to overwrite one frame into another.
 <code class="display"><span class="extract">Memory::check_memory_integrity</span></code> might on very large runs be run often, if we didn't
 prevent this: since the number of calls would be roughly proportional to
-memory usage, we would implicitly have an O(n^2) running time in the
-amount of storage n allocated.
+memory usage, we would implicitly have an \(O(n^2)\) running time in the
+amount of storage \(n\) allocated.
 </p>
 
 <pre class="display">
@@ -1213,7 +1214,7 @@ following:
 
 <p class="inwebparagraph"></p>
 
-<ul class="items"><li>(a) <code class="display"><span class="extract">NULL</span></code>, to which we assign ID number -1;
+<ul class="items"><li>(a) <code class="display"><span class="extract">NULL</span></code>, to which we assign ID number \(-1\);
 </li><li>(b) <code class="display"><span class="extract">char</span></code>, to which we assign ID number 1000;
 </li><li>(c) any individually allocated structure of the types listed above, to
 which we assign the ID numbers used above: for instance, <code class="display"><span class="extract">blorb_figure_MT</span></code>
@@ -1313,6 +1314,20 @@ allocated objects above; so that leaves only humble <code class="display"><span 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-dl.html">Back to 'Debugging Log'</a></li><li><a href="2-str.html">Continue with 'Streams'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: <b>'$', '$'], ['\\(', '\\)'</b>
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+
 		</main>
 	</body>
 </html>

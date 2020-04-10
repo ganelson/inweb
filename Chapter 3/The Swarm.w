@@ -81,6 +81,7 @@ typedef struct weave_target {
 	int docs_mode; /* make as part of a |-weave-docs| run */
 	struct linked_list *breadcrumbs; /* non-standard breadcrumb trail, if any */
 	struct filename *navigation; /* navigation links, or |NULL| if not supplied */
+	struct linked_list *plugins; /* of |weave_plugin|: these are for HTML extensions */
 	MEMORY_MANAGEMENT
 } weave_target;
 
@@ -98,6 +99,7 @@ typedef struct weave_target {
 	wt->docs_mode = docs_mode;
 	wt->navigation = navigation;
 	wt->breadcrumbs = breadcrumbs;
+	wt->plugins = NEW_LINKED_LIST(weave_plugin);
 	if (Reader::web_has_one_section(W)) wt->self_contained = TRUE;
 	Str::copy(wt->cover_sheet_to_use, I"cover-sheet");
 
@@ -179,6 +181,16 @@ and details of any cover-sheet to use.
 	PRINT("[%S: %S -> %f", wt->booklet_title, wt->format->format_name, wt->weave_to);
 	Formats::report_on_post_processing(wt);
 	PRINT("]\n");
+
+@ =
+void Swarm::ensure_plugin(weave_target *wt, text_stream *name) {
+	weave_plugin *existing;
+	LOOP_OVER_LINKED_LIST(existing, weave_plugin, wt->plugins)
+		if (Str::eq_insensitive(name, existing->plugin_name))
+			return;
+	weave_plugin *wp = WeavePlugins::new(name);
+	ADD_TO_LINKED_LIST(wp, weave_plugin, wt->plugins);
+}
 
 @ After every swarm, we rebuild the index. We first try for a template called
 |chaptered-index.html| or |unchaptered-index.html|, then fall back on a

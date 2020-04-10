@@ -43,6 +43,7 @@ case, |_array_MT| appended. MT stands for "memory type".
 @e theme_tag_MT
 @e weave_format_MT
 @e weave_pattern_MT
+@e weave_plugin_MT
 @e weave_target_MT
 @e web_MT
 @e writeme_asset_MT
@@ -80,6 +81,7 @@ ALLOCATE_INDIVIDUALLY(text_literal)
 ALLOCATE_INDIVIDUALLY(theme_tag)
 ALLOCATE_INDIVIDUALLY(weave_format)
 ALLOCATE_INDIVIDUALLY(weave_pattern)
+ALLOCATE_INDIVIDUALLY(weave_plugin)
 ALLOCATE_INDIVIDUALLY(weave_target)
 ALLOCATE_INDIVIDUALLY(web)
 ALLOCATE_INDIVIDUALLY(writeme_asset)

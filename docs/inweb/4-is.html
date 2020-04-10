@@ -6,6 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		
 	</head>
 	<body>
 		<nav role="navigation">
@@ -831,7 +832,7 @@ often one or both is undefined.
         <span class="plain">&lt;cardinal-number&gt; + &lt;cardinal-number&gt; ==&gt; R[1] + R[2]</span>
 </pre>
 
-<p class="inwebparagraph">where the composition function would be called on a match of, say, "5 + 7",
+<p class="inwebparagraph">where the composition function would be called on a match of, say, "\(5 + 7\)",
 and would find the values 5 and 7 in <code class="display"><span class="extract">R[1]</span></code> and <code class="display"><span class="extract">R[2]</span></code> respectively. It would
 then add these together, store 12 in <code class="display"><span class="extract">*X</span></code>, and return <code class="display"><span class="extract">TRUE</span></code> to show that all
 was well.
@@ -1466,6 +1467,20 @@ exists. We watch for it here:
 <hr class="tocbar">
 <ul class="toc"><li><a href="4-cl.html">Back to 'C-Like Languages'</a></li><li><i>(This section ends Chapter 4: Languages.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: <b>'$', '$'], ['\\(', '\\)'</b>
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+
 		</main>
 	</body>
 </html>

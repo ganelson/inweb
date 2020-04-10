@@ -6,6 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		
 	</head>
 	<body>
 		<nav role="navigation">
@@ -719,27 +720,81 @@ web; this overrides the ones built in. If your service is, say, <code class="dis
 then the file would be <code class="display"><span class="extract">W/Embedding/WebTubeo.html</span></code>.
 </p>
 
-<p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Mathematics notation. </b>Mathematical formulae can be typed in TeX notation between dollar signs,
-as usual for TeX formulae. This can of course only really be rendered if
-the weave is to TeX, but a few very approximate attempts are made by Inweb
-so that the HTML version may also make sense. For example, <code class="display"><span class="extract">$x \leq y$</span></code> would
-be rendered in HTML as <code class="display"><span class="extract">x &lt;= y</span></code>.
+<p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Mathematics notation. </b>Literate programming is a good technique to justify code which hangs on
+unobvious pieces of mathematics or computer science, and which must therefore
+be explained carefully. Formulae or equations are a real convenience for that.
 </p>
 
-<p class="inwebparagraph">In some webs, this will be inconvenient, because the dollar sign is wanted
-for something else (such as money, or hexadecimal). So this feature can be
-deactivated by writing the following in the Contents section of a web:
+<p class="inwebparagraph">For example, it's known that the average running time of Euclid's GCD
+algorithm on \(a\) and numbers coprime to \(a\) is:
+$$ \tau (a)={\frac {12}{\pi ^{2}}}\ln 2\ln a+C+O(a^{-1/6-\varepsilon }) $$
+where \(C\) is Porter's constant,
+$$ C=-{\frac {1}{2}}+{\frac {6\ln 2}{\pi ^{2}}}\left(4\gamma -{\frac {24}{\pi ^{2}}}\zeta '(2)+3\ln 2-2\right)\approx 1.467 $$
+which involves evaluating Euler's constant \(\gamma\) and the first derivative
+of the Riemann zeta function \(\zeta'(z)\) at \(z=2\).
+</p>
+
+<p class="inwebparagraph">That passage was achieved by typing this as the Inweb source:
+</p>
+
+<pre class="display">
+        <span class="plain">For example, it's known that the average running time of Euclid's GCD</span>
+        <span class="plain">algorithm on $a$ and numbers coprime to $a$ is:</span>
+        <span class="plain">$$ \tau (a)={\frac {12}{\pi ^{2}}}\ln 2\ln a+C+O(a^{-1/6-\varepsilon }) $$</span>
+        <span class="plain">where $C$ is Porter's constant,</span>
+        <span class="plain">$$ C=-{\frac {1}{2}}+{\frac {6\ln 2}{\pi ^{2}}}</span>
+        <span class="plain">\left(4\gamma -{\frac {24}{\pi^{2}}}\zeta '(2)+3\ln 2-2\right)\approx 1.467 $$</span>
+        <span class="plain">which involves evaluating Euler's constant $\gamma$ and the first derivative</span>
+        <span class="plain">of the Riemann zeta function $\zeta'(z)$ at $z=2$.</span>
+</pre>
+
+<p class="inwebparagraph">Mathematical formulae can be typed in TeX notation between dollar signs,
+as usual for TeX formulae.
+</p>
+
+<p class="inwebparagraph">The rendering is done by default via the MathJax3 project, full details
+of which can be found at: <a href="https://docs.mathjax.org/en/latest/index.html
+" class="external">https://docs.mathjax.org/en/latest/index.html
+</a></p>
+
+<p class="inwebparagraph">Inweb in fact managed this by including a "plugin" with the HTML page you
+are now reading: a plugin called <code class="display"><span class="extract">MathJax3</span></code>. Plugins are simply small
+fragments of HTML added to the head of a page, and usually contain Javascript
+code needed for special effects in it. To use a different renderer, simply
+change the value of <code class="display"><span class="extract">TeX Mathematics Plugin</span></code> for your web (by default it is
+set to <code class="display"><span class="extract">MathJax3</span></code>); or if you don't want to use Javascript at all, change
+this to <code class="display"><span class="extract">None</span></code>, but then Inweb can really only make the grossest approximation
+of what you would like to achieve.
+</p>
+
+<p class="inwebparagraph">In some webs, TeX notation is an unwanted nuisance. So this feature can be
+deactivated entirely by writing the following in the Contents section of a web:
 </p>
 
 <pre class="display">
         <span class="element">TeX Mathematics Notation</span><span class="plain">:</span><span class="string"> Off</span>
 </pre>
 
-<p class="inwebparagraph"></p>
+<p class="inwebparagraph">(This is always <code class="display"><span class="extract">On</span></code>, the default, or <code class="display"><span class="extract">Off</span></code>.)
+</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="M-wtaw.html">Back to 'Webs, Tangling and Weaving'</a></li><li><a href="M-tid.html">Continue with 'The InC Dialect'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+MathJax = {
+  tex: {
+    inlineMath: <b>'$', '$'], ['\\(', '\\)'</b>
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+
 		</main>
 	</body>
 </html>

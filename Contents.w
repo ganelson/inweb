@@ -63,6 +63,7 @@ Chapter 5: Formats
 	Plain Text Format
 	TeX Format
 	HTML Formats
+	Weave Plugins
 	Running Through TeX
 
 Chapter 6: Extras

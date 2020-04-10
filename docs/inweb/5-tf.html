@@ -6,6 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		
 	</head>
 	<body>
 		<nav role="navigation">
@@ -67,7 +68,7 @@
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">POST_PROCESS_POS_MTID</span><span class="plain">, </span><span class="functiontext">TeX::post_process_DVI</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">POST_PROCESS_POS_MTID</span><span class="plain">, </span><span class="functiontext">TeX::post_process_report</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">POST_PROCESS_SUBSTITUTE_POS_MTID</span><span class="plain">, </span><span class="functiontext">TeX::post_process_substitute</span><span class="plain">);</span>
-        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">PRESERVE_MATH_MODE_FOR_MTID</span><span class="plain">, </span><span class="functiontext">TeX::yes</span><span class="plain">);</span>
+        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">PRESERVE_MATH_MODE_FOR_MTID</span><span class="plain">, </span><span class="functiontext">TeX::preserve_math_mode</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -89,7 +90,7 @@
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">POST_PROCESS_POS_MTID</span><span class="plain">, </span><span class="functiontext">TeX::post_process_PDF</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">POST_PROCESS_SUBSTITUTE_POS_MTID</span><span class="plain">, </span><span class="functiontext">TeX::post_process_substitute</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">INDEX_PDFS_POS_MTID</span><span class="plain">, </span><span class="functiontext">TeX::yes</span><span class="plain">);</span>
-        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">PRESERVE_MATH_MODE_FOR_MTID</span><span class="plain">, </span><span class="functiontext">TeX::yes</span><span class="plain">);</span>
+        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">PRESERVE_MATH_MODE_FOR_MTID</span><span class="plain">, </span><span class="functiontext">TeX::preserve_math_mode</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -123,7 +124,7 @@
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">TAIL_FOR_MTID</span><span class="plain">, </span><span class="functiontext">TeX::tail</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">PREFORM_DOCUMENT_FOR_MTID</span><span class="plain">, </span><span class="functiontext">TeX::preform_document</span><span class="plain">);</span>
         <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">POST_PROCESS_SUBSTITUTE_POS_MTID</span><span class="plain">, </span><span class="functiontext">TeX::post_process_substitute</span><span class="plain">);</span>
-        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">PRESERVE_MATH_MODE_FOR_MTID</span><span class="plain">, </span><span class="functiontext">TeX::yes</span><span class="plain">);</span>
+        <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">wf</span><span class="plain">, </span><span class="constant">PRESERVE_MATH_MODE_FOR_MTID</span><span class="plain">, </span><span class="functiontext">TeX::preserve_math_mode</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -134,14 +135,21 @@
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TeX::yes</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TeX::preserve_math_mode</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
+        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">matter</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">id</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
+    <span class="plain">}</span>
+
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TeX::yes</span><span class="plain">(</span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">self</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function TeX::yes is used in <a href="#SP1_2">&#167;1.2</a>, <a href="#SP1_3">&#167;1.3</a>, <a href="#SP1_1_1">&#167;1.1.1</a>.</p>
+<p class="endnote">The function TeX::preserve_math_mode is used in <a href="#SP1_2">&#167;1.2</a>, <a href="#SP1_3">&#167;1.3</a>, <a href="#SP1_1_1">&#167;1.1.1</a>.</p>
+
+<p class="endnote">The function TeX::yes is used in <a href="#SP1_3">&#167;1.3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
