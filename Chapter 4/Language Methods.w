@@ -393,18 +393,7 @@ These are really a little miscellaneous, but they all have to do with looking
 at the code in a web and working out what's going on, rather than producing
 any weave or tangle output.
 
-This one provides details to add to the section catalogue if |-structures|
-or |-functions| is used at the command line:
-
-@e CATALOGUE_ANA_MTID
-
-=
-VMETHOD_TYPE(CATALOGUE_ANA_MTID, programming_language *pl, section *S, int functions_too)
-void LanguageMethods::catalogue(programming_language *pl, section *S, int functions_too) {
-	VMETHOD_CALL(pl, CATALOGUE_ANA_MTID, S, functions_too);
-}
-
-@ The "preweave analysis" is an opportunity to look through the code before
+The "preweave analysis" is an opportunity to look through the code before
 any weaving of it occurs. It's never called on a tangle run. These methods
 are called first and last in the process, respectively. (What happens in
 between is essentially that Inweb looks for identifiers, for later syntax

@@ -361,7 +361,8 @@ For example,
 	...which is essential in order to restore the state of
 =
 
-@ URLs in the web are automatically recognised and a weave to HTML will
+@h Links.
+URLs in the web are automatically recognised and a weave to HTML will
 make them into links. For example:
 = (text)
 	For further reading, see: https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships
@@ -381,7 +382,8 @@ produces:
 	Compare: https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes
 =
 
-@ Cross-references are also allowed. These are normally written within |//|
+@h Cross-references.
+These are like links, but internal. These are normally written within |//|
 signs and are only available in the commentary of a web. They allow us to
 place cross-references like so:
 = (text)
@@ -406,7 +408,7 @@ Errors are thrown if these references are in any way ambiguous. They are not
 case sensitive.
 
 Cross-references also work inside text extracts marked as |hyperlinked|.
-= (text)
+= (text as Inweb)
 	= (hyperlinked text)
 		See the //Manual// for more on this.
 	=
@@ -426,22 +428,31 @@ It's also possible to disable cross-referencing entirely with:
 Cross-References Notation: Off
 =
 
-@ Pictures must be in PNG, JPG or PDF format and can be included with lines
-like:
+@h Figures.
+Images to be included in weaves of a web are called "Figures", as they
+would be in a printed book. These images should ideally be in PNG, JPG or PDF
+format and placed in a subdirectory of the web called |Figures|: for instance,
+the weaver would seek |Fig_2_3.pdf| at pathname |Figures/Fig_2_3.pdf|.
+
+To embed an image, we write like so:
 = (text as Inweb)
-	[[Fig_0_1.pdf]]
-	[[Whatever.jpg width 6cm]]
-	[[Something.pdf height 2cm]]
+	= (figure mars.jpg)
 =
-In the latter examples, we constrain the width or the height of the image
+With results like so:
+= (figure mars.jpg)
+
+Inweb also has some limited ability to control the dimensions of an image as it
+would be used in a PDF via TeX:
+= (text as Inweb)
+	= (figure Whatever.jpg width 6cm)
+	= (figure Something.jpg height 2cm)
+=
+In these examples, we constrain the width or the height of the image
 to be exactly that given: it is scaled accordingly. (They can't both be
 constrained, so you can't change the aspect ratio.)
 
-The weaver expects that any pictures needed will be stored in a subdirectory of
-the web called |Figures|: for instance, the weaver would seek |Fig_2_3.pdf| at
-pathname |Figures/Fig_2_3.pdf|.
-
-@ Mathematical formulae can be typed in TeX notation between dollar signs,
+@h Mathematics notation.
+Mathematical formulae can be typed in TeX notation between dollar signs,
 as usual for TeX formulae. This can of course only really be rendered if
 the weave is to TeX, but a few very approximate attempts are made by Inweb
 so that the HTML version may also make sense. For example, |$x \leq y$| would

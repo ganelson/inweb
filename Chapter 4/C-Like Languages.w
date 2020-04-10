@@ -13,7 +13,6 @@ void CLike::make_c_like(programming_language *pl) {
 	METHOD_ADD(pl, ADDITIONAL_EARLY_MATTER_TAN_MTID, CLike::additional_early_matter);
 	METHOD_ADD(pl, ADDITIONAL_PREDECLARATIONS_TAN_MTID, CLike::additional_predeclarations);
 
-	METHOD_ADD(pl, CATALOGUE_ANA_MTID, CLike::catalogue);
 	METHOD_ADD(pl, EARLY_PREWEAVE_ANALYSIS_ANA_MTID, CLike::analyse_code);
 	METHOD_ADD(pl, LATE_PREWEAVE_ANALYSIS_ANA_MTID, CLike::post_analysis);
 }
@@ -36,7 +35,6 @@ source line being scanned lies within.
 =
 int cc_sp = 0;
 source_line *cc_stack[MAX_CONDITIONAL_COMPILATION_STACK];
-c_structure *first_cst_alphabetically = NULL;
 
 void CLike::further_parsing(programming_language *self, web *W) {
 	@<Find every typedef struct in the tangle@>;
@@ -101,77 +99,19 @@ takes care of it automatically.
 		match_results mr = Regexp::create_mr();
 
 		if (Regexp::match(&mr, L->text, L"typedef struct (%i+) %c*{%c*")) {
-			@<Attach a structure to this source line@>;
+			current_str = Structures::new_struct(W, mr.exp[0], L);
 			Tags::add_by_name(L->owning_paragraph, I"Structures");
 		} else if ((Str::get_first_char(L->text) == '}') && (current_str)) {
 			current_str->typedef_ends = L;
 			current_str = NULL;
 		} else if ((current_str) && (current_str->typedef_ends == NULL)) {
-			@<Work through the a line in the structure definition@>;
+			@<Work through a line in the structure definition@>;
 		} else if ((Regexp::match(&mr, L->text, L"typedef %c+")) &&
 			(Regexp::match(&mr, L->text, L"%c+##%c+") == FALSE)) {
 			if (L->owning_paragraph->placed_very_early == FALSE)
 				L->category = TYPEDEF_LCAT;
 		}
 		Regexp::dispose_of(&mr);
-	}
-
-@ For each |typedef struct| we find, we will make one of these:
-
-=
-typedef struct c_structure {
-	struct text_stream *structure_name;
-	int tangled; /* whether the structure definition has been tangled out */
-	struct source_line *typedef_begins; /* opening line of |typedef| */
-	struct source_line *typedef_ends; /* closing line, where |}| appears */
-	struct linked_list *incorporates; /* of |c_structure| */
-	struct linked_list *elements; /* of |structure_element| */
-	struct c_structure *next_cst_alphabetically;
-	MEMORY_MANAGEMENT
-} c_structure;
-
-@<Attach a structure to this source line@> =
-	c_structure *str = CREATE(c_structure);
-	@<Initialise the C structure structure@>;
-	Analyser::mark_reserved_word_for_section(L->owning_section, str->structure_name, RESERVED_COLOUR);
-	@<Add this to the lists for its web and its paragraph@>;
-	@<Insertion-sort this into the alphabetical list of all structures found@>;
-	current_str = str;
-
-@<Initialise the C structure structure@> =
-	str->structure_name = Str::duplicate(mr.exp[0]);
-	str->typedef_begins = L;
-	str->tangled = FALSE;
-	str->typedef_ends = NULL;
-	str->incorporates = NEW_LINKED_LIST(c_structure);
-	str->elements = NEW_LINKED_LIST(structure_element);
-
-@<Add this to the lists for its web and its paragraph@> =
-	ADD_TO_LINKED_LIST(str, c_structure, W->c_structures);
-	ADD_TO_LINKED_LIST(str, c_structure, L->owning_paragraph->structures);
-
-@<Insertion-sort this into the alphabetical list of all structures found@> =
-	str->next_cst_alphabetically = NULL;
-	if (first_cst_alphabetically == NULL) first_cst_alphabetically = str;
-	else {
-		int placed = FALSE;
-		c_structure *last = NULL;
-		for (c_structure *seq = first_cst_alphabetically; seq;
-			seq = seq->next_cst_alphabetically) {
-			if (Str::cmp(str->structure_name, seq->structure_name) < 0) {
-				if (seq == first_cst_alphabetically) {
-					str->next_cst_alphabetically = first_cst_alphabetically;
-					first_cst_alphabetically = str;
-				} else {
-					last->next_cst_alphabetically = str;
-					str->next_cst_alphabetically = seq;
-				}
-				placed = TRUE;
-				break;
-			}
-			last = seq;
-		}
-		if (placed == FALSE) last->next_cst_alphabetically = str;
 	}
 
 @ At this point we're reading a line within the structure's definition; for
@@ -181,7 +121,7 @@ the sake of an illustrative example, let's suppose that line is:
 =
 We need to extract the element name, |val|, and make a note of it.
 
-@<Work through the a line in the structure definition@> =
+@<Work through a line in the structure definition@> =
 	TEMPORARY_TEXT(p);
 	Str::copy(p, L->text);
 	Str::trim_white_space(p);
@@ -194,7 +134,7 @@ We need to extract the element name, |val|, and make a note of it.
 			match_results mr = Regexp::create_mr();
 			TEMPORARY_TEXT(elname);
 			@<Copy the element name into elname@>;
-			@<Record the element@>;
+			Structures::new_element(current_str, elname, L);
 			DISCARD_TEXT(elname);
 			Regexp::dispose_of(&mr);
 		}
@@ -238,32 +178,6 @@ down to just the identifier characters at the front, i.e., to |val|.
 	Str::substr(elname, pos, Str::end(p));
 	if (Regexp::match(&mr, elname, L"(%i+)%c*")) Str::copy(elname, mr.exp[0]);
 
-@ Now we create an instance of |structure_element| to record the existence
-of the element |val|, and add it to the linked list of elements of the
-structure being defined.
-
-In InC, only, certain element names used often in Inform's source code are
-given mildly special treatment. This doesn't amount to much. |allow_sharing|
-has no effect on tangling, so it doesn't change the program. It simply
-affects the reports in the woven code about where structures are used.
-
-=
-typedef struct structure_element {
-	struct text_stream *element_name;
-	struct source_line *element_created_at;
-	int allow_sharing;
-	MEMORY_MANAGEMENT
-} structure_element;
-
-@<Record the element@> =
-	Analyser::mark_reserved_word_for_section(L->owning_section, elname, ELEMENT_COLOUR);
-	structure_element *elt = CREATE(structure_element);
-	elt->element_name = Str::duplicate(elname);
-	elt->allow_sharing = FALSE;
-	elt->element_created_at = L;
-	if (LanguageMethods::share_element(W->main_language, elname)) elt->allow_sharing = TRUE;
-	ADD_TO_LINKED_LIST(elt, structure_element, current_str->elements);
-
 @h Structure dependency.
 We say that S depends on T if |struct S| has an element whose type is
 |struct T|. That matters because if so then |struct T| has to be defined
@@ -280,7 +194,7 @@ will not trip the switch here.
 @<Work out which structs contain which others@> =
 	c_structure *current_str;
 	LOOP_OVER(current_str, c_structure) {
-		for (source_line *L = current_str->typedef_begins;
+		for (source_line *L = current_str->structure_header_at;
 			((L) && (L != current_str->typedef_ends));
 			L = L->next_line) {
 			match_results mr = Regexp::create_mr();
@@ -354,12 +268,12 @@ forms like |static long long int| will work.
 
 @<A function definition was found@> =
 	@<Soak up further arguments from continuation lines after the declaration@>;
-	Analyser::mark_reserved_word_for_section(L->owning_section, fname, FUNCTION_COLOUR);
-	function *fn = CREATE(function);
-	@<Initialise the function structure@>;
-	@<Add the function to its paragraph and line@>;
-	if (W->main_language->supports_namespaces)
-		@<Check that the function has its namespace correctly declared@>;
+	function *fn = Structures::new_function(fname, L);
+	fn->function_arguments = Str::duplicate(arguments);
+	WRITE_TO(fn->function_type, "%S%S %S", qualifiers, ftype, asts);
+	if (Str::eq_wide_string(fn->function_name, L"isdigit")) fn->call_freely = TRUE;
+	fn->no_conditionals = cc_sp;
+	for (int i=0; i<cc_sp; i++) fn->within_conditionals[i] = cc_stack[i];
 
 @ In some cases the function's declaration runs over several lines:
 = (text as code)
@@ -389,80 +303,6 @@ reach an open brace |{|.
 	}
 	int n = Regexp::find_open_brace(arguments);
 	if (n >= 0) Str::truncate(arguments, n);
-
-@ Each function definition found results in one of these structures being made:
-
-=
-typedef struct function {
-	struct text_stream *function_name; /* e.g., |"cultivate"| */
-	struct text_stream *function_type; /* e.g., |"tree *"| */
-	struct text_stream *function_arguments; /* e.g., |"int rainfall)"|: note |)| */
-	struct source_line *function_header_at; /* where the first line of the header begins */
-	int within_namespace; /* written using InC namespace dividers */
-	int called_from_other_sections;
-	int call_freely;
-	int no_conditionals;
-	struct source_line *within_conditionals[MAX_CONDITIONAL_COMPILATION_STACK];
-	MEMORY_MANAGEMENT
-} function;
-
-@ Note that we take a snapshot of the conditional compilation stack as
-part of the function structure. We'll need it when predeclaring the function.
-
-@<Initialise the function structure@> =
-	fn->function_name = Str::duplicate(fname);
-	fn->function_arguments = Str::duplicate(arguments);
-	fn->function_type = Str::new();
-	WRITE_TO(fn->function_type, "%S%S %S", qualifiers, ftype, asts);
-	fn->within_namespace = FALSE;
-	fn->called_from_other_sections = FALSE;
-	fn->call_freely = FALSE;
-	if (Str::eq_wide_string(fn->function_name, L"isdigit")) fn->call_freely = TRUE;
-	fn->function_header_at = L;
-
-	fn->no_conditionals = cc_sp;
-	for (int i=0; i<cc_sp; i++) fn->within_conditionals[i] = cc_stack[i];
-
-@<Add the function to its paragraph and line@> =
-	paragraph *P = L->owning_paragraph;
-	if (P) ADD_TO_LINKED_LIST(fn, function, P->functions);
-	L->function_defined = fn;
-
-@<Check that the function has its namespace correctly declared@> =
-	text_stream *declared_namespace = NULL;
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, fname, L"(%c+::)%c*")) {
-		declared_namespace = mr.exp[0];
-		fn->within_namespace = TRUE;
-	} else if ((Str::eq_wide_string(fname, L"main")) && (Str::eq_wide_string(S->sect_namespace, L"Main::")))
-		declared_namespace = I"Main::";
-	if ((Str::ne(declared_namespace, S->sect_namespace)) &&
-		(L->owning_paragraph->placed_very_early == FALSE)) {
-		TEMPORARY_TEXT(err_mess);
-		if (Str::len(declared_namespace) == 0)
-			WRITE_TO(err_mess, "Function '%S' should have namespace prefix '%S'",
-				fname, S->sect_namespace);
-		else if (Str::len(S->sect_namespace) == 0)
-			WRITE_TO(err_mess, "Function '%S' declared in a section with no namespace",
-				fname);
-		else
-			WRITE_TO(err_mess, "Function '%S' declared in a section with the wrong namespace '%S'",
-				fname, S->sect_namespace);
-		Main::error_in_web(err_mess, L);
-		DISCARD_TEXT(err_mess);
-	}
-	Regexp::dispose_of(&mr);
-
-@ The following 
-
-=
-c_structure *CLike::find_structure(web *W, text_stream *name) {
-	c_structure *str;
-	LOOP_OVER_LINKED_LIST(str, c_structure, W->c_structures)
-		if (Str::eq(name, str->structure_name))
-			return str;
-	return NULL;
-}
 
 @h Subcategorisation.
 The following is called after the parser gives every line in the web a
@@ -563,14 +403,14 @@ void CLike::tangle_structure(OUTPUT_STREAM, programming_language *self, c_struct
 	LOOP_OVER_LINKED_LIST(embodied, c_structure, str->incorporates)
 		CLike::tangle_structure(OUT, self, embodied);
 	str->tangled = TRUE;
-	Tags::open_ifdefs(OUT, str->typedef_begins->owning_paragraph);
-	LanguageMethods::insert_line_marker(OUT, self, str->typedef_begins);
-	for (source_line *L = str->typedef_begins; L; L = L->next_line) {
+	Tags::open_ifdefs(OUT, str->structure_header_at->owning_paragraph);
+	LanguageMethods::insert_line_marker(OUT, self, str->structure_header_at);
+	for (source_line *L = str->structure_header_at; L; L = L->next_line) {
 		WRITE("%S\n", L->text);
 		L->suppress_tangling = TRUE;
 		if (L == str->typedef_ends) break;
 	}
-	Tags::close_ifdefs(OUT, str->typedef_begins->owning_paragraph);
+	Tags::close_ifdefs(OUT, str->structure_header_at->owning_paragraph);
 }
 
 @ Functions are rather easier to deal with. In general, if a function was
@@ -619,24 +459,7 @@ We have the opportunity here to sidestep the regular weaving algorithm, and do
 our own thing. We decline.
 
 @h Analysis.
-This implements the additional information in the |-structures| and |-functions|
-fprms of section catalogue.
-
-=
-void CLike::catalogue(programming_language *self, section *S, int functions_too) {
-	c_structure *str;
-	LOOP_OVER(str, c_structure)
-		if (str->typedef_begins->owning_section == S)
-			PRINT(" %S ", str->structure_name);
-	if (functions_too) {
-		function *fn;
-		LOOP_OVER(fn, function)
-			if (fn->function_header_at->owning_section == S)
-				PRINT("\n                     %S", fn->function_name);
-	}
-}
-
-@ Having found all those functions and structure elements, we make sure they
+Having found all those functions and structure elements, we make sure they
 are all known to Inweb's hash table of interesting identifiers:
 
 =

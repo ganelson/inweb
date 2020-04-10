@@ -181,19 +181,19 @@ at us; but we don't weave them into the output, that's for sure.
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, figname, L"(%d+)cm: (%c+)")) {
 		if (S->md->using_syntax > V1_SYNTAX)
-			Parser::wrong_version(S->md->using_syntax, L, "[[Figure: Xcm:...]]", V1_SYNTAX);
+			Parser::wrong_version(S->md->using_syntax, L, "Figure: Xcm:...", V1_SYNTAX);
 		Formats::figure(OUT, wv, mr.exp[1], Str::atoi(mr.exp[0], 0), -1, NULL);
 	} else if (Regexp::match(&mr, figname, L"(%c+) width (%d+)cm")) {
 		if (S->md->using_syntax < V2_SYNTAX)
-			Parser::wrong_version(S->md->using_syntax, L, "[[F width Xcm]]", V2_SYNTAX);
+			Parser::wrong_version(S->md->using_syntax, L, "F width Xcm", V2_SYNTAX);
 		Formats::figure(OUT, wv, mr.exp[0], Str::atoi(mr.exp[1], 0), -1, NULL);
 	} else if (Regexp::match(&mr, figname, L"(%c+) height (%d+)cm")) {
 		if (S->md->using_syntax < V2_SYNTAX)
-			Parser::wrong_version(S->md->using_syntax, L, "[[F height Xcm]]", V2_SYNTAX);
+			Parser::wrong_version(S->md->using_syntax, L, "F height Xcm", V2_SYNTAX);
 		Formats::figure(OUT, wv, mr.exp[0], -1, Str::atoi(mr.exp[1], 0), NULL);
 	} else if (Regexp::match(&mr, figname, L"(%c+) as (%c+)")) {
 		if (S->md->using_syntax < V2_SYNTAX)
-			Parser::wrong_version(S->md->using_syntax, L, "[[F as L]]", V2_SYNTAX);
+			Parser::wrong_version(S->md->using_syntax, L, "F as L", V2_SYNTAX);
 		programming_language *pl = Languages::find_by_name(mr.exp[1], W);
 		Formats::figure(OUT, wv, mr.exp[0], -1, -1, pl);
 	} else {

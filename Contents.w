@@ -50,6 +50,7 @@ Chapter 4: Languages
 "Providing support for syntax-colouring and for better organisation of code
 in different programming languages."
 	Programming Languages
+	Structures and Functions
 	Language Methods
 	ACME Support
 	The Painter

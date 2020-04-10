@@ -9,7 +9,7 @@ number greater than 2 can be written this way. This remains open, though
 every even number is a sum of at most six primes (Ramaré, 1995) and every
 odd number is a sum of at most five (Tao, 2012).
 
-[[Letter.jpg height 10cm]]
+= (figure Letter.jpg height 10cm)
 
 Computer verification has been made up to around $10^{18}$, but by rather better
 methods.

@@ -278,7 +278,7 @@ would be "elctrcty", since we don't count "y" as a vowel here.
 
 @ Version 1 syntax was cluttered up with a number of hardly-used markup
 syntaxes called "commands", written in double squared brackets |[[Thus]]|.
-In version 2, this notation is used only for figures.
+In version 2, this notation is never used.
 
 @<Parse the line as a possible Inweb command@> =
 	match_results mr = Regexp::create_mr();
@@ -309,13 +309,7 @@ In version 2, this notation is used only for figures.
 			Tags::add_by_name(L->owning_paragraph, I"Figures");
 			L->command_code = FIGURE_CMD;
 		} else {
-			if (S->md->using_syntax >= V2_SYNTAX) {
-				Tags::add_by_name(L->owning_paragraph, I"Figures");
-				L->command_code = FIGURE_CMD;
-				Str::copy(L->text_operand, full_command);
-			} else {
-				Main::error_in_web(I"unknown [[command]]", L);
-			}
+			Main::error_in_web(I"unknown [[command]]", L);
 		}
 		L->is_commentary = TRUE;
 		DISCARD_TEXT(command_text);
@@ -421,6 +415,14 @@ division in the current section.
 			@<Make plainer@>;
 			code_pl_for_body = NULL;
 			@<Spool from file@>;
+		} else if ((current_paragraph) &&
+			(Regexp::match(&mr2, mr.exp[0], L"%(figure (%c+)%)"))) {
+			Tags::add_by_name(L->owning_paragraph, I"Figures");
+			L->command_code = FIGURE_CMD;
+			L->category = COMMAND_LCAT;
+			code_lcat_for_body = COMMENT_BODY_LCAT;
+			L->text_operand = Str::duplicate(mr2.exp[0]);
+			comment_mode = TRUE;
 		} else {
 			Main::error_in_web(I"unknown bracketed annotation", L);
 		}
