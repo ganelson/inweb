@@ -163,7 +163,7 @@ being accessed directly.
 
 The current state of the processor is recorded in the following.
 
-@d MAX_TEMPLATE_LINES 256 /* maximum number of lines in template */
+@d MAX_TEMPLATE_LINES 8192 /* maximum number of lines in template */
 @d CI_STACK_CAPACITY 8 /* maximum recursion of chapter/section iteration */
 
 =

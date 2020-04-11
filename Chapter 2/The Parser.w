@@ -818,3 +818,49 @@ void Parser::wrong_version(int using, source_line *L, char *feature, int need) {
 	Main::error_in_web(warning, L);
 	DISCARD_TEXT(warning);
 }
+
+@h Footnote notation.
+
+=
+int Parser::detect_footnote(web *W, text_stream *matter, text_stream *before,
+	text_stream *cue, text_stream *after) {
+	text_stream *fn_on_notation =
+		Bibliographic::get_datum(W->md, I"Footnote Begins Notation");
+	text_stream *fn_off_notation =
+		Bibliographic::get_datum(W->md, I"Footnote Ends Notation");
+	if (Str::ne(fn_on_notation, I"Off")) {
+		int N1 = Str::len(fn_on_notation);
+		int N2 = Str::len(fn_off_notation);
+		if ((N1 > 0) && (N2 > 0))
+			for (int i=0; i < Str::len(matter); i++) {
+				if (Str::includes_at(matter, i, fn_on_notation)) {
+					int j = i + N1 + 1;
+					while (j < Str::len(matter)) {
+						if (Str::includes_at(matter, j, fn_off_notation)) {
+							TEMPORARY_TEXT(b);
+							TEMPORARY_TEXT(c);
+							TEMPORARY_TEXT(a);
+							Str::substr(b, Str::start(matter), Str::at(matter, i));
+							Str::substr(c, Str::at(matter, i + N1), Str::at(matter, j));
+							Str::substr(a, Str::at(matter, j + N2), Str::end(matter));
+							int allow = TRUE;
+							LOOP_THROUGH_TEXT(pos, c)
+								if (Characters::isdigit(Str::get(pos)) == FALSE)
+									allow = FALSE;
+							if (allow) {
+								Str::clear(before); Str::copy(before, b);
+								Str::clear(cue); Str::copy(cue, c);
+								Str::clear(after); Str::copy(after, a);
+							}
+							DISCARD_TEXT(b);
+							DISCARD_TEXT(c);
+							DISCARD_TEXT(a);
+							if (allow) return TRUE;
+						}
+						j++;
+					}			
+				}
+			}
+	}
+	return FALSE;
+}

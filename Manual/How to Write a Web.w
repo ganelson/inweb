@@ -502,7 +502,8 @@ For example, it's known that the average running time of Euclid's GCD
 algorithm on $a$ and numbers coprime to $a$ is:
 $$ \tau (a)={\frac {12}{\pi ^{2}}}\ln 2\ln a+C+O(a^{-1/6-\varepsilon }) $$
 where $C$ is Porter's constant,
-$$ C=-{\frac {1}{2}}+{\frac {6\ln 2}{\pi ^{2}}}\left(4\gamma -{\frac {24}{\pi ^{2}}}\zeta '(2)+3\ln 2-2\right)\approx 1.467 $$
+$$ C=-{\frac {1}{2}}+{\frac {6\ln 2}{\pi ^{2}}}
+\left(4\gamma - {\frac {24}{\pi ^{2}}}\zeta'(2)+3\ln 2-2\right)\approx 1.467 $$
 which involves evaluating Euler's constant $\gamma$ and the first derivative
 of the Riemann zeta function $\zeta'(z)$ at $z=2$.
 
@@ -513,7 +514,7 @@ That passage was achieved by typing this as the Inweb source:
 	$$ \tau (a)={\frac {12}{\pi ^{2}}}\ln 2\ln a+C+O(a^{-1/6-\varepsilon }) $$
 	where $C$ is Porter's constant,
 	$$ C=-{\frac {1}{2}}+{\frac {6\ln 2}{\pi ^{2}}}
-	\left(4\gamma -{\frac {24}{\pi^{2}}}\zeta '(2)+3\ln 2-2\right)\approx 1.467 $$
+	\left(4\gamma - {\frac {24}{\pi^{2}}}\zeta'(2)+3\ln 2-2\right)\approx 1.467 $$
 	which involves evaluating Euler's constant $\gamma$ and the first derivative
 	of the Riemann zeta function $\zeta'(z)$ at $z=2$.
 =
@@ -538,3 +539,52 @@ deactivated entirely by writing the following in the Contents section of a web:
 	TeX Mathematics Notation: Off
 =
 (This is always |On|, the default, or |Off|.)
+
+@h Footnotes.
+Not everyone likes footnotes,[1] but sometimes they're a tidy way to make
+references.[2]
+
+[1] But see Anthony Grafton, "The Footnote: A Curious History" (Harvard
+University Press, 1999).
+[2] For example, to cite Donald Knuth, "Evaluation of Porter's constant",
+Computers & Mathematics with Applications, 2, 137-39 (1976).
+
+@ The content of that sentence was typed as follows:
+= (text as Inweb)
+	Not everyone likes footnotes,[1] but sometimes they're a tidy way to make
+	references.[2]
+
+	[1] But see Anthony Grafton, "The Footnote: A Curious History" (Harvard
+	University Press, 1999).
+	[2] For example, to cite Donald Knuth, "Evaluation of Porter's constant",
+	Computers & Mathematics with Applications, 2, 137-39 (1976).
+=
+If you're reading this as a web page (with Javascript on), then you should
+have seen clickable footnote blobs, which reveal the text. If Javascript is
+off, there's a more conventionally textual presentation.
+
+These blob-footnotes are fine for snarky asides or quick references, but long
+discursive notes need more space, so if you intend to use those then you
+should probably turn this rendering off altogether:
+= (text as Inweb)
+	Footnotes Plugin: None
+=
+Footnotes are otherwise rendered by the |Bigfoot| plugin, which is the default
+value of this; its big feet unfortunately tread on the |MathJax3| plugin, so
+right now it's not possible to have mathematics in a footnote when |Bigfoot|
+is in use.
+
+@ Once again, notation may be an issue, and so it's controllable. By default,
+we have:
+= (text as Inweb)
+	Footnote Begins Notation: [
+	Footnote Ends Notation: ]
+=
+but if you need squares for something else in your commentary, then perhaps:
+= (text as Inweb)
+	Footnote Begins Notation: [fn
+	Footnote Ends Notation: ]
+=
+would be sensible. The "cue" between these notations is required to be a
+string of digits; each must occur just once in its section; and each must
+have a text and a cue which match up correctly.

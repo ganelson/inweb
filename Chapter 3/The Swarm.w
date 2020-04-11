@@ -82,6 +82,12 @@ typedef struct weave_target {
 	struct linked_list *breadcrumbs; /* non-standard breadcrumb trail, if any */
 	struct filename *navigation; /* navigation links, or |NULL| if not supplied */
 	struct linked_list *plugins; /* of |weave_plugin|: these are for HTML extensions */
+
+	/* used for workspace during an actual weave: */
+	struct source_line *current_weave_line;
+	struct linked_list *footnotes_cued; /* of |text_stream| */
+	struct linked_list *footnotes_written; /* of |text_stream| */
+	struct text_stream *current_footnote;
 	MEMORY_MANAGEMENT
 } weave_target;
 
@@ -102,6 +108,11 @@ typedef struct weave_target {
 	wt->plugins = NEW_LINKED_LIST(weave_plugin);
 	if (Reader::web_has_one_section(W)) wt->self_contained = TRUE;
 	Str::copy(wt->cover_sheet_to_use, I"cover-sheet");
+	
+	wt->current_weave_line = NULL;
+	wt->footnotes_cued = NEW_LINKED_LIST(text_stream);
+	wt->footnotes_written = NEW_LINKED_LIST(text_stream);
+	wt->current_footnote = Str::new();
 
 	int has_content = FALSE;
 	chapter *C;

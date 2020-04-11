@@ -121,6 +121,12 @@ the call comes from Program Control).
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">breadcrumbs</span><span class="plain">; </span><span class="comment"> non-standard breadcrumb trail, if any</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">navigation</span><span class="plain">; </span><span class="comment"> navigation links, or <code class="display"><span class="extract">NULL</span></code> if not supplied</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">plugins</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">weave_plugin</span></code>: these are for HTML extensions</span>
+
+        <span class="comment"> used for workspace during an actual weave:</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">current_weave_line</span><span class="plain">;</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">footnotes_cued</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">text_stream</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">footnotes_written</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">text_stream</span></code></span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">current_footnote</span><span class="plain">;</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">weave_target</span><span class="plain">;</span>
 </pre>
@@ -151,6 +157,11 @@ the call comes from Program Control).
         <span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">plugins</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">weave_plugin</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Reader::web_has_one_section</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">)) </span><span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">self_contained</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">cover_sheet_to_use</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"cover-sheet"</span><span class="plain">);</span>
+
+        <span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">current_weave_line</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">footnotes_cued</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain">);</span>
+        <span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">footnotes_written</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain">);</span>
+        <span class="identifier">wt</span><span class="plain">-&gt;</span><span class="element">current_footnote</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
 
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">has_content</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">chapter</span><span class="plain"> *</span><span class="identifier">C</span><span class="plain">;</span>
@@ -285,7 +296,7 @@ and details of any cover-sheet to use.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Swarm::ensure_plugin is used in 5/hf (<a href="5-hf.html#SP6">&#167;6</a>).</p>
+<p class="endnote">The function Swarm::ensure_plugin is used in 5/hf (<a href="5-hf.html#SP6">&#167;6</a>, <a href="5-hf.html#SP13">&#167;13</a>, <a href="5-hf.html#SP14">&#167;14</a>, <a href="5-hf.html#SP15">&#167;15</a>).</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>After every swarm, we rebuild the index. We first try for a template called
 <code class="display"><span class="extract">chaptered-index.html</span></code> or <code class="display"><span class="extract">unchaptered-index.html</span></code>, then fall back on a

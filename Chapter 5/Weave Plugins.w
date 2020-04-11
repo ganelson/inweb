@@ -20,14 +20,19 @@ weave_plugin *WeavePlugins::new(text_stream *name) {
 
 void WeavePlugins::include(OUTPUT_STREAM, web *W, weave_plugin *wp,
 	weave_pattern *pattern) {
+	pathname *P1 = Pathnames::subfolder(W->md->path_to_web, I"Plugins");
+	pathname *P2 = Pathnames::subfolder(path_to_inweb, I"Plugins");
+		
 	TEMPORARY_TEXT(embed_leaf);
+	TEMPORARY_TEXT(css_leaf);
 	WRITE_TO(embed_leaf, "%S.html", wp->plugin_name);
-	filename *F = Filenames::in_folder(	
-		Pathnames::subfolder(W->md->path_to_web, I"Plugins"), embed_leaf);
-	if (TextFiles::exists(F) == FALSE)
-		F = Filenames::in_folder(	
-			Pathnames::subfolder(path_to_inweb, I"Plugins"), embed_leaf);
+	WRITE_TO(css_leaf, "%S.css", wp->plugin_name);
+	filename *F = P1?(Filenames::in_folder(P1, embed_leaf)):NULL;
+	if (TextFiles::exists(F) == FALSE) F = P2?(Filenames::in_folder(P2, embed_leaf)):NULL;
+	filename *CF = P1?(Filenames::in_folder(P1, css_leaf)):NULL;
+	if (TextFiles::exists(CF) == FALSE) CF = P2?(Filenames::in_folder(P2, css_leaf)):NULL;
 	DISCARD_TEXT(embed_leaf);
+	DISCARD_TEXT(css_leaf);
 
 	if (TextFiles::exists(F) == FALSE) {
 		TEMPORARY_TEXT(err);
@@ -36,4 +41,9 @@ void WeavePlugins::include(OUTPUT_STREAM, web *W, weave_plugin *wp,
 		return;
 	}
 	Indexer::run(W, I"", F, NULL, OUT, pattern, NULL, NULL, NULL, FALSE, TRUE);
+	if (TextFiles::exists(CF)) {
+		WRITE("<link href=\"%S.css\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\">\n",
+			wp->plugin_name);
+		Patterns::copy_file_into_weave(W, CF);
+	}
 }

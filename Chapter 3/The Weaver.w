@@ -13,8 +13,6 @@ where to put the result: and so we arrive at the front door of the routine
 |Weaver::weave_source| below.
 
 =
-source_line *current_weave_line = NULL;
-
 int Weaver::weave_source(web *W, weave_target *wv) {
 	text_stream TO_struct;
 	text_stream *OUT = &TO_struct;
@@ -57,6 +55,7 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 			LOOP_OVER_LINKED_LIST(S, section, C->sections)
 				if (Reader::range_within(S->sect_range, wv->weave_range)) {
 					latest_section = S;
+					@<Wipe the slate clean of footnotes@>;
 					LanguageMethods::begin_weave(S, wv);
 					Str::clear(state->sectionmark);
 					@<Weave this section@>;
@@ -110,12 +109,17 @@ typedef struct weaver_state {
 	state->chaptermark = Str::new();
 	state->sectionmark = Str::new();
 
+@<Wipe the slate clean of footnotes@> =
+	wv->footnotes_cued = NEW_LINKED_LIST(text_stream);
+	wv->footnotes_written = NEW_LINKED_LIST(text_stream);
+	wv->current_footnote = Str::new();
+
 @h Weaving a section.
 
 @<Weave this section@> =
 	paragraph *current_paragraph = NULL;
 	for (source_line *L = S->first_line; L; L = L->next_line) {
-		current_weave_line = L;
+		wv->current_weave_line = L;
 		if ((Tags::tagged_with(L->owning_paragraph, wv->theme_match)) &&
 			(LanguageMethods::skip_in_weaving(S->sect_language, wv, L) == FALSE)) {
 			lines_woven++;
@@ -269,6 +273,7 @@ we only have to transcribe it. But not quite!
 	@<Weave a blank line as a thin vertical skip and paragraph break@>;
 	@<Weave bracketed list indications at start of line into indentation@>;
 	@<Weave tabbed code material as a new indented paragraph@>;
+	@<Weave footnotes@>;
 	state->substantive_comment = TRUE;
 	WRITE_TO(matter, "\n");
 	Formats::text(OUT, wv, matter);
@@ -358,6 +363,44 @@ in the source is set indented in code style.
 		state->kind_of_material = REGULAR_MATERIAL;
 	}
 	Regexp::dispose_of(&mr);
+
+@<Weave footnotes@> =
+	TEMPORARY_TEXT(before);
+	TEMPORARY_TEXT(cue);
+	TEMPORARY_TEXT(after);
+	int this_is_a_cue = FALSE;
+	if (Parser::detect_footnote(wv->weave_web, matter, before, cue, after)) {
+		LOOP_THROUGH_TEXT(pos, before)
+			if (Characters::is_whitespace(Str::get(pos)) == FALSE)
+				this_is_a_cue = TRUE;
+		if (this_is_a_cue) {
+			text_stream *T;
+			LOOP_OVER_LINKED_LIST(T, text_stream, wv->footnotes_cued)
+				if (Str::eq(T, cue))
+					Main::error_in_web(I"this is a duplicate footnote cue", L);
+			ADD_TO_LINKED_LIST(T, text_stream, wv->footnotes_cued);
+			if (Str::len(wv->current_footnote) > 0)
+				Main::error_in_web(I"this is a footnote cue within a footnote", L);
+		} else {
+			text_stream *T;
+			LOOP_OVER_LINKED_LIST(T, text_stream, wv->footnotes_written)
+				if (Str::eq(T, cue))
+					Main::error_in_web(I"this is a duplicate footnote text", L);
+			ADD_TO_LINKED_LIST(T, text_stream, wv->footnotes_written);
+			@<End any currently weaving footnote text@>;
+			Str::copy(wv->current_footnote, cue);
+			Formats::begin_footnote_text(OUT, wv, cue);
+		}
+	}
+	DISCARD_TEXT(before);
+	DISCARD_TEXT(cue);
+	DISCARD_TEXT(after);
+
+@<End any currently weaving footnote text@> =
+	if (Str::len(wv->current_footnote) > 0) {
+		Formats::end_footnote_text(OUT, wv, wv->current_footnote);
+		Str::clear(wv->current_footnote);
+	}	
 
 @h Code-like matter.
 Even though Inweb's approach, unlike |CWEB|'s, is to respect the layout
@@ -687,6 +730,7 @@ At the end of a paragraph, on the other hand, we do this:
 		Weaver::show_endnotes_on_previous_paragraph(OUT, wv, current_paragraph);
 	}
 	if (L) current_paragraph = L->owning_paragraph;
+	@<End any currently weaving footnote text@>;
 
 @h Endnotes.
 The endnotes describe function calls from far away, or unexpected

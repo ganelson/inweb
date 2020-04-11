@@ -231,6 +231,55 @@ void Formats::url(OUTPUT_STREAM, weave_target *wv, text_stream *url,
 	}
 }
 
+@ And this weaves a footnote cue.
+
+@e FOOTNOTE_CUE_FOR_MTID
+
+=
+VMETHOD_TYPE(FOOTNOTE_CUE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+	text_stream *cue)
+void Formats::footnote_cue(OUTPUT_STREAM, weave_target *wv, text_stream *cue) {
+	weave_format *wf = wv->format;
+	if (Methods::provided(wf->methods, FOOTNOTE_CUE_FOR_MTID)) {
+		VMETHOD_CALL(wf, FOOTNOTE_CUE_FOR_MTID, OUT, wv, cue);
+	} else {
+		WRITE("[%S]", cue);
+	}
+}
+
+@ And this weaves a footnote text opening...
+
+@e BEGIN_FOOTNOTE_TEXT_FOR_MTID
+
+=
+VMETHOD_TYPE(BEGIN_FOOTNOTE_TEXT_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+	text_stream *cue)
+void Formats::begin_footnote_text(OUTPUT_STREAM, weave_target *wv, text_stream *cue) {
+	weave_format *wf = wv->format;
+	if (Methods::provided(wf->methods, BEGIN_FOOTNOTE_TEXT_FOR_MTID)) {
+		VMETHOD_CALL(wf, BEGIN_FOOTNOTE_TEXT_FOR_MTID, OUT, wv, cue);
+	} else {
+		WRITE("[%S]. ", cue);
+	}
+}
+
+@ ...bookended by a footnote text closing. The weaver ensures that these occur
+in pairs and do not nest.
+
+@e END_FOOTNOTE_TEXT_FOR_MTID
+
+=
+VMETHOD_TYPE(END_FOOTNOTE_TEXT_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+	text_stream *cue)
+void Formats::end_footnote_text(OUTPUT_STREAM, weave_target *wv, text_stream *cue) {
+	weave_format *wf = wv->format;
+	if (Methods::provided(wf->methods, END_FOOTNOTE_TEXT_FOR_MTID)) {
+		VMETHOD_CALL(wf, END_FOOTNOTE_TEXT_FOR_MTID, OUT, wv, cue);
+	} else {
+		WRITE("\n");
+	}
+}
+
 @ This method produces the |>> Example| bits of example source text, really
 a convenience for Inform 7 code commentary.
 
@@ -426,6 +475,7 @@ void Formats::text_r(OUTPUT_STREAM, weave_target *wv, text_stream *id,
 	if (within) {
 		Formats::source_fragment(OUT, wv, id);
 	} else {
+		@<Detect use of footnotes@>;
 		Formats::text_fragment(OUT, wv, id);
 	}
 }
@@ -469,6 +519,22 @@ void Formats::text_r(OUTPUT_STREAM, weave_target *wv, text_stream *id,
 		}
 	}
 
+@<Detect use of footnotes@> =
+	TEMPORARY_TEXT(before);
+	TEMPORARY_TEXT(cue);
+	TEMPORARY_TEXT(after);
+	int allow = FALSE;
+	if (Parser::detect_footnote(wv->weave_web, id, before, cue, after)) {
+		allow = TRUE;
+		Formats::text_r(OUT, wv, before, within, comments);
+		Formats::footnote_cue(OUT, wv, cue);
+		Formats::text_r(OUT, wv, after, within, comments);
+	}
+	DISCARD_TEXT(before);
+	DISCARD_TEXT(cue);
+	DISCARD_TEXT(after);
+	if (allow) return;
+
 @<Recognise cross-references@> =
 	int N = Str::len(xref_notation);
 	for (int i=0; i < Str::len(id); i++) {
@@ -498,7 +564,7 @@ void Formats::text_r(OUTPUT_STREAM, weave_target *wv, text_stream *id,
 	TEMPORARY_TEXT(url);
 	TEMPORARY_TEXT(title);
 	if (Formats::resolve_reference_in_weave(url, title, wv, reference,
-		current_weave_line)) {
+		wv->current_weave_line)) {
 		Formats::text_r(OUT, wv, before, within, comments);
 		Formats::url(OUT, wv, url, title, FALSE);
 		Formats::text_r(OUT, wv, after, within, comments);

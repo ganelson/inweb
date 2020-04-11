@@ -28,6 +28,9 @@ void HTMLFormat::create(void) {
 	METHOD_ADD(wf, SOURCE_CODE_FOR_MTID, HTMLFormat::source_code);
 	METHOD_ADD(wf, INLINE_CODE_FOR_MTID, HTMLFormat::inline_code);
 	METHOD_ADD(wf, URL_FOR_MTID, HTMLFormat::url);
+	METHOD_ADD(wf, FOOTNOTE_CUE_FOR_MTID, HTMLFormat::footnote_cue);
+	METHOD_ADD(wf, BEGIN_FOOTNOTE_TEXT_FOR_MTID, HTMLFormat::begin_footnote_text);
+	METHOD_ADD(wf, END_FOOTNOTE_TEXT_FOR_MTID, HTMLFormat::end_footnote_text);
 	METHOD_ADD(wf, DISPLAY_LINE_FOR_MTID, HTMLFormat::display_line);
 	METHOD_ADD(wf, ITEM_FOR_MTID, HTMLFormat::item);
 	METHOD_ADD(wf, BAR_FOR_MTID, HTMLFormat::bar);
@@ -400,7 +403,7 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 	TEMPORARY_TEXT(url);
 	TEMPORARY_TEXT(title);
 	if (Formats::resolve_reference_in_weave(url, title, wv, reference,
-		current_weave_line)) {
+		wv->current_weave_line)) {
 		Formats::url(OUT, wv, url, title, FALSE);
 		i = j + N;
 	}
@@ -431,6 +434,37 @@ void HTMLFormat::url(weave_format *self, text_stream *OUT, weave_target *wv,
 	HTML::begin_link_with_class(OUT, (external)?I"external":I"internal", url);
 	WRITE("%S", content);
 	HTML::end_link(OUT);
+}
+
+@=
+void HTMLFormat::footnote_cue(weave_format *self, text_stream *OUT, weave_target *wv,
+	text_stream *cue) {
+	text_stream *fn_plugin_name =
+		Bibliographic::get_datum(wv->weave_web->md, I"Footnotes Plugin");
+	if (Str::ne_insensitive(fn_plugin_name, I"None"))	
+		Swarm::ensure_plugin(wv, fn_plugin_name);
+	WRITE("<sup id=\"fnref:%S\"><a href=\"#fn:%S\" rel=\"footnote\">%S</a></sup>",
+		cue, cue, cue);
+}
+
+@=
+void HTMLFormat::begin_footnote_text(weave_format *self, text_stream *OUT, weave_target *wv,
+	text_stream *cue) {
+	text_stream *fn_plugin_name =
+		Bibliographic::get_datum(wv->weave_web->md, I"Footnotes Plugin");
+	if (Str::ne_insensitive(fn_plugin_name, I"None"))	
+		Swarm::ensure_plugin(wv, fn_plugin_name);
+	WRITE("<li class=\"footnote\" id=\"fn:%S\"><p>", cue);	
+}
+
+@=
+void HTMLFormat::end_footnote_text(weave_format *self, text_stream *OUT, weave_target *wv,
+	text_stream *cue) {
+	text_stream *fn_plugin_name =
+		Bibliographic::get_datum(wv->weave_web->md, I"Footnotes Plugin");
+	if (Str::ne_insensitive(fn_plugin_name, I"None"))	
+		Swarm::ensure_plugin(wv, fn_plugin_name);
+	WRITE("<a href=\"#fnref:%S\" title=\"return to text\"> &#x21A9;</a></p></li>", cue);
 }
 
 @ =
@@ -499,7 +533,7 @@ void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_target *wv,
 	DISCARD_TEXT(embed_leaf);
 
 	if (TextFiles::exists(F) == FALSE) {
-		Main::error_in_web(I"This is not a supported service", current_weave_line);
+		Main::error_in_web(I"This is not a supported service", wv->current_weave_line);
 		return;
 	}
 
