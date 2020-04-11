@@ -105,7 +105,7 @@ typedef struct preform_nonterminal {
 	struct text_stream *nt_name; /* e.g., |<action-clause>| */
 	struct text_stream *unangled_name; /* e.g., |action-clause| */
 	struct text_stream *as_C_identifier; /* e.g., |action_clause_NTM| */
-	int as_function; /* defined internally, that is, parsed by a C function */
+	int as_function; /* defined internally, that is, parsed by a C language_function */
 	int voracious; /* a voracious nonterminal: see "The English Syntax of Inform" */
 	int min_word_count; /* for internals only */
 	int max_word_count;

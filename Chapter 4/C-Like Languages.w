@@ -50,14 +50,14 @@ earlier in the code than that for |fruit|. This is a nuisance, so Inweb
 takes care of it automatically.
 
 @<Find every typedef struct in the tangle@> =
-	c_structure *current_str = NULL;
+	language_type *current_str = NULL;
 	chapter *C;
 	section *S;
 	LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W)) {
 		match_results mr = Regexp::create_mr();
 
 		if (Regexp::match(&mr, L->text, L"typedef struct (%i+) %c*{%c*")) {
-			current_str = Structures::new_struct(W, mr.exp[0], L);
+			current_str = Functions::new_struct(W, mr.exp[0], L);
 			Tags::add_by_name(L->owning_paragraph, I"Structures");
 		} else if ((Str::get_first_char(L->text) == '}') && (current_str)) {
 			current_str->typedef_ends = L;
@@ -92,7 +92,7 @@ We need to extract the element name, |val|, and make a note of it.
 			match_results mr = Regexp::create_mr();
 			TEMPORARY_TEXT(elname);
 			@<Copy the element name into elname@>;
-			Structures::new_element(current_str, elname, L);
+			Functions::new_element(current_str, elname, L);
 			DISCARD_TEXT(elname);
 			Regexp::dispose_of(&mr);
 		}
@@ -150,8 +150,8 @@ matches only identifier characters and |*| is not one of those, a line like
 will not trip the switch here.
 
 @<Work out which structs contain which others@> =
-	c_structure *current_str;
-	LOOP_OVER(current_str, c_structure) {
+	language_type *current_str;
+	LOOP_OVER(current_str, language_type) {
 		for (source_line *L = current_str->structure_header_at;
 			((L) && (L != current_str->typedef_ends));
 			L = L->next_line) {
@@ -164,11 +164,11 @@ will not trip the switch here.
 
 @<One structure appears to contain a copy of another one@> =
 	text_stream *used_structure = mr.exp[0];
-	c_structure *str;
-	LOOP_OVER_LINKED_LIST(str, c_structure, W->c_structures)
+	language_type *str;
+	LOOP_OVER_LINKED_LIST(str, language_type, W->language_types)
 		if ((str != current_str) &&
 			(Str::eq(used_structure, str->structure_name)))
-			ADD_TO_LINKED_LIST(str, c_structure, current_str->incorporates);
+			ADD_TO_LINKED_LIST(str, language_type, current_str->incorporates);
 
 @h Functions.
 This time, we will need to keep track of |#ifdef| and |#endif| pairs
@@ -272,7 +272,7 @@ forms like |static long long int| will work.
 
 @<A function definition was found@> =
 	@<Soak up further arguments from continuation lines after the declaration@>;
-	function *fn = Structures::new_function(fname, L);
+	language_function *fn = Functions::new_function(fname, L);
 	fn->function_arguments = Str::duplicate(arguments);
 	WRITE_TO(fn->function_type, "%S%S %S", qualifiers, ftype, asts);
 	if (Str::eq_wide_string(fn->function_name, L"isdigit")) fn->call_freely = TRUE;
@@ -391,20 +391,20 @@ started yet, |NOT_APPLICABLE| if it's in progress, and |TRUE| if it's
 finished.
 
 @<Predeclare the structures in a well-founded order@> =
-	c_structure *str;
-	LOOP_OVER_LINKED_LIST(str, c_structure, W->c_structures)
+	language_type *str;
+	LOOP_OVER_LINKED_LIST(str, language_type, W->language_types)
 		str->tangled = FALSE;
-	LOOP_OVER_LINKED_LIST(str, c_structure, W->c_structures)
+	LOOP_OVER_LINKED_LIST(str, language_type, W->language_types)
 		CLike::tangle_structure(OUT, self, str);
 
 @ Using the following recursion, which is therefore terminating:
 
 =
-void CLike::tangle_structure(OUTPUT_STREAM, programming_language *self, c_structure *str) {
+void CLike::tangle_structure(OUTPUT_STREAM, programming_language *self, language_type *str) {
 	if (str->tangled != FALSE) return;
 	str->tangled = NOT_APPLICABLE;
-	c_structure *embodied = NULL;
-	LOOP_OVER_LINKED_LIST(embodied, c_structure, str->incorporates)
+	language_type *embodied = NULL;
+	LOOP_OVER_LINKED_LIST(embodied, language_type, str->incorporates)
 		CLike::tangle_structure(OUT, self, embodied);
 	str->tangled = TRUE;
 	Tags::open_ifdefs(OUT, str->structure_header_at->owning_paragraph);
@@ -437,7 +437,7 @@ exist either way.
 	section *S;
 	LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W))
 		if ((L->function_defined) && (L->owning_paragraph->placed_very_early == FALSE)) {
-			function *fn = L->function_defined;
+			language_function *fn = L->function_defined;
 			int to_close = 0;
 			for (int i=0; i<fn->no_conditionals; i++) {
 				match_results mr = Regexp::create_mr();
@@ -468,13 +468,13 @@ are all known to Inweb's hash table of interesting identifiers:
 
 =
 void CLike::analyse_code(programming_language *self, web *W) {
-	function *fn;
-	LOOP_OVER(fn, function)
+	language_function *fn;
+	LOOP_OVER(fn, language_function)
 		Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,
 			fn->function_name, TRUE);
-	c_structure *str;
+	language_type *str;
 	structure_element *elt;
-	LOOP_OVER_LINKED_LIST(str, c_structure, W->c_structures)
+	LOOP_OVER_LINKED_LIST(str, language_type, W->language_types)
 		LOOP_OVER_LINKED_LIST(elt, structure_element, str->elements)
 			if (elt->allow_sharing == FALSE)
 				Analyser::find_hash_entry_for_section(elt->element_created_at->owning_section,
@@ -492,8 +492,8 @@ bibliographic variable, but don't do that.
 void CLike::post_analysis(programming_language *self, web *W) {
 	int check_namespaces = FALSE;
 	if (Str::eq_wide_string(Bibliographic::get_datum(W->md, I"Namespaces"), L"On")) check_namespaces = TRUE;
-	function *fn;
-	LOOP_OVER(fn, function) {
+	language_function *fn;
+	LOOP_OVER(fn, language_function) {
 		hash_table_entry *hte =
 			Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,
 				fn->function_name, FALSE);

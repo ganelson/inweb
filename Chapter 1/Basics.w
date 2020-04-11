@@ -16,14 +16,14 @@ see Foundation, but these are all struct names with either |_MT| or, in one
 case, |_array_MT| appended. MT stands for "memory type".
 
 @e breadcrumb_request_MT
-@e c_structure_MT
 @e chapter_MT
+@e colouring_language_block_MT
 @e colouring_rule_MT
 @e enumeration_set_MT
-@e function_MT
 @e hash_table_entry_MT
 @e hash_table_entry_usage_MT
-@e colouring_language_block_MT
+@e language_function_MT
+@e language_type_MT
 @e macro_MT
 @e macro_tokens_MT
 @e macro_usage_MT
@@ -55,14 +55,14 @@ types.
 =
 ALLOCATE_IN_ARRAYS(source_line, 1000)
 ALLOCATE_INDIVIDUALLY(breadcrumb_request)
-ALLOCATE_INDIVIDUALLY(c_structure)
 ALLOCATE_INDIVIDUALLY(chapter)
+ALLOCATE_INDIVIDUALLY(colouring_language_block)
 ALLOCATE_INDIVIDUALLY(colouring_rule)
 ALLOCATE_INDIVIDUALLY(enumeration_set)
-ALLOCATE_INDIVIDUALLY(function)
 ALLOCATE_INDIVIDUALLY(hash_table_entry_usage)
 ALLOCATE_INDIVIDUALLY(hash_table_entry)
-ALLOCATE_INDIVIDUALLY(colouring_language_block)
+ALLOCATE_INDIVIDUALLY(language_function)
+ALLOCATE_INDIVIDUALLY(language_type)
 ALLOCATE_INDIVIDUALLY(macro_tokens)
 ALLOCATE_INDIVIDUALLY(macro_usage)
 ALLOCATE_INDIVIDUALLY(macro)

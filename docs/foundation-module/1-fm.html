@@ -139,12 +139,12 @@ that is, literal <code class="display"><span class="extract">text_stream *</span
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Foundation::start<button class="popup" onclick="togglePopup('usagePopup0')">...<span class="popuptext" id="usagePopup0">Usage of <b>Foundation::start</b>:<br>none</span></button></span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="functiontext"><a href="2-mmr.html#SP5">Memory::start</a></span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Foundation::start<button class="popup" onclick="togglePopup('usagePopup0')">...<span class="popuptext" id="usagePopup0">Usage of <b>Foundation::start</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="functiontext"><a href="2-mmr.html#SP5">Memory::start</a></span><span class="plain">();</span>
         &lt;<span class="cwebmacro">Register the default stream writers</span> <span class="cwebmacronumber">8.1</span>&gt;<span class="plain">;</span>
         <span class="plain">[[</span><span class="identifier">textliterals</span><span class="plain">]];</span>
-        <span class="functiontext"><a href="3-tm.html#SP1">Time::begin</a></span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-pth.html#SP2">Pathnames::start</a></span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-tm.html#SP1">Time::begin</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="3-pth.html#SP2">Pathnames::start</a></span><span class="plain">();</span>
         &lt;<span class="cwebmacro">Register the default debugging log aspects</span> <span class="cwebmacronumber">8.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Register the default debugging log writers</span> <span class="cwebmacronumber">8.3</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Register the default command line switches</span> <span class="cwebmacronumber">8.5</span>&gt;<span class="plain">;</span>
@@ -166,10 +166,10 @@ prints a filename by calling <code class="display"><span class="extract">Filenam
 
 
 <pre class="displaydefn">
-        <span class="functiontext"><a href="2-wal.html#SP4">Writers::register_writer</a></span><span class="character">'f'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="3-fln.html#SP4">Filenames::writer</a></span><span class="plain">;</span>
-        <span class="functiontext"><a href="2-wal.html#SP4">Writers::register_writer</a></span><span class="character">'p'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="3-pth.html#SP6">Pathnames::writer</a></span><span class="plain">;</span>
-        <span class="functiontext"><a href="2-wal.html#SP4">Writers::register_writer</a></span><span class="character">'v'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="7-vn.html#SP6">VersionNumbers::writer</a></span><span class="plain">;</span>
-        <span class="functiontext"><a href="2-wal.html#SP4">Writers::register_writer</a></span><span class="character">'S'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="2-str.html#SP43">Streams::writer</a></span><span class="plain">;</span>
+        <span class="functiontext"><a href="2-wal.html#SP4">Writers::register_writer</a></span><span class="plain">(</span><span class="character">'f'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="3-fln.html#SP4">Filenames::writer</a></span><span class="plain">);</span>
+        <span class="functiontext"><a href="2-wal.html#SP4">Writers::register_writer</a></span><span class="plain">(</span><span class="character">'p'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="3-pth.html#SP6">Pathnames::writer</a></span><span class="plain">);</span>
+        <span class="functiontext"><a href="2-wal.html#SP4">Writers::register_writer</a></span><span class="plain">(</span><span class="character">'v'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="7-vn.html#SP6">VersionNumbers::writer</a></span><span class="plain">);</span>
+        <span class="functiontext"><a href="2-wal.html#SP4">Writers::register_writer</a></span><span class="plain">(</span><span class="character">'S'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="2-str.html#SP43">Streams::writer</a></span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -189,10 +189,10 @@ The following are always provided, but are all off by default.
 
 
 <pre class="displaydefn">
-        <span class="functiontext"><a href="2-dl.html#SP4">Log::declare_aspect</a></span><span class="constant">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"debugging log inclusions"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="functiontext"><a href="2-dl.html#SP4">Log::declare_aspect</a></span><span class="constant">SHELL_USAGE_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"shell usage"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="functiontext"><a href="2-dl.html#SP4">Log::declare_aspect</a></span><span class="constant">MEMORY_USAGE_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"memory usage"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="functiontext"><a href="2-dl.html#SP4">Log::declare_aspect</a></span><span class="constant">TEXT_FILES_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"text files"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="functiontext"><a href="2-dl.html#SP4">Log::declare_aspect</a></span><span class="plain">(</span><span class="constant">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"debugging log inclusions"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="functiontext"><a href="2-dl.html#SP4">Log::declare_aspect</a></span><span class="plain">(</span><span class="constant">SHELL_USAGE_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"shell usage"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="functiontext"><a href="2-dl.html#SP4">Log::declare_aspect</a></span><span class="plain">(</span><span class="constant">MEMORY_USAGE_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"memory usage"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="functiontext"><a href="2-dl.html#SP4">Log::declare_aspect</a></span><span class="plain">(</span><span class="constant">TEXT_FILES_DA</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"text files"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -212,8 +212,8 @@ state of a stream.
 
 
 <pre class="displaydefn">
-        <span class="functiontext"><a href="2-wal.html#SP4">Writers::register_logger</a></span><span class="character">'a'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="4-taa.html#SP9">Tries::log_avinue</a></span><span class="plain">;</span>
-        <span class="functiontext"><a href="2-wal.html#SP4">Writers::register_logger</a></span><span class="character">'S'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="2-str.html#SP21">Streams::log</a></span><span class="plain">;</span>
+        <span class="functiontext"><a href="2-wal.html#SP4">Writers::register_logger</a></span><span class="plain">(</span><span class="character">'a'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="4-taa.html#SP9">Tries::log_avinue</a></span><span class="plain">);</span>
+        <span class="functiontext"><a href="2-wal.html#SP4">Writers::register_logger</a></span><span class="plain">(</span><span class="character">'S'</span><span class="plain">, &amp;</span><span class="functiontext"><a href="2-str.html#SP21">Streams::log</a></span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -244,20 +244,20 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 
 
 <pre class="displaydefn">
-        <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::begin_group</a></span><span class="constant">FOUNDATION_CLSG</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="constant">LOG_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"log"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
+        <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::begin_group</a></span><span class="plain">(</span><span class="constant">FOUNDATION_CLSG</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">LOG_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"log"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"write the debugging log to include diagnostics on X"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="constant">VERSION_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"version"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
+        <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">VERSION_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"version"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"print out version number"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-cla.html#SP6">CommandLine::declare_boolean_switch</a></span><span class="constant">CRASH_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"crash"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
+        <span class="functiontext"><a href="3-cla.html#SP6">CommandLine::declare_boolean_switch</a></span><span class="plain">(</span><span class="constant">CRASH_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"crash"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"intentionally crash on internal errors, for backtracing"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="constant">HELP_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"help"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
+        <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">HELP_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"help"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"print this help information"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-cla.html#SP6">CommandLine::declare_boolean_switch</a></span><span class="constant">FIXTIME_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"fixtime"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
+        <span class="functiontext"><a href="3-cla.html#SP6">CommandLine::declare_boolean_switch</a></span><span class="plain">(</span><span class="constant">FIXTIME_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"fixtime"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"pretend the time is 11 a.m. on 28 March 2016 for testing"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="constant">AT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"at"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
+        <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">AT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"at"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"specify that this tool is installed at X"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::end_group</a></span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::end_group</a></span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -271,10 +271,10 @@ safety problems.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Foundation::end<button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Foundation::end</b>:<br>none</span></button></span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="2-dl.html#SP7">Log::aspect_switched_on</a></span><span class="constant">MEMORY_USAGE_DA</span><span class="plain">)) </span><span class="functiontext"><a href="2-mmr.html#SP32">Memory::log_statistics</a></span><span class="plain">);</span>
-        <span class="functiontext"><a href="2-dl.html#SP5">Log::close</a></span><span class="plain">);</span>
-        <span class="functiontext"><a href="2-mmr.html#SP12">Memory::free</a></span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Foundation::end<button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Foundation::end</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="2-dl.html#SP7">Log::aspect_switched_on</a></span><span class="plain">(</span><span class="constant">MEMORY_USAGE_DA</span><span class="plain">)) </span><span class="functiontext"><a href="2-mmr.html#SP32">Memory::log_statistics</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="2-dl.html#SP5">Log::close</a></span><span class="plain">();</span>
+        <span class="functiontext"><a href="2-mmr.html#SP12">Memory::free</a></span><span class="plain">();</span>
     <span class="plain">}</span>
 </pre>
 

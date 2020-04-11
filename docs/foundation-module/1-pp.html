@@ -159,7 +159,7 @@ here is UTF-8 since OS X and Linux both adopt this.
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Environment variables. </b></p>
 
 <pre class="display">
-    <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext"><a href="1-wp.html#SP4">Platform::getenv</a></span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
+    <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext"><a href="1-wp.html#SP4">Platform::getenv</a></span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">getenv</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -179,7 +179,7 @@ just that installation and use of Foundation-built tools is less convenient.)
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">buffer</span><span class="plain">[</span><span class="identifier">PATH_MAX</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">];</span>
         &lt;<span class="cwebmacro">Follow the proc filesystem symlink to the real filesystem's file</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="character">;</span>
         &lt;<span class="cwebmacro">Transcode buffer, which is locale-encoded, into the wide-char buffer</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="plain">;</span>
@@ -242,9 +242,9 @@ string.
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">_NSGetExecutablePath<button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>_NSGetExecutablePath</b>:<br>none</span></button></span><span class="reserved">char</span><span class="plain">* </span><span class="identifier">buf</span><span class="plain">, </span><span class="identifier">uint32_t</span><span class="plain">* </span><span class="identifier">bufsize</span><span class="plain">);</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">_NSGetExecutablePath<button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>_NSGetExecutablePath</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">char</span><span class="plain">* </span><span class="identifier">buf</span><span class="plain">, </span><span class="identifier">uint32_t</span><span class="plain">* </span><span class="identifier">bufsize</span><span class="plain">);</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">relative_path</span><span class="plain">[4 * </span><span class="identifier">PATH_MAX</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">];</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">absolute_path</span><span class="plain">[</span><span class="identifier">PATH_MAX</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">];</span>
         <span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">convert_len</span><span class="plain">;</span>
@@ -252,7 +252,7 @@ string.
         <span class="identifier">uint32_t</span><span class="plain"> </span><span class="identifier">tempsize</span><span class="plain"> = </span><span class="identifier">pathsize</span><span class="plain">;</span>
 
         <span class="comment"> Get "a path" to the executable</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="#SP9_1_1">_NSGetExecutablePath</a></span><span class="identifier">relative_path</span><span class="plain">, &amp;</span><span class="identifier">tempsize</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="#SP9_1_1">_NSGetExecutablePath</a></span><span class="plain">(</span><span class="identifier">relative_path</span><span class="plain">, &amp;</span><span class="identifier">tempsize</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
 
         <span class="comment"> Convert to canonical absolute path</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">realpath</span><span class="plain">(</span><span class="identifier">relative_path</span><span class="plain">, </span><span class="identifier">absolute_path</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
@@ -274,7 +274,7 @@ string.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -289,7 +289,7 @@ string.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -323,7 +323,7 @@ string.
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Shell commands. </b></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP6">Platform::system</a></span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cmd</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP6">Platform::system</a></span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cmd</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">system</span><span class="plain">(</span><span class="identifier">cmd</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -361,7 +361,7 @@ memory space. Using <code class="display"><span class="extract">posix_spawn()</s
 
     <span class="reserved">extern</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">environ</span><span class="plain">;</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP6">Platform::system</a></span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cmd</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP6">Platform::system</a></span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cmd</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">argv</span><span class="plain">[] = {</span><span class="string">"sh"</span><span class="plain">, </span><span class="string">"-c"</span><span class="plain">, (</span><span class="reserved">char</span><span class="plain"> *) </span><span class="identifier">cmd</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">};</span>
         <span class="identifier">pid_t</span><span class="plain"> </span><span class="identifier">pid</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">status</span><span class="plain"> = </span><span class="identifier">posix_spawn</span><span class="plain">(&amp;</span><span class="identifier">pid</span><span class="plain">, </span><span class="string">"/bin/sh"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">environ</span><span class="plain">);</span>
@@ -385,7 +385,7 @@ memory space. Using <code class="display"><span class="extract">posix_spawn()</s
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Directory handling. </b></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP7">Platform::mkdir</a></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_pathname</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP7">Platform::mkdir</a></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_pathname</span><span class="plain">) {</span>
         <span class="identifier">errno</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">mkdir</span><span class="plain">(</span><span class="identifier">transcoded_pathname</span><span class="plain">, </span><span class="identifier">S_IRWXU</span><span class="plain"> | </span><span class="identifier">S_IRWXG</span><span class="plain"> | </span><span class="identifier">S_IROTH</span><span class="plain"> | </span><span class="identifier">S_IXOTH</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
@@ -393,12 +393,12 @@ memory space. Using <code class="display"><span class="extract">posix_spawn()</s
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext"><a href="1-wp.html#SP7">Platform::opendir</a></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path_to_folder</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext"><a href="1-wp.html#SP7">Platform::opendir</a></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path_to_folder</span><span class="plain">) {</span>
         <span class="identifier">DIR</span><span class="plain"> *</span><span class="identifier">dirp</span><span class="plain"> = </span><span class="identifier">opendir</span><span class="plain">(</span><span class="identifier">path_to_folder</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">dirp</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP7">Platform::readdir</a></span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">folder</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path_to_folder</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP7">Platform::readdir</a></span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">folder</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path_to_folder</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">path_to</span><span class="plain">[2*</span><span class="constant">MAX_FILENAME_LENGTH</span><span class="plain">+2];</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">stat</span><span class="plain"> </span><span class="identifier">file_status</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
@@ -413,7 +413,7 @@ memory space. Using <code class="display"><span class="extract">posix_spawn()</s
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP7">Platform::closedir</a></span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">folder</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP7">Platform::closedir</a></span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">folder</span><span class="plain">) {</span>
         <span class="identifier">DIR</span><span class="plain"> *</span><span class="identifier">dirp</span><span class="plain"> = (</span><span class="identifier">DIR</span><span class="plain"> *) </span><span class="identifier">folder</span><span class="plain">;</span>
         <span class="identifier">closedir</span><span class="plain">(</span><span class="identifier">dirp</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -439,14 +439,14 @@ be dealing with.
 </p>
 
 <pre class="display">
-    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP12">Platform::never_time</a></span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP12">Platform::never_time</a></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">time_t</span><span class="plain">) </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP12">Platform::timestamp</a></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_filename</span><span class="plain">) {</span>
+    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP12">Platform::timestamp</a></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_filename</span><span class="plain">) {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">stat</span><span class="plain"> </span><span class="identifier">filestat</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stat</span><span class="plain">(</span><span class="identifier">transcoded_filename</span><span class="plain">, &amp;</span><span class="identifier">filestat</span><span class="plain">) != -1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">filestat</span><span class="plain">.</span><span class="identifier">st_mtime</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP12">Platform::never_time</a></span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP12">Platform::never_time</a></span><span class="plain">();</span>
     <span class="plain">}</span>
 </pre>
 
@@ -467,16 +467,16 @@ anything different which was originally in <code class="display"><span class="ex
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::rsync<button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Platform::rsync</b>:<br>Pathnames - <a href="3-pth.html#SP9">&#167;9</a></span></button></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_source</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_dest</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::rsync<button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Platform::rsync</b>:<br>Pathnames - <a href="3-pth.html#SP9">&#167;9</a></span></button></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_source</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_dest</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">rsync_command</span><span class="plain">[10*</span><span class="constant">MAX_FILENAME_LENGTH</span><span class="plain">];</span>
         <span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">, </span><span class="string">"rsync -a --delete "</span><span class="plain">);</span>
-        <span class="functiontext"><a href="#SP14">Platform::quote_text</a></span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="identifier">transcoded_source</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP14">Platform::quote_text</a></span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="identifier">transcoded_source</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
         <span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="string">" "</span><span class="plain">);</span>
-        <span class="functiontext"><a href="#SP14">Platform::quote_text</a></span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="identifier">transcoded_dest</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="functiontext"><a href="1-wp.html#SP6">Platform::system</a></span><span class="identifier">rsync_command</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP14">Platform::quote_text</a></span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="identifier">transcoded_dest</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="functiontext"><a href="1-wp.html#SP6">Platform::system</a></span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::quote_text<button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Platform::quote_text</b>:<br>none</span></button></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">quoted</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">terminate</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::quote_text<button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Platform::quote_text</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">quoted</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">terminate</span><span class="plain">) {</span>
         <span class="identifier">quoted</span><span class="plain">[0] = </span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">qp</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">rp</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">raw</span><span class="plain">[</span><span class="identifier">rp</span><span class="plain">]; </span><span class="identifier">rp</span><span class="plain">++) {</span>
@@ -497,7 +497,7 @@ anything different which was originally in <code class="display"><span class="ex
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Sleep. </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP8">Platform::sleep</a></span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">seconds</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP8">Platform::sleep</a></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">seconds</span><span class="plain">) {</span>
         <span class="identifier">sleep</span><span class="plain">((</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">seconds</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -521,13 +521,13 @@ actually running a one-line AppleScript here.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP9">Platform::notification</a></span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">happy</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP9">Platform::notification</a></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">happy</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">sound_name</span><span class="plain"> = </span><span class="string">"Bell.aiff"</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">happy</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">sound_name</span><span class="plain"> = </span><span class="string">"Submarine.aiff"</span><span class="plain">;</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">)</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"osascript -e 'display notification \"%S\" "</span>
             <span class="string">"sound name \"%s\" with title \"intest Results\"'"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">sound_name</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP5">Shell::run</a></span><span class="identifier">TEMP</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-shl.html#SP5">Shell::run</a></span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">)</span>
     <span class="plain">}</span>
 </pre>
@@ -541,7 +541,7 @@ actually running a one-line AppleScript here.
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP9">Platform::notification</a></span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">happy</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP9">Platform::notification</a></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">happy</span><span class="plain">) {</span>
     <span class="plain">}</span>
 </pre>
 
@@ -565,21 +565,21 @@ actually running a one-line AppleScript here.
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::create_thread</a></span><span class="identifier">foundation_thread</span><span class="plain"> *</span><span class="identifier">pt</span><span class="plain">,</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::create_thread</a></span><span class="plain">(</span><span class="identifier">foundation_thread</span><span class="plain"> *</span><span class="identifier">pt</span><span class="plain">,</span>
         <span class="reserved">const</span><span class="plain"> </span><span class="identifier">foundation_thread_attributes</span><span class="plain"> *</span><span class="identifier">pa</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *(*</span><span class="identifier">fn</span><span class="plain">)(</span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pthread_create</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">, </span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, </span><span class="identifier">arg</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::join_thread</a></span><span class="identifier">pthread_t</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">void</span><span class="plain">** </span><span class="identifier">rv</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::join_thread</a></span><span class="plain">(</span><span class="identifier">pthread_t</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">void</span><span class="plain">** </span><span class="identifier">rv</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pthread_join</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">, </span><span class="identifier">rv</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::init_thread</a></span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::init_thread</a></span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pthread_attr_init</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread initialisation failed"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pthread_attr_setstacksize</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread stack sizing failed"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="identifier">size_t</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::get_thread_stack_size</a></span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">) {</span>
+    <span class="identifier">size_t</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::get_thread_stack_size</a></span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">) {</span>
         <span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">mystacksize</span><span class="plain">;</span>
         <span class="identifier">pthread_attr_getstacksize</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">, &amp;</span><span class="identifier">mystacksize</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">mystacksize</span><span class="plain">;</span>

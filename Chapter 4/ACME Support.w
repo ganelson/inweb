@@ -224,7 +224,7 @@ void ACMESupport::parse_types(programming_language *self, web *W) {
 			if (S->sect_language == W->main_language) {
 				match_results mr = Regexp::create_mr();
 				if (Regexp::match(&mr, L->text, W->main_language->type_notation)) {
-					Structures::new_function(mr.exp[0], L);
+					Functions::new_function(mr.exp[0], L);
 				}
 				Regexp::dispose_of(&mr);
 			}
@@ -244,7 +244,7 @@ void ACMESupport::parse_functions(programming_language *self, web *W) {
 				match_results mr = Regexp::create_mr();
 				if ((L->category != TEXT_EXTRACT_LCAT) &&
 					(Regexp::match(&mr, L->text, W->main_language->function_notation))) {
-					Structures::new_function(mr.exp[0], L);
+					Functions::new_function(mr.exp[0], L);
 				}
 				Regexp::dispose_of(&mr);
 			}

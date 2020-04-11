@@ -402,12 +402,22 @@ What happened in that last sentence is that Inweb noticed the following:
 (d) And that module has a section called "Web Modules".
 
 Inweb then made links accordingly. Chapters, which can be referred to either
-numerically, link to the first section in them; modules likewise.
-
-Errors are thrown if these references are in any way ambiguous. They are not
+numerically, link to the first section in them; modules likewise. Errors are
+thrown if these references to sections are in any way ambiguous. They are not
 case sensitive.
 
-Cross-references also work inside text extracts marked as |hyperlinked|.
+It's also possible to reference function names and type names, provided that
+the language definition supports these (see //Supporting Programming Languages//):
+this is certainly the case for C-like languages. For example,
+= (text)
+	Individual lines of a web are stored in //source_line// structures,
+	and mostly created by //Reader::read_file//.
+=
+produces: Individual lines of a web are stored in //source_line// structures,
+and mostly created by //Reader::read_file//. And that should link to the
+structure definition and function of these names inside the Inweb program.
+
+@ Cross-references also work inside text extracts marked as |hyperlinked|.
 = (text as Inweb)
 	= (hyperlinked text)
 		See the //Manual// for more on this.

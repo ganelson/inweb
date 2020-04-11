@@ -72,7 +72,7 @@ void Analyser::catalogue_the_sections(web *W, text_stream *range, int form) {
 				PRINT("%S", main_title);
 				for (int i = Str::len(main_title); i<max_width+2; i++) PRINT(" ");
 				if (form != BASIC_SECTIONCAT)
-					Structures::catalogue(S, (form == FUNCTIONS_SECTIONCAT)?TRUE:FALSE);
+					Functions::catalogue(S, (form == FUNCTIONS_SECTIONCAT)?TRUE:FALSE);
 				PRINT("\n");
 				DISCARD_TEXT(main_title);
 			}
@@ -258,7 +258,7 @@ typedef struct hash_table_entry {
 	int reserved_word; /* in the language currently being woven, that is */
 	struct linked_list *usages; /* of |hash_table_entry_usage| */
 	struct source_line *definition_line; /* or null, if it's not a constant, function or type name */
-	struct function *as_function; /* for function names only */
+	struct language_function *as_function; /* for function names only */
 	MEMORY_MANAGEMENT
 } hash_table_entry;
 
@@ -337,7 +337,7 @@ source_line *Analyser::get_defn_line(section *S, text_stream *p, int e) {
 	return NULL;
 }
 
-function *Analyser::get_function(section *S, text_stream *p, int e) {
+language_function *Analyser::get_function(section *S, text_stream *p, int e) {
 	hash_table_entry *hte = Analyser::find_hash_entry(&(S->sect_target->symbols), p, FALSE);
 	if ((hte) && (hte->reserved_word & (1 << e))) return hte->as_function;
 	return NULL;

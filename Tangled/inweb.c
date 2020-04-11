@@ -719,14 +719,14 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define INTOOL_NAME "inweb"
 #define INWEB_BUILD "7"
 #define breadcrumb_request_MT 32
-#define c_structure_MT 33
-#define chapter_MT 34
+#define chapter_MT 33
+#define colouring_language_block_MT 34
 #define colouring_rule_MT 35
 #define enumeration_set_MT 36
-#define function_MT 37
-#define hash_table_entry_MT 38
-#define hash_table_entry_usage_MT 39
-#define colouring_language_block_MT 40
+#define hash_table_entry_MT 37
+#define hash_table_entry_usage_MT 38
+#define language_function_MT 39
+#define language_type_MT 40
 #define macro_MT 41
 #define macro_tokens_MT 42
 #define macro_usage_MT 43
@@ -1475,7 +1475,7 @@ typedef struct web {
 
 	struct linked_list *headers; /* of |filename|: additional header files */
 	int analysed; /* has this been scanned for function usage and such? */
-	struct linked_list *c_structures; /* of |c_structure|: used only for C-like languages */
+	struct linked_list *language_types; /* of |language_type|: used only for C-like languages */
 
 	struct ebook *as_ebook; /* when being woven to an ebook */
 	struct pathname *redirect_weaves_to; /* ditto */
@@ -1522,7 +1522,7 @@ typedef struct section {
 	int printed_number; /* temporary again: sometimes used in weaving */
 	MEMORY_MANAGEMENT
 } section;
-#line 249 "inweb/Chapter 3/The Analyser.w"
+#line 248 "inweb/Chapter 3/The Analyser.w"
 typedef struct hash_table {
 	struct linked_list *analysis_hash[HASH_TAB_SIZE]; /* of |hash_table_entry| */
 	int analysis_hash_initialised; /* when we start up, array's contents are undefined */
@@ -1546,7 +1546,7 @@ typedef struct source_line {
 	int enable_hyperlinks; /* used only for |CODE_BODY_LCAT| lines: link URLs in weave */
 	struct programming_language *colour_as; /* used only for |TEXT_EXTRACT_LCAT| lines */
 	int is_commentary; /* flag */
-	struct function *function_defined; /* if any C-like function is defined on this line */
+	struct language_function *function_defined; /* if any C-like function is defined on this line */
 	struct preform_nonterminal *preform_nonterminal_defined; /* similarly */
 	int suppress_tangling; /* if e.g., lines are tangled out of order */
 	int interface_line_identified; /* only relevant during parsing of Interface lines */
@@ -1572,7 +1572,7 @@ typedef struct paragraph {
 
 	struct para_macro *defines_macro; /* there can only be one */
 	struct linked_list *functions; /* of |function|: those defined in this para */
-	struct linked_list *structures; /* of |c_structure|: similarly */
+	struct linked_list *structures; /* of |language_type|: similarly */
 	struct linked_list *taggings; /* of |paragraph_tagging| */
 	struct source_line *first_line_in_paragraph;
 	struct section *under_section;
@@ -1614,16 +1614,16 @@ typedef struct macro_usage {
 	int multiplicity; /* for example, 2 if it's used twice in this paragraph */
 	MEMORY_MANAGEMENT
 } macro_usage;
-#line 257 "inweb/Chapter 3/The Analyser.w"
+#line 256 "inweb/Chapter 3/The Analyser.w"
 typedef struct hash_table_entry {
 	text_stream *hash_key;
 	int reserved_word; /* in the language currently being woven, that is */
 	struct linked_list *usages; /* of |hash_table_entry_usage| */
 	struct source_line *definition_line; /* or null, if it's not a constant, function or type name */
-	struct function *as_function; /* for function names only */
+	struct language_function *as_function; /* for function names only */
 	MEMORY_MANAGEMENT
 } hash_table_entry;
-#line 355 "inweb/Chapter 3/The Analyser.w"
+#line 354 "inweb/Chapter 3/The Analyser.w"
 typedef struct hash_table_entry_usage {
 	struct paragraph *usage_recorded_at;
 	int form_of_usage; /* bitmap of the |*_USAGE| constants defined above */
@@ -1781,26 +1781,26 @@ typedef struct reserved_word {
 	int colour;
 	MEMORY_MANAGEMENT
 } reserved_word;
-#line 8 "inweb/Chapter 4/Structures and Functions.w"
-typedef struct c_structure {
+#line 8 "inweb/Chapter 4/Types and Functions.w"
+typedef struct language_type {
 	struct text_stream *structure_name;
 	int tangled; /* whether the structure definition has been tangled out */
 	struct source_line *structure_header_at; /* opening line of |typedef| */
 	struct source_line *typedef_ends; /* closing line, where |}| appears */
-	struct linked_list *incorporates; /* of |c_structure| */
+	struct linked_list *incorporates; /* of |language_type| */
 	struct linked_list *elements; /* of |structure_element| */
-	struct c_structure *next_cst_alphabetically;
+	struct language_type *next_cst_alphabetically;
 	MEMORY_MANAGEMENT
-} c_structure;
-#line 78 "inweb/Chapter 4/Structures and Functions.w"
+} language_type;
+#line 78 "inweb/Chapter 4/Types and Functions.w"
 typedef struct structure_element {
 	struct text_stream *element_name;
 	struct source_line *element_created_at;
 	int allow_sharing;
 	MEMORY_MANAGEMENT
 } structure_element;
-#line 112 "inweb/Chapter 4/Structures and Functions.w"
-typedef struct function {
+#line 112 "inweb/Chapter 4/Types and Functions.w"
+typedef struct language_function {
 	struct text_stream *function_name; /* e.g., |"cultivate"| */
 	struct text_stream *function_type; /* e.g., |"tree *"| */
 	struct text_stream *function_arguments; /* e.g., |"int rainfall)"|: note |)| */
@@ -1812,13 +1812,13 @@ typedef struct function {
 	int no_conditionals;
 	struct source_line *within_conditionals[MAX_CONDITIONAL_COMPILATION_STACK];
 	MEMORY_MANAGEMENT
-} function;
+} language_function;
 #line 104 "inweb/Chapter 4/InC Support.w"
 typedef struct preform_nonterminal {
 	struct text_stream *nt_name; /* e.g., |<action-clause>| */
 	struct text_stream *unangled_name; /* e.g., |action-clause| */
 	struct text_stream *as_C_identifier; /* e.g., |action_clause_NTM| */
-	int as_function; /* defined internally, that is, parsed by a C function */
+	int as_function; /* defined internally, that is, parsed by a C language_function */
 	int voracious; /* a voracious nonterminal: see "The English Syntax of Inform" */
 	int min_word_count; /* for internals only */
 	int max_word_count;
@@ -3182,33 +3182,33 @@ void  Analyser__scan_line_categories(web *W, text_stream *range) ;
 void  Analyser__catalogue_the_sections(web *W, text_stream *range, int form) ;
 #line 106 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__analyse_code(web *W) ;
-#line 184 "inweb/Chapter 3/The Analyser.w"
+#line 183 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__analyse_as_code(web *W, source_line *L, text_stream *text, int mask, int transf) ;
-#line 226 "inweb/Chapter 3/The Analyser.w"
+#line 225 "inweb/Chapter 3/The Analyser.w"
 int  Analyser__hash_code_from_word(text_stream *text) ;
-#line 272 "inweb/Chapter 3/The Analyser.w"
+#line 271 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry * Analyser__find_hash_entry(hash_table *HT, text_stream *text, int create) ;
-#line 297 "inweb/Chapter 3/The Analyser.w"
+#line 296 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry * Analyser__find_hash_entry_for_section(section *S, text_stream *text, 	int create) ;
-#line 305 "inweb/Chapter 3/The Analyser.w"
+#line 304 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry * Analyser__mark_reserved_word(hash_table *HT, text_stream *p, int e) ;
-#line 313 "inweb/Chapter 3/The Analyser.w"
+#line 312 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__mark_reserved_word_for_section(section *S, text_stream *p, int e) ;
-#line 317 "inweb/Chapter 3/The Analyser.w"
+#line 316 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry * Analyser__mark_reserved_word_at_line(source_line *L, text_stream *p, int e) ;
-#line 325 "inweb/Chapter 3/The Analyser.w"
+#line 324 "inweb/Chapter 3/The Analyser.w"
 int  Analyser__is_reserved_word(hash_table *HT, text_stream *p, int e) ;
-#line 331 "inweb/Chapter 3/The Analyser.w"
+#line 330 "inweb/Chapter 3/The Analyser.w"
 int  Analyser__is_reserved_word_for_section(section *S, text_stream *p, int e) ;
-#line 335 "inweb/Chapter 3/The Analyser.w"
+#line 334 "inweb/Chapter 3/The Analyser.w"
 source_line * Analyser__get_defn_line(section *S, text_stream *p, int e) ;
-#line 341 "inweb/Chapter 3/The Analyser.w"
-function * Analyser__get_function(section *S, text_stream *p, int e) ;
-#line 364 "inweb/Chapter 3/The Analyser.w"
+#line 340 "inweb/Chapter 3/The Analyser.w"
+language_function * Analyser__get_function(section *S, text_stream *p, int e) ;
+#line 363 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__analyse_find(web *W, source_line *L, text_stream *identifier, int u) ;
-#line 386 "inweb/Chapter 3/The Analyser.w"
+#line 385 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__write_makefile(web *W, filename *F, module_search *I) ;
-#line 393 "inweb/Chapter 3/The Analyser.w"
+#line 392 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__write_gitignore(web *W, filename *F) ;
 #line 20 "inweb/Chapter 3/The Swarm.w"
 void  Swarm__weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag, 	weave_pattern *pattern, filename *to, pathname *into, int docs_mode, 	linked_list *breadcrumbs, filename *navigation) ;
@@ -3247,7 +3247,7 @@ int  Weaver__weave_source(web *W, weave_target *wv) ;
 #line 740 "inweb/Chapter 3/The Weaver.w"
 void  Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM, 	weave_target *wv, paragraph *P) ;
 #line 840 "inweb/Chapter 3/The Weaver.w"
-void  Weaver__show_function_usage(OUTPUT_STREAM, weave_target *wv, paragraph *P, 	function *fn, int as_list) ;
+void  Weaver__show_function_usage(OUTPUT_STREAM, weave_target *wv, paragraph *P, 	language_function *fn, int as_list) ;
 #line 905 "inweb/Chapter 3/The Weaver.w"
 int  Weaver__weave_table_of_contents(OUTPUT_STREAM, weave_target *wv, section *S) ;
 #line 14 "inweb/Chapter 3/The Tangler.w"
@@ -3294,16 +3294,16 @@ void  Languages__regexp(wchar_t *write_to, text_stream *T, text_file_position *t
 int  Languages__add_to_regexp(wchar_t *write_to, int i, wchar_t c) ;
 #line 780 "inweb/Chapter 4/Programming Languages.w"
 int  Languages__add_escape_to_regexp(wchar_t *write_to, int i, wchar_t c) ;
-#line 22 "inweb/Chapter 4/Structures and Functions.w"
-c_structure * Structures__new_struct(web *W, text_stream *name, source_line *L) ;
-#line 86 "inweb/Chapter 4/Structures and Functions.w"
-structure_element * Structures__new_element(c_structure *str, text_stream *elname, 	source_line *L) ;
-#line 100 "inweb/Chapter 4/Structures and Functions.w"
-c_structure * Structures__find_structure(web *W, text_stream *name) ;
-#line 127 "inweb/Chapter 4/Structures and Functions.w"
-function * Structures__new_function(text_stream *fname, source_line *L) ;
-#line 190 "inweb/Chapter 4/Structures and Functions.w"
-void  Structures__catalogue(section *S, int functions_too) ;
+#line 22 "inweb/Chapter 4/Types and Functions.w"
+language_type * Functions__new_struct(web *W, text_stream *name, source_line *L) ;
+#line 86 "inweb/Chapter 4/Types and Functions.w"
+structure_element * Functions__new_element(language_type *str, text_stream *elname, 	source_line *L) ;
+#line 100 "inweb/Chapter 4/Types and Functions.w"
+language_type * Functions__find_structure(web *W, text_stream *name) ;
+#line 127 "inweb/Chapter 4/Types and Functions.w"
+language_function * Functions__new_function(text_stream *fname, source_line *L) ;
+#line 190 "inweb/Chapter 4/Types and Functions.w"
+void  Functions__catalogue(section *S, int functions_too) ;
 #line 37 "inweb/Chapter 4/Language Methods.w"
 void  LanguageMethods__parse_types(web *W, programming_language *pl) ;
 #line 47 "inweb/Chapter 4/Language Methods.w"
@@ -3447,7 +3447,7 @@ void  CLike__additional_early_matter(programming_language *self, text_stream *OU
 #line 365 "inweb/Chapter 4/C-Like Languages.w"
 void  CLike__additional_predeclarations(programming_language *self, text_stream *OUT, web *W) ;
 #line 403 "inweb/Chapter 4/C-Like Languages.w"
-void  CLike__tangle_structure(OUTPUT_STREAM, programming_language *self, c_structure *str) ;
+void  CLike__tangle_structure(OUTPUT_STREAM, programming_language *self, language_type *str) ;
 #line 470 "inweb/Chapter 4/C-Like Languages.w"
 void  CLike__analyse_code(programming_language *self, web *W) ;
 #line 492 "inweb/Chapter 4/C-Like Languages.w"
@@ -3552,23 +3552,23 @@ void  Formats__text_comment(OUTPUT_STREAM, weave_target *wv, text_stream *id) ;
 void  Formats__text_r(OUTPUT_STREAM, weave_target *wv, text_stream *id, 	int within, int comments) ;
 #line 581 "inweb/Chapter 5/Format Methods.w"
 int  Formats__resolve_reference_in_weave(text_stream *url, text_stream *title, 	weave_target *wv, text_stream *text, source_line *L) ;
-#line 631 "inweb/Chapter 5/Format Methods.w"
+#line 652 "inweb/Chapter 5/Format Methods.w"
 void  Formats__text_fragment(OUTPUT_STREAM, weave_target *wv, text_stream *fragment) ;
-#line 656 "inweb/Chapter 5/Format Methods.w"
+#line 677 "inweb/Chapter 5/Format Methods.w"
 int  Formats__preform_document(OUTPUT_STREAM, weave_target *wv, web *W, 	chapter *C, section *S, source_line *L, text_stream *matter, 	text_stream *concluding_comment) ;
-#line 674 "inweb/Chapter 5/Format Methods.w"
+#line 695 "inweb/Chapter 5/Format Methods.w"
 void  Formats__endnote(OUTPUT_STREAM, weave_target *wv, int end) ;
-#line 689 "inweb/Chapter 5/Format Methods.w"
+#line 710 "inweb/Chapter 5/Format Methods.w"
 void  Formats__locale(OUTPUT_STREAM, weave_target *wv, paragraph *par1, paragraph *par2) ;
-#line 702 "inweb/Chapter 5/Format Methods.w"
+#line 723 "inweb/Chapter 5/Format Methods.w"
 void  Formats__tail(OUTPUT_STREAM, weave_target *wv, text_stream *comment, section *S) ;
-#line 718 "inweb/Chapter 5/Format Methods.w"
+#line 739 "inweb/Chapter 5/Format Methods.w"
 void  Formats__post_process_weave(weave_target *wv, int open_afterwards) ;
-#line 729 "inweb/Chapter 5/Format Methods.w"
+#line 750 "inweb/Chapter 5/Format Methods.w"
 void  Formats__report_on_post_processing(weave_target *wv) ;
-#line 741 "inweb/Chapter 5/Format Methods.w"
+#line 762 "inweb/Chapter 5/Format Methods.w"
 int  Formats__index_pdfs(text_stream *format) ;
-#line 757 "inweb/Chapter 5/Format Methods.w"
+#line 778 "inweb/Chapter 5/Format Methods.w"
 int  Formats__substitute_post_processing_data(OUTPUT_STREAM, weave_target *wv, 	text_stream *detail, weave_pattern *pattern) ;
 #line 9 "inweb/Chapter 5/Plain Text Format.w"
 void  PlainText__create(void) ;
@@ -3700,53 +3700,53 @@ void  HTMLFormat__paragraph_heading(weave_format *self, text_stream *OUT, 	weave
 void  HTMLFormat__drop_initial_breadcrumbs(OUTPUT_STREAM, linked_list *crumbs, int docs_mode) ;
 #line 316 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__source_code(weave_format *self, text_stream *OUT, weave_target *wv, 	int tab_stops_of_indentation, text_stream *prefatory, text_stream *matter, 	text_stream *colouring, text_stream *concluding_comment, 	int starts, int finishes, int code_mode, int linked) ;
-#line 471 "inweb/Chapter 5/HTML Formats.w"
+#line 467 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__inline_code(weave_format *self, text_stream *OUT, weave_target *wv, 	int enter) ;
-#line 482 "inweb/Chapter 5/HTML Formats.w"
+#line 478 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__url(weave_format *self, text_stream *OUT, weave_target *wv, 	text_stream *url, text_stream *content, int external) ;
-#line 490 "inweb/Chapter 5/HTML Formats.w"
+#line 486 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__footnote_cue(weave_format *self, text_stream *OUT, weave_target *wv, 	text_stream *cue) ;
-#line 501 "inweb/Chapter 5/HTML Formats.w"
+#line 497 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__begin_footnote_text(weave_format *self, text_stream *OUT, weave_target *wv, 	text_stream *cue) ;
-#line 511 "inweb/Chapter 5/HTML Formats.w"
+#line 507 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__end_footnote_text(weave_format *self, text_stream *OUT, weave_target *wv, 	text_stream *cue) ;
-#line 521 "inweb/Chapter 5/HTML Formats.w"
+#line 517 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__display_line(weave_format *self, text_stream *OUT, weave_target *wv, 	text_stream *from) ;
-#line 532 "inweb/Chapter 5/HTML Formats.w"
+#line 528 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__item(weave_format *self, text_stream *OUT, weave_target *wv, int depth, 	text_stream *label) ;
-#line 541 "inweb/Chapter 5/HTML Formats.w"
+#line 537 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__bar(weave_format *self, text_stream *OUT, weave_target *wv) ;
-#line 547 "inweb/Chapter 5/HTML Formats.w"
+#line 543 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__figure(weave_format *self, text_stream *OUT, weave_target *wv, 	text_stream *figname, int w, int h, programming_language *pl) ;
-#line 562 "inweb/Chapter 5/HTML Formats.w"
+#line 558 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__embed(weave_format *self, text_stream *OUT, weave_target *wv, 	text_stream *service, text_stream *ID) ;
-#line 601 "inweb/Chapter 5/HTML Formats.w"
+#line 597 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__para_macro(weave_format *self, text_stream *OUT, weave_target *wv, 	para_macro *pmac, int defn) ;
-#line 616 "inweb/Chapter 5/HTML Formats.w"
+#line 612 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__pagebreak(weave_format *self, text_stream *OUT, weave_target *wv) ;
-#line 621 "inweb/Chapter 5/HTML Formats.w"
+#line 617 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__blank_line(weave_format *self, text_stream *OUT, weave_target *wv, 	int in_comment) ;
-#line 634 "inweb/Chapter 5/HTML Formats.w"
+#line 630 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__change_material(weave_format *self, text_stream *OUT, weave_target *wv, 	int old_material, int new_material, int content, int plainly) ;
-#line 703 "inweb/Chapter 5/HTML Formats.w"
+#line 699 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__change_colour(weave_format *self, text_stream *OUT, weave_target *wv, 	int col, int in_code) ;
-#line 724 "inweb/Chapter 5/HTML Formats.w"
+#line 720 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__endnote(weave_format *self, text_stream *OUT, weave_target *wv, int end) ;
-#line 734 "inweb/Chapter 5/HTML Formats.w"
+#line 730 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__commentary_text(weave_format *self, text_stream *OUT, weave_target *wv, 	text_stream *id) ;
-#line 755 "inweb/Chapter 5/HTML Formats.w"
+#line 751 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__locale(weave_format *self, text_stream *OUT, weave_target *wv, 	paragraph *par1, paragraph *par2) ;
-#line 769 "inweb/Chapter 5/HTML Formats.w"
+#line 765 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__section_URL(OUTPUT_STREAM, weave_target *wv, section *from) ;
-#line 778 "inweb/Chapter 5/HTML Formats.w"
+#line 774 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__xref(OUTPUT_STREAM, weave_target *wv, paragraph *P, section *from, 	int a_link) ;
-#line 802 "inweb/Chapter 5/HTML Formats.w"
+#line 798 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__tail(weave_format *self, text_stream *OUT, weave_target *wv, 	text_stream *comment, section *this_S) ;
-#line 849 "inweb/Chapter 5/HTML Formats.w"
+#line 845 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__sref(OUTPUT_STREAM, weave_target *wv, section *S) ;
-#line 862 "inweb/Chapter 5/HTML Formats.w"
+#line 858 "inweb/Chapter 5/HTML Formats.w"
 int  HTMLFormat__begin_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) ;
-#line 877 "inweb/Chapter 5/HTML Formats.w"
+#line 873 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__end_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) ;
 #line 19 "inweb/Chapter 5/Weave Plugins.w"
 weave_plugin * WeavePlugins__new(text_stream *name) ;
@@ -13470,14 +13470,14 @@ void BuildFiles__increment(text_stream *T) {
 #line 56 "inweb/Chapter 1/Basics.w"
 ALLOCATE_IN_ARRAYS(source_line, 1000)
 ALLOCATE_INDIVIDUALLY(breadcrumb_request)
-ALLOCATE_INDIVIDUALLY(c_structure)
 ALLOCATE_INDIVIDUALLY(chapter)
+ALLOCATE_INDIVIDUALLY(colouring_language_block)
 ALLOCATE_INDIVIDUALLY(colouring_rule)
 ALLOCATE_INDIVIDUALLY(enumeration_set)
-ALLOCATE_INDIVIDUALLY(function)
 ALLOCATE_INDIVIDUALLY(hash_table_entry_usage)
 ALLOCATE_INDIVIDUALLY(hash_table_entry)
-ALLOCATE_INDIVIDUALLY(colouring_language_block)
+ALLOCATE_INDIVIDUALLY(language_function)
+ALLOCATE_INDIVIDUALLY(language_type)
 ALLOCATE_INDIVIDUALLY(macro_tokens)
 ALLOCATE_INDIVIDUALLY(macro_usage)
 ALLOCATE_INDIVIDUALLY(macro)
@@ -14368,7 +14368,7 @@ web *Reader__load_web(pathname *P, filename *alt_F, module_search *I, int verbos
 #line 142 "inweb/Chapter 2/The Reader.w"
 	W->chapters = NEW_LINKED_LIST(chapter);
 	W->headers = NEW_LINKED_LIST(filename);
-	W->c_structures = NEW_LINKED_LIST(c_structure);
+	W->language_types = NEW_LINKED_LIST(language_type);
 	W->tangle_targets = NEW_LINKED_LIST(tangle_target);
 	W->analysed = FALSE;
 	W->as_ebook = NULL;
@@ -15746,7 +15746,7 @@ void Parser__parse_web(web *W, int inweb_mode, int sequential) {
 	P->first_line_in_paragraph = L;
 	P->defines_macro = NULL;
 	P->functions = NEW_LINKED_LIST(function);
-	P->structures = NEW_LINKED_LIST(c_structure);
+	P->structures = NEW_LINKED_LIST(language_type);
 	P->taggings = NEW_LINKED_LIST(paragraph_tagging);
 
 	P->under_section = S;
@@ -16430,7 +16430,7 @@ void Analyser__catalogue_the_sections(web *W, text_stream *range, int form) {
 				PRINT("%S", main_title);
 				for (int i = Str__len(main_title); i<max_width+2; i++) PRINT(" ");
 				if (form != BASIC_SECTIONCAT)
-					Structures__catalogue(S, (form == FUNCTIONS_SECTIONCAT)?TRUE:FALSE);
+					Functions__catalogue(S, (form == FUNCTIONS_SECTIONCAT)?TRUE:FALSE);
 				PRINT("\n");
 				DISCARD_TEXT(main_title);
 			}
@@ -16489,7 +16489,7 @@ void Analyser__analyse_code(web *W) {
 			case PREFORM_GRAMMAR_LCAT:
 				
 {
-#line 168 "inweb/Chapter 3/The Analyser.w"
+#line 167 "inweb/Chapter 3/The Analyser.w"
 	Analyser__analyse_as_code(W, L, L->text_operand2, ANY_USAGE, 0);
 	Analyser__analyse_as_code(W, L, L->text_operand, PREFORM_IN_CODE_USAGE, PREFORM_IN_GRAMMAR_USAGE);
 
@@ -16503,7 +16503,7 @@ void Analyser__analyse_code(web *W) {
 	W->analysed = TRUE;
 }
 
-#line 184 "inweb/Chapter 3/The Analyser.w"
+#line 183 "inweb/Chapter 3/The Analyser.w"
 void Analyser__analyse_as_code(web *W, source_line *L, text_stream *text, int mask, int transf) {
 	int start_at = -1, element_follows = FALSE;
 	for (int i = 0; i < Str__len(text); i++) {
@@ -16535,7 +16535,7 @@ void Analyser__analyse_as_code(web *W, source_line *L, text_stream *text, int ma
 	}
 }
 
-#line 226 "inweb/Chapter 3/The Analyser.w"
+#line 225 "inweb/Chapter 3/The Analyser.w"
 int Analyser__hash_code_from_word(text_stream *text) {
     unsigned int hash_code = 0;
     string_position p = Str__start(text);
@@ -16556,11 +16556,11 @@ int Analyser__hash_code_from_word(text_stream *text) {
     return (int) (1+(hash_code % (HASH_TAB_SIZE-1))); /* result of X 30011, plus 1 */
 }
 
-#line 253 "inweb/Chapter 3/The Analyser.w"
+#line 252 "inweb/Chapter 3/The Analyser.w"
 
-#line 265 "inweb/Chapter 3/The Analyser.w"
+#line 264 "inweb/Chapter 3/The Analyser.w"
 
-#line 272 "inweb/Chapter 3/The Analyser.w"
+#line 271 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry *Analyser__find_hash_entry(hash_table *HT, text_stream *text, int create) {
 	int h = Analyser__hash_code_from_word(text);
 	if (h == NUMBER_HASH) return NULL;
@@ -16591,7 +16591,7 @@ hash_table_entry *Analyser__find_hash_entry_for_section(section *S, text_stream 
 	return Analyser__find_hash_entry(&(S->sect_target->symbols), text, create);
 }
 
-#line 305 "inweb/Chapter 3/The Analyser.w"
+#line 304 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry *Analyser__mark_reserved_word(hash_table *HT, text_stream *p, int e) {
 	hash_table_entry *hte = Analyser__find_hash_entry(HT, p, TRUE);
 	hte->reserved_word |= (1 << e);
@@ -16628,15 +16628,15 @@ source_line *Analyser__get_defn_line(section *S, text_stream *p, int e) {
 	return NULL;
 }
 
-function *Analyser__get_function(section *S, text_stream *p, int e) {
+language_function *Analyser__get_function(section *S, text_stream *p, int e) {
 	hash_table_entry *hte = Analyser__find_hash_entry(&(S->sect_target->symbols), p, FALSE);
 	if ((hte) && (hte->reserved_word & (1 << e))) return hte->as_function;
 	return NULL;
 }
 
-#line 360 "inweb/Chapter 3/The Analyser.w"
+#line 359 "inweb/Chapter 3/The Analyser.w"
 
-#line 364 "inweb/Chapter 3/The Analyser.w"
+#line 363 "inweb/Chapter 3/The Analyser.w"
 void Analyser__analyse_find(web *W, source_line *L, text_stream *identifier, int u) {
 	hash_table_entry *hte =
 		Analyser__find_hash_entry_for_section(L->owning_section, identifier, FALSE);
@@ -16654,7 +16654,7 @@ void Analyser__analyse_find(web *W, source_line *L, text_stream *identifier, int
 	hteu->form_of_usage |= u;
 }
 
-#line 386 "inweb/Chapter 3/The Analyser.w"
+#line 385 "inweb/Chapter 3/The Analyser.w"
 void Analyser__write_makefile(web *W, filename *F, module_search *I) {
 	filename *prototype = Filenames__in_folder(W->md->path_to_web, TL_IS_167);
 	if (!(TextFiles__exists(prototype)))
@@ -18328,8 +18328,8 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 }
 #line 744 "inweb/Chapter 3/The Weaver.w"
 ;
-	function *fn;
-	LOOP_OVER_LINKED_LIST(fn, function, P->functions)
+	language_function *fn;
+	LOOP_OVER_LINKED_LIST(fn, language_function, P->functions)
 		
 {
 #line 793 "inweb/Chapter 3/The Weaver.w"
@@ -18342,8 +18342,8 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 }
 #line 747 "inweb/Chapter 3/The Weaver.w"
 ;
-	c_structure *st;
-	LOOP_OVER_LINKED_LIST(st, c_structure, P->structures)
+	language_type *st;
+	LOOP_OVER_LINKED_LIST(st, language_type, P->structures)
 		
 {
 #line 800 "inweb/Chapter 3/The Weaver.w"
@@ -18393,7 +18393,7 @@ void Weaver__show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 
 #line 840 "inweb/Chapter 3/The Weaver.w"
 void Weaver__show_function_usage(OUTPUT_STREAM, weave_target *wv, paragraph *P,
-	function *fn, int as_list) {
+	language_function *fn, int as_list) {
 	fn->usage_described = TRUE;
 	hash_table_entry *hte =
 		Analyser__find_hash_entry_for_section(fn->function_header_at->owning_section,
@@ -19387,46 +19387,46 @@ int Languages__add_escape_to_regexp(wchar_t *write_to, int i, wchar_t c) {
 	return i;
 }
 
-#line 18 "inweb/Chapter 4/Structures and Functions.w"
+#line 18 "inweb/Chapter 4/Types and Functions.w"
 
-#line 20 "inweb/Chapter 4/Structures and Functions.w"
-c_structure *first_cst_alphabetically = NULL;
+#line 20 "inweb/Chapter 4/Types and Functions.w"
+language_type *first_cst_alphabetically = NULL;
 
-c_structure *Structures__new_struct(web *W, text_stream *name, source_line *L) {
-	c_structure *str = CREATE(c_structure);
+language_type *Functions__new_struct(web *W, text_stream *name, source_line *L) {
+	language_type *str = CREATE(language_type);
 	
 {
-#line 32 "inweb/Chapter 4/Structures and Functions.w"
+#line 32 "inweb/Chapter 4/Types and Functions.w"
 	str->structure_name = Str__duplicate(name);
 	str->structure_header_at = L;
 	str->tangled = FALSE;
 	str->typedef_ends = NULL;
-	str->incorporates = NEW_LINKED_LIST(c_structure);
+	str->incorporates = NEW_LINKED_LIST(language_type);
 	str->elements = NEW_LINKED_LIST(structure_element);
 
 }
-#line 24 "inweb/Chapter 4/Structures and Functions.w"
+#line 24 "inweb/Chapter 4/Types and Functions.w"
 ;
 	Analyser__mark_reserved_word_at_line(L, str->structure_name, RESERVED_COLOUR);
 	
 {
-#line 40 "inweb/Chapter 4/Structures and Functions.w"
+#line 40 "inweb/Chapter 4/Types and Functions.w"
 	Tags__add_by_name(L->owning_paragraph, TL_IS_319);
-	ADD_TO_LINKED_LIST(str, c_structure, W->c_structures);
-	ADD_TO_LINKED_LIST(str, c_structure, L->owning_paragraph->structures);
+	ADD_TO_LINKED_LIST(str, language_type, W->language_types);
+	ADD_TO_LINKED_LIST(str, language_type, L->owning_paragraph->structures);
 
 }
-#line 26 "inweb/Chapter 4/Structures and Functions.w"
+#line 26 "inweb/Chapter 4/Types and Functions.w"
 ;
 	
 {
-#line 45 "inweb/Chapter 4/Structures and Functions.w"
+#line 45 "inweb/Chapter 4/Types and Functions.w"
 	str->next_cst_alphabetically = NULL;
 	if (first_cst_alphabetically == NULL) first_cst_alphabetically = str;
 	else {
 		int placed = FALSE;
-		c_structure *last = NULL;
-		for (c_structure *seq = first_cst_alphabetically; seq;
+		language_type *last = NULL;
+		for (language_type *seq = first_cst_alphabetically; seq;
 			seq = seq->next_cst_alphabetically) {
 			if (Str__cmp(str->structure_name, seq->structure_name) < 0) {
 				if (seq == first_cst_alphabetically) {
@@ -19445,15 +19445,15 @@ c_structure *Structures__new_struct(web *W, text_stream *name, source_line *L) {
 	}
 
 }
-#line 27 "inweb/Chapter 4/Structures and Functions.w"
+#line 27 "inweb/Chapter 4/Types and Functions.w"
 ;
 	return str;
 }
 
-#line 84 "inweb/Chapter 4/Structures and Functions.w"
+#line 84 "inweb/Chapter 4/Types and Functions.w"
 
-#line 86 "inweb/Chapter 4/Structures and Functions.w"
-structure_element *Structures__new_element(c_structure *str, text_stream *elname,
+#line 86 "inweb/Chapter 4/Types and Functions.w"
+structure_element *Functions__new_element(language_type *str, text_stream *elname,
 	source_line *L) {
 	Analyser__mark_reserved_word_at_line(L, elname, ELEMENT_COLOUR);
 	structure_element *elt = CREATE(structure_element);
@@ -19466,26 +19466,26 @@ structure_element *Structures__new_element(c_structure *str, text_stream *elname
 	return elt;
 }
 
-#line 100 "inweb/Chapter 4/Structures and Functions.w"
-c_structure *Structures__find_structure(web *W, text_stream *name) {
-	c_structure *str;
-	LOOP_OVER_LINKED_LIST(str, c_structure, W->c_structures)
+#line 100 "inweb/Chapter 4/Types and Functions.w"
+language_type *Functions__find_structure(web *W, text_stream *name) {
+	language_type *str;
+	LOOP_OVER_LINKED_LIST(str, language_type, W->language_types)
 		if (Str__eq(name, str->structure_name))
 			return str;
 	return NULL;
 }
 
-#line 125 "inweb/Chapter 4/Structures and Functions.w"
+#line 125 "inweb/Chapter 4/Types and Functions.w"
 
-#line 127 "inweb/Chapter 4/Structures and Functions.w"
-function *Structures__new_function(text_stream *fname, source_line *L) {
+#line 127 "inweb/Chapter 4/Types and Functions.w"
+language_function *Functions__new_function(text_stream *fname, source_line *L) {
 	hash_table_entry *hte =
 		Analyser__mark_reserved_word_at_line(L, fname, FUNCTION_COLOUR);
-	function *fn = CREATE(function);
+	language_function *fn = CREATE(language_function);
 	hte->as_function = fn;
 	
 {
-#line 143 "inweb/Chapter 4/Structures and Functions.w"
+#line 143 "inweb/Chapter 4/Types and Functions.w"
 	fn->function_name = Str__duplicate(fname);
 	fn->function_arguments = Str__new();
 	fn->function_type = Str__new();
@@ -19497,22 +19497,22 @@ function *Structures__new_function(text_stream *fname, source_line *L) {
 	fn->no_conditionals = 0;
 
 }
-#line 132 "inweb/Chapter 4/Structures and Functions.w"
+#line 132 "inweb/Chapter 4/Types and Functions.w"
 ;
 	
 {
-#line 154 "inweb/Chapter 4/Structures and Functions.w"
+#line 154 "inweb/Chapter 4/Types and Functions.w"
 	paragraph *P = L->owning_paragraph;
-	if (P) ADD_TO_LINKED_LIST(fn, function, P->functions);
+	if (P) ADD_TO_LINKED_LIST(fn, language_function, P->functions);
 	L->function_defined = fn;
 
 }
-#line 133 "inweb/Chapter 4/Structures and Functions.w"
+#line 133 "inweb/Chapter 4/Types and Functions.w"
 ;
 	if (L->owning_section->sect_language->supports_namespaces)
 		
 {
-#line 159 "inweb/Chapter 4/Structures and Functions.w"
+#line 159 "inweb/Chapter 4/Types and Functions.w"
 	text_stream *declared_namespace = NULL;
 	text_stream *ambient_namespace = L->owning_section->sect_namespace;
 	match_results mr = Regexp__create_mr();
@@ -19540,20 +19540,20 @@ function *Structures__new_function(text_stream *fname, source_line *L) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 135 "inweb/Chapter 4/Structures and Functions.w"
+#line 135 "inweb/Chapter 4/Types and Functions.w"
 ;
 	return fn;
 }
 
-#line 190 "inweb/Chapter 4/Structures and Functions.w"
-void Structures__catalogue(section *S, int functions_too) {
-	c_structure *str;
-	LOOP_OVER(str, c_structure)
+#line 190 "inweb/Chapter 4/Types and Functions.w"
+void Functions__catalogue(section *S, int functions_too) {
+	language_type *str;
+	LOOP_OVER(str, language_type)
 		if (str->structure_header_at->owning_section == S)
 			PRINT(" %S ", str->structure_name);
 	if (functions_too) {
-		function *fn;
-		LOOP_OVER(fn, function)
+		language_function *fn;
+		LOOP_OVER(fn, language_function)
 			if (fn->function_header_at->owning_section == S)
 				PRINT("\n                     %S", fn->function_name);
 	}
@@ -20067,7 +20067,7 @@ void ACMESupport__parse_types(programming_language *self, web *W) {
 			if (S->sect_language == W->main_language) {
 				match_results mr = Regexp__create_mr();
 				if (Regexp__match(&mr, L->text, W->main_language->type_notation)) {
-					Structures__new_function(mr.exp[0], L);
+					Functions__new_function(mr.exp[0], L);
 				}
 				Regexp__dispose_of(&mr);
 			}
@@ -20085,7 +20085,7 @@ void ACMESupport__parse_functions(programming_language *self, web *W) {
 				match_results mr = Regexp__create_mr();
 				if ((L->category != TEXT_EXTRACT_LCAT) &&
 					(Regexp__match(&mr, L->text, W->main_language->function_notation))) {
-					Structures__new_function(mr.exp[0], L);
+					Functions__new_function(mr.exp[0], L);
 				}
 				Regexp__dispose_of(&mr);
 			}
@@ -20540,14 +20540,14 @@ void CLike__parse_types(programming_language *self, web *W) {
 	
 {
 #line 53 "inweb/Chapter 4/C-Like Languages.w"
-	c_structure *current_str = NULL;
+	language_type *current_str = NULL;
 	chapter *C;
 	section *S;
 	LOOP_WITHIN_TANGLE(C, S, Tangler__primary_target(W)) {
 		match_results mr = Regexp__create_mr();
 
 		if (Regexp__match(&mr, L->text, L"typedef struct (%i+) %c*{%c*")) {
-			current_str = Structures__new_struct(W, mr.exp[0], L);
+			current_str = Functions__new_struct(W, mr.exp[0], L);
 			Tags__add_by_name(L->owning_paragraph, TL_IS_324);
 		} else if ((Str__get_first_char(L->text) == '}') && (current_str)) {
 			current_str->typedef_ends = L;
@@ -20611,7 +20611,7 @@ void CLike__parse_types(programming_language *self, web *W) {
 }
 #line 94 "inweb/Chapter 4/C-Like Languages.w"
 ;
-			Structures__new_element(current_str, elname, L);
+			Functions__new_element(current_str, elname, L);
 			DISCARD_TEXT(elname);
 			Regexp__dispose_of(&mr);
 		}
@@ -20635,8 +20635,8 @@ void CLike__parse_types(programming_language *self, web *W) {
 	
 {
 #line 153 "inweb/Chapter 4/C-Like Languages.w"
-	c_structure *current_str;
-	LOOP_OVER(current_str, c_structure) {
+	language_type *current_str;
+	LOOP_OVER(current_str, language_type) {
 		for (source_line *L = current_str->structure_header_at;
 			((L) && (L != current_str->typedef_ends));
 			L = L->next_line) {
@@ -20646,11 +20646,11 @@ void CLike__parse_types(programming_language *self, web *W) {
 {
 #line 166 "inweb/Chapter 4/C-Like Languages.w"
 	text_stream *used_structure = mr.exp[0];
-	c_structure *str;
-	LOOP_OVER_LINKED_LIST(str, c_structure, W->c_structures)
+	language_type *str;
+	LOOP_OVER_LINKED_LIST(str, language_type, W->language_types)
 		if ((str != current_str) &&
 			(Str__eq(used_structure, str->structure_name)))
-			ADD_TO_LINKED_LIST(str, c_structure, current_str->incorporates);
+			ADD_TO_LINKED_LIST(str, language_type, current_str->incorporates);
 
 }
 #line 160 "inweb/Chapter 4/C-Like Languages.w"
@@ -20759,7 +20759,7 @@ void CLike__parse_functions(programming_language *self, web *W) {
 }
 #line 274 "inweb/Chapter 4/C-Like Languages.w"
 ;
-	function *fn = Structures__new_function(fname, L);
+	language_function *fn = Functions__new_function(fname, L);
 	fn->function_arguments = Str__duplicate(arguments);
 	WRITE_TO(fn->function_type, "%S%S %S", qualifiers, ftype, asts);
 	if (Str__eq_wide_string(fn->function_name, L"isdigit")) fn->call_freely = TRUE;
@@ -20823,10 +20823,10 @@ void CLike__additional_predeclarations(programming_language *self, text_stream *
 	
 {
 #line 394 "inweb/Chapter 4/C-Like Languages.w"
-	c_structure *str;
-	LOOP_OVER_LINKED_LIST(str, c_structure, W->c_structures)
+	language_type *str;
+	LOOP_OVER_LINKED_LIST(str, language_type, W->language_types)
 		str->tangled = FALSE;
-	LOOP_OVER_LINKED_LIST(str, c_structure, W->c_structures)
+	LOOP_OVER_LINKED_LIST(str, language_type, W->language_types)
 		CLike__tangle_structure(OUT, self, str);
 
 }
@@ -20855,7 +20855,7 @@ void CLike__additional_predeclarations(programming_language *self, text_stream *
 	section *S;
 	LOOP_WITHIN_TANGLE(C, S, Tangler__primary_target(W))
 		if ((L->function_defined) && (L->owning_paragraph->placed_very_early == FALSE)) {
-			function *fn = L->function_defined;
+			language_function *fn = L->function_defined;
 			int to_close = 0;
 			for (int i=0; i<fn->no_conditionals; i++) {
 				match_results mr = Regexp__create_mr();
@@ -20882,11 +20882,11 @@ void CLike__additional_predeclarations(programming_language *self, text_stream *
 }
 
 #line 403 "inweb/Chapter 4/C-Like Languages.w"
-void CLike__tangle_structure(OUTPUT_STREAM, programming_language *self, c_structure *str) {
+void CLike__tangle_structure(OUTPUT_STREAM, programming_language *self, language_type *str) {
 	if (str->tangled != FALSE) return;
 	str->tangled = NOT_APPLICABLE;
-	c_structure *embodied = NULL;
-	LOOP_OVER_LINKED_LIST(embodied, c_structure, str->incorporates)
+	language_type *embodied = NULL;
+	LOOP_OVER_LINKED_LIST(embodied, language_type, str->incorporates)
 		CLike__tangle_structure(OUT, self, embodied);
 	str->tangled = TRUE;
 	Tags__open_ifdefs(OUT, str->structure_header_at->owning_paragraph);
@@ -20901,13 +20901,13 @@ void CLike__tangle_structure(OUTPUT_STREAM, programming_language *self, c_struct
 
 #line 470 "inweb/Chapter 4/C-Like Languages.w"
 void CLike__analyse_code(programming_language *self, web *W) {
-	function *fn;
-	LOOP_OVER(fn, function)
+	language_function *fn;
+	LOOP_OVER(fn, language_function)
 		Analyser__find_hash_entry_for_section(fn->function_header_at->owning_section,
 			fn->function_name, TRUE);
-	c_structure *str;
+	language_type *str;
 	structure_element *elt;
-	LOOP_OVER_LINKED_LIST(str, c_structure, W->c_structures)
+	LOOP_OVER_LINKED_LIST(str, language_type, W->language_types)
 		LOOP_OVER_LINKED_LIST(elt, structure_element, str->elements)
 			if (elt->allow_sharing == FALSE)
 				Analyser__find_hash_entry_for_section(elt->element_created_at->owning_section,
@@ -20918,8 +20918,8 @@ void CLike__analyse_code(programming_language *self, web *W) {
 void CLike__post_analysis(programming_language *self, web *W) {
 	int check_namespaces = FALSE;
 	if (Str__eq_wide_string(Bibliographic__get_datum(W->md, TL_IS_328), L"On")) check_namespaces = TRUE;
-	function *fn;
-	LOOP_OVER(fn, function) {
+	language_function *fn;
+	LOOP_OVER(fn, language_function) {
 		hash_table_entry *hte =
 			Analyser__find_hash_entry_for_section(fn->function_header_at->owning_section,
 				fn->function_name, FALSE);
@@ -22146,6 +22146,31 @@ int Formats__resolve_reference_in_weave(text_stream *url, text_stream *title,
 	int N = WebModules__named_reference(&found_M, &found_Sm, &named_as_module,
 		title, wv->weave_web->md->as_module, text, FALSE);
 	if (N == 0) {
+		if (L) 
+{
+#line 618 "inweb/Chapter 5/Format Methods.w"
+	language_function *fn;
+	LOOP_OVER(fn, language_function) {
+		if (Str__eq_insensitive(fn->function_name, text)) {
+			HTMLFormat__xref(url, wv, fn->function_header_at->owning_paragraph,
+				L->owning_section, TRUE);
+			WRITE_TO(title, "%S", fn->function_name);
+			return TRUE;
+		}
+	}
+	language_type *str;
+	LOOP_OVER(str, language_type) {
+		if (Str__eq_insensitive(str->structure_name, text)) {
+			HTMLFormat__xref(url, wv, str->structure_header_at->owning_paragraph,
+				L->owning_section, TRUE);
+			WRITE_TO(title, "%S", str->structure_name);
+			return TRUE;
+		}
+	}
+
+}
+#line 589 "inweb/Chapter 5/Format Methods.w"
+;
 		Main__error_in_web(TL_IS_349, L);
 		return FALSE;
 	} else if (N > 1) {
@@ -22173,9 +22198,9 @@ int Formats__resolve_reference_in_weave(text_stream *url, text_stream *title,
 	}
 }
 
-#line 624 "inweb/Chapter 5/Format Methods.w"
+#line 645 "inweb/Chapter 5/Format Methods.w"
 
-#line 626 "inweb/Chapter 5/Format Methods.w"
+#line 647 "inweb/Chapter 5/Format Methods.w"
 IMETHOD_TYPE(PRESERVE_MATH_MODE_FOR_MTID, weave_format *wf, weave_target *wv,
 	text_stream *matter, text_stream *id)
 VMETHOD_TYPE(COMMENTARY_TEXT_FOR_MTID, weave_format *wf, text_stream *OUT,
@@ -22196,9 +22221,9 @@ void Formats__text_fragment(OUTPUT_STREAM, weave_target *wv, text_stream *fragme
 	DISCARD_TEXT(matter);
 }
 
-#line 651 "inweb/Chapter 5/Format Methods.w"
+#line 672 "inweb/Chapter 5/Format Methods.w"
 
-#line 653 "inweb/Chapter 5/Format Methods.w"
+#line 674 "inweb/Chapter 5/Format Methods.w"
 IMETHOD_TYPE(PREFORM_DOCUMENT_FOR_MTID, weave_format *wf, text_stream *OUT,
 	weave_target *wv, web *W, chapter *C, section *S, source_line *L,
 	text_stream *matter, text_stream *concluding_comment)
@@ -22212,18 +22237,18 @@ int Formats__preform_document(OUTPUT_STREAM, weave_target *wv, web *W,
 	return rv;
 }
 
-#line 671 "inweb/Chapter 5/Format Methods.w"
+#line 692 "inweb/Chapter 5/Format Methods.w"
 
-#line 673 "inweb/Chapter 5/Format Methods.w"
+#line 694 "inweb/Chapter 5/Format Methods.w"
 VMETHOD_TYPE(ENDNOTE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv, int end)
 void Formats__endnote(OUTPUT_STREAM, weave_target *wv, int end) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, ENDNOTE_FOR_MTID, OUT, wv, end);
 }
 
-#line 685 "inweb/Chapter 5/Format Methods.w"
+#line 706 "inweb/Chapter 5/Format Methods.w"
 
-#line 687 "inweb/Chapter 5/Format Methods.w"
+#line 708 "inweb/Chapter 5/Format Methods.w"
 VMETHOD_TYPE(LOCALE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
 	paragraph *par1, paragraph *par2)
 void Formats__locale(OUTPUT_STREAM, weave_target *wv, paragraph *par1, paragraph *par2) {
@@ -22231,9 +22256,9 @@ void Formats__locale(OUTPUT_STREAM, weave_target *wv, paragraph *par1, paragraph
 	VMETHOD_CALL(wf, LOCALE_FOR_MTID, OUT, wv, par1, par2);
 }
 
-#line 698 "inweb/Chapter 5/Format Methods.w"
+#line 719 "inweb/Chapter 5/Format Methods.w"
 
-#line 700 "inweb/Chapter 5/Format Methods.w"
+#line 721 "inweb/Chapter 5/Format Methods.w"
 VMETHOD_TYPE(TAIL_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
 	text_stream *comment, section *S)
 void Formats__tail(OUTPUT_STREAM, weave_target *wv, text_stream *comment, section *S) {
@@ -22241,25 +22266,25 @@ void Formats__tail(OUTPUT_STREAM, weave_target *wv, text_stream *comment, sectio
 	VMETHOD_CALL(wf, TAIL_FOR_MTID, OUT, wv, comment, S);
 }
 
-#line 715 "inweb/Chapter 5/Format Methods.w"
+#line 736 "inweb/Chapter 5/Format Methods.w"
 
-#line 717 "inweb/Chapter 5/Format Methods.w"
+#line 738 "inweb/Chapter 5/Format Methods.w"
 VMETHOD_TYPE(POST_PROCESS_POS_MTID, weave_format *wf, weave_target *wv, int open_afterwards)
 void Formats__post_process_weave(weave_target *wv, int open_afterwards) {
 	VMETHOD_CALL(wv->format, POST_PROCESS_POS_MTID, wv, open_afterwards);
 }
 
-#line 726 "inweb/Chapter 5/Format Methods.w"
+#line 747 "inweb/Chapter 5/Format Methods.w"
 
-#line 728 "inweb/Chapter 5/Format Methods.w"
+#line 749 "inweb/Chapter 5/Format Methods.w"
 VMETHOD_TYPE(POST_PROCESS_REPORT_POS_MTID, weave_format *wf, weave_target *wv)
 void Formats__report_on_post_processing(weave_target *wv) {
 	VMETHOD_CALL(wv->format, POST_PROCESS_REPORT_POS_MTID, wv);
 }
 
-#line 738 "inweb/Chapter 5/Format Methods.w"
+#line 759 "inweb/Chapter 5/Format Methods.w"
 
-#line 740 "inweb/Chapter 5/Format Methods.w"
+#line 761 "inweb/Chapter 5/Format Methods.w"
 IMETHOD_TYPE(INDEX_PDFS_POS_MTID, weave_format *wf)
 int Formats__index_pdfs(text_stream *format) {
 	weave_format *wf = Formats__find_by_name(format);
@@ -22269,9 +22294,9 @@ int Formats__index_pdfs(text_stream *format) {
 	return rv;
 }
 
-#line 753 "inweb/Chapter 5/Format Methods.w"
+#line 774 "inweb/Chapter 5/Format Methods.w"
 
-#line 755 "inweb/Chapter 5/Format Methods.w"
+#line 776 "inweb/Chapter 5/Format Methods.w"
 IMETHOD_TYPE(POST_PROCESS_SUBSTITUTE_POS_MTID, weave_format *wf, text_stream *OUT,
 	weave_target *wv, text_stream *detail, weave_pattern *pattern)
 int Formats__substitute_post_processing_data(OUTPUT_STREAM, weave_target *wv,
@@ -23646,7 +23671,7 @@ void HTMLFormat__source_code(weave_format *self, text_stream *OUT, weave_target 
 				source_line *defn_line = Analyser__get_defn_line(
 					wv->current_weave_line->owning_section, fname, FUNCTION_COLOUR);
 				if (wv->current_weave_line == defn_line) {
-					function *fn = Analyser__get_function(
+					language_function *fn = Analyser__get_function(
 						wv->current_weave_line->owning_section, fname, FUNCTION_COLOUR);
 					if ((defn_line) && (fn)) {
 						Swarm__ensure_plugin(wv, TL_IS_481);
@@ -23659,7 +23684,7 @@ void HTMLFormat__source_code(weave_format *self, text_stream *OUT, weave_target 
 							defn_line->owning_paragraph, fn, TRUE);
 						WRITE("</span>", popup_counter, fname);
 						WRITE("</button>");
-						i += Str__len(fname);
+						i += Str__len(fname) - 1;
 						popup_counter++;
 						continue;
 					}
@@ -23672,14 +23697,10 @@ void HTMLFormat__source_code(weave_format *self, text_stream *OUT, weave_target 
 						DISCARD_TEXT(TEMP)
 						WRITE("%S", fname);
 						HTML__end_link(OUT);
-						i += Str__len(fname);
+						i += Str__len(fname) - 1;
 						continue;
-					} else {
-						PRINT("Unlinked usage of %S\n", fname);
 					}
 				}
-			} else {
-				PRINT("Mysterious mention of %S\n", fname);
 			}
 			DISCARD_TEXT(fname);
 		}
@@ -23767,7 +23788,7 @@ void HTMLFormat__source_code(weave_format *self, text_stream *OUT, weave_target 
 	}
 }
 
-#line 471 "inweb/Chapter 5/HTML Formats.w"
+#line 467 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__inline_code(weave_format *self, text_stream *OUT, weave_target *wv,
 	int enter) {
 	if (enter) {
@@ -23778,7 +23799,7 @@ void HTMLFormat__inline_code(weave_format *self, text_stream *OUT, weave_target 
 	}
 }
 
-#line 482 "inweb/Chapter 5/HTML Formats.w"
+#line 478 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__url(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *url, text_stream *content, int external) {
 	HTML__begin_link_with_class(OUT, (external)?TL_IS_482:TL_IS_483, url);
@@ -23786,7 +23807,7 @@ void HTMLFormat__url(weave_format *self, text_stream *OUT, weave_target *wv,
 	HTML__end_link(OUT);
 }
 
-#line 490 "inweb/Chapter 5/HTML Formats.w"
+#line 486 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__footnote_cue(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *cue) {
 	text_stream *fn_plugin_name =
@@ -23797,7 +23818,7 @@ void HTMLFormat__footnote_cue(weave_format *self, text_stream *OUT, weave_target
 		cue, cue, cue);
 }
 
-#line 501 "inweb/Chapter 5/HTML Formats.w"
+#line 497 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__begin_footnote_text(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *cue) {
 	text_stream *fn_plugin_name =
@@ -23807,7 +23828,7 @@ void HTMLFormat__begin_footnote_text(weave_format *self, text_stream *OUT, weave
 	WRITE("<li class=\"footnote\" id=\"fn:%S\"><p>", cue);
 }
 
-#line 511 "inweb/Chapter 5/HTML Formats.w"
+#line 507 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__end_footnote_text(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *cue) {
 	text_stream *fn_plugin_name =
@@ -23817,7 +23838,7 @@ void HTMLFormat__end_footnote_text(weave_format *self, text_stream *OUT, weave_t
 	WRITE("<a href=\"#fnref:%S\" title=\"return to text\"> &#x21A9;</a></p></li>", cue);
 }
 
-#line 521 "inweb/Chapter 5/HTML Formats.w"
+#line 517 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__display_line(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *from) {
 	HTMLFormat__exit_current_paragraph(OUT);
@@ -23828,7 +23849,7 @@ void HTMLFormat__display_line(weave_format *self, text_stream *OUT, weave_target
 	OUTDENT; HTML_CLOSE("blockquote"); WRITE("\n");
 }
 
-#line 532 "inweb/Chapter 5/HTML Formats.w"
+#line 528 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__item(weave_format *self, text_stream *OUT, weave_target *wv, int depth,
 	text_stream *label) {
 	HTMLFormat__go_to_depth(OUT, depth);
@@ -23837,13 +23858,13 @@ void HTMLFormat__item(weave_format *self, text_stream *OUT, weave_target *wv, in
 
 }
 
-#line 541 "inweb/Chapter 5/HTML Formats.w"
+#line 537 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__bar(weave_format *self, text_stream *OUT, weave_target *wv) {
 	HTMLFormat__exit_current_paragraph(OUT);
 	HTML__hr(OUT, NULL);
 }
 
-#line 547 "inweb/Chapter 5/HTML Formats.w"
+#line 543 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__figure(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *figname, int w, int h, programming_language *pl) {
 	HTMLFormat__exit_current_paragraph(OUT);
@@ -23858,7 +23879,7 @@ void HTMLFormat__figure(weave_format *self, text_stream *OUT, weave_target *wv,
 	WRITE("\n");
 }
 
-#line 562 "inweb/Chapter 5/HTML Formats.w"
+#line 558 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__embed(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *service, text_stream *ID) {
 	text_stream *CH = TL_IS_491;
@@ -23897,7 +23918,7 @@ void HTMLFormat__embed(weave_format *self, text_stream *OUT, weave_target *wv,
 	Regexp__dispose_of(&mr);
 }
 
-#line 601 "inweb/Chapter 5/HTML Formats.w"
+#line 597 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__para_macro(weave_format *self, text_stream *OUT, weave_target *wv,
 	para_macro *pmac, int defn) {
 	paragraph *P = pmac->defining_paragraph;
@@ -23912,12 +23933,12 @@ void HTMLFormat__para_macro(weave_format *self, text_stream *OUT, weave_target *
 	WRITE("&gt;%s", (defn)?" =":"");
 }
 
-#line 616 "inweb/Chapter 5/HTML Formats.w"
+#line 612 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__pagebreak(weave_format *self, text_stream *OUT, weave_target *wv) {
 	HTMLFormat__exit_current_paragraph(OUT);
 }
 
-#line 621 "inweb/Chapter 5/HTML Formats.w"
+#line 617 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__blank_line(weave_format *self, text_stream *OUT, weave_target *wv,
 	int in_comment) {
 	if (html_in_para == HTML_IN_PRE) {
@@ -23930,7 +23951,7 @@ void HTMLFormat__blank_line(weave_format *self, text_stream *OUT, weave_target *
 	}
 }
 
-#line 634 "inweb/Chapter 5/HTML Formats.w"
+#line 630 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__change_material(weave_format *self, text_stream *OUT, weave_target *wv,
 	int old_material, int new_material, int content, int plainly) {
 	if (old_material != new_material) {
@@ -23999,7 +24020,7 @@ void HTMLFormat__change_material(weave_format *self, text_stream *OUT, weave_tar
 	}
 }
 
-#line 703 "inweb/Chapter 5/HTML Formats.w"
+#line 699 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__change_colour(weave_format *self, text_stream *OUT, weave_target *wv,
 	int col, int in_code) {
 	char *cl = "plain";
@@ -24020,7 +24041,7 @@ void HTMLFormat__change_colour(weave_format *self, text_stream *OUT, weave_targe
 	HTML_OPEN_WITH("span", "class=\"%s\"", cl);
 }
 
-#line 724 "inweb/Chapter 5/HTML Formats.w"
+#line 720 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__endnote(weave_format *self, text_stream *OUT, weave_target *wv, int end) {
 	if (end == 1) {
 		HTMLFormat__exit_current_paragraph(OUT);
@@ -24030,7 +24051,7 @@ void HTMLFormat__endnote(weave_format *self, text_stream *OUT, weave_target *wv,
 	}
 }
 
-#line 734 "inweb/Chapter 5/HTML Formats.w"
+#line 730 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__commentary_text(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *id) {
 	for (int i=0; i < Str__len(id); i++) {
@@ -24051,7 +24072,7 @@ void HTMLFormat__commentary_text(weave_format *self, text_stream *OUT, weave_tar
 	}
 }
 
-#line 755 "inweb/Chapter 5/HTML Formats.w"
+#line 751 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__locale(weave_format *self, text_stream *OUT, weave_target *wv,
 	paragraph *par1, paragraph *par2) {
 	TEMPORARY_TEXT(TEMP)
@@ -24065,7 +24086,7 @@ void HTMLFormat__locale(weave_format *self, text_stream *OUT, weave_target *wv,
 	HTML__end_link(OUT);
 }
 
-#line 769 "inweb/Chapter 5/HTML Formats.w"
+#line 765 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__section_URL(OUTPUT_STREAM, weave_target *wv, section *from) {
 	TEMPORARY_TEXT(linkto);
 	Str__copy(linkto, from->sect_range);
@@ -24098,7 +24119,7 @@ void HTMLFormat__xref(OUTPUT_STREAM, weave_target *wv, paragraph *P, section *fr
 	}
 }
 
-#line 802 "inweb/Chapter 5/HTML Formats.w"
+#line 798 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__tail(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *comment, section *this_S) {
 	HTMLFormat__exit_current_paragraph(OUT);
@@ -24145,7 +24166,7 @@ void HTMLFormat__tail(weave_format *self, text_stream *OUT, weave_target *wv,
 	Indexer__cover_sheet_maker(OUT, wv->weave_web, TL_IS_501, wv, WEAVE_SECOND_HALF);
 }
 
-#line 849 "inweb/Chapter 5/HTML Formats.w"
+#line 845 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__sref(OUTPUT_STREAM, weave_target *wv, section *S) {
 	if (S == NULL) internal_error("unwoven section");
 	LOOP_THROUGH_TEXT(pos, S->sect_range)
@@ -24156,7 +24177,7 @@ void HTMLFormat__sref(OUTPUT_STREAM, weave_target *wv, section *S) {
 	WRITE(".html");
 }
 
-#line 862 "inweb/Chapter 5/HTML Formats.w"
+#line 858 "inweb/Chapter 5/HTML Formats.w"
 int HTMLFormat__begin_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) {
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "%S", Bibliographic__get_datum(W->md, TL_IS_502));

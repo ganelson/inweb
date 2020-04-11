@@ -717,7 +717,7 @@ typedef struct paragraph {
 
 	struct para_macro *defines_macro; /* there can only be one */
 	struct linked_list *functions; /* of |function|: those defined in this para */
-	struct linked_list *structures; /* of |c_structure|: similarly */
+	struct linked_list *structures; /* of |language_type|: similarly */
 	struct linked_list *taggings; /* of |paragraph_tagging| */
 	struct source_line *first_line_in_paragraph;
 	struct section *under_section;
@@ -747,7 +747,7 @@ typedef struct paragraph {
 	P->first_line_in_paragraph = L;
 	P->defines_macro = NULL;
 	P->functions = NEW_LINKED_LIST(function);
-	P->structures = NEW_LINKED_LIST(c_structure);
+	P->structures = NEW_LINKED_LIST(language_type);
 	P->taggings = NEW_LINKED_LIST(paragraph_tagging);
 
 	P->under_section = S;

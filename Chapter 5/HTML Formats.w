@@ -428,7 +428,7 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 				source_line *defn_line = Analyser::get_defn_line(
 					wv->current_weave_line->owning_section, fname, FUNCTION_COLOUR);
 				if (wv->current_weave_line == defn_line) {
-					function *fn = Analyser::get_function(
+					language_function *fn = Analyser::get_function(
 						wv->current_weave_line->owning_section, fname, FUNCTION_COLOUR);
 					if ((defn_line) && (fn)) {
 						Swarm::ensure_plugin(wv, I"Popups");
@@ -441,7 +441,7 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 							defn_line->owning_paragraph, fn, TRUE);
 						WRITE("</span>", popup_counter, fname);
 						WRITE("</button>");
-						i += Str::len(fname);
+						i += Str::len(fname) - 1;
 						popup_counter++;
 						continue;
 					}
@@ -454,14 +454,10 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 						DISCARD_TEXT(TEMP)
 						WRITE("%S", fname);
 						HTML::end_link(OUT);
-						i += Str::len(fname);
+						i += Str::len(fname) - 1;
 						continue;
-					} else {
-						PRINT("Unlinked usage of %S\n", fname);
 					}
 				}
-			} else {
-				PRINT("Mysterious mention of %S\n", fname);
 			}
 			DISCARD_TEXT(fname);
 		}

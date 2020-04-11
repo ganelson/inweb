@@ -29,7 +29,7 @@ typedef struct source_line {
 	int enable_hyperlinks; /* used only for |CODE_BODY_LCAT| lines: link URLs in weave */
 	struct programming_language *colour_as; /* used only for |TEXT_EXTRACT_LCAT| lines */
 	int is_commentary; /* flag */
-	struct function *function_defined; /* if any C-like function is defined on this line */
+	struct language_function *function_defined; /* if any C-like function is defined on this line */
 	struct preform_nonterminal *preform_nonterminal_defined; /* similarly */
 	int suppress_tangling; /* if e.g., lines are tangled out of order */
 	int interface_line_identified; /* only relevant during parsing of Interface lines */

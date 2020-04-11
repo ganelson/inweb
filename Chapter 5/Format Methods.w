@@ -586,6 +586,7 @@ int Formats::resolve_reference_in_weave(text_stream *url, text_stream *title,
 	int N = WebModules::named_reference(&found_M, &found_Sm, &named_as_module,
 		title, wv->weave_web->md->as_module, text, FALSE);
 	if (N == 0) {
+		if (L) @<Try references to non-sections@>;
 		Main::error_in_web(I"No section has this name", L);
 		return FALSE;
 	} else if (N > 1) {
@@ -612,6 +613,26 @@ int Formats::resolve_reference_in_weave(text_stream *url, text_stream *title,
 		return TRUE;
 	}
 }
+
+@<Try references to non-sections@> =
+	language_function *fn;
+	LOOP_OVER(fn, language_function) {
+		if (Str::eq_insensitive(fn->function_name, text)) {
+			HTMLFormat::xref(url, wv, fn->function_header_at->owning_paragraph,
+				L->owning_section, TRUE);
+			WRITE_TO(title, "%S", fn->function_name);
+			return TRUE;
+		}
+	}
+	language_type *str;
+	LOOP_OVER(str, language_type) {
+		if (Str::eq_insensitive(str->structure_name, text)) {
+			HTMLFormat::xref(url, wv, str->structure_header_at->owning_paragraph,
+				L->owning_section, TRUE);
+			WRITE_TO(title, "%S", str->structure_name);
+			return TRUE;
+		}
+	}
 
 @ |COMMENTARY_TEXT_FOR_MTID| straightforwardly weaves out a run of contiguous
 text. Ordinarily, any formulae written in TeX notation (i.e., in dollar signs

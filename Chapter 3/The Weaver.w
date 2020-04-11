@@ -742,12 +742,12 @@ void Weaver::show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 	Tags::show_endnote_on_ifdefs(OUT, wv, P);
 	if (P->defines_macro)
 		@<Show endnote on where paragraph macro is used@>;
-	function *fn;
-	LOOP_OVER_LINKED_LIST(fn, function, P->functions)
+	language_function *fn;
+	LOOP_OVER_LINKED_LIST(fn, language_function, P->functions)
 		@<Show endnote on where this function is used@>;
-	c_structure *st;
-	LOOP_OVER_LINKED_LIST(st, c_structure, P->structures)
-		@<Show endnote on where this C structure is accessed@>;
+	language_type *st;
+	LOOP_OVER_LINKED_LIST(st, language_type, P->structures)
+		@<Show endnote on where this language type is accessed@>;
 }
 
 @<Show endnote on where paragraph macro is used@> =
@@ -796,7 +796,7 @@ void Weaver::show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 		Formats::endnote(OUT, wv, 2);
 	}
 
-@<Show endnote on where this C structure is accessed@> =
+@<Show endnote on where this language type is accessed@> =
 	Formats::endnote(OUT, wv, 1);
 	Formats::text(OUT, wv, I"The structure ");
 	Formats::text(OUT, wv, st->structure_name);
@@ -838,7 +838,7 @@ void Weaver::show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 
 @ =
 void Weaver::show_function_usage(OUTPUT_STREAM, weave_target *wv, paragraph *P,
-	function *fn, int as_list) {
+	language_function *fn, int as_list) {
 	fn->usage_described = TRUE;
 	hash_table_entry *hte =
 		Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,

@@ -37,7 +37,7 @@ typedef struct web {
 
 	struct linked_list *headers; /* of |filename|: additional header files */
 	int analysed; /* has this been scanned for function usage and such? */
-	struct linked_list *c_structures; /* of |c_structure|: used only for C-like languages */
+	struct linked_list *language_types; /* of |language_type|: used only for C-like languages */
 
 	struct ebook *as_ebook; /* when being woven to an ebook */
 	struct pathname *redirect_weaves_to; /* ditto */
@@ -141,7 +141,7 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbos
 @<Initialise the rest of the web structure@> =
 	W->chapters = NEW_LINKED_LIST(chapter);
 	W->headers = NEW_LINKED_LIST(filename);
-	W->c_structures = NEW_LINKED_LIST(c_structure);
+	W->language_types = NEW_LINKED_LIST(language_type);
 	W->tangle_targets = NEW_LINKED_LIST(tangle_target);
 	W->analysed = FALSE;
 	W->as_ebook = NULL;

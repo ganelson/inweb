@@ -244,9 +244,31 @@ only appears in comment notation has been declared for the language: so
 e.g., the Plain Text ILD doesn't need to be told to |Suppress Disclaimer|
 since it cannot tangle comments anyway.)
 
+@h Functions and types.
+Inweb provides a few extra features for languages where there are meaningful
+functions and/or types: in particular, it cross-references declarations with
+their usages. If the language doesn't tell Inweb how to do this, then (with
+the exception of C-like languages, see below) functions and types will not
+be detected.
+
+For example, in a hypothetical language we might write:
+= (text as ILDF)
+	Function Declaration Notation: /fun \.([A-Za-z_][A-Za-z0-9_]*) =.*/
+=
+and this will then match lines like
+= (text)
+	fun seekHigherAuthority = ...
+=
+and read them as function declarations. The function name matches the bracketed
+part of the regular expression, and in this case is |seekHigherAuthority|.
+Similarly for
+= (text as ILDF)
+	Type Declaration Notation: /struct \.([A-Za-z_][A-Za-z0-9_]*) =.*/
+=
+
 @h Secret Features.
 It is not quite true that everything a language can do is defined by the ILD.
-Additional features are provided to C-like languages to detect functions
+Additional features are provided to C-like languages to unravel their functions
 and |typedef|s. At present, these are hard-wired into Inweb, and it will take
 further thought to work out how to express them in LDFs.
 
