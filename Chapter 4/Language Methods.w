@@ -28,7 +28,27 @@ We begin with parsing extensions. When these are used, we have already read
 the web into chapters, sections and paragraphs, but for some languages we will
 need a more detailed picture.
 
-|FURTHER_PARSING_PAR_MTID| is "further" in that it is called when the main
+|PARSE_TYPES_PAR_MTID| gives a language to look for type declarations.
+
+@e PARSE_TYPES_PAR_MTID
+
+=
+VMETHOD_TYPE(PARSE_TYPES_PAR_MTID, programming_language *pl, web *W)
+void LanguageMethods::parse_types(web *W, programming_language *pl) {
+	VMETHOD_CALL(pl, PARSE_TYPES_PAR_MTID, W);
+}
+
+@ |PARSE_FUNCTIONS_PAR_MTID| is, similarly, for function declarations.
+
+@e PARSE_FUNCTIONS_PAR_MTID
+
+=
+VMETHOD_TYPE(PARSE_FUNCTIONS_PAR_MTID, programming_language *pl, web *W)
+void LanguageMethods::parse_functions(web *W, programming_language *pl) {
+	VMETHOD_CALL(pl, PARSE_FUNCTIONS_PAR_MTID, W);
+}
+
+@ |FURTHER_PARSING_PAR_MTID| is "further" in that it is called when the main
 parser has finished work; it typically looks over the whole web for something
 of interest.
 

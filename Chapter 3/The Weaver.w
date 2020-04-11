@@ -790,45 +790,11 @@ void Weaver::show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 	Formats::endnote(OUT, wv, 2);
 
 @<Show endnote on where this function is used@> =
-	Formats::endnote(OUT, wv, 1);
-	hash_table_entry *hte =
-		Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,
-			fn->function_name, FALSE);
-	Formats::text(OUT, wv, I"The function ");
-	Formats::text(OUT, wv, fn->function_name);
-	int used_flag = FALSE;
-	hash_table_entry_usage *hteu = NULL;
-	section *last_cited_in = NULL;
-	int count_under = 0;
-	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
-		if ((P != hteu->usage_recorded_at) &&
-			(P->under_section == hteu->usage_recorded_at->under_section))
-			@<Cite usage of function here@>;
-	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
-		if (P->under_section != hteu->usage_recorded_at->under_section)
-			@<Cite usage of function here@>;
-	if (used_flag == FALSE) Formats::text(OUT, wv, I" appears nowhere else");
-	if ((last_cited_in != P->under_section) && (last_cited_in))
-		Formats::text(OUT, wv, I")");
-	Formats::text(OUT, wv, I".");
-	Formats::endnote(OUT, wv, 2);
-
-@<Cite usage of function here@> =
-	if (used_flag == FALSE) Formats::text(OUT, wv, I" is used in ");
-	used_flag = TRUE;
-	section *S = hteu->usage_recorded_at->under_section;
-	if ((S != last_cited_in) && (S != P->under_section)) {
-		count_under = 0;
-		if (last_cited_in) {
-			if (last_cited_in != P->under_section) Formats::text(OUT, wv, I"), ");
-			else Formats::text(OUT, wv, I", ");
-		}
-		Formats::text(OUT, wv, hteu->usage_recorded_at->under_section->sect_range);
-		Formats::text(OUT, wv, I" (");
+	if (fn->usage_described == FALSE) {
+		Formats::endnote(OUT, wv, 1);
+		Weaver::show_function_usage(OUT, wv, P, fn, FALSE);
+		Formats::endnote(OUT, wv, 2);
 	}
-	if (count_under++ > 0) Formats::text(OUT, wv, I", ");
-	Formats::locale(OUT, wv, hteu->usage_recorded_at, NULL);
-	last_cited_in = hteu->usage_recorded_at->under_section;
 
 @<Show endnote on where this C structure is accessed@> =
 	Formats::endnote(OUT, wv, 1);
@@ -869,6 +835,67 @@ void Weaver::show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 	}
 	Formats::text(OUT, wv, I".");
 	Formats::endnote(OUT, wv, 2);
+
+@ =
+void Weaver::show_function_usage(OUTPUT_STREAM, weave_target *wv, paragraph *P,
+	function *fn, int as_list) {
+	fn->usage_described = TRUE;
+	hash_table_entry *hte =
+		Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,
+			fn->function_name, FALSE);
+	if (as_list == FALSE) {
+		Formats::text(OUT, wv, I"The function ");
+		Formats::text(OUT, wv, fn->function_name);
+	}
+	int used_flag = FALSE;
+	hash_table_entry_usage *hteu = NULL;
+	section *last_cited_in = NULL;
+	int count_under = 0;
+	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
+		if ((P != hteu->usage_recorded_at) &&
+			(P->under_section == hteu->usage_recorded_at->under_section))
+			@<Cite usage of function here@>;
+	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
+		if (P->under_section != hteu->usage_recorded_at->under_section)
+			@<Cite usage of function here@>;
+	if (used_flag == FALSE) {
+		if (as_list == FALSE) {
+			Formats::text(OUT, wv, I" appears nowhere else");
+		} else {
+			Formats::text(OUT, wv, I"none");
+		}
+	}
+	if (as_list == FALSE) {
+		if ((last_cited_in != P->under_section) && (last_cited_in))
+			Formats::text(OUT, wv, I")");
+		Formats::text(OUT, wv, I".");
+	}
+}
+
+@<Cite usage of function here@> =
+	if (as_list == FALSE) {
+		if (used_flag == FALSE) Formats::text(OUT, wv, I" is used in ");
+	}
+	used_flag = TRUE;
+	section *S = hteu->usage_recorded_at->under_section;
+	if ((S != last_cited_in) && (S != P->under_section)) {
+		count_under = 0;
+		if (last_cited_in) {
+			if (as_list == FALSE) {
+				if (last_cited_in != P->under_section) Formats::text(OUT, wv, I"), ");
+				else Formats::text(OUT, wv, I", ");
+			} else {
+				if (last_cited_in != P->under_section) WRITE("<br>");
+				else Formats::text(OUT, wv, I", ");
+			}
+		}
+		Formats::text(OUT, wv, hteu->usage_recorded_at->under_section->md->sect_title);
+		if (as_list == FALSE) Formats::text(OUT, wv, I" (");
+		else WRITE(" - ");
+	}
+	if (count_under++ > 0) Formats::text(OUT, wv, I", ");
+	Formats::locale(OUT, wv, hteu->usage_recorded_at, NULL);
+	last_cited_in = hteu->usage_recorded_at->under_section;
 
 @h Section tables of contents.
 These appear at the top of each woven section, and give links to the paragraphs

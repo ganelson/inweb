@@ -14,6 +14,10 @@ actually called ACME: the 6502 assembler of the same name.
 
 =
 void ACMESupport::add_fallbacks(programming_language *pl) {	
+	if (Methods::provided(pl->methods, PARSE_TYPES_PAR_MTID) == FALSE)
+		METHOD_ADD(pl, PARSE_TYPES_PAR_MTID, ACMESupport::parse_types);
+	if (Methods::provided(pl->methods, PARSE_FUNCTIONS_PAR_MTID) == FALSE)
+		METHOD_ADD(pl, PARSE_FUNCTIONS_PAR_MTID, ACMESupport::parse_functions);
 	if (Methods::provided(pl->methods, PARSE_COMMENT_TAN_MTID) == FALSE)
 		METHOD_ADD(pl, PARSE_COMMENT_TAN_MTID, ACMESupport::parse_comment);
 	if (Methods::provided(pl->methods, COMMENT_TAN_MTID) == FALSE)
@@ -207,6 +211,45 @@ int ACMESupport::parse_comment(programming_language *pl,
 		return TRUE;
 	}
 	return FALSE;
+}
+
+@
+
+=
+void ACMESupport::parse_types(programming_language *self, web *W) {
+	if (W->main_language->type_notation[0]) {
+		chapter *C;
+		section *S;
+		LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W)) {
+			if (S->sect_language == W->main_language) {
+				match_results mr = Regexp::create_mr();
+				if (Regexp::match(&mr, L->text, W->main_language->type_notation)) {
+					Structures::new_function(mr.exp[0], L);
+				}
+				Regexp::dispose_of(&mr);
+			}
+		}
+	}
+}
+
+@
+
+=
+void ACMESupport::parse_functions(programming_language *self, web *W) {
+	if (W->main_language->function_notation[0]) {
+		chapter *C;
+		section *S;
+		LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W)) {
+			if (S->sect_language == W->main_language) {
+				match_results mr = Regexp::create_mr();
+				if ((L->category != TEXT_EXTRACT_LCAT) &&
+					(Regexp::match(&mr, L->text, W->main_language->function_notation))) {
+					Structures::new_function(mr.exp[0], L);
+				}
+				Regexp::dispose_of(&mr);
+			}
+		}
+	}
 }
 
 @ This is here so that tangling the Standard Rules extension doesn't insert

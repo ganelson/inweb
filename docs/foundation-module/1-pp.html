@@ -159,7 +159,7 @@ here is UTF-8 since OS X and Linux both adopt this.
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Environment variables. </b></p>
 
 <pre class="display">
-    <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Platform::getenv</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
+    <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext"><a href="1-wp.html#SP4">Platform::getenv</a></span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">getenv</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -168,7 +168,7 @@ here is UTF-8 since OS X and Linux both adopt this.
 
 <p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
 
-<p class="endnote">The function Platform::getenv is used in 1/wp (<a href="1-wp.html#SP4">&#167;4</a>), 3/pth (<a href="3-pth.html#SP2">&#167;2</a>, <a href="3-pth.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Platform::getenv is used in Windows Platform (<a href="1-wp.html#SP4">&#167;4</a>), Pathnames (<a href="3-pth.html#SP2">&#167;2</a>, <a href="3-pth.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Executable location. </b>Fill the wide-char buffer <code class="display"><span class="extract">p</span></code> with the path to the current executable, up to
 length <code class="display"><span class="extract">length</span></code>. This function is guaranteed to be called from only one
@@ -179,7 +179,7 @@ just that installation and use of Foundation-built tools is less convenient.)
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::where_am_i</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">buffer</span><span class="plain">[</span><span class="identifier">PATH_MAX</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">];</span>
         &lt;<span class="cwebmacro">Follow the proc filesystem symlink to the real filesystem's file</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="character">;</span>
         &lt;<span class="cwebmacro">Transcode buffer, which is locale-encoded, into the wide-char buffer</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="plain">;</span>
@@ -190,7 +190,7 @@ just that installation and use of Foundation-built tools is less convenient.)
 
 <p class="endnote">This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</p>
 
-<p class="endnote">The function Platform::where_am_i is used in <a href="#SP9_1_1">&#167;9.1.1</a>, <a href="#SP9_1_2">&#167;9.1.2</a>, <a href="#SP9_1_3">&#167;9.1.3</a>, 1/wp (<a href="1-wp.html#SP5">&#167;5</a>), 3/pth (<a href="3-pth.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Platform::where_am_i is used in <a href="#SP9_1_1">&#167;9.1.1</a>, <a href="#SP9_1_2">&#167;9.1.2</a>, <a href="#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9_1"></a><b>&#167;9.1.  </b>On Linux, <code class="display"><span class="extract">/proc/self/exe</span></code> is a symlink to the current process's executable.
 Follow that link to find the path. Normally when reading a symlink, one uses
@@ -242,9 +242,9 @@ string.
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">_NSGetExecutablePath</span><span class="plain">(</span><span class="reserved">char</span><span class="plain">* </span><span class="identifier">buf</span><span class="plain">, </span><span class="identifier">uint32_t</span><span class="plain">* </span><span class="identifier">bufsize</span><span class="plain">);</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">_NSGetExecutablePath<button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>_NSGetExecutablePath</b>:<br>none</span></button></span><span class="reserved">char</span><span class="plain">* </span><span class="identifier">buf</span><span class="plain">, </span><span class="identifier">uint32_t</span><span class="plain">* </span><span class="identifier">bufsize</span><span class="plain">);</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::where_am_i</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">relative_path</span><span class="plain">[4 * </span><span class="identifier">PATH_MAX</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">];</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">absolute_path</span><span class="plain">[</span><span class="identifier">PATH_MAX</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">];</span>
         <span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">convert_len</span><span class="plain">;</span>
@@ -252,7 +252,7 @@ string.
         <span class="identifier">uint32_t</span><span class="plain"> </span><span class="identifier">tempsize</span><span class="plain"> = </span><span class="identifier">pathsize</span><span class="plain">;</span>
 
         <span class="comment"> Get "a path" to the executable</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">_NSGetExecutablePath</span><span class="plain">(</span><span class="identifier">relative_path</span><span class="plain">, &amp;</span><span class="identifier">tempsize</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="#SP9_1_1">_NSGetExecutablePath</a></span><span class="identifier">relative_path</span><span class="plain">, &amp;</span><span class="identifier">tempsize</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
 
         <span class="comment"> Convert to canonical absolute path</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">realpath</span><span class="plain">(</span><span class="identifier">relative_path</span><span class="plain">, </span><span class="identifier">absolute_path</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
@@ -268,15 +268,13 @@ string.
 
 <p class="endnote">This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</p>
 
-<p class="endnote">The function _NSGetExecutablePath appears nowhere else.</p>
-
-<p class="endnote">The function Platform::where_am_i is used in <a href="#SP9">&#167;9</a>, <a href="#SP9_1_2">&#167;9.1.2</a>, <a href="#SP9_1_3">&#167;9.1.3</a>, 1/wp (<a href="1-wp.html#SP5">&#167;5</a>), 3/pth (<a href="3-pth.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Platform::where_am_i is used in <a href="#SP9">&#167;9</a>, <a href="#SP9_1_2">&#167;9.1.2</a>, <a href="#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9_1_2"></a><b>&#167;9.1.2.  </b>For Unix, there's nothing we can generically do. 
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::where_am_i</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -285,13 +283,13 @@ string.
 
 <p class="endnote">This paragraph is used only if PLATFORM_UNIX and PLATFORM_POSIX are defined.</p>
 
-<p class="endnote">The function Platform::where_am_i is used in <a href="#SP9">&#167;9</a>, <a href="#SP9_1_1">&#167;9.1.1</a>, <a href="#SP9_1_3">&#167;9.1.3</a>, 1/wp (<a href="1-wp.html#SP5">&#167;5</a>), 3/pth (<a href="3-pth.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Platform::where_am_i is used in <a href="#SP9">&#167;9</a>, <a href="#SP9_1_1">&#167;9.1.1</a>, <a href="#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9_1_3"></a><b>&#167;9.1.3.  </b>On Android, there's no real need for this. 
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::where_am_i</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
         &lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -300,7 +298,7 @@ string.
 
 <p class="endnote">This paragraph is used only if PLATFORM_ANDROID and PLATFORM_POSIX are defined.</p>
 
-<p class="endnote">The function Platform::where_am_i is used in <a href="#SP9">&#167;9</a>, <a href="#SP9_1_1">&#167;9.1.1</a>, <a href="#SP9_1_2">&#167;9.1.2</a>, 1/wp (<a href="1-wp.html#SP5">&#167;5</a>), 3/pth (<a href="3-pth.html#SP3">&#167;3</a>).</p>
+<p class="endnote">The function Platform::where_am_i is used in <a href="#SP9">&#167;9</a>, <a href="#SP9_1_1">&#167;9.1.1</a>, <a href="#SP9_1_2">&#167;9.1.2</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP9_1_4"></a><b>&#167;9.1.4.  </b>All of the above make use of:
 </p>
@@ -325,7 +323,7 @@ string.
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Shell commands. </b></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::system</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cmd</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP6">Platform::system</a></span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cmd</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">system</span><span class="plain">(</span><span class="identifier">cmd</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -334,7 +332,7 @@ string.
 
 <p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined and if PLATFORM_MACOS is undefined.</p>
 
-<p class="endnote">The function Platform::system is used in <a href="#SP11">&#167;11</a>, <a href="#SP14">&#167;14</a>, 1/wp (<a href="1-wp.html#SP6">&#167;6</a>), 3/shl (<a href="3-shl.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function Platform::system is used in <a href="#SP11">&#167;11</a>, <a href="#SP14">&#167;14</a>, Windows Platform (<a href="1-wp.html#SP6">&#167;6</a>), Shell (<a href="3-shl.html#SP5">&#167;5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>In MacOS 10.5, a new implementation of the C standard library
 crippled performance of <code class="display"><span class="extract">system()</span></code> by placing it behind a global mutex, so
@@ -363,7 +361,7 @@ memory space. Using <code class="display"><span class="extract">posix_spawn()</s
 
     <span class="reserved">extern</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">environ</span><span class="plain">;</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::system</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cmd</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP6">Platform::system</a></span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cmd</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">argv</span><span class="plain">[] = {</span><span class="string">"sh"</span><span class="plain">, </span><span class="string">"-c"</span><span class="plain">, (</span><span class="reserved">char</span><span class="plain"> *) </span><span class="identifier">cmd</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">};</span>
         <span class="identifier">pid_t</span><span class="plain"> </span><span class="identifier">pid</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">status</span><span class="plain"> = </span><span class="identifier">posix_spawn</span><span class="plain">(&amp;</span><span class="identifier">pid</span><span class="plain">, </span><span class="string">"/bin/sh"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">environ</span><span class="plain">);</span>
@@ -382,12 +380,12 @@ memory space. Using <code class="display"><span class="extract">posix_spawn()</s
 
 <p class="endnote">This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</p>
 
-<p class="endnote">The function Platform::system is used in <a href="#SP10">&#167;10</a>, <a href="#SP14">&#167;14</a>, 1/wp (<a href="1-wp.html#SP6">&#167;6</a>), 3/shl (<a href="3-shl.html#SP5">&#167;5</a>).</p>
+<p class="endnote">The function Platform::system is used in <a href="#SP10">&#167;10</a>, <a href="#SP14">&#167;14</a>, Windows Platform (<a href="1-wp.html#SP6">&#167;6</a>), Shell (<a href="3-shl.html#SP5">&#167;5</a>).</p>
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Directory handling. </b></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::mkdir</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_pathname</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP7">Platform::mkdir</a></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_pathname</span><span class="plain">) {</span>
         <span class="identifier">errno</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">mkdir</span><span class="plain">(</span><span class="identifier">transcoded_pathname</span><span class="plain">, </span><span class="identifier">S_IRWXU</span><span class="plain"> | </span><span class="identifier">S_IRWXG</span><span class="plain"> | </span><span class="identifier">S_IROTH</span><span class="plain"> | </span><span class="identifier">S_IXOTH</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
@@ -395,12 +393,12 @@ memory space. Using <code class="display"><span class="extract">posix_spawn()</s
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Platform::opendir</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path_to_folder</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext"><a href="1-wp.html#SP7">Platform::opendir</a></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path_to_folder</span><span class="plain">) {</span>
         <span class="identifier">DIR</span><span class="plain"> *</span><span class="identifier">dirp</span><span class="plain"> = </span><span class="identifier">opendir</span><span class="plain">(</span><span class="identifier">path_to_folder</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">dirp</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::readdir</span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">folder</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path_to_folder</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP7">Platform::readdir</a></span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">folder</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path_to_folder</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">path_to</span><span class="plain">[2*</span><span class="constant">MAX_FILENAME_LENGTH</span><span class="plain">+2];</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">stat</span><span class="plain"> </span><span class="identifier">file_status</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
@@ -415,7 +413,7 @@ memory space. Using <code class="display"><span class="extract">posix_spawn()</s
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::closedir</span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">folder</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP7">Platform::closedir</a></span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">folder</span><span class="plain">) {</span>
         <span class="identifier">DIR</span><span class="plain"> *</span><span class="identifier">dirp</span><span class="plain"> = (</span><span class="identifier">DIR</span><span class="plain"> *) </span><span class="identifier">folder</span><span class="plain">;</span>
         <span class="identifier">closedir</span><span class="plain">(</span><span class="identifier">dirp</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -425,13 +423,13 @@ memory space. Using <code class="display"><span class="extract">posix_spawn()</s
 
 <p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
 
-<p class="endnote">The function Platform::mkdir is used in 1/wp (<a href="1-wp.html#SP7">&#167;7</a>), 3/pth (<a href="3-pth.html#SP8">&#167;8</a>).</p>
+<p class="endnote">The function Platform::mkdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Pathnames (<a href="3-pth.html#SP8">&#167;8</a>).</p>
 
-<p class="endnote">The function Platform::opendir is used in 1/wp (<a href="1-wp.html#SP7">&#167;7</a>), 3/drc (<a href="3-drc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Platform::opendir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Platform::readdir is used in 1/wp (<a href="1-wp.html#SP7">&#167;7</a>), 3/drc (<a href="3-drc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Platform::readdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</p>
 
-<p class="endnote">The function Platform::closedir is used in 1/wp (<a href="1-wp.html#SP7">&#167;7</a>), 3/drc (<a href="3-drc.html#SP2">&#167;2</a>).</p>
+<p class="endnote">The function Platform::closedir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Timestamp. </b>There are implementations of the C standard library where <code class="display"><span class="extract">time_t</span></code> has
 super-weird behaviour, but on almost POSIX systems, time 0 corresponds to
@@ -441,14 +439,14 @@ be dealing with.
 </p>
 
 <pre class="display">
-    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext">Platform::never_time</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP12">Platform::never_time</a></span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">time_t</span><span class="plain">) </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext">Platform::timestamp</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_filename</span><span class="plain">) {</span>
+    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP12">Platform::timestamp</a></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_filename</span><span class="plain">) {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">stat</span><span class="plain"> </span><span class="identifier">filestat</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stat</span><span class="plain">(</span><span class="identifier">transcoded_filename</span><span class="plain">, &amp;</span><span class="identifier">filestat</span><span class="plain">) != -1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">filestat</span><span class="plain">.</span><span class="identifier">st_mtime</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Platform::never_time</span><span class="plain">();</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP12">Platform::never_time</a></span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -456,9 +454,9 @@ be dealing with.
 
 <p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
 
-<p class="endnote">The function Platform::never_time is used in 1/wp (<a href="1-wp.html#SP12">&#167;12</a>).</p>
+<p class="endnote">The function Platform::never_time is used in Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>).</p>
 
-<p class="endnote">The function Platform::timestamp is used in 1/wp (<a href="1-wp.html#SP12">&#167;12</a>), 3/fln (<a href="3-fln.html#SP12">&#167;12</a>).</p>
+<p class="endnote">The function Platform::timestamp is used in Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>), Filenames (<a href="3-fln.html#SP12">&#167;12</a>).</p>
 
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Sync. </b>Both names here are of directories which do exist. The function makes
 the <code class="display"><span class="extract">dest</span></code> tree an exact copy of the <code class="display"><span class="extract">source</span></code> tree (and therefore deletes
@@ -469,16 +467,16 @@ anything different which was originally in <code class="display"><span class="ex
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::rsync</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_source</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_dest</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::rsync<button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Platform::rsync</b>:<br>Pathnames - <a href="3-pth.html#SP9">&#167;9</a></span></button></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_source</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_dest</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">rsync_command</span><span class="plain">[10*</span><span class="constant">MAX_FILENAME_LENGTH</span><span class="plain">];</span>
         <span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">, </span><span class="string">"rsync -a --delete "</span><span class="plain">);</span>
-        <span class="functiontext">Platform::quote_text</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="identifier">transcoded_source</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP14">Platform::quote_text</a></span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="identifier">transcoded_source</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
         <span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="string">" "</span><span class="plain">);</span>
-        <span class="functiontext">Platform::quote_text</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="identifier">transcoded_dest</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="functiontext">Platform::system</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP14">Platform::quote_text</a></span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="identifier">transcoded_dest</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
+        <span class="functiontext"><a href="1-wp.html#SP6">Platform::system</a></span><span class="identifier">rsync_command</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::quote_text</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">quoted</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">terminate</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::quote_text<button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Platform::quote_text</b>:<br>none</span></button></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">quoted</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">terminate</span><span class="plain">) {</span>
         <span class="identifier">quoted</span><span class="plain">[0] = </span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">qp</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">rp</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">raw</span><span class="plain">[</span><span class="identifier">rp</span><span class="plain">]; </span><span class="identifier">rp</span><span class="plain">++) {</span>
@@ -496,14 +494,10 @@ anything different which was originally in <code class="display"><span class="ex
 
 <p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
 
-<p class="endnote">The function Platform::rsync is used in 3/pth (<a href="3-pth.html#SP9">&#167;9</a>).</p>
-
-<p class="endnote">The function Platform::quote_text appears nowhere else.</p>
-
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Sleep. </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::sleep</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">seconds</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP8">Platform::sleep</a></span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">seconds</span><span class="plain">) {</span>
         <span class="identifier">sleep</span><span class="plain">((</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">seconds</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -512,7 +506,7 @@ anything different which was originally in <code class="display"><span class="ex
 
 <p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
 
-<p class="endnote">The function Platform::sleep is used in 1/wp (<a href="1-wp.html#SP8">&#167;8</a>).</p>
+<p class="endnote">The function Platform::sleep is used in Windows Platform (<a href="1-wp.html#SP8">&#167;8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Notifications. </b>The "submarine" sound is a gloomy thunk; the "bell" is the three-tone rising
 alert noise which iPhones make when they receive texts, but which hackers of a
@@ -527,13 +521,13 @@ actually running a one-line AppleScript here.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::notification</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">happy</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP9">Platform::notification</a></span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">happy</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">sound_name</span><span class="plain"> = </span><span class="string">"Bell.aiff"</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">happy</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">sound_name</span><span class="plain"> = </span><span class="string">"Submarine.aiff"</span><span class="plain">;</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">)</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"osascript -e 'display notification \"%S\" "</span>
             <span class="string">"sound name \"%s\" with title \"intest Results\"'"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">sound_name</span><span class="plain">);</span>
-        <span class="functiontext">Shell::run</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-shl.html#SP5">Shell::run</a></span><span class="identifier">TEMP</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">)</span>
     <span class="plain">}</span>
 </pre>
@@ -542,12 +536,12 @@ actually running a one-line AppleScript here.
 
 <p class="endnote">This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</p>
 
-<p class="endnote">The function Platform::notification is used in <a href="#SP17">&#167;17</a>, 1/wp (<a href="1-wp.html#SP9">&#167;9</a>).</p>
+<p class="endnote">The function Platform::notification is used in <a href="#SP17">&#167;17</a>, Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>).</p>
 
 <p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::notification</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">happy</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP9">Platform::notification</a></span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">happy</span><span class="plain">) {</span>
     <span class="plain">}</span>
 </pre>
 
@@ -555,7 +549,7 @@ actually running a one-line AppleScript here.
 
 <p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined and if PLATFORM_MACOS is undefined.</p>
 
-<p class="endnote">The function Platform::notification is used in <a href="#SP16">&#167;16</a>, 1/wp (<a href="1-wp.html#SP9">&#167;9</a>).</p>
+<p class="endnote">The function Platform::notification is used in <a href="#SP16">&#167;16</a>, Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>).</p>
 
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Concurrency. </b></p>
 
@@ -571,21 +565,21 @@ actually running a one-line AppleScript here.
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::create_thread</span><span class="plain">(</span><span class="identifier">foundation_thread</span><span class="plain"> *</span><span class="identifier">pt</span><span class="plain">,</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::create_thread</a></span><span class="identifier">foundation_thread</span><span class="plain"> *</span><span class="identifier">pt</span><span class="plain">,</span>
         <span class="reserved">const</span><span class="plain"> </span><span class="identifier">foundation_thread_attributes</span><span class="plain"> *</span><span class="identifier">pa</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *(*</span><span class="identifier">fn</span><span class="plain">)(</span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pthread_create</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">, </span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, </span><span class="identifier">arg</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::join_thread</span><span class="plain">(</span><span class="identifier">pthread_t</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">void</span><span class="plain">** </span><span class="identifier">rv</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::join_thread</a></span><span class="identifier">pthread_t</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">void</span><span class="plain">** </span><span class="identifier">rv</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pthread_join</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">, </span><span class="identifier">rv</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::init_thread</span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::init_thread</a></span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pthread_attr_init</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread initialisation failed"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pthread_attr_setstacksize</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread stack sizing failed"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="identifier">size_t</span><span class="plain"> </span><span class="functiontext">Platform::get_thread_stack_size</span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">) {</span>
+    <span class="identifier">size_t</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::get_thread_stack_size</a></span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">) {</span>
         <span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">mystacksize</span><span class="plain">;</span>
         <span class="identifier">pthread_attr_getstacksize</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">, &amp;</span><span class="identifier">mystacksize</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">mystacksize</span><span class="plain">;</span>
@@ -596,13 +590,13 @@ actually running a one-line AppleScript here.
 
 <p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
 
-<p class="endnote">The function Platform::create_thread is used in 1/wp (<a href="1-wp.html#SP11">&#167;11</a>).</p>
+<p class="endnote">The function Platform::create_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</p>
 
-<p class="endnote">The function Platform::join_thread is used in 1/wp (<a href="1-wp.html#SP11">&#167;11</a>).</p>
+<p class="endnote">The function Platform::join_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</p>
 
-<p class="endnote">The function Platform::init_thread is used in 1/wp (<a href="1-wp.html#SP11">&#167;11</a>).</p>
+<p class="endnote">The function Platform::init_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</p>
 
-<p class="endnote">The function Platform::get_thread_stack_size is used in 1/wp (<a href="1-wp.html#SP11">&#167;11</a>).</p>
+<p class="endnote">The function Platform::get_thread_stack_size is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</p>
 
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Mutexes. </b></p>
 
@@ -618,6 +612,14 @@ actually running a one-line AppleScript here.
 <hr class="tocbar">
 <ul class="toc"><li><a href="1-fm.html">Back to 'Foundation Module'</a></li><li><a href="1-wp.html">Continue with 'Windows Platform'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

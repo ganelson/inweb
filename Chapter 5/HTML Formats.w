@@ -311,6 +311,8 @@ void HTMLFormat::drop_initial_breadcrumbs(OUTPUT_STREAM, linked_list *crumbs, in
 }
 
 @ =
+int popup_counter = 0;
+
 void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target *wv,
 	int tab_stops_of_indentation, text_stream *prefatory, text_stream *matter,
 	text_stream *colouring, text_stream *concluding_comment,
@@ -415,6 +417,54 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 		if (current_colour >= 0) HTML_CLOSE("span");
 		Formats::change_colour(OUT, wv, colour_wanted, TRUE);
 		current_colour = colour_wanted;
+		if ((colour_wanted == FUNCTION_COLOUR) && (wv->current_weave_line) &&
+			(wv->current_weave_line->category != TEXT_EXTRACT_LCAT)) {
+			TEMPORARY_TEXT(fname);
+			int j = i;
+			while (Str::get_at(colouring, j) == FUNCTION_COLOUR)
+				PUT_TO(fname, Str::get_at(matter, j++));
+			if (Analyser::is_reserved_word_for_section(
+				wv->current_weave_line->owning_section, fname, FUNCTION_COLOUR)) {
+				source_line *defn_line = Analyser::get_defn_line(
+					wv->current_weave_line->owning_section, fname, FUNCTION_COLOUR);
+				if (wv->current_weave_line == defn_line) {
+					function *fn = Analyser::get_function(
+						wv->current_weave_line->owning_section, fname, FUNCTION_COLOUR);
+					if ((defn_line) && (fn)) {
+						Swarm::ensure_plugin(wv, I"Popups");
+						WRITE("%S", fname);
+						WRITE("<button class=\"popup\" onclick=\"togglePopup('usagePopup%d')\">", popup_counter);
+						WRITE("...");
+						WRITE("<span class=\"popuptext\" id=\"usagePopup%d\">Usage of <b>%S</b>:<br>",
+							popup_counter, fname);
+						Weaver::show_function_usage(OUT, wv,
+							defn_line->owning_paragraph, fn, TRUE);
+						WRITE("</span>", popup_counter, fname);
+						WRITE("</button>");
+						i += Str::len(fname);
+						popup_counter++;
+						continue;
+					}
+				} else {
+					if ((defn_line) && (defn_line->owning_paragraph)) {
+						TEMPORARY_TEXT(TEMP)
+						HTMLFormat::xref(TEMP, wv, defn_line->owning_paragraph,
+							wv->current_weave_line->owning_section, TRUE);
+						HTML::begin_link(OUT, TEMP);
+						DISCARD_TEXT(TEMP)
+						WRITE("%S", fname);
+						HTML::end_link(OUT);
+						i += Str::len(fname);
+						continue;
+					} else {
+						PRINT("Unlinked usage of %S\n", fname);
+					}
+				}
+			} else {
+				PRINT("Mysterious mention of %S\n", fname);
+			}
+			DISCARD_TEXT(fname);
+		}
 	}
 
 @ =

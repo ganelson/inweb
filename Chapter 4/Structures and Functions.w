@@ -22,7 +22,7 @@ c_structure *first_cst_alphabetically = NULL;
 c_structure *Structures::new_struct(web *W, text_stream *name, source_line *L) {
 	c_structure *str = CREATE(c_structure);
 	@<Initialise the C structure structure@>;
-	Analyser::mark_reserved_word_for_section(L->owning_section, str->structure_name, RESERVED_COLOUR);
+	Analyser::mark_reserved_word_at_line(L, str->structure_name, RESERVED_COLOUR);
 	@<Add this to the lists for its web and its paragraph@>;
 	@<Insertion-sort this into the alphabetical list of all structures found@>;
 	return str;
@@ -37,6 +37,7 @@ c_structure *Structures::new_struct(web *W, text_stream *name, source_line *L) {
 	str->elements = NEW_LINKED_LIST(structure_element);
 
 @<Add this to the lists for its web and its paragraph@> =
+	Tags::add_by_name(L->owning_paragraph, I"Structures");
 	ADD_TO_LINKED_LIST(str, c_structure, W->c_structures);
 	ADD_TO_LINKED_LIST(str, c_structure, L->owning_paragraph->structures);
 
@@ -84,7 +85,7 @@ typedef struct structure_element {
 @ =
 structure_element *Structures::new_element(c_structure *str, text_stream *elname,
 	source_line *L) {
-	Analyser::mark_reserved_word_for_section(L->owning_section, elname, ELEMENT_COLOUR);
+	Analyser::mark_reserved_word_at_line(L, elname, ELEMENT_COLOUR);
 	structure_element *elt = CREATE(structure_element);
 	elt->element_name = Str::duplicate(elname);
 	elt->allow_sharing = FALSE;
@@ -116,6 +117,7 @@ typedef struct function {
 	int within_namespace; /* written using InC namespace dividers */
 	int called_from_other_sections;
 	int call_freely;
+	int usage_described;
 	int no_conditionals;
 	struct source_line *within_conditionals[MAX_CONDITIONAL_COMPILATION_STACK];
 	MEMORY_MANAGEMENT
@@ -123,8 +125,10 @@ typedef struct function {
 
 @ =
 function *Structures::new_function(text_stream *fname, source_line *L) {
-	Analyser::mark_reserved_word_for_section(L->owning_section, fname, FUNCTION_COLOUR);
+	hash_table_entry *hte =
+		Analyser::mark_reserved_word_at_line(L, fname, FUNCTION_COLOUR);
 	function *fn = CREATE(function);
+	hte->as_function = fn;
 	@<Initialise the function structure@>;
 	@<Add the function to its paragraph and line@>;
 	if (L->owning_section->sect_language->supports_namespaces)
@@ -143,6 +147,7 @@ part of the function structure. We'll need it when predeclaring the function.
 	fn->called_from_other_sections = FALSE;
 	fn->call_freely = FALSE;
 	fn->function_header_at = L;
+	fn->usage_described = FALSE;
 	fn->no_conditionals = 0;
 
 @<Add the function to its paragraph and line@> =

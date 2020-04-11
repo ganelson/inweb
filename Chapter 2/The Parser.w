@@ -24,6 +24,8 @@ void Parser::parse_web(web *W, int inweb_mode, int sequential) {
 			section_counter++;
 		}
 	}
+	LanguageMethods::parse_types(W, W->main_language);
+	LanguageMethods::parse_functions(W, W->main_language);
 	LanguageMethods::further_parsing(W, W->main_language);
 }
 
@@ -615,7 +617,7 @@ C preprocessor macros, Inform 6 |Constant|s, and so on.
 		L->text_operand = Str::duplicate(remainder); /* name of term defined */
 		L->text_operand2 = Str::new(); /* no value given */
 	}
-	Analyser::mark_reserved_word_for_section(S, L->text_operand, CONSTANT_COLOUR);
+	Analyser::mark_reserved_word_at_line(L, L->text_operand, CONSTANT_COLOUR);
 	comment_mode = FALSE;
 	L->is_commentary = FALSE;
 	Regexp::dispose_of(&mr);
@@ -646,7 +648,7 @@ enumerated sort of |@d|.
 	L->text_operand2 = Str::new();
 	if (inweb_mode == TANGLE_MODE)
 		Enumerations::define(L->text_operand2, L->text_operand, from, L);
-	Analyser::mark_reserved_word_for_section(S, L->text_operand, CONSTANT_COLOUR);
+	Analyser::mark_reserved_word_at_line(L, L->text_operand, CONSTANT_COLOUR);
 	comment_mode = FALSE;
 	L->is_commentary = FALSE;
 	Regexp::dispose_of(&mr);

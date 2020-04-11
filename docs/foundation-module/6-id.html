@@ -49,11 +49,11 @@ height and width.
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">ImageFiles::get_JPEG_dimensions</span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">JPEG_file</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">width</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">height</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">ImageFiles::get_JPEG_dimensions<button class="popup" onclick="togglePopup('usagePopup460')">...<span class="popuptext" id="usagePopup460">Usage of <b>ImageFiles::get_JPEG_dimensions</b>:<br>none</span></button></span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">JPEG_file</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">width</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">height</span><span class="plain">) {</span>
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sig</span><span class="plain">, </span><span class="identifier">length</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext">BinaryFiles::read_int16</span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">, &amp;</span><span class="identifier">sig</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int16</a></span><span class="identifier">JPEG_file</span><span class="plain">, &amp;</span><span class="identifier">sig</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sig</span><span class="plain"> != </span><span class="constant">0xFFD8</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">; </span><span class="comment"> <code class="display"><span class="extract">0xFF</span></code> (marker) then <code class="display"><span class="extract">0xD8</span></code> (SOI)</span>
 
         <span class="reserved">do</span><span class="plain"> {</span>
@@ -66,7 +66,7 @@ height and width.
                 <span class="identifier">marker</span><span class="plain"> = </span><span class="identifier">getc</span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">);</span>
             <span class="plain">} </span><span class="reserved">while</span><span class="plain"> (</span><span class="identifier">marker</span><span class="plain"> == </span><span class="constant">0xff</span><span class="plain">); </span><span class="comment"> skip to next non <code class="display"><span class="extract">FF</span></code> byte</span>
 
-            <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext">BinaryFiles::read_int16</span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">, &amp;</span><span class="identifier">length</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">; </span><span class="comment"> length of marker</span>
+            <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int16</a></span><span class="identifier">JPEG_file</span><span class="plain">, &amp;</span><span class="identifier">length</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">; </span><span class="comment"> length of marker</span>
 
             <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">marker</span><span class="plain">) {</span>
                 <span class="comment"> all variant forms of "start of frame": e.g., <code class="display"><span class="extract">0xC0</span></code> is a baseline DCT image</span>
@@ -79,8 +79,8 @@ height and width.
                     <span class="comment"> fortunately these markers all then open with the same format</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">getc</span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">) == </span><span class="identifier">EOF</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">; </span><span class="comment"> skip 1 byte of data precision</span>
 
-                    <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext">BinaryFiles::read_int16</span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">, </span><span class="identifier">height</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-                    <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext">BinaryFiles::read_int16</span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">, </span><span class="identifier">width</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int16</a></span><span class="identifier">JPEG_file</span><span class="plain">, </span><span class="identifier">height</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+                    <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int16</a></span><span class="identifier">JPEG_file</span><span class="plain">, </span><span class="identifier">width</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
 
                     <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
                 <span class="plain">}</span>
@@ -96,8 +96,6 @@ height and width.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function ImageFiles::get_JPEG_dimensions appears nowhere else.</p>
-
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. PNG files. </b>The PNG file must start with a signature which indicates that the
 remainder contains a single PNG image, consisting of a series of chunks
 beginning with an IHDR chunk and ending with an IEND chunk ("Portable
@@ -107,35 +105,41 @@ first two words (section 11.2.2).
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">ImageFiles::get_PNG_dimensions</span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">PNG_file</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">width</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">height</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">ImageFiles::get_PNG_dimensions<button class="popup" onclick="togglePopup('usagePopup461')">...<span class="popuptext" id="usagePopup461">Usage of <b>ImageFiles::get_PNG_dimensions</b>:<br>none</span></button></span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">PNG_file</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">width</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">height</span><span class="plain">) {</span>
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sig1</span><span class="plain">, </span><span class="identifier">sig2</span><span class="plain">, </span><span class="identifier">length</span><span class="plain">, </span><span class="identifier">type</span><span class="plain">;</span>
 
         <span class="comment"> Check PNG signature</span>
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext">BinaryFiles::read_int32</span><span class="plain">(</span><span class="identifier">PNG_file</span><span class="plain">, &amp;</span><span class="identifier">sig1</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext">BinaryFiles::read_int32</span><span class="plain">(</span><span class="identifier">PNG_file</span><span class="plain">, &amp;</span><span class="identifier">sig2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int32</a></span><span class="identifier">PNG_file</span><span class="plain">, &amp;</span><span class="identifier">sig1</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int32</a></span><span class="identifier">PNG_file</span><span class="plain">, &amp;</span><span class="identifier">sig2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sig1</span><span class="plain"> != </span><span class="constant">0x89504e47</span><span class="plain">) || (</span><span class="identifier">sig2</span><span class="plain"> != </span><span class="constant">0x0d0a1a0a</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
 
         <span class="comment"> Read first chunk</span>
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext">BinaryFiles::read_int32</span><span class="plain">(</span><span class="identifier">PNG_file</span><span class="plain">, &amp;</span><span class="identifier">length</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext">BinaryFiles::read_int32</span><span class="plain">(</span><span class="identifier">PNG_file</span><span class="plain">, &amp;</span><span class="identifier">type</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int32</a></span><span class="identifier">PNG_file</span><span class="plain">, &amp;</span><span class="identifier">length</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int32</a></span><span class="identifier">PNG_file</span><span class="plain">, &amp;</span><span class="identifier">type</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
 
         <span class="comment"> First chunk must be IHDR</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">type</span><span class="plain"> != </span><span class="constant">0x49484452</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
 
         <span class="comment"> Width and height follow</span>
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext">BinaryFiles::read_int32</span><span class="plain">(</span><span class="identifier">PNG_file</span><span class="plain">, </span><span class="identifier">width</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext">BinaryFiles::read_int32</span><span class="plain">(</span><span class="identifier">PNG_file</span><span class="plain">, </span><span class="identifier">height</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int32</a></span><span class="identifier">PNG_file</span><span class="plain">, </span><span class="identifier">width</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int32</a></span><span class="identifier">PNG_file</span><span class="plain">, </span><span class="identifier">height</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function ImageFiles::get_PNG_dimensions appears nowhere else.</p>
-
 <hr class="tocbar">
 <ul class="toc"><li><a href="6-bf.html">Back to 'Binary Files'</a></li><li><a href="6-sd.html">Continue with 'Sound Durations'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

@@ -65,10 +65,10 @@ means.
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
 <pre class="display">
-    <span class="reserved">module</span><span class="plain"> *</span><span class="functiontext">WebModules::new</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">m</span><span class="plain">) {</span>
+    <span class="reserved">module</span><span class="plain"> *</span><span class="functiontext">WebModules::new<button class="popup" onclick="togglePopup('usagePopup506')">...<span class="popuptext" id="usagePopup506">Usage of <b>WebModules::new</b>:<br><a href="#SP3">&#167;3</a>, <a href="#SP7_1">&#167;7.1</a></span></button></span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">m</span><span class="plain">) {</span>
         <span class="reserved">module</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">module</span><span class="plain">);</span>
         <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">module_location</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">;</span>
-        <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">module_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">module_name</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">dependencies</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">module</span><span class="plain">);</span>
         <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">origin_marker</span><span class="plain"> = </span><span class="identifier">m</span><span class="plain">;</span>
         <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">module_tag</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"miscellaneous"</span><span class="plain">;</span>
@@ -79,8 +79,6 @@ means.
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function WebModules::new is used in <a href="#SP3">&#167;3</a>, <a href="#SP7_1">&#167;7.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>In the Inweb documentation, "module" is used to refer to a sidekick web which
 contains a suite of utility routines, or a major component of a program, but
@@ -93,14 +91,12 @@ internally named <code class="display"><span class="extract">"(main)"</span></co
 </p>
 
 <pre class="display">
-    <span class="reserved">module</span><span class="plain"> *</span><span class="functiontext">WebModules::create_main_module</span><span class="plain">(</span><span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">WS</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">WebModules::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"(main)"</span><span class="plain">, </span><span class="identifier">WS</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">, </span><span class="constant">READING_WEB_MOM</span><span class="plain">);</span>
+    <span class="reserved">module</span><span class="plain"> *</span><span class="functiontext">WebModules::create_main_module<button class="popup" onclick="togglePopup('usagePopup507')">...<span class="popuptext" id="usagePopup507">Usage of <b>WebModules::create_main_module</b>:<br>Web Structure - <a href="8-ws.html#SP5_2">&#167;5.2</a></span></button></span><span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">WS</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext"><a href="#SP2">WebModules::new</a></span><span class="identifier">I</span><span class="string">"(main)"</span><span class="plain">, </span><span class="identifier">WS</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">, </span><span class="constant">READING_WEB_MOM</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function WebModules::create_main_module is used in 8/ws (<a href="8-ws.html#SP5_2">&#167;5.2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Dependencies. </b>When web A imports module B, we will say that A is dependent on B. A web
 can import multiple modules, so there can a list of dependencies. These are
@@ -109,15 +105,13 @@ program generated by A.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">WebModules::dependency</span><span class="plain">(</span><span class="reserved">module</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="reserved">module</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">WebModules::dependency<button class="popup" onclick="togglePopup('usagePopup508')">...<span class="popuptext" id="usagePopup508">Usage of <b>WebModules::dependency</b>:<br><a href="#SP7_1">&#167;7.1</a></span></button></span><span class="reserved">module</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">, </span><span class="reserved">module</span><span class="plain"> *</span><span class="identifier">B</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">A</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">B</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no module"</span><span class="plain">);</span>
         <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">B</span><span class="plain">, </span><span class="reserved">module</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="identifier">dependencies</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function WebModules::dependency is used in <a href="#SP7_1">&#167;7.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Searching. </b>The following abstracts the idea of a place where modules might be found.
 (At one time there was going to be a more elaborate search hierarchy.)
@@ -137,7 +131,7 @@ program generated by A.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
 <pre class="display">
-    <span class="reserved">module_search</span><span class="plain"> *</span><span class="functiontext">WebModules::make_search_path</span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">ext_path</span><span class="plain">) {</span>
+    <span class="reserved">module_search</span><span class="plain"> *</span><span class="functiontext">WebModules::make_search_path<button class="popup" onclick="togglePopup('usagePopup509')">...<span class="popuptext" id="usagePopup509">Usage of <b>WebModules::make_search_path</b>:<br>Web Structure - <a href="8-ws.html#SP5">&#167;5</a></span></button></span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">ext_path</span><span class="plain">) {</span>
         <span class="reserved">module_search</span><span class="plain"> *</span><span class="identifier">ms</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">module_search</span><span class="plain">);</span>
         <span class="identifier">ms</span><span class="plain">-&gt;</span><span class="element">path_to_search</span><span class="plain"> = </span><span class="identifier">ext_path</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ms</span><span class="plain">;</span>
@@ -146,25 +140,23 @@ program generated by A.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function WebModules::make_search_path is used in 8/ws (<a href="8-ws.html#SP5">&#167;5</a>).</p>
-
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>When a web's contents page says to <code class="display"><span class="extract">import Blah</span></code>, how do we find the module
 called <code class="display"><span class="extract">Blah</span></code> on disc? We try four possibilities in sequence:
 </p>
 
 <pre class="display">
-    <span class="reserved">module</span><span class="plain"> *</span><span class="functiontext">WebModules::find</span><span class="plain">(</span><span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">WS</span><span class="plain">, </span><span class="reserved">module_search</span><span class="plain"> *</span><span class="identifier">ms</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">) {</span>
+    <span class="reserved">module</span><span class="plain"> *</span><span class="functiontext">WebModules::find<button class="popup" onclick="togglePopup('usagePopup510')">...<span class="popuptext" id="usagePopup510">Usage of <b>WebModules::find</b>:<br>Web Structure - <a href="8-ws.html#SP7_3_3_2">&#167;7.3.3.2</a></span></button></span><span class="reserved">web_md</span><span class="plain"> *</span><span class="identifier">WS</span><span class="plain">, </span><span class="reserved">module_search</span><span class="plain"> *</span><span class="identifier">ms</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">, </span><span class="string">"%S-module"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">tries</span><span class="plain">[4];</span>
         <span class="identifier">tries</span><span class="plain">[0] = </span><span class="identifier">WS</span><span class="plain">?(</span><span class="identifier">WS</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">):</span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">tries</span><span class="plain">[1] = </span><span class="identifier">tries</span><span class="plain">[0]?(</span><span class="functiontext">Pathnames::up</span><span class="plain">(</span><span class="identifier">tries</span><span class="plain">[0])):</span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">tries</span><span class="plain">[1] = </span><span class="identifier">tries</span><span class="plain">[0]?(</span><span class="functiontext"><a href="3-pth.html#SP7">Pathnames::up</a></span><span class="identifier">tries</span><span class="plain">[0])):</span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">tries</span><span class="plain">[2] = </span><span class="identifier">X</span><span class="plain">;</span>
         <span class="identifier">tries</span><span class="plain">[3] = </span><span class="identifier">ms</span><span class="plain">-&gt;</span><span class="element">path_to_search</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain"> = </span><span class="constant">4</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">N</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Pathnames::from_text_relative</span><span class="plain">(</span><span class="identifier">tries</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">T</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">) &amp;&amp; (</span><span class="functiontext">WebModules::exists</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">))) </span>&lt;<span class="cwebmacro">Accept this directory as the module</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
+            <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext"><a href="3-pth.html#SP5">Pathnames::from_text_relative</a></span><span class="identifier">tries</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">T</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">P</span><span class="plain">) &amp;&amp; (</span><span class="functiontext"><a href="#SP8">WebModules::exists</a></span><span class="identifier">P</span><span class="plain">))) </span>&lt;<span class="cwebmacro">Accept this directory as the module</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">T</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -172,8 +164,6 @@ called <code class="display"><span class="extract">Blah</span></code> on disc? W
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function WebModules::find is used in 8/ws (<a href="8-ws.html#SP7_3_3_2">&#167;7.3.3.2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b>When the module is found (if it is), a suitable module structure is made,
 and a dependency created from the web's <code class="display"><span class="extract">(main)</span></code> module to this one.
@@ -186,8 +176,8 @@ and a dependency created from the web's <code class="display"><span class="extra
 
 
 <pre class="displaydefn">
-        <span class="reserved">module</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain"> = </span><span class="functiontext">WebModules::new</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="constant">READING_WEB_MOM</span><span class="plain">);</span>
-        <span class="functiontext">WebModules::dependency</span><span class="plain">(</span><span class="identifier">WS</span><span class="plain">-&gt;</span><span class="element">as_module</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">);</span>
+        <span class="reserved">module</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain"> = </span><span class="functiontext"><a href="#SP2">WebModules::new</a></span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">, </span><span class="constant">READING_WEB_MOM</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP4">WebModules::dependency</a></span><span class="identifier">WS</span><span class="plain">-&gt;</span><span class="element">as_module</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">M</span><span class="plain">;</span>
 </pre>
 
@@ -200,14 +190,12 @@ sought if it looks like a web.
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">WebModules::exists</span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">WebMetadata::directory_looks_like_a_web</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">WebModules::exists<button class="popup" onclick="togglePopup('usagePopup511')">...<span class="popuptext" id="usagePopup511">Usage of <b>WebModules::exists</b>:<br><a href="#SP7">&#167;7</a></span></button></span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext"><a href="8-ws.html#SP8">WebMetadata::directory_looks_like_a_web</a></span><span class="identifier">P</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function WebModules::exists is used in <a href="#SP7">&#167;7</a>.</p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Resolving cross-reference names. </b>Suppose we are in module <code class="display"><span class="extract">from_M</span></code> and want to understand which section of
 a relevant web <code class="display"><span class="extract">text</span></code> might refer to. It could be the name of a module,
@@ -230,22 +218,22 @@ section of code you are now reading.
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">WebModules::named_reference</span><span class="plain">(</span><span class="reserved">module</span><span class="plain"> **</span><span class="identifier">return_M</span><span class="plain">, </span><span class="reserved">section_md</span><span class="plain"> **</span><span class="identifier">return_Sm</span><span class="plain">,</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">WebModules::named_reference<button class="popup" onclick="togglePopup('usagePopup512')">...<span class="popuptext" id="usagePopup512">Usage of <b>WebModules::named_reference</b>:<br>none</span></button></span><span class="reserved">module</span><span class="plain"> **</span><span class="identifier">return_M</span><span class="plain">, </span><span class="reserved">section_md</span><span class="plain"> **</span><span class="identifier">return_Sm</span><span class="plain">,</span>
         <span class="reserved">int</span><span class="plain"> *</span><span class="identifier">named_as_module</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">title</span><span class="plain">, </span><span class="reserved">module</span><span class="plain"> *</span><span class="identifier">from_M</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">list</span><span class="plain">) {</span>
         <span class="plain">*</span><span class="identifier">return_M</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; *</span><span class="identifier">return_Sm</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; *</span><span class="identifier">named_as_module</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">module</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">finds</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from_M</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
+        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext"><a href="4-pm.html#SP9">Regexp::create_mr</a></span><span class="plain">);</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">seek</span><span class="plain"> = </span><span class="identifier">text</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%C+?): *(%c+?) *"</span><span class="plain">)) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%C+?): *(%c+?) *"</span><span class="plain">)) {</span>
             <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">M</span><span class="plain">, </span><span class="reserved">module</span><span class="plain">, </span><span class="identifier">from_M</span><span class="plain">-&gt;</span><span class="element">dependencies</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">module_name</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0])) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq_insensitive</a></span><span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">module_name</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0])) {</span>
                     <span class="identifier">seek</span><span class="plain"> = </span><span class="identifier">mr</span><span class="plain">.</span><span class="identifier">exp</span><span class="plain">[1];</span>
                     &lt;<span class="cwebmacro">Look for references to chapters or sections in M</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="plain">;</span>
                 <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="identifier">seek</span><span class="plain"> = </span><span class="identifier">text</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">stage</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">; ((</span><span class="identifier">finds</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">stage</span><span class="plain"> &lt;= </span><span class="constant">2</span><span class="plain">)); </span><span class="identifier">stage</span><span class="plain">++) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stage</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
@@ -263,8 +251,6 @@ section of code you are now reading.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function WebModules::named_reference appears nowhere else.</p>
-
 <p class="inwebparagraph"><a id="SP9_1"></a><b>&#167;9.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Look for references to chapters or sections in M</span> <span class="cwebmacronumber">9.1</span>&gt; =
 </code></p>
@@ -272,17 +258,17 @@ section of code you are now reading.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">M</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no module"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">module_name</span><span class="plain">, </span><span class="identifier">seek</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq_insensitive</a></span><span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">module_name</span><span class="plain">, </span><span class="identifier">seek</span><span class="plain">))</span>
             &lt;<span class="cwebmacro">Found first section in module</span> <span class="cwebmacronumber">9.1.1</span>&gt;<span class="plain">;</span>
         <span class="reserved">chapter_md</span><span class="plain"> *</span><span class="identifier">Cm</span><span class="plain">;</span>
         <span class="reserved">section_md</span><span class="plain"> *</span><span class="identifier">Sm</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">Cm</span><span class="plain">, </span><span class="reserved">chapter_md</span><span class="plain">, </span><span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">chapters_md</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">Cm</span><span class="plain">-&gt;</span><span class="element">ch_title</span><span class="plain">, </span><span class="identifier">seek</span><span class="plain">)) ||</span>
-                <span class="plain">(</span><span class="functiontext">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">Cm</span><span class="plain">-&gt;</span><span class="element">ch_basic_title</span><span class="plain">, </span><span class="identifier">seek</span><span class="plain">)) ||</span>
-                <span class="plain">(</span><span class="functiontext">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">Cm</span><span class="plain">-&gt;</span><span class="element">ch_decorated_title</span><span class="plain">, </span><span class="identifier">seek</span><span class="plain">)))</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq_insensitive</a></span><span class="identifier">Cm</span><span class="plain">-&gt;</span><span class="element">ch_title</span><span class="plain">, </span><span class="identifier">seek</span><span class="plain">)) ||</span>
+                <span class="plain">(</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq_insensitive</a></span><span class="identifier">Cm</span><span class="plain">-&gt;</span><span class="element">ch_basic_title</span><span class="plain">, </span><span class="identifier">seek</span><span class="plain">)) ||</span>
+                <span class="plain">(</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq_insensitive</a></span><span class="identifier">Cm</span><span class="plain">-&gt;</span><span class="element">ch_decorated_title</span><span class="plain">, </span><span class="identifier">seek</span><span class="plain">)))</span>
                 &lt;<span class="cwebmacro">Found first section in chapter</span> <span class="cwebmacronumber">9.1.2</span>&gt;<span class="plain">;</span>
             <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">Sm</span><span class="plain">, </span><span class="reserved">section_md</span><span class="plain">, </span><span class="identifier">Cm</span><span class="plain">-&gt;</span><span class="element">sections_md</span><span class="plain">)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_insensitive</span><span class="plain">(</span><span class="identifier">Sm</span><span class="plain">-&gt;</span><span class="element">sect_title</span><span class="plain">, </span><span class="identifier">seek</span><span class="plain">))</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq_insensitive</a></span><span class="identifier">Sm</span><span class="plain">-&gt;</span><span class="element">sect_title</span><span class="plain">, </span><span class="identifier">seek</span><span class="plain">))</span>
                     &lt;<span class="cwebmacro">Found section by name</span> <span class="cwebmacronumber">9.1.3</span>&gt;<span class="plain">;</span>
         <span class="plain">}</span>
 </pre>
@@ -349,6 +335,14 @@ section of code you are now reading.
 <hr class="tocbar">
 <ul class="toc"><li><a href="8-bdfw.html">Back to 'Bibliographic Data for Webs'</a></li><li><a href="8-bf.html">Continue with 'Build Files'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

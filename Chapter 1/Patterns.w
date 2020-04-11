@@ -14,6 +14,7 @@ typedef struct weave_pattern {
 	struct weave_pattern *based_on; /* inherit from which other pattern? */
 
 	struct weave_format *pattern_format; /* such as |DVI|: the desired final format */
+	struct linked_list *plugins; /* of |weave_plugin|: any extras needed */
 	struct linked_list *payloads; /* of |text_stream|: leafnames of associated files */
 	struct linked_list *up_payloads; /* of |text_stream|: leafnames of associated files */
 
@@ -46,6 +47,7 @@ weave_pattern *Patterns::find(web *W, text_stream *name) {
 @<Initialise the pattern structure@> =
 	wp->pattern_name = Str::duplicate(name);
 	wp->pattern_location = NULL;
+	wp->plugins = NEW_LINKED_LIST(weave_plugin);
 	wp->payloads = NEW_LINKED_LIST(text_stream);
 	wp->up_payloads = NEW_LINKED_LIST(text_stream);
 	wp->based_on = NULL;
@@ -91,6 +93,7 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 	if (Regexp::match(&mr, line, L" *(%c+?) = (%c+)")) @<This is an X = Y command@>;
 	if (Regexp::match(&mr, line, L" *embed css *")) @<This is an embed CSS command@>;
 	if (Regexp::match(&mr, line, L" *hierarchical *")) @<This is a hierarchical command@>;
+	if (Regexp::match(&mr, line, L" *plugin (%c+)")) @<This is a plugin command@>;
 	if (Regexp::match(&mr, line, L" *use (%c+)")) @<This is a use command@>;
 	if (Regexp::match(&mr, line, L" *use-up (%c+)")) @<This is a use-up command@>;
 	if (Regexp::match(&mr, line, L" *%C%c*"))
@@ -135,6 +138,14 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 
 @<This is a hierarchical command@> =
 	wp->hierarchical = TRUE;
+	Regexp::dispose_of(&mr);
+	return;
+
+@ "Plugins" here refer to //Weave Plugins//.
+
+@<This is a plugin command@> =
+	text_stream *leafname = Str::duplicate(mr.exp[0]);
+	ADD_TO_LINKED_LIST(leafname, text_stream, wp->plugins);
 	Regexp::dispose_of(&mr);
 	return;
 

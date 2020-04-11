@@ -29,7 +29,11 @@
 
 <ul class="toc"><li><a href="#SP1">&#167;1. Creation</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Creation. </b></p>
+<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Creation. </b>At present, plugins are simply their names: Inweb knows as little as possible
+about how they work. The model is just that a file being woven either does or
+does not need a plugin of a given name: for example, if it uses maths notation,
+it will likely need the <code class="display"><span class="extract">MathJax3</span></code> plugin.
+</p>
 
 <pre class="display">
     <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">weave_plugin</span><span class="plain"> {</span>
@@ -45,52 +49,69 @@
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
 <pre class="display">
-    <span class="reserved">weave_plugin</span><span class="plain"> *</span><span class="functiontext">WeavePlugins::new</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
+    <span class="reserved">weave_plugin</span><span class="plain"> *</span><span class="functiontext">WeavePlugins::new<button class="popup" onclick="togglePopup('usagePopup338')">...<span class="popuptext" id="usagePopup338">Usage of <b>WeavePlugins::new</b>:<br>The Swarm - <a href="3-ts.html#SP3">&#167;3</a></span></button></span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">weave_plugin</span><span class="plain"> *</span><span class="identifier">wp</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">weave_plugin</span><span class="plain">);</span>
-        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">plugin_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">plugin_name</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">name</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">wp</span><span class="plain">;</span>
     <span class="plain">}</span>
+</pre>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">WeavePlugins::include</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">weave_plugin</span><span class="plain"> *</span><span class="identifier">wp</span><span class="plain">,</span>
+<p class="inwebparagraph"></p>
+
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>When a file is woven, then, the following function can add the plugins
+necessary. If a plugin is called <code class="display"><span class="extract">X</span></code>, then we try to find <code class="display"><span class="extract">X.html</span></code> and
+weave that into the page header; and we try to find <code class="display"><span class="extract">X.css</span></code>, weave an
+inclusion of that, and also copy the file into the weave destination.
+</p>
+
+<p class="inwebparagraph">The fragment of HTML is compulsory; the CSS file, optional.
+</p>
+
+<pre class="display">
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">WeavePlugins::include<button class="popup" onclick="togglePopup('usagePopup339')">...<span class="popuptext" id="usagePopup339">Usage of <b>WeavePlugins::include</b>:<br>The Indexer - <a href="3-ti.html#SP2_1">&#167;2.1</a></span></button></span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">weave_plugin</span><span class="plain"> *</span><span class="identifier">wp</span><span class="plain">,</span>
         <span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">pattern</span><span class="plain">) {</span>
-        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P1</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Plugins"</span><span class="plain">);</span>
-        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P2</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">path_to_inweb</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Plugins"</span><span class="plain">);</span>
+        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P1</span><span class="plain"> = </span><span class="functiontext"><a href="3-pth.html#SP4">Pathnames::subfolder</a></span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Plugins"</span><span class="plain">);</span>
+        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P2</span><span class="plain"> = </span><span class="functiontext"><a href="3-pth.html#SP4">Pathnames::subfolder</a></span><span class="identifier">path_to_inweb</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Plugins"</span><span class="plain">);</span>
 
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">embed_leaf</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">css_leaf</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">embed_leaf</span><span class="plain">, </span><span class="string">"%S.html"</span><span class="plain">, </span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">plugin_name</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">css_leaf</span><span class="plain">, </span><span class="string">"%S.css"</span><span class="plain">, </span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="identifier">plugin_name</span><span class="plain">);</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">P1</span><span class="plain">?(</span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P1</span><span class="plain">, </span><span class="identifier">embed_leaf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">P2</span><span class="plain">?(</span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P2</span><span class="plain">, </span><span class="identifier">embed_leaf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">CF</span><span class="plain"> = </span><span class="identifier">P1</span><span class="plain">?(</span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P1</span><span class="plain">, </span><span class="identifier">css_leaf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">CF</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">CF</span><span class="plain"> = </span><span class="identifier">P2</span><span class="plain">?(</span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">P2</span><span class="plain">, </span><span class="identifier">css_leaf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">P1</span><span class="plain">?(</span><span class="functiontext"><a href="3-fln.html#SP2">Filenames::in_folder</a></span><span class="identifier">P1</span><span class="plain">, </span><span class="identifier">embed_leaf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-tf.html#SP1">TextFiles::exists</a></span><span class="identifier">F</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">P2</span><span class="plain">?(</span><span class="functiontext"><a href="3-fln.html#SP2">Filenames::in_folder</a></span><span class="identifier">P2</span><span class="plain">, </span><span class="identifier">embed_leaf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">CF</span><span class="plain"> = </span><span class="identifier">P1</span><span class="plain">?(</span><span class="functiontext"><a href="3-fln.html#SP2">Filenames::in_folder</a></span><span class="identifier">P1</span><span class="plain">, </span><span class="identifier">css_leaf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-tf.html#SP1">TextFiles::exists</a></span><span class="identifier">CF</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">CF</span><span class="plain"> = </span><span class="identifier">P2</span><span class="plain">?(</span><span class="functiontext"><a href="3-fln.html#SP2">Filenames::in_folder</a></span><span class="identifier">P2</span><span class="plain">, </span><span class="identifier">css_leaf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">embed_leaf</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">css_leaf</span><span class="plain">);</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-tf.html#SP1">TextFiles::exists</a></span><span class="identifier">F</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">err</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">err</span><span class="plain">, </span><span class="string">"The plugin '%S' is not supported"</span><span class="plain">, </span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">plugin_name</span><span class="plain">);</span>
-            <span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="identifier">err</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
+            <span class="functiontext"><a href="1-pc.html#SP8">Main::error_in_web</a></span><span class="identifier">err</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="functiontext">Indexer::run</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">I</span><span class="string">""</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">CF</span><span class="plain">)) {</span>
+        <span class="functiontext"><a href="3-ti.html#SP5">Indexer::run</a></span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">I</span><span class="string">""</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-tf.html#SP1">TextFiles::exists</a></span><span class="identifier">CF</span><span class="plain">)) {</span>
             <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;link href=\"%S.css\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\"&gt;\n"</span><span class="plain">,</span>
                 <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">plugin_name</span><span class="plain">);</span>
-            <span class="functiontext">Patterns::copy_file_into_weave</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">CF</span><span class="plain">);</span>
+            <span class="functiontext"><a href="1-ptt.html#SP7">Patterns::copy_file_into_weave</a></span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">CF</span><span class="plain">);</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function WeavePlugins::new is used in 3/ts (<a href="3-ts.html#SP3">&#167;3</a>).</p>
-
-<p class="endnote">The function WeavePlugins::include is used in 3/ti (<a href="3-ti.html#SP2_1">&#167;2.1</a>).</p>
-
 <hr class="tocbar">
 <ul class="toc"><li><a href="5-hf.html">Back to 'HTML Formats'</a></li><li><a href="5-rtt.html">Continue with 'Running Through TeX'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

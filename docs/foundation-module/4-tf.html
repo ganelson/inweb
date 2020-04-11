@@ -40,8 +40,8 @@ file actually exists on disc at a given filename:
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">HANDLE</span><span class="plain"> = </span><span class="functiontext">Filenames::fopen</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="string">"rb"</span><span class="plain">);</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TextFiles::exists<button class="popup" onclick="togglePopup('usagePopup333')">...<span class="popuptext" id="usagePopup333">Usage of <b>TextFiles::exists</b>:<br>Web Structure - <a href="8-ws.html#SP7_2_2_4">&#167;7.2.2.4</a>, <a href="8-ws.html#SP8">&#167;8</a><br>Build Files - <a href="8-bf.html#SP1">&#167;1</a></span></button></span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
+        <span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">HANDLE</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP10">Filenames::fopen</a></span><span class="identifier">F</span><span class="plain">, </span><span class="string">"rb"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">HANDLE</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">fclose</span><span class="plain">(</span><span class="identifier">HANDLE</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
@@ -49,8 +49,6 @@ file actually exists on disc at a given filename:
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function TextFiles::exists is used in 8/ws (<a href="8-ws.html#SP7_2_2_4">&#167;7.2.2.4</a>, <a href="8-ws.html#SP8">&#167;8</a>), 8/bf (<a href="8-bf.html#SP1">&#167;1</a>).</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Text file positions. </b>Here's how we record a position in a text file:
 </p>
@@ -75,7 +73,7 @@ file actually exists on disc at a given filename:
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TextFiles::get_line_count</span><span class="plain">(</span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TextFiles::get_line_count<button class="popup" onclick="togglePopup('usagePopup334')">...<span class="popuptext" id="usagePopup334">Usage of <b>TextFiles::get_line_count</b>:<br>none</span></button></span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tfp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">line_count</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -83,13 +81,11 @@ file actually exists on disc at a given filename:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function TextFiles::get_line_count appears nowhere else.</p>
-
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And this is for a real nowhere man:
 </p>
 
 <pre class="display">
-    <span class="reserved">text_file_position</span><span class="plain"> </span><span class="functiontext">TextFiles::nowhere</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">text_file_position</span><span class="plain"> </span><span class="functiontext">TextFiles::nowhere<button class="popup" onclick="togglePopup('usagePopup335')">...<span class="popuptext" id="usagePopup335">Usage of <b>TextFiles::nowhere</b>:<br>none</span></button></span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">text_file_position</span><span class="plain"> </span><span class="identifier">tfp</span><span class="plain">;</span>
         <span class="identifier">tfp</span><span class="plain">.</span><span class="element">text_file_filename</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">tfp</span><span class="plain">.</span><span class="element">line_count</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
@@ -102,8 +98,6 @@ file actually exists on disc at a given filename:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function TextFiles::nowhere appears nowhere else.</p>
-
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Text file scanner. </b>We read lines in, delimited by any of the standard line-ending characters,
 and send them one at a time to a function called <code class="display"><span class="extract">iterator</span></code>. Throughout,
 we preserve a pointer called <code class="display"><span class="extract">state</span></code> to some object being used by the
@@ -111,11 +105,11 @@ client.
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">escape_oddities</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">serious</span><span class="plain">,</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TextFiles::read<button class="popup" onclick="togglePopup('usagePopup336')">...<span class="popuptext" id="usagePopup336">Usage of <b>TextFiles::read</b>:<br>Command Line Arguments - <a href="3-cla.html#SP11">&#167;11</a><br>HTML - <a href="5-htm.html#SP10">&#167;10</a><br>Web Structure - <a href="8-ws.html#SP6">&#167;6</a><br>Build Files - <a href="8-bf.html#SP3">&#167;3</a></span></button></span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">escape_oddities</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">message</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">serious</span><span class="plain">,</span>
         <span class="reserved">void</span><span class="plain"> (</span><span class="identifier">iterator</span><span class="plain">)(</span><span class="reserved">text_stream</span><span class="plain"> *, </span><span class="reserved">text_file_position</span><span class="plain"> *, </span><span class="reserved">void</span><span class="plain"> *),</span>
         <span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">start_at</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
         <span class="reserved">text_file_position</span><span class="plain"> </span><span class="identifier">tfp</span><span class="plain">;</span>
-        <span class="identifier">tfp</span><span class="plain">.</span><span class="element">ufb</span><span class="plain"> = </span><span class="functiontext">TextFiles::create_ufb</span><span class="plain">();</span>
+        <span class="identifier">tfp</span><span class="plain">.</span><span class="element">ufb</span><span class="plain"> = </span><span class="functiontext"><a href="#SP8">TextFiles::create_ufb</a></span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Open the text file</span> <span class="cwebmacronumber">5.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Set the initial position, seeking it in the file if need be</span> <span class="cwebmacronumber">5.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Read in lines and send them one by one to the iterator</span> <span class="cwebmacronumber">5.3</span>&gt;<span class="plain">;</span>
@@ -126,19 +120,17 @@ client.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function TextFiles::read is used in 3/cla (<a href="3-cla.html#SP11">&#167;11</a>), 5/htm (<a href="5-htm.html#SP10">&#167;10</a>), 8/ws (<a href="8-ws.html#SP6">&#167;6</a>), 8/bf (<a href="8-bf.html#SP3">&#167;3</a>).</p>
-
 <p class="inwebparagraph"><a id="SP5_1"></a><b>&#167;5.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Open the text file</span> <span class="cwebmacronumber">5.1</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="identifier">tfp</span><span class="plain">.</span><span class="element">handle_when_open</span><span class="plain"> = </span><span class="functiontext">Filenames::fopen</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="string">"rb"</span><span class="plain">);</span>
+        <span class="identifier">tfp</span><span class="plain">.</span><span class="element">handle_when_open</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP10">Filenames::fopen</a></span><span class="identifier">F</span><span class="plain">, </span><span class="string">"rb"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tfp</span><span class="plain">.</span><span class="element">handle_when_open</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">message</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">serious</span><span class="plain">) </span><span class="functiontext">Errors::fatal_with_file</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-            <span class="reserved">else</span><span class="plain"> { </span><span class="functiontext">Errors::with_file</span><span class="plain">(</span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">; }</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">serious</span><span class="plain">) </span><span class="functiontext"><a href="3-em.html#SP2">Errors::fatal_with_file</a></span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+            <span class="reserved">else</span><span class="plain"> { </span><span class="functiontext"><a href="3-em.html#SP7">Errors::with_file</a></span><span class="identifier">message</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">; }</span>
         <span class="plain">}</span>
 </pre>
 
@@ -166,8 +158,8 @@ values returned by <code class="display"><span class="extract">ftell</span></cod
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">tfp</span><span class="plain"> = *</span><span class="identifier">start_at</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fseek</span><span class="plain">(</span><span class="identifier">tfp</span><span class="plain">.</span><span class="element">handle_when_open</span><span class="plain">, (</span><span class="reserved">long</span><span class="plain"> </span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">tfp</span><span class="plain">.</span><span class="element">line_position</span><span class="plain">), </span><span class="identifier">SEEK_SET</span><span class="plain">)) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">serious</span><span class="plain">) </span><span class="functiontext">Errors::fatal_with_file</span><span class="plain">(</span><span class="string">"unable to seek position in file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-                <span class="functiontext">Errors::with_file</span><span class="plain">(</span><span class="string">"unable to seek position in file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">serious</span><span class="plain">) </span><span class="functiontext"><a href="3-em.html#SP2">Errors::fatal_with_file</a></span><span class="string">"unable to seek position in file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+                <span class="functiontext"><a href="3-em.html#SP7">Errors::with_file</a></span><span class="string">"unable to seek position in file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
@@ -193,9 +185,9 @@ values returned by <code class="display"><span class="extract">ftell</span></cod
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">c</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> != </span><span class="identifier">EOF</span><span class="plain">) &amp;&amp; (</span><span class="identifier">tfp</span><span class="plain">.</span><span class="element">actively_scanning</span><span class="plain">)) {</span>
-            <span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">TextFiles::utf8_fgetc</span><span class="plain">(</span><span class="identifier">tfp</span><span class="plain">.</span><span class="element">handle_when_open</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">escape_oddities</span><span class="plain">, &amp;</span><span class="identifier">tfp</span><span class="plain">.</span><span class="element">ufb</span><span class="plain">);</span>
+            <span class="identifier">c</span><span class="plain"> = </span><span class="functiontext"><a href="#SP8">TextFiles::utf8_fgetc</a></span><span class="identifier">tfp</span><span class="plain">.</span><span class="element">handle_when_open</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">escape_oddities</span><span class="plain">, &amp;</span><span class="identifier">tfp</span><span class="plain">.</span><span class="element">ufb</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="identifier">EOF</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\x0a'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\x0d'</span><span class="plain">)) {</span>
-                <span class="functiontext">Str::put_at</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+                <span class="functiontext"><a href="4-sm.html#SP14">Str::put_at</a></span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> != </span><span class="identifier">tfp</span><span class="plain">.</span><span class="element">skip_terminator</span><span class="plain">)) {</span>
                     &lt;<span class="cwebmacro">Feed the completed line to the iterator routine</span> <span class="cwebmacronumber">5.3.1</span>&gt;<span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\x0a'</span><span class="plain">) </span><span class="identifier">tfp</span><span class="plain">.</span><span class="element">skip_terminator</span><span class="plain"> = </span><span class="character">'\x0d'</span><span class="plain">;</span>
@@ -204,7 +196,7 @@ values returned by <code class="display"><span class="extract">ftell</span></cod
                 &lt;<span class="cwebmacro">Update the text file position</span> <span class="cwebmacronumber">5.3.2</span>&gt;<span class="plain">;</span>
                 <span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="functiontext">Str::put_at</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">++, (</span><span class="identifier">wchar_t</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">);</span>
+                <span class="functiontext"><a href="4-sm.html#SP14">Str::put_at</a></span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">++, (</span><span class="identifier">wchar_t</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">tfp</span><span class="plain">.</span><span class="element">actively_scanning</span><span class="plain">))</span>
@@ -256,9 +248,9 @@ Text files seldom come that large.
         <span class="identifier">tfp</span><span class="plain">.</span><span class="element">line_position</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) (</span><span class="identifier">ftell</span><span class="plain">(</span><span class="identifier">tfp</span><span class="plain">.</span><span class="element">handle_when_open</span><span class="plain">));</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">tfp</span><span class="plain">.</span><span class="element">line_position</span><span class="plain"> == -1) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">serious</span><span class="plain">)</span>
-                <span class="functiontext">Errors::fatal_with_file</span><span class="plain">(</span><span class="string">"unable to determine position in file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+                <span class="functiontext"><a href="3-em.html#SP2">Errors::fatal_with_file</a></span><span class="string">"unable to determine position in file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
             <span class="reserved">else</span>
-                <span class="functiontext">Errors::with_file</span><span class="plain">(</span><span class="string">"unable to determine position in file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+                <span class="functiontext"><a href="3-em.html#SP7">Errors::with_file</a></span><span class="string">"unable to determine position in file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -269,13 +261,13 @@ Text files seldom come that large.
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">TextFiles::read_line</span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">escape_oddities</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">) {</span>
-        <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">TextFiles::read_line<button class="popup" onclick="togglePopup('usagePopup337')">...<span class="popuptext" id="usagePopup337">Usage of <b>TextFiles::read_line</b>:<br>none</span></button></span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">escape_oddities</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">) {</span>
+        <span class="functiontext"><a href="4-sm.html#SP15">Str::clear</a></span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">c</span><span class="plain"> = </span><span class="character">' '</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> != </span><span class="identifier">EOF</span><span class="plain">) &amp;&amp; (</span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">actively_scanning</span><span class="plain">)) {</span>
-            <span class="identifier">c</span><span class="plain"> = </span><span class="functiontext">TextFiles::utf8_fgetc</span><span class="plain">(</span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">handle_when_open</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">escape_oddities</span><span class="plain">, &amp;</span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">ufb</span><span class="plain">);</span>
+            <span class="identifier">c</span><span class="plain"> = </span><span class="functiontext"><a href="#SP8">TextFiles::utf8_fgetc</a></span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">handle_when_open</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">escape_oddities</span><span class="plain">, &amp;</span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">ufb</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> == </span><span class="identifier">EOF</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\x0a'</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\x0d'</span><span class="plain">)) {</span>
-                <span class="functiontext">Str::put_at</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+                <span class="functiontext"><a href="4-sm.html#SP14">Str::put_at</a></span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">c</span><span class="plain"> != </span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">skip_terminator</span><span class="plain">)) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\x0a'</span><span class="plain">) </span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">skip_terminator</span><span class="plain"> = </span><span class="character">'\x0d'</span><span class="plain">;</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'\x0d'</span><span class="plain">) </span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">skip_terminator</span><span class="plain"> = </span><span class="character">'\x0a'</span><span class="plain">;</span>
@@ -284,7 +276,7 @@ Text files seldom come that large.
                 <span class="identifier">i</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">line_count</span><span class="plain">++; </span><span class="reserved">return</span><span class="plain">;</span>
             <span class="plain">}</span>
-            <span class="functiontext">Str::put_at</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">++, (</span><span class="identifier">wchar_t</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">);</span>
+            <span class="functiontext"><a href="4-sm.html#SP14">Str::put_at</a></span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">++, (</span><span class="identifier">wchar_t</span><span class="plain">) </span><span class="identifier">c</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">i</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">actively_scanning</span><span class="plain">)) </span><span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">line_count</span><span class="plain">++;</span>
     <span class="plain">}</span>
@@ -292,21 +284,17 @@ Text files seldom come that large.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function TextFiles::read_line appears nowhere else.</p>
-
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>The routine being iterated can indicate that it has had enough by
 calling the following:
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">TextFiles::lose_interest</span><span class="plain">(</span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">TextFiles::lose_interest<button class="popup" onclick="togglePopup('usagePopup338')">...<span class="popuptext" id="usagePopup338">Usage of <b>TextFiles::lose_interest</b>:<br>none</span></button></span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">) {</span>
         <span class="identifier">tfp</span><span class="plain">-&gt;</span><span class="element">actively_scanning</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function TextFiles::lose_interest appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Reading UTF-8 files. </b>The following routine reads a sequence of Unicode characters from a UTF-8
 encoded file, but returns them as a sequence of ISO Latin-1 characters, a
@@ -339,13 +327,13 @@ might be at the start of the file being read.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ufb_counter</span><span class="plain">; </span><span class="comment"> position in the unicode feed buffer</span>
     <span class="plain">} </span><span class="reserved">unicode_file_buffer</span><span class="plain">;</span>
 
-    <span class="reserved">unicode_file_buffer</span><span class="plain"> </span><span class="functiontext">TextFiles::create_ufb</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">unicode_file_buffer</span><span class="plain"> </span><span class="functiontext">TextFiles::create_ufb<button class="popup" onclick="togglePopup('usagePopup339')">...<span class="popuptext" id="usagePopup339">Usage of <b>TextFiles::create_ufb</b>:<br><a href="#SP5">&#167;5</a>, Streams - <a href="2-str.html#SP28_2">&#167;28.2</a></span></button></span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">unicode_file_buffer</span><span class="plain"> </span><span class="identifier">ufb</span><span class="plain">;</span>
         <span class="identifier">ufb</span><span class="plain">.</span><span class="element">ufb_counter</span><span class="plain"> = -1;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">ufb</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TextFiles::utf8_fgetc</span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">or_from</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">escape_oddities</span><span class="plain">,</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">TextFiles::utf8_fgetc<button class="popup" onclick="togglePopup('usagePopup340')">...<span class="popuptext" id="usagePopup340">Usage of <b>TextFiles::utf8_fgetc</b>:<br><a href="#SP5_3">&#167;5.3</a>, <a href="#SP6">&#167;6</a>, Streams - <a href="2-str.html#SP28_2">&#167;28.2</a></span></button></span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">or_from</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">escape_oddities</span><span class="plain">,</span>
         <span class="reserved">unicode_file_buffer</span><span class="plain"> *</span><span class="identifier">ufb</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">EOF</span><span class="plain">, </span><span class="identifier">conts</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">ufb</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ufb</span><span class="plain">-&gt;</span><span class="element">ufb_counter</span><span class="plain"> &gt;= </span><span class="constant">0</span><span class="plain">)) {</span>
@@ -373,10 +361,6 @@ might be at the start of the file being read.
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function TextFiles::create_ufb is used in <a href="#SP5">&#167;5</a>, 2/str (<a href="2-str.html#SP28_2">&#167;28.2</a>).</p>
-
-<p class="endnote">The function TextFiles::utf8_fgetc is used in <a href="#SP5_3">&#167;5.3</a>, <a href="#SP6">&#167;6</a>, 2/str (<a href="2-str.html#SP28_2">&#167;28.2</a>).</p>
 
 <p class="endnote">The structure unicode_file_buffer is private to this section.</p>
 
@@ -479,6 +463,14 @@ hyphens into em-rules when they are flanked by spaces, and so on.
 <hr class="tocbar">
 <ul class="toc"><li><a href="4-sm.html">Back to 'String Manipulation'</a></li><li><a href="4-taa.html">Continue with 'Tries and Avinues'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

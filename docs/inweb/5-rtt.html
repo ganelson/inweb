@@ -48,10 +48,10 @@ are too wide to display.)
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RunningTeX::post_process_weave</span><span class="plain">(</span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">open_afterwards</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">to_DVI</span><span class="plain">) {</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">console_filename</span><span class="plain"> = </span><span class="functiontext">Filenames::set_extension</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">, </span><span class="string">"console"</span><span class="plain">);</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">log_filename</span><span class="plain"> = </span><span class="functiontext">Filenames::set_extension</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">, </span><span class="string">"log"</span><span class="plain">);</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">pdf_filename</span><span class="plain"> = </span><span class="functiontext">Filenames::set_extension</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">, </span><span class="string">"pdf"</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RunningTeX::post_process_weave<button class="popup" onclick="togglePopup('usagePopup340')">...<span class="popuptext" id="usagePopup340">Usage of <b>RunningTeX::post_process_weave</b>:<br>TeX Format - <a href="5-tf.html#SP25">&#167;25</a></span></button></span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">open_afterwards</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">to_DVI</span><span class="plain">) {</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">console_filename</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP8">Filenames::set_extension</a></span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">, </span><span class="string">"console"</span><span class="plain">);</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">log_filename</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP8">Filenames::set_extension</a></span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">, </span><span class="string">"log"</span><span class="plain">);</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">pdf_filename</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP8">Filenames::set_extension</a></span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">, </span><span class="string">"pdf"</span><span class="plain">);</span>
 
         <span class="reserved">tex_results</span><span class="plain"> *</span><span class="identifier">res</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">tex_results</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Initialise the TeX results</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
@@ -66,8 +66,6 @@ are too wide to display.)
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function RunningTeX::post_process_weave is used in 5/tf (<a href="5-tf.html#SP25">&#167;25</a>).</p>
 
 <p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b>We're going to have to read in a console file of TeX output to work out
 what happened, and this structure will store what we find:
@@ -112,21 +110,21 @@ what happened, and this structure will store what we find:
 
 <pre class="displaydefn">
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">)</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">tex_rel</span><span class="plain"> = </span><span class="functiontext">Filenames::without_path</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">);</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">console_rel</span><span class="plain"> = </span><span class="functiontext">Filenames::without_path</span><span class="plain">(</span><span class="identifier">console_filename</span><span class="plain">);</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">tex_rel</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP7">Filenames::without_path</a></span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">);</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">console_rel</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP7">Filenames::without_path</a></span><span class="identifier">console_filename</span><span class="plain">);</span>
 
-        <span class="functiontext">Shell::plain</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"cd "</span><span class="plain">);</span>
-        <span class="functiontext">Shell::quote_path</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="functiontext">Filenames::get_path_to</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">));</span>
-        <span class="functiontext">Shell::plain</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"; "</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-shl.html#SP1">Shell::plain</a></span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"cd "</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-shl.html#SP1">Shell::quote_path</a></span><span class="identifier">TEMP</span><span class="plain">, </span><span class="functiontext"><a href="3-fln.html#SP6">Filenames::get_path_to</a></span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">));</span>
+        <span class="functiontext"><a href="3-shl.html#SP1">Shell::plain</a></span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"; "</span><span class="plain">);</span>
 
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">tool</span><span class="plain"> = </span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">pattern</span><span class="plain">-&gt;</span><span class="identifier">pdftex_command</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">to_DVI</span><span class="plain">) </span><span class="identifier">tool</span><span class="plain"> = </span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">pattern</span><span class="plain">-&gt;</span><span class="element">tex_command</span><span class="plain">;</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">tool</span><span class="plain">);</span>
-        <span class="functiontext">Shell::plain</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">" -interaction=scrollmode "</span><span class="plain">);</span>
-        <span class="functiontext">Shell::quote_file</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="identifier">tex_rel</span><span class="plain">);</span>
-        <span class="functiontext">Shell::plain</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"&gt;"</span><span class="plain">);</span>
-        <span class="functiontext">Shell::quote_file</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="identifier">console_rel</span><span class="plain">);</span>
-        <span class="functiontext">Shell::run</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-shl.html#SP1">Shell::plain</a></span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">" -interaction=scrollmode "</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-shl.html#SP1">Shell::quote_file</a></span><span class="identifier">TEMP</span><span class="plain">, </span><span class="identifier">tex_rel</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-shl.html#SP1">Shell::plain</a></span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"&gt;"</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-shl.html#SP1">Shell::quote_file</a></span><span class="identifier">TEMP</span><span class="plain">, </span><span class="identifier">console_rel</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-shl.html#SP5">Shell::run</a></span><span class="identifier">TEMP</span><span class="plain">);</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">)</span>
 </pre>
 
@@ -146,8 +144,8 @@ the error messages (which begin with an exclamation mark in column 1).
 
 
 <pre class="displaydefn">
-        <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">console_filename</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">,</span>
-            <span class="string">"can't open console file"</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">, </span><span class="functiontext">RunningTeX::scan_console_line</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">,</span>
+        <span class="functiontext"><a href="4-tf.html#SP5">TextFiles::read</a></span><span class="identifier">console_filename</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">,</span>
+            <span class="string">"can't open console file"</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">, </span><span class="functiontext"><a href="#SP3">RunningTeX::scan_console_line</a></span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">,</span>
             <span class="plain">(</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">res</span><span class="plain">);</span>
 </pre>
 
@@ -171,9 +169,9 @@ for the user to find out what those errors were.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">tex_error_count</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
-            <span class="functiontext">Shell::rm</span><span class="plain">(</span><span class="identifier">console_filename</span><span class="plain">);</span>
-            <span class="functiontext">Shell::rm</span><span class="plain">(</span><span class="identifier">log_filename</span><span class="plain">);</span>
-            <span class="functiontext">Shell::rm</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">);</span>
+            <span class="functiontext"><a href="3-shl.html#SP3">Shell::rm</a></span><span class="identifier">console_filename</span><span class="plain">);</span>
+            <span class="functiontext"><a href="3-shl.html#SP3">Shell::rm</a></span><span class="identifier">log_filename</span><span class="plain">);</span>
+            <span class="functiontext"><a href="3-shl.html#SP3">Shell::rm</a></span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">weave_to</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -191,10 +189,10 @@ for the user to find out what those errors were.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">pattern</span><span class="plain">-&gt;</span><span class="element">open_command</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
-            <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"no way to open PDF (see pattern.txt file)"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP8">Str::len</a></span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">pattern</span><span class="plain">-&gt;</span><span class="element">open_command</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="functiontext"><a href="3-em.html#SP2">Errors::fatal</a></span><span class="string">"no way to open PDF (see pattern.txt file)"</span><span class="plain">);</span>
         <span class="reserved">else</span>
-            <span class="functiontext">Shell::apply_S</span><span class="plain">(</span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">pattern</span><span class="plain">-&gt;</span><span class="element">open_command</span><span class="plain">, </span><span class="identifier">pdf_filename</span><span class="plain">);</span>
+            <span class="functiontext"><a href="3-shl.html#SP2">Shell::apply_S</a></span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">pattern</span><span class="plain">-&gt;</span><span class="element">open_command</span><span class="plain">, </span><span class="identifier">pdf_filename</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -204,32 +202,30 @@ for the user to find out what those errors were.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RunningTeX::scan_console_line</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">,</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RunningTeX::scan_console_line<button class="popup" onclick="togglePopup('usagePopup341')">...<span class="popuptext" id="usagePopup341">Usage of <b>RunningTeX::scan_console_line</b>:<br><a href="#SP2_4">&#167;2.4</a></span></button></span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">,</span>
         <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">res_V</span><span class="plain">) {</span>
         <span class="reserved">tex_results</span><span class="plain"> *</span><span class="identifier">res</span><span class="plain"> = (</span><span class="reserved">tex_results</span><span class="plain"> *) </span><span class="identifier">res_V</span><span class="plain">;</span>
-        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">,</span>
+        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext"><a href="4-pm.html#SP9">Regexp::create_mr</a></span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"Output written %c*? %((%d+) page%c*?(%d+) bytes%)."</span><span class="plain">)) {</span>
-            <span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">page_count</span><span class="plain"> = </span><span class="functiontext">Str::atoi</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="constant">0</span><span class="plain">);</span>
-            <span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">pdf_size</span><span class="plain"> = </span><span class="functiontext">Str::atoi</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1], </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">page_count</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP7">Str::atoi</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">pdf_size</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP7">Str::atoi</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1], </span><span class="constant">0</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%c+verfull \\hbox%c+"</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%c+verfull \\hbox%c+"</span><span class="plain">))</span>
             <span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">overfull_hbox_count</span><span class="plain">++;</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::get_first_char</span><span class="plain">(</span><span class="identifier">line</span><span class="plain">) == </span><span class="character">'!'</span><span class="plain">) {</span>
+        <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP13">Str::get_first_char</a></span><span class="identifier">line</span><span class="plain">) == </span><span class="character">'!'</span><span class="plain">) {</span>
             <span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">tex_error_count</span><span class="plain">++;</span>
         <span class="plain">}</span>
-        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function RunningTeX::scan_console_line is used in <a href="#SP2_4">&#167;2.4</a>.</p>
-
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Reporting. </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RunningTeX::report_on_post_processing</span><span class="plain">(</span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">RunningTeX::report_on_post_processing<button class="popup" onclick="togglePopup('usagePopup342')">...<span class="popuptext" id="usagePopup342">Usage of <b>RunningTeX::report_on_post_processing</b>:<br>TeX Format - <a href="5-tf.html#SP26">&#167;26</a></span></button></span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">) {</span>
         <span class="reserved">tex_results</span><span class="plain"> *</span><span class="identifier">res</span><span class="plain"> = </span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">post_processing_results</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">res</span><span class="plain">) {</span>
             <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">": %dpp %dK"</span><span class="plain">, </span><span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">page_count</span><span class="plain">, </span><span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">pdf_size</span><span class="plain">/1024);</span>
@@ -243,25 +239,23 @@ for the user to find out what those errors were.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function RunningTeX::report_on_post_processing is used in 5/tf (<a href="5-tf.html#SP26">&#167;26</a>).</p>
-
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>And here are some details to do with the results of post-processing.
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">RunningTeX::substitute_post_processing_data</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">RunningTeX::substitute_post_processing_data<button class="popup" onclick="togglePopup('usagePopup343')">...<span class="popuptext" id="usagePopup343">Usage of <b>RunningTeX::substitute_post_processing_data</b>:<br>TeX Format - <a href="5-tf.html#SP27">&#167;27</a></span></button></span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">, </span><span class="reserved">weave_target</span><span class="plain"> *</span><span class="identifier">wv</span><span class="plain">,</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">detail</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wv</span><span class="plain">) {</span>
             <span class="reserved">tex_results</span><span class="plain"> *</span><span class="identifier">res</span><span class="plain"> = </span><span class="identifier">wv</span><span class="plain">-&gt;</span><span class="element">post_processing_results</span><span class="plain">;</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">res</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">detail</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"PDF Size"</span><span class="plain">)) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP21">Str::eq_wide_string</a></span><span class="identifier">detail</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"PDF Size"</span><span class="plain">)) {</span>
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">, </span><span class="string">"%dKB"</span><span class="plain">, </span><span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">pdf_size</span><span class="plain">/1024);</span>
-                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">detail</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Extent"</span><span class="plain">)) {</span>
+                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP21">Str::eq_wide_string</a></span><span class="identifier">detail</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Extent"</span><span class="plain">)) {</span>
                     <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">, </span><span class="string">"%dpp"</span><span class="plain">, </span><span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">page_count</span><span class="plain">);</span>
-                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">detail</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Leafname"</span><span class="plain">)) {</span>
-                    <span class="functiontext">Str::copy</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">, </span><span class="functiontext">Filenames::get_leafname</span><span class="plain">(</span><span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">PDF_filename</span><span class="plain">));</span>
-                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">detail</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Errors"</span><span class="plain">)) {</span>
-                    <span class="functiontext">Str::clear</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">);</span>
+                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP21">Str::eq_wide_string</a></span><span class="identifier">detail</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Leafname"</span><span class="plain">)) {</span>
+                    <span class="functiontext"><a href="4-sm.html#SP16">Str::copy</a></span><span class="identifier">to</span><span class="plain">, </span><span class="functiontext"><a href="3-fln.html#SP7">Filenames::get_leafname</a></span><span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">PDF_filename</span><span class="plain">));</span>
+                <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP21">Str::eq_wide_string</a></span><span class="identifier">detail</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Errors"</span><span class="plain">)) {</span>
+                    <span class="functiontext"><a href="4-sm.html#SP15">Str::clear</a></span><span class="identifier">to</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">res</span><span class="plain">-&gt;</span><span class="identifier">overfull_hbox_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">tex_error_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">))</span>
                         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">to</span><span class="plain">, </span><span class="string">": "</span><span class="plain">);</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">res</span><span class="plain">-&gt;</span><span class="element">overfull_hbox_count</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
@@ -284,11 +278,17 @@ for the user to find out what those errors were.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function RunningTeX::substitute_post_processing_data is used in 5/tf (<a href="5-tf.html#SP27">&#167;27</a>).</p>
-
 <hr class="tocbar">
 <ul class="toc"><li><a href="5-wp.html">Back to 'Weave Plugins'</a></li><li><i>(This section ends Chapter 5: Formats.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

@@ -75,7 +75,7 @@ file itself.
 </p>
 
 <pre class="display">
-    <span class="reserved">FILE</span><span class="plain"> *</span><span class="functiontext">CIFilingSystem::fopen</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">mode</span><span class="plain">) {</span>
+    <span class="reserved">FILE</span><span class="plain"> *</span><span class="functiontext"><a href="#SP5">CIFilingSystem::fopen</a></span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">mode</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">topdirpath</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">ciextdirpath</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">cistring</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">ciextname</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">workstring</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">workstring2</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">DIR</span><span class="plain"> *</span><span class="identifier">topdir</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">extdir</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">; </span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">handle</span><span class="plain">;</span>
@@ -108,7 +108,7 @@ file itself.
 
 <p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
 
-<p class="endnote">The function CIFilingSystem::fopen is used in <a href="#SP5">&#167;5</a>, 3/fln (<a href="3-fln.html#SP10">&#167;10</a>).</p>
+<p class="endnote">The function CIFilingSystem::fopen is used in <a href="#SP5">&#167;5</a>, Filenames (<a href="3-fln.html#SP10">&#167;10</a>).</p>
 
 <p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1. Looking for case-insensitive matches instead. </b>We emerge from the following only in the happy case where a unique matching
 directory name can be found.
@@ -121,7 +121,7 @@ directory name can be found.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rc</span><span class="plain"> = </span><span class="functiontext">CIFilingSystem::match_in_directory</span><span class="plain">(</span><span class="identifier">topdir</span><span class="plain">, </span><span class="identifier">ciextdirpath</span><span class="plain">, </span><span class="identifier">workstring</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rc</span><span class="plain"> = </span><span class="functiontext"><a href="#SP4">CIFilingSystem::match_in_directory</a></span><span class="identifier">topdir</span><span class="plain">, </span><span class="identifier">ciextdirpath</span><span class="plain">, </span><span class="identifier">workstring</span><span class="plain">);</span>
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">rc</span><span class="plain">) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">:</span>
                 <span class="identifier">errno</span><span class="plain"> = </span><span class="identifier">ENOENT</span><span class="plain">; </span>&lt;<span class="cwebmacro">Sad ending to ci-fopen</span> <span class="cwebmacronumber">3.5</span>&gt;<span class="plain">;</span>
@@ -152,7 +152,7 @@ return from the function.
 
 
 <pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rc</span><span class="plain"> = </span><span class="functiontext">CIFilingSystem::match_in_directory</span><span class="plain">(</span><span class="identifier">extdir</span><span class="plain">, </span><span class="identifier">ciextname</span><span class="plain">, </span><span class="identifier">workstring</span><span class="plain">);</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rc</span><span class="plain"> = </span><span class="functiontext"><a href="#SP4">CIFilingSystem::match_in_directory</a></span><span class="identifier">extdir</span><span class="plain">, </span><span class="identifier">ciextname</span><span class="plain">, </span><span class="identifier">workstring</span><span class="plain">);</span>
 
         <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">rc</span><span class="plain">) {</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">:</span>
@@ -339,7 +339,7 @@ and in any case the code above contains much larger buffers than needed.)
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CIFilingSystem::match_in_directory</span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vd</span><span class="plain">,</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">CIFilingSystem::match_in_directory<button class="popup" onclick="togglePopup('usagePopup220')">...<span class="popuptext" id="usagePopup220">Usage of <b>CIFilingSystem::match_in_directory</b>:<br><a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a></span></button></span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vd</span><span class="plain">,</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">last_match</span><span class="plain">) {</span>
         <span class="identifier">DIR</span><span class="plain"> *</span><span class="identifier">d</span><span class="plain"> = (</span><span class="identifier">DIR</span><span class="plain"> *) </span><span class="identifier">vd</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">dirent</span><span class="plain"> *</span><span class="identifier">dirp</span><span class="plain">;</span>
@@ -358,13 +358,11 @@ and in any case the code above contains much larger buffers than needed.)
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function CIFilingSystem::match_in_directory is used in <a href="#SP3_1">&#167;3.1</a>, <a href="#SP3_2">&#167;3.2</a>.</p>
-
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Non-POSIX tail. </b>On platforms without POSIX directory handling, we revert to regular <code class="display"><span class="extract">fopen</span></code>.
 </p>
 
 <pre class="display">
-    <span class="reserved">FILE</span><span class="plain"> *</span><span class="functiontext">CIFilingSystem::fopen</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">mode</span><span class="plain">) {</span>
+    <span class="reserved">FILE</span><span class="plain"> *</span><span class="functiontext">CIFilingSystem::fopen<button class="popup" onclick="togglePopup('usagePopup221')">...<span class="popuptext" id="usagePopup221">Usage of <b>CIFilingSystem::fopen</b>:<br><a href="#SP3">&#167;3</a>, Filenames - <a href="3-fln.html#SP10">&#167;10</a></span></button></span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">mode</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">fopen</span><span class="plain">(</span><span class="identifier">path</span><span class="plain">, </span><span class="identifier">mode</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -373,11 +371,17 @@ and in any case the code above contains much larger buffers than needed.)
 
 <p class="endnote">This paragraph is used only if PLATFORM_POSIX is undefined.</p>
 
-<p class="endnote">The function CIFilingSystem::fopen is used in <a href="#SP3">&#167;3</a>, 3/fln (<a href="3-fln.html#SP10">&#167;10</a>).</p>
-
 <hr class="tocbar">
 <ul class="toc"><li><a href="3-fln.html">Back to 'Filenames'</a></li><li><a href="3-shl.html">Continue with 'Shell'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

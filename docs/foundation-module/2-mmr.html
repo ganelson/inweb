@@ -146,7 +146,7 @@ begin as soon as this is initialised.
 <pre class="display">
     <span class="reserved">allocation_status_structure</span><span class="plain"> </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">];</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::start</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::start<button class="popup" onclick="togglePopup('usagePopup44')">...<span class="popuptext" id="usagePopup44">Usage of <b>Memory::start</b>:<br>Foundation Module - <a href="1-fm.html#SP8">&#167;8</a></span></button></span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">first_in_memory</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">last_in_memory</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -156,13 +156,11 @@ begin as soon as this is initialised.
             <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">no_allocated_together</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
             <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">name_of_type</span><span class="plain"> = </span><span class="string">"unused"</span><span class="plain">;</span>
         <span class="plain">}</span>
-        <span class="functiontext">Memory::name_fundamental_reasons</span><span class="plain">();</span>
+        <span class="functiontext"><a href="#SP22">Memory::name_fundamental_reasons</a></span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Memory::start is used in 1/fm (<a href="1-fm.html#SP8">&#167;8</a>).</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Architecture. </b>The memory manager is built in three levels, with its interface to the user
 being entirely at level 3 (except that when it shuts down it calls a level 1
@@ -253,7 +251,7 @@ pair of routines.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::allocate_another_block</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::allocate_another_block<button class="popup" onclick="togglePopup('usagePopup45')">...<span class="popuptext" id="usagePopup45">Usage of <b>Memory::allocate_another_block</b>:<br><a href="#SP16_1">&#167;16.1</a></span></button></span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cp</span><span class="plain">;</span>
         <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">mh</span><span class="plain">;</span>
 
@@ -269,8 +267,6 @@ pair of routines.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Memory::allocate_another_block is used in <a href="#SP16_1">&#167;16.1</a>.</p>
-
 <p class="inwebparagraph"><a id="SP11_1"></a><b>&#167;11.1.  </b>Note that <code class="display"><span class="extract">cp</span></code> and <code class="display"><span class="extract">mh</span></code> are set to the same value: they merely have different
 pointer types as far as the C compiler is concerned.
 </p>
@@ -284,12 +280,12 @@ pointer types as far as the C compiler is concerned.
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">no_blocks_allocated</span><span class="plain">++ &gt;= </span><span class="constant">MAX_BLOCKS_ALLOWED</span><span class="plain">)</span>
-            <span class="functiontext">Errors::fatal</span><span class="plain">(</span>
+            <span class="functiontext"><a href="3-em.html#SP2">Errors::fatal</a></span>
                 <span class="string">"the memory manager has halted inweb, which seems to be generating "</span>
                 <span class="string">"endless structures. Presumably it is trapped in a loop"</span><span class="plain">);</span>
-        <span class="functiontext">Memory::check_memory_integrity</span><span class="plain">();</span>
-        <span class="identifier">cp</span><span class="plain"> = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *) (</span><span class="functiontext">Memory::paranoid_calloc</span><span class="plain">(</span><span class="constant">MEMORY_GRANULARITY</span><span class="plain">, </span><span class="constant">1</span><span class="plain">));</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"Run out of memory: malloc failed"</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP15">Memory::check_memory_integrity</a></span><span class="plain">);</span>
+        <span class="identifier">cp</span><span class="plain"> = (</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *) (</span><span class="functiontext"><a href="#SP35">Memory::paranoid_calloc</a></span><span class="constant">MEMORY_GRANULARITY</span><span class="plain">, </span><span class="constant">1</span><span class="plain">));</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">cp</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext"><a href="3-em.html#SP2">Errors::fatal</a></span><span class="string">"Run out of memory: malloc failed"</span><span class="plain">);</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="constant">MEMORY_GRANULARITY</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">cp</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
@@ -328,8 +324,8 @@ block.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::free</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="functiontext">Memory::free_ssas</span><span class="plain">();</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::free<button class="popup" onclick="togglePopup('usagePopup46')">...<span class="popuptext" id="usagePopup46">Usage of <b>Memory::free</b>:<br>Foundation Module - <a href="1-fm.html#SP9">&#167;9</a></span></button></span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="functiontext"><a href="#SP30">Memory::free_ssas</a></span><span class="plain">);</span>
         <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">mh</span><span class="plain"> = </span><span class="identifier">first_memblock_header</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">mh</span><span class="plain"> != </span><span class="identifier">NULL</span><span class="plain">) {</span>
             <span class="reserved">memblock_header</span><span class="plain"> *</span><span class="identifier">next_mh</span><span class="plain"> = </span><span class="identifier">mh</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
@@ -341,8 +337,6 @@ block.
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Memory::free is used in 1/fm (<a href="1-fm.html#SP9">&#167;9</a>).</p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Level 2: memory frames and integrity checking. </b>Within these extensive blocks of contiguous memory, we place the actual
 objects in between "memory frames", which are only used at present to police
@@ -391,7 +385,7 @@ amount of storage \(n\) allocated.
 
 <pre class="display">
     <span class="reserved">int</span><span class="plain"> </span><span class="identifier">calls_to_cmi</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::check_memory_integrity</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::check_memory_integrity<button class="popup" onclick="togglePopup('usagePopup47')">...<span class="popuptext" id="usagePopup47">Usage of <b>Memory::check_memory_integrity</b>:<br><a href="#SP11_1">&#167;11.1</a></span></button></span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
         <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">mf</span><span class="plain">;</span>
         <span class="identifier">c</span><span class="plain"> = </span><span class="identifier">calls_to_cmi</span><span class="plain">++;</span>
@@ -399,10 +393,10 @@ amount of storage \(n\) allocated.
 
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">mf</span><span class="plain"> = </span><span class="identifier">first_memory_frame</span><span class="plain">; </span><span class="identifier">mf</span><span class="plain">; </span><span class="identifier">c</span><span class="plain">++, </span><span class="identifier">mf</span><span class="plain"> = </span><span class="identifier">mf</span><span class="plain">-&gt;</span><span class="element">next_frame</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">mf</span><span class="plain">-&gt;</span><span class="element">integrity_check</span><span class="plain"> != </span><span class="constant">INTEGRITY_NUMBER</span><span class="plain">)</span>
-                <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"Memory manager failed integrity check"</span><span class="plain">);</span>
+                <span class="functiontext"><a href="3-em.html#SP2">Errors::fatal</a></span><span class="string">"Memory manager failed integrity check"</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::debug_memory_frames</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">to</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::debug_memory_frames<button class="popup" onclick="togglePopup('usagePopup48')">...<span class="popuptext" id="usagePopup48">Usage of <b>Memory::debug_memory_frames</b>:<br>none</span></button></span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">to</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">;</span>
         <span class="reserved">memory_frame</span><span class="plain"> *</span><span class="identifier">mf</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">mf</span><span class="plain"> = </span><span class="identifier">first_memory_frame</span><span class="plain">; (</span><span class="identifier">mf</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="identifier">to</span><span class="plain">); </span><span class="identifier">c</span><span class="plain">++, </span><span class="identifier">mf</span><span class="plain"> = </span><span class="identifier">mf</span><span class="plain">-&gt;</span><span class="element">next_frame</span><span class="plain">)</span>
@@ -416,10 +410,6 @@ amount of storage \(n\) allocated.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Memory::check_memory_integrity is used in <a href="#SP11_1">&#167;11.1</a>.</p>
-
-<p class="endnote">The function Memory::debug_memory_frames appears nowhere else.</p>
-
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>We have seen how memory is allocated in large blocks, and that a linked
 list of memory frames will live inside those blocks; we have seen how the
 list is checked for integrity; but we not seen how it is built. Every
@@ -427,7 +417,7 @@ memory frame is created by the following function:
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::allocate</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">mem_type</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">extent</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::allocate<button class="popup" onclick="togglePopup('usagePopup49')">...<span class="popuptext" id="usagePopup49">Usage of <b>Memory::allocate</b>:<br><a href="#SP19">&#167;19</a></span></button></span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">mem_type</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">extent</span><span class="plain">) {</span>
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
 
@@ -462,8 +452,6 @@ memory frame is created by the following function:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Memory::allocate is used in <a href="#SP19">&#167;19</a>.</p>
-
 <p class="inwebparagraph"><a id="SP16_1"></a><b>&#167;16.1.  </b>The granularity error below will be triggered the first time a particular
 object type is allocated. So this is not a potential time-bomb just waiting
 for a user with a particularly long and involved source text to discover.
@@ -476,12 +464,12 @@ for a user with a particularly long and involved source text to discover.
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_memblock_header</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext">Memory::allocate_another_block</span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">current_memblock_header</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="functiontext"><a href="#SP11">Memory::allocate_another_block</a></span><span class="plain">);</span>
         <span class="identifier">bytes_free_in_current_memblock</span><span class="plain"> = </span><span class="constant">MEMORY_GRANULARITY</span><span class="plain"> - (</span><span class="identifier">used_in_current_memblock</span><span class="plain"> + </span><span class="identifier">extent</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">bytes_free_in_current_memblock</span><span class="plain"> &lt; </span><span class="constant">BLANK_END_SIZE</span><span class="plain">) {</span>
-            <span class="functiontext">Memory::allocate_another_block</span><span class="plain">();</span>
+            <span class="functiontext"><a href="#SP11">Memory::allocate_another_block</a></span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">extent</span><span class="plain">+</span><span class="constant">BLANK_END_SIZE</span><span class="plain"> &gt;= </span><span class="constant">MEMORY_GRANULARITY</span><span class="plain">)</span>
-                <span class="functiontext">Errors::fatal</span><span class="plain">(</span><span class="string">"Memory manager failed because granularity too low"</span><span class="plain">);</span>
+                <span class="functiontext"><a href="3-em.html#SP2">Errors::fatal</a></span><span class="string">"Memory manager failed because granularity too low"</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -579,7 +567,7 @@ double-quotes.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="identifier">NEW_OBJECT</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">) ((</span><span class="identifier">type_name</span><span class="plain"> *) </span><span class="functiontext">Memory::allocate</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">)))</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">NEW_OBJECT</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">) ((</span><span class="identifier">type_name</span><span class="plain"> *) </span><span class="functiontext"><a href="#SP16">Memory::allocate</a></span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">)))</span>
     <span class="definitionkeyword">define</span> <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">)</span>
     <span class="identifier">MAKE_REFERENCE_ROUTINES</span><span class="plain">(</span><span class="identifier">type_name</span><span class="plain">, </span><span class="identifier">type_name</span><span class="plain">##</span><span class="identifier">_MT</span><span class="plain">)</span>
     <span class="identifier">type_name</span><span class="plain"> *</span><span class="identifier">allocate_</span><span class="plain">##</span><span class="identifier">type_name</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
@@ -761,18 +749,16 @@ we need to use the equivalent of traditional <code class="display"><span class="
 </pre>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::name_fundamental_reasons</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="functiontext">Memory::reason_name</span><span class="plain">(</span><span class="constant">STREAM_MREASON</span><span class="plain">, </span><span class="string">"text stream storage"</span><span class="plain">);</span>
-        <span class="functiontext">Memory::reason_name</span><span class="plain">(</span><span class="constant">FILENAME_STORAGE_MREASON</span><span class="plain">, </span><span class="string">"filename/pathname storage"</span><span class="plain">);</span>
-        <span class="functiontext">Memory::reason_name</span><span class="plain">(</span><span class="constant">STRING_STORAGE_MREASON</span><span class="plain">, </span><span class="string">"string storage"</span><span class="plain">);</span>
-        <span class="functiontext">Memory::reason_name</span><span class="plain">(</span><span class="constant">DICTIONARY_MREASON</span><span class="plain">, </span><span class="string">"dictionary storage"</span><span class="plain">);</span>
-        <span class="functiontext">Memory::reason_name</span><span class="plain">(</span><span class="constant">CLS_SORTING_MREASON</span><span class="plain">, </span><span class="string">"sorting"</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::name_fundamental_reasons<button class="popup" onclick="togglePopup('usagePopup50')">...<span class="popuptext" id="usagePopup50">Usage of <b>Memory::name_fundamental_reasons</b>:<br><a href="#SP5">&#167;5</a></span></button></span><span class="reserved">void</span><span class="plain">) {</span>
+        <span class="functiontext"><a href="#SP23">Memory::reason_name</a></span><span class="constant">STREAM_MREASON</span><span class="plain">, </span><span class="string">"text stream storage"</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP23">Memory::reason_name</a></span><span class="constant">FILENAME_STORAGE_MREASON</span><span class="plain">, </span><span class="string">"filename/pathname storage"</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP23">Memory::reason_name</a></span><span class="constant">STRING_STORAGE_MREASON</span><span class="plain">, </span><span class="string">"string storage"</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP23">Memory::reason_name</a></span><span class="constant">DICTIONARY_MREASON</span><span class="plain">, </span><span class="string">"dictionary storage"</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP23">Memory::reason_name</a></span><span class="constant">CLS_SORTING_MREASON</span><span class="plain">, </span><span class="string">"sorting"</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Memory::name_fundamental_reasons is used in <a href="#SP5">&#167;5</a>.</p>
 
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23.  </b>And here is the (very simple) implementation.
 </p>
@@ -780,22 +766,18 @@ we need to use the equivalent of traditional <code class="display"><span class="
 <pre class="display">
     <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">memory_needs</span><span class="plain">[</span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">];</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::reason_name</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">reason</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::reason_name<button class="popup" onclick="togglePopup('usagePopup51')">...<span class="popuptext" id="usagePopup51">Usage of <b>Memory::reason_name</b>:<br><a href="#SP22">&#167;22</a></span></button></span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">reason</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">r</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">r</span><span class="plain"> &gt;= </span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"MR out of range"</span><span class="plain">);</span>
         <span class="identifier">memory_needs</span><span class="plain">[</span><span class="identifier">r</span><span class="plain">] = </span><span class="identifier">reason</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Memory::description_of_reason</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">) {</span>
+    <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Memory::description_of_reason<button class="popup" onclick="togglePopup('usagePopup52')">...<span class="popuptext" id="usagePopup52">Usage of <b>Memory::description_of_reason</b>:<br><a href="#SP26_1">&#167;26.1</a>, <a href="#SP31">&#167;31</a></span></button></span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">r</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">r</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">r</span><span class="plain"> &gt;= </span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"MR out of range"</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">memory_needs</span><span class="plain">[</span><span class="identifier">r</span><span class="plain">];</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Memory::reason_name is used in <a href="#SP22">&#167;22</a>.</p>
-
-<p class="endnote">The function Memory::description_of_reason is used in <a href="#SP26_1">&#167;26.1</a>, <a href="#SP31">&#167;31</a>.</p>
 
 <p class="inwebparagraph"><a id="SP24"></a><b>&#167;24.  </b>We keep some statistics on this. The value for "memory claimed" is the
 net amount of memory currently owned, which is increased when we allocate
@@ -822,25 +804,21 @@ values of these functions are always non-<code class="display"><span class="extr
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::I7_calloc</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">how_many</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Memory::I7_alloc</span><span class="plain">(</span><span class="identifier">how_many</span><span class="plain">, </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="identifier">reason</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::I7_calloc<button class="popup" onclick="togglePopup('usagePopup53')">...<span class="popuptext" id="usagePopup53">Usage of <b>Memory::I7_calloc</b>:<br>Streams - <a href="2-str.html#SP26">&#167;26</a><br>Dictionaries - <a href="2-dct.html#SP2">&#167;2</a><br>Command Line Arguments - <a href="3-cla.html#SP14">&#167;14</a></span></button></span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">how_many</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext"><a href="#SP26">Memory::I7_alloc</a></span><span class="identifier">how_many</span><span class="plain">, </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="identifier">reason</span><span class="plain">);</span>
     <span class="plain">}</span>
-    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::I7_malloc</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Memory::I7_alloc</span><span class="plain">(-1, </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="identifier">reason</span><span class="plain">);</span>
+    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::I7_malloc<button class="popup" onclick="togglePopup('usagePopup54')">...<span class="popuptext" id="usagePopup54">Usage of <b>Memory::I7_malloc</b>:<br><a href="#SP29">&#167;29</a>, Streams - <a href="2-str.html#SP35_3">&#167;35.3</a></span></button></span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">reason</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext"><a href="#SP26">Memory::I7_alloc</a></span><span class="plain">-1, </span><span class="identifier">size_in_bytes</span><span class="plain">, </span><span class="identifier">reason</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Memory::I7_calloc is used in 2/str (<a href="2-str.html#SP26">&#167;26</a>), 2/dct (<a href="2-dct.html#SP2">&#167;2</a>), 3/cla (<a href="3-cla.html#SP14">&#167;14</a>).</p>
-
-<p class="endnote">The function Memory::I7_malloc is used in <a href="#SP29">&#167;29</a>, 2/str (<a href="2-str.html#SP35_3">&#167;35.3</a>).</p>
-
 <p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b>And this, then, is the joint routine implementing both.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::I7_alloc</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::I7_alloc<button class="popup" onclick="togglePopup('usagePopup55')">...<span class="popuptext" id="usagePopup55">Usage of <b>Memory::I7_alloc</b>:<br><a href="#SP25">&#167;25</a></span></button></span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">) {</span>
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">pointer</span><span class="plain">;</span>
@@ -856,8 +834,6 @@ values of these functions are always non-<code class="display"><span class="extr
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Memory::I7_alloc is used in <a href="#SP25">&#167;25</a>.</p>
-
 <p class="inwebparagraph"><a id="SP26_1"></a><b>&#167;26.1.  </b>I am nervous about assuming that <code class="display"><span class="extract">calloc(0, X)</span></code> returns a non-<code class="display"><span class="extract">NULL</span></code> pointer
 in all implementations of the standard C library, so the case when <code class="display"><span class="extract">N</span></code> is zero
 allocates a tiny but positive amount of memory, just to be safe.
@@ -871,14 +847,14 @@ allocates a tiny but positive amount of memory, just to be safe.
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">N</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
-            <span class="identifier">pointer</span><span class="plain"> = </span><span class="functiontext">Memory::paranoid_calloc</span><span class="plain">((</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">N</span><span class="plain">, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">S</span><span class="plain">);</span>
+            <span class="identifier">pointer</span><span class="plain"> = </span><span class="functiontext"><a href="#SP35">Memory::paranoid_calloc</a></span><span class="plain">(</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">N</span><span class="plain">, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="identifier">bytes_needed</span><span class="plain"> = </span><span class="identifier">N</span><span class="plain">*</span><span class="identifier">S</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">pointer</span><span class="plain"> = </span><span class="functiontext">Memory::paranoid_calloc</span><span class="plain">(1, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">S</span><span class="plain">);</span>
+            <span class="identifier">pointer</span><span class="plain"> = </span><span class="functiontext"><a href="#SP35">Memory::paranoid_calloc</a></span><span class="plain">1, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">S</span><span class="plain">);</span>
             <span class="identifier">bytes_needed</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pointer</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-            <span class="functiontext">Errors::fatal_with_C_string</span><span class="plain">(</span><span class="string">"Out of memory for %s"</span><span class="plain">, </span><span class="functiontext">Memory::description_of_reason</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">));</span>
+            <span class="functiontext"><a href="3-em.html#SP2">Errors::fatal_with_C_string</a></span><span class="string">"Out of memory for %s"</span><span class="plain">, </span><span class="functiontext"><a href="#SP23">Memory::description_of_reason</a></span><span class="identifier">R</span><span class="plain">));</span>
         <span class="plain">}</span>
 </pre>
 
@@ -931,7 +907,7 @@ rarely and to allocate large blocks of memory.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::I7_free</span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">pointer</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">bytes_freed</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::I7_free<button class="popup" onclick="togglePopup('usagePopup56')">...<span class="popuptext" id="usagePopup56">Usage of <b>Memory::I7_free</b>:<br><a href="#SP30">&#167;30</a>, Streams - <a href="2-str.html#SP34_2">&#167;34.2</a><br>Dictionaries - <a href="2-dct.html#SP7_2">&#167;7.2</a>, <a href="2-dct.html#SP11">&#167;11</a><br>Command Line Arguments - <a href="3-cla.html#SP14">&#167;14</a></span></button></span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">pointer</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">bytes_freed</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">R</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">R</span><span class="plain"> &gt;= </span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no such memory reason"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pointer</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"can't free NULL memory"</span><span class="plain">);</span>
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
@@ -941,16 +917,12 @@ rarely and to allocate large blocks of memory.
         <span class="identifier">UNLOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::I7_array_free</span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">pointer</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">num_cells</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">cell_size</span><span class="plain">) {</span>
-        <span class="functiontext">Memory::I7_free</span><span class="plain">(</span><span class="identifier">pointer</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">num_cells</span><span class="plain">*((</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">cell_size</span><span class="plain">));</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::I7_array_free<button class="popup" onclick="togglePopup('usagePopup57')">...<span class="popuptext" id="usagePopup57">Usage of <b>Memory::I7_array_free</b>:<br>none</span></button></span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">pointer</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">num_cells</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">cell_size</span><span class="plain">) {</span>
+        <span class="functiontext"><a href="#SP27">Memory::I7_free</a></span><span class="identifier">pointer</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">num_cells</span><span class="plain">*((</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">cell_size</span><span class="plain">));</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Memory::I7_free is used in <a href="#SP30">&#167;30</a>, 2/str (<a href="2-str.html#SP34_2">&#167;34.2</a>), 2/dct (<a href="2-dct.html#SP7_2">&#167;7.2</a>, <a href="2-dct.html#SP11">&#167;11</a>), 3/cla (<a href="3-cla.html#SP14">&#167;14</a>).</p>
-
-<p class="endnote">The function Memory::I7_array_free appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP28"></a><b>&#167;28. Text storage. </b>We will also use much simpler memory areas for text, in 64K chunks:
 </p>
@@ -980,14 +952,14 @@ to write to the result.
 </p>
 
 <pre class="display">
-    <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Memory::new_string</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
+    <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Memory::new_string<button class="popup" onclick="togglePopup('usagePopup58')">...<span class="popuptext" id="usagePopup58">Usage of <b>Memory::new_string</b>:<br>none</span></button></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">) {</span>
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">length_needed</span><span class="plain"> = (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) + </span><span class="constant">1</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (!((</span><span class="identifier">current_ssa</span><span class="plain">) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="element">first_free_byte</span><span class="plain"> + </span><span class="identifier">length_needed</span><span class="plain"> &lt; </span><span class="constant">SSA_CAPACITY</span><span class="plain">))) {</span>
             <span class="identifier">current_ssa</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">string_storage_area</span><span class="plain">);</span>
-            <span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="element">storage_at</span><span class="plain"> = </span><span class="functiontext">Memory::I7_malloc</span><span class="plain">(</span><span class="constant">SSA_CAPACITY</span><span class="plain">, </span><span class="constant">STRING_STORAGE_MREASON</span><span class="plain">);</span>
+            <span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="element">storage_at</span><span class="plain"> = </span><span class="functiontext"><a href="#SP25">Memory::I7_malloc</a></span><span class="constant">SSA_CAPACITY</span><span class="plain">, </span><span class="constant">STRING_STORAGE_MREASON</span><span class="plain">);</span>
             <span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="element">first_free_byte</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">rp</span><span class="plain"> = </span><span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="element">storage_at</span><span class="plain"> + </span><span class="identifier">current_ssa</span><span class="plain">-&gt;</span><span class="element">first_free_byte</span><span class="plain">;</span>
@@ -1000,37 +972,33 @@ to write to the result.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Memory::new_string appears nowhere else.</p>
-
 <p class="inwebparagraph"><a id="SP30"></a><b>&#167;30.  </b>And here we free any SSAs needed in the course of the run.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::free_ssas</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::free_ssas<button class="popup" onclick="togglePopup('usagePopup59')">...<span class="popuptext" id="usagePopup59">Usage of <b>Memory::free_ssas</b>:<br><a href="#SP12">&#167;12</a></span></button></span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">string_storage_area</span><span class="plain"> *</span><span class="identifier">ssa</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">ssa</span><span class="plain">, </span><span class="reserved">string_storage_area</span><span class="plain">)</span>
-            <span class="functiontext">Memory::I7_free</span><span class="plain">(</span><span class="identifier">ssa</span><span class="plain">-&gt;</span><span class="element">storage_at</span><span class="plain">, </span><span class="constant">STRING_STORAGE_MREASON</span><span class="plain">, </span><span class="constant">SSA_CAPACITY</span><span class="plain">);</span>
+            <span class="functiontext"><a href="#SP27">Memory::I7_free</a></span><span class="identifier">ssa</span><span class="plain">-&gt;</span><span class="element">storage_at</span><span class="plain">, </span><span class="constant">STRING_STORAGE_MREASON</span><span class="plain">, </span><span class="constant">SSA_CAPACITY</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Memory::free_ssas is used in <a href="#SP12">&#167;12</a>.</p>
 
 <p class="inwebparagraph"><a id="SP31"></a><b>&#167;31.  </b>And the following provides statistics, and a mini-report, for the memory
 report in the debugging log (for which, see below).
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Memory::log_usage</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Memory::log_usage<button class="popup" onclick="togglePopup('usagePopup60')">...<span class="popuptext" id="usagePopup60">Usage of <b>Memory::log_usage</b>:<br><a href="#SP32">&#167;32</a>, <a href="#SP32_3">&#167;32.3</a></span></button></span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">total_claimed_simply</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">t</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_MREASON_VALUES</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
             <span class="identifier">t</span><span class="plain"> += </span><span class="identifier">max_memory_at_once_for_each_need</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">total</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"0.%03d: %s - %d bytes in %d claim(s)\n"</span><span class="plain">,</span>
-                    <span class="functiontext">Memory::proportion</span><span class="plain">(</span><span class="identifier">max_memory_at_once_for_each_need</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">total</span><span class="plain">),</span>
-                    <span class="functiontext">Memory::description_of_reason</span><span class="plain">(</span><span class="identifier">i</span><span class="plain">),</span>
+                    <span class="functiontext"><a href="#SP34">Memory::proportion</a></span><span class="identifier">max_memory_at_once_for_each_need</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">], </span><span class="identifier">total</span><span class="plain">),</span>
+                    <span class="functiontext"><a href="#SP23">Memory::description_of_reason</a></span><span class="identifier">i</span><span class="plain">),</span>
                     <span class="identifier">max_memory_at_once_for_each_need</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">],</span>
                     <span class="identifier">number_of_claims_for_each_need</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
         <span class="plain">}</span>
@@ -1040,15 +1008,13 @@ report in the debugging log (for which, see below).
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Memory::log_usage is used in <a href="#SP32">&#167;32</a>, <a href="#SP32_3">&#167;32.3</a>.</p>
-
 <p class="inwebparagraph"><a id="SP32"></a><b>&#167;32. Memory usage report. </b>A small utility routine to help keep track of our unquestioned profligacy.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::log_statistics</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Memory::log_statistics<button class="popup" onclick="togglePopup('usagePopup61')">...<span class="popuptext" id="usagePopup61">Usage of <b>Memory::log_statistics</b>:<br>Foundation Module - <a href="1-fm.html#SP9">&#167;9</a></span></button></span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_for_objects</span><span class="plain"> = </span><span class="constant">MEMORY_GRANULARITY</span><span class="plain">*</span><span class="identifier">no_blocks_allocated</span><span class="plain">; </span><span class="comment"> usage in bytes</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_for_SMAs</span><span class="plain"> = </span><span class="functiontext">Memory::log_usage</span><span class="plain">(0); </span><span class="comment"> usage in bytes</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total_for_SMAs</span><span class="plain"> = </span><span class="functiontext"><a href="#SP31">Memory::log_usage</a></span><span class="plain">0); </span><span class="comment"> usage in bytes</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">sorted_usage</span><span class="plain">[</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">]; </span><span class="comment"> memory type numbers, in usage order</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain"> = (</span><span class="identifier">total_for_objects</span><span class="plain"> + </span><span class="identifier">total_for_SMAs</span><span class="plain">)/1024; </span><span class="comment"> total memory usage in KB</span>
 
@@ -1063,8 +1029,6 @@ report in the debugging log (for which, see below).
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Memory::log_statistics is used in 1/fm (<a href="1-fm.html#SP9">&#167;9</a>).</p>
 
 <p class="inwebparagraph"><a id="SP32_1"></a><b>&#167;32.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Calculate the memory usage for objects</span> <span class="cwebmacronumber">32.1</span>&gt; =
@@ -1103,7 +1067,7 @@ order of total number of bytes allocated.
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) </span><span class="identifier">sorted_usage</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">] = </span><span class="identifier">i</span><span class="plain">;</span>
-        <span class="identifier">qsort</span><span class="plain">(</span><span class="identifier">sorted_usage</span><span class="plain">, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="reserved">int</span><span class="plain">), </span><span class="functiontext">Memory::compare_usage</span><span class="plain">);</span>
+        <span class="identifier">qsort</span><span class="plain">(</span><span class="identifier">sorted_usage</span><span class="plain">, (</span><span class="identifier">size_t</span><span class="plain">) </span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">, </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="reserved">int</span><span class="plain">), </span><span class="functiontext"><a href="#SP33">Memory::compare_usage</a></span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1125,16 +1089,16 @@ order of total number of bytes allocated.
             <span class="identifier">total</span><span class="plain">, (</span><span class="identifier">total</span><span class="plain">+512)/1024);</span>
 
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"0.%03d: %d objects in %d frames in %d memory blocks (of %dK each):\n"</span><span class="plain">,</span>
-            <span class="functiontext">Memory::proportion</span><span class="plain">(</span><span class="identifier">total_for_objects</span><span class="plain">, </span><span class="identifier">total</span><span class="plain">),</span>
+            <span class="functiontext"><a href="#SP34">Memory::proportion</a></span><span class="identifier">total_for_objects</span><span class="plain">, </span><span class="identifier">total</span><span class="plain">),</span>
             <span class="identifier">total_objects</span><span class="plain">, </span><span class="identifier">total_objects_allocated</span><span class="plain">, </span><span class="identifier">no_blocks_allocated</span><span class="plain">, </span><span class="constant">MEMORY_GRANULARITY</span><span class="plain">/1024);</span>
         <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"    0.%03d: memory manager overhead - %d bytes\n"</span><span class="plain">,</span>
-            <span class="functiontext">Memory::proportion</span><span class="plain">(</span><span class="identifier">overhead_for_objects</span><span class="plain">, </span><span class="identifier">total</span><span class="plain">), </span><span class="identifier">overhead_for_objects</span><span class="plain">);</span>
+            <span class="functiontext"><a href="#SP34">Memory::proportion</a></span><span class="identifier">overhead_for_objects</span><span class="plain">, </span><span class="identifier">total</span><span class="plain">), </span><span class="identifier">overhead_for_objects</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain">=0; </span><span class="identifier">j</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_MT_VALUES</span><span class="plain">; </span><span class="identifier">j</span><span class="plain">++) {</span>
             <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">sorted_usage</span><span class="plain">[</span><span class="identifier">j</span><span class="plain">];</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">objects_allocated</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) {</span>
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"    0.%03d: %s  -  "</span><span class="plain">,</span>
-                    <span class="functiontext">Memory::proportion</span><span class="plain">(</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">bytes_allocated</span><span class="plain">, </span><span class="identifier">total</span><span class="plain">),</span>
+                    <span class="functiontext"><a href="#SP34">Memory::proportion</a></span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">bytes_allocated</span><span class="plain">, </span><span class="identifier">total</span><span class="plain">),</span>
                     <span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">name_of_type</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">no_allocated_together</span><span class="plain"> == </span><span class="constant">1</span><span class="plain">) {</span>
                     <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"%d "</span><span class="plain">, </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">objects_count</span><span class="plain">);</span>
@@ -1147,7 +1111,7 @@ order of total number of bytes allocated.
                 <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"objects, %d bytes\n"</span><span class="plain">, </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">].</span><span class="element">bytes_allocated</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
-        <span class="functiontext">Memory::log_usage</span><span class="plain">(</span><span class="identifier">total</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP31">Memory::log_usage</a></span><span class="identifier">total</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -1157,7 +1121,7 @@ order of total number of bytes allocated.
 <p class="inwebparagraph"><a id="SP33"></a><b>&#167;33.  </b></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Memory::compare_usage</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ent1</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ent2</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Memory::compare_usage<button class="popup" onclick="togglePopup('usagePopup62')">...<span class="popuptext" id="usagePopup62">Usage of <b>Memory::compare_usage</b>:<br><a href="#SP32_2">&#167;32.2</a></span></button></span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ent1</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">ent2</span><span class="plain">) {</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ix1</span><span class="plain"> = *((</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *) </span><span class="identifier">ent1</span><span class="plain">);</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ix2</span><span class="plain"> = *((</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *) </span><span class="identifier">ent2</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">ix2</span><span class="plain">].</span><span class="element">bytes_allocated</span><span class="plain"> - </span><span class="identifier">alloc_status</span><span class="plain">[</span><span class="identifier">ix1</span><span class="plain">].</span><span class="element">bytes_allocated</span><span class="plain">;</span>
@@ -1166,14 +1130,12 @@ order of total number of bytes allocated.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Memory::compare_usage is used in <a href="#SP32_2">&#167;32.2</a>.</p>
-
 <p class="inwebparagraph"><a id="SP34"></a><b>&#167;34.  </b>Finally, a little routine to compute the proportions of memory for each
 usage. Recall that <code class="display"><span class="extract">bytes</span></code> is measured in bytes, but <code class="display"><span class="extract">total</span></code> in kilobytes.
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Memory::proportion</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">bytes</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Memory::proportion<button class="popup" onclick="togglePopup('usagePopup63')">...<span class="popuptext" id="usagePopup63">Usage of <b>Memory::proportion</b>:<br><a href="#SP31">&#167;31</a>, <a href="#SP32_3">&#167;32.3</a></span></button></span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">bytes</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">total</span><span class="plain">) {</span>
         <span class="reserved">float</span><span class="plain"> </span><span class="identifier">B</span><span class="plain"> = (</span><span class="reserved">float</span><span class="plain">) </span><span class="identifier">bytes</span><span class="plain">, </span><span class="identifier">T</span><span class="plain"> = (</span><span class="reserved">float</span><span class="plain">) </span><span class="identifier">total</span><span class="plain">;</span>
         <span class="reserved">float</span><span class="plain"> </span><span class="identifier">P</span><span class="plain"> = (1000*</span><span class="identifier">B</span><span class="plain">)/(1024*</span><span class="identifier">T</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">P</span><span class="plain">;</span>
@@ -1182,12 +1144,10 @@ usage. Recall that <code class="display"><span class="extract">bytes</span></cod
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Memory::proportion is used in <a href="#SP31">&#167;31</a>, <a href="#SP32_3">&#167;32.3</a>.</p>
-
 <p class="inwebparagraph"><a id="SP35"></a><b>&#167;35.  </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::paranoid_calloc</span><span class="plain">(</span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Memory::paranoid_calloc<button class="popup" onclick="togglePopup('usagePopup64')">...<span class="popuptext" id="usagePopup64">Usage of <b>Memory::paranoid_calloc</b>:<br><a href="#SP11_1">&#167;11.1</a>, <a href="#SP26_1">&#167;26.1</a></span></button></span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">) {</span>
         <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">mutex</span><span class="plain">);</span>
         <span class="reserved">void</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="identifier">calloc</span><span class="plain">(</span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
@@ -1197,8 +1157,6 @@ usage. Recall that <code class="display"><span class="extract">bytes</span></cod
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Memory::paranoid_calloc is used in <a href="#SP11_1">&#167;11.1</a>, <a href="#SP26_1">&#167;26.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP36"></a><b>&#167;36. Run-time pointer type checking. </b>In several places Inform needs to store pointers of type <code class="display"><span class="extract">void *</span></code>, that is,
 pointers which have no indication of what type of data they point to.
@@ -1223,8 +1181,8 @@ structure.
 </li></ul>
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">NULL_GENERAL_POINTER</span><span class="plain"> (</span><span class="functiontext">Memory::store_gp_null</span><span class="plain">())</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">GENERAL_POINTER_IS_NULL</span><span class="plain">(</span><span class="identifier">gp</span><span class="plain">) (</span><span class="functiontext">Memory::test_gp_null</span><span class="plain">(</span><span class="identifier">gp</span><span class="plain">))</span>
+    <span class="definitionkeyword">define</span> <span class="constant">NULL_GENERAL_POINTER</span><span class="plain"> (</span><span class="functiontext"><a href="#SP36">Memory::store_gp_null</a></span><span class="plain">))</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">GENERAL_POINTER_IS_NULL</span><span class="plain">(</span><span class="identifier">gp</span><span class="plain">) (</span><span class="functiontext"><a href="#SP36">Memory::test_gp_null</a></span><span class="identifier">gp</span><span class="plain">))</span>
 </pre>
 
 <pre class="display">
@@ -1233,23 +1191,19 @@ structure.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">run_time_type_code</span><span class="plain">;</span>
     <span class="plain">} </span><span class="reserved">general_pointer</span><span class="plain">;</span>
 
-    <span class="reserved">general_pointer</span><span class="plain"> </span><span class="functiontext">Memory::store_gp_null</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">general_pointer</span><span class="plain"> </span><span class="functiontext">Memory::store_gp_null<button class="popup" onclick="togglePopup('usagePopup65')">...<span class="popuptext" id="usagePopup65">Usage of <b>Memory::store_gp_null</b>:<br>none</span></button></span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">;</span>
         <span class="identifier">gp</span><span class="plain">.</span><span class="element">pointer_to_data</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">gp</span><span class="plain">.</span><span class="element">run_time_type_code</span><span class="plain"> = -1; </span><span class="comment"> guaranteed to differ from all <code class="display"><span class="extract">_MT</span></code> values</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">;</span>
     <span class="plain">}</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Memory::test_gp_null</span><span class="plain">(</span><span class="reserved">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Memory::test_gp_null<button class="popup" onclick="togglePopup('usagePopup66')">...<span class="popuptext" id="usagePopup66">Usage of <b>Memory::test_gp_null</b>:<br>none</span></button></span><span class="reserved">general_pointer</span><span class="plain"> </span><span class="identifier">gp</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">gp</span><span class="plain">.</span><span class="element">run_time_type_code</span><span class="plain"> == -1) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Memory::store_gp_null appears nowhere else.</p>
-
-<p class="endnote">The function Memory::test_gp_null appears nowhere else.</p>
 
 <p class="endnote">The structure general_pointer is private to this section.</p>
 
@@ -1314,6 +1268,14 @@ allocated objects above; so that leaves only humble <code class="display"><span 
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-dl.html">Back to 'Debugging Log'</a></li><li><a href="2-str.html">Continue with 'Streams'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 MathJax = {
   tex: {

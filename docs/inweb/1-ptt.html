@@ -41,6 +41,7 @@ to such a name, and to read it in. This structure holds the result:
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">based_on</span><span class="plain">; </span><span class="comment"> inherit from which other pattern?</span>
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">weave_format</span><span class="plain"> *</span><span class="identifier">pattern_format</span><span class="plain">; </span><span class="comment"> such as <code class="display"><span class="extract">DVI</span></code>: the desired final format</span>
+        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">plugins</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">weave_plugin</span></code>: any extras needed</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">payloads</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">text_stream</span></code>: leafnames of associated files</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">up_payloads</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">text_stream</span></code>: leafnames of associated files</span>
 
@@ -67,7 +68,7 @@ to such a name, and to read it in. This structure holds the result:
 </p>
 
 <pre class="display">
-    <span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="functiontext">Patterns::find</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
+    <span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="functiontext">Patterns::find<button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Patterns::find</b>:<br><a href="#SP3_1">&#167;3.1</a>, Program Control - <a href="1-pc.html#SP7_4_3">&#167;7.4.3</a></span></button></span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">pattern_file</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">wp</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">weave_pattern</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Initialise the pattern structure</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
@@ -79,16 +80,15 @@ to such a name, and to read it in. This structure holds the result:
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Patterns::find is used in <a href="#SP3_1">&#167;3.1</a>, 1/pc (<a href="1-pc.html#SP7_4_3">&#167;7.4.3</a>).</p>
-
 <p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Initialise the pattern structure</span> <span class="cwebmacronumber">2.1</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pattern_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pattern_name</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pattern_location</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">plugins</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">weave_plugin</span><span class="plain">);</span>
         <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">payloads</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain">);</span>
         <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">up_payloads</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain">);</span>
         <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">based_on</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -97,10 +97,10 @@ to such a name, and to read it in. This structure holds the result:
         <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">patterned_for</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">;</span>
         <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">show_abbrevs</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">number_sections</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">default_range</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"0"</span><span class="plain">);</span>
-        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">tex_command</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"tex"</span><span class="plain">);</span>
-        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pdftex_command</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"pdftex"</span><span class="plain">);</span>
-        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">open_command</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"open"</span><span class="plain">);</span>
+        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">default_range</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">I</span><span class="string">"0"</span><span class="plain">);</span>
+        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">tex_command</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">I</span><span class="string">"tex"</span><span class="plain">);</span>
+        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pdftex_command</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">I</span><span class="string">"pdftex"</span><span class="plain">);</span>
+        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">open_command</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">I</span><span class="string">"open"</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -114,15 +114,15 @@ to such a name, and to read it in. This structure holds the result:
 
 <pre class="displaydefn">
         <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pattern_location</span><span class="plain"> =</span>
-            <span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span>
-                <span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Patterns"</span><span class="plain">),</span>
+            <span class="functiontext"><a href="3-pth.html#SP4">Pathnames::subfolder</a></span>
+                <span class="functiontext"><a href="3-pth.html#SP4">Pathnames::subfolder</a></span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Patterns"</span><span class="plain">),</span>
                 <span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">pattern_file</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pattern_location</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"pattern.txt"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">pattern_file</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pattern_location</span><span class="plain"> = </span><span class="functiontext">Pathnames::subfolder</span><span class="plain">(</span><span class="identifier">path_to_inweb_patterns</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
-            <span class="identifier">pattern_file</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pattern_location</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"pattern.txt"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">pattern_file</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
-                <span class="functiontext">Errors::fatal_with_text</span><span class="plain">(</span><span class="string">"no such weave pattern as '%S'"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">pattern_file</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP2">Filenames::in_folder</a></span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pattern_location</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"pattern.txt"</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-tf.html#SP1">TextFiles::exists</a></span><span class="identifier">pattern_file</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) {</span>
+            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pattern_location</span><span class="plain"> = </span><span class="functiontext"><a href="3-pth.html#SP4">Pathnames::subfolder</a></span><span class="identifier">path_to_inweb_patterns</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+            <span class="identifier">pattern_file</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP2">Filenames::in_folder</a></span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pattern_location</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"pattern.txt"</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-tf.html#SP1">TextFiles::exists</a></span><span class="identifier">pattern_file</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
+                <span class="functiontext"><a href="3-em.html#SP2">Errors::fatal_with_text</a></span><span class="string">"no such weave pattern as '%S'"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
         <span class="plain">}</span>
 </pre>
 
@@ -137,10 +137,10 @@ to such a name, and to read it in. This structure holds the result:
 
 <pre class="displaydefn">
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pattern_file</span><span class="plain">)</span>
-            <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">pattern_file</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open pattern.txt file"</span><span class="plain">,</span>
-                <span class="constant">TRUE</span><span class="plain">, </span><span class="functiontext">Patterns::scan_pattern_line</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">wp</span><span class="plain">);</span>
+            <span class="functiontext"><a href="4-tf.html#SP5">TextFiles::read</a></span><span class="identifier">pattern_file</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open pattern.txt file"</span><span class="plain">,</span>
+                <span class="constant">TRUE</span><span class="plain">, </span><span class="functiontext"><a href="#SP3">Patterns::scan_pattern_line</a></span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">wp</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pattern_format</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            <span class="functiontext">Errors::fatal_with_text</span><span class="plain">(</span><span class="string">"pattern did not specify a format"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
+            <span class="functiontext"><a href="3-em.html#SP2">Errors::fatal_with_text</a></span><span class="string">"pattern did not specify a format"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -153,24 +153,23 @@ following routine:
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Patterns::scan_pattern_line</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Patterns::scan_pattern_line<button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>Patterns::scan_pattern_line</b>:<br><a href="#SP2_3">&#167;2.3</a></span></button></span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">) {</span>
         <span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">wp</span><span class="plain"> = (</span><span class="reserved">weave_pattern</span><span class="plain"> *) </span><span class="identifier">X</span><span class="plain">;</span>
-        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *from (%c+)"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">This is a from command</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *(%c+?) = (%c+)"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">This is an X = Y command</span> <span class="cwebmacronumber">3.2</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *embed css *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">This is an embed CSS command</span> <span class="cwebmacronumber">3.3</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *hierarchical *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">This is a hierarchical command</span> <span class="cwebmacronumber">3.4</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *use (%c+)"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">This is a use command</span> <span class="cwebmacronumber">3.5</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *use-up (%c+)"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">This is a use-up command</span> <span class="cwebmacronumber">3.6</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *%C%c*"</span><span class="plain">))</span>
-            <span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"unrecognised pattern command"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
-        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext"><a href="4-pm.html#SP9">Regexp::create_mr</a></span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *from (%c+)"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">This is a from command</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *(%c+?) = (%c+)"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">This is an X = Y command</span> <span class="cwebmacronumber">3.2</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *embed css *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">This is an embed CSS command</span> <span class="cwebmacronumber">3.3</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *hierarchical *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">This is a hierarchical command</span> <span class="cwebmacronumber">3.4</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *plugin (%c+)"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">This is a plugin command</span> <span class="cwebmacronumber">3.5</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *use (%c+)"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">This is a use command</span> <span class="cwebmacronumber">3.6</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *use-up (%c+)"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">This is a use-up command</span> <span class="cwebmacronumber">3.7</span>&gt;<span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *%C%c*"</span><span class="plain">))</span>
+            <span class="functiontext"><a href="3-em.html#SP5">Errors::in_text_file</a></span><span class="string">"unrecognised pattern command"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
+        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Patterns::scan_pattern_line is used in <a href="#SP2_3">&#167;2.3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">This is a from command</span> <span class="cwebmacronumber">3.1</span>&gt; =
@@ -178,8 +177,8 @@ following routine:
 
 
 <pre class="displaydefn">
-        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">based_on</span><span class="plain"> = </span><span class="functiontext">Patterns::find</span><span class="plain">(</span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">patterned_for</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
-        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">based_on</span><span class="plain"> = </span><span class="functiontext"><a href="#SP2">Patterns::find</a></span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">patterned_for</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
@@ -193,28 +192,28 @@ following routine:
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"format"</span><span class="plain">)) {</span>
-            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pattern_format</span><span class="plain"> = </span><span class="functiontext">Formats::find_by_name</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"abbrevs"</span><span class="plain">)) {</span>
-            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">show_abbrevs</span><span class="plain"> = </span><span class="functiontext">Patterns::yes_or_no</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1], </span><span class="identifier">tfp</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"numbered"</span><span class="plain">)) {</span>
-            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">number_sections</span><span class="plain"> = </span><span class="functiontext">Patterns::yes_or_no</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1], </span><span class="identifier">tfp</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"default-range"</span><span class="plain">)) {</span>
-            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">default_range</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"tex-command"</span><span class="plain">)) {</span>
-            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">tex_command</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"pdftex-command"</span><span class="plain">)) {</span>
-            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pdftex_command</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"open-command"</span><span class="plain">)) {</span>
-            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">open_command</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Bibliographic::data_exists</span><span class="plain">(</span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">patterned_for</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0])) ||</span>
-            <span class="plain">(</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"Booklet Title"</span><span class="plain">))) {</span>
-            <span class="functiontext">Bibliographic::set_datum</span><span class="plain">(</span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">patterned_for</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"format"</span><span class="plain">)) {</span>
+            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pattern_format</span><span class="plain"> = </span><span class="functiontext"><a href="5-fm.html#SP1">Formats::find_by_name</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"abbrevs"</span><span class="plain">)) {</span>
+            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">show_abbrevs</span><span class="plain"> = </span><span class="functiontext"><a href="#SP4">Patterns::yes_or_no</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1], </span><span class="identifier">tfp</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"numbered"</span><span class="plain">)) {</span>
+            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">number_sections</span><span class="plain"> = </span><span class="functiontext"><a href="#SP4">Patterns::yes_or_no</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1], </span><span class="identifier">tfp</span><span class="plain">);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"default-range"</span><span class="plain">)) {</span>
+            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">default_range</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"tex-command"</span><span class="plain">)) {</span>
+            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">tex_command</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"pdftex-command"</span><span class="plain">)) {</span>
+            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">pdftex_command</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"open-command"</span><span class="plain">)) {</span>
+            <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">open_command</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext"><a href="8-bdfw.html#SP6">Bibliographic::data_exists</a></span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">patterned_for</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0])) ||</span>
+            <span class="plain">(</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">I</span><span class="string">"Booklet Title"</span><span class="plain">))) {</span>
+            <span class="functiontext"><a href="8-bdfw.html#SP7">Bibliographic::set_datum</a></span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">patterned_for</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"Setting: %S\n"</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
-            <span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"no such pattern setting"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
+            <span class="functiontext"><a href="3-em.html#SP5">Errors::in_text_file</a></span><span class="string">"no such pattern setting"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
@@ -229,7 +228,7 @@ following routine:
 
 <pre class="displaydefn">
         <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">embed_CSS</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
@@ -244,7 +243,7 @@ following routine:
 
 <pre class="displaydefn">
         <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">hierarchical</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
@@ -252,21 +251,41 @@ following routine:
 
 <p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_5"></a><b>&#167;3.5.  </b>"Payloads" are associated files such as images which may be needed for an
+<p class="inwebparagraph"><a id="SP3_5"></a><b>&#167;3.5.  </b>"Plugins" here refer to <a href="5-wp.html" class="internal">Weave Plugins</a>.
+</p>
+
+
+<p class="macrodefinition"><code class="display">
+&lt;<span class="cwebmacrodefn">This is a plugin command</span> <span class="cwebmacronumber">3.5</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain">, </span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">plugins</span><span class="plain">);</span>
+        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="reserved">return</span><span class="plain">;</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
+
+<p class="inwebparagraph"><a id="SP3_6"></a><b>&#167;3.6.  </b>"Payloads" are associated files such as images which may be needed for an
 HTML weave to look right. We identify them here only by leafname: their
 actual location will depend on where the pattern directory is.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">This is a use command</span> <span class="cwebmacronumber">3.5</span>&gt; =
+&lt;<span class="cwebmacrodefn">This is a use command</span> <span class="cwebmacronumber">3.6</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
         <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain">, </span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">payloads</span><span class="plain">);</span>
-        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
@@ -274,15 +293,15 @@ actual location will depend on where the pattern directory is.
 
 <p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
 
-<p class="inwebparagraph"><a id="SP3_6"></a><b>&#167;3.6.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">This is a use-up command</span> <span class="cwebmacronumber">3.6</span>&gt; =
+<p class="inwebparagraph"><a id="SP3_7"></a><b>&#167;3.7.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">This is a use-up command</span> <span class="cwebmacronumber">3.7</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
         <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain">, </span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">up_payloads</span><span class="plain">);</span>
-        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
@@ -293,17 +312,15 @@ actual location will depend on where the pattern directory is.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Patterns::yes_or_no</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"yes"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"no"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"setting must be 'yes' or 'no'"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Patterns::yes_or_no<button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>Patterns::yes_or_no</b>:<br><a href="#SP3_2">&#167;3.2</a></span></button></span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="identifier">arg</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"yes"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="identifier">arg</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"no"</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+        <span class="functiontext"><a href="3-em.html#SP5">Errors::in_text_file</a></span><span class="string">"setting must be 'yes' or 'no'"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Patterns::yes_or_no is used in <a href="#SP3_2">&#167;3.2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Obtaining files. </b>Patterns provide not merely some configuration settings (above): they also
 provide template or style files of various kinds. When Inweb wants to find
@@ -317,78 +334,78 @@ from each other then this routine will lock up into an infinite loop.
 </p>
 
 <pre class="display">
-    <span class="reserved">filename</span><span class="plain"> *</span><span class="functiontext">Patterns::obtain_filename</span><span class="plain">(</span><span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">pattern</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::prefix_eq</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"../"</span><span class="plain">, </span><span class="constant">3</span><span class="plain">)) {</span>
-            <span class="functiontext">Str::delete_first_character</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
-            <span class="functiontext">Str::delete_first_character</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
-            <span class="functiontext">Str::delete_first_character</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">);</span>
+    <span class="reserved">filename</span><span class="plain"> *</span><span class="functiontext">Patterns::obtain_filename<button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>Patterns::obtain_filename</b>:<br><a href="#SP6">&#167;6</a>, The Swarm - <a href="3-ts.html#SP4">&#167;4</a><br>The Indexer - <a href="3-ti.html#SP1">&#167;1</a>, <a href="3-ti.html#SP2">&#167;2</a>, <a href="3-ti.html#SP2_1_3">&#167;2.1.3</a>, <a href="3-ti.html#SP5_1">&#167;5.1</a><br>TeX Format - <a href="5-tf.html#SP3_1">&#167;3.1</a><br>HTML Formats - <a href="5-hf.html#SP6">&#167;6</a>, <a href="5-hf.html#SP9">&#167;9</a>, <a href="5-hf.html#SP32">&#167;32</a></span></button></span><span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">pattern</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP20">Str::prefix_eq</a></span><span class="identifier">leafname</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"../"</span><span class="plain">, </span><span class="constant">3</span><span class="plain">)) {</span>
+            <span class="functiontext"><a href="4-sm.html#SP24">Str::delete_first_character</a></span><span class="identifier">leafname</span><span class="plain">);</span>
+            <span class="functiontext"><a href="4-sm.html#SP24">Str::delete_first_character</a></span><span class="identifier">leafname</span><span class="plain">);</span>
+            <span class="functiontext"><a href="4-sm.html#SP24">Str::delete_first_character</a></span><span class="identifier">leafname</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="element">pattern_location</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">TextFiles::exists</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="element">based_on</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Patterns::obtain_filename</span><span class="plain">(</span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="element">based_on</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
+        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP2">Filenames::in_folder</a></span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="element">pattern_location</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-tf.html#SP1">TextFiles::exists</a></span><span class="identifier">F</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">;</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="element">based_on</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="functiontext"><a href="#SP5">Patterns::obtain_filename</a></span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="element">based_on</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Patterns::obtain_filename is used in <a href="#SP6">&#167;6</a>, 3/ts (<a href="3-ts.html#SP4">&#167;4</a>), 3/ti (<a href="3-ti.html#SP1">&#167;1</a>, <a href="3-ti.html#SP2">&#167;2</a>, <a href="3-ti.html#SP2_1_3">&#167;2.1.3</a>, <a href="3-ti.html#SP5_1">&#167;5.1</a>), 5/tf (<a href="5-tf.html#SP3_1">&#167;3.1</a>), 5/hf (<a href="5-hf.html#SP6">&#167;6</a>, <a href="5-hf.html#SP9">&#167;9</a>, <a href="5-hf.html#SP32">&#167;32</a>).</p>
-
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>When we eventually want to deal with the <code class="display"><span class="extract">use P</span></code> commands, which call
 for payloads to be copied into weave, we make good use of the above:
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Patterns::copy_payloads_into_weave</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">pattern</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Patterns::copy_payloads_into_weave<button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>Patterns::copy_payloads_into_weave</b>:<br>The Swarm - <a href="3-ts.html#SP4">&#167;4</a></span></button></span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">pattern</span><span class="plain">) {</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="element">payloads</span><span class="plain">) {</span>
-            <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Patterns::obtain_filename</span><span class="plain">(</span><span class="identifier">pattern</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
-            <span class="functiontext">Patterns::copy_file_into_weave</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+            <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext"><a href="#SP5">Patterns::obtain_filename</a></span><span class="identifier">pattern</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
+            <span class="functiontext"><a href="#SP7">Patterns::copy_file_into_weave</a></span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">as_ebook</span><span class="plain">) {</span>
-                <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">rel</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
-                <span class="functiontext">Epub::note_image</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">as_ebook</span><span class="plain">, </span><span class="identifier">rel</span><span class="plain">);</span>
+                <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">rel</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP2">Filenames::in_folder</a></span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
+                <span class="functiontext"><a href="5-ee.html#SP5">Epub::note_image</a></span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">as_ebook</span><span class="plain">, </span><span class="identifier">rel</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="element">up_payloads</span><span class="plain">) {</span>
-            <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Patterns::obtain_filename</span><span class="plain">(</span><span class="identifier">pattern</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
-            <span class="functiontext">Patterns::copy_up_file_into_weave</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+            <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext"><a href="#SP5">Patterns::obtain_filename</a></span><span class="identifier">pattern</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
+            <span class="functiontext"><a href="#SP7">Patterns::copy_up_file_into_weave</a></span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">as_ebook</span><span class="plain">) {</span>
-                <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">rel</span><span class="plain"> = </span><span class="functiontext">Filenames::in_folder</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
-                <span class="functiontext">Epub::note_image</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">as_ebook</span><span class="plain">, </span><span class="identifier">rel</span><span class="plain">);</span>
+                <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">rel</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP2">Filenames::in_folder</a></span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
+                <span class="functiontext"><a href="5-ee.html#SP5">Epub::note_image</a></span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">as_ebook</span><span class="plain">, </span><span class="identifier">rel</span><span class="plain">);</span>
             <span class="plain">}</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Patterns::copy_payloads_into_weave is used in 3/ts (<a href="3-ts.html#SP4">&#167;4</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Patterns::copy_file_into_weave</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Patterns::copy_file_into_weave<button class="popup" onclick="togglePopup('usagePopup14')">...<span class="popuptext" id="usagePopup14">Usage of <b>Patterns::copy_file_into_weave</b>:<br><a href="#SP6">&#167;6</a>, HTML Formats - <a href="5-hf.html#SP6">&#167;6</a>, <a href="5-hf.html#SP9">&#167;9</a>, <a href="5-hf.html#SP19">&#167;19</a><br>Weave Plugins - <a href="5-wp.html#SP3">&#167;3</a></span></button></span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">H</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">redirect_weaves_to</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">H</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">H</span><span class="plain"> = </span><span class="functiontext">Reader::woven_folder</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="functiontext">Shell::copy</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">H</span><span class="plain">, </span><span class="string">""</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">H</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">H</span><span class="plain"> = </span><span class="functiontext"><a href="2-tr.html#SP7">Reader::woven_folder</a></span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-shl.html#SP3">Shell::copy</a></span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">H</span><span class="plain">, </span><span class="string">""</span><span class="plain">);</span>
     <span class="plain">}</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Patterns::copy_up_file_into_weave</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Patterns::copy_up_file_into_weave<button class="popup" onclick="togglePopup('usagePopup15')">...<span class="popuptext" id="usagePopup15">Usage of <b>Patterns::copy_up_file_into_weave</b>:<br><a href="#SP6">&#167;6</a>, HTML Formats - <a href="5-hf.html#SP6">&#167;6</a>, <a href="5-hf.html#SP9">&#167;9</a></span></button></span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
         <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">H</span><span class="plain"> = </span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">redirect_weaves_to</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">H</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">H</span><span class="plain"> = </span><span class="functiontext">Reader::woven_folder</span><span class="plain">(</span><span class="identifier">W</span><span class="plain">);</span>
-        <span class="identifier">H</span><span class="plain"> = </span><span class="functiontext">Pathnames::up</span><span class="plain">(</span><span class="identifier">H</span><span class="plain">);</span>
-        <span class="functiontext">Shell::copy</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">H</span><span class="plain">, </span><span class="string">""</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">H</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">H</span><span class="plain"> = </span><span class="functiontext"><a href="2-tr.html#SP7">Reader::woven_folder</a></span><span class="identifier">W</span><span class="plain">);</span>
+        <span class="identifier">H</span><span class="plain"> = </span><span class="functiontext"><a href="3-pth.html#SP7">Pathnames::up</a></span><span class="identifier">H</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-shl.html#SP3">Shell::copy</a></span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">H</span><span class="plain">, </span><span class="string">""</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Patterns::copy_file_into_weave is used in <a href="#SP6">&#167;6</a>, 5/hf (<a href="5-hf.html#SP6">&#167;6</a>, <a href="5-hf.html#SP9">&#167;9</a>, <a href="5-hf.html#SP19">&#167;19</a>), 5/wp (<a href="5-wp.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Patterns::copy_up_file_into_weave is used in <a href="#SP6">&#167;6</a>, 5/hf (<a href="5-hf.html#SP6">&#167;6</a>, <a href="5-hf.html#SP9">&#167;9</a>).</p>
-
 <hr class="tocbar">
 <ul class="toc"><li><a href="1-cnf.html">Back to 'Configuration'</a></li><li><i>(This section ends Chapter 1: Top Level.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

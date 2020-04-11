@@ -60,7 +60,7 @@ tagged functions attached to it dynamically: those, we'll call "methods".
     <span class="definitionkeyword">define</span> <span class="constant">METHOD_CALLS</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">method_set</span><span class="plain"> *</span><span class="identifier">methods</span><span class="plain">;</span>
     <span class="definitionkeyword">define</span> <span class="identifier">ENABLE_METHOD_CALLS</span><span class="plain">(</span><span class="identifier">obj</span><span class="plain">)</span>
-        <span class="identifier">obj</span><span class="plain">-&gt;</span><span class="identifier">methods</span><span class="plain"> = </span><span class="functiontext">Methods::new_set</span><span class="plain">();</span>
+        <span class="identifier">obj</span><span class="plain">-&gt;</span><span class="identifier">methods</span><span class="plain"> = </span><span class="functiontext"><a href="#SP3">Methods::new_set</a></span><span class="plain">);</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>A "method set" is simply a linked list of methods:
 </p>
@@ -71,7 +71,7 @@ tagged functions attached to it dynamically: those, we'll call "methods".
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">method_set</span><span class="plain">;</span>
 
-    <span class="reserved">method_set</span><span class="plain"> *</span><span class="functiontext">Methods::new_set</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">method_set</span><span class="plain"> *</span><span class="functiontext">Methods::new_set<button class="popup" onclick="togglePopup('usagePopup118')">...<span class="popuptext" id="usagePopup118">Usage of <b>Methods::new_set</b>:<br><a href="#SP2">&#167;2</a></span></button></span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">method_set</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">method_set</span><span class="plain">);</span>
         <span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">first_method</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">S</span><span class="plain">;</span>
@@ -79,8 +79,6 @@ tagged functions attached to it dynamically: those, we'll call "methods".
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Methods::new_set is used in <a href="#SP2">&#167;2</a>.</p>
 
 <p class="endnote">The structure method_set is private to this section.</p>
 
@@ -124,7 +122,7 @@ attach it to an object with a method set, using the <code class="display"><span 
 
 <pre class="definitions">
     <span class="definitionkeyword">define</span> <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">upon</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, </span><span class="identifier">func</span><span class="plain">)</span>
-        <span class="functiontext">Methods::add</span><span class="plain">(</span><span class="identifier">upon</span><span class="plain">-&gt;</span><span class="identifier">methods</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) &amp;</span><span class="identifier">func</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP6">Methods::add</a></span><span class="identifier">upon</span><span class="plain">-&gt;</span><span class="identifier">methods</span><span class="plain">, </span><span class="identifier">id</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) &amp;</span><span class="identifier">func</span><span class="plain">);</span>
 </pre>
 
 <pre class="display">
@@ -135,7 +133,7 @@ attach it to an object with a method set, using the <code class="display"><span 
         <span class="constant">MEMORY_MANAGEMENT</span>
     <span class="plain">} </span><span class="reserved">method</span><span class="plain">;</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Methods::add</span><span class="plain">(</span><span class="reserved">method_set</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">function</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Methods::add<button class="popup" onclick="togglePopup('usagePopup119')">...<span class="popuptext" id="usagePopup119">Usage of <b>Methods::add</b>:<br>none</span></button></span><span class="reserved">method_set</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">function</span><span class="plain">) {</span>
         <span class="reserved">method</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">method</span><span class="plain">);</span>
         <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">method_id</span><span class="plain"> = </span><span class="identifier">ID</span><span class="plain">;</span>
         <span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">method_function</span><span class="plain"> = </span><span class="identifier">function</span><span class="plain">;</span>
@@ -149,7 +147,7 @@ attach it to an object with a method set, using the <code class="display"><span 
         <span class="plain">}</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Methods::provided</span><span class="plain">(</span><span class="reserved">method_set</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Methods::provided<button class="popup" onclick="togglePopup('usagePopup120')">...<span class="popuptext" id="usagePopup120">Usage of <b>Methods::provided</b>:<br>none</span></button></span><span class="reserved">method_set</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">ID</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">method</span><span class="plain"> *</span><span class="identifier">M</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">first_method</span><span class="plain">; </span><span class="identifier">M</span><span class="plain">; </span><span class="identifier">M</span><span class="plain"> = </span><span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">next_method</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">M</span><span class="plain">-&gt;</span><span class="element">method_id</span><span class="plain"> == </span><span class="identifier">ID</span><span class="plain">)</span>
@@ -159,10 +157,6 @@ attach it to an object with a method set, using the <code class="display"><span 
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Methods::add appears nowhere else.</p>
-
-<p class="endnote">The function Methods::provided appears nowhere else.</p>
 
 <p class="endnote">The structure method is private to this section.</p>
 
@@ -234,6 +228,14 @@ to a structure which has <code class="display"><span class="extract">METHOD_CALL
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-wal.html">Back to 'Writers and Loggers'</a></li><li><a href="2-llas.html">Continue with 'Linked Lists and Stacks'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

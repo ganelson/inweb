@@ -4,6 +4,10 @@ Mainly for HTML, to add the necessary JavaScript for unusual requirements
 such as equations or footnotes.
 
 @h Creation.
+At present, plugins are simply their names: Inweb knows as little as possible
+about how they work. The model is just that a file being woven either does or
+does not need a plugin of a given name: for example, if it uses maths notation,
+it will likely need the |MathJax3| plugin.
 
 =
 typedef struct weave_plugin {
@@ -18,6 +22,14 @@ weave_plugin *WeavePlugins::new(text_stream *name) {
 	return wp;
 }
 
+@ When a file is woven, then, the following function can add the plugins
+necessary. If a plugin is called |X|, then we try to find |X.html| and
+weave that into the page header; and we try to find |X.css|, weave an
+inclusion of that, and also copy the file into the weave destination.
+
+The fragment of HTML is compulsory; the CSS file, optional.
+
+=
 void WeavePlugins::include(OUTPUT_STREAM, web *W, weave_plugin *wp,
 	weave_pattern *pattern) {
 	pathname *P1 = Pathnames::subfolder(W->md->path_to_web, I"Plugins");

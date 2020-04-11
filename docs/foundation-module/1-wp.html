@@ -80,11 +80,11 @@ And with Windows GCC, <code class="display"><span class="extract">isdigit(-23)</
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="identifier">isdigit</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">) </span><span class="functiontext">Platform::Windows_isdigit</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">)</span>
+    <span class="definitionkeyword">define</span> <span class="identifier">isdigit</span><span class="plain">(</span><span class="identifier">x</span><span class="plain">) </span><span class="functiontext"><a href="#SP3">Platform::Windows_isdigit</a></span><span class="identifier">x</span><span class="plain">)</span>
 </pre>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::Windows_isdigit</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::Windows_isdigit<button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>Platform::Windows_isdigit</b>:<br>none</span></button></span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="character">'0'</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="character">'9'</span><span class="plain">)) ? </span><span class="constant">1</span><span class="plain"> : </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -93,22 +93,20 @@ And with Windows GCC, <code class="display"><span class="extract">isdigit(-23)</
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
 
-<p class="endnote">The function Platform::Windows_isdigit appears nowhere else.</p>
-
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Environment variables. </b></p>
 
 <pre class="display">
-    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">GetCurrentDirectoryA</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">len</span><span class="plain">, </span><span class="reserved">char</span><span class="plain">* </span><span class="identifier">buffer</span><span class="plain">);</span>
-    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">SHGetFolderPathA</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">wnd</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">folder</span><span class="plain">,</span>
+    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">GetCurrentDirectoryA<button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>GetCurrentDirectoryA</b>:<br>none</span></button></span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">len</span><span class="plain">, </span><span class="reserved">char</span><span class="plain">* </span><span class="identifier">buffer</span><span class="plain">);</span>
+    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">SHGetFolderPathA<button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>SHGetFolderPathA</b>:<br>none</span></button></span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">wnd</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">folder</span><span class="plain">,</span>
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">token</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">flags</span><span class="plain">, </span><span class="reserved">char</span><span class="plain">* </span><span class="identifier">path</span><span class="plain">);</span>
 
-    <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Platform::getenv</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
+    <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext">Platform::getenv<button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>Platform::getenv</b>:<br>POSIX Platforms - <a href="1-pp.html#SP8">&#167;8</a><br>Pathnames - <a href="3-pth.html#SP2">&#167;2</a>, <a href="3-pth.html#SP3">&#167;3</a></span></button></span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">static</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> </span><span class="identifier">env</span><span class="plain">[260];</span>
         <span class="identifier">env</span><span class="plain">[0] = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">,</span><span class="string">"PWD"</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">GetCurrentDirectoryA</span><span class="plain">(260,</span><span class="identifier">env</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">env</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="#SP4">GetCurrentDirectoryA</a></span><span class="plain">260,</span><span class="identifier">env</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">env</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strcmp</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">,</span><span class="string">"HOME"</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">SHGetFolderPathA</span><span class="plain">(0,5,0,0,</span><span class="identifier">env</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">env</span><span class="plain">;</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="#SP4">SHGetFolderPathA</a></span><span class="plain">0,5,0,0,</span><span class="identifier">env</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">env</span><span class="plain">;</span>
         <span class="plain">}</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">getenv</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -117,12 +115,6 @@ And with Windows GCC, <code class="display"><span class="extract">isdigit(-23)</
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
-
-<p class="endnote">The function GetCurrentDirectoryA appears nowhere else.</p>
-
-<p class="endnote">The function SHGetFolderPathA appears nowhere else.</p>
-
-<p class="endnote">The function Platform::getenv is used in 1/pp (<a href="1-pp.html#SP8">&#167;8</a>), 3/pth (<a href="3-pth.html#SP2">&#167;2</a>, <a href="3-pth.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Executable location. </b>Fill the wide-char buffer <code class="display"><span class="extract">p</span></code> with the path to the current executable, up to
 length <code class="display"><span class="extract">length</span></code>. This function is guaranteed to be called from only one
@@ -133,7 +125,7 @@ just that installation and use of Foundation-built tools is less convenient.)
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::where_am_i</span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::where_am_i<button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Platform::where_am_i</b>:<br>POSIX Platforms - <a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a><br>Pathnames - <a href="3-pth.html#SP3">&#167;3</a></span></button></span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
         <span class="identifier">DWORD</span><span class="plain"> </span><span class="identifier">result</span><span class="plain"> = </span><span class="identifier">GetModuleFileNameW</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">length</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">result</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">result</span><span class="plain"> == </span><span class="identifier">length</span><span class="plain">)) </span><span class="identifier">p</span><span class="plain">[0] = </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -142,8 +134,6 @@ just that installation and use of Foundation-built tools is less convenient.)
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
-
-<p class="endnote">The function Platform::where_am_i is used in 1/pp (<a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>), 3/pth (<a href="3-pth.html#SP3">&#167;3</a>).</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Shell commands. </b></p>
 
@@ -155,14 +145,14 @@ just that installation and use of Foundation-built tools is less convenient.)
         <span class="reserved">short</span><span class="plain"> </span><span class="identifier">v12</span><span class="plain">; </span><span class="reserved">char</span><span class="plain">* </span><span class="identifier">v13</span><span class="plain">; </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">v14</span><span class="plain">; </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">v15</span><span class="plain">; </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">v16</span><span class="plain">; };</span>
     <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Process_Info</span><span class="plain"> {</span>
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">process</span><span class="plain">; </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">thread</span><span class="plain">; </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">v1</span><span class="plain">; </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">v2</span><span class="plain">; };</span>
-    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">CloseHandle</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">handle</span><span class="plain">);</span>
-    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">WaitForSingleObject</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">handle</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">ms</span><span class="plain">);</span>
-    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">CreateProcessA</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">* </span><span class="identifier">app</span><span class="plain">, </span><span class="reserved">char</span><span class="plain">* </span><span class="identifier">cmd</span><span class="plain">, </span><span class="reserved">void</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">,</span>
+    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">CloseHandle<button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>CloseHandle</b>:<br>none</span></button></span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">handle</span><span class="plain">);</span>
+    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">WaitForSingleObject<button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>WaitForSingleObject</b>:<br><a href="#SP11">&#167;11</a></span></button></span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">handle</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">ms</span><span class="plain">);</span>
+    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">CreateProcessA<button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>CreateProcessA</b>:<br>none</span></button></span><span class="reserved">void</span><span class="plain">* </span><span class="identifier">app</span><span class="plain">, </span><span class="reserved">char</span><span class="plain">* </span><span class="identifier">cmd</span><span class="plain">, </span><span class="reserved">void</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">,</span>
         <span class="reserved">void</span><span class="plain">* </span><span class="identifier">ta</span><span class="plain">, </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">inherit</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">flags</span><span class="plain">, </span><span class="reserved">void</span><span class="plain">* </span><span class="identifier">env</span><span class="plain">, </span><span class="reserved">void</span><span class="plain">* </span><span class="identifier">dir</span><span class="plain">,</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Startup_Info</span><span class="plain">* </span><span class="identifier">start</span><span class="plain">, </span><span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Process_Info</span><span class="plain">* </span><span class="identifier">process</span><span class="plain">);</span>
-    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">GetExitCodeProcess</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">proc</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain">* </span><span class="identifier">code</span><span class="plain">);</span>
+    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">GetExitCodeProcess<button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>GetExitCodeProcess</b>:<br>none</span></button></span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">proc</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain">* </span><span class="identifier">code</span><span class="plain">);</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::system</span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cmd</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::system<button class="popup" onclick="togglePopup('usagePopup14')">...<span class="popuptext" id="usagePopup14">Usage of <b>Platform::system</b>:<br>POSIX Platforms - <a href="1-pp.html#SP10">&#167;10</a>, <a href="1-pp.html#SP11">&#167;11</a>, <a href="1-pp.html#SP14">&#167;14</a><br>Shell - <a href="3-shl.html#SP5">&#167;5</a></span></button></span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cmd</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">strncmp</span><span class="plain">(</span><span class="identifier">cmd</span><span class="plain">,</span><span class="string">"md5 "</span><span class="plain">, </span><span class="constant">4</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
 
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">cmdline</span><span class="plain">[4096];</span>
@@ -173,18 +163,18 @@ just that installation and use of Foundation-built tools is less convenient.)
         <span class="identifier">start</span><span class="plain">.</span><span class="identifier">showWindow</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Process_Info</span><span class="plain"> </span><span class="identifier">process</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">CreateProcessA</span><span class="plain">(0, </span><span class="identifier">cmdline</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0x8000000</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, &amp;</span><span class="identifier">start</span><span class="plain">, &amp;</span><span class="identifier">process</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="#SP6">CreateProcessA</a></span><span class="plain">0, </span><span class="identifier">cmdline</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0x8000000</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, </span><span class="constant">0</span><span class="plain">, &amp;</span><span class="identifier">start</span><span class="plain">, &amp;</span><span class="identifier">process</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
             <span class="reserved">return</span><span class="plain"> -1;</span>
 
-        <span class="functiontext">CloseHandle</span><span class="plain">(</span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">thread</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">WaitForSingleObject</span><span class="plain">(</span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">process</span><span class="plain">, -1) != </span><span class="constant">0</span><span class="plain">) {</span>
-            <span class="functiontext">CloseHandle</span><span class="plain">(</span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">process</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP6">CloseHandle</a></span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">thread</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="#SP6">WaitForSingleObject</a></span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">process</span><span class="plain">, -1) != </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="functiontext"><a href="#SP6">CloseHandle</a></span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">process</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> -1;</span>
         <span class="plain">}</span>
 
         <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">code</span><span class="plain"> = </span><span class="constant">10</span><span class="plain">;</span>
-        <span class="functiontext">GetExitCodeProcess</span><span class="plain">(</span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">process</span><span class="plain">, &amp;</span><span class="identifier">code</span><span class="plain">);</span>
-        <span class="functiontext">CloseHandle</span><span class="plain">(</span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">process</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP6">GetExitCodeProcess</a></span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">process</span><span class="plain">, &amp;</span><span class="identifier">code</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP6">CloseHandle</a></span><span class="identifier">process</span><span class="plain">.</span><span class="identifier">process</span><span class="plain">);</span>
 
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">code</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -194,20 +184,10 @@ just that installation and use of Foundation-built tools is less convenient.)
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
 
-<p class="endnote">The function CloseHandle appears nowhere else.</p>
-
-<p class="endnote">The function WaitForSingleObject is used in <a href="#SP11">&#167;11</a>.</p>
-
-<p class="endnote">The function CreateProcessA appears nowhere else.</p>
-
-<p class="endnote">The function GetExitCodeProcess appears nowhere else.</p>
-
-<p class="endnote">The function Platform::system is used in 1/pp (<a href="1-pp.html#SP10">&#167;10</a>, <a href="1-pp.html#SP11">&#167;11</a>, <a href="1-pp.html#SP14">&#167;14</a>), 3/shl (<a href="3-shl.html#SP5">&#167;5</a>).</p>
-
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Directory handling. </b></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::mkdir</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_pathname</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::mkdir<button class="popup" onclick="togglePopup('usagePopup15')">...<span class="popuptext" id="usagePopup15">Usage of <b>Platform::mkdir</b>:<br>POSIX Platforms - <a href="1-pp.html#SP12">&#167;12</a><br>Pathnames - <a href="3-pth.html#SP8">&#167;8</a></span></button></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_pathname</span><span class="plain">) {</span>
         <span class="identifier">errno</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">_mkdir</span><span class="plain">(</span><span class="identifier">transcoded_pathname</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
@@ -215,12 +195,12 @@ just that installation and use of Foundation-built tools is less convenient.)
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Platform::opendir</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path_to_folder</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext">Platform::opendir<button class="popup" onclick="togglePopup('usagePopup16')">...<span class="popuptext" id="usagePopup16">Usage of <b>Platform::opendir</b>:<br>POSIX Platforms - <a href="1-pp.html#SP12">&#167;12</a><br>Directories - <a href="3-drc.html#SP2">&#167;2</a></span></button></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path_to_folder</span><span class="plain">) {</span>
         <span class="identifier">DIR</span><span class="plain"> *</span><span class="identifier">dirp</span><span class="plain"> = </span><span class="identifier">opendir</span><span class="plain">(</span><span class="identifier">path_to_folder</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">dirp</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::readdir</span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">folder</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path_to_folder</span><span class="plain">,</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::readdir<button class="popup" onclick="togglePopup('usagePopup17')">...<span class="popuptext" id="usagePopup17">Usage of <b>Platform::readdir</b>:<br>POSIX Platforms - <a href="1-pp.html#SP12">&#167;12</a><br>Directories - <a href="3-drc.html#SP2">&#167;2</a></span></button></span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">folder</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">path_to_folder</span><span class="plain">,</span>
         <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">path_to</span><span class="plain">[2*</span><span class="constant">MAX_FILENAME_LENGTH</span><span class="plain">+2];</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">_stat</span><span class="plain"> </span><span class="identifier">file_status</span><span class="plain">;</span>
@@ -237,7 +217,7 @@ just that installation and use of Foundation-built tools is less convenient.)
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::closedir</span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">folder</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::closedir<button class="popup" onclick="togglePopup('usagePopup18')">...<span class="popuptext" id="usagePopup18">Usage of <b>Platform::closedir</b>:<br>POSIX Platforms - <a href="1-pp.html#SP12">&#167;12</a><br>Directories - <a href="3-drc.html#SP2">&#167;2</a></span></button></span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">folder</span><span class="plain">) {</span>
         <span class="identifier">DIR</span><span class="plain"> *</span><span class="identifier">dirp</span><span class="plain"> = (</span><span class="identifier">DIR</span><span class="plain"> *) </span><span class="identifier">folder</span><span class="plain">;</span>
         <span class="identifier">closedir</span><span class="plain">(</span><span class="identifier">dirp</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -247,21 +227,13 @@ just that installation and use of Foundation-built tools is less convenient.)
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
 
-<p class="endnote">The function Platform::mkdir is used in 1/pp (<a href="1-pp.html#SP12">&#167;12</a>), 3/pth (<a href="3-pth.html#SP8">&#167;8</a>).</p>
-
-<p class="endnote">The function Platform::opendir is used in 1/pp (<a href="1-pp.html#SP12">&#167;12</a>), 3/drc (<a href="3-drc.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Platform::readdir is used in 1/pp (<a href="1-pp.html#SP12">&#167;12</a>), 3/drc (<a href="3-drc.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Platform::closedir is used in 1/pp (<a href="1-pp.html#SP12">&#167;12</a>), 3/drc (<a href="3-drc.html#SP2">&#167;2</a>).</p>
-
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Sleep. </b>The Windows <code class="display"><span class="extract">Sleep</span></code> call measures time in milliseconds, whereas
 POSIX <code class="display"><span class="extract">sleep</span></code> is for seconds.
 </p>
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="identifier">Sleep</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">ms</span><span class="plain">);</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::sleep</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">seconds</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::sleep<button class="popup" onclick="togglePopup('usagePopup19')">...<span class="popuptext" id="usagePopup19">Usage of <b>Platform::sleep</b>:<br>POSIX Platforms - <a href="1-pp.html#SP15">&#167;15</a></span></button></span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">seconds</span><span class="plain">) {</span>
         <span class="identifier">Sleep</span><span class="plain">((</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain">) </span><span class="constant">1000</span><span class="plain">*</span><span class="identifier">seconds</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
@@ -270,12 +242,10 @@ POSIX <code class="display"><span class="extract">sleep</span></code> is for sec
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
 
-<p class="endnote">The function Platform::sleep is used in 1/pp (<a href="1-pp.html#SP15">&#167;15</a>).</p>
-
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Notifications. </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::notification</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">happy</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::notification<button class="popup" onclick="togglePopup('usagePopup20')">...<span class="popuptext" id="usagePopup20">Usage of <b>Platform::notification</b>:<br>POSIX Platforms - <a href="1-pp.html#SP16">&#167;16</a>, <a href="1-pp.html#SP17">&#167;17</a></span></button></span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">happy</span><span class="plain">) {</span>
     <span class="plain">}</span>
 </pre>
 
@@ -283,13 +253,11 @@ POSIX <code class="display"><span class="extract">sleep</span></code> is for sec
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
 
-<p class="endnote">The function Platform::notification is used in 1/pp (<a href="1-pp.html#SP16">&#167;16</a>, <a href="1-pp.html#SP17">&#167;17</a>).</p>
-
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Concurrency. </b>The following predeclarations come from the Windows SDK.
 </p>
 
 <pre class="display">
-    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">CreateThread</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">* </span><span class="identifier">attrs</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">stack</span><span class="plain">,</span>
+    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">CreateThread<button class="popup" onclick="togglePopup('usagePopup21')">...<span class="popuptext" id="usagePopup21">Usage of <b>CreateThread</b>:<br><a href="#SP11">&#167;11</a></span></button></span><span class="reserved">void</span><span class="plain">* </span><span class="identifier">attrs</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">stack</span><span class="plain">,</span>
         <span class="reserved">void</span><span class="plain">* </span><span class="identifier">func</span><span class="plain">, </span><span class="reserved">void</span><span class="plain">* </span><span class="identifier">param</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">flags</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain">* </span><span class="identifier">id</span><span class="plain">);</span>
 
     <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Thread_Attrs</span><span class="plain"> {};</span>
@@ -303,24 +271,22 @@ POSIX <code class="display"><span class="extract">sleep</span></code> is for sec
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
 
-<p class="endnote">The function CreateThread is used in <a href="#SP11">&#167;11</a>.</p>
-
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
 
 <pre class="display">
-    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">Platform::Win32_Thread_Func</span><span class="plain">(</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">param</span><span class="plain">) {</span>
+    <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">__stdcall</span><span class="plain"> </span><span class="functiontext">Platform::Win32_Thread_Func<button class="popup" onclick="togglePopup('usagePopup22')">...<span class="popuptext" id="usagePopup22">Usage of <b>Platform::Win32_Thread_Func</b>:<br>none</span></button></span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">param</span><span class="plain">) {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Thread_Start</span><span class="plain">* </span><span class="identifier">start</span><span class="plain"> = (</span><span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Thread_Start</span><span class="plain">*)</span><span class="identifier">param</span><span class="plain">;</span>
         <span class="plain">(</span><span class="identifier">start</span><span class="plain">-&gt;</span><span class="identifier">fn</span><span class="plain">)(</span><span class="identifier">start</span><span class="plain">-&gt;</span><span class="identifier">arg</span><span class="plain">);</span>
         <span class="identifier">free</span><span class="plain">(</span><span class="identifier">start</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::create_thread</span><span class="plain">(</span><span class="identifier">foundation_thread</span><span class="plain"> *</span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="identifier">foundation_thread_attributes</span><span class="plain"> *</span><span class="identifier">pa</span><span class="plain">,</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::create_thread<button class="popup" onclick="togglePopup('usagePopup23')">...<span class="popuptext" id="usagePopup23">Usage of <b>Platform::create_thread</b>:<br>POSIX Platforms - <a href="1-pp.html#SP19">&#167;19</a></span></button></span><span class="identifier">foundation_thread</span><span class="plain"> *</span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">const</span><span class="plain"> </span><span class="identifier">foundation_thread_attributes</span><span class="plain"> *</span><span class="identifier">pa</span><span class="plain">,</span>
         <span class="reserved">void</span><span class="plain"> *(*</span><span class="identifier">fn</span><span class="plain">)(</span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">) {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Thread_Start</span><span class="plain">* </span><span class="identifier">start</span><span class="plain"> = (</span><span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Thread_Start</span><span class="plain">*) </span><span class="identifier">malloc</span><span class="plain">(</span><span class="reserved">sizeof</span><span class="plain"> (</span><span class="reserved">struct</span><span class="plain"> </span><span class="identifier">Win32_Thread_Start</span><span class="plain">));</span>
         <span class="identifier">start</span><span class="plain">-&gt;</span><span class="identifier">fn</span><span class="plain"> = </span><span class="identifier">fn</span><span class="plain">;</span>
         <span class="identifier">start</span><span class="plain">-&gt;</span><span class="identifier">arg</span><span class="plain"> = </span><span class="identifier">arg</span><span class="plain">;</span>
-        <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">thread</span><span class="plain"> = </span><span class="functiontext">CreateThread</span><span class="plain">(0,0,</span><span class="functiontext">Platform::Win32_Thread_Func</span><span class="plain">,</span><span class="identifier">start</span><span class="plain">,0,0);</span>
+        <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">long</span><span class="plain"> </span><span class="identifier">thread</span><span class="plain"> = </span><span class="functiontext"><a href="#SP10">CreateThread</a></span><span class="plain">0,0,</span><span class="functiontext"><a href="#SP11">Platform::Win32_Thread_Func</a></span><span class="identifier">start</span><span class="plain">,0,0);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">thread</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="identifier">free</span><span class="plain">(</span><span class="identifier">start</span><span class="plain">);</span>
             <span class="reserved">return</span><span class="plain"> </span><span class="constant">1</span><span class="plain">;</span>
@@ -330,14 +296,14 @@ POSIX <code class="display"><span class="extract">sleep</span></code> is for sec
         <span class="plain">}</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::join_thread</span><span class="plain">(</span><span class="identifier">pthread_t</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">void</span><span class="plain">** </span><span class="identifier">rv</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="functiontext">WaitForSingleObject</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">,-1) == </span><span class="constant">0</span><span class="plain">) ? </span><span class="constant">0</span><span class="plain"> : </span><span class="constant">1</span><span class="plain">;</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Platform::join_thread<button class="popup" onclick="togglePopup('usagePopup24')">...<span class="popuptext" id="usagePopup24">Usage of <b>Platform::join_thread</b>:<br>POSIX Platforms - <a href="1-pp.html#SP19">&#167;19</a></span></button></span><span class="identifier">pthread_t</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">void</span><span class="plain">** </span><span class="identifier">rv</span><span class="plain">) {</span>
+        <span class="reserved">return</span><span class="plain"> (</span><span class="functiontext"><a href="#SP6">WaitForSingleObject</a></span><span class="identifier">pt</span><span class="plain">,-1) == </span><span class="constant">0</span><span class="plain">) ? </span><span class="constant">0</span><span class="plain"> : </span><span class="constant">1</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::init_thread</span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::init_thread<button class="popup" onclick="togglePopup('usagePopup25')">...<span class="popuptext" id="usagePopup25">Usage of <b>Platform::init_thread</b>:<br>POSIX Platforms - <a href="1-pp.html#SP19">&#167;19</a></span></button></span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">) {</span>
     <span class="plain">}</span>
 
-    <span class="identifier">size_t</span><span class="plain"> </span><span class="functiontext">Platform::get_thread_stack_size</span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">) {</span>
+    <span class="identifier">size_t</span><span class="plain"> </span><span class="functiontext">Platform::get_thread_stack_size<button class="popup" onclick="togglePopup('usagePopup26')">...<span class="popuptext" id="usagePopup26">Usage of <b>Platform::get_thread_stack_size</b>:<br>POSIX Platforms - <a href="1-pp.html#SP19">&#167;19</a></span></button></span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
@@ -345,16 +311,6 @@ POSIX <code class="display"><span class="extract">sleep</span></code> is for sec
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
-
-<p class="endnote">The function Platform::Win32_Thread_Func appears nowhere else.</p>
-
-<p class="endnote">The function Platform::create_thread is used in 1/pp (<a href="1-pp.html#SP19">&#167;19</a>).</p>
-
-<p class="endnote">The function Platform::join_thread is used in 1/pp (<a href="1-pp.html#SP19">&#167;19</a>).</p>
-
-<p class="endnote">The function Platform::init_thread is used in 1/pp (<a href="1-pp.html#SP19">&#167;19</a>).</p>
-
-<p class="endnote">The function Platform::get_thread_stack_size is used in 1/pp (<a href="1-pp.html#SP19">&#167;19</a>).</p>
 
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Timestamp. </b>There are implementations of the C standard library where <code class="display"><span class="extract">time_t</span></code> has
 super-weird behaviour, but on almost POSIX systems, time 0 corresponds to
@@ -364,24 +320,20 @@ be dealing with.
 </p>
 
 <pre class="display">
-    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext">Platform::never_time</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext">Platform::never_time<button class="popup" onclick="togglePopup('usagePopup27')">...<span class="popuptext" id="usagePopup27">Usage of <b>Platform::never_time</b>:<br>POSIX Platforms - <a href="1-pp.html#SP13">&#167;13</a></span></button></span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">time_t</span><span class="plain">) </span><span class="constant">0</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext">Platform::timestamp</span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_filename</span><span class="plain">) {</span>
+    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext">Platform::timestamp<button class="popup" onclick="togglePopup('usagePopup28')">...<span class="popuptext" id="usagePopup28">Usage of <b>Platform::timestamp</b>:<br>POSIX Platforms - <a href="1-pp.html#SP13">&#167;13</a><br>Filenames - <a href="3-fln.html#SP12">&#167;12</a></span></button></span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_filename</span><span class="plain">) {</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">stat</span><span class="plain"> </span><span class="identifier">filestat</span><span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stat</span><span class="plain">(</span><span class="identifier">transcoded_pathname</span><span class="plain">, &amp;</span><span class="identifier">filestat</span><span class="plain">) != -1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">filestat</span><span class="plain">.</span><span class="identifier">st_mtime</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext">Platform::never_time</span><span class="plain">();</span>
+        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext"><a href="#SP12">Platform::never_time</a></span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
 <p class="endnote">This paragraph is used only if PLATFORM_WINDOWS is defined.</p>
-
-<p class="endnote">The function Platform::never_time is used in 1/pp (<a href="1-pp.html#SP13">&#167;13</a>).</p>
-
-<p class="endnote">The function Platform::timestamp is used in 1/pp (<a href="1-pp.html#SP13">&#167;13</a>), 3/fln (<a href="3-fln.html#SP12">&#167;12</a>).</p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Mutexes. </b></p>
 
@@ -407,6 +359,14 @@ be dealing with.
 <hr class="tocbar">
 <ul class="toc"><li><a href="1-pp.html">Back to 'POSIX Platforms'</a></li><li><i>(This section ends Chapter 1: Setting Up.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

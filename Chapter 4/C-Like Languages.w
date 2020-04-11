@@ -7,7 +7,8 @@ This does:
 
 =
 void CLike::make_c_like(programming_language *pl) {
-	METHOD_ADD(pl, FURTHER_PARSING_PAR_MTID, CLike::further_parsing);
+	METHOD_ADD(pl, PARSE_TYPES_PAR_MTID, CLike::parse_types);
+	METHOD_ADD(pl, PARSE_FUNCTIONS_PAR_MTID, CLike::parse_functions);
 	METHOD_ADD(pl, SUBCATEGORISE_LINE_PAR_MTID, CLike::subcategorise_code);
 
 	METHOD_ADD(pl, ADDITIONAL_EARLY_MATTER_TAN_MTID, CLike::additional_early_matter);
@@ -22,56 +23,13 @@ After a web has been read in and then parsed, code supporting its language
 is then called to do any further parsing it might want to. The code below
 is run if the language is "C-like": regular C and InC both qualify.
 
-In scanning the web, we need to keep track of |#ifdef| and |#endif| pairs
-in the source. This matters because we will want to predeclare functions;
-but if functions are declared in conditional compilation, then their
-predeclarations have to be made under the same conditions.
-
-The following stack holds the current set of conditional compilations which the
-source line being scanned lies within.
-
-@d MAX_CONDITIONAL_COMPILATION_STACK 8
-
 =
-int cc_sp = 0;
-source_line *cc_stack[MAX_CONDITIONAL_COMPILATION_STACK];
-
-void CLike::further_parsing(programming_language *self, web *W) {
+void CLike::parse_types(programming_language *self, web *W) {
 	@<Find every typedef struct in the tangle@>;
 	@<Work out which structs contain which others@>;
-	cc_sp = 0;
-	chapter *C;
-	section *S;
-	LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W))
-		if ((L->category == CODE_BODY_LCAT) ||
-			(L->category == BEGIN_DEFINITION_LCAT) ||
-			(L->category == CONT_DEFINITION_LCAT)) {
-			@<Look for conditional compilation on this line@>;
-			@<Look for a function definition on this line@>;
-		}
-	if (cc_sp > 0)
-		Main::error_in_web(I"program ended with conditional compilation open", NULL);
 }
 
-@<Look for conditional compilation on this line@> =
-	match_results mr = Regexp::create_mr();
-	if ((Regexp::match(&mr, L->text, L" *#ifn*def %c+")) ||
-		(Regexp::match(&mr, L->text, L" *#IFN*DEF %c+"))) {
-		if (cc_sp >= MAX_CONDITIONAL_COMPILATION_STACK)
-			Main::error_in_web(I"conditional compilation too deeply nested", L);
-		else
-			cc_stack[cc_sp++] = L;
-	}
-	if ((Regexp::match(&mr, L->text, L" *#endif *")) ||
-		(Regexp::match(&mr, L->text, L" *#ENDIF *"))) {
-		if (cc_sp <= 0)
-			Main::error_in_web(I"found #endif without #ifdef or #ifndef", L);
-		else
-			cc_sp--;
-	}
-
-@h Structures.
-We're going to assume that the C source code uses structures looking
+@ We're going to assume that the C source code uses structures looking
 something like this:
 = (text as C)
 	typedef struct fruit {
@@ -213,7 +171,53 @@ will not trip the switch here.
 			ADD_TO_LINKED_LIST(str, c_structure, current_str->incorporates);
 
 @h Functions.
-Second round: we recognise a C function as being a line which takes the form
+This time, we will need to keep track of |#ifdef| and |#endif| pairs
+in the source. This matters because we will want to predeclare functions;
+but if functions are declared in conditional compilation, then their
+predeclarations have to be made under the same conditions.
+
+The following stack holds the current set of conditional compilations which the
+source line being scanned lies within.
+
+@d MAX_CONDITIONAL_COMPILATION_STACK 8
+
+=
+int cc_sp = 0;
+source_line *cc_stack[MAX_CONDITIONAL_COMPILATION_STACK];
+
+void CLike::parse_functions(programming_language *self, web *W) {
+	cc_sp = 0;
+	chapter *C;
+	section *S;
+	LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W))
+		if ((L->category == CODE_BODY_LCAT) ||
+			(L->category == BEGIN_DEFINITION_LCAT) ||
+			(L->category == CONT_DEFINITION_LCAT)) {
+			@<Look for conditional compilation on this line@>;
+			@<Look for a function definition on this line@>;
+		}
+	if (cc_sp > 0)
+		Main::error_in_web(I"program ended with conditional compilation open", NULL);
+}
+
+@<Look for conditional compilation on this line@> =
+	match_results mr = Regexp::create_mr();
+	if ((Regexp::match(&mr, L->text, L" *#ifn*def %c+")) ||
+		(Regexp::match(&mr, L->text, L" *#IFN*DEF %c+"))) {
+		if (cc_sp >= MAX_CONDITIONAL_COMPILATION_STACK)
+			Main::error_in_web(I"conditional compilation too deeply nested", L);
+		else
+			cc_stack[cc_sp++] = L;
+	}
+	if ((Regexp::match(&mr, L->text, L" *#endif *")) ||
+		(Regexp::match(&mr, L->text, L" *#ENDIF *"))) {
+		if (cc_sp <= 0)
+			Main::error_in_web(I"found #endif without #ifdef or #ifndef", L);
+		else
+			cc_sp--;
+	}
+
+@ So, then, we recognise a C function as being a line which takes the form
 = (text)
 	type identifier(args...
 =

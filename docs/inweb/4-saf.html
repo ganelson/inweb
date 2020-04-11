@@ -54,10 +54,10 @@
 <pre class="display">
     <span class="reserved">c_structure</span><span class="plain"> *</span><span class="identifier">first_cst_alphabetically</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
 
-    <span class="reserved">c_structure</span><span class="plain"> *</span><span class="functiontext">Structures::new_struct</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
+    <span class="reserved">c_structure</span><span class="plain"> *</span><span class="functiontext">Structures::new_struct<button class="popup" onclick="togglePopup('usagePopup111')">...<span class="popuptext" id="usagePopup111">Usage of <b>Structures::new_struct</b>:<br>C-Like Languages - <a href="4-cl.html#SP2_1">&#167;2.1</a></span></button></span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
         <span class="reserved">c_structure</span><span class="plain"> *</span><span class="identifier">str</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">c_structure</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Initialise the C structure structure</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
-        <span class="functiontext">Analyser::mark_reserved_word_for_section</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain">, </span><span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">structure_name</span><span class="plain">, </span><span class="constant">RESERVED_COLOUR</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-ta.html#SP10">Analyser::mark_reserved_word_at_line</a></span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">structure_name</span><span class="plain">, </span><span class="constant">RESERVED_COLOUR</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Add this to the lists for its web and its paragraph</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Insertion-sort this into the alphabetical list of all structures found</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">str</span><span class="plain">;</span>
@@ -66,15 +66,13 @@
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Structures::new_struct is used in 4/cl (<a href="4-cl.html#SP2_2">&#167;2.2</a>).</p>
-
 <p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Initialise the C structure structure</span> <span class="cwebmacronumber">2.1</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
-        <span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">structure_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
+        <span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">structure_name</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">name</span><span class="plain">);</span>
         <span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">structure_header_at</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">;</span>
         <span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">tangled</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">typedef_ends</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -92,6 +90,7 @@
 
 
 <pre class="displaydefn">
+        <span class="functiontext"><a href="2-tgs.html#SP4">Tags::add_by_name</a></span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">owning_paragraph</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Structures"</span><span class="plain">);</span>
         <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="reserved">c_structure</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">c_structures</span><span class="plain">);</span>
         <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="reserved">c_structure</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">owning_paragraph</span><span class="plain">-&gt;</span><span class="element">structures</span><span class="plain">);</span>
 </pre>
@@ -113,7 +112,7 @@
             <span class="reserved">c_structure</span><span class="plain"> *</span><span class="identifier">last</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
             <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">c_structure</span><span class="plain"> *</span><span class="identifier">seq</span><span class="plain"> = </span><span class="identifier">first_cst_alphabetically</span><span class="plain">; </span><span class="identifier">seq</span><span class="plain">;</span>
                 <span class="identifier">seq</span><span class="plain"> = </span><span class="identifier">seq</span><span class="plain">-&gt;</span><span class="identifier">next_cst_alphabetically</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::cmp</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">structure_name</span><span class="plain">, </span><span class="identifier">seq</span><span class="plain">-&gt;</span><span class="element">structure_name</span><span class="plain">) &lt; </span><span class="constant">0</span><span class="plain">) {</span>
+                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP19">Str::cmp</a></span><span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">structure_name</span><span class="plain">, </span><span class="identifier">seq</span><span class="plain">-&gt;</span><span class="element">structure_name</span><span class="plain">) &lt; </span><span class="constant">0</span><span class="plain">) {</span>
                     <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">seq</span><span class="plain"> == </span><span class="identifier">first_cst_alphabetically</span><span class="plain">) {</span>
                         <span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">next_cst_alphabetically</span><span class="plain"> = </span><span class="identifier">first_cst_alphabetically</span><span class="plain">;</span>
                         <span class="identifier">first_cst_alphabetically</span><span class="plain"> = </span><span class="identifier">str</span><span class="plain">;</span>
@@ -161,14 +160,14 @@ affects the reports in the woven code about where structures are used.
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
 <pre class="display">
-    <span class="reserved">structure_element</span><span class="plain"> *</span><span class="functiontext">Structures::new_element</span><span class="plain">(</span><span class="reserved">c_structure</span><span class="plain"> *</span><span class="identifier">str</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">elname</span><span class="plain">,</span>
+    <span class="reserved">structure_element</span><span class="plain"> *</span><span class="functiontext">Structures::new_element<button class="popup" onclick="togglePopup('usagePopup112')">...<span class="popuptext" id="usagePopup112">Usage of <b>Structures::new_element</b>:<br>C-Like Languages - <a href="4-cl.html#SP2_1_1">&#167;2.1.1</a></span></button></span><span class="reserved">c_structure</span><span class="plain"> *</span><span class="identifier">str</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">elname</span><span class="plain">,</span>
         <span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
-        <span class="functiontext">Analyser::mark_reserved_word_for_section</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain">, </span><span class="identifier">elname</span><span class="plain">, </span><span class="constant">ELEMENT_COLOUR</span><span class="plain">);</span>
+        <span class="functiontext"><a href="3-ta.html#SP10">Analyser::mark_reserved_word_at_line</a></span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">elname</span><span class="plain">, </span><span class="constant">ELEMENT_COLOUR</span><span class="plain">);</span>
         <span class="reserved">structure_element</span><span class="plain"> *</span><span class="identifier">elt</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">structure_element</span><span class="plain">);</span>
-        <span class="identifier">elt</span><span class="plain">-&gt;</span><span class="element">element_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">elname</span><span class="plain">);</span>
+        <span class="identifier">elt</span><span class="plain">-&gt;</span><span class="element">element_name</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">elname</span><span class="plain">);</span>
         <span class="identifier">elt</span><span class="plain">-&gt;</span><span class="element">allow_sharing</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">elt</span><span class="plain">-&gt;</span><span class="element">element_created_at</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">LanguageMethods::share_element</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain">-&gt;</span><span class="element">sect_language</span><span class="plain">, </span><span class="identifier">elname</span><span class="plain">))</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-lm.html#SP29">LanguageMethods::share_element</a></span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain">-&gt;</span><span class="element">sect_language</span><span class="plain">, </span><span class="identifier">elname</span><span class="plain">))</span>
             <span class="identifier">elt</span><span class="plain">-&gt;</span><span class="element">allow_sharing</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">elt</span><span class="plain">, </span><span class="reserved">structure_element</span><span class="plain">, </span><span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">elements</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">elt</span><span class="plain">;</span>
@@ -177,23 +176,19 @@ affects the reports in the woven code about where structures are used.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Structures::new_element is used in 4/cl (<a href="4-cl.html#SP2_2_1">&#167;2.2.1</a>).</p>
-
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b></p>
 
 <pre class="display">
-    <span class="reserved">c_structure</span><span class="plain"> *</span><span class="functiontext">Structures::find_structure</span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
+    <span class="reserved">c_structure</span><span class="plain"> *</span><span class="functiontext">Structures::find_structure<button class="popup" onclick="togglePopup('usagePopup113')">...<span class="popuptext" id="usagePopup113">Usage of <b>Structures::find_structure</b>:<br>none</span></button></span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
         <span class="reserved">c_structure</span><span class="plain"> *</span><span class="identifier">str</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="reserved">c_structure</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">c_structures</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::eq</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">structure_name</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">structure_name</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">str</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Structures::find_structure appears nowhere else.</p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Functions. </b>Each function definition found results in one of these structures being made:
 </p>
@@ -207,6 +202,7 @@ affects the reports in the woven code about where structures are used.
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">within_namespace</span><span class="plain">; </span><span class="comment"> written using InC namespace dividers</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">called_from_other_sections</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">call_freely</span><span class="plain">;</span>
+        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">usage_described</span><span class="plain">;</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">no_conditionals</span><span class="plain">;</span>
         <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">within_conditionals</span><span class="plain">[</span><span class="constant">MAX_CONDITIONAL_COMPILATION_STACK</span><span class="plain">];</span>
         <span class="constant">MEMORY_MANAGEMENT</span>
@@ -220,9 +216,11 @@ affects the reports in the woven code about where structures are used.
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
 <pre class="display">
-    <span class="reserved">function</span><span class="plain"> *</span><span class="functiontext">Structures::new_function</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">fname</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
-        <span class="functiontext">Analyser::mark_reserved_word_for_section</span><span class="plain">(</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain">, </span><span class="identifier">fname</span><span class="plain">, </span><span class="constant">FUNCTION_COLOUR</span><span class="plain">);</span>
+    <span class="reserved">function</span><span class="plain"> *</span><span class="functiontext">Structures::new_function<button class="popup" onclick="togglePopup('usagePopup114')">...<span class="popuptext" id="usagePopup114">Usage of <b>Structures::new_function</b>:<br>ACME Support - <a href="4-as.html#SP4">&#167;4</a>, <a href="4-as.html#SP5">&#167;5</a><br>C-Like Languages - <a href="4-cl.html#SP3_2_2">&#167;3.2.2</a></span></button></span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">fname</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
+        <span class="reserved">hash_table_entry</span><span class="plain"> *</span><span class="identifier">hte</span><span class="plain"> =</span>
+            <span class="functiontext"><a href="3-ta.html#SP10">Analyser::mark_reserved_word_at_line</a></span><span class="identifier">L</span><span class="plain">, </span><span class="identifier">fname</span><span class="plain">, </span><span class="constant">FUNCTION_COLOUR</span><span class="plain">);</span>
         <span class="reserved">function</span><span class="plain"> *</span><span class="identifier">fn</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">function</span><span class="plain">);</span>
+        <span class="identifier">hte</span><span class="plain">-&gt;</span><span class="element">as_function</span><span class="plain"> = </span><span class="identifier">fn</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Initialise the function structure</span> <span class="cwebmacronumber">7.1</span>&gt;<span class="plain">;</span>
         &lt;<span class="cwebmacro">Add the function to its paragraph and line</span> <span class="cwebmacronumber">7.2</span>&gt;<span class="plain">;</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain">-&gt;</span><span class="element">sect_language</span><span class="plain">-&gt;</span><span class="element">supports_namespaces</span><span class="plain">)</span>
@@ -232,8 +230,6 @@ affects the reports in the woven code about where structures are used.
 </pre>
 
 <p class="inwebparagraph"></p>
-
-<p class="endnote">The function Structures::new_function is used in 4/cl (<a href="4-cl.html#SP2_4_2">&#167;2.4.2</a>).</p>
 
 <p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b>Note that we take a snapshot of the conditional compilation stack as
 part of the function structure. We'll need it when predeclaring the function.
@@ -246,13 +242,14 @@ part of the function structure. We'll need it when predeclaring the function.
 
 
 <pre class="displaydefn">
-        <span class="identifier">fn</span><span class="plain">-&gt;</span><span class="element">function_name</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">fname</span><span class="plain">);</span>
-        <span class="identifier">fn</span><span class="plain">-&gt;</span><span class="element">function_arguments</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
-        <span class="identifier">fn</span><span class="plain">-&gt;</span><span class="element">function_type</span><span class="plain"> = </span><span class="functiontext">Str::new</span><span class="plain">();</span>
+        <span class="identifier">fn</span><span class="plain">-&gt;</span><span class="element">function_name</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="identifier">fname</span><span class="plain">);</span>
+        <span class="identifier">fn</span><span class="plain">-&gt;</span><span class="element">function_arguments</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP2">Str::new</a></span><span class="plain">);</span>
+        <span class="identifier">fn</span><span class="plain">-&gt;</span><span class="element">function_type</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP2">Str::new</a></span><span class="plain">);</span>
         <span class="identifier">fn</span><span class="plain">-&gt;</span><span class="element">within_namespace</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">fn</span><span class="plain">-&gt;</span><span class="element">called_from_other_sections</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">fn</span><span class="plain">-&gt;</span><span class="element">call_freely</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">fn</span><span class="plain">-&gt;</span><span class="element">function_header_at</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">;</span>
+        <span class="identifier">fn</span><span class="plain">-&gt;</span><span class="element">usage_described</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">fn</span><span class="plain">-&gt;</span><span class="element">no_conditionals</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
 </pre>
 
@@ -283,29 +280,29 @@ part of the function structure. We'll need it when predeclaring the function.
 <pre class="displaydefn">
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">declared_namespace</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">ambient_namespace</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain">-&gt;</span><span class="element">sect_namespace</span><span class="plain">;</span>
-        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext">Regexp::create_mr</span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Regexp::match</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">fname</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c+::)%c*"</span><span class="plain">)) {</span>
+        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext"><a href="4-pm.html#SP9">Regexp::create_mr</a></span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">fname</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c+::)%c*"</span><span class="plain">)) {</span>
             <span class="identifier">declared_namespace</span><span class="plain"> = </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0];</span>
             <span class="identifier">fn</span><span class="plain">-&gt;</span><span class="element">within_namespace</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">fname</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"main"</span><span class="plain">)) &amp;&amp;</span>
-            <span class="plain">(</span><span class="functiontext">Str::eq_wide_string</span><span class="plain">(</span><span class="identifier">ambient_namespace</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Main::"</span><span class="plain">)))</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext"><a href="4-sm.html#SP21">Str::eq_wide_string</a></span><span class="identifier">fname</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"main"</span><span class="plain">)) &amp;&amp;</span>
+            <span class="plain">(</span><span class="functiontext"><a href="4-sm.html#SP21">Str::eq_wide_string</a></span><span class="identifier">ambient_namespace</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Main::"</span><span class="plain">)))</span>
             <span class="identifier">declared_namespace</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"Main::"</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext">Str::ne</span><span class="plain">(</span><span class="identifier">declared_namespace</span><span class="plain">, </span><span class="identifier">ambient_namespace</span><span class="plain">)) &amp;&amp;</span>
+        <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext"><a href="4-sm.html#SP18">Str::ne</a></span><span class="identifier">declared_namespace</span><span class="plain">, </span><span class="identifier">ambient_namespace</span><span class="plain">)) &amp;&amp;</span>
             <span class="plain">(</span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">owning_paragraph</span><span class="plain">-&gt;</span><span class="element">placed_very_early</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">)) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">err_mess</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">declared_namespace</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP8">Str::len</a></span><span class="identifier">declared_namespace</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">err_mess</span><span class="plain">, </span><span class="string">"Function '%S' should have namespace prefix '%S'"</span><span class="plain">,</span>
                     <span class="identifier">fname</span><span class="plain">, </span><span class="identifier">ambient_namespace</span><span class="plain">);</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext">Str::len</span><span class="plain">(</span><span class="identifier">ambient_namespace</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
+            <span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP8">Str::len</a></span><span class="identifier">ambient_namespace</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">)</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">err_mess</span><span class="plain">, </span><span class="string">"Function '%S' declared in a section with no namespace"</span><span class="plain">,</span>
                     <span class="identifier">fname</span><span class="plain">);</span>
             <span class="reserved">else</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">err_mess</span><span class="plain">, </span><span class="string">"Function '%S' declared in a section with the wrong namespace '%S'"</span><span class="plain">,</span>
                     <span class="identifier">fname</span><span class="plain">, </span><span class="identifier">ambient_namespace</span><span class="plain">);</span>
-            <span class="functiontext">Main::error_in_web</span><span class="plain">(</span><span class="identifier">err_mess</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
+            <span class="functiontext"><a href="1-pc.html#SP8">Main::error_in_web</a></span><span class="identifier">err_mess</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
             <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">err_mess</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext">Regexp::dispose_of</span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
@@ -317,7 +314,7 @@ forms of section catalogue.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Structures::catalogue</span><span class="plain">(</span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">functions_too</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Structures::catalogue<button class="popup" onclick="togglePopup('usagePopup115')">...<span class="popuptext" id="usagePopup115">Usage of <b>Structures::catalogue</b>:<br>The Analyser - <a href="3-ta.html#SP2">&#167;2</a></span></button></span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">functions_too</span><span class="plain">) {</span>
         <span class="reserved">c_structure</span><span class="plain"> *</span><span class="identifier">str</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">str</span><span class="plain">, </span><span class="reserved">c_structure</span><span class="plain">)</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">str</span><span class="plain">-&gt;</span><span class="element">structure_header_at</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain"> == </span><span class="identifier">S</span><span class="plain">)</span>
@@ -333,11 +330,17 @@ forms of section catalogue.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The function Structures::catalogue is used in 3/ta (<a href="3-ta.html#SP2">&#167;2</a>).</p>
-
 <hr class="tocbar">
 <ul class="toc"><li><a href="4-pl.html">Back to 'Programming Languages'</a></li><li><a href="4-lm.html">Continue with 'Language Methods'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

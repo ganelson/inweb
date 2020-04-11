@@ -10,11 +10,14 @@ Binary Literal Prefix: "%"
 Hexadecimal Literal Prefix: "$"
 Negative Literal Prefix: "-"
 
+Function Declaration Notation: / *\.([A-Za-z_][A-Za-z0-9_]*).*/
+
 colouring {
 	runs of unquoted {
 		runs of !identifier {
 			=> !reserved
-			prefix "." => !identifier on both
+			keyword of !function => !function
+#			prefix "." => !identifier on both
 			prefix "!" => !element on both
 		}
 		characters {

@@ -129,6 +129,9 @@ typedef struct programming_language {
 	text_stream *end_ifdef;
 	text_stream *start_ifndef;
 	text_stream *end_ifndef;
+	wchar_t type_notation[MAX_ILDF_REGEXP_LENGTH];
+	wchar_t function_notation[MAX_ILDF_REGEXP_LENGTH];
+
 	int suppress_disclaimer;
 	int C_like; /* languages with this set have access to extra features */
 
@@ -192,6 +195,8 @@ programming_language *Languages::read_definition(filename *F) {
 	pl->end_ifndef = NULL;
 	pl->C_like = FALSE;
 	pl->suppress_disclaimer = FALSE;
+	pl->type_notation[0] = 0;
+	pl->function_notation[0] = 0;
 
 	pl->reserved_words = NEW_LINKED_LIST(reserved_word);
 	pl->built_in_keywords.analysis_hash_initialised = FALSE;
@@ -299,6 +304,10 @@ declare a reserved keyword, or set a key to a value.
 			pl->suppress_disclaimer = Languages::boolean(value, tfp);
 		else if (Str::eq(key, I"Supports Namespaces"))
 			pl->supports_namespaces = Languages::boolean(value, tfp);
+		else if (Str::eq(key, I"Function Declaration Notation"))
+			Languages::regexp(pl->function_notation, value, tfp);
+		else if (Str::eq(key, I"Type Declaration Notation"))
+			Languages::regexp(pl->type_notation, value, tfp);
 		else {
 			Errors::in_text_file("unknown property name before ':'", tfp);
 		}

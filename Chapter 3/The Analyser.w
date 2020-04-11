@@ -158,9 +158,8 @@ practice.
 		Analyser::analyse_as_code(W, L, L->text, ANY_USAGE, 0);
 	}
 
-@ Recall -- or rather, see Chapter 5, where this all comes up -- that lines
-in a Preform grammar generally take the form of some BNF grammar, where we
-want only to identify any nonterminals mentioned, then a |==>| divider,
+@ Lines in a Preform grammar generally take the form of some BNF grammar, where
+we want only to identify any nonterminals mentioned, then a |==>| divider,
 and then some C code to deal with a match. The code is subjected to analysis
 just as any other code would be.
 
@@ -258,6 +257,8 @@ typedef struct hash_table_entry {
 	text_stream *hash_key;
 	int reserved_word; /* in the language currently being woven, that is */
 	struct linked_list *usages; /* of |hash_table_entry_usage| */
+	struct source_line *definition_line; /* or null, if it's not a constant, function or type name */
+	struct function *as_function; /* for function names only */
 	MEMORY_MANAGEMENT
 } hash_table_entry;
 
@@ -300,13 +301,24 @@ hash_table_entry *Analyser::find_hash_entry_for_section(section *S, text_stream 
 @ Marking and testing these bits:
 
 =
-void Analyser::mark_reserved_word(hash_table *HT, text_stream *p, int e) {
+hash_table_entry *Analyser::mark_reserved_word(hash_table *HT, text_stream *p, int e) {
 	hash_table_entry *hte = Analyser::find_hash_entry(HT, p, TRUE);
 	hte->reserved_word |= (1 << e);
+	hte->definition_line = NULL;
+	hte->as_function = NULL;
+	return hte;
 }
 
 void Analyser::mark_reserved_word_for_section(section *S, text_stream *p, int e) {
 	Analyser::mark_reserved_word(&(S->sect_target->symbols), p, e);
+}
+
+hash_table_entry *Analyser::mark_reserved_word_at_line(source_line *L, text_stream *p, int e) {
+	if (L == NULL) internal_error("no line for rw");
+	hash_table_entry *hte = 
+		Analyser::mark_reserved_word(&(L->owning_section->sect_target->symbols), p, e);
+	hte->definition_line = L;
+	return hte;
 }
 
 int Analyser::is_reserved_word(hash_table *HT, text_stream *p, int e) {
@@ -317,6 +329,18 @@ int Analyser::is_reserved_word(hash_table *HT, text_stream *p, int e) {
 
 int Analyser::is_reserved_word_for_section(section *S, text_stream *p, int e) {
 	return Analyser::is_reserved_word(&(S->sect_target->symbols), p, e);
+}
+
+source_line *Analyser::get_defn_line(section *S, text_stream *p, int e) {
+	hash_table_entry *hte = Analyser::find_hash_entry(&(S->sect_target->symbols), p, FALSE);
+	if ((hte) && (hte->reserved_word & (1 << e))) return hte->definition_line;
+	return NULL;
+}
+
+function *Analyser::get_function(section *S, text_stream *p, int e) {
+	hash_table_entry *hte = Analyser::find_hash_entry(&(S->sect_target->symbols), p, FALSE);
+	if ((hte) && (hte->reserved_word & (1 << e))) return hte->as_function;
+	return NULL;
 }
 
 @ Now we turn back to the actual analysis. When we spot an identifier that
