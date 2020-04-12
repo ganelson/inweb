@@ -438,6 +438,35 @@ It's also possible to disable cross-referencing entirely with:
 Cross-References Notation: Off
 =
 
+@h Colonies.
+A collection of webs gathered in one place is, for want of a better word,
+called a "colony". (Some social species of spiders form colonies, and share
+webs which are collectively woven.)
+
+Running Inweb with |-colony F| tells it that the file |F| lists the webs and
+modules making up the current colony. This affects only weaving, and allows
+cross-referencing across webs which do not share any actual code. For
+example, here is the current version of the colony file for the Inweb
+repository:
+= (text from Figures/colony.txt)
+As this demonstrates, either webs, or modules, or both, can be included.
+Each one gives (a) a short name, (b) a location relative to the current
+working directory, and (c) a similar location for its woven collection of
+files.
+
+The practical effect of this is that a cross-reference like this can work,
+even from one web to another: see //goldbach: The Sieve of Eratosthenes//.
+That last sentence was typed as:
+= (text as Inweb)
+	The practical effect of this is that a cross-reference like this can work,
+	even from one web to another: see //goldbach: The Sieve of Eratosthenes//.
+=
+
+Cross-references to other webs or modules in the same colony can be to chapters
+or sections, or simply to the entire web in question -- see //goldbach// --
+but not to functions or types in those webs: that would require Inweb to read
+every web in the colony into memory, which would slow it down too much.
+
 @h Figures.
 Images to be included in weaves of a web are called "Figures", as they
 would be in a printed book. These images should ideally be in PNG, JPG or PDF

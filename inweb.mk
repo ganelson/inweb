@@ -84,6 +84,7 @@ commit:
 pages:
 	$(INWEB) -help > $(ME)/Figures/help.txt
 	$(INWEB) -show-languages > $(ME)/Figures/languages.txt
+	cp -f $(ME)/docs/docs-src/colony.txt $(ME)/Figures/colony.txt
 	$(INWEB) -advance-build-file $(ME)/build.txt
 	mkdir -p $(ME)/docs
 	rm -f $(ME)/docs/*.html

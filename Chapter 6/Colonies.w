@@ -117,25 +117,21 @@ int Colonies::resolve_reference_in_weave(text_stream *url, text_stream *title,
 		module *found_M = Colonies::as_module(search_CM, L, Wm);
 		section_md *found_Sm = FIRST_IN_LINKED_LIST(section_md, found_M->sections_md);
 		int bare_module_name = TRUE;
+		WRITE_TO(title, "%S", search_CM->name);
 		@<Resolved@>;
 		return TRUE;
 	}
 
 	if (Regexp::match(&mr, text, L"(%c*?): (%c*)")) {
-		search_M = NULL;
-		external = TRUE;
-		if (search_M == NULL) {
-			search_CM = Colonies::member(mr.exp[0]);
-			if (search_CM) search_M = Colonies::as_module(search_CM, L, Wm);
+		search_CM = Colonies::member(mr.exp[0]);
+		if (search_CM) {
+			module *found_M = Colonies::as_module(search_CM, L, Wm);
+			if (found_M) {
+				search_M = found_M;
+				text = Str::duplicate(mr.exp[1]);
+				external = TRUE;
+			}
 		}
-		if (search_M == NULL) {
-			TEMPORARY_TEXT(err);
-			WRITE_TO(err, "unrecognised web/module '%S' - use -colony?", mr.exp[0]);
-			Main::error_in_web(err, L);
-			Regexp::dispose_of(&mr);
-			return FALSE;
-		}
-		text = Str::duplicate(mr.exp[1]);
 	}
 	Regexp::dispose_of(&mr);
 
@@ -209,11 +205,8 @@ int Colonies::resolve_reference_in_weave(text_stream *url, text_stream *title,
 		}
 		if (found == FALSE) internal_error("no relation made");
 		if (Str::len(url) > 0) WRITE_TO(url, "/");
-		if (bare_module_name)
-			WRITE_TO(url, "index.html");
-		else if (found_Sm)
-			HTMLFormat::section_URL(url, wv, found_Sm); 
-		WRITE_TO(title, "%S", search_CM->name);
+		if (bare_module_name) WRITE_TO(url, "index.html");
+		else if (found_Sm) HTMLFormat::section_URL(url, wv, found_Sm); 
 		if (bare_module_name == FALSE)
 			WRITE_TO(title, " (in %S)", search_CM->name);
 	} else {

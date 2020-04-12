@@ -95,7 +95,7 @@ void Main::follow_instructions(inweb_instructions *ins) {
 			TRUE);
 		W->redirect_weaves_to = ins->weave_into_setting;
 		Reader::read_web(W, ins->verbose_switch);
-		Parser::parse_web(W, ins->inweb_mode, ins->sequential);
+		Parser::parse_web(W, ins->inweb_mode);
 	}
 	if (no_inweb_errors == 0) {
 		if (ins->inweb_mode == TRANSLATE_MODE) @<Translate a makefile@>

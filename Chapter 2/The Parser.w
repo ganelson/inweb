@@ -14,7 +14,7 @@ function definitions are recognised in C programs.) There is no requirement
 for it to do anything.
 
 =
-void Parser::parse_web(web *W, int inweb_mode, int sequential) {
+void Parser::parse_web(web *W, int inweb_mode) {
 	chapter *C;
 	section *S;
 	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)

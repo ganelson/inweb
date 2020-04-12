@@ -1,0 +1,5 @@
+web: "inweb" at "inweb" in "inweb/docs/inweb"
+module: "foundation" at "inweb/foundation-module" in "inweb/docs/foundation-module"
+web: "foundation-test" at "inweb/foundation-test" in "inweb/docs/foundation-test"
+web: "goldbach" at "inweb/Examples/goldbach" in "inweb/docs/goldbach"
+web: "twinprimes" at "inweb/Examples/twinprimes.inweb" in "inweb/docs/twinprimes"

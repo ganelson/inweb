@@ -784,17 +784,16 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define WEAVE_CLSW 23
 #define WEAVE_INTO_CLSW 24
 #define WEAVE_TO_CLSW 25
-#define SEQUENTIAL_CLSW 26
-#define OPEN_CLSW 27
-#define WEAVE_AS_CLSW 28
-#define WEAVE_TAG_CLSW 29
-#define WEAVE_DOCS_CLSW 30
-#define BREADCRUMB_CLSW 31
-#define NAVIGATION_CLSW 32
-#define COLONY_CLSW 33
+#define OPEN_CLSW 26
+#define WEAVE_AS_CLSW 27
+#define WEAVE_TAG_CLSW 28
+#define WEAVE_DOCS_CLSW 29
+#define BREADCRUMB_CLSW 30
+#define NAVIGATION_CLSW 31
+#define COLONY_CLSW 32
 #define TANGLING_CLSG 5
-#define TANGLE_CLSW 34
-#define TANGLE_TO_CLSW 35
+#define TANGLE_CLSW 33
+#define TANGLE_TO_CLSW 34
 #define LOOP_WITHIN_TANGLE(C, S, T)\
     	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)\
     		LOOP_OVER_LINKED_LIST(S, section, C->sections)\
@@ -974,7 +973,7 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define HTML_IN_P 1 /* write position in HTML file is currently outside p */
 #define HTML_IN_PRE 2 /* write position in HTML file is currently outside pre */
 #define HTML_IN_LI 3 /* write position in HTML file is currently outside li */
-#define NO_DEFINED_CLSW_VALUES 36
+#define NO_DEFINED_CLSW_VALUES 35
 #define NO_DEFINED_DA_VALUES 4
 #define NO_DEFINED_MT_VALUES 66
 #define NO_DEFINED_MREASON_VALUES 5
@@ -3098,15 +3097,15 @@ void  Main__follow_instructions(inweb_instructions *ins) ;
 void  Main__error_in_web(text_stream *message, source_line *sl) ;
 #line 64 "inweb/Chapter 1/Configuration.w"
 inweb_instructions  Configuration__read(int argc, char **argv) ;
-#line 260 "inweb/Chapter 1/Configuration.w"
+#line 256 "inweb/Chapter 1/Configuration.w"
 void  Configuration__switch(int id, int val, text_stream *arg, void *state) ;
-#line 364 "inweb/Chapter 1/Configuration.w"
+#line 358 "inweb/Chapter 1/Configuration.w"
 breadcrumb_request * Configuration__breadcrumb(text_stream *arg) ;
-#line 384 "inweb/Chapter 1/Configuration.w"
+#line 378 "inweb/Chapter 1/Configuration.w"
 void  Configuration__bareword(int id, text_stream *opt, void *state) ;
-#line 399 "inweb/Chapter 1/Configuration.w"
+#line 393 "inweb/Chapter 1/Configuration.w"
 void  Configuration__set_range(inweb_instructions *args, text_stream *opt) ;
-#line 431 "inweb/Chapter 1/Configuration.w"
+#line 425 "inweb/Chapter 1/Configuration.w"
 void  Configuration__set_fundamental_mode(inweb_instructions *args, int new_material) ;
 #line 38 "inweb/Chapter 1/Patterns.w"
 weave_pattern * Patterns__find(web *W, text_stream *name) ;
@@ -3157,7 +3156,7 @@ source_line * Lines__new_source_line_in(text_stream *line, text_file_position *t
 #line 113 "inweb/Chapter 2/Line Categories.w"
 char * Lines__category_name(int cat) ;
 #line 17 "inweb/Chapter 2/The Parser.w"
-void  Parser__parse_web(web *W, int inweb_mode, int sequential) ;
+void  Parser__parse_web(web *W, int inweb_mode) ;
 #line 721 "inweb/Chapter 2/The Parser.w"
 text_stream * Parser__extract_purpose(text_stream *prologue, source_line *XL, section *S, source_line **adjust) ;
 #line 742 "inweb/Chapter 2/The Parser.w"
@@ -13696,7 +13695,7 @@ void Main__follow_instructions(inweb_instructions *ins) {
 			TRUE);
 		W->redirect_weaves_to = ins->weave_into_setting;
 		Reader__read_web(W, ins->verbose_switch);
-		Parser__parse_web(W, ins->inweb_mode, ins->sequential);
+		Parser__parse_web(W, ins->inweb_mode);
 	}
 	if (no_inweb_errors == 0) {
 		if (ins->inweb_mode == TRANSLATE_MODE) 
@@ -13940,7 +13939,6 @@ inweb_instructions Configuration__read(int argc, char **argv) {
 	args.tangle_setting = NULL;
 	args.weave_to_setting = NULL;
 	args.weave_into_setting = NULL;
-	args.sequential = FALSE;
 	args.makefile_setting = NULL;
 	args.gitignore_setting = NULL;
 	args.advance_setting = NULL;
@@ -13962,7 +13960,7 @@ inweb_instructions Configuration__read(int argc, char **argv) {
 ;
 	
 {
-#line 164 "inweb/Chapter 1/Configuration.w"
+#line 162 "inweb/Chapter 1/Configuration.w"
 	CommandLine__declare_heading(L"inweb: a tool for literate programming\n\n"
 		L"Usage: inweb WEB OPTIONS RANGE\n\n"
 		L"WEB must be a directory holding a literate program (a 'web')\n\n"
@@ -14027,8 +14025,6 @@ inweb_instructions Configuration__read(int argc, char **argv) {
 		L"weave, but into directory X");
 	CommandLine__declare_switch(WEAVE_TO_CLSW, L"weave-to", 2,
 		L"weave, but to filename X (for single files only)");
-	CommandLine__declare_boolean_switch(SEQUENTIAL_CLSW, L"sequential", 1,
-		L"name woven leaves with sequential numbering", FALSE);
 	CommandLine__declare_switch(OPEN_CLSW, L"open", 1,
 		L"weave then open woven file");
 	CommandLine__declare_switch(WEAVE_AS_CLSW, L"weave-as", 2,
@@ -14072,25 +14068,25 @@ inweb_instructions Configuration__read(int argc, char **argv) {
 	return args;
 }
 
-#line 122 "inweb/Chapter 1/Configuration.w"
+#line 121 "inweb/Chapter 1/Configuration.w"
 
-#line 124 "inweb/Chapter 1/Configuration.w"
+#line 123 "inweb/Chapter 1/Configuration.w"
 
-#line 130 "inweb/Chapter 1/Configuration.w"
+#line 129 "inweb/Chapter 1/Configuration.w"
 
-#line 132 "inweb/Chapter 1/Configuration.w"
+#line 131 "inweb/Chapter 1/Configuration.w"
 
-#line 143 "inweb/Chapter 1/Configuration.w"
+#line 142 "inweb/Chapter 1/Configuration.w"
 
-#line 145 "inweb/Chapter 1/Configuration.w"
+#line 144 "inweb/Chapter 1/Configuration.w"
+
+#line 155 "inweb/Chapter 1/Configuration.w"
 
 #line 157 "inweb/Chapter 1/Configuration.w"
 
-#line 159 "inweb/Chapter 1/Configuration.w"
+#line 160 "inweb/Chapter 1/Configuration.w"
 
-#line 162 "inweb/Chapter 1/Configuration.w"
-
-#line 260 "inweb/Chapter 1/Configuration.w"
+#line 256 "inweb/Chapter 1/Configuration.w"
 void Configuration__switch(int id, int val, text_stream *arg, void *state) {
 	inweb_instructions *args = (inweb_instructions *) state;
 	switch (id) {
@@ -14162,8 +14158,6 @@ void Configuration__switch(int id, int val, text_stream *arg, void *state) {
 		case WEAVE_TO_CLSW:
 			args->weave_to_setting = Filenames__from_text(arg);
 			Configuration__set_fundamental_mode(args, WEAVE_MODE); break;
-		case SEQUENTIAL_CLSW:
-			args->sequential = val; break;
 		case OPEN_CLSW:
 			args->open_pdf_switch = TRUE;
 			Configuration__set_fundamental_mode(args, WEAVE_MODE); break;
@@ -14210,7 +14204,7 @@ breadcrumb_request *Configuration__breadcrumb(text_stream *arg) {
 	return BR;
 }
 
-#line 384 "inweb/Chapter 1/Configuration.w"
+#line 378 "inweb/Chapter 1/Configuration.w"
 void Configuration__bareword(int id, text_stream *opt, void *state) {
 	inweb_instructions *args = (inweb_instructions *) state;
 	if ((args->chosen_web == NULL) && (args->chosen_file == NULL)) {
@@ -14221,7 +14215,7 @@ void Configuration__bareword(int id, text_stream *opt, void *state) {
 	} else Configuration__set_range(args, opt);
 }
 
-#line 399 "inweb/Chapter 1/Configuration.w"
+#line 393 "inweb/Chapter 1/Configuration.w"
 void Configuration__set_range(inweb_instructions *args, text_stream *opt) {
 	match_results mr = Regexp__create_mr();
 	if (Str__eq_wide_string(opt, L"index")) {
@@ -14251,7 +14245,7 @@ void Configuration__set_range(inweb_instructions *args, text_stream *opt) {
 	Regexp__dispose_of(&mr);
 }
 
-#line 431 "inweb/Chapter 1/Configuration.w"
+#line 425 "inweb/Chapter 1/Configuration.w"
 void Configuration__set_fundamental_mode(inweb_instructions *args, int new_material) {
 	if ((args->inweb_mode != NO_MODE) && (args->inweb_mode != new_material))
 		Errors__fatal("can only do one at a time - weaving, tangling or analysing");
@@ -14907,7 +14901,7 @@ char *Lines__category_name(int cat) {
 #line 155 "inweb/Chapter 2/Line Categories.w"
 
 #line 17 "inweb/Chapter 2/The Parser.w"
-void Parser__parse_web(web *W, int inweb_mode, int sequential) {
+void Parser__parse_web(web *W, int inweb_mode) {
 	chapter *C;
 	section *S;
 	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
@@ -25341,9 +25335,10 @@ int Colonies__resolve_reference_in_weave(text_stream *url, text_stream *title,
 		module *found_M = Colonies__as_module(search_CM, L, Wm);
 		section_md *found_Sm = FIRST_IN_LINKED_LIST(section_md, found_M->sections_md);
 		int bare_module_name = TRUE;
+		WRITE_TO(title, "%S", search_CM->name);
 		
 {
-#line 185 "inweb/Chapter 6/Colonies.w"
+#line 181 "inweb/Chapter 6/Colonies.w"
 	if (found_M == NULL) internal_error("could not locate M");
 	if (search_CM) {
 		pathname *from = Filenames__get_path_to(wv->weave_to);
@@ -25371,11 +25366,8 @@ int Colonies__resolve_reference_in_weave(text_stream *url, text_stream *title,
 		}
 		if (found == FALSE) internal_error("no relation made");
 		if (Str__len(url) > 0) WRITE_TO(url, "/");
-		if (bare_module_name)
-			WRITE_TO(url, "index.html");
-		else if (found_Sm)
-			HTMLFormat__section_URL(url, wv, found_Sm);
-		WRITE_TO(title, "%S", search_CM->name);
+		if (bare_module_name) WRITE_TO(url, "index.html");
+		else if (found_Sm) HTMLFormat__section_URL(url, wv, found_Sm);
 		if (bare_module_name == FALSE)
 			WRITE_TO(title, " (in %S)", search_CM->name);
 	} else {
@@ -25390,26 +25382,21 @@ int Colonies__resolve_reference_in_weave(text_stream *url, text_stream *title,
 	return TRUE;
 
 }
-#line 120 "inweb/Chapter 6/Colonies.w"
+#line 121 "inweb/Chapter 6/Colonies.w"
 ;
 		return TRUE;
 	}
 
 	if (Regexp__match(&mr, text, L"(%c*?): (%c*)")) {
-		search_M = NULL;
-		external = TRUE;
-		if (search_M == NULL) {
-			search_CM = Colonies__member(mr.exp[0]);
-			if (search_CM) search_M = Colonies__as_module(search_CM, L, Wm);
+		search_CM = Colonies__member(mr.exp[0]);
+		if (search_CM) {
+			module *found_M = Colonies__as_module(search_CM, L, Wm);
+			if (found_M) {
+				search_M = found_M;
+				text = Str__duplicate(mr.exp[1]);
+				external = TRUE;
+			}
 		}
-		if (search_M == NULL) {
-			TEMPORARY_TEXT(err);
-			WRITE_TO(err, "unrecognised web/module '%S' - use -colony?", mr.exp[0]);
-			Main__error_in_web(err, L);
-			Regexp__dispose_of(&mr);
-			return FALSE;
-		}
-		text = Str__duplicate(mr.exp[1]);
 	}
 	Regexp__dispose_of(&mr);
 
@@ -25423,7 +25410,7 @@ int Colonies__resolve_reference_in_weave(text_stream *url, text_stream *title,
 	if (N == 0) {
 		if ((L) && (external == FALSE)) 
 {
-#line 165 "inweb/Chapter 6/Colonies.w"
+#line 161 "inweb/Chapter 6/Colonies.w"
 	language_function *fn;
 	LOOP_OVER(fn, language_function) {
 		if (Str__eq_insensitive(fn->function_name, text)) {
@@ -25444,7 +25431,7 @@ int Colonies__resolve_reference_in_weave(text_stream *url, text_stream *title,
 	}
 
 }
-#line 150 "inweb/Chapter 6/Colonies.w"
+#line 146 "inweb/Chapter 6/Colonies.w"
 ;
 		Main__error_in_web(TL_IS_534, L);
 		return FALSE;
@@ -25456,7 +25443,7 @@ int Colonies__resolve_reference_in_weave(text_stream *url, text_stream *title,
 	} else {
 		
 {
-#line 185 "inweb/Chapter 6/Colonies.w"
+#line 181 "inweb/Chapter 6/Colonies.w"
 	if (found_M == NULL) internal_error("could not locate M");
 	if (search_CM) {
 		pathname *from = Filenames__get_path_to(wv->weave_to);
@@ -25484,11 +25471,8 @@ int Colonies__resolve_reference_in_weave(text_stream *url, text_stream *title,
 		}
 		if (found == FALSE) internal_error("no relation made");
 		if (Str__len(url) > 0) WRITE_TO(url, "/");
-		if (bare_module_name)
-			WRITE_TO(url, "index.html");
-		else if (found_Sm)
-			HTMLFormat__section_URL(url, wv, found_Sm);
-		WRITE_TO(title, "%S", search_CM->name);
+		if (bare_module_name) WRITE_TO(url, "index.html");
+		else if (found_Sm) HTMLFormat__section_URL(url, wv, found_Sm);
 		if (bare_module_name == FALSE)
 			WRITE_TO(title, " (in %S)", search_CM->name);
 	} else {
@@ -25503,7 +25487,7 @@ int Colonies__resolve_reference_in_weave(text_stream *url, text_stream *title,
 	return TRUE;
 
 }
-#line 159 "inweb/Chapter 6/Colonies.w"
+#line 155 "inweb/Chapter 6/Colonies.w"
 ;
 		return TRUE;
 	}

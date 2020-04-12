@@ -142,7 +142,6 @@ then declare them.
         <span class="identifier">args</span><span class="plain">.</span><span class="element">tangle_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">args</span><span class="plain">.</span><span class="element">weave_to_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">args</span><span class="plain">.</span><span class="element">weave_into_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">args</span><span class="plain">.</span><span class="element">sequential</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
         <span class="identifier">args</span><span class="plain">.</span><span class="element">makefile_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">args</span><span class="plain">.</span><span class="element">gitignore_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">args</span><span class="plain">.</span><span class="element">advance_setting</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -194,7 +193,6 @@ provides automatically.
     <span class="definitionkeyword">enum</span> <span class="constant">WEAVE_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">WEAVE_INTO_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">WEAVE_TO_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SEQUENTIAL_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">OPEN_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">WEAVE_AS_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">WEAVE_TAG_CLSW</span>
@@ -276,8 +274,6 @@ provides automatically.
             <span class="identifier">L</span><span class="string">"weave, but into directory X"</span><span class="plain">);</span>
         <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">WEAVE_TO_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"weave-to"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"weave, but to filename X (for single files only)"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-cla.html#SP6">CommandLine::declare_boolean_switch</a></span><span class="plain">(</span><span class="constant">SEQUENTIAL_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"sequential"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
-            <span class="identifier">L</span><span class="string">"name woven leaves with sequential numbering"</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
         <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">OPEN_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"open"</span><span class="plain">, </span><span class="constant">1</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"weave then open woven file"</span><span class="plain">);</span>
         <span class="functiontext"><a href="3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">WEAVE_AS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"weave-as"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
@@ -385,8 +381,6 @@ provides automatically.
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">WEAVE_TO_CLSW:</span>
                 <span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">weave_to_setting</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP3">Filenames::from_text</a></span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">);</span>
                 <span class="functiontext"><a href="#SP6">Configuration::set_fundamental_mode</a></span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="constant">WEAVE_MODE</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">SEQUENTIAL_CLSW:</span>
-                <span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">sequential</span><span class="plain"> = </span><span class="identifier">val</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">OPEN_CLSW:</span>
                 <span class="identifier">args</span><span class="plain">-&gt;</span><span class="element">open_pdf_switch</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
                 <span class="functiontext"><a href="#SP6">Configuration::set_fundamental_mode</a></span><span class="plain">(</span><span class="identifier">args</span><span class="plain">, </span><span class="constant">WEAVE_MODE</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
