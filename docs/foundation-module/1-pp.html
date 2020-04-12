@@ -428,7 +428,7 @@ memory space. Using <code class="display"><span class="extract">posix_spawn()</s
 
 <p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
 
-<p class="endnote">The function Platform::mkdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Pathnames (<a href="3-pth.html#SP8">&#167;8</a>).</p>
+<p class="endnote">The function Platform::mkdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Pathnames (<a href="3-pth.html#SP9">&#167;9</a>).</p>
 
 <p class="endnote">The function Platform::opendir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</p>
 
@@ -472,7 +472,7 @@ anything different which was originally in <code class="display"><span class="ex
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::rsync<button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Platform::rsync</b>:<br>Pathnames - <a href="3-pth.html#SP9">&#167;9</a></span></button></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_source</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_dest</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::rsync<button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Platform::rsync</b>:<br>Pathnames - <a href="3-pth.html#SP10">&#167;10</a></span></button></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_source</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_dest</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">rsync_command</span><span class="plain">[10*</span><span class="constant">MAX_FILENAME_LENGTH</span><span class="plain">];</span>
         <span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">, </span><span class="string">"rsync -a --delete "</span><span class="plain">);</span>
         <span class="functiontext"><a href="#SP14">Platform::quote_text</a></span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="identifier">transcoded_source</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>

@@ -53,7 +53,7 @@ transcoded the other way.
 </p>
 
 <pre class="display">
-    <span class="reserved">scan_directory</span><span class="plain"> *</span><span class="functiontext">Directories::open<button class="popup" onclick="togglePopup('usagePopup234')">...<span class="popuptext" id="usagePopup234">Usage of <b>Directories::open</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
+    <span class="reserved">scan_directory</span><span class="plain"> *</span><span class="functiontext">Directories::open<button class="popup" onclick="togglePopup('usagePopup235')">...<span class="popuptext" id="usagePopup235">Usage of <b>Directories::open</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
         <span class="reserved">scan_directory</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">scan_directory</span><span class="plain">);</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pn</span><span class="plain">, </span><span class="string">"%p"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
@@ -64,7 +64,7 @@ transcoded the other way.
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">D</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Directories::next<button class="popup" onclick="togglePopup('usagePopup235')">...<span class="popuptext" id="usagePopup235">Usage of <b>Directories::next</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">scan_directory</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">) {</span>
+    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Directories::next<button class="popup" onclick="togglePopup('usagePopup236')">...<span class="popuptext" id="usagePopup236">Usage of <b>Directories::next</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">scan_directory</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">) {</span>
         <span class="reserved">char</span><span class="plain"> </span><span class="identifier">leafname_Cs</span><span class="plain">[</span><span class="constant">MAX_FILENAME_LENGTH</span><span class="plain">];</span>
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain">) {</span>
@@ -76,7 +76,7 @@ transcoded the other way.
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
     <span class="plain">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Directories::close<button class="popup" onclick="togglePopup('usagePopup236')">...<span class="popuptext" id="usagePopup236">Usage of <b>Directories::close</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">scan_directory</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Directories::close<button class="popup" onclick="togglePopup('usagePopup237')">...<span class="popuptext" id="usagePopup237">Usage of <b>Directories::close</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">scan_directory</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">) {</span>
         <span class="functiontext"><a href="1-wp.html#SP7">Platform::closedir</a></span><span class="plain">(</span><span class="identifier">D</span><span class="plain">-&gt;</span><span class="element">directory_handle</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>

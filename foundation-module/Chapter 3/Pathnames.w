@@ -196,6 +196,38 @@ text_stream *Pathnames::directory_name(pathname *P) {
 	return P->intermediate;
 }
 
+@h Relative URLs.
+Suppose a web page in the directory at |from| wants to link to a page in
+the directory |to|. The following composes a minimal-length URL to do so:
+possibly, if they are in fact the same directory, an empty one.
+
+=
+void Pathnames::relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) {
+	int found = FALSE;
+	for (pathname *P = to; P && (found == FALSE); P = Pathnames::up(P)) {
+		TEMPORARY_TEXT(PT);
+		WRITE_TO(PT, "%p", P);
+		int q_up_count = 0;
+		for (pathname *Q = from; Q && (found == FALSE); Q = Pathnames::up(Q)) {
+			TEMPORARY_TEXT(QT);
+			WRITE_TO(QT, "%p", Q);
+			if (Str::eq(PT, QT)) {
+				for (int i=0; i<q_up_count; i++)
+					WRITE("../");
+				TEMPORARY_TEXT(FPT);
+				WRITE_TO(FPT, "%p", to);
+				Str::substr(OUT, Str::at(FPT, Str::len(PT) + 1), Str::end(FPT));
+				found = TRUE;
+			}
+			DISCARD_TEXT(QT);
+			q_up_count++;
+		}
+		DISCARD_TEXT(PT);
+	}
+	if (found == FALSE) internal_error("no relation made");
+	if (Str::len(OUT) > 0) WRITE("/");
+}
+
 @h Existence in the file system.
 Just because we have a pathname, it doesn't follow that any folder exists
 on the file system with that path.
