@@ -17,6 +17,8 @@ case, |_array_MT| appended. MT stands for "memory type".
 
 @e breadcrumb_request_MT
 @e chapter_MT
+@e colony_MT
+@e colony_member_MT
 @e colouring_language_block_MT
 @e colouring_rule_MT
 @e enumeration_set_MT
@@ -56,6 +58,8 @@ types.
 ALLOCATE_IN_ARRAYS(source_line, 1000)
 ALLOCATE_INDIVIDUALLY(breadcrumb_request)
 ALLOCATE_INDIVIDUALLY(chapter)
+ALLOCATE_INDIVIDUALLY(colony)
+ALLOCATE_INDIVIDUALLY(colony_member)
 ALLOCATE_INDIVIDUALLY(colouring_language_block)
 ALLOCATE_INDIVIDUALLY(colouring_rule)
 ALLOCATE_INDIVIDUALLY(enumeration_set)

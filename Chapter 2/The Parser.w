@@ -17,13 +17,9 @@ for it to do anything.
 void Parser::parse_web(web *W, int inweb_mode, int sequential) {
 	chapter *C;
 	section *S;
-	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters) {
-		int section_counter = 1;
-		LOOP_OVER_LINKED_LIST(S, section, C->sections) {
+	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
+		LOOP_OVER_LINKED_LIST(S, section, C->sections)
 			@<Parse a section@>;
-			section_counter++;
-		}
-	}
 	LanguageMethods::parse_types(W, W->main_language);
 	LanguageMethods::parse_functions(W, W->main_language);
 	LanguageMethods::further_parsing(W, W->main_language);
@@ -130,7 +126,7 @@ immediately adjacent on the same line.
 reparsing from there.
 
 @<Insert an implied paragraph break@> =
-	source_line *NL = Lines::new_source_line(I"@", &(L->source));
+	source_line *NL = Lines::new_source_line_in(I"@", &(L->source), S);
 	PL->next_line = NL;
 	NL->next_line = L;
 	L = PL;
@@ -174,109 +170,39 @@ come literally from the source web.
 		L->category = CHAPTER_HEADING_LCAT;
 	}
 
-@ The top line of a section gives its title and range; in InC, it can
-also give the namespace for its functions.
+@ The top line of a section gives its title; in InC, it can also give the
+namespace for its functions.
 
 @<Parse the line as a probable section heading@> =
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, L->text, L"%[(%C+)%] (%C+/%C+): (%c+).")) {
+		if (S->md->using_syntax >= V2_SYNTAX)
+			Parser::wrong_version(S->md->using_syntax, L,
+			"section range in header line", V1_SYNTAX);
 		S->sect_namespace = Str::duplicate(mr.exp[0]);
-		S->sect_range = Str::duplicate(mr.exp[1]);
+		S->md->sect_range = Str::duplicate(mr.exp[1]);
 		S->md->sect_title = Str::duplicate(mr.exp[2]);
 		L->text_operand = Str::duplicate(mr.exp[2]);
 		L->category = SECTION_HEADING_LCAT;
 	} else if (Regexp::match(&mr, L->text, L"(%C+/%C+): (%c+).")) {
-		S->sect_range = Str::duplicate(mr.exp[0]);
+		if (S->md->using_syntax >= V2_SYNTAX)
+			Parser::wrong_version(S->md->using_syntax, L,
+			"section range in header line", V1_SYNTAX);
+		S->md->sect_range = Str::duplicate(mr.exp[0]);
 		S->md->sect_title = Str::duplicate(mr.exp[1]);
 		L->text_operand = Str::duplicate(mr.exp[1]);
 		L->category = SECTION_HEADING_LCAT;
 	} else if (Regexp::match(&mr, L->text, L"%[(%C+::)%] (%c+).")) {
 		S->sect_namespace = Str::duplicate(mr.exp[0]);
 		S->md->sect_title = Str::duplicate(mr.exp[1]);
-		@<Set the range to an automatic abbreviation of the relative pathname@>;
 		L->text_operand = Str::duplicate(mr.exp[1]);
 		L->category = SECTION_HEADING_LCAT;
 	} else if (Regexp::match(&mr, L->text, L"(%c+).")) {
 		S->md->sect_title = Str::duplicate(mr.exp[0]);
-		@<Set the range to an automatic abbreviation of the relative pathname@>;
 		L->text_operand = Str::duplicate(mr.exp[0]);
 		L->category = SECTION_HEADING_LCAT;
 	}
 	Regexp::dispose_of(&mr);
-
-@ If no range is supplied, we make one ourselves.
-
-@<Set the range to an automatic abbreviation of the relative pathname@> =
-	if (Str::len(S->sect_range) == 0) {
-		if (sequential) {
-			WRITE_TO(S->sect_range, "%S/", C->md->ch_range);
-			WRITE_TO(S->sect_range, "s%d", section_counter);
-		} else {
-			text_stream *from = S->md->sect_title;
-			int letters_from_each_word = 5;
-			do {
-				Str::clear(S->sect_range);
-				WRITE_TO(S->sect_range, "%S/", C->md->ch_range);
-				@<Make the tail using this many consonants from each word@>;
-				if (--letters_from_each_word == 0) break;
-			} while (Str::len(S->sect_range) > 5);
-
-			@<Terminate with disambiguating numbers in case of collisions@>;
-		}
-	}
-
-@ We collapse words to an initial letter plus consonants: thus "electricity"
-would be "elctrcty", since we don't count "y" as a vowel here.
-
-@<Make the tail using this many consonants from each word@> =
-	int sn = 0, sw = Str::len(S->sect_range);
-	if (Str::get_at(from, sn) == FOLDER_SEPARATOR) sn++;
-	int letters_from_current_word = 0;
-	while ((Str::get_at(from, sn)) && (Str::get_at(from, sn) != '.')) {
-		if (Str::get_at(from, sn) == ' ') letters_from_current_word = 0;
-		else {
-			if (letters_from_current_word < letters_from_each_word) {
-				if (Str::get_at(from, sn) != '-') {
-					int l = tolower(Str::get_at(from, sn));
-					if ((letters_from_current_word == 0) ||
-						((l != 'a') && (l != 'e') && (l != 'i') && (l != 'o') && (l != 'u'))) {
-						Str::put_at(S->sect_range, sw++, l); Str::put_at(S->sect_range, sw, 0);
-						letters_from_current_word++;
-					}
-				}
-			}
-		}
-		sn++;
-	}
-
-@ We never want two sections to have the same range.
-
-@<Terminate with disambiguating numbers in case of collisions@> =
-	TEMPORARY_TEXT(original_range);
-	Str::copy(original_range, S->sect_range);
-	int disnum = 0, collision = FALSE;
-	do {
-		if (disnum++ > 0) {
-			int ldn = 4;
-			if (disnum >= 1000) ldn = 3;
-			else if (disnum >= 100) ldn = 2;
-			else if (disnum >= 10) ldn = 1;
-			else ldn = 0;
-			Str::clear(S->sect_range);
-			WRITE_TO(S->sect_range, "%S", original_range);
-			Str::truncate(S->sect_range, Str::len(S->sect_range) - ldn);
-			WRITE_TO(S->sect_range, "%d", disnum);
-		}
-		collision = FALSE;
-		chapter *C;
-		section *S2;
-		LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
-			LOOP_OVER_LINKED_LIST(S2, section, C->sections)
-				if ((S2 != S) && (Str::eq(S2->sect_range, S->sect_range))) {
-					collision = TRUE; break;
-				}
-	} while (collision);
-	DISCARD_TEXT(original_range);
 
 @ Version 1 syntax was cluttered up with a number of hardly-used markup
 syntaxes called "commands", written in double squared brackets |[[Thus]]|.
@@ -471,13 +397,13 @@ division in the current section.
 	text_stream *T;
 	source_line *latest = L;
 	LOOP_OVER_LINKED_LIST(T, text_stream, lines) {
-		source_line *TL = Lines::new_source_line(T, &(L->source));
+		source_line *TL = Lines::new_source_line_in(T, &(L->source), S);
 		TL->next_line = latest->next_line;
 		TL->plainer = L->plainer;
 		latest->next_line = TL;
 		latest = TL;
 	}
-	source_line *EEL = Lines::new_source_line(I"=", &(L->source));
+	source_line *EEL = Lines::new_source_line_in(I"=", &(L->source), S);
 	EEL->next_line = latest->next_line;
 	latest->next_line = EEL;
 	code_lcat_for_body = TEXT_EXTRACT_LCAT;

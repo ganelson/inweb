@@ -563,8 +563,8 @@ void Formats::text_r(OUTPUT_STREAM, weave_target *wv, text_stream *id,
 @<Attempt to resolve the cross-reference@> =
 	TEMPORARY_TEXT(url);
 	TEMPORARY_TEXT(title);
-	if (Formats::resolve_reference_in_weave(url, title, wv, reference,
-		wv->current_weave_line)) {
+	if (Colonies::resolve_reference_in_weave(url, title, wv, reference,
+		wv->weave_web->md, wv->current_weave_line)) {
 		Formats::text_r(OUT, wv, before, within, comments);
 		Formats::url(OUT, wv, url, title, FALSE);
 		Formats::text_r(OUT, wv, after, within, comments);
@@ -572,67 +572,6 @@ void Formats::text_r(OUTPUT_STREAM, weave_target *wv, text_stream *id,
 	}
 	DISCARD_TEXT(url);
 	DISCARD_TEXT(title);
-
-@ The following must decide what a reference like "Chapter 3" should refer
-to: that is, whether it makes unamgiguous sense, and if so, what URL we should
-link to, and what the full text of the link might be.
-
-=
-int Formats::resolve_reference_in_weave(text_stream *url, text_stream *title,
-	weave_target *wv, text_stream *text, source_line *L) {
-	module *found_M = NULL;
-	section_md *found_Sm = NULL;
-	int named_as_module = FALSE;
-	int N = WebModules::named_reference(&found_M, &found_Sm, &named_as_module,
-		title, wv->weave_web->md->as_module, text, FALSE);
-	if (N == 0) {
-		if (L) @<Try references to non-sections@>;
-		Main::error_in_web(I"No section has this name", L);
-		return FALSE;
-	} else if (N > 1) {
-		Main::error_in_web(I"Multiple sections might be meant here", L);
-		WebModules::named_reference(&found_M, &found_Sm, &named_as_module,
-			title, wv->weave_web->md->as_module, text, TRUE);
-		return FALSE;
-	} else {
-		chapter *C;
-		section *S, *found_S = NULL;
-		LOOP_OVER_LINKED_LIST(C, chapter, wv->weave_web->chapters)
-			LOOP_OVER_LINKED_LIST(S, section, C->sections)
-				if (S->md == found_Sm) found_S = S;
-		if (found_S == NULL) internal_error("could not locate S");
-		if (found_M == NULL) internal_error("could not locate M");
-
-		if (found_M != wv->weave_web->md->as_module) {
-			WRITE_TO(url, "../%S-module/", found_M->module_name);
-		}
-		HTMLFormat::section_URL(url, wv, found_S); 
-		if ((named_as_module == FALSE) && (found_M != wv->weave_web->md->as_module)) {
-			WRITE_TO(title, " (in %S)", found_M->module_name);
-		}
-		return TRUE;
-	}
-}
-
-@<Try references to non-sections@> =
-	language_function *fn;
-	LOOP_OVER(fn, language_function) {
-		if (Str::eq_insensitive(fn->function_name, text)) {
-			HTMLFormat::xref(url, wv, fn->function_header_at->owning_paragraph,
-				L->owning_section, TRUE);
-			WRITE_TO(title, "%S", fn->function_name);
-			return TRUE;
-		}
-	}
-	language_type *str;
-	LOOP_OVER(str, language_type) {
-		if (Str::eq_insensitive(str->structure_name, text)) {
-			HTMLFormat::xref(url, wv, str->structure_header_at->owning_paragraph,
-				L->owning_section, TRUE);
-			WRITE_TO(title, "%S", str->structure_name);
-			return TRUE;
-		}
-	}
 
 @ |COMMENTARY_TEXT_FOR_MTID| straightforwardly weaves out a run of contiguous
 text. Ordinarily, any formulae written in TeX notation (i.e., in dollar signs

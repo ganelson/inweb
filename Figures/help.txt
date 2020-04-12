@@ -40,6 +40,7 @@ for analysing a web:
 
 for weaving a web:
   -breadcrumb X          use the text X as a breadcrumb in overhead navigation
+  -colony X              use the file X as a list of webs in this colony
   -navigation X          use the file X as a column of navigation links
   -open                  weave then open woven file
   -sequential            name woven leaves with sequential numbering (default is -no-sequential)

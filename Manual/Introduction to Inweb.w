@@ -6,8 +6,6 @@ What Inweb is, and why it is not CWEB.
 Inweb is a modern system for literate programming written for the Inform
 programming language project.
 
-//Patterns//
-
 This means that it is a preprocessor and organiser of source code. It reads in
 a "web", an expression of a program which mixes code with heavy quantities of
 commentary. Inweb can do two basic things: "weave" the web into a booklet or

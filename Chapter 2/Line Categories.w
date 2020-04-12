@@ -42,7 +42,8 @@ typedef struct source_line {
 } source_line;
 
 @ =
-source_line *Lines::new_source_line(text_stream *line, text_file_position *tfp) {
+source_line *Lines::new_source_line_in(text_stream *line, text_file_position *tfp,
+	section *S) {
 	source_line *sl = CREATE(source_line);
 	sl->text = Str::duplicate(line);
 	sl->text_operand = Str::new();
@@ -62,7 +63,10 @@ source_line *Lines::new_source_line(text_stream *line, text_file_position *tfp) 
 
 	if (tfp) sl->source = *tfp; else sl->source = TextFiles::nowhere();
 
-	sl->owning_section = NULL;
+	sl->owning_section = S;
+	sl->owning_section->sect_extent++;
+	sl->owning_section->owning_chapter->owning_web->web_extent++;
+
 	sl->next_line = NULL;
 	sl->owning_paragraph = NULL;
 	return sl;

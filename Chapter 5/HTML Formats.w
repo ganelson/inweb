@@ -404,8 +404,8 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 @<Attempt to resolve the cross-reference@> =
 	TEMPORARY_TEXT(url);
 	TEMPORARY_TEXT(title);
-	if (Formats::resolve_reference_in_weave(url, title, wv, reference,
-		wv->current_weave_line)) {
+	if (Colonies::resolve_reference_in_weave(url, title, wv, reference,
+		wv->weave_web->md, wv->current_weave_line)) {
 		Formats::url(OUT, wv, url, title, FALSE);
 		i = j + N;
 	}
@@ -430,7 +430,7 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 				if (wv->current_weave_line == defn_line) {
 					language_function *fn = Analyser::get_function(
 						wv->current_weave_line->owning_section, fname, FUNCTION_COLOUR);
-					if ((defn_line) && (fn)) {
+					if ((defn_line) && (fn)	&& (fn->usage_described == FALSE)) {
 						Swarm::ensure_plugin(wv, I"Popups");
 						WRITE("%S", fname);
 						WRITE("<button class=\"popup\" onclick=\"togglePopup('usagePopup%d')\">", popup_counter);
@@ -762,7 +762,7 @@ void HTMLFormat::locale(weave_format *self, text_stream *OUT, weave_target *wv,
 }
 
 @ =
-void HTMLFormat::section_URL(OUTPUT_STREAM, weave_target *wv, section *from) {
+void HTMLFormat::section_URL(OUTPUT_STREAM, weave_target *wv, section_md *from) {
 	TEMPORARY_TEXT(linkto);
 	Str::copy(linkto, from->sect_range);
 	LOOP_THROUGH_TEXT(pos, linkto)
@@ -771,11 +771,12 @@ void HTMLFormat::section_URL(OUTPUT_STREAM, weave_target *wv, section *from) {
 	WRITE_TO(linkto, ".html");
 	WRITE("%S", linkto);
 }
+
 void HTMLFormat::xref(OUTPUT_STREAM, weave_target *wv, paragraph *P, section *from,
 	int a_link) {
 	TEMPORARY_TEXT(linkto);
 	if ((from) && (P->under_section != from)) {
-		Str::copy(linkto, P->under_section->sect_range);
+		Str::copy(linkto, P->under_section->md->sect_range);
 		LOOP_THROUGH_TEXT(pos, linkto)
 			if ((Str::get(pos) == '/') || (Str::get(pos) == ' '))
 				Str::put(pos, '-');
@@ -844,7 +845,7 @@ void HTMLFormat::tail(weave_format *self, text_stream *OUT, weave_target *wv,
 @ =
 void HTMLFormat::sref(OUTPUT_STREAM, weave_target *wv, section *S) {
 	if (S == NULL) internal_error("unwoven section");
-	LOOP_THROUGH_TEXT(pos, S->sect_range)
+	LOOP_THROUGH_TEXT(pos, S->md->sect_range)
 		if (Str::get(pos) == '/')
 			PUT('-');
 		else

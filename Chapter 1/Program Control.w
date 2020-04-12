@@ -242,6 +242,8 @@ which for many small webs will be the entire thing.
 	if ((ins->chosen_range_actually_chosen == FALSE) && (ins->chosen_file == NULL))
 		Configuration::set_range(ins, pattern->default_range);
 
+	if (ins->colony_setting) Colonies::load(ins->colony_setting);
+
 	int r = Formats::begin_weaving(W, pattern);
 	if (r != SWARM_OFF_SWM) ins->swarm_mode = r;
 	@<Assign section numbers for printing purposes@>;
@@ -286,7 +288,7 @@ which for many small webs will be the entire thing.
 @<Assign section numbers for printing purposes@> =
 	section *S; int k = 1;
 	LOOP_OVER(S, section)
-		if (Reader::range_within(S->sect_range, ins->chosen_range))
+		if (Reader::range_within(S->md->sect_range, ins->chosen_range))
 			S->printed_number = k++;
 
 @h Error messages.

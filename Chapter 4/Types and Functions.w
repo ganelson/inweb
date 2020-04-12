@@ -148,6 +148,9 @@ part of the function structure. We'll need it when predeclaring the function.
 	fn->call_freely = FALSE;
 	fn->function_header_at = L;
 	fn->usage_described = FALSE;
+	if ((Str::eq_wide_string(fname, L"main")) &&
+		(L->owning_section->sect_language->C_like))
+		fn->usage_described = TRUE;
 	fn->no_conditionals = 0;
 
 @<Add the function to its paragraph and line@> =

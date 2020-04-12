@@ -53,7 +53,7 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 		if (C->md->imported == FALSE) {
 			Str::clear(state->chaptermark);
 			LOOP_OVER_LINKED_LIST(S, section, C->sections)
-				if (Reader::range_within(S->sect_range, wv->weave_range)) {
+				if (Reader::range_within(S->md->sect_range, wv->weave_range)) {
 					latest_section = S;
 					@<Wipe the slate clean of footnotes@>;
 					LanguageMethods::begin_weave(S, wv);
@@ -423,8 +423,7 @@ and macro usage is rendered differently.
 		W, C, S, L, matter, concluding_comment)) continue;
 
 	TEMPORARY_TEXT(colouring);
-	LanguageMethods::syntax_colour(OUT, S->sect_language, wv, W, C, S, L,
-		 matter, colouring);
+	LanguageMethods::syntax_colour(OUT, S->sect_language, wv, L, matter, colouring);
 
 	int found = 0;
 	@<Find macro usages and adjust syntax colouring accordingly@>;
@@ -623,7 +622,7 @@ in TeX's deeply peculiar font encoding system.
 	if (weight == 2) {
 		Str::copy(state->sectionmark, L->text_operand);
 		if (wv->pattern->show_abbrevs == FALSE) Str::clear(state->chaptermark);
-		else if (Str::len(S->sect_range) > 0) Str::copy(state->chaptermark, S->sect_range);
+		else if (Str::len(S->md->sect_range) > 0) Str::copy(state->chaptermark, S->md->sect_range);
 		if (Str::len(state->chaptermark) > 0) {
 			Str::clear(state->sectionmark);
 			WRITE_TO(state->sectionmark, " - %S", L->text_operand);
@@ -829,7 +828,7 @@ void Weaver::show_endnotes_on_previous_paragraph(OUTPUT_STREAM,
 		LOOP_OVER(S, section)
 			if ((S->scratch_flag) && (S != P->under_section)) {
 				if (c++ > 0) Formats::text(OUT, wv, I", ");
-				Formats::text(OUT, wv, S->sect_range);
+				Formats::text(OUT, wv, S->md->sect_range);
 			}
 		if (P->under_section->scratch_flag) Formats::text(OUT, wv, I" and here");
 	}
@@ -910,7 +909,7 @@ int Weaver::weave_table_of_contents(OUTPUT_STREAM, weave_target *wv, section *S)
 			noteworthy++;
 	if (noteworthy == 0) return FALSE;
 
-	Formats::toc(OUT, wv, 1, S->sect_range, I"", NULL);
+	Formats::toc(OUT, wv, 1, S->md->sect_range, I"", NULL);
 	noteworthy = 0;
 	LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
 		if ((P->weight > 0) && ((S->barred == FALSE) || (P->above_bar == FALSE))) {

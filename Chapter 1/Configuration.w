@@ -38,6 +38,7 @@ typedef struct inweb_instructions {
 	struct filename *writeme_setting; /* |-write-me X|: advance build file X */
 	struct filename *prototype_setting; /* |-prototype X|: the pathname X, if supplied */
 	struct filename *navigation_setting; /* |-navigation X|: the filename X, if supplied */
+	struct filename *colony_setting; /* |-colony X|: the filename X, if supplied */
 	struct linked_list *breadcrumb_setting; /* of |breadcrumb_request| */
 	int verbose_switch; /* |-verbose|: print names of files read to stdout */
 	int targets; /* used only for parsing */
@@ -102,6 +103,7 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.writeme_setting = NULL;
 	args.prototype_setting = NULL;
 	args.navigation_setting = NULL;
+	args.colony_setting = NULL;
 	args.breadcrumb_setting = NEW_LINKED_LIST(breadcrumb_request);
 	args.tag_setting = Str::new();
 	args.weave_pattern = Str::new_from_wide_string(L"HTML");
@@ -151,6 +153,7 @@ provides automatically.
 @e WEAVE_DOCS_CLSW
 @e BREADCRUMB_CLSW
 @e NAVIGATION_CLSW
+@e COLONY_CLSW
 
 @e TANGLING_CLSG
 
@@ -234,6 +237,8 @@ provides automatically.
 		L"use the text X as a breadcrumb in overhead navigation");
 	CommandLine::declare_switch(NAVIGATION_CLSW, L"navigation", 2,
 		L"use the file X as a column of navigation links");
+	CommandLine::declare_switch(COLONY_CLSW, L"colony", 2,
+		L"use the file X as a list of webs in this colony");
 	CommandLine::end_group();
 
 	CommandLine::begin_group(TANGLING_CLSG,
@@ -340,6 +345,9 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
 		case NAVIGATION_CLSW:
 			args->navigation_setting = Filenames::from_text(arg);
+			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
+		case COLONY_CLSW:
+			args->colony_setting = Filenames::from_text(arg);
 			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
 
 		/* Tangle-related */

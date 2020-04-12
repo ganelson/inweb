@@ -143,7 +143,7 @@ void TeX::chapter_title_page(weave_format *self, text_stream *OUT, weave_target 
 	LOOP_OVER_LINKED_LIST(S, section, C->sections) {
 		WRITE("\\smallskip\\noindent ");
 		if (wv->pattern->number_sections) WRITE("%d. ", S->printed_number);
-		if (wv->pattern->show_abbrevs) WRITE("|%S|: ", S->sect_range);
+		if (wv->pattern->show_abbrevs) WRITE("|%S|: ", S->md->sect_range);
 		WRITE("{\\it %S}\\qquad\n%S", S->md->sect_title, S->sect_purpose);
 	}
 }
@@ -170,7 +170,7 @@ void TeX::paragraph_heading(weave_format *self, text_stream *OUT, weave_target *
 			TeX_macro, N, modified, mark, orn, NULL);
 	else
 		WRITE("\\%S{%S}{%S}{%S}{\\%S}{%S}%%\n",
-			TeX_macro, N, modified, mark, orn, S->sect_range);
+			TeX_macro, N, modified, mark, orn, S->md->sect_range);
 	DISCARD_TEXT(mark);
 	DISCARD_TEXT(modified);
 	Regexp::dispose_of(&mr);

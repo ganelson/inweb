@@ -59,7 +59,7 @@ void PlainText::chapter_title_page(weave_format *self, text_stream *OUT,
 	section *S;
 	LOOP_OVER_LINKED_LIST(S, section, C->sections)
 		WRITE("    %S: %S\n        %S\n",
-			S->sect_range, S->md->sect_title, S->sect_purpose);
+			S->md->sect_range, S->md->sect_title, S->sect_purpose);
 }
 
 @ =

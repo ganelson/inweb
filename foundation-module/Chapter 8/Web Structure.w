@@ -67,6 +67,7 @@ typedef struct chapter_md {
 =
 typedef struct section_md {
 	struct text_stream *sect_title; /* e.g., "Program Control" */
+	struct text_stream *sect_range; /* e.g., "2/ct" */
 	int using_syntax; /* which syntax the web is written in */
 	int is_a_singleton; /* is this the only section in its entire web? */
 
@@ -99,6 +100,7 @@ web_md *WebMetadata::get(pathname *P, filename *alt_F, int syntax_version,
 	WebMetadata::read_contents_page(Wm, Wm->as_module, I, verbosely,
 		including_modules, NULL, path_to_inweb);
 	@<Consolidate the bibliographic data@>;
+	@<Work out the section ranges@>;
 	return Wm;
 }
 
@@ -130,6 +132,95 @@ web_md *WebMetadata::get(pathname *P, filename *alt_F, int syntax_version,
 	Bibliographic::check_required_data(Wm);
 	BuildFiles::set_bibliographic_data_for(Wm);
 	BuildFiles::deduce_semver(Wm);
+
+@ If no range is supplied, we make one ourselves.
+
+@<Work out the section ranges@> =
+	int sequential = FALSE; /* are we numbering sections sequentially? */
+	if (Str::eq(Bibliographic::get_datum(Wm, I"Sequential Section Ranges"), I"On"))
+		sequential = TRUE;
+	chapter_md *Cm;
+	section_md *Sm;
+	LOOP_OVER_LINKED_LIST(Cm, chapter_md, Wm->chapters_md) {
+		int section_counter = 1;
+		LOOP_OVER_LINKED_LIST(Sm, section_md, Cm->sections_md) {
+			if (Str::len(Sm->sect_range) == 0)
+				@<Concoct a range for section Sm in chapter Cm in web Wm@>;
+			section_counter++;
+		}
+	}
+
+@<Concoct a range for section Sm in chapter Cm in web Wm@> =
+	if (sequential) {
+		WRITE_TO(Sm->sect_range, "%S/", Cm->ch_range);
+		WRITE_TO(Sm->sect_range, "s%d", section_counter);
+	} else {
+		text_stream *from = Sm->sect_title;
+		int letters_from_each_word = 5;
+		do {
+			Str::clear(Sm->sect_range);
+			WRITE_TO(Sm->sect_range, "%S/", Cm->ch_range);
+			@<Make the tail using this many consonants from each word@>;
+			if (--letters_from_each_word == 0) break;
+		} while (Str::len(Sm->sect_range) > 5);
+
+		@<Terminate with disambiguating numbers in case of collisions@>;
+	}
+
+@ We collapse words to an initial letter plus consonants: thus "electricity"
+would be "elctrcty", since we don't count "y" as a vowel here.
+
+@<Make the tail using this many consonants from each word@> =
+	int sn = 0, sw = Str::len(Sm->sect_range);
+	if (Str::get_at(from, sn) == FOLDER_SEPARATOR) sn++;
+	int letters_from_current_word = 0;
+	while ((Str::get_at(from, sn)) && (Str::get_at(from, sn) != '.')) {
+		if (Str::get_at(from, sn) == ' ') letters_from_current_word = 0;
+		else {
+			if (letters_from_current_word < letters_from_each_word) {
+				if (Str::get_at(from, sn) != '-') {
+					int l = tolower(Str::get_at(from, sn));
+					if ((letters_from_current_word == 0) ||
+						((l != 'a') && (l != 'e') && (l != 'i') &&
+							(l != 'o') && (l != 'u'))) {
+						Str::put_at(Sm->sect_range, sw++, l);
+						Str::put_at(Sm->sect_range, sw, 0);
+						letters_from_current_word++;
+					}
+				}
+			}
+		}
+		sn++;
+	}
+
+@ We never want two sections to have the same range.
+
+@<Terminate with disambiguating numbers in case of collisions@> =
+	TEMPORARY_TEXT(original_range);
+	Str::copy(original_range, Sm->sect_range);
+	int disnum = 0, collision = FALSE;
+	do {
+		if (disnum++ > 0) {
+			int ldn = 4;
+			if (disnum >= 1000) ldn = 3;
+			else if (disnum >= 100) ldn = 2;
+			else if (disnum >= 10) ldn = 1;
+			else ldn = 0;
+			Str::clear(Sm->sect_range);
+			WRITE_TO(Sm->sect_range, "%S", original_range);
+			Str::truncate(Sm->sect_range, Str::len(Sm->sect_range) - ldn);
+			WRITE_TO(Sm->sect_range, "%d", disnum);
+		}
+		collision = FALSE;
+		chapter_md *Cm2;
+		section_md *Sm2;
+		LOOP_OVER_LINKED_LIST(Cm2, chapter_md, Wm->chapters_md)
+			LOOP_OVER_LINKED_LIST(Sm2, section_md, Cm2->sections_md)
+				if ((Sm2 != Sm) && (Str::eq(Sm2->sect_range, Sm->sect_range))) {
+					collision = TRUE; break;
+				}
+	} while (collision);
+	DISCARD_TEXT(original_range);
 
 @h Reading the contents page.
 Making the web begins by reading the contents section, which really isn't a
@@ -503,6 +594,7 @@ we also read in and process its file.
 	Sm->using_syntax = syntax;
 	Sm->is_a_singleton = FALSE;
 	Sm->titling_line_to_insert = Str::duplicate(RS->titling_line_to_insert);
+	Sm->sect_range = Str::new();
 	Str::clear(RS->titling_line_to_insert);
 
 	match_results mr = Regexp::create_mr();

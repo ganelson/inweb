@@ -29,7 +29,7 @@ typedef struct web {
 	struct web_md *md;
 	struct linked_list *chapters; /* of |chapter| (including Sections, Preliminaries, etc.) */
 
-	int no_lines; /* total lines in literate source, excluding contents */
+	int web_extent; /* total lines in literate source, excluding contents */
 	int no_paragraphs; /* this will be at least 1 */
 
 	struct programming_language *main_language; /* in which most of the sections are written */
@@ -69,7 +69,6 @@ typedef struct section {
 
 	struct text_stream *sect_namespace; /* e.g., "Text::Languages::" */
 	struct text_stream *sect_purpose; /* e.g., "To manage the zoo, and feed all penguins" */
-	struct text_stream *sect_range; /* e.g., "9/tfto" */
 	int barred; /* if version 1 syntax, contains a dividing bar? */
 	struct programming_language *sect_language; /* in which this section is written */
 	struct tangle_target *sect_target; /* |NULL| unless this section produces a tangle of its own */
@@ -147,7 +146,7 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbos
 	W->as_ebook = NULL;
 	W->redirect_weaves_to = NULL;
 	W->main_language = Languages::default(W);
-	W->no_lines = 0; W->no_paragraphs = 0; 
+	W->web_extent = 0; W->no_paragraphs = 0; 
 	text_stream *language_name = Bibliographic::get_datum(W->md, I"Language");
 	if (Str::len(language_name) > 0)
 		W->main_language = Languages::find_by_name(language_name, W);
@@ -188,7 +187,6 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbos
 	S->tag_with = NULL;
 	if (Str::len(Sm->tag_name) > 0)
 		S->tag_with = Tags::add_by_name(NULL, Sm->tag_name);
-	S->sect_range = Str::new();
 
 @<Add the imported headers@> =
 	filename *HF;
@@ -274,20 +272,15 @@ void Reader::scan_source_line(text_stream *line, text_file_position *tfp, void *
 }
 
 @<Accept this as a line belonging to this section and chapter@> =
-	source_line *sl = Lines::new_source_line(line, tfp);
+	source_line *sl = Lines::new_source_line_in(line, tfp, S);
 
 	/* enter this in its section's linked list of lines: */
-	sl->owning_section = S;
 	if (S->first_line == NULL) S->first_line = sl;
 	else S->last_line->next_line = sl;
 	S->last_line = sl;
 
 	/* we haven't detected paragraph boundaries yet, so: */
 	sl->owning_paragraph = NULL;
-
-	/* and keep count: */
-	sl->owning_section->sect_extent++;
-	sl->owning_section->owning_chapter->owning_web->no_lines++;
 
 @h Woven and Tangled folders.
 We abstract these in order to be able to respond well to their not existing:
@@ -329,7 +322,7 @@ section *Reader::get_section_for_range(web *W, text_stream *range) {
 	if (W)
 		LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
 			LOOP_OVER_LINKED_LIST(S, section, C->sections)
-				if (Str::eq(S->sect_range, range))
+				if (Str::eq(S->md->sect_range, range))
 					return S;
 	return NULL;
 }
@@ -436,7 +429,7 @@ void Reader::print_web_statistics(web *W) {
 	PRINT("%d section%s : %d paragraph%s : %d line%s\n",
 		s, (s == 1)?"":"s",
 		W->no_paragraphs, (W->no_paragraphs == 1)?"":"s",
-		W->no_lines, (W->no_lines == 1)?"":"s");
+		W->web_extent, (W->web_extent == 1)?"":"s");
 }
 
 

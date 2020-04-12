@@ -34,9 +34,9 @@ void Swarm::weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag,
 				}
 			if (swarm_mode == SWARM_SECTIONS_SWM)
 				LOOP_OVER_LINKED_LIST(S, section, C->sections)
-					if (Reader::range_within(S->sect_range, range))
+					if (Reader::range_within(S->md->sect_range, range))
 						S->sect_weave = Swarm::weave_subset(W,
-							S->sect_range, FALSE, tag, pattern, to, into, docs_mode,
+							S->md->sect_range, FALSE, tag, pattern, to, into, docs_mode,
 							breadcrumbs, navigation);
 		}
 
@@ -119,7 +119,7 @@ typedef struct weave_target {
 	section *S;
 	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
 		LOOP_OVER_LINKED_LIST(S, section, C->sections)
-			if (Reader::range_within(S->sect_range, wt->weave_range))
+			if (Reader::range_within(S->md->sect_range, wt->weave_range))
 				has_content = TRUE;
 	if (has_content == FALSE)
 		Errors::fatal("no sections match that range");

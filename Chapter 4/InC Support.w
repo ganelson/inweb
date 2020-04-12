@@ -853,7 +853,7 @@ void InCSupport::weave_grammar_index(OUTPUT_STREAM) {
 			"\\leaders\\hbox to 1em{\\hss.\\hss}\\hfill {\\xreffont %S}}\n",
 			pnt->unangled_name,
 			(pnt->as_function)?" (internal)":"",
-			pnt->where_defined->owning_section->sect_range);
+			pnt->where_defined->owning_section->md->sect_range);
 		int said_something = FALSE;
 		@<List where the nonterminal appears in other Preform declarations@>;
 		@<List where the nonterminal is called from Inform code@>;
@@ -885,7 +885,7 @@ void InCSupport::weave_grammar_index(OUTPUT_STREAM) {
 		LOOP_OVER(S, section)
 			if (S->scratch_flag) {
 				if (c++ > 0) WRITE(", ");
-				WRITE("{\\xreffont %S}", S->sect_range);
+				WRITE("{\\xreffont %S}", S->md->sect_range);
 			}
 		WRITE("\n\n");
 	}
@@ -910,7 +910,7 @@ void InCSupport::weave_grammar_index(OUTPUT_STREAM) {
 		LOOP_OVER(S, section)
 			if (S->scratch_flag) {
 				if (c++ > 0) WRITE(", ");
-				WRITE("{\\xreffont %S}", S->sect_range);
+				WRITE("{\\xreffont %S}", S->md->sect_range);
 			}
 		WRITE("\n\n");
 	}

@@ -276,9 +276,9 @@ void ACMESupport::reset_syntax_colouring(programming_language *pl) {
 	Painter::reset_syntax_colouring(pl);
 }
 
-int ACMESupport::syntax_colour(programming_language *pl, text_stream *OUT, weave_target *wv,
-	web *W, chapter *C, section *S, source_line *L, text_stream *matter,
-	text_stream *colouring) {
+int ACMESupport::syntax_colour(programming_language *pl, text_stream *OUT,
+	weave_target *wv, source_line *L, text_stream *matter, text_stream *colouring) {
+	section *S = L->owning_section;
 	hash_table *ht = &(S->sect_target->symbols);
 	if ((L->category == TEXT_EXTRACT_LCAT) && (pl != S->sect_language))
 		ht = &(pl->built_in_keywords);

@@ -303,8 +303,8 @@ void Indexer::save_template_line(text_stream *line, text_file_position *tfp, voi
 				((chapter *) CONTENT_IN_ITEM(cp->repeat_stack_threshold[j], chapter))->md->ch_range);
 		else if (cp->repeat_stack_level[j] == SECTION_LEVEL)
 			PRINT(" %d: %S/%S",
-				j, ((section *) CONTENT_IN_ITEM(cp->repeat_stack_variable[j], section))->sect_range,
-				((section *) CONTENT_IN_ITEM(cp->repeat_stack_threshold[j], section))->sect_range);
+				j, ((section *) CONTENT_IN_ITEM(cp->repeat_stack_variable[j], section))->md->sect_range,
+				((section *) CONTENT_IN_ITEM(cp->repeat_stack_threshold[j], section))->md->sect_range);
 	}
 	PRINT("\n");
 
@@ -319,7 +319,7 @@ chapter as its value during the sole iteration.
 		section *S;
 		LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
 			LOOP_OVER_LINKED_LIST(S, section, C->sections)
-				if (Str::eq(S->sect_range, mr.exp[0])) {
+				if (Str::eq(S->md->sect_range, mr.exp[0])) {
 					Indexer::start_CI_loop(cp, SECTION_LEVEL, S_item, S_item, lpos);
 					Regexp::dispose_of(&mr);
 					goto CYCLE;
@@ -475,6 +475,10 @@ its square-bracketed parts.
 				cp->restrict_to_range, cp->nav_pattern, cp->nav_file, cp->leafname);
 		} else if (Regexp::match(&mr, varname, L"Breadcrumbs")) {
 			HTMLFormat::drop_initial_breadcrumbs(substituted, cp->crumbs, cp->docs_mode);
+		} else if (Str::eq_wide_string(varname, L"Plugins")) {
+			weave_plugin *wp;
+			LOOP_OVER_LINKED_LIST(wp, weave_plugin, cp->nav_pattern->plugins)
+				WeavePlugins::include(OUT, cp->nav_web, wp, cp->nav_pattern);
 		} else if (Regexp::match(&mr, varname, L"Modules")) {
 			@<Substitute the list of imported modules@>;
 		} else if (Regexp::match(&mr, varname, L"Chapter (%c+)")) {
@@ -543,14 +547,14 @@ its square-bracketed parts.
 	} else if (Str::eq_wide_string(detail, L"Purpose")) {
 		Str::copy(substituted, S->sect_purpose);
 	} else if (Str::eq_wide_string(detail, L"Code")) {
-		Str::copy(substituted, S->sect_range);
+		Str::copy(substituted, S->md->sect_range);
 	} else if (Str::eq_wide_string(detail, L"Lines")) {
 		WRITE_TO(substituted, "%d", S->sect_extent);
 	} else if (Str::eq_wide_string(detail, L"Source")) {
 		WRITE_TO(substituted, "%f", S->md->source_file_for_section);
 	} else if (Str::eq_wide_string(detail, L"Page")) {
 		TEMPORARY_TEXT(linkto);
-		Str::copy(linkto, S->sect_range);
+		Str::copy(linkto, S->md->sect_range);
 		LOOP_THROUGH_TEXT(P, linkto)
 			if ((Str::get(P) == '/') || (Str::get(P) == ' '))
 				Str::put(P, '-');

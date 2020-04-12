@@ -18,6 +18,9 @@ Manual
 	Supporting Programming Languages
 	Reference Card
 
+Preliminaries
+	How This Program Works
+
 Chapter 1: Top Level
 "Dealing with the user, and deciding what is to be done."
 	Basics
@@ -71,3 +74,5 @@ Chapter 6: Extras
 	Makefiles
 	Git Support
 	Readme Writeme
+	Colonies
+

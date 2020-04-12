@@ -55,7 +55,7 @@ void Analyser::catalogue_the_sections(web *W, text_stream *range, int form) {
 	section *S;
 	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
 		LOOP_OVER_LINKED_LIST(S, section, C->sections) {
-			if (max_range_width < Str::len(S->sect_range)) max_range_width = Str::len(S->sect_range);
+			if (max_range_width < Str::len(S->md->sect_range)) max_range_width = Str::len(S->md->sect_range);
 			TEMPORARY_TEXT(main_title);
 			WRITE_TO(main_title, "%S/%S", C->md->ch_basic_title, S->md->sect_title);
 			if (max_width < Str::len(main_title)) max_width = Str::len(main_title);
@@ -67,8 +67,8 @@ void Analyser::catalogue_the_sections(web *W, text_stream *range, int form) {
 			LOOP_OVER_LINKED_LIST(S, section, C->sections) {
 				TEMPORARY_TEXT(main_title);
 				WRITE_TO(main_title, "%S/%S", C->md->ch_basic_title, S->md->sect_title);
-				PRINT("%4d  %S", S->sect_extent, S->sect_range);
-				for (int i = Str::len(S->sect_range); i<max_range_width+2; i++) PRINT(" ");
+				PRINT("%4d  %S", S->sect_extent, S->md->sect_range);
+				for (int i = Str::len(S->md->sect_range); i<max_range_width+2; i++) PRINT(" ");
 				PRINT("%S", main_title);
 				for (int i = Str::len(main_title); i<max_width+2; i++) PRINT(" ");
 				if (form != BASIC_SECTIONCAT)

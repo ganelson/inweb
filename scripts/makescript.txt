@@ -116,14 +116,20 @@ pages:
 	$(INWEB) -prototype inweb/scripts/READMEscript.txt -write-me inweb/README.md
 	mkdir -p $(ME)/docs/inweb
 	rm -f $(ME)/docs/inweb/*.html
+	mkdir -p $(ME)/docs/goldbach
+	rm -f $(ME)/docs/goldbach/*.html
+	mkdir -p $(ME)/docs/twinprimes
+	rm -f $(ME)/docs/twinprimes/*.html
 	mkdir -p $(ME)/docs/foundation-module
 	rm -f $(ME)/docs/foundation-module/*.html
 	mkdir -p $(ME)/docs/foundation-test
 	rm -f $(ME)/docs/foundation-test/*.html
-	$(INWEB) $(ME)/docs/docs-src/webs.inweb -weave-as GitHubCovers -weave-into $(ME)/docs -navigation $(ME)/docs/docs-src/nav-o.html
-	$(INWEB) $(ME) -weave-docs -weave-into $(ME)/docs/inweb -breadcrumb 'Source:../webs.html' -navigation $(ME)/docs/docs-src/nav.html
-	$(INWEB) $(ME)/foundation-module -weave-docs -weave-into $(ME)/docs/foundation-module -breadcrumb 'Source:../webs.html' -navigation $(ME)/docs/docs-src/nav.html
-	$(INWEB) $(ME)/foundation-test -weave-docs -weave-into $(ME)/docs/foundation-test -breadcrumb 'Source:../webs.html' -navigation $(ME)/docs/docs-src/nav.html
+	$(INWEB) $(ME)/docs/docs-src/webs.inweb -weave-as GitHubCovers -weave-into $(ME)/docs -navigation $(ME)/docs/docs-src/nav-o.html -colony $(ME)/docs/docs-src/colony.txt
+	$(INWEB) $(ME)/Examples/goldbach -weave-docs -weave-into $(ME)/docs/goldbach -breadcrumb 'Home:../webs.html' -navigation $(ME)/docs/docs-src/nav.html -colony $(ME)/docs/docs-src/colony.txt
+	$(INWEB) $(ME)/Examples/twinprimes.inweb -weave-docs -weave-into $(ME)/docs/twinprimes -breadcrumb 'Home:../webs.html' -navigation $(ME)/docs/docs-src/nav.html -colony $(ME)/docs/docs-src/colony.txt
+	$(INWEB) $(ME) -weave-docs -weave-into $(ME)/docs/inweb -breadcrumb 'Home:../webs.html' -navigation $(ME)/docs/docs-src/nav.html -colony $(ME)/docs/docs-src/colony.txt
+	$(INWEB) $(ME)/foundation-module -weave-docs -weave-into $(ME)/docs/foundation-module -breadcrumb 'Home:../webs.html' -navigation $(ME)/docs/docs-src/nav.html -colony $(ME)/docs/docs-src/colony.txt
+	$(INWEB) $(ME)/foundation-test -weave-docs -weave-into $(ME)/docs/foundation-test -breadcrumb 'Home:../webs.html' -navigation $(ME)/docs/docs-src/nav.html -colony $(ME)/docs/docs-src/colony.txt
 
 # Cleaning up:
 
