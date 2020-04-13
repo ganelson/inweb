@@ -132,7 +132,10 @@ void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_crs
 	Regexp::dispose_of(&mr);
 }
 
-@ =
+@ "Breadcrumbs" are the chain of links in a horizontal list at the top of
+the page, and this requests one.
+
+=
 void Colonies::add_crumb(linked_list *L, text_stream *spec, text_file_position *tfp) {
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, spec, L"\"(%c*?)\"") == FALSE) {
@@ -171,8 +174,24 @@ void Colonies::drop_initial_breadcrumbs(OUTPUT_STREAM, filename *F, linked_list 
 	LOOP_OVER_LINKED_LIST(BR, breadcrumb_request, crumbs) {
 		TEMPORARY_TEXT(url);
 		Colonies::link_URL(url, BR->breadcrumb_link, F);
-		HTMLFormat::breadcrumb(OUT, BR->breadcrumb_text, url);
+		Colonies::write_breadcrumb(OUT, BR->breadcrumb_text, url);
 		DISCARD_TEXT(url);
+	}
+}
+
+void Colonies::write_breadcrumb(OUTPUT_STREAM, text_stream *text, text_stream *link) {
+	if (link) {
+		HTML_OPEN("li");
+		HTML::begin_link(OUT, link);
+		WRITE("%S", text);
+		HTML::end_link(OUT);
+		HTML_CLOSE("li");
+	} else {
+		HTML_OPEN("li");
+		HTML_OPEN("b");
+		WRITE("%S", text);
+		HTML_CLOSE("b");
+		HTML_CLOSE("li");
 	}
 }
 

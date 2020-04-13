@@ -52,7 +52,7 @@ void WeavePlugins::include(OUTPUT_STREAM, web *W, weave_plugin *wp,
 		Main::error_in_web(err, NULL);
 		return;
 	}
-	Indexer::run(W, I"", F, NULL, OUT, pattern, NULL, NULL, NULL, TRUE);
+	Indexer::incorporate_template_for_web_and_pattern(OUT, W, pattern, F);
 	if (TextFiles::exists(CF)) {
 		WRITE("<link href=\"%S.css\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\">\n",
 			wp->plugin_name);

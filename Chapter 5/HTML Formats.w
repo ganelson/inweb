@@ -121,26 +121,6 @@ void HTMLFormat::exit_current_paragraph(OUTPUT_STREAM) {
 	}
 }
 
-@ "Breadcrumbs" are the chain of links in a horizontal list at the top of
-the page, and this drops one.
-
-=
-void HTMLFormat::breadcrumb(OUTPUT_STREAM, text_stream *text, text_stream *link) {
-	if (link) {
-		HTML_OPEN("li");
-		HTML::begin_link(OUT, link);
-		WRITE("%S", text);
-		HTML::end_link(OUT);
-		HTML_CLOSE("li");
-	} else {
-		HTML_OPEN("li");
-		HTML_OPEN("b");
-		WRITE("%S", text);
-		HTML_CLOSE("b");
-		HTML_CLOSE("li");
-	}
-}
-
 @h Methods.
 For documentation, see "Weave Fornats".
 
@@ -148,13 +128,13 @@ For documentation, see "Weave Fornats".
 void HTMLFormat::top(weave_format *self, text_stream *OUT, weave_target *wv, text_stream *comment) {
 	HTML::declare_as_HTML(OUT, FALSE);
 	Indexer::cover_sheet_maker(OUT, wv->weave_web, I"template", wv, WEAVE_FIRST_HALF);
-	if (wv->self_contained == FALSE) {
+//	if (wv->self_contained == FALSE) {
 		filename *CSS = Patterns::obtain_filename(wv->pattern, I"inweb.css");
 		if (wv->pattern->hierarchical)
 			Patterns::copy_up_file_into_weave(wv->weave_web, CSS);
 		else
 			Patterns::copy_file_into_weave(wv->weave_web, CSS);
-	}
+//	}
 	HTML::comment(OUT, comment);
 	html_in_para = HTML_OUT;
 }
@@ -265,7 +245,7 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 		WRITE(". %S%s ", heading_text, (Str::len(heading_text) > 0)?".":"");
 		HTML_CLOSE("b");
 	} else {
-		if (wv->self_contained == FALSE) {
+//		if (wv->self_contained == FALSE) {
 			if (crumbs_dropped == FALSE) {
 				filename *C = Patterns::obtain_filename(wv->pattern, I"crumbs.gif");
 				if (wv->pattern->hierarchical)
@@ -281,23 +261,25 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 			if (Str::len(Bibliographic::get_datum(wv->weave_web->md, I"Short Title")) > 0) {
 				bct = Bibliographic::get_datum(wv->weave_web->md, I"Short Title");
 			}
-			HTMLFormat::breadcrumb(OUT, bct, I"index.html");
-
-			if (wv->weave_web->md->chaptered) {
-				TEMPORARY_TEXT(chapter_link);
-				WRITE_TO(chapter_link, "index.html#%s%S", (wv->weave_web->as_ebook)?"C":"",
-					S->owning_chapter->md->ch_range);
-				HTMLFormat::breadcrumb(OUT, S->owning_chapter->md->ch_title, chapter_link);
-				DISCARD_TEXT(chapter_link);
+			if (wv->self_contained == FALSE) {
+				Colonies::write_breadcrumb(OUT, bct, I"index.html");
+				if (wv->weave_web->md->chaptered) {
+					TEMPORARY_TEXT(chapter_link);
+					WRITE_TO(chapter_link, "index.html#%s%S", (wv->weave_web->as_ebook)?"C":"",
+						S->owning_chapter->md->ch_range);
+					Colonies::write_breadcrumb(OUT, S->owning_chapter->md->ch_title, chapter_link);
+					DISCARD_TEXT(chapter_link);
+				}
+				Colonies::write_breadcrumb(OUT, heading_text, NULL);
+			} else {
+				Colonies::write_breadcrumb(OUT, bct, NULL);
 			}
-
-			HTMLFormat::breadcrumb(OUT, heading_text, NULL);
 			HTML_CLOSE("ul");
-		} else {
-			HTML_OPEN_WITH("ul", "class=\"crumbs\"");
-			HTMLFormat::breadcrumb(OUT, heading_text, NULL);
-			HTML_CLOSE("ul");
-		}
+//		} else {
+//			HTML_OPEN_WITH("ul", "class=\"crumbs\"");
+//			Colonies::write_breadcrumb(OUT, heading_text, NULL);
+//			HTML_CLOSE("ul");
+//		}
 	}
 }
 
@@ -578,7 +560,7 @@ void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_target *wv,
 	Bibliographic::set_datum(wv->weave_web->md, I"Content Width", CW);
 	Bibliographic::set_datum(wv->weave_web->md, I"Content Height", CH);
 	HTML_OPEN("center");
-	Indexer::run(wv->weave_web, I"", F, NULL, OUT, wv->pattern, NULL, NULL, NULL, TRUE);
+	Indexer::incorporate_template_for_web_and_pattern(OUT, wv->weave_web, wv->pattern, F);
 	HTML_CLOSE("center");
 	WRITE("\n");
 	Regexp::dispose_of(&mr);

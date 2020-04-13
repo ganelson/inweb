@@ -207,14 +207,27 @@ generic |index.html| if those aren't available in the current pattern.
 
 =
 void Swarm::weave_index_templates(web *W, text_stream *range, weave_pattern *pattern,
-	int self_contained, pathname *into, filename *F, linked_list *crumbs) {
+	int self_contained, pathname *into, filename *nav, linked_list *crumbs) {
 	if (!(Bibliographic::data_exists(W->md, I"Version Number")))
 		Bibliographic::set_datum(W->md, I"Version Number", I" ");
 	text_stream *index_leaf = NULL;
 	if (W->md->chaptered) index_leaf = I"chaptered-index.html";
 	else index_leaf = I"unchaptered-index.html";
-	filename *OUT = Patterns::obtain_filename(pattern, index_leaf);
-	if (OUT == NULL) OUT = Patterns::obtain_filename(pattern, I"index.html");
-	if (OUT) Indexer::run(W, range, OUT, I"index.html", NULL, pattern, into, F, crumbs, TRUE);
+	filename *INF = Patterns::obtain_filename(pattern, index_leaf);
+	if (INF == NULL) INF = Patterns::obtain_filename(pattern, I"index.html");
+	if (INF) {
+		pathname *H = W->redirect_weaves_to;
+		if (H == NULL) H = Reader::woven_folder(W);
+		filename *Contents = Filenames::in_folder(H, I"index.html");
+		text_stream TO_struct; text_stream *OUT = &TO_struct;
+		if (STREAM_OPEN_TO_FILE(OUT, Contents, ISO_ENC) == FALSE)
+			Errors::fatal_with_file("unable to write contents file", Contents);
+		if (W->as_ebook)
+			Epub::note_page(W->as_ebook, Contents, I"Index", I"index");
+		Indexer::set_current_file(Contents);
+		PRINT("[Index file: %f]\n", Contents);
+		Indexer::incorporate_template(OUT, W, range, INF, pattern, nav, crumbs);
+		STREAM_CLOSE(OUT);
+	}
 	if (self_contained == FALSE) Patterns::copy_payloads_into_weave(W, pattern);
 }

@@ -5,7 +5,8 @@ To construct indexes of the material woven, following a template.
 @h Cover sheets.
 The indexer offers two basic services. One, which is much simpler, makes
 cover sheets, and has only simple escapes (except that it has the ability
-to call the fuller indexing service if need be, using |[[Template T]]|).
+to call the fuller indexing service if need be, using |[[Template T]]|
+or |[[Navigation]]|).
 
 =
 void Indexer::cover_sheet_maker(OUTPUT_STREAM, web *W, text_stream *unextended_leafname,
@@ -113,50 +114,24 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 	}
 
 @<Weave in navigation@> =
-	pathname *P = Filenames::get_path_to(state->target->weave_to);
-	Indexer::nav_column(OUT, P, state->target->weave_web, state->target->weave_range,
-		state->target->pattern, state->target->navigation,
-		Filenames::get_leafname(state->target->weave_to));
+	if (state->target->navigation) {
+		if (TextFiles::exists(state->target->navigation))
+			Indexer::incorporate_template_for_target(OUT, state->target, state->target->navigation);
+		else
+			Errors::fatal_with_file("unable to find navigation file", state->target->navigation);
+	} else {
+		PRINT("Warning: no sidebar links will be generated, as -navigation is unset");
+	}
 
 @<Weave in an index@> =
-	pathname *P = Filenames::get_path_to(state->target->weave_to);
 	filename *CF = Patterns::obtain_filename(state->target->pattern, mr2.exp[0]);
 	if (CF == NULL)
 		Errors::in_text_file("pattern does not provide this template file", tfp);
 	else
-		Indexer::run(state->target->weave_web, state->target->weave_range,
-			CF, NULL, OUT, state->target->pattern, P, state->target->navigation,
-			NULL, FALSE);
+		Indexer::incorporate_template_for_target(OUT, state->target, CF);
 
 @<Weave in the value of this variable name@> =
 	WRITE("%S", Bibliographic::get_datum(state->target->weave_web->md, command));
-
-@
-
-=
-void Indexer::nav_column(OUTPUT_STREAM, pathname *P, web *W, text_stream *range,
-	weave_pattern *pattern, filename *nav, text_stream *leafname) {
-	if (nav) {
-		if (TextFiles::exists(nav))
-			Indexer::nav_run(W, range, nav, leafname, OUT, pattern, P);
-		else
-			Errors::fatal_with_file("unable to find navigation file", nav);
-	} else {
-		if (pattern->hierarchical) {
-			filename *F = Filenames::in_folder(Pathnames::up(P), I"nav.html");
-			if (TextFiles::exists(F))
-				Indexer::nav_run(W, range, F, leafname, OUT, pattern, P);
-		}
-		filename *F = Filenames::in_folder(P, I"nav.html");
-		if (TextFiles::exists(F))
-			Indexer::nav_run(W, range, F, leafname, OUT, pattern, P);
-	}
-}
-
-void Indexer::nav_run(web *W, text_stream *range, filename *F, text_stream *leafname,
-	text_stream *OUT, weave_pattern *pattern, pathname *P) {
-	Indexer::run(W, range, F, leafname, OUT, pattern, P, NULL, NULL, TRUE);
-}
 
 @h Full index pages.
 This is a much more substantial service, and operates as a little processor
@@ -166,14 +141,39 @@ speak of, in fact, except for the slightly unusual way that loop variables
 provide context by changing the subject of what is discussed rather than by
 being accessed directly.
 
-The current state of the processor is recorded in the following.
+For convenience, we provide three way to call:
+
+=
+void Indexer::incorporate_template_for_web_and_pattern(text_stream *OUT, web *W,
+	weave_pattern *pattern, filename *F) {
+	Indexer::incorporate_template(OUT, W, I"", F, pattern, NULL, NULL);
+}
+
+void Indexer::incorporate_template_for_target(text_stream *OUT, weave_target *wv,
+	filename *F) {
+	Indexer::incorporate_template(OUT, wv->weave_web, wv->weave_range, F, wv->pattern,
+		wv->navigation, wv->breadcrumbs);
+}
+
+void Indexer::incorporate_template(text_stream *OUT, web *W, text_stream *range,
+	filename *template_filename, weave_pattern *pattern, filename *nav_file,
+	linked_list *crumbs) {
+	index_engine_state actual_ies =
+		Indexer::new_processor(W, range, template_filename, pattern, nav_file, crumbs);
+	index_engine_state *ies = &actual_ies;
+	Indexer::run_engine(OUT, ies);
+}
+
+@ The current state of the processor is recorded in the following.
+
+@d TRACE_CI_EXECUTION FALSE /* set true for debugging */
 
 @d MAX_TEMPLATE_LINES 8192 /* maximum number of lines in template */
 @d CI_STACK_CAPACITY 8 /* maximum recursion of chapter/section iteration */
 
 =
-typedef struct contents_processor {
-	text_stream *leafname;
+typedef struct index_engine_state {
+	web *for_web;
 	text_stream *tlines[MAX_TEMPLATE_LINES];
 	int no_tlines;
 	int repeat_stack_level[CI_STACK_CAPACITY];
@@ -182,59 +182,64 @@ typedef struct contents_processor {
 	int repeat_stack_startpos[CI_STACK_CAPACITY];
 	int stack_pointer; /* And this is our stack pointer for tracking of loops */
 	text_stream *restrict_to_range;
-	web *nav_web;
 	weave_pattern *nav_pattern;
-	pathname *nav_path;
 	filename *nav_file;
 	linked_list *crumbs;
 	int inside_navigation_submenu;
-} contents_processor;
+	filename *errors_at;
+} index_engine_state;
 
-contents_processor Indexer::new_processor(text_stream *range) {
-	contents_processor cp;
-	cp.no_tlines = 0;
-	cp.restrict_to_range = Str::duplicate(range);
-	cp.stack_pointer = 0;
-	cp.leafname = Str::new();
-	cp.inside_navigation_submenu = FALSE;
-	return cp;
+index_engine_state Indexer::new_processor(web *W, text_stream *range,
+	filename *template_filename, weave_pattern *pattern, filename *nav_file,
+	linked_list *crumbs) {
+	index_engine_state ies;
+	ies.no_tlines = 0;
+	ies.restrict_to_range = Str::duplicate(range);
+	ies.stack_pointer = 0;
+	ies.inside_navigation_submenu = FALSE;
+	ies.for_web = W;
+	ies.nav_pattern = pattern;
+	ies.nav_file = nav_file;
+	ies.crumbs = crumbs;
+	ies.errors_at = template_filename;
+	@<Read in the source file containing the contents page template@>;
+	return ies;
 }
 
-@h Running the interpreter.
+@<Read in the source file containing the contents page template@> =
+	TextFiles::read(template_filename, FALSE,
+		"can't find contents template", TRUE, Indexer::temp_line, NULL, &ies);
+	if (TRACE_CI_EXECUTION)
+		PRINT("Read template <%f>: %d line(s)\n", template_filename, ies.no_tlines);
+	if (ies.no_tlines >= MAX_TEMPLATE_LINES)
+		PRINT("Warning: template <%f> truncated after %d line(s)\n",
+			template_filename, ies.no_tlines);
 
-@d TRACE_CI_EXECUTION FALSE /* set true for debugging */
+@ =
+void Indexer::temp_line(text_stream *line, text_file_position *tfp, void *v_ies) {
+	index_engine_state *ies = (index_engine_state *) v_ies;
+	if (ies->no_tlines < MAX_TEMPLATE_LINES)
+		ies->tlines[ies->no_tlines++] = Str::duplicate(line);
+}
+
+@ Running the engine...
 
 =
-void Indexer::run(web *W, text_stream *range,
-	filename *template_filename, text_stream *contents_page_leafname,
-	text_stream *write_to, weave_pattern *pattern, pathname *P, filename *nav_file,
-	linked_list *crumbs, int unlink_selflinks) {
-	contents_processor actual_cp = Indexer::new_processor(range);
-	actual_cp.nav_web = W;
-	actual_cp.nav_pattern = pattern;
-	actual_cp.nav_path = P;
-	actual_cp.nav_file = nav_file;
-	actual_cp.crumbs = crumbs;
-	actual_cp.leafname = Str::duplicate(contents_page_leafname);
-	contents_processor *cp = &actual_cp;
-	text_stream TO_struct; text_stream *OUT = &TO_struct;
+void Indexer::run_engine(text_stream *OUT, index_engine_state *ies) {
 	filename *save_cf = Indexer::current_file();
-	@<Read in the source file containing the contents page template@>;
-	@<Open the contents page file to be constructed@>;
-
 	int lpos = 0; /* This is our program counter: a line number in the template */
-	while (lpos < cp->no_tlines) {
+	while (lpos < ies->no_tlines) {
 		match_results mr = Regexp::create_mr();
 		TEMPORARY_TEXT(tl);
-		Str::copy(tl, cp->tlines[lpos++]); /* Fetch the line at the program counter and advance */
+		Str::copy(tl, ies->tlines[lpos++]); /* Fetch the line at the program counter and advance */
 		@<Make any necessary substitutions to turn tl into final output@>;
 		WRITE("%S\n", tl); /* Copy the now finished line to the output */
 		DISCARD_TEXT(tl);
 		CYCLE: ;
 		Regexp::dispose_of(&mr);
 	}
-	if (actual_cp.inside_navigation_submenu) WRITE("</ul>");
-	if (write_to == NULL) STREAM_CLOSE(OUT);
+	if (ies->inside_navigation_submenu) WRITE("</ul>");
+	ies->inside_navigation_submenu = FALSE;
 	Indexer::set_current_file(save_cf);
 }
 
@@ -242,21 +247,11 @@ void Indexer::run(web *W, text_stream *range,
 	if (Regexp::match(&mr, tl, L"(%c*?) ")) Str::copy(tl, mr.exp[0]); /* Strip trailing spaces */
 	if (TRACE_CI_EXECUTION)
 		@<Print line and contents of repeat stack@>;
-	if ((pattern->embed_CSS) &&
+	if ((ies->nav_pattern->embed_CSS) &&
 		(Regexp::match(&mr, tl, L" *%<link href=%\"(%c+?)\"%c*"))) {
-		filename *CSS_file = Patterns::obtain_filename(pattern, mr.exp[0]);
+		filename *CSS_file = Patterns::obtain_filename(ies->nav_pattern, mr.exp[0]);
 		Indexer::transcribe_CSS(OUT, CSS_file);
 		Str::clear(tl);
-	}
-	if ((unlink_selflinks) &&
-		(Regexp::match(&mr, tl, L"(%c+?)<a href=\"(%c+?)\">(%c+?)</a>(%c*)")) &&
-		(Str::eq_insensitive(mr.exp[1], contents_page_leafname))) {
-		TEMPORARY_TEXT(unlinked);
-		WRITE_TO(unlinked, "%S<span class=\"unlink\">%S</span>%S",
-			mr.exp[0], mr.exp[2], mr.exp[3]);
-		Str::clear(tl);
-		Str::copy(tl, unlinked);
-		DISCARD_TEXT(unlinked);
 	}
 	if ((Regexp::match(&mr, tl, L"%[%[(%c+)%]%]")) ||
 		(Regexp::match(&mr, tl, L" %[%[(%c+)%]%]"))) {
@@ -270,51 +265,24 @@ void Indexer::run(web *W, text_stream *range,
 	@<Skip line if inside an empty loop@>;
 	@<Make substitutions of square-bracketed variables in line@>;
 
-@h File handling.
-
-@<Read in the source file containing the contents page template@> =
-	TextFiles::read(template_filename, FALSE,
-		"can't find contents template", TRUE, Indexer::save_template_line, NULL, cp);
-	if (TRACE_CI_EXECUTION)
-		PRINT("Read template <%f>: %d line(s)\n", template_filename, cp->no_tlines);
-
-@ With the following iterator:
-
-=
-void Indexer::save_template_line(text_stream *line, text_file_position *tfp, void *void_cp) {
-	contents_processor *cp = (contents_processor *) void_cp;
-	if (cp->no_tlines < MAX_TEMPLATE_LINES)
-		cp->tlines[cp->no_tlines++] = Str::duplicate(line);
-}
-
-@<Open the contents page file to be constructed@> =
-	pathname *H = W->redirect_weaves_to;
-	if (H == NULL) H = Reader::woven_folder(W);
-	if (write_to) OUT = write_to;
-	else {
-		filename *Contents = Filenames::in_folder(H, contents_page_leafname);
-		if (STREAM_OPEN_TO_FILE(OUT, Contents, ISO_ENC) == FALSE)
-			Errors::fatal_with_file("unable to write contents file", Contents);
-		if (W->as_ebook)
-			Epub::note_page(W->as_ebook, Contents, I"Index", I"index");
-		Indexer::set_current_file(Contents);
-		PRINT("[Index file: %f]\n", Contents);
-	}
-
 @h The repeat stack and loops.
 This is used only for debugging:
 
 @<Print line and contents of repeat stack@> =
 	PRINT("%04d: %S\nStack:", lpos-1, tl);
-	for (int j=0; j<cp->stack_pointer; j++) {
-		if (cp->repeat_stack_level[j] == CHAPTER_LEVEL)
+	for (int j=0; j<ies->stack_pointer; j++) {
+		if (ies->repeat_stack_level[j] == CHAPTER_LEVEL)
 			PRINT(" %d: %S/%S",
-				j, ((chapter *) CONTENT_IN_ITEM(cp->repeat_stack_variable[j], chapter))->md->ch_range,
-				((chapter *) CONTENT_IN_ITEM(cp->repeat_stack_threshold[j], chapter))->md->ch_range);
-		else if (cp->repeat_stack_level[j] == SECTION_LEVEL)
+				j, ((chapter *)
+					CONTENT_IN_ITEM(ies->repeat_stack_variable[j], chapter))->md->ch_range,
+				((chapter *)
+					CONTENT_IN_ITEM(ies->repeat_stack_threshold[j], chapter))->md->ch_range);
+		else if (ies->repeat_stack_level[j] == SECTION_LEVEL)
 			PRINT(" %d: %S/%S",
-				j, ((section *) CONTENT_IN_ITEM(cp->repeat_stack_variable[j], section))->md->sect_range,
-				((section *) CONTENT_IN_ITEM(cp->repeat_stack_threshold[j], section))->md->sect_range);
+				j, ((section *)
+					CONTENT_IN_ITEM(ies->repeat_stack_variable[j], section))->md->sect_range,
+				((section *)
+					CONTENT_IN_ITEM(ies->repeat_stack_threshold[j], section))->md->sect_range);
 	}
 	PRINT("\n");
 
@@ -327,21 +295,21 @@ chapter as its value during the sole iteration.
 	if (Regexp::match(&mr, command, L"Select (%c*)")) {
 		chapter *C;
 		section *S;
-		LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
+		LOOP_OVER_LINKED_LIST(C, chapter, ies->for_web->chapters)
 			LOOP_OVER_LINKED_LIST(S, section, C->sections)
 				if (Str::eq(S->md->sect_range, mr.exp[0])) {
-					Indexer::start_CI_loop(cp, SECTION_LEVEL, S_item, S_item, lpos);
+					Indexer::start_CI_loop(ies, SECTION_LEVEL, S_item, S_item, lpos);
 					Regexp::dispose_of(&mr);
 					goto CYCLE;
 				}
-		LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
+		LOOP_OVER_LINKED_LIST(C, chapter, ies->for_web->chapters)
 			if (Str::eq(C->md->ch_range, mr.exp[0])) {
-				Indexer::start_CI_loop(cp, CHAPTER_LEVEL, C_item, C_item, lpos);
+				Indexer::start_CI_loop(ies, CHAPTER_LEVEL, C_item, C_item, lpos);
 				Regexp::dispose_of(&mr);
 				goto CYCLE;
 			}
 		Errors::at_position("don't recognise the chapter or section abbreviation range",
-			template_filename, lpos);
+			ies->errors_at, lpos);
 		Regexp::dispose_of(&mr);
 		goto CYCLE;
 	}
@@ -354,16 +322,16 @@ chapter as its value during the sole iteration.
 	if (Regexp::match(&mr, command, L"Repeat Section")) loop_level = SECTION_LEVEL;
 	if (loop_level != 0) {
 		linked_list_item *from = NULL, *to = NULL;
-		linked_list_item *CI = FIRST_ITEM_IN_LINKED_LIST(chapter, W->chapters);
+		linked_list_item *CI = FIRST_ITEM_IN_LINKED_LIST(chapter, ies->for_web->chapters);
 		while ((CI) && (CONTENT_IN_ITEM(CI, chapter)->md->imported))
 			CI = NEXT_ITEM_IN_LINKED_LIST(CI, chapter);
 		if (loop_level == CHAPTER_LEVEL) {
 			from = CI;
-			to = LAST_ITEM_IN_LINKED_LIST(chapter, W->chapters);
-			if (Str::eq_wide_string(cp->restrict_to_range, L"0") == FALSE) {
+			to = LAST_ITEM_IN_LINKED_LIST(chapter, ies->for_web->chapters);
+			if (Str::eq_wide_string(ies->restrict_to_range, L"0") == FALSE) {
 				chapter *C;
-				LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
-					if (Str::eq(C->md->ch_range, cp->restrict_to_range)) {
+				LOOP_OVER_LINKED_LIST(C, chapter, ies->for_web->chapters)
+					if (Str::eq(C->md->ch_range, ies->restrict_to_range)) {
 						from = C_item; to = from;
 						break;
 					}
@@ -371,21 +339,21 @@ chapter as its value during the sole iteration.
 		}
 		if (loop_level == SECTION_LEVEL) {
 			chapter *within_chapter =
-				CONTENT_IN_ITEM(Indexer::heading_topmost_on_stack(cp, CHAPTER_LEVEL),
+				CONTENT_IN_ITEM(Indexer::heading_topmost_on_stack(ies, CHAPTER_LEVEL),
 					chapter);
 			if (within_chapter == NULL) {
 				if (CI) {
 					chapter *C = CONTENT_IN_ITEM(CI, chapter);
 					from = FIRST_ITEM_IN_LINKED_LIST(section, C->sections);
 				}
-				chapter *LC = LAST_IN_LINKED_LIST(chapter, W->chapters);
+				chapter *LC = LAST_IN_LINKED_LIST(chapter, ies->for_web->chapters);
 				if (LC) to = LAST_ITEM_IN_LINKED_LIST(section, LC->sections);
 			} else {
 				from = FIRST_ITEM_IN_LINKED_LIST(section, within_chapter->sections);
 				to = LAST_ITEM_IN_LINKED_LIST(section, within_chapter->sections);
 			}
 		}
-		if (from) Indexer::start_CI_loop(cp, loop_level, from, to, lpos);
+		if (from) Indexer::start_CI_loop(ies, loop_level, from, to, lpos);
 		goto CYCLE;
 	}
 
@@ -394,27 +362,27 @@ chapter as its value during the sole iteration.
 @<Deal with a Repeat End command@> =
 	if ((Regexp::match(&mr, command, L"End Repeat")) ||
 		(Regexp::match(&mr, command, L"End Select"))) {
-		if (cp->stack_pointer <= 0)
+		if (ies->stack_pointer <= 0)
 			Errors::at_position("stack underflow on contents template",
-				template_filename, lpos);
-		if (cp->repeat_stack_level[cp->stack_pointer-1] == SECTION_LEVEL) {
-			linked_list_item *SI = cp->repeat_stack_variable[cp->stack_pointer-1];
-			if ((SI == cp->repeat_stack_threshold[cp->stack_pointer-1]) ||
+				ies->errors_at, lpos);
+		if (ies->repeat_stack_level[ies->stack_pointer-1] == SECTION_LEVEL) {
+			linked_list_item *SI = ies->repeat_stack_variable[ies->stack_pointer-1];
+			if ((SI == ies->repeat_stack_threshold[ies->stack_pointer-1]) ||
 				(NEXT_ITEM_IN_LINKED_LIST(SI, section) == NULL))
-				Indexer::end_CI_loop(cp);
+				Indexer::end_CI_loop(ies);
 			else {
-				cp->repeat_stack_variable[cp->stack_pointer-1] =
+				ies->repeat_stack_variable[ies->stack_pointer-1] =
 					NEXT_ITEM_IN_LINKED_LIST(SI, section);
-				lpos = cp->repeat_stack_startpos[cp->stack_pointer-1]; /* Back round loop */
+				lpos = ies->repeat_stack_startpos[ies->stack_pointer-1]; /* Back round loop */
 			}
 		} else {
-			linked_list_item *CI = cp->repeat_stack_variable[cp->stack_pointer-1];
-			if (CI == cp->repeat_stack_threshold[cp->stack_pointer-1])
-				Indexer::end_CI_loop(cp);
+			linked_list_item *CI = ies->repeat_stack_variable[ies->stack_pointer-1];
+			if (CI == ies->repeat_stack_threshold[ies->stack_pointer-1])
+				Indexer::end_CI_loop(ies);
 			else {
-				cp->repeat_stack_variable[cp->stack_pointer-1] =
+				ies->repeat_stack_variable[ies->stack_pointer-1] =
 					NEXT_ITEM_IN_LINKED_LIST(CI, chapter);
-				lpos = cp->repeat_stack_startpos[cp->stack_pointer-1]; /* Back round loop */
+				lpos = ies->repeat_stack_startpos[ies->stack_pointer-1]; /* Back round loop */
 			}
 		}
 		goto CYCLE;
@@ -423,11 +391,11 @@ chapter as its value during the sole iteration.
 @ It can happen that a section loop, at least, is empty:
 
 @<Skip line if inside an empty loop@> =
-	for (int rstl = cp->stack_pointer-1; rstl >= 0; rstl--)
-		if (cp->repeat_stack_level[cp->stack_pointer-1] == SECTION_LEVEL) {
-			linked_list_item *SI = cp->repeat_stack_threshold[cp->stack_pointer-1];
+	for (int rstl = ies->stack_pointer-1; rstl >= 0; rstl--)
+		if (ies->repeat_stack_level[ies->stack_pointer-1] == SECTION_LEVEL) {
+			linked_list_item *SI = ies->repeat_stack_threshold[ies->stack_pointer-1];
 			if (NEXT_ITEM_IN_LINKED_LIST(SI, section) ==
-				cp->repeat_stack_variable[cp->stack_pointer-1])
+				ies->repeat_stack_variable[ies->stack_pointer-1])
 				goto CYCLE;
 		}
 
@@ -438,10 +406,10 @@ on the stack; and similarly for |SECTION_LEVEL|.
 @d SECTION_LEVEL 2
 
 =
-linked_list_item *Indexer::heading_topmost_on_stack(contents_processor *cp, int level) {
-	for (int rstl = cp->stack_pointer-1; rstl >= 0; rstl--)
-		if (cp->repeat_stack_level[rstl] == level)
-			return cp->repeat_stack_variable[rstl];
+linked_list_item *Indexer::heading_topmost_on_stack(index_engine_state *ies, int level) {
+	for (int rstl = ies->stack_pointer-1; rstl >= 0; rstl--)
+		if (ies->repeat_stack_level[rstl] == level)
+			return ies->repeat_stack_variable[rstl];
 	return NULL;
 }
 
@@ -449,18 +417,18 @@ linked_list_item *Indexer::heading_topmost_on_stack(contents_processor *cp, int 
 similarly for ending it by popping them again:
 
 =
-void Indexer::start_CI_loop(contents_processor *cp, int level,
+void Indexer::start_CI_loop(index_engine_state *ies, int level,
 	linked_list_item *from, linked_list_item *to, int pos) {
-	if (cp->stack_pointer < CI_STACK_CAPACITY) {
-		cp->repeat_stack_level[cp->stack_pointer] = level;
-		cp->repeat_stack_variable[cp->stack_pointer] = from;
-		cp->repeat_stack_threshold[cp->stack_pointer] = to;
-		cp->repeat_stack_startpos[cp->stack_pointer++] = pos;
+	if (ies->stack_pointer < CI_STACK_CAPACITY) {
+		ies->repeat_stack_level[ies->stack_pointer] = level;
+		ies->repeat_stack_variable[ies->stack_pointer] = from;
+		ies->repeat_stack_threshold[ies->stack_pointer] = to;
+		ies->repeat_stack_startpos[ies->stack_pointer++] = pos;
 	}
 }
 
-void Indexer::end_CI_loop(contents_processor *cp) {
-	cp->stack_pointer--;
+void Indexer::end_CI_loop(index_engine_state *ies) {
+	ies->stack_pointer--;
 }
 
 @h Variable substitutions.
@@ -481,7 +449,7 @@ its square-bracketed parts.
 
 		TEMPORARY_TEXT(substituted);
 		match_results mr = Regexp::create_mr();
-		if (Bibliographic::data_exists(W->md, varname)) {
+		if (Bibliographic::data_exists(ies->for_web->md, varname)) {
 			@<Substitute any bibliographic datum named@>;
 		} else if (Regexp::match(&mr, varname, L"Navigation")) {
 			@<Substitute Navigation@>;
@@ -534,43 +502,50 @@ its square-bracketed parts.
 @ This is why, for instance, |[[Author]]| is replaced by the author's name:
 
 @<Substitute any bibliographic datum named@> =
-	Str::copy(substituted, Bibliographic::get_datum(W->md, varname));
+	Str::copy(substituted, Bibliographic::get_datum(ies->for_web->md, varname));
 
 @ |[[Navigation]]| substitutes to the content of the sidebar navigation file;
 this will recursively call the Indexer, in fact.
 
 @<Substitute Navigation@> =
-	Indexer::nav_column(substituted, cp->nav_path, cp->nav_web,
-		cp->restrict_to_range, cp->nav_pattern, cp->nav_file, cp->leafname);
+	if (ies->nav_file) {
+		if (TextFiles::exists(ies->nav_file))
+			Indexer::incorporate_template(substituted, ies->for_web, ies->restrict_to_range,
+				ies->nav_file, ies->nav_pattern, NULL, NULL);
+		else
+			Errors::fatal_with_file("unable to find navigation file", ies->nav_file);
+	} else {
+		PRINT("Warning: no sidebar links will be generated, as -navigation is unset");
+	}
 
 @ A trail of breadcrumbs, used for overhead navigation in web pages.
 
 @<Substitute Breadcrumbs@> =
 	Colonies::drop_initial_breadcrumbs(substituted, Indexer::current_file(),
-		cp->crumbs);
+		ies->crumbs);
 
 @ |[[Plugins]]| here expands to material needed by any plugins required
-by the weave pattern itself; it doesn't include optional extras for a
+by the weave ies->nav_pattern itself; it doesn't include optional extras for a
 specific page because, of course, the Indexer is used for cover sheets and
 not pages. (Except for navigation purposes, and navigation files should never
 use this.)
 
 @<Substitute Plugins@> =
 	weave_plugin *wp;
-	LOOP_OVER_LINKED_LIST(wp, weave_plugin, cp->nav_pattern->plugins)
-		WeavePlugins::include(OUT, cp->nav_web, wp, cp->nav_pattern);
+	LOOP_OVER_LINKED_LIST(wp, weave_plugin, ies->nav_pattern->plugins)
+		WeavePlugins::include(OUT, ies->for_web, wp, ies->nav_pattern);
 
 @ A list of all modules in the current web.
 
 @<Substitute Modules@> =
-	module *M = W->md->as_module;
+	module *M = ies->for_web->md->as_module;
 	int L = LinkedLists::len(M->dependencies);
 	if (L > 0) {
 		WRITE_TO(substituted,
 			"<p class=\"purpose\">Together with the following imported module%s:\n",
 			(L==1)?"":"s");
 		WRITE_TO(substituted, "<ul class=\"chapterlist\">\n");
-		Indexer::list_module(substituted, W->md->as_module, FALSE);
+		Indexer::list_module(substituted, ies->for_web->md->as_module, FALSE);
 		WRITE_TO(substituted, "</ul>\n");
 	}
 
@@ -579,17 +554,17 @@ use this.)
 @<Substitute a detail about the complete PDF@> =
 	if (swarm_leader)
 		if (Formats::substitute_post_processing_data(substituted,
-			swarm_leader, detail, pattern) == FALSE)
+			swarm_leader, detail, ies->nav_pattern) == FALSE)
 			WRITE_TO(substituted, "%S for complete web", detail);
 
 @ And here for Chapters:
 
 @<Substitute a Chapter@> =
 	chapter *C = CONTENT_IN_ITEM(
-		Indexer::heading_topmost_on_stack(cp, CHAPTER_LEVEL), chapter);
+		Indexer::heading_topmost_on_stack(ies, CHAPTER_LEVEL), chapter);
 	if (C == NULL)
 		Errors::at_position("no chapter is currently selected",
-			template_filename, lpos);
+			ies->errors_at, lpos);
 	else @<Substitute a detail about the currently selected Chapter@>;
 
 @<Substitute a detail about the currently selected Chapter@> =
@@ -600,7 +575,7 @@ use this.)
 	} else if (Str::eq_wide_string(detail, L"Purpose")) {
 		Str::copy(substituted, C->md->rubric);
 	} else if (Formats::substitute_post_processing_data(substituted,
-		C->ch_weave, detail, pattern)) {
+		C->ch_weave, detail, ies->nav_pattern)) {
 		;
 	} else {
 		WRITE_TO(substituted, "%S for %S", varname, C->md->ch_title);
@@ -610,10 +585,10 @@ use this.)
 
 @<Substitute a Section@> =
 	section *S = CONTENT_IN_ITEM(
-		Indexer::heading_topmost_on_stack(cp, SECTION_LEVEL), section);
+		Indexer::heading_topmost_on_stack(ies, SECTION_LEVEL), section);
 	if (S == NULL)
 		Errors::at_position("no section is currently selected",
-			template_filename, lpos);
+			ies->errors_at, lpos);
 	else @<Substitute a detail about the currently selected Section@>;
 
 @<Substitute a detail about the currently selected Section@> =
@@ -628,14 +603,7 @@ use this.)
 	} else if (Str::eq_wide_string(detail, L"Source")) {
 		WRITE_TO(substituted, "%f", S->md->source_file_for_section);
 	} else if (Str::eq_wide_string(detail, L"Page")) {
-		TEMPORARY_TEXT(linkto);
-		Str::copy(linkto, S->md->sect_range);
-		LOOP_THROUGH_TEXT(P, linkto)
-			if ((Str::get(P) == '/') || (Str::get(P) == ' '))
-				Str::put(P, '-');
-		WRITE_TO(linkto, ".html");
-		Str::copy(substituted, linkto);
-		DISCARD_TEXT(linkto);
+		Colonies::section_URL(substituted, S->md);
 	} else if (Str::eq_wide_string(detail, L"Paragraphs")) {
 		WRITE_TO(substituted, "%d", S->sect_paragraphs);
 	} else if (Str::eq_wide_string(detail, L"Mean")) {
@@ -643,7 +611,7 @@ use this.)
 		if (denom == 0) denom = 1;
 		WRITE_TO(substituted, "%d", S->sect_extent/denom);
 	} else if (Formats::substitute_post_processing_data(substituted,
-		S->sect_weave, detail, pattern)) {
+		S->sect_weave, detail, ies->nav_pattern)) {
 		;
 	} else {
 		WRITE_TO(substituted, "%S for %S", varname, S->md->sect_title);
@@ -663,9 +631,9 @@ navigation purposes.
 	WRITE_TO(substituted, "\">");
 
 @<Substitute a Menu@> =
-	if (cp->inside_navigation_submenu) WRITE_TO(substituted, "</ul>");
+	if (ies->inside_navigation_submenu) WRITE_TO(substituted, "</ul>");
 	WRITE_TO(substituted, "<h2>%S</h2><ul>", menu_name);
-	cp->inside_navigation_submenu = TRUE;
+	ies->inside_navigation_submenu = TRUE;
 
 @<Substitute a member Item@> =
 	TEMPORARY_TEXT(url);
@@ -680,8 +648,8 @@ navigation purposes.
 	DISCARD_TEXT(url);
 
 @<Substitute an item at this URL@> =
-	if (cp->inside_navigation_submenu == FALSE) WRITE_TO(substituted, "<ul>");
-	cp->inside_navigation_submenu = TRUE;
+	if (ies->inside_navigation_submenu == FALSE) WRITE_TO(substituted, "<ul>");
+	ies->inside_navigation_submenu = TRUE;
 	WRITE_TO(substituted, "<li>");
 	if (Str::eq(url, Filenames::get_leafname(Indexer::current_file()))) {
 		WRITE_TO(substituted, "<span class=\"unlink\">");

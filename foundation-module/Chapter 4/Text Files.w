@@ -54,6 +54,13 @@ text_file_position TextFiles::nowhere(void) {
 	return tfp;
 }
 
+text_file_position TextFiles::at(filename *F, int line) {
+	text_file_position tfp = TextFiles::nowhere();
+	tfp.text_file_filename = F;
+	tfp.line_count = line;
+	return tfp;
+}
+
 @h Text file scanner.
 We read lines in, delimited by any of the standard line-ending characters,
 and send them one at a time to a function called |iterator|. Throughout,

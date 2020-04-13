@@ -1,6 +1,6 @@
 navigation: inweb/docs/docs-src/nav.html
 
-pattern: GitHubCovers
+pattern: GitHubPages
 breadcrumbs: none
 web: "overview" at "inweb/docs/docs-src/index.inweb" in "inweb/docs"
 
