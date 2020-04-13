@@ -366,7 +366,7 @@ the main one, and suffixed by |-module|.
 =
 void Colonies::link_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, link_text, L"//(%c+)//"))
+	if (Regexp::match(&mr, link_text, L" *//(%c+)// *"))
 		Colonies::reference_URL(OUT, mr.exp[0], F);
 	else
 		WRITE("%S", link_text);

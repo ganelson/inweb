@@ -45,10 +45,10 @@ Each web has the following slate of data:
 void Bibliographic::initialise_data(web_md *Wm) {
 	web_bibliographic_datum *bd;
 
-	bd = Bibliographic::set_datum(Wm, I"Author", NULL); bd->declaration_mandatory = TRUE;
-	bd = Bibliographic::set_datum(Wm, I"Language", NULL); bd->declaration_mandatory = TRUE;
-	bd = Bibliographic::set_datum(Wm, I"Purpose", NULL); bd->declaration_mandatory = TRUE;
 	bd = Bibliographic::set_datum(Wm, I"Title", NULL); bd->declaration_mandatory = TRUE;
+	bd = Bibliographic::set_datum(Wm, I"Author", NULL); bd->declaration_mandatory = TRUE;
+	bd = Bibliographic::set_datum(Wm, I"Language", I"None");
+	bd = Bibliographic::set_datum(Wm, I"Purpose", I"");
 
 	bd = Bibliographic::set_datum(Wm, I"License", NULL);
 	bd->alias = Bibliographic::set_datum(Wm, I"Licence", NULL); /* alias US to UK spelling */
