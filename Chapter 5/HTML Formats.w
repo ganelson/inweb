@@ -225,7 +225,7 @@ void HTMLFormat::toc(weave_format *self, text_stream *OUT, weave_target *wv,
 			break;
 		case 3: {
 			TEMPORARY_TEXT(TEMP)
-			HTMLFormat::xref(TEMP, wv, P, NULL, TRUE);
+			Colonies::paragraph_URL(TEMP, P, NULL, TRUE);
 			HTML::begin_link(OUT, TEMP);
 			DISCARD_TEXT(TEMP)
 			WRITE("%s%S", (Str::get_first_char(P->ornament) == 'S')?"&#167;":"&para;",
@@ -256,7 +256,7 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 	if (P) {
 		HTMLFormat::p(OUT, "inwebparagraph");
 		TEMPORARY_TEXT(TEMP)
-		HTMLFormat::xref(TEMP, wv, P, NULL, FALSE);
+		Colonies::paragraph_URL(TEMP, P, NULL, FALSE);
 		HTML::anchor(OUT, TEMP);
 		DISCARD_TEXT(TEMP)
 		HTML_OPEN("b");
@@ -275,7 +275,8 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 				crumbs_dropped = TRUE;
 			}
 			HTML_OPEN_WITH("ul", "class=\"crumbs\"");
-			HTMLFormat::drop_initial_breadcrumbs(OUT, wv->breadcrumbs, wv->docs_mode);
+			Colonies::drop_initial_breadcrumbs(OUT,
+				wv->weave_to, wv->breadcrumbs);
 			text_stream *bct = Bibliographic::get_datum(wv->weave_web->md, I"Title");
 			if (Str::len(Bibliographic::get_datum(wv->weave_web->md, I"Short Title")) > 0) {
 				bct = Bibliographic::get_datum(wv->weave_web->md, I"Short Title");
@@ -298,16 +299,6 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 			HTML_CLOSE("ul");
 		}
 	}
-}
-
-void HTMLFormat::drop_initial_breadcrumbs(OUTPUT_STREAM, linked_list *crumbs, int docs_mode) {
-	if (LinkedLists::len(crumbs) > 0) {
-		breadcrumb_request *BR;
-		LOOP_OVER_LINKED_LIST(BR, breadcrumb_request, crumbs) {
-			HTMLFormat::breadcrumb(OUT, BR->breadcrumb_text, BR->breadcrumb_link);
-		}
-	} else if (docs_mode)
-		HTMLFormat::breadcrumb(OUT, I"&#9733;", I"../webs.html");
 }
 
 @ =
@@ -404,7 +395,7 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 @<Attempt to resolve the cross-reference@> =
 	TEMPORARY_TEXT(url);
 	TEMPORARY_TEXT(title);
-	if (Colonies::resolve_reference_in_weave(url, title, wv, reference,
+	if (Colonies::resolve_reference_in_weave(url, title, wv->weave_to, reference,
 		wv->weave_web->md, wv->current_weave_line)) {
 		Formats::url(OUT, wv, url, title, FALSE);
 		i = j + N;
@@ -448,7 +439,7 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 				} else {
 					if ((defn_line) && (defn_line->owning_paragraph)) {
 						TEMPORARY_TEXT(TEMP)
-						HTMLFormat::xref(TEMP, wv, defn_line->owning_paragraph,
+						Colonies::paragraph_URL(TEMP, defn_line->owning_paragraph,
 							wv->current_weave_line->owning_section, TRUE);
 						HTML::begin_link(OUT, TEMP);
 						DISCARD_TEXT(TEMP)
@@ -587,7 +578,7 @@ void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_target *wv,
 	Bibliographic::set_datum(wv->weave_web->md, I"Content Width", CW);
 	Bibliographic::set_datum(wv->weave_web->md, I"Content Height", CH);
 	HTML_OPEN("center");
-	Indexer::run(wv->weave_web, I"", F, NULL, OUT, wv->pattern, NULL, NULL, NULL, FALSE, TRUE);
+	Indexer::run(wv->weave_web, I"", F, NULL, OUT, wv->pattern, NULL, NULL, NULL, TRUE);
 	HTML_CLOSE("center");
 	WRITE("\n");
 	Regexp::dispose_of(&mr);
@@ -751,7 +742,7 @@ void HTMLFormat::commentary_text(weave_format *self, text_stream *OUT, weave_tar
 void HTMLFormat::locale(weave_format *self, text_stream *OUT, weave_target *wv,
 	paragraph *par1, paragraph *par2) {
 	TEMPORARY_TEXT(TEMP)
-	HTMLFormat::xref(TEMP, wv, par1, page_section, TRUE);
+	Colonies::paragraph_URL(TEMP, par1, page_section, TRUE);
 	HTML::begin_link(OUT, TEMP);
 	DISCARD_TEXT(TEMP)
 	WRITE("%s%S",
@@ -762,95 +753,48 @@ void HTMLFormat::locale(weave_format *self, text_stream *OUT, weave_target *wv,
 }
 
 @ =
-void HTMLFormat::section_URL(OUTPUT_STREAM, weave_target *wv, section_md *from) {
-	TEMPORARY_TEXT(linkto);
-	Str::copy(linkto, from->sect_range);
-	LOOP_THROUGH_TEXT(pos, linkto)
-		if ((Str::get(pos) == '/') || (Str::get(pos) == ' '))
-			Str::put(pos, '-');
-	WRITE_TO(linkto, ".html");
-	WRITE("%S", linkto);
-}
-
-void HTMLFormat::xref(OUTPUT_STREAM, weave_target *wv, paragraph *P, section *from,
-	int a_link) {
-	TEMPORARY_TEXT(linkto);
-	if ((from) && (P->under_section != from)) {
-		Str::copy(linkto, P->under_section->md->sect_range);
-		LOOP_THROUGH_TEXT(pos, linkto)
-			if ((Str::get(pos) == '/') || (Str::get(pos) == ' '))
-				Str::put(pos, '-');
-		WRITE_TO(linkto, ".html");
-	}
-	WRITE("%S", linkto);
-	if (P) WRITE("%s%S", (a_link)?"#":"", P->ornament);
-	DISCARD_TEXT(linkto);
-
-	if (P) {
-		WRITE("P");
-		text_stream *N = P->paragraph_number;
-		LOOP_THROUGH_TEXT(pos, N)
-			if (Str::get(pos) == '.') WRITE("_");
-			else PUT(Str::get(pos));
-	}
-}
-
-@ =
 void HTMLFormat::tail(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *comment, section *this_S) {
 	HTMLFormat::exit_current_paragraph(OUT);
-	if (wv->docs_mode) {
-		chapter *C = this_S->owning_chapter;
-		section *S, *last_S = NULL, *prev_S = NULL, *next_S = NULL;
-		LOOP_OVER_LINKED_LIST(S, section, C->sections) {
-			if (S == this_S) prev_S = last_S;
-			if (last_S == this_S) next_S = S;
-			last_S = S;
+	chapter *C = this_S->owning_chapter;
+	section *S, *last_S = NULL, *prev_S = NULL, *next_S = NULL;
+	LOOP_OVER_LINKED_LIST(S, section, C->sections) {
+		if (S == this_S) prev_S = last_S;
+		if (last_S == this_S) next_S = S;
+		last_S = S;
+	}
+	if ((prev_S) || (next_S)) {
+		HTML::hr(OUT, "tocbar");
+		HTML_OPEN_WITH("ul", "class=\"toc\"");
+		HTML_OPEN("li");
+		if (prev_S == NULL) WRITE("<i>(This section begins %S.)</i>", C->md->ch_title);
+		else {
+			TEMPORARY_TEXT(TEMP);
+			Colonies::section_URL(TEMP, prev_S->md);
+			HTML::begin_link(OUT, TEMP);
+			WRITE("Back to '%S'", prev_S->md->sect_title);
+			HTML::end_link(OUT);
+			DISCARD_TEXT(TEMP);
 		}
-		if ((prev_S) || (next_S)) {
-			HTML::hr(OUT, "tocbar");
-			HTML_OPEN_WITH("ul", "class=\"toc\"");
-			HTML_OPEN("li");
-			if (prev_S == NULL) WRITE("<i>(This section begins %S.)</i>", C->md->ch_title);
-			else {
-				TEMPORARY_TEXT(TEMP);
-				HTMLFormat::sref(TEMP, wv, prev_S);
-				HTML::begin_link(OUT, TEMP);
-				WRITE("Back to '%S'", prev_S->md->sect_title);
-				HTML::end_link(OUT);
-				DISCARD_TEXT(TEMP);
-			}
-			HTML_CLOSE("li");
-			HTML_OPEN("li");
-			if (next_S == NULL) WRITE("<i>(This section ends %S.)</i>", C->md->ch_title);
-			else {
-				TEMPORARY_TEXT(TEMP);
-				HTMLFormat::sref(TEMP, wv, next_S);
-				HTML::begin_link(OUT, TEMP);
-				WRITE("Continue with '%S'", next_S->md->sect_title);
-				HTML::end_link(OUT);
-				DISCARD_TEXT(TEMP);
-			}
-			HTML_CLOSE("li");
-			HTML_CLOSE("ul");
+		HTML_CLOSE("li");
+		HTML_OPEN("li");
+		if (next_S == NULL) WRITE("<i>(This section ends %S.)</i>", C->md->ch_title);
+		else {
+			TEMPORARY_TEXT(TEMP);
+			Colonies::section_URL(TEMP, next_S->md);
+			HTML::begin_link(OUT, TEMP);
+			WRITE("Continue with '%S'", next_S->md->sect_title);
+			HTML::end_link(OUT);
+			DISCARD_TEXT(TEMP);
 		}
+		HTML_CLOSE("li");
+		HTML_CLOSE("ul");
 		HTML::hr(OUT, "tocbar");
 	}
 	HTML::comment(OUT, comment);
 	HTML::completed(OUT);
 	Bibliographic::set_datum(wv->weave_web->md, I"Booklet Title", wv->booklet_title);
 	Indexer::cover_sheet_maker(OUT, wv->weave_web, I"template", wv, WEAVE_SECOND_HALF);
-}
-
-@ =
-void HTMLFormat::sref(OUTPUT_STREAM, weave_target *wv, section *S) {
-	if (S == NULL) internal_error("unwoven section");
-	LOOP_THROUGH_TEXT(pos, S->md->sect_range)
-		if (Str::get(pos) == '/')
-			PUT('-');
-		else
-			PUT(Str::get(pos));
-	WRITE(".html");
 }
 
 @h EPUB-only methods.

@@ -349,6 +349,10 @@ nav[role="navigation"] ul li a:link {
     padding: 10px 10px 2px 2px
 }
 
+nav[role="navigation"] ul li span.selectedlink {
+    color: #f25;
+}
+
 nav[role="navigation"] ul li span.unlink {
     color: #f25;
     text-decoration: none;

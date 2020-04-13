@@ -17,9 +17,7 @@ typedef struct inweb_instructions {
 
 	int swarm_mode; /* relevant to weaving only: one of the |*_SWARM| constants */
 	struct text_stream *tag_setting; /* |-weave-tag X|: weave, but only the material tagged X */
-	struct text_stream *weave_format; /* |-weave-as X|: for example, |-weave-as TeX| */
-	struct text_stream *weave_pattern; /* |-weave-to X|: for example, |-weave-to HTML| */
-	int weave_docs; /* |-docs|: for GitHub Pages */
+	struct text_stream *weave_pattern; /* |-weave-as X|: for example, |-weave-to HTML| */
 
 	int show_languages_switch; /* |-show-languages|: print list of available PLs */
 	int catalogue_switch; /* |-catalogue|: print catalogue of sections */
@@ -39,6 +37,7 @@ typedef struct inweb_instructions {
 	struct filename *prototype_setting; /* |-prototype X|: the pathname X, if supplied */
 	struct filename *navigation_setting; /* |-navigation X|: the filename X, if supplied */
 	struct filename *colony_setting; /* |-colony X|: the filename X, if supplied */
+	struct text_stream *member_setting; /* |-member X|: sets web to member X of colony */
 	struct linked_list *breadcrumb_setting; /* of |breadcrumb_request| */
 	int verbose_switch; /* |-verbose|: print names of files read to stdout */
 	int targets; /* used only for parsing */
@@ -48,12 +47,6 @@ typedef struct inweb_instructions {
 
 	struct pathname *import_setting; /* |-import X|: where to find imported webs */
 } inweb_instructions;
-
-typedef struct breadcrumb_request {
-	struct text_stream *breadcrumb_text;
-	struct text_stream *breadcrumb_link;
-	MEMORY_MANAGEMENT
-} breadcrumb_request;
 
 @h Reading the command line.
 The dull work of this is done by the Foundation module: all we need to do is
@@ -66,6 +59,8 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	@<Initialise the args@>;
 	@<Declare the command-line switches specific to Inweb@>;
 	CommandLine::read(argc, argv, &args, &Configuration::switch, &Configuration::bareword);
+	@<Use the colony file to impose further settings@>;
+	if (Str::len(args.weave_pattern) == 0) WRITE_TO(args.weave_pattern, "HTML");
 	if ((args.chosen_web == NULL) && (args.chosen_file == NULL)) {
 		if ((args.makefile_setting) || (args.gitignore_setting))
 			args.inweb_mode = TRANSLATE_MODE;
@@ -103,10 +98,10 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.prototype_setting = NULL;
 	args.navigation_setting = NULL;
 	args.colony_setting = NULL;
+	args.member_setting = NULL;
 	args.breadcrumb_setting = NEW_LINKED_LIST(breadcrumb_request);
 	args.tag_setting = Str::new();
-	args.weave_pattern = Str::new_from_wide_string(L"HTML");
-	args.weave_docs = FALSE;
+	args.weave_pattern = Str::new();
 	args.import_setting = NULL;
 	args.targets = 0;
 	args.test_language_setting = NULL;
@@ -148,15 +143,18 @@ provides automatically.
 @e OPEN_CLSW
 @e WEAVE_AS_CLSW
 @e WEAVE_TAG_CLSW
-@e WEAVE_DOCS_CLSW
 @e BREADCRUMB_CLSW
 @e NAVIGATION_CLSW
-@e COLONY_CLSW
 
 @e TANGLING_CLSG
 
 @e TANGLE_CLSW
 @e TANGLE_TO_CLSW
+
+@e COLONIAL_CLSG
+
+@e COLONY_CLSW
+@e MEMBER_CLSW
 
 @<Declare the command-line switches specific to Inweb@> =
 	CommandLine::declare_heading(L"inweb: a tool for literate programming\n\n"
@@ -215,8 +213,6 @@ provides automatically.
 
 	CommandLine::begin_group(WEAVING_CLSG,
 		I"for weaving a web");
-	CommandLine::declare_switch(WEAVE_DOCS_CLSW, L"weave-docs", 1,
-		L"weave the web for use at GitHub Pages");
 	CommandLine::declare_switch(WEAVE_CLSW, L"weave", 1,
 		L"weave the web into human-readable form");
 	CommandLine::declare_switch(WEAVE_INTO_CLSW, L"weave-into", 2,
@@ -233,8 +229,6 @@ provides automatically.
 		L"use the text X as a breadcrumb in overhead navigation");
 	CommandLine::declare_switch(NAVIGATION_CLSW, L"navigation", 2,
 		L"use the file X as a column of navigation links");
-	CommandLine::declare_switch(COLONY_CLSW, L"colony", 2,
-		L"use the file X as a list of webs in this colony");
 	CommandLine::end_group();
 
 	CommandLine::begin_group(TANGLING_CLSG,
@@ -243,6 +237,14 @@ provides automatically.
 		L"tangle the web into machine-compilable form");
 	CommandLine::declare_switch(TANGLE_TO_CLSW, L"tangle-to", 2,
 		L"tangle, but to filename X");
+	CommandLine::end_group();
+
+	CommandLine::begin_group(COLONIAL_CLSG,
+		I"for dealing with colonies of webs together");
+	CommandLine::declare_switch(COLONY_CLSW, L"colony", 2,
+		L"use the file X as a list of webs in this colony");
+	CommandLine::declare_switch(MEMBER_CLSW, L"member", 2,
+		L"use member X from the colony as our web");
 	CommandLine::end_group();
 
 	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
@@ -315,9 +317,6 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 		/* Weave-related */
 		case WEAVE_CLSW:
 			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
-		case WEAVE_DOCS_CLSW:
-			args->weave_docs = TRUE;
-			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
 		case WEAVE_INTO_CLSW:
 			args->weave_into_setting = Pathnames::from_text(arg);
 			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
@@ -334,15 +333,18 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 			args->tag_setting = Str::duplicate(arg);
 			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
 		case BREADCRUMB_CLSW:
-			ADD_TO_LINKED_LIST(Configuration::breadcrumb(arg),
+			ADD_TO_LINKED_LIST(Colonies::request_breadcrumb(arg),
 				breadcrumb_request, args->breadcrumb_setting);
 			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
 		case NAVIGATION_CLSW:
 			args->navigation_setting = Filenames::from_text(arg);
 			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
+
+		/* Colonial */
 		case COLONY_CLSW:
-			args->colony_setting = Filenames::from_text(arg);
-			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
+			args->colony_setting = Filenames::from_text(arg); break;
+		case MEMBER_CLSW:
+			args->member_setting = Str::duplicate(arg); break;
 
 		/* Tangle-related */
 		case TANGLE_CLSW:
@@ -355,20 +357,28 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 	}
 }
 
-breadcrumb_request *Configuration::breadcrumb(text_stream *arg) {
-	breadcrumb_request *BR = CREATE(breadcrumb_request);
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, arg, L"(%c*?): *(%c*)")) {
-		BR->breadcrumb_text = Str::duplicate(mr.exp[0]);
-		BR->breadcrumb_link = Str::duplicate(mr.exp[1]);	
-	} else {
-		BR->breadcrumb_text = Str::duplicate(arg);
-		BR->breadcrumb_link = Str::duplicate(arg);
-		WRITE_TO(BR->breadcrumb_link, ".html");
+@ The colony file is, in one sense, a collection of presets for the web
+location and its navigational aids.
+
+@<Use the colony file to impose further settings@> =
+	if (args.colony_setting) Colonies::load(args.colony_setting);
+	if (Str::len(args.member_setting) > 0) {
+		if ((args.chosen_web == NULL) && (args.chosen_file == NULL)) {
+			colony_member *CM = Colonies::find(args.member_setting);
+			if (CM == NULL) Errors::fatal("the colony has no member of that name");
+			Configuration::bareword(0, CM->path, &args);
+			if (Str::len(args.weave_pattern) == 0)
+				args.weave_pattern = CM->default_weave_pattern;
+			if (LinkedLists::len(args.breadcrumb_setting) == 0)
+				args.breadcrumb_setting = CM->breadcrumb_tail;
+			if (args.navigation_setting == NULL)
+				args.navigation_setting = CM->navigation;
+			if (args.weave_into_setting == NULL)
+				args.weave_into_setting = CM->weave_path;
+		} else {
+			Errors::fatal("cannot specify a web and also use -member");
+		}
 	}
-	Regexp::dispose_of(&mr);
-	return BR;
-}
 
 @ Foundation calls this routine on any command-line argument which is
 neither a switch (like |-weave|), nor an argument for a switch (like

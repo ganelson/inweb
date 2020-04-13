@@ -203,6 +203,7 @@ possibly, if they are in fact the same directory, an empty one.
 
 =
 void Pathnames::relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) {
+	TEMPORARY_TEXT(url);
 	int found = FALSE;
 	for (pathname *P = to; P && (found == FALSE); P = Pathnames::up(P)) {
 		TEMPORARY_TEXT(PT);
@@ -212,11 +213,10 @@ void Pathnames::relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) {
 			TEMPORARY_TEXT(QT);
 			WRITE_TO(QT, "%p", Q);
 			if (Str::eq(PT, QT)) {
-				for (int i=0; i<q_up_count; i++)
-					WRITE("../");
+				for (int i=0; i<q_up_count; i++) WRITE_TO(url, "../");
 				TEMPORARY_TEXT(FPT);
 				WRITE_TO(FPT, "%p", to);
-				Str::substr(OUT, Str::at(FPT, Str::len(PT) + 1), Str::end(FPT));
+				Str::substr(url, Str::at(FPT, Str::len(PT) + 1), Str::end(FPT));
 				found = TRUE;
 			}
 			DISCARD_TEXT(QT);
@@ -224,8 +224,13 @@ void Pathnames::relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) {
 		}
 		DISCARD_TEXT(PT);
 	}
-	if (found == FALSE) internal_error("no relation made");
-	if (Str::len(OUT) > 0) WRITE("/");
+	if (found == FALSE) {
+		for (pathname *Q = from; Q; Q = Pathnames::up(Q)) WRITE_TO(url, "../");
+		WRITE_TO(url, "%p", to);
+	}
+	WRITE("%S", url);
+	if ((Str::len(url) > 0) && (Str::get_last_char(url) != '/')) WRITE("/");
+	DISCARD_TEXT(url);
 }
 
 @h Existence in the file system.

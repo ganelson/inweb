@@ -58,9 +58,9 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 	TEMPORARY_TEXT(matter);
 	Str::copy(matter, line);
 	match_results mr = Regexp::create_mr();
-	if ((include) && ((state->target->self_contained) || (state->target->pattern->embed_CSS)) &&
+	if ((include) &&
+		((state->target->self_contained) || (state->target->pattern->embed_CSS)) &&
 		(Regexp::match(&mr, matter, L" *%<link href=%\"(%c+?)\"%c*"))) {
-		
 		filename *CSS_file = Patterns::obtain_filename(state->target->pattern, mr.exp[0]);
 		Indexer::transcribe_CSS(matter, CSS_file);
 	} else {
@@ -126,7 +126,7 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 	else
 		Indexer::run(state->target->weave_web, state->target->weave_range,
 			CF, NULL, OUT, state->target->pattern, P, state->target->navigation,
-			NULL, FALSE, FALSE);
+			NULL, FALSE);
 
 @<Weave in the value of this variable name@> =
 	WRITE("%S", Bibliographic::get_datum(state->target->weave_web->md, command));
@@ -138,19 +138,24 @@ void Indexer::nav_column(OUTPUT_STREAM, pathname *P, web *W, text_stream *range,
 	weave_pattern *pattern, filename *nav, text_stream *leafname) {
 	if (nav) {
 		if (TextFiles::exists(nav))
-			Indexer::run(W, range, nav, leafname, OUT, pattern, P, NULL, NULL, FALSE, TRUE);
+			Indexer::nav_run(W, range, nav, leafname, OUT, pattern, P);
 		else
 			Errors::fatal_with_file("unable to find navigation file", nav);
 	} else {
 		if (pattern->hierarchical) {
 			filename *F = Filenames::in_folder(Pathnames::up(P), I"nav.html");
 			if (TextFiles::exists(F))
-				Indexer::run(W, range, F, leafname, OUT, pattern, P, NULL, NULL, FALSE, TRUE);
+				Indexer::nav_run(W, range, F, leafname, OUT, pattern, P);
 		}
 		filename *F = Filenames::in_folder(P, I"nav.html");
 		if (TextFiles::exists(F))
-			Indexer::run(W, range, F, leafname, OUT, pattern, P, NULL, NULL, FALSE, TRUE);
+			Indexer::nav_run(W, range, F, leafname, OUT, pattern, P);
 	}
+}
+
+void Indexer::nav_run(web *W, text_stream *range, filename *F, text_stream *leafname,
+	text_stream *OUT, weave_pattern *pattern, pathname *P) {
+	Indexer::run(W, range, F, leafname, OUT, pattern, P, NULL, NULL, TRUE);
 }
 
 @h Full index pages.
@@ -182,7 +187,7 @@ typedef struct contents_processor {
 	pathname *nav_path;
 	filename *nav_file;
 	linked_list *crumbs;
-	int docs_mode;
+	int inside_navigation_submenu;
 } contents_processor;
 
 contents_processor Indexer::new_processor(text_stream *range) {
@@ -191,6 +196,7 @@ contents_processor Indexer::new_processor(text_stream *range) {
 	cp.restrict_to_range = Str::duplicate(range);
 	cp.stack_pointer = 0;
 	cp.leafname = Str::new();
+	cp.inside_navigation_submenu = FALSE;
 	return cp;
 }
 
@@ -202,17 +208,17 @@ contents_processor Indexer::new_processor(text_stream *range) {
 void Indexer::run(web *W, text_stream *range,
 	filename *template_filename, text_stream *contents_page_leafname,
 	text_stream *write_to, weave_pattern *pattern, pathname *P, filename *nav_file,
-	linked_list *crumbs, int docs, int unlink_selflinks) {
+	linked_list *crumbs, int unlink_selflinks) {
 	contents_processor actual_cp = Indexer::new_processor(range);
 	actual_cp.nav_web = W;
 	actual_cp.nav_pattern = pattern;
 	actual_cp.nav_path = P;
 	actual_cp.nav_file = nav_file;
 	actual_cp.crumbs = crumbs;
-	actual_cp.docs_mode = docs;
 	actual_cp.leafname = Str::duplicate(contents_page_leafname);
 	contents_processor *cp = &actual_cp;
 	text_stream TO_struct; text_stream *OUT = &TO_struct;
+	filename *save_cf = Indexer::current_file();
 	@<Read in the source file containing the contents page template@>;
 	@<Open the contents page file to be constructed@>;
 
@@ -227,7 +233,9 @@ void Indexer::run(web *W, text_stream *range,
 		CYCLE: ;
 		Regexp::dispose_of(&mr);
 	}
+	if (actual_cp.inside_navigation_submenu) WRITE("</ul>");
 	if (write_to == NULL) STREAM_CLOSE(OUT);
+	Indexer::set_current_file(save_cf);
 }
 
 @<Make any necessary substitutions to turn tl into final output@> =
@@ -289,10 +297,12 @@ void Indexer::save_template_line(text_stream *line, text_file_position *tfp, voi
 			Errors::fatal_with_file("unable to write contents file", Contents);
 		if (W->as_ebook)
 			Epub::note_page(W->as_ebook, Contents, I"Index", I"index");
+		Indexer::set_current_file(Contents);
 		PRINT("[Index file: %f]\n", Contents);
 	}
 
 @h The repeat stack and loops.
+This is used only for debugging:
 
 @<Print line and contents of repeat stack@> =
 	PRINT("%04d: %S\nStack:", lpos-1, tl);
@@ -361,7 +371,8 @@ chapter as its value during the sole iteration.
 		}
 		if (loop_level == SECTION_LEVEL) {
 			chapter *within_chapter =
-				CONTENT_IN_ITEM(Indexer::heading_topmost_on_stack(cp, CHAPTER_LEVEL), chapter);
+				CONTENT_IN_ITEM(Indexer::heading_topmost_on_stack(cp, CHAPTER_LEVEL),
+					chapter);
 			if (within_chapter == NULL) {
 				if (CI) {
 					chapter *C = CONTENT_IN_ITEM(CI, chapter);
@@ -381,9 +392,11 @@ chapter as its value during the sole iteration.
 @ And at the other bookend:
 
 @<Deal with a Repeat End command@> =
-	if ((Regexp::match(&mr, command, L"End Repeat")) || (Regexp::match(&mr, command, L"End Select"))) {
+	if ((Regexp::match(&mr, command, L"End Repeat")) ||
+		(Regexp::match(&mr, command, L"End Select"))) {
 		if (cp->stack_pointer <= 0)
-			Errors::at_position("stack underflow on contents template", template_filename, lpos);
+			Errors::at_position("stack underflow on contents template",
+				template_filename, lpos);
 		if (cp->repeat_stack_level[cp->stack_pointer-1] == SECTION_LEVEL) {
 			linked_list_item *SI = cp->repeat_stack_variable[cp->stack_pointer-1];
 			if ((SI == cp->repeat_stack_threshold[cp->stack_pointer-1]) ||
@@ -471,37 +484,43 @@ its square-bracketed parts.
 		if (Bibliographic::data_exists(W->md, varname)) {
 			@<Substitute any bibliographic datum named@>;
 		} else if (Regexp::match(&mr, varname, L"Navigation")) {
-			Indexer::nav_column(substituted, cp->nav_path, cp->nav_web,
-				cp->restrict_to_range, cp->nav_pattern, cp->nav_file, cp->leafname);
+			@<Substitute Navigation@>;
 		} else if (Regexp::match(&mr, varname, L"Breadcrumbs")) {
-			HTMLFormat::drop_initial_breadcrumbs(substituted, cp->crumbs, cp->docs_mode);
+			@<Substitute Breadcrumbs@>;
 		} else if (Str::eq_wide_string(varname, L"Plugins")) {
-			weave_plugin *wp;
-			LOOP_OVER_LINKED_LIST(wp, weave_plugin, cp->nav_pattern->plugins)
-				WeavePlugins::include(OUT, cp->nav_web, wp, cp->nav_pattern);
+			@<Substitute Plugins@>;
 		} else if (Regexp::match(&mr, varname, L"Modules")) {
-			@<Substitute the list of imported modules@>;
-		} else if (Regexp::match(&mr, varname, L"Chapter (%c+)")) {
-			text_stream *detail = mr.exp[0];
-			chapter *C = CONTENT_IN_ITEM(
-				Indexer::heading_topmost_on_stack(cp, CHAPTER_LEVEL), chapter);
-			if (C == NULL)
-				Errors::at_position("no chapter is currently selected",
-					template_filename, lpos);
-			else @<Substitute a detail about the currently selected Chapter@>;
-		} else if (Regexp::match(&mr, varname, L"Section (%c+)")) {
-			text_stream *detail = mr.exp[0];
-			section *S = CONTENT_IN_ITEM(
-				Indexer::heading_topmost_on_stack(cp, SECTION_LEVEL), section);
-			if (S == NULL)
-				Errors::at_position("no section is currently selected",
-					template_filename, lpos);
-			else @<Substitute a detail about the currently selected Section@>;
+			@<Substitute Modules@>;
 		} else if (Regexp::match(&mr, varname, L"Complete (%c+)")) {
 			text_stream *detail = mr.exp[0];
 			@<Substitute a detail about the complete PDF@>;
+		} else if (Regexp::match(&mr, varname, L"Chapter (%c+)")) {
+			text_stream *detail = mr.exp[0];
+			@<Substitute a Chapter@>;
+		} else if (Regexp::match(&mr, varname, L"Section (%c+)")) {
+			text_stream *detail = mr.exp[0];
+			@<Substitute a Section@>;
+		} else if (Regexp::match(&mr, varname, L"URL \"(%c+)\"")) {
+			text_stream *link_text = mr.exp[0];
+			@<Substitute a URL@>;
+		} else if (Regexp::match(&mr, varname, L"Link \"(%c+)\"")) {
+			text_stream *link_text = mr.exp[0];
+			@<Substitute a Link@>;
+		} else if (Regexp::match(&mr, varname, L"Menu \"(%c+)\"")) {
+			text_stream *menu_name = mr.exp[0];
+			@<Substitute a Menu@>;
+		} else if (Regexp::match(&mr, varname, L"Item \"(%c+)\"")) {
+			text_stream *item_name = mr.exp[0];
+			text_stream *link_text = item_name;
+			@<Substitute a member Item@>;
+		} else if (Regexp::match(&mr, varname, L"Item \"(%c+)\" -> (%c+)")) {
+			text_stream *item_name = mr.exp[0];
+			text_stream *link_text = mr.exp[1];
+			@<Substitute a general Item@>;
 		} else {
-			WRITE_TO(substituted, "<b>%S</b>", varname);
+			WRITE_TO(substituted, "%S", varname);
+			if (Regexp::match(&mr, varname, L"%i+%c*"))
+				PRINT("Warning: unable to resolve command '%S'\n", varname);
 		}
 		Str::clear(tl);
 		WRITE_TO(tl, "%S%S%S", left_part, substituted, right_part);
@@ -517,14 +536,61 @@ its square-bracketed parts.
 @<Substitute any bibliographic datum named@> =
 	Str::copy(substituted, Bibliographic::get_datum(W->md, varname));
 
+@ |[[Navigation]]| substitutes to the content of the sidebar navigation file;
+this will recursively call the Indexer, in fact.
+
+@<Substitute Navigation@> =
+	Indexer::nav_column(substituted, cp->nav_path, cp->nav_web,
+		cp->restrict_to_range, cp->nav_pattern, cp->nav_file, cp->leafname);
+
+@ A trail of breadcrumbs, used for overhead navigation in web pages.
+
+@<Substitute Breadcrumbs@> =
+	Colonies::drop_initial_breadcrumbs(substituted, Indexer::current_file(),
+		cp->crumbs);
+
+@ |[[Plugins]]| here expands to material needed by any plugins required
+by the weave pattern itself; it doesn't include optional extras for a
+specific page because, of course, the Indexer is used for cover sheets and
+not pages. (Except for navigation purposes, and navigation files should never
+use this.)
+
+@<Substitute Plugins@> =
+	weave_plugin *wp;
+	LOOP_OVER_LINKED_LIST(wp, weave_plugin, cp->nav_pattern->plugins)
+		WeavePlugins::include(OUT, cp->nav_web, wp, cp->nav_pattern);
+
+@ A list of all modules in the current web.
+
+@<Substitute Modules@> =
+	module *M = W->md->as_module;
+	int L = LinkedLists::len(M->dependencies);
+	if (L > 0) {
+		WRITE_TO(substituted,
+			"<p class=\"purpose\">Together with the following imported module%s:\n",
+			(L==1)?"":"s");
+		WRITE_TO(substituted, "<ul class=\"chapterlist\">\n");
+		Indexer::list_module(substituted, W->md->as_module, FALSE);
+		WRITE_TO(substituted, "</ul>\n");
+	}
+
 @ We store little about the complete-web-in-one-file PDF:
 
 @<Substitute a detail about the complete PDF@> =
 	if (swarm_leader)
-		if (Formats::substitute_post_processing_data(substituted, swarm_leader, detail, pattern) == FALSE)
+		if (Formats::substitute_post_processing_data(substituted,
+			swarm_leader, detail, pattern) == FALSE)
 			WRITE_TO(substituted, "%S for complete web", detail);
 
 @ And here for Chapters:
+
+@<Substitute a Chapter@> =
+	chapter *C = CONTENT_IN_ITEM(
+		Indexer::heading_topmost_on_stack(cp, CHAPTER_LEVEL), chapter);
+	if (C == NULL)
+		Errors::at_position("no chapter is currently selected",
+			template_filename, lpos);
+	else @<Substitute a detail about the currently selected Chapter@>;
 
 @<Substitute a detail about the currently selected Chapter@> =
 	if (Str::eq_wide_string(detail, L"Title")) {
@@ -533,13 +599,22 @@ its square-bracketed parts.
 		Str::copy(substituted, C->md->ch_range);
 	} else if (Str::eq_wide_string(detail, L"Purpose")) {
 		Str::copy(substituted, C->md->rubric);
-	} else if (Formats::substitute_post_processing_data(substituted, C->ch_weave, detail, pattern)) {
+	} else if (Formats::substitute_post_processing_data(substituted,
+		C->ch_weave, detail, pattern)) {
 		;
 	} else {
 		WRITE_TO(substituted, "%S for %S", varname, C->md->ch_title);
 	}
 
-@ And this, finally, is a very similar construction for Sections.
+@ And this is a very similar construction for Sections.
+
+@<Substitute a Section@> =
+	section *S = CONTENT_IN_ITEM(
+		Indexer::heading_topmost_on_stack(cp, SECTION_LEVEL), section);
+	if (S == NULL)
+		Errors::at_position("no section is currently selected",
+			template_filename, lpos);
+	else @<Substitute a detail about the currently selected Section@>;
 
 @<Substitute a detail about the currently selected Section@> =
 	if (Str::eq_wide_string(detail, L"Title")) {
@@ -567,23 +642,63 @@ its square-bracketed parts.
 		int denom = S->sect_paragraphs;
 		if (denom == 0) denom = 1;
 		WRITE_TO(substituted, "%d", S->sect_extent/denom);
-	} else if (Formats::substitute_post_processing_data(substituted, S->sect_weave, detail, pattern)) {
+	} else if (Formats::substitute_post_processing_data(substituted,
+		S->sect_weave, detail, pattern)) {
 		;
 	} else {
 		WRITE_TO(substituted, "%S for %S", varname, S->md->sect_title);
 	}
 
-@<Substitute the list of imported modules@> =
-	module *M = W->md->as_module;
-	int L = LinkedLists::len(M->dependencies);
-	if (L > 0) {
-		WRITE_TO(substituted,
-			"<p class=\"purpose\">Together with the following imported module%s:\n",
-			(L==1)?"":"s");
-		WRITE_TO(substituted, "<ul class=\"chapterlist\">\n");
-		Indexer::list_module(substituted, W->md->as_module, FALSE);
-		WRITE_TO(substituted, "</ul>\n");
+@ These commands are all used in constructing relative URLs, especially for
+navigation purposes.
+
+@<Substitute a URL@> =
+	Pathnames::relative_URL(substituted,
+		Filenames::get_path_to(Indexer::current_file()),
+		Pathnames::from_text(link_text));
+
+@<Substitute a Link@> =
+	WRITE_TO(substituted, "<a href=\"");
+	Colonies::reference_URL(substituted, link_text, Indexer::current_file());
+	WRITE_TO(substituted, "\">");
+
+@<Substitute a Menu@> =
+	if (cp->inside_navigation_submenu) WRITE_TO(substituted, "</ul>");
+	WRITE_TO(substituted, "<h2>%S</h2><ul>", menu_name);
+	cp->inside_navigation_submenu = TRUE;
+
+@<Substitute a member Item@> =
+	TEMPORARY_TEXT(url);
+	Colonies::reference_URL(url, link_text, Indexer::current_file());
+	@<Substitute an item at this URL@>;
+	DISCARD_TEXT(url);
+
+@<Substitute a general Item@> =
+	TEMPORARY_TEXT(url);
+	Colonies::link_URL(url, link_text, Indexer::current_file());
+	@<Substitute an item at this URL@>;
+	DISCARD_TEXT(url);
+
+@<Substitute an item at this URL@> =
+	if (cp->inside_navigation_submenu == FALSE) WRITE_TO(substituted, "<ul>");
+	cp->inside_navigation_submenu = TRUE;
+	WRITE_TO(substituted, "<li>");
+	if (Str::eq(url, Filenames::get_leafname(Indexer::current_file()))) {
+		WRITE_TO(substituted, "<span class=\"unlink\">");
+		WRITE_TO(substituted, "%S", item_name);
+		WRITE_TO(substituted, "</span>");
+	} else if (Str::eq(url, I"index.html")) {
+		WRITE_TO(substituted, "<a href=\"%S\">", url);
+		WRITE_TO(substituted, "<span class=\"selectedlink\">");
+		WRITE_TO(substituted, "%S", item_name);
+		WRITE_TO(substituted, "</span>");
+		WRITE_TO(substituted, "</a>");
+	} else {
+		WRITE_TO(substituted, "<a href=\"%S\">", url);
+		WRITE_TO(substituted, "%S", item_name);
+		WRITE_TO(substituted, "</a>");
 	}
+	WRITE_TO(substituted, "</li>");
 
 @ =
 void Indexer::list_module(OUTPUT_STREAM, module *M, int list_this) {
@@ -613,4 +728,15 @@ void Indexer::transcribe_CSS(OUTPUT_STREAM, filename *CSS_file) {
 void Indexer::copy_CSS(text_stream *line, text_file_position *tfp, void *X) {
 	text_stream *OUT = (text_stream *) X;
 	WRITE("%S\n", line);
+}
+
+@h Tracking the file being written to.
+
+=
+filename *file_being_woven = NULL;
+filename *Indexer::current_file(void) {
+	return file_being_woven;
+}
+void Indexer::set_current_file(filename *F) {
+	file_being_woven = F;
 }

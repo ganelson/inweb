@@ -18,6 +18,7 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 	text_stream *OUT = &TO_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, wv->weave_to, UTF8_ENC) == FALSE)
 		Errors::fatal_with_file("unable to write woven file", wv->weave_to);
+	Indexer::set_current_file(wv->weave_to);
 
 	@<Weave the banner@>;
 	if ((Str::len(wv->cover_sheet_to_use) > 0) && (Reader::web_has_one_section(W) == FALSE))
@@ -30,6 +31,7 @@ int Weaver::weave_source(web *W, weave_target *wv) {
 	@<Weave the rennab@>;
 
 	STREAM_CLOSE(OUT);
+	Indexer::set_current_file(NULL);
 	return lines_woven;
 }
 

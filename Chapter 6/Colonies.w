@@ -38,7 +38,12 @@ typedef struct colony_member {
 	struct text_stream *name; /* the |N| in |N at P in W| */
 	struct text_stream *path; /* the |P| in |N at P in W| */
 	struct pathname *weave_path; /* the |W| in |N at P in W| */
+	struct text_stream *home_leaf; /* usually |index.html|, but not for single-file webs */
+	struct text_stream *default_weave_pattern; /* for use when weaving */
+	
 	struct web_md *loaded; /* metadata on its sections, lazily evaluated */
+	struct filename *navigation; /* navigation sidebar HTML */
+	struct linked_list *breadcrumb_tail; /* of |breadcrumb_request| */
 	MEMORY_MANAGEMENT
 } colony_member;
 
@@ -48,18 +53,31 @@ at GitHub:
 = (text from Figures/colony.txt)
 
 =
+typedef struct colony_reader_state {
+	struct colony *province;
+	struct filename *nav;
+	struct linked_list *crumbs; /* of |breadcrumb_request| */
+	struct text_stream *pattern;
+} colony_reader_state;
+
 void Colonies::load(filename *F) {
 	colony *C = CREATE(colony);
 	C->members = NEW_LINKED_LIST(colony_member);
+	colony_reader_state crs;
+	crs.province = C;
+	crs.nav = NULL;
+	crs.crumbs = NEW_LINKED_LIST(breadcrumb_request);
+	crs.pattern = NULL;
 	TextFiles::read(F, FALSE, "can't open colony file",
-		TRUE, Colonies::read_line, NULL, (void *) C);
+		TRUE, Colonies::read_line, NULL, (void *) &crs);
 }
 
 @ Lines from the colony file are fed, one by one, into:
 
 =
-void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_C) {
-	colony *C = (colony *) v_C;
+void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_crs) {
+	colony_reader_state *crs = (colony_reader_state *) v_crs;
+	colony *C = crs->province;
 
 	Str::trim_white_space(line); /* ignore trailing space */
 	if (Str::len(line) == 0) return; /* ignore blank lines */
@@ -76,13 +94,86 @@ void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_C) 
 		}
 		CM->name = Str::duplicate(mr.exp[1]);
 		CM->path = Str::duplicate(mr.exp[2]);
+		CM->home_leaf = Str::new();
+		if (Str::suffix_eq(CM->path, I".inweb", 6)) {
+			filename *F = Filenames::from_text(CM->path);
+			Filenames::write_unextended_leafname(CM->home_leaf, F);
+			WRITE_TO(CM->home_leaf, ".html");
+		} else {
+			WRITE_TO(CM->home_leaf, "index.html");
+		}
 		CM->weave_path = Pathnames::from_text(mr.exp[3]);
 		CM->loaded = NULL;
+		CM->navigation = crs->nav;
+		CM->breadcrumb_tail = crs->crumbs;
+		CM->default_weave_pattern = Str::duplicate(crs->pattern);
 		ADD_TO_LINKED_LIST(CM, colony_member, C->members);
+	} else if (Regexp::match(&mr, line, L"pattern: none")) {
+		crs->pattern = NULL;
+	} else if (Regexp::match(&mr, line, L"pattern: *(%c*)")) {
+		crs->pattern = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, line, L"navigation: none")) {
+		crs->nav = NULL;
+	} else if (Regexp::match(&mr, line, L"navigation: *(%c*)")) {
+		crs->nav = Filenames::from_text(mr.exp[0]);
+	} else if (Regexp::match(&mr, line, L"breadcrumbs: none")) {
+		crs->crumbs = NEW_LINKED_LIST(breadcrumb_request);
+	} else if (Regexp::match(&mr, line, L"breadcrumbs: *(%c*)")) {
+		crs->crumbs = NEW_LINKED_LIST(breadcrumb_request);
+		match_results mr2 = Regexp::create_mr();
+		while (Regexp::match(&mr2, mr.exp[0], L"(\"%c*?\") > (%c*)")) {
+			Colonies::add_crumb(crs->crumbs, mr2.exp[0], tfp);
+			Str::clear(mr.exp[0]); Str::copy(mr.exp[0], mr2.exp[1]);
+		}
+		Colonies::add_crumb(crs->crumbs, mr.exp[0], tfp);
 	} else {
 		Errors::in_text_file("unable to read colony member", tfp);
 	}
 	Regexp::dispose_of(&mr);
+}
+
+@ =
+void Colonies::add_crumb(linked_list *L, text_stream *spec, text_file_position *tfp) {
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, spec, L"\"(%c*?)\"") == FALSE) {
+		Errors::in_text_file("each crumb must be in double-quotes", tfp);
+		return;
+	}
+	spec = mr.exp[0];
+	breadcrumb_request *br = Colonies::request_breadcrumb(spec);
+	ADD_TO_LINKED_LIST(br, breadcrumb_request, L);
+	Regexp::dispose_of(&mr);
+}
+
+typedef struct breadcrumb_request {
+	struct text_stream *breadcrumb_text;
+	struct text_stream *breadcrumb_link;
+	MEMORY_MANAGEMENT
+} breadcrumb_request;
+
+breadcrumb_request *Colonies::request_breadcrumb(text_stream *arg) {
+	breadcrumb_request *BR = CREATE(breadcrumb_request);
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, arg, L"(%c*?): *(%c*)")) {
+		BR->breadcrumb_text = Str::duplicate(mr.exp[0]);
+		BR->breadcrumb_link = Str::duplicate(mr.exp[1]);	
+	} else {
+		BR->breadcrumb_text = Str::duplicate(arg);
+		BR->breadcrumb_link = Str::duplicate(arg);
+		WRITE_TO(BR->breadcrumb_link, ".html");
+	}
+	Regexp::dispose_of(&mr);
+	return BR;
+}
+
+void Colonies::drop_initial_breadcrumbs(OUTPUT_STREAM, filename *F, linked_list *crumbs) {
+	breadcrumb_request *BR;
+	LOOP_OVER_LINKED_LIST(BR, breadcrumb_request, crumbs) {
+		TEMPORARY_TEXT(url);
+		Colonies::link_URL(url, BR->breadcrumb_link, F);
+		HTMLFormat::breadcrumb(OUT, BR->breadcrumb_text, url);
+		DISCARD_TEXT(url);
+	}
 }
 
 @h Searching.
@@ -162,7 +253,7 @@ is where the reference is made from.
 
 =
 int Colonies::resolve_reference_in_weave(text_stream *url, text_stream *title,
-	weave_target *wv, text_stream *text, web_md *Wm, source_line *L) {
+	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L) {
 	module *from_M = (Wm)?(Wm->as_module):NULL;
 	module *search_M = from_M;
 	colony_member *search_CM = NULL;
@@ -223,7 +314,7 @@ int Colonies::resolve_reference_in_weave(text_stream *url, text_stream *title,
 	language_function *fn;
 	LOOP_OVER(fn, language_function) {
 		if (Str::eq_insensitive(fn->function_name, text)) {
-			HTMLFormat::xref(url, wv, fn->function_header_at->owning_paragraph,
+			Colonies::paragraph_URL(url, fn->function_header_at->owning_paragraph,
 				L->owning_section, TRUE);
 			WRITE_TO(title, "%S", fn->function_name);
 			return TRUE;
@@ -234,7 +325,7 @@ int Colonies::resolve_reference_in_weave(text_stream *url, text_stream *title,
 	language_type *str;
 	LOOP_OVER(str, language_type) {
 		if (Str::eq_insensitive(str->structure_name, text)) {
-			HTMLFormat::xref(url, wv, str->structure_header_at->owning_paragraph,
+			Colonies::paragraph_URL(url, str->structure_header_at->owning_paragraph,
 				L->owning_section, TRUE);
 			WRITE_TO(title, "%S", str->structure_name);
 			return TRUE;
@@ -248,11 +339,11 @@ int Colonies::resolve_reference_in_weave(text_stream *url, text_stream *title,
 	return TRUE;
 
 @<The section is a known colony member@> =
-	pathname *from = Filenames::get_path_to(wv->weave_to);
+	pathname *from = Filenames::get_path_to(for_HTML_file);
 	pathname *to = search_CM->weave_path;
 	Pathnames::relative_URL(url, from, to);
-	if (bare_module_name) WRITE_TO(url, "index.html");
-	else if (found_Sm) HTMLFormat::section_URL(url, wv, found_Sm); 
+	if (bare_module_name) WRITE_TO(url, "%S", search_CM->home_leaf);
+	else if (found_Sm) Colonies::section_URL(url, found_Sm); 
 	if (bare_module_name == FALSE)
 		WRITE_TO(title, " (in %S)", search_CM->name);
 
@@ -262,10 +353,65 @@ the main one, and suffixed by |-module|.
 
 @<The section is not in a known colony member@> =
 	if (found_M == from_M) {
-		HTMLFormat::section_URL(url, wv, found_Sm);
+		Colonies::section_URL(url, found_Sm);
 	} else {
 		WRITE_TO(url, "../%S-module/", found_M->module_name);
-		HTMLFormat::section_URL(url, wv, found_Sm); 
+		Colonies::section_URL(url, found_Sm); 
 		if (bare_module_name == FALSE)
 			WRITE_TO(title, " (in %S)", found_M->module_name);
 	}
+
+@h URL management.
+
+=
+void Colonies::link_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, link_text, L"//(%c+)//"))
+		Colonies::reference_URL(OUT, mr.exp[0], F);
+	else
+		WRITE("%S", link_text);
+	Regexp::dispose_of(&mr);
+}
+
+void Colonies::reference_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
+	TEMPORARY_TEXT(title);
+	TEMPORARY_TEXT(url);
+	if (Colonies::resolve_reference_in_weave(url, title, F, link_text, NULL, NULL))
+		WRITE("%S", url);
+	else
+		PRINT("Warning: unable to resolve reference '%S' in navigation\n", link_text);
+	DISCARD_TEXT(title);
+	DISCARD_TEXT(url);
+}
+
+void Colonies::section_URL(OUTPUT_STREAM, section_md *Sm) {
+	if (Sm == NULL) internal_error("unwoven section");
+	LOOP_THROUGH_TEXT(pos, Sm->sect_range)
+		if ((Str::get(pos) == '/') || (Str::get(pos) == ' '))
+			PUT('-');
+		else
+			PUT(Str::get(pos));
+	WRITE(".html");
+}
+
+void Colonies::paragraph_URL(OUTPUT_STREAM, paragraph *P, section *from, int a_link) {
+	TEMPORARY_TEXT(linkto);
+	if ((from) && (P->under_section != from)) {
+		Str::copy(linkto, P->under_section->md->sect_range);
+		LOOP_THROUGH_TEXT(pos, linkto)
+			if ((Str::get(pos) == '/') || (Str::get(pos) == ' '))
+				Str::put(pos, '-');
+		WRITE_TO(linkto, ".html");
+	}
+	WRITE("%S", linkto);
+	if (P) WRITE("%s%S", (a_link)?"#":"", P->ornament);
+	DISCARD_TEXT(linkto);
+
+	if (P) {
+		WRITE("P");
+		text_stream *N = P->paragraph_number;
+		LOOP_THROUGH_TEXT(pos, N)
+			if (Str::get(pos) == '.') WRITE("_");
+			else PUT(Str::get(pos));
+	}
+}

@@ -4,6 +4,8 @@
 ME = inweb
 SAFETYCOPY = $(ME)/Tangled/inweb_dev
 
+COLONY = $(ME)/docs/docs-src/colony.txt
+
 -include $(ME)/platform-settings.mk
 
 .PHONY: all
@@ -85,6 +87,7 @@ pages:
 	$(INWEB) -help > $(ME)/Figures/help.txt
 	$(INWEB) -show-languages > $(ME)/Figures/languages.txt
 	cp -f $(ME)/docs/docs-src/colony.txt $(ME)/Figures/colony.txt
+	cp -f $(ME)/docs/docs-src/nav.html $(ME)/Figures/nav.txt
 	$(INWEB) -advance-build-file $(ME)/build.txt
 	mkdir -p $(ME)/docs
 	rm -f $(ME)/docs/*.html
@@ -99,12 +102,12 @@ pages:
 	rm -f $(ME)/docs/foundation-module/*.html
 	mkdir -p $(ME)/docs/foundation-test
 	rm -f $(ME)/docs/foundation-test/*.html
-	$(INWEB) $(ME)/docs/docs-src/webs.inweb -weave-as GitHubCovers -weave-into $(ME)/docs -navigation $(ME)/docs/docs-src/nav-o.html -colony $(ME)/docs/docs-src/colony.txt
-	$(INWEB) $(ME)/Examples/goldbach -weave-docs -weave-into $(ME)/docs/goldbach -breadcrumb 'Home:../webs.html' -navigation $(ME)/docs/docs-src/nav.html -colony $(ME)/docs/docs-src/colony.txt
-	$(INWEB) $(ME)/Examples/twinprimes.inweb -weave-docs -weave-into $(ME)/docs/twinprimes -breadcrumb 'Home:../webs.html' -navigation $(ME)/docs/docs-src/nav.html -colony $(ME)/docs/docs-src/colony.txt
-	$(INWEB) $(ME) -weave-docs -weave-into $(ME)/docs/inweb -breadcrumb 'Home:../webs.html' -navigation $(ME)/docs/docs-src/nav.html -colony $(ME)/docs/docs-src/colony.txt
-	$(INWEB) $(ME)/foundation-module -weave-docs -weave-into $(ME)/docs/foundation-module -breadcrumb 'Home:../webs.html' -navigation $(ME)/docs/docs-src/nav.html -colony $(ME)/docs/docs-src/colony.txt
-	$(INWEB) $(ME)/foundation-test -weave-docs -weave-into $(ME)/docs/foundation-test -breadcrumb 'Home:../webs.html' -navigation $(ME)/docs/docs-src/nav.html -colony $(ME)/docs/docs-src/colony.txt
+	$(INWEB) -colony $(COLONY) -member overview -weave
+	$(INWEB) -colony $(COLONY) -member goldbach -weave
+	$(INWEB) -colony $(COLONY) -member twinprimes -weave
+	$(INWEB) -colony $(COLONY) -member inweb -weave
+	$(INWEB) -colony $(COLONY) -member foundation-module -weave
+	$(INWEB) -colony $(COLONY) -member foundation-test -weave
 
 .PHONY: clean
 clean:

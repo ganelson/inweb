@@ -40,12 +40,10 @@ for analysing a web:
 
 for weaving a web:
   -breadcrumb X          use the text X as a breadcrumb in overhead navigation
-  -colony X              use the file X as a list of webs in this colony
   -navigation X          use the file X as a column of navigation links
   -open                  weave then open woven file
   -weave                 weave the web into human-readable form
   -weave-as X            set weave pattern to X (default is 'HTML')
-  -weave-docs            weave the web for use at GitHub Pages
   -weave-into X          weave, but into directory X
   -weave-tag X           weave, but only using material tagged as X
   -weave-to X            weave, but to filename X (for single files only)
@@ -53,6 +51,10 @@ for weaving a web:
 for tangling a web:
   -tangle                tangle the web into machine-compilable form
   -tangle-to X           tangle, but to filename X
+
+for dealing with colonies of webs together:
+  -colony X              use the file X as a list of webs in this colony
+  -member X              use member X from the colony as our web
 
 -at X                    specify that this tool is installed at X
 -crash                   intentionally crash on internal errors, for backtracing (default is -no-crash)

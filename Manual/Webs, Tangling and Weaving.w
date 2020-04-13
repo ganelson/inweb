@@ -569,36 +569,6 @@ it is actually expanded. A definition of one function |A| can refer to another
 function |B| not yet defined; but any actual use of |A| must be made after
 both |A| and |B| have been defined. So, basically, declare before use.
 
-@h GitHub Pages support.
-If a project is hosted at GitHub, then the GitHub Pages service is the ideal
-place to serve a woven copy of the project to the world. To that end,
-= (text as ConsoleText)
-	$ inweb/Tangled/inweb W -weave-docs
-=
-performs a weave which is special in two ways:
-
-(a) It uses the pattern called |GitHubPages|, and
-(b) Material is by default placed in |W/docs/NAME|, where |NAME| is the
-short title of the project.
-
-The reason for this scheme is that GitHub Pages, if enabled, serves a
-website using part or all of a git repository. Here, we just want part of
-the project's repository to be served: that being so, GitHub mandates that
-we use a top-level directory in the repository called |docs|.
-
-|-weave-docs| expects that there will be a page at |W/docs/webs.html| to
-give readers a choice of which web to browse -- since some Inweb projects
-contain multiple webs. There will later be a way to create the |webs.html|
-poge automatically, but for now it's made by hand.
-
-Note that:
-= (text as ConsoleText)
-	$ inweb/Tangled/inweb W -weave-docs -weave-into P
-=
-substitutes the path |P| for |W/docs/NAME|. But the files created there still
-expect that to be able to link to a |../webs.html|, that is, in the directory
-above them.
-
 @h Semantic version numbering and build metadata.
 When Inweb reads in a web, it also looks for a file called |build.txt| in
 the web's directory; if that isn't there, it looks for the same file in the

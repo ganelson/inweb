@@ -13,9 +13,10 @@ Manual
 	Introduction to Inweb
 	Webs, Tangling and Weaving
 	How to Write a Web
-	The InC Dialect
+	Making Weaves into Websites
 	Advanced Weaving with Patterns
 	Supporting Programming Languages
+	The InC Dialect
 	Reference Card
 
 Preliminaries

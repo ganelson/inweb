@@ -563,7 +563,7 @@ void Formats::text_r(OUTPUT_STREAM, weave_target *wv, text_stream *id,
 @<Attempt to resolve the cross-reference@> =
 	TEMPORARY_TEXT(url);
 	TEMPORARY_TEXT(title);
-	if (Colonies::resolve_reference_in_weave(url, title, wv, reference,
+	if (Colonies::resolve_reference_in_weave(url, title, wv->weave_to, reference,
 		wv->weave_web->md, wv->current_weave_line)) {
 		Formats::text_r(OUT, wv, before, within, comments);
 		Formats::url(OUT, wv, url, title, FALSE);

@@ -232,7 +232,6 @@ which for many small webs will be the entire thing.
 
 @<Weave the web@> =
 	Numbering::number_web(W);
-	if (ins->weave_docs) @<Prepare a docs weave@>;
 
 	theme_tag *tag = Tags::find_by_name(ins->tag_setting, FALSE);
 	if ((Str::len(ins->tag_setting) > 0) && (tag == NULL))
@@ -241,8 +240,6 @@ which for many small webs will be the entire thing.
 	weave_pattern *pattern = Patterns::find(W, ins->weave_pattern);
 	if ((ins->chosen_range_actually_chosen == FALSE) && (ins->chosen_file == NULL))
 		Configuration::set_range(ins, pattern->default_range);
-
-	if (ins->colony_setting) Colonies::load(ins->colony_setting);
 
 	int r = Formats::begin_weaving(W, pattern);
 	if (r != SWARM_OFF_SWM) ins->swarm_mode = r;
@@ -254,36 +251,14 @@ which for many small webs will be the entire thing.
 			else shall_we_open = FALSE;
 		}
 		Swarm::weave_subset(W, ins->chosen_range, shall_we_open, tag, pattern,
-			ins->weave_to_setting, ins->weave_into_setting, ins->weave_docs,
+			ins->weave_to_setting, ins->weave_into_setting,
 			ins->breadcrumb_setting, ins->navigation_setting);
 	} else {
 		Swarm::weave(W, ins->chosen_range, ins->swarm_mode, tag, pattern,
-			ins->weave_to_setting, ins->weave_into_setting, ins->weave_docs,
+			ins->weave_to_setting, ins->weave_into_setting,
 			ins->breadcrumb_setting, ins->navigation_setting);
 	}
 	Formats::end_weaving(W, pattern);
-
-@ If the |-weave-docs| option was used, we have to weave into a subfolder of
-|docs|, and we'll create it if it doesn't already exist.
-
-@<Prepare a docs weave@> =
-	if (ins->weave_into_setting == NULL) {
-		pathname *docs = Pathnames::subfolder(W->md->path_to_web, I"docs");
-		Pathnames::create_in_file_system(docs);
-		text_stream *leaf = Str::new();
-		if (Bibliographic::data_exists(W->md, I"Short Title"))
-			Str::copy(leaf, Bibliographic::get_datum(W->md, I"Short Title"));
-		else
-			Str::copy(leaf, Bibliographic::get_datum(W->md, I"Title"));
-		if (Str::len(leaf) > 0) {
-			ins->weave_into_setting = Pathnames::subfolder(docs, leaf);
-			Pathnames::create_in_file_system(ins->weave_into_setting);
-		} else ins->weave_into_setting = docs;
-	} else {
-		Pathnames::create_in_file_system(ins->weave_into_setting);
-	}
-	W->redirect_weaves_to = ins->weave_into_setting;
-	ins->weave_pattern = I"GitHubPages";
 
 @<Assign section numbers for printing purposes@> =
 	section *S; int k = 1;

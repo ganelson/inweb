@@ -144,8 +144,10 @@ code, definition, what?
 
 	if (L->source.line_count == 0) @<Parse the line as a probable chapter heading@>;
 	if (L->source.line_count <= 1) @<Parse the line as a probable section heading@>;
-	@<Parse the line as a possible Inweb command@>;
-	@<Parse the line as a possible paragraph macro definition@>;
+	if (extract_mode == FALSE) {
+		@<Parse the line as a possible Inweb command@>;
+		@<Parse the line as a possible paragraph macro definition@>;
+	}
 	if (Str::get_first_char(L->text) == '=') {
 		if (S->md->using_syntax < V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "column-1 '=' as code divider", V2_SYNTAX);
