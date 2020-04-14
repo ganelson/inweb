@@ -648,10 +648,10 @@ navigation purposes.
 
 @<Look for icon text@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, item_name, L"<(%c+)> *(%c*)")) {
+	if (Regexp::match(&mr, item_name, L"<(%i+.%i+)> *(%c*)")) {
 		icon_text = Str::duplicate(mr.exp[0]);
 		item_name = Str::duplicate(mr.exp[1]);
-	} else if (Regexp::match(&mr, item_name, L"(%c*?) *<(%c+)>")) {
+	} else if (Regexp::match(&mr, item_name, L"(%c*?) *<(%i+.%i+)>")) {
 		icon_text = Str::duplicate(mr.exp[1]);
 		item_name = Str::duplicate(mr.exp[0]);
 	}
