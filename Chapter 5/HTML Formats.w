@@ -369,6 +369,7 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 				Str::substr(reference, Str::at(matter, i + N), Str::at(matter, j));
 				@<Attempt to resolve the cross-reference@>;
 				DISCARD_TEXT(reference);
+				break;
 			}
 			j++;
 		}

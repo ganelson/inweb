@@ -468,6 +468,8 @@ its square-bracketed parts.
 		} else if (Regexp::match(&mr, varname, L"Section (%c+)")) {
 			text_stream *detail = mr.exp[0];
 			@<Substitute a Section@>;
+		} else if (Regexp::match(&mr, varname, L"Docs")) {
+			@<Substitute a Docs@>;
 		} else if (Regexp::match(&mr, varname, L"URL \"(%c+)\"")) {
 			text_stream *link_text = mr.exp[0];
 			@<Substitute a URL@>;
@@ -619,6 +621,11 @@ use this.)
 
 @ These commands are all used in constructing relative URLs, especially for
 navigation purposes.
+
+@<Substitute a Docs@> =
+	Pathnames::relative_URL(substituted,
+		Filenames::get_path_to(Indexer::current_file()),
+		Pathnames::from_text(Colonies::home()));
 
 @<Substitute a URL@> =
 	Pathnames::relative_URL(substituted,

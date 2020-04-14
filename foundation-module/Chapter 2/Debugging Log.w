@@ -96,7 +96,7 @@ void Log::declare_aspect(int a, wchar_t *name, int def, int alt) {
 
 @ The debugging log provides an opportunity to see what has been happening
 behind the scenes; but such a log file is often buffered by the filing system,
-so that a sudden crash of NI may result in the loss of recent data written to
+so that a sudden crash of Inform may result in the loss of recent data written to
 the log. Which is a pity, since this is exactly the most useful evidence as to
 the cause of the crash in the first place. Accordingly, we fairly often
 |fflush| the debug log file, forcing any buffered output to be written.

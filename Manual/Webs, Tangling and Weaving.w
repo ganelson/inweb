@@ -227,7 +227,7 @@ much longer roster, such as:
 = (text)
 	Appendix A: The Standard Rules (Independent Inform 7)
 	"This is the body of Inform 7 source text automatically included with every
-	project run through the NI compiler, and which defines most of what end users
+	project run through the Inform compiler, and which defines most of what end users
 	see as the Inform language."
 	    SR0 - Preamble
 	    SR1 - Physical World Model

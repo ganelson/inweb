@@ -20,6 +20,7 @@ Orb-Weaving Spiders With Communal Webbing in a Man-Made Structural Habitat
 =
 typedef struct colony {
 	struct linked_list *members; /* of |colony_member| */
+	struct text_stream *home; /* path of home repository */
 	MEMORY_MANAGEMENT
 } colony;
 
@@ -63,6 +64,7 @@ typedef struct colony_reader_state {
 void Colonies::load(filename *F) {
 	colony *C = CREATE(colony);
 	C->members = NEW_LINKED_LIST(colony_member);
+	C->home = I"docs";
 	colony_reader_state crs;
 	crs.province = C;
 	crs.nav = NULL;
@@ -108,6 +110,8 @@ void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_crs
 		CM->breadcrumb_tail = crs->crumbs;
 		CM->default_weave_pattern = Str::duplicate(crs->pattern);
 		ADD_TO_LINKED_LIST(CM, colony_member, C->members);
+	} else if (Regexp::match(&mr, line, L"home: *(%c*)")) {
+		C->home = Str::duplicate(mr.exp[0]);
 	} else if (Regexp::match(&mr, line, L"pattern: none")) {
 		crs->pattern = NULL;
 	} else if (Regexp::match(&mr, line, L"pattern: *(%c*)")) {
@@ -252,6 +256,16 @@ module *Colonies::as_module(colony_member *CM, source_line *L, web_md *Wm) {
 	WRITE_TO(err, "unable to load '%S'", CM->name);
 	Main::error_in_web(err, L);
 
+@ Finally:
+
+=
+text_stream *Colonies::home(void) {
+	colony *C;
+	LOOP_OVER(C, colony)
+		return C->home;
+	return I"docs";
+}
+
 @h Cross-references.
 The following must decide what references like the following should refer to:
 = (text)
@@ -291,7 +305,10 @@ int Colonies::resolve_reference_in_weave(text_stream *url, text_stream *title,
 			@<Is it the name of a function in the current web?@>;
 			@<Is it the name of a type in the current web?@>;
 		}
-		Main::error_in_web(I"Can't find this cross-reference", L);
+		TEMPORARY_TEXT(err);
+		WRITE_TO(err, "Can't find the cross-reference '%S'", text);
+		Main::error_in_web(err, L);
+		DISCARD_TEXT(err);
 		return FALSE;
 	} else if (N > 1) {
 		Main::error_in_web(I"Multiple cross-references might be meant here", L);
