@@ -1,7 +1,5 @@
 Title: The Inweb Manual and Source Code
 Author: Graham Nelson
-Purpose: A documentation page.
-Language: C
 
 @ This website holds human-readable, or "woven", forms of the source code for
 the literate programming tool Inweb. To download and build Inweb, go to the

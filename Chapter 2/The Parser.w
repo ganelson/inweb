@@ -96,9 +96,11 @@ version 2 it's much tidier.
 @<In version 2 syntax, construe the comment under the heading as the purpose@> =
 	if (S->md->using_syntax >= V2_SYNTAX) {
 		source_line *L = S->first_line;
-		if ((L) && (L->category == CHAPTER_HEADING_LCAT)) L = L->next_line;	
-		S->sect_purpose = Parser::extract_purpose(I"", L?L->next_line: NULL, S, NULL);
-		if (Str::len(S->sect_purpose) > 0) L->next_line->category = PURPOSE_LCAT;
+		if ((L) && (L->category == CHAPTER_HEADING_LCAT)) L = L->next_line;
+		if (Str::len(S->sect_purpose) == 0) {
+			S->sect_purpose = Parser::extract_purpose(I"", L?L->next_line: NULL, S, NULL);
+			if (Str::len(S->sect_purpose) > 0) L->next_line->category = PURPOSE_LCAT;
+		}
 	}
 
 @ A new paragraph is implied when a macro definition begins in the middle of
@@ -177,7 +179,13 @@ namespace for its functions.
 
 @<Parse the line as a probable section heading@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, L->text, L"%[(%C+)%] (%C+/%C+): (%c+).")) {
+	if (Regexp::match(&mr, L->text, L"Implied Purpose: (%c+)")) {
+		S->sect_purpose = Str::duplicate(mr.exp[0]);
+		if (Str::len(S->sect_purpose) > 0) {
+			L->category = PURPOSE_LCAT;
+			L->is_commentary = TRUE;
+		}
+	} else if (Regexp::match(&mr, L->text, L"%[(%C+)%] (%C+/%C+): (%c+).")) {
 		if (S->md->using_syntax >= V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L,
 			"section range in header line", V1_SYNTAX);

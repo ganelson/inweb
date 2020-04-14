@@ -1,6 +1,6 @@
-Title: twinprimes
+Title: The Twin Primes Conjecture
 Author: Graham Nelson
-Purpose: A single-file test web for inweb.
+Purpose: This example of using inweb is a whole web in a single short file, to look for twin primes, a classic problem in number theory.
 Language: C
 
 @h The conjecture.

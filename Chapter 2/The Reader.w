@@ -252,6 +252,14 @@ void Reader::read_file(web *W, chapter *C, filename *F, text_stream *titling_lin
 	@<Accept this as a line belonging to this section and chapter@>;
 	Str::clear(line);
 	@<Accept this as a line belonging to this section and chapter@>;
+	text_stream *purpose = Bibliographic::get_datum(W->md, I"Purpose");
+	if (Str::len(purpose) > 0) {
+		Str::clear(line);
+		WRITE_TO(line, "Implied Purpose: %S", purpose);
+		@<Accept this as a line belonging to this section and chapter@>;
+		Str::clear(line);
+		@<Accept this as a line belonging to this section and chapter@>;
+	}
 	DISCARD_TEXT(line);
 
 @ Non-implied source lines come from here. Note that we assume here that
@@ -262,7 +270,8 @@ tangled for.
 void Reader::scan_source_line(text_stream *line, text_file_position *tfp, void *state) {
 	section *S = (section *) state;
 	int l = Str::len(line) - 1;
-	while ((l>=0) && (Characters::is_space_or_tab(Str::get_at(line, l)))) Str::truncate(line, l--);
+	while ((l>=0) && (Characters::is_space_or_tab(Str::get_at(line, l))))
+		Str::truncate(line, l--);
 
 	if (S->paused_until_at) {
 		if (Str::get_at(line, 0) == '@') S->paused_until_at = FALSE;

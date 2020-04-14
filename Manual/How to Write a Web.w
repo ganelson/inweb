@@ -406,7 +406,15 @@ numerically, link to the first section in them; modules likewise. Errors are
 thrown if these references to sections are in any way ambiguous. They are not
 case sensitive.
 
-It's also possible to reference function names and type names, provided that
+@ Sometimes we want to make a link without literally showing the destination.
+This is simple: for example,
+= (text)
+	First //the program has to configure itself -> Configuration//, then...
+=
+produces: "First //the program has to configure itself -> Configuration//,
+then..."; the text "the program has to configure itself" links to //Configuration//.
+
+@ It's also possible to reference function names and type names, provided that
 the language definition supports these (see //Supporting Programming Languages//):
 this is certainly the case for C-like languages. For example,
 = (text)

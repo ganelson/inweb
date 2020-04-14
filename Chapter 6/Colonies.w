@@ -287,6 +287,21 @@ is where the reference is made from.
 =
 int Colonies::resolve_reference_in_weave(text_stream *url, text_stream *title,
 	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L) {
+	int r = 0;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, text, L"(%c+?) -> (%c+)")) {
+		r = Colonies::resolve_reference_in_weave_inner(url, NULL,
+			for_HTML_file, mr.exp[1], Wm, L);
+		WRITE_TO(title, "%S", mr.exp[0]);
+	} else {
+		r = Colonies::resolve_reference_in_weave_inner(url, title,
+			for_HTML_file, text, Wm, L);
+	}
+	Regexp::dispose_of(&mr);
+	return r;
+}
+int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *title,
+	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L) {
 	module *from_M = (Wm)?(Wm->as_module):NULL;
 	module *search_M = from_M;
 	colony_member *search_CM = NULL;
