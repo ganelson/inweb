@@ -50,6 +50,16 @@ The idea is that |-member M| chooses |M| as the current web, and automatically
 sets its default settings: |-weave-to|, |-weave-as|, |-navigation| and
 |-breadcrumb| are all handled like this.
 
+@ These pathnames are taken relative to the current working directory of
+the user (not to the location of the colony file). For //inweb//, this
+is conventionally the directory above the actual web, and that's why the
+file needs to say:
+= (text)
+	home: inweb/docs
+=
+This overrides the default setting (just |docs|), and is the path to the
+home page of the Github Docs area for the repository.
+
 @ The use of a colony also enables cross-references from the weave of one
 web to the weave of another, even when they are independent programs. For
 example, a section of code in |beth| could say:
@@ -115,7 +125,8 @@ Inweb |docs| site:
 As this shows, there's some HTML for the top left corner area, and then
 a list of items and submenus. |[[Link "overview"]]| opens a link to the
 colony item called |overview|; |[[URL "inweb"]]| writes a minimal-length
-relative URL to reach the named directory. |[[Menu "External"]]| begins
+relative URL to reach the named directory, and |[[Docs]]| to the home page
+of the Github Docs area for the repository. |[[Menu "External"]]| begins
 a submenu among the items. |[[Item "X"]]| makes a menu item whose title is
 |X| and which links to the colony item called |X|; |[[Item "Y" -> Z]]| is
 more general, and makes the text |Y| point to either an external web page,

@@ -4,7 +4,7 @@
 ME = inweb
 SAFETYCOPY = $(ME)/Tangled/inweb_dev
 
-COLONY = $(ME)/docs/docs-src/colony.txt
+COLONY = $(ME)/colony.txt
 
 -include $(ME)/platform-settings.mk
 
@@ -86,7 +86,7 @@ commit:
 pages:
 	$(INWEB) -help > $(ME)/Figures/help.txt
 	$(INWEB) -show-languages > $(ME)/Figures/languages.txt
-	cp -f $(ME)/docs/docs-src/colony.txt $(ME)/Figures/colony.txt
+	cp -f $(COLONY) $(ME)/Figures/colony.txt
 	cp -f $(ME)/docs/docs-src/nav.html $(ME)/Figures/nav.txt
 	$(INWEB) -advance-build-file $(ME)/build.txt
 	mkdir -p $(ME)/docs

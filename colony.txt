@@ -1,3 +1,5 @@
+home: inweb/docs
+
 navigation: inweb/docs/docs-src/nav.html
 pattern: GitHubPages
 
@@ -10,3 +12,6 @@ module: "foundation-module" at "inweb/foundation-module" in "inweb/docs/foundati
 web: "foundation-test" at "inweb/foundation-test" in "inweb/docs/foundation-test"
 web: "goldbach" at "inweb/Examples/goldbach" in "inweb/docs/goldbach"
 web: "twinprimes" at "inweb/Examples/twinprimes.inweb" in "inweb/docs/twinprimes"
+
+web: "intest" at "intest" in "intest/docs"
+web: "inform" at "inform/docs/docs-src/index.inweb" in "inform/docs"
