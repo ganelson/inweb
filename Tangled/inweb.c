@@ -3130,9 +3130,9 @@ int  Patterns__yes_or_no(text_stream *arg, text_file_position *tfp) ;
 filename * Patterns__obtain_filename(weave_pattern *pattern, text_stream *leafname) ;
 #line 203 "inweb/Chapter 1/Patterns.w"
 void  Patterns__copy_payloads_into_weave(web *W, weave_pattern *pattern) ;
-#line 226 "inweb/Chapter 1/Patterns.w"
+#line 224 "inweb/Chapter 1/Patterns.w"
 void  Patterns__copy_file_into_weave(web *W, filename *F) ;
-#line 231 "inweb/Chapter 1/Patterns.w"
+#line 229 "inweb/Chapter 1/Patterns.w"
 void  Patterns__copy_up_file_into_weave(web *W, filename *F) ;
 #line 97 "inweb/Chapter 2/The Reader.w"
 web_md * Reader__load_web_md(pathname *P, filename *alt_F, module_search *I, int verbosely, 	int including_modules) ;
@@ -14497,7 +14497,6 @@ void Patterns__copy_payloads_into_weave(web *W, weave_pattern *pattern) {
 	text_stream *leafname;
 	LOOP_OVER_LINKED_LIST(leafname, text_stream, pattern->payloads) {
 		filename *F = Patterns__obtain_filename(pattern, leafname);
-PRINT("use %f\n", F);
 		Patterns__copy_file_into_weave(W, F);
 		if (W->as_ebook) {
 			filename *rel = Filenames__in_folder(NULL, leafname);
@@ -14506,7 +14505,6 @@ PRINT("use %f\n", F);
 	}
 	LOOP_OVER_LINKED_LIST(leafname, text_stream, pattern->up_payloads) {
 		filename *F = Patterns__obtain_filename(pattern, leafname);
-PRINT("use up %f\n", F);
 		Patterns__copy_up_file_into_weave(W, F);
 		if (W->as_ebook) {
 			filename *rel = Filenames__in_folder(NULL, leafname);
@@ -14515,7 +14513,7 @@ PRINT("use up %f\n", F);
 	}
 }
 
-#line 226 "inweb/Chapter 1/Patterns.w"
+#line 224 "inweb/Chapter 1/Patterns.w"
 void Patterns__copy_file_into_weave(web *W, filename *F) {
 	pathname *H = W->redirect_weaves_to;
 	if (H == NULL) H = Reader__woven_folder(W);

@@ -204,7 +204,6 @@ void Patterns::copy_payloads_into_weave(web *W, weave_pattern *pattern) {
 	text_stream *leafname;
 	LOOP_OVER_LINKED_LIST(leafname, text_stream, pattern->payloads) {
 		filename *F = Patterns::obtain_filename(pattern, leafname);
-PRINT("use %f\n", F);
 		Patterns::copy_file_into_weave(W, F);
 		if (W->as_ebook) {
 			filename *rel = Filenames::in_folder(NULL, leafname);
@@ -213,7 +212,6 @@ PRINT("use %f\n", F);
 	}
 	LOOP_OVER_LINKED_LIST(leafname, text_stream, pattern->up_payloads) {
 		filename *F = Patterns::obtain_filename(pattern, leafname);
-PRINT("use up %f\n", F);
 		Patterns::copy_up_file_into_weave(W, F);
 		if (W->as_ebook) {
 			filename *rel = Filenames::in_folder(NULL, leafname);
