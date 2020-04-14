@@ -331,6 +331,7 @@ following a "prototype".
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain"> = </span><span class="constant">MAKEFILE_TOOL_MOM</span><span class="plain">;</span>
+        <span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">MS</span><span class="plain">-&gt;</span><span class="element">tools_dictionary</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Declare something</span> <span class="cwebmacronumber">2.11.1</span>&gt;<span class="plain">;</span>
 </pre>
 
@@ -345,6 +346,7 @@ following a "prototype".
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain"> = </span><span class="constant">MAKEFILE_WEB_MOM</span><span class="plain">;</span>
+        <span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">MS</span><span class="plain">-&gt;</span><span class="element">webs_dictionary</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Declare something</span> <span class="cwebmacronumber">2.11.1</span>&gt;<span class="plain">;</span>
 </pre>
 
@@ -359,6 +361,7 @@ following a "prototype".
 
 <pre class="displaydefn">
         <span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain"> = </span><span class="constant">MAKEFILE_MODULE_MOM</span><span class="plain">;</span>
+        <span class="reserved">dictionary</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain"> = </span><span class="identifier">MS</span><span class="plain">-&gt;</span><span class="element">modules_dictionary</span><span class="plain">;</span>
         &lt;<span class="cwebmacro">Declare something</span> <span class="cwebmacronumber">2.11.1</span>&gt;<span class="plain">;</span>
 </pre>
 
@@ -381,8 +384,8 @@ following a "prototype".
         <span class="identifier">Wm</span><span class="plain">-&gt;</span><span class="element">as_module</span><span class="plain">-&gt;</span><span class="element">module_name</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
         <span class="identifier">Wm</span><span class="plain">-&gt;</span><span class="element">as_module</span><span class="plain">-&gt;</span><span class="element">module_tag</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[3]);</span>
         <span class="identifier">Wm</span><span class="plain">-&gt;</span><span class="element">as_module</span><span class="plain">-&gt;</span><span class="element">origin_marker</span><span class="plain"> = </span><span class="identifier">marker</span><span class="plain">;</span>
-        <span class="functiontext"><a href="2-dct.html#SP5">Dictionaries::create</a></span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-&gt;</span><span class="element">tools_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
-        <span class="functiontext"><a href="2-dct.html#SP8">Dictionaries::write_value</a></span><span class="plain">(</span><span class="identifier">MS</span><span class="plain">-&gt;</span><span class="element">tools_dictionary</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">Wm</span><span class="plain">);</span>
+        <span class="functiontext"><a href="2-dct.html#SP5">Dictionaries::create</a></span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+        <span class="functiontext"><a href="2-dct.html#SP8">Dictionaries::write_value</a></span><span class="plain">(</span><span class="identifier">D</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0], </span><span class="identifier">Wm</span><span class="plain">);</span>
         <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
@@ -475,6 +478,7 @@ following a "prototype".
             <span class="functiontext"><a href="#SP3">Makefiles::pattern</a></span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">Wm</span><span class="plain">-&gt;</span><span class="element">sections_md</span><span class="plain">, </span><span class="identifier">Wm</span><span class="plain">-&gt;</span><span class="element">contents_filename</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext"><a href="3-em.html#SP5">Errors::in_text_file</a></span><span class="plain">(</span><span class="string">"unknown module to find dependencies for"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"-- module name: %S\n"</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
         <span class="plain">}</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
         <span class="identifier">MS</span><span class="plain">-&gt;</span><span class="element">last_line_was_blank</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>

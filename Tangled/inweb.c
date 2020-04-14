@@ -3789,11 +3789,11 @@ int  RunningTeX__substitute_post_processing_data(text_stream *to, weave_target *
 void  Makefiles__write(web *W, filename *prototype, filename *F, module_search *I) ;
 #line 49 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, void *X) ;
-#line 260 "inweb/Chapter 6/Makefiles.w"
+#line 264 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) ;
-#line 271 "inweb/Chapter 6/Makefiles.w"
+#line 275 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) ;
-#line 310 "inweb/Chapter 6/Makefiles.w"
+#line 314 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__repeat(OUTPUT_STREAM, text_stream *prefix, int every_time, text_stream *matter, 	int as_lines, text_stream *suffix, text_file_position *tfp, makefile_state *MS, int over, text_stream *tag) ;
 #line 15 "inweb/Chapter 6/Git Support.w"
 void  Git__write_gitignore(web *W, filename *prototype, filename *F) ;
@@ -24664,9 +24664,10 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 {
 #line 169 "inweb/Chapter 6/Makefiles.w"
 	int marker = MAKEFILE_TOOL_MOM;
+	dictionary *D = MS->tools_dictionary;
 	
 {
-#line 181 "inweb/Chapter 6/Makefiles.w"
+#line 184 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%SLEAF = %S\n", mr.exp[0], mr.exp[1]);
 	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", mr.exp[0], mr.exp[0], mr.exp[1]);
@@ -24676,13 +24677,13 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	Wm->as_module->module_name = Str__duplicate(mr.exp[0]);
 	Wm->as_module->module_tag = Str__duplicate(mr.exp[3]);
 	Wm->as_module->origin_marker = marker;
-	Dictionaries__create(MS->tools_dictionary, mr.exp[0]);
-	Dictionaries__write_value(MS->tools_dictionary, mr.exp[0], Wm);
+	Dictionaries__create(D, mr.exp[0]);
+	Dictionaries__write_value(D, mr.exp[0], Wm);
 	Regexp__dispose_of(&mr);
 	return;
 
 }
-#line 170 "inweb/Chapter 6/Makefiles.w"
+#line 171 "inweb/Chapter 6/Makefiles.w"
 ;
 
 }
@@ -24690,11 +24691,12 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 ;
 		if (Regexp__match(&mr, line, L" *{web} *(%C+) (%C+) (%c+) (%C+) *")) 
 {
-#line 173 "inweb/Chapter 6/Makefiles.w"
+#line 174 "inweb/Chapter 6/Makefiles.w"
 	int marker = MAKEFILE_WEB_MOM;
+	dictionary *D = MS->webs_dictionary;
 	
 {
-#line 181 "inweb/Chapter 6/Makefiles.w"
+#line 184 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%SLEAF = %S\n", mr.exp[0], mr.exp[1]);
 	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", mr.exp[0], mr.exp[0], mr.exp[1]);
@@ -24704,13 +24706,13 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	Wm->as_module->module_name = Str__duplicate(mr.exp[0]);
 	Wm->as_module->module_tag = Str__duplicate(mr.exp[3]);
 	Wm->as_module->origin_marker = marker;
-	Dictionaries__create(MS->tools_dictionary, mr.exp[0]);
-	Dictionaries__write_value(MS->tools_dictionary, mr.exp[0], Wm);
+	Dictionaries__create(D, mr.exp[0]);
+	Dictionaries__write_value(D, mr.exp[0], Wm);
 	Regexp__dispose_of(&mr);
 	return;
 
 }
-#line 174 "inweb/Chapter 6/Makefiles.w"
+#line 176 "inweb/Chapter 6/Makefiles.w"
 ;
 
 }
@@ -24718,11 +24720,12 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 ;
 		if (Regexp__match(&mr, line, L" *{module} *(%C+) (%C+) (%c+) (%C+) *")) 
 {
-#line 177 "inweb/Chapter 6/Makefiles.w"
+#line 179 "inweb/Chapter 6/Makefiles.w"
 	int marker = MAKEFILE_MODULE_MOM;
+	dictionary *D = MS->modules_dictionary;
 	
 {
-#line 181 "inweb/Chapter 6/Makefiles.w"
+#line 184 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%SLEAF = %S\n", mr.exp[0], mr.exp[1]);
 	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", mr.exp[0], mr.exp[0], mr.exp[1]);
@@ -24732,13 +24735,13 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	Wm->as_module->module_name = Str__duplicate(mr.exp[0]);
 	Wm->as_module->module_tag = Str__duplicate(mr.exp[3]);
 	Wm->as_module->origin_marker = marker;
-	Dictionaries__create(MS->tools_dictionary, mr.exp[0]);
-	Dictionaries__write_value(MS->tools_dictionary, mr.exp[0], Wm);
+	Dictionaries__create(D, mr.exp[0]);
+	Dictionaries__write_value(D, mr.exp[0], Wm);
 	Regexp__dispose_of(&mr);
 	return;
 
 }
-#line 178 "inweb/Chapter 6/Makefiles.w"
+#line 181 "inweb/Chapter 6/Makefiles.w"
 ;
 
 }
@@ -24747,7 +24750,7 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 
 		if (Regexp__match(&mr, line, L"(%c*?) *{dependent-files} *")) 
 {
-#line 196 "inweb/Chapter 6/Makefiles.w"
+#line 199 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%S", mr.exp[0]);
 	Makefiles__pattern(OUT, MS->for_web->md->sections_md, MS->for_web->md->contents_filename);
 	WRITE("\n");
@@ -24761,7 +24764,7 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 		if (Regexp__match(&mr, line, L"(%c*?) *{dependent-files-for-tool-alone} *(%C+)"))
 			
 {
-#line 221 "inweb/Chapter 6/Makefiles.w"
+#line 224 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%S", mr.exp[0]);
 	if (Dictionaries__find(MS->tools_dictionary, mr.exp[1])) {
 		web_md *Wm = Dictionaries__read_value(MS->tools_dictionary, mr.exp[1]);
@@ -24784,7 +24787,7 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 		if (Regexp__match(&mr, line, L"(%c*?) *{dependent-files-for-tool-and-modules} *(%C+)"))
 			
 {
-#line 204 "inweb/Chapter 6/Makefiles.w"
+#line 207 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%S", mr.exp[0]);
 	if (Dictionaries__find(MS->tools_dictionary, mr.exp[1])) {
 		web_md *Wm = Dictionaries__read_value(MS->tools_dictionary, mr.exp[1]);
@@ -24807,13 +24810,14 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 		if (Regexp__match(&mr, line, L"(%c*?) *{dependent-files-for-module} *(%C+)"))
 			
 {
-#line 238 "inweb/Chapter 6/Makefiles.w"
+#line 241 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%S", mr.exp[0]);
 	if (Dictionaries__find(MS->modules_dictionary, mr.exp[1])) {
 		web_md *Wm = Dictionaries__read_value(MS->modules_dictionary, mr.exp[1]);
 		Makefiles__pattern(OUT, Wm->sections_md, Wm->contents_filename);
 	} else {
 		Errors__in_text_file("unknown module to find dependencies for", tfp);
+		WRITE_TO(STDERR, "-- module name: %S\n", mr.exp[1]);
 	}
 	WRITE("\n");
 	MS->last_line_was_blank = FALSE;
@@ -24828,7 +24832,7 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 
 	
 {
-#line 251 "inweb/Chapter 6/Makefiles.w"
+#line 255 "inweb/Chapter 6/Makefiles.w"
 	if (Str__len(line) == 0) {
 		if (MS->last_line_was_blank == FALSE) WRITE("\n");
 		MS->last_line_was_blank = TRUE;
@@ -24842,7 +24846,7 @@ void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, v
 ;
 }
 
-#line 260 "inweb/Chapter 6/Makefiles.w"
+#line 264 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) {
 	TEMPORARY_TEXT(PT)
 	WRITE_TO(PT, "%p", P);
@@ -24858,41 +24862,7 @@ void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	dictionary *patterns_done = Dictionaries__new(16, TRUE);
 	if (F) 
 {
-#line 282 "inweb/Chapter 6/Makefiles.w"
-	pathname *P = Filenames__get_path_to(F);
-	TEMPORARY_TEXT(leaf_pattern);
-	WRITE_TO(leaf_pattern, "%S", Pathnames__directory_name(P));
-	match_results mr = Regexp__create_mr();
-	if (Regexp__match(&mr, leaf_pattern, L"Chapter %d*")) {
-		Str__clear(leaf_pattern); WRITE_TO(leaf_pattern, "Chapter*");
-	} else if (Regexp__match(&mr, leaf_pattern, L"Appendix %C")) {
-		Str__clear(leaf_pattern); WRITE_TO(leaf_pattern, "Appendix*");
-	}
-	Regexp__dispose_of(&mr);
-	TEMPORARY_TEXT(tester);
-	WRITE_TO(tester, "%p/%S/*", Pathnames__up(P), leaf_pattern);
-	DISCARD_TEXT(leaf_pattern);
-	Filenames__write_extension(tester, F);
-	if (Dictionaries__find(patterns_done, tester) == NULL) {
-		WRITE_TO(Dictionaries__create_text(patterns_done, tester), "got this");
-		WRITE(" ");
-		LOOP_THROUGH_TEXT(pos, tester) {
-			wchar_t c = Str__get(pos);
-			if (c == ' ') PUT('\\');
-			PUT(c);
-		}
-	}
-	DISCARD_TEXT(tester);
-
-}
-#line 273 "inweb/Chapter 6/Makefiles.w"
-;
-	section_md *Sm;
-	LOOP_OVER_LINKED_LIST(Sm, section_md, L) {
-		filename *F = Sm->source_file_for_section;
-		
-{
-#line 282 "inweb/Chapter 6/Makefiles.w"
+#line 286 "inweb/Chapter 6/Makefiles.w"
 	pathname *P = Filenames__get_path_to(F);
 	TEMPORARY_TEXT(leaf_pattern);
 	WRITE_TO(leaf_pattern, "%S", Pathnames__directory_name(P));
@@ -24921,10 +24891,44 @@ void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 }
 #line 277 "inweb/Chapter 6/Makefiles.w"
 ;
+	section_md *Sm;
+	LOOP_OVER_LINKED_LIST(Sm, section_md, L) {
+		filename *F = Sm->source_file_for_section;
+		
+{
+#line 286 "inweb/Chapter 6/Makefiles.w"
+	pathname *P = Filenames__get_path_to(F);
+	TEMPORARY_TEXT(leaf_pattern);
+	WRITE_TO(leaf_pattern, "%S", Pathnames__directory_name(P));
+	match_results mr = Regexp__create_mr();
+	if (Regexp__match(&mr, leaf_pattern, L"Chapter %d*")) {
+		Str__clear(leaf_pattern); WRITE_TO(leaf_pattern, "Chapter*");
+	} else if (Regexp__match(&mr, leaf_pattern, L"Appendix %C")) {
+		Str__clear(leaf_pattern); WRITE_TO(leaf_pattern, "Appendix*");
+	}
+	Regexp__dispose_of(&mr);
+	TEMPORARY_TEXT(tester);
+	WRITE_TO(tester, "%p/%S/*", Pathnames__up(P), leaf_pattern);
+	DISCARD_TEXT(leaf_pattern);
+	Filenames__write_extension(tester, F);
+	if (Dictionaries__find(patterns_done, tester) == NULL) {
+		WRITE_TO(Dictionaries__create_text(patterns_done, tester), "got this");
+		WRITE(" ");
+		LOOP_THROUGH_TEXT(pos, tester) {
+			wchar_t c = Str__get(pos);
+			if (c == ' ') PUT('\\');
+			PUT(c);
+		}
+	}
+	DISCARD_TEXT(tester);
+
+}
+#line 281 "inweb/Chapter 6/Makefiles.w"
+;
 	}
 }
 
-#line 310 "inweb/Chapter 6/Makefiles.w"
+#line 314 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__repeat(OUTPUT_STREAM, text_stream *prefix, int every_time, text_stream *matter,
 	int as_lines, text_stream *suffix, text_file_position *tfp, makefile_state *MS, int over, text_stream *tag) {
 	module *M;

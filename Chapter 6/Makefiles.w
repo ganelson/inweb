@@ -167,14 +167,17 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 
 @<Declare a tool@> =
 	int marker = MAKEFILE_TOOL_MOM;
+	dictionary *D = MS->tools_dictionary;
 	@<Declare something@>;
 
 @<Declare a web@> =
 	int marker = MAKEFILE_WEB_MOM;
+	dictionary *D = MS->webs_dictionary;
 	@<Declare something@>;
 
 @<Declare a module@> =
 	int marker = MAKEFILE_MODULE_MOM;
+	dictionary *D = MS->modules_dictionary;
 	@<Declare something@>;
 
 @<Declare something@> =
@@ -187,8 +190,8 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	Wm->as_module->module_name = Str::duplicate(mr.exp[0]);
 	Wm->as_module->module_tag = Str::duplicate(mr.exp[3]);
 	Wm->as_module->origin_marker = marker;
-	Dictionaries::create(MS->tools_dictionary, mr.exp[0]);
-	Dictionaries::write_value(MS->tools_dictionary, mr.exp[0], Wm);
+	Dictionaries::create(D, mr.exp[0]);
+	Dictionaries::write_value(D, mr.exp[0], Wm);
 	Regexp::dispose_of(&mr);
 	return;
 
@@ -241,6 +244,7 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 		Makefiles::pattern(OUT, Wm->sections_md, Wm->contents_filename);
 	} else {
 		Errors::in_text_file("unknown module to find dependencies for", tfp);
+		WRITE_TO(STDERR, "-- module name: %S\n", mr.exp[1]);
 	}
 	WRITE("\n");
 	MS->last_line_was_blank = FALSE;
