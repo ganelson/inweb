@@ -128,13 +128,11 @@ For documentation, see "Weave Fornats".
 void HTMLFormat::top(weave_format *self, text_stream *OUT, weave_target *wv, text_stream *comment) {
 	HTML::declare_as_HTML(OUT, FALSE);
 	Indexer::cover_sheet_maker(OUT, wv->weave_web, I"template", wv, WEAVE_FIRST_HALF);
-//	if (wv->self_contained == FALSE) {
-		filename *CSS = Patterns::obtain_filename(wv->pattern, I"inweb.css");
-		if (wv->pattern->hierarchical)
-			Patterns::copy_up_file_into_weave(wv->weave_web, CSS);
-		else
-			Patterns::copy_file_into_weave(wv->weave_web, CSS);
-//	}
+	filename *CSS = Patterns::obtain_filename(wv->pattern, I"inweb.css");
+	if (wv->pattern->hierarchical)
+		Patterns::copy_up_file_into_weave(wv->weave_web, CSS);
+	else
+		Patterns::copy_file_into_weave(wv->weave_web, CSS);
 	HTML::comment(OUT, comment);
 	html_in_para = HTML_OUT;
 }
@@ -245,41 +243,35 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 		WRITE(". %S%s ", heading_text, (Str::len(heading_text) > 0)?".":"");
 		HTML_CLOSE("b");
 	} else {
-//		if (wv->self_contained == FALSE) {
-			if (crumbs_dropped == FALSE) {
-				filename *C = Patterns::obtain_filename(wv->pattern, I"crumbs.gif");
-				if (wv->pattern->hierarchical)
-					Patterns::copy_up_file_into_weave(wv->weave_web, C);
-				else
-					Patterns::copy_file_into_weave(wv->weave_web, C);
-				crumbs_dropped = TRUE;
+		if (crumbs_dropped == FALSE) {
+			filename *C = Patterns::obtain_filename(wv->pattern, I"crumbs.gif");
+			if (wv->pattern->hierarchical)
+				Patterns::copy_up_file_into_weave(wv->weave_web, C);
+			else
+				Patterns::copy_file_into_weave(wv->weave_web, C);
+			crumbs_dropped = TRUE;
+		}
+		HTML_OPEN_WITH("ul", "class=\"crumbs\"");
+		Colonies::drop_initial_breadcrumbs(OUT,
+			wv->weave_to, wv->breadcrumbs);
+		text_stream *bct = Bibliographic::get_datum(wv->weave_web->md, I"Title");
+		if (Str::len(Bibliographic::get_datum(wv->weave_web->md, I"Short Title")) > 0) {
+			bct = Bibliographic::get_datum(wv->weave_web->md, I"Short Title");
+		}
+		if (wv->self_contained == FALSE) {
+			Colonies::write_breadcrumb(OUT, bct, I"index.html");
+			if (wv->weave_web->md->chaptered) {
+				TEMPORARY_TEXT(chapter_link);
+				WRITE_TO(chapter_link, "index.html#%s%S", (wv->weave_web->as_ebook)?"C":"",
+					S->owning_chapter->md->ch_range);
+				Colonies::write_breadcrumb(OUT, S->owning_chapter->md->ch_title, chapter_link);
+				DISCARD_TEXT(chapter_link);
 			}
-			HTML_OPEN_WITH("ul", "class=\"crumbs\"");
-			Colonies::drop_initial_breadcrumbs(OUT,
-				wv->weave_to, wv->breadcrumbs);
-			text_stream *bct = Bibliographic::get_datum(wv->weave_web->md, I"Title");
-			if (Str::len(Bibliographic::get_datum(wv->weave_web->md, I"Short Title")) > 0) {
-				bct = Bibliographic::get_datum(wv->weave_web->md, I"Short Title");
-			}
-			if (wv->self_contained == FALSE) {
-				Colonies::write_breadcrumb(OUT, bct, I"index.html");
-				if (wv->weave_web->md->chaptered) {
-					TEMPORARY_TEXT(chapter_link);
-					WRITE_TO(chapter_link, "index.html#%s%S", (wv->weave_web->as_ebook)?"C":"",
-						S->owning_chapter->md->ch_range);
-					Colonies::write_breadcrumb(OUT, S->owning_chapter->md->ch_title, chapter_link);
-					DISCARD_TEXT(chapter_link);
-				}
-				Colonies::write_breadcrumb(OUT, heading_text, NULL);
-			} else {
-				Colonies::write_breadcrumb(OUT, bct, NULL);
-			}
-			HTML_CLOSE("ul");
-//		} else {
-//			HTML_OPEN_WITH("ul", "class=\"crumbs\"");
-//			Colonies::write_breadcrumb(OUT, heading_text, NULL);
-//			HTML_CLOSE("ul");
-//		}
+			Colonies::write_breadcrumb(OUT, heading_text, NULL);
+		} else {
+			Colonies::write_breadcrumb(OUT, bct, NULL);
+		}
+		HTML_CLOSE("ul");
 	}
 }
 

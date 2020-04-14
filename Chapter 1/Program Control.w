@@ -253,6 +253,7 @@ which for many small webs will be the entire thing.
 		Swarm::weave_subset(W, ins->chosen_range, shall_we_open, tag, pattern,
 			ins->weave_to_setting, ins->weave_into_setting,
 			ins->breadcrumb_setting, ins->navigation_setting);
+		Patterns::copy_payloads_into_weave(W, pattern);
 	} else {
 		Swarm::weave(W, ins->chosen_range, ins->swarm_mode, tag, pattern,
 			ins->weave_to_setting, ins->weave_into_setting,

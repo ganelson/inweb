@@ -40,8 +40,7 @@ void Swarm::weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag,
 							breadcrumbs, navigation);
 		}
 
-	Swarm::weave_index_templates(W, range, pattern, (to)?TRUE:FALSE, into, navigation,
-		breadcrumbs);
+	Swarm::weave_index_templates(W, range, pattern, into, navigation, breadcrumbs);
 }
 
 @ The following is where an individual weave task begins, whether it comes
@@ -207,7 +206,7 @@ generic |index.html| if those aren't available in the current pattern.
 
 =
 void Swarm::weave_index_templates(web *W, text_stream *range, weave_pattern *pattern,
-	int self_contained, pathname *into, filename *nav, linked_list *crumbs) {
+	pathname *into, filename *nav, linked_list *crumbs) {
 	if (!(Bibliographic::data_exists(W->md, I"Version Number")))
 		Bibliographic::set_datum(W->md, I"Version Number", I" ");
 	text_stream *index_leaf = NULL;
@@ -229,5 +228,5 @@ void Swarm::weave_index_templates(web *W, text_stream *range, weave_pattern *pat
 		Indexer::incorporate_template(OUT, W, range, INF, pattern, nav, crumbs);
 		STREAM_CLOSE(OUT);
 	}
-	if (self_contained == FALSE) Patterns::copy_payloads_into_weave(W, pattern);
+	Patterns::copy_payloads_into_weave(W, pattern);
 }

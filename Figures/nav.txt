@@ -9,7 +9,7 @@
 [[Item "goldbach"]]
 [[Item "twinprimes"]]
 [[Menu "Repository"]]
-[[Item "github" -> https://github.com/ganelson/inweb]]
+[[Item "<github.png> github" -> https://github.com/ganelson/inweb]]
 [[Menu "Related Projects"]]
 [[Item "inform"]]
 [[Item "intest"]]

@@ -21,7 +21,7 @@
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
 </ul><h2>Repository</h2><ul>
-<li><a href="https://github.com/ganelson/inweb">github</a></li>
+<li><a href="https://github.com/ganelson/inweb"><img src="../github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
 <li><a href="../../../inform/docs/index.html">inform</a></li>
 <li><a href="../../../intest/docs/index.html">intest</a></li>
@@ -220,7 +220,7 @@ Inweb <code class="display"><span class="extract">docs</span></code> site:
     <span class="plain">[[Item "goldbach"]]</span>
     <span class="plain">[[Item "twinprimes"]]</span>
     <span class="plain">[[Menu "Repository"]]</span>
-    <span class="plain">[[Item "github" -&gt; https://github.com/ganelson/inweb]]</span>
+    <span class="plain">[[Item "&lt;github.png&gt; github" -&gt; https://github.com/ganelson/inweb]]</span>
     <span class="plain">[[Menu "Related Projects"]]</span>
     <span class="plain">[[Item "inform"]]</span>
     <span class="plain">[[Item "intest"]]</span>
@@ -243,6 +243,19 @@ recognised by beginning with <code class="display"><span class="extract">http</s
 
 <p class="inwebparagraph">would make a menu item called "innards" leading to a section in Chapter 4
 of the Inweb source.
+</p>
+
+<p class="inwebparagraph">An item text can begin or end with an icon name, in angle brackets. For
+example:
+</p>
+
+<pre class="display">
+        <span class="plain">[[Item "&lt;github.png&gt; github" -&gt; https://github.com/ganelson/intest]]</span>
+</pre>
+
+<p class="inwebparagraph">This icon should be in the <code class="display"><span class="extract">docs</span></code> home of the repository. Note that the
+<code class="display"><span class="extract">GithubPages</span></code> pattern automatically includes the <code class="display"><span class="extract">github.png</span></code> icon, so
+that one's guaranteed to be present.
 </p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. The trail of breadcrumbs. </b>Inweb automatically adds web, chapter and section titles to the trail of

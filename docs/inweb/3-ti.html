@@ -21,7 +21,7 @@
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
 </ul><h2>Repository</h2><ul>
-<li><a href="https://github.com/ganelson/inweb">github</a></li>
+<li><a href="https://github.com/ganelson/inweb"><img src="../github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
 <li><a href="../../../inform/docs/index.html">inform</a></li>
 <li><a href="../../../intest/docs/index.html">intest</a></li>
@@ -707,12 +707,16 @@ its square-bracketed parts.
                 &lt;<span class="cwebmacro">Substitute a Menu</span> <span class="cwebmacronumber">6.1.8.12</span>&gt;<span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">varname</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Item \"(%c+)\""</span><span class="plain">)) {</span>
                 <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">item_name</span><span class="plain"> = </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0];</span>
+                <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">icon_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                &lt;<span class="cwebmacro">Look for icon text</span> <span class="cwebmacronumber">6.1.8.13</span>&gt;<span class="plain">;</span>
                 <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">link_text</span><span class="plain"> = </span><span class="identifier">item_name</span><span class="plain">;</span>
-                &lt;<span class="cwebmacro">Substitute a member Item</span> <span class="cwebmacronumber">6.1.8.13</span>&gt;<span class="plain">;</span>
+                &lt;<span class="cwebmacro">Substitute a member Item</span> <span class="cwebmacronumber">6.1.8.14</span>&gt;<span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">varname</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"Item \"(%c+)\" -&gt; (%c+)"</span><span class="plain">)) {</span>
                 <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">item_name</span><span class="plain"> = </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0];</span>
                 <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">link_text</span><span class="plain"> = </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1];</span>
-                &lt;<span class="cwebmacro">Substitute a general Item</span> <span class="cwebmacronumber">6.1.8.14</span>&gt;<span class="plain">;</span>
+                <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">icon_text</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+                &lt;<span class="cwebmacro">Look for icon text</span> <span class="cwebmacronumber">6.1.8.13</span>&gt;<span class="plain">;</span>
+                &lt;<span class="cwebmacro">Substitute a general Item</span> <span class="cwebmacronumber">6.1.8.15</span>&gt;<span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">varname</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">varname</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%i+%c*"</span><span class="plain">))</span>
@@ -1032,14 +1036,35 @@ navigation purposes.
 <p class="endnote">This code is used in <a href="#SP6_1_8">&#167;6.1.8</a>.</p>
 
 <p class="inwebparagraph"><a id="SP6_1_8_13"></a><b>&#167;6.1.8.13.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Substitute a member Item</span> <span class="cwebmacronumber">6.1.8.13</span>&gt; =
+&lt;<span class="cwebmacrodefn">Look for icon text</span> <span class="cwebmacronumber">6.1.8.13</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext"><a href="4-pm.html#SP9">Regexp::create_mr</a></span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">item_name</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"&lt;(%c+)&gt; *(%c*)"</span><span class="plain">)) {</span>
+            <span class="identifier">icon_text</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+            <span class="identifier">item_name</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
+        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">item_name</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"(%c*?) *&lt;(%c+)&gt;"</span><span class="plain">)) {</span>
+            <span class="identifier">icon_text</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[1]);</span>
+            <span class="identifier">item_name</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+        <span class="plain">}</span>
+        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP6_1_8">&#167;6.1.8</a> (twice).</p>
+
+<p class="inwebparagraph"><a id="SP6_1_8_14"></a><b>&#167;6.1.8.14.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Substitute a member Item</span> <span class="cwebmacronumber">6.1.8.14</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">);</span>
         <span class="functiontext"><a href="6-cln.html#SP11">Colonies::reference_URL</a></span><span class="plain">(</span><span class="identifier">url</span><span class="plain">, </span><span class="identifier">link_text</span><span class="plain">, </span><span class="functiontext"><a href="#SP9">Indexer::current_file</a></span><span class="plain">());</span>
-        &lt;<span class="cwebmacro">Substitute an item at this URL</span> <span class="cwebmacronumber">6.1.8.13.1</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Substitute an item at this URL</span> <span class="cwebmacronumber">6.1.8.14.1</span>&gt;<span class="plain">;</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">);</span>
 </pre>
 
@@ -1047,15 +1072,15 @@ navigation purposes.
 
 <p class="endnote">This code is used in <a href="#SP6_1_8">&#167;6.1.8</a>.</p>
 
-<p class="inwebparagraph"><a id="SP6_1_8_14"></a><b>&#167;6.1.8.14.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Substitute a general Item</span> <span class="cwebmacronumber">6.1.8.14</span>&gt; =
+<p class="inwebparagraph"><a id="SP6_1_8_15"></a><b>&#167;6.1.8.15.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Substitute a general Item</span> <span class="cwebmacronumber">6.1.8.15</span>&gt; =
 </code></p>
 
 
 <pre class="displaydefn">
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">);</span>
         <span class="functiontext"><a href="6-cln.html#SP11">Colonies::link_URL</a></span><span class="plain">(</span><span class="identifier">url</span><span class="plain">, </span><span class="identifier">link_text</span><span class="plain">, </span><span class="functiontext"><a href="#SP9">Indexer::current_file</a></span><span class="plain">());</span>
-        &lt;<span class="cwebmacro">Substitute an item at this URL</span> <span class="cwebmacronumber">6.1.8.13.1</span>&gt;<span class="plain">;</span>
+        &lt;<span class="cwebmacro">Substitute an item at this URL</span> <span class="cwebmacronumber">6.1.8.14.1</span>&gt;<span class="plain">;</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">url</span><span class="plain">);</span>
 </pre>
 
@@ -1063,8 +1088,8 @@ navigation purposes.
 
 <p class="endnote">This code is used in <a href="#SP6_1_8">&#167;6.1.8</a>.</p>
 
-<p class="inwebparagraph"><a id="SP6_1_8_13_1"></a><b>&#167;6.1.8.13.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Substitute an item at this URL</span> <span class="cwebmacronumber">6.1.8.13.1</span>&gt; =
+<p class="inwebparagraph"><a id="SP6_1_8_14_1"></a><b>&#167;6.1.8.14.1.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Substitute an item at this URL</span> <span class="cwebmacronumber">6.1.8.14.1</span>&gt; =
 </code></p>
 
 
@@ -1074,17 +1099,17 @@ navigation purposes.
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"&lt;li&gt;"</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="plain">(</span><span class="identifier">url</span><span class="plain">, </span><span class="functiontext"><a href="3-fln.html#SP7">Filenames::get_leafname</a></span><span class="plain">(</span><span class="functiontext"><a href="#SP9">Indexer::current_file</a></span><span class="plain">()))) {</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"&lt;span class=\"unlink\"&gt;"</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">item_name</span><span class="plain">);</span>
+            &lt;<span class="cwebmacro">Substitute icon and name</span> <span class="cwebmacronumber">6.1.8.14.1.1</span>&gt;<span class="plain">;</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"&lt;/span&gt;"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="plain">(</span><span class="identifier">url</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"index.html"</span><span class="plain">)) {</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"&lt;a href=\"%S\"&gt;"</span><span class="plain">, </span><span class="identifier">url</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"&lt;span class=\"selectedlink\"&gt;"</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">item_name</span><span class="plain">);</span>
+            &lt;<span class="cwebmacro">Substitute icon and name</span> <span class="cwebmacronumber">6.1.8.14.1.1</span>&gt;<span class="plain">;</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"&lt;/span&gt;"</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"&lt;/a&gt;"</span><span class="plain">);</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"&lt;a href=\"%S\"&gt;"</span><span class="plain">, </span><span class="identifier">url</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">item_name</span><span class="plain">);</span>
+            &lt;<span class="cwebmacro">Substitute icon and name</span> <span class="cwebmacronumber">6.1.8.14.1.1</span>&gt;<span class="plain">;</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"&lt;/a&gt;"</span><span class="plain">);</span>
         <span class="plain">}</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"&lt;/li&gt;"</span><span class="plain">);</span>
@@ -1092,7 +1117,27 @@ navigation purposes.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP6_1_8_13">&#167;6.1.8.13</a>, <a href="#SP6_1_8_14">&#167;6.1.8.14</a>.</p>
+<p class="endnote">This code is used in <a href="#SP6_1_8_14">&#167;6.1.8.14</a>, <a href="#SP6_1_8_15">&#167;6.1.8.15</a>.</p>
+
+<p class="inwebparagraph"><a id="SP6_1_8_14_1_1"></a><b>&#167;6.1.8.14.1.1.  </b><code class="display">
+&lt;<span class="cwebmacrodefn">Substitute icon and name</span> <span class="cwebmacronumber">6.1.8.14.1.1</span>&gt; =
+</code></p>
+
+
+<pre class="displaydefn">
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP8">Str::len</a></span><span class="plain">(</span><span class="identifier">icon_text</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) {</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"&lt;img src=\""</span><span class="plain">);</span>
+            <span class="functiontext"><a href="3-pth.html#SP8">Pathnames::relative_URL</a></span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">,</span>
+                <span class="functiontext"><a href="3-fln.html#SP6">Filenames::get_path_to</a></span><span class="plain">(</span><span class="functiontext"><a href="#SP9">Indexer::current_file</a></span><span class="plain">()),</span>
+                <span class="functiontext"><a href="3-pth.html#SP5">Pathnames::from_text</a></span><span class="plain">(</span><span class="functiontext"><a href="6-cln.html#SP9">Colonies::home</a></span><span class="plain">()));</span>
+            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"%S\" height=18&gt; "</span><span class="plain">, </span><span class="identifier">icon_text</span><span class="plain">);</span>
+        <span class="plain">}</span>
+        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">substituted</span><span class="plain">, </span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">item_name</span><span class="plain">);</span>
+</pre>
+
+<p class="inwebparagraph"></p>
+
+<p class="endnote">This code is used in <a href="#SP6_1_8_14_1">&#167;6.1.8.14.1</a> (three times).</p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
@@ -1136,7 +1181,7 @@ navigation purposes.
 
 <pre class="display">
     <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">file_being_woven</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="reserved">filename</span><span class="plain"> *</span><span class="functiontext">Indexer::current_file<button class="popup" onclick="togglePopup('usagePopup85')">...<span class="popuptext" id="usagePopup85">Usage of <b>Indexer::current_file</b>:<br><a href="#SP6">&#167;6</a>, <a href="#SP6_1_8_3">&#167;6.1.8.3</a>, <a href="#SP6_1_8_9">&#167;6.1.8.9</a>, <a href="#SP6_1_8_10">&#167;6.1.8.10</a>, <a href="#SP6_1_8_11">&#167;6.1.8.11</a>, <a href="#SP6_1_8_13">&#167;6.1.8.13</a>, <a href="#SP6_1_8_14">&#167;6.1.8.14</a>, <a href="#SP6_1_8_13_1">&#167;6.1.8.13.1</a></span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
+    <span class="reserved">filename</span><span class="plain"> *</span><span class="functiontext">Indexer::current_file<button class="popup" onclick="togglePopup('usagePopup85')">...<span class="popuptext" id="usagePopup85">Usage of <b>Indexer::current_file</b>:<br><a href="#SP6">&#167;6</a>, <a href="#SP6_1_8_3">&#167;6.1.8.3</a>, <a href="#SP6_1_8_9">&#167;6.1.8.9</a>, <a href="#SP6_1_8_10">&#167;6.1.8.10</a>, <a href="#SP6_1_8_11">&#167;6.1.8.11</a>, <a href="#SP6_1_8_14">&#167;6.1.8.14</a>, <a href="#SP6_1_8_15">&#167;6.1.8.15</a>, <a href="#SP6_1_8_14_1">&#167;6.1.8.14.1</a>, <a href="#SP6_1_8_14_1_1">&#167;6.1.8.14.1.1</a></span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">file_being_woven</span><span class="plain">;</span>
     <span class="plain">}</span>
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Indexer::set_current_file<button class="popup" onclick="togglePopup('usagePopup86')">...<span class="popuptext" id="usagePopup86">Usage of <b>Indexer::set_current_file</b>:<br><a href="#SP6">&#167;6</a>, The Swarm - <a href="3-ts.html#SP4">&#167;4</a><br>The Weaver - <a href="3-tw.html#SP1">&#167;1</a></span></button></span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>

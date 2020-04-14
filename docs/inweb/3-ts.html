@@ -21,7 +21,7 @@
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
 </ul><h2>Repository</h2><ul>
-<li><a href="https://github.com/ganelson/inweb">github</a></li>
+<li><a href="https://github.com/ganelson/inweb"><img src="../github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
 <li><a href="../../../inform/docs/index.html">inform</a></li>
 <li><a href="../../../intest/docs/index.html">intest</a></li>
@@ -73,8 +73,7 @@ of Chapter 25 of "On the Banks of Plum Creek".
                                 <span class="identifier">breadcrumbs</span><span class="plain">, </span><span class="identifier">navigation</span><span class="plain">);</span>
             <span class="plain">}</span>
 
-        <span class="functiontext"><a href="#SP4">Swarm::weave_index_templates</a></span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">range</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">, (</span><span class="identifier">to</span><span class="plain">)?</span><span class="identifier">TRUE:FALSE</span><span class="plain">, </span><span class="identifier">into</span><span class="plain">, </span><span class="identifier">navigation</span><span class="plain">,</span>
-            <span class="identifier">breadcrumbs</span><span class="plain">);</span>
+        <span class="functiontext"><a href="#SP4">Swarm::weave_index_templates</a></span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">range</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">, </span><span class="identifier">into</span><span class="plain">, </span><span class="identifier">navigation</span><span class="plain">, </span><span class="identifier">breadcrumbs</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 
@@ -303,7 +302,7 @@ generic <code class="display"><span class="extract">index.html</span></code> if 
 
 <pre class="display">
     <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Swarm::weave_index_templates<button class="popup" onclick="togglePopup('usagePopup70')">...<span class="popuptext" id="usagePopup70">Usage of <b>Swarm::weave_index_templates</b>:<br><a href="#SP1">&#167;1</a></span></button></span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">range</span><span class="plain">, </span><span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">pattern</span><span class="plain">,</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">self_contained</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">into</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">nav</span><span class="plain">, </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">crumbs</span><span class="plain">) {</span>
+        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">into</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">nav</span><span class="plain">, </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">crumbs</span><span class="plain">) {</span>
         <span class="reserved">if</span><span class="plain"> (!(</span><span class="functiontext"><a href="8-bdfw.html#SP6">Bibliographic::data_exists</a></span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Version Number"</span><span class="plain">)))</span>
             <span class="functiontext"><a href="8-bdfw.html#SP7">Bibliographic::set_datum</a></span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Version Number"</span><span class="plain">, </span><span class="identifier">I</span><span class="string">" "</span><span class="plain">);</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">index_leaf</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
@@ -325,7 +324,7 @@ generic <code class="display"><span class="extract">index.html</span></code> if 
             <span class="functiontext"><a href="3-ti.html#SP3">Indexer::incorporate_template</a></span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">range</span><span class="plain">, </span><span class="identifier">INF</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">, </span><span class="identifier">nav</span><span class="plain">, </span><span class="identifier">crumbs</span><span class="plain">);</span>
             <span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">self_contained</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="functiontext"><a href="1-ptt.html#SP6">Patterns::copy_payloads_into_weave</a></span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">);</span>
+        <span class="functiontext"><a href="1-ptt.html#SP6">Patterns::copy_payloads_into_weave</a></span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">);</span>
     <span class="plain">}</span>
 </pre>
 

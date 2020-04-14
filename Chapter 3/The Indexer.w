@@ -481,11 +481,15 @@ its square-bracketed parts.
 			@<Substitute a Menu@>;
 		} else if (Regexp::match(&mr, varname, L"Item \"(%c+)\"")) {
 			text_stream *item_name = mr.exp[0];
+			text_stream *icon_text = NULL;
+			@<Look for icon text@>;
 			text_stream *link_text = item_name;
 			@<Substitute a member Item@>;
 		} else if (Regexp::match(&mr, varname, L"Item \"(%c+)\" -> (%c+)")) {
 			text_stream *item_name = mr.exp[0];
 			text_stream *link_text = mr.exp[1];
+			text_stream *icon_text = NULL;
+			@<Look for icon text@>;
 			@<Substitute a general Item@>;
 		} else {
 			WRITE_TO(substituted, "%S", varname);
@@ -642,6 +646,17 @@ navigation purposes.
 	WRITE_TO(substituted, "<h2>%S</h2><ul>", menu_name);
 	ies->inside_navigation_submenu = TRUE;
 
+@<Look for icon text@> =
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, item_name, L"<(%c+)> *(%c*)")) {
+		icon_text = Str::duplicate(mr.exp[0]);
+		item_name = Str::duplicate(mr.exp[1]);
+	} else if (Regexp::match(&mr, item_name, L"(%c*?) *<(%c+)>")) {
+		icon_text = Str::duplicate(mr.exp[1]);
+		item_name = Str::duplicate(mr.exp[0]);
+	}
+	Regexp::dispose_of(&mr);
+
 @<Substitute a member Item@> =
 	TEMPORARY_TEXT(url);
 	Colonies::reference_URL(url, link_text, Indexer::current_file());
@@ -660,20 +675,30 @@ navigation purposes.
 	WRITE_TO(substituted, "<li>");
 	if (Str::eq(url, Filenames::get_leafname(Indexer::current_file()))) {
 		WRITE_TO(substituted, "<span class=\"unlink\">");
-		WRITE_TO(substituted, "%S", item_name);
+		@<Substitute icon and name@>;
 		WRITE_TO(substituted, "</span>");
 	} else if (Str::eq(url, I"index.html")) {
 		WRITE_TO(substituted, "<a href=\"%S\">", url);
 		WRITE_TO(substituted, "<span class=\"selectedlink\">");
-		WRITE_TO(substituted, "%S", item_name);
+		@<Substitute icon and name@>;
 		WRITE_TO(substituted, "</span>");
 		WRITE_TO(substituted, "</a>");
 	} else {
 		WRITE_TO(substituted, "<a href=\"%S\">", url);
-		WRITE_TO(substituted, "%S", item_name);
+		@<Substitute icon and name@>;
 		WRITE_TO(substituted, "</a>");
 	}
 	WRITE_TO(substituted, "</li>");
+
+@<Substitute icon and name@> =
+	if (Str::len(icon_text) > 0) {
+		WRITE_TO(substituted, "<img src=\"");
+		Pathnames::relative_URL(substituted,
+			Filenames::get_path_to(Indexer::current_file()),
+			Pathnames::from_text(Colonies::home()));
+		WRITE_TO(substituted, "%S\" height=18> ", icon_text);
+	}
+	WRITE_TO(substituted, "%S", item_name);
 
 @ =
 void Indexer::list_module(OUTPUT_STREAM, module *M, int list_this) {

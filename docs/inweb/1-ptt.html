@@ -21,7 +21,7 @@
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
 </ul><h2>Repository</h2><ul>
-<li><a href="https://github.com/ganelson/inweb">github</a></li>
+<li><a href="https://github.com/ganelson/inweb"><img src="../github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
 <li><a href="../../../inform/docs/index.html">inform</a></li>
 <li><a href="../../../intest/docs/index.html">intest</a></li>
@@ -360,10 +360,11 @@ for payloads to be copied into weave, we make good use of the above:
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Patterns::copy_payloads_into_weave<button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>Patterns::copy_payloads_into_weave</b>:<br>The Swarm - <a href="3-ts.html#SP4">&#167;4</a></span></button></span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">pattern</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Patterns::copy_payloads_into_weave<button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>Patterns::copy_payloads_into_weave</b>:<br>Program Control - <a href="1-pc.html#SP7_4_3">&#167;7.4.3</a><br>The Swarm - <a href="3-ts.html#SP4">&#167;4</a></span></button></span><span class="plain">(</span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">pattern</span><span class="plain">) {</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="element">payloads</span><span class="plain">) {</span>
             <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext"><a href="#SP5">Patterns::obtain_filename</a></span><span class="plain">(</span><span class="identifier">pattern</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
+    <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"use %f\n"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
             <span class="functiontext"><a href="#SP7">Patterns::copy_file_into_weave</a></span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">as_ebook</span><span class="plain">) {</span>
                 <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">rel</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP2">Filenames::in_folder</a></span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
@@ -372,6 +373,7 @@ for payloads to be copied into weave, we make good use of the above:
         <span class="plain">}</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">-&gt;</span><span class="element">up_payloads</span><span class="plain">) {</span>
             <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext"><a href="#SP5">Patterns::obtain_filename</a></span><span class="plain">(</span><span class="identifier">pattern</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>
+    <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"use up %f\n"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
             <span class="functiontext"><a href="#SP7">Patterns::copy_up_file_into_weave</a></span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">as_ebook</span><span class="plain">) {</span>
                 <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">rel</span><span class="plain"> = </span><span class="functiontext"><a href="3-fln.html#SP2">Filenames::in_folder</a></span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">leafname</span><span class="plain">);</span>

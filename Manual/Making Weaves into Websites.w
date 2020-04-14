@@ -137,6 +137,15 @@ recognised by beginning with |http|, or else a web cross-reference. Thus:
 would make a menu item called "innards" leading to a section in Chapter 4
 of the Inweb source.
 
+An item text can begin or end with an icon name, in angle brackets. For
+example:
+= (text)
+	[[Item "<github.png> github" -> https://github.com/ganelson/intest]]
+=
+This icon should be in the |docs| home of the repository. Note that the
+|GithubPages| pattern automatically includes the |github.png| icon, so
+that one's guaranteed to be present.
+
 @h The trail of breadcrumbs.
 Inweb automatically adds web, chapter and section titles to the trail of
 breadcrumbs above each page: for example,
