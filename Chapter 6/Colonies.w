@@ -366,7 +366,7 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	LOOP_OVER(fn, language_function) {
 		if (Str::eq_insensitive(fn->function_name, text)) {
 			Colonies::paragraph_URL(url, fn->function_header_at->owning_paragraph,
-				L->owning_section, TRUE);
+				for_HTML_file);
 			WRITE_TO(title, "%S", fn->function_name);
 			return TRUE;
 		}
@@ -377,7 +377,7 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	LOOP_OVER(str, language_type) {
 		if (Str::eq_insensitive(str->structure_name, text)) {
 			Colonies::paragraph_URL(url, str->structure_header_at->owning_paragraph,
-				L->owning_section, TRUE);
+				for_HTML_file);
 			WRITE_TO(title, "%S", str->structure_name);
 			return TRUE;
 		}
@@ -390,7 +390,7 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	return TRUE;
 
 @<The section is a known colony member@> =
-	pathname *from = Filenames::get_path_to(for_HTML_file);
+	pathname *from = Filenames::up(for_HTML_file);
 	pathname *to = search_CM->weave_path;
 	Pathnames::relative_URL(url, from, to);
 	if (bare_module_name) WRITE_TO(url, "%S", search_CM->home_leaf);
@@ -445,24 +445,33 @@ void Colonies::section_URL(OUTPUT_STREAM, section_md *Sm) {
 	WRITE(".html");
 }
 
-void Colonies::paragraph_URL(OUTPUT_STREAM, paragraph *P, section *from, int a_link) {
-	TEMPORARY_TEXT(linkto);
-	if ((from) && (P->under_section != from)) {
-		Str::copy(linkto, P->under_section->md->sect_range);
-		LOOP_THROUGH_TEXT(pos, linkto)
-			if ((Str::get(pos) == '/') || (Str::get(pos) == ' '))
-				Str::put(pos, '-');
-		WRITE_TO(linkto, ".html");
+void Colonies::paragraph_URL(OUTPUT_STREAM, paragraph *P, filename *from) {
+	if (from == NULL) internal_error("no from file");
+	if (P == NULL) internal_error("no para");
+	section *to_S = P->under_section;
+	module *to_M = to_S->md->owning_module;
+	if (Str::ne(to_M->module_name, I"(main)")) {
+		colony_member *to_C = Colonies::find(to_M->module_name);
+		if (to_C) {
+			pathname *from_path = Filenames::up(from);
+			pathname *to_path = to_C->weave_path;
+			Pathnames::relative_URL(OUT, from_path, to_path);
+		} else {
+			PRINT("Warning: a link in the weave will work only if '%S' appears in the colony file\n",
+				to_M->module_name);
+		}
 	}
-	WRITE("%S", linkto);
-	if (P) WRITE("%s%S", (a_link)?"#":"", P->ornament);
-	DISCARD_TEXT(linkto);
+	Colonies::section_URL(OUT, to_S->md);
+	WRITE("#");
+	Colonies::paragraph_anchor(OUT, P);
+}
 
-	if (P) {
-		WRITE("P");
-		text_stream *N = P->paragraph_number;
-		LOOP_THROUGH_TEXT(pos, N)
-			if (Str::get(pos) == '.') WRITE("_");
-			else PUT(Str::get(pos));
-	}
+void Colonies::paragraph_anchor(OUTPUT_STREAM, paragraph *P) {
+	if (P == NULL) internal_error("no para");
+	WRITE("%S", P->ornament);
+	WRITE("P");
+	text_stream *N = P->paragraph_number;
+	LOOP_THROUGH_TEXT(pos, N)
+		if (Str::get(pos) == '.') WRITE("_");
+		else PUT(Str::get(pos));
 }

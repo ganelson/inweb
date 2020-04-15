@@ -290,14 +290,14 @@ writeme_asset *Readme::find_asset(text_stream *program) {
 		if (WebMetadata::directory_looks_like_a_web(Pathnames::from_text(program))) {
 			A->if_web = WebMetadata::get_without_modules(Pathnames::from_text(program), NULL);
 		} else {
-			filename *I6_vn = Filenames::in_folder(
-				Pathnames::subfolder(Pathnames::from_text(program), I"inform6"), I"header.h");
+			filename *I6_vn = Filenames::in(
+				Pathnames::down(Pathnames::from_text(program), I"inform6"), I"header.h");
 			if (TextFiles::exists(I6_vn)) @<Read in I6 source header file@>;
-			filename *template_vn = Filenames::in_folder(Pathnames::from_text(program), I"(manifest).txt");
+			filename *template_vn = Filenames::in(Pathnames::from_text(program), I"(manifest).txt");
 			if (TextFiles::exists(template_vn)) @<Read in template manifest file@>;
-			filename *rmt_vn = Filenames::in_folder(Pathnames::from_text(program), I"README.txt");
+			filename *rmt_vn = Filenames::in(Pathnames::from_text(program), I"README.txt");
 			if (TextFiles::exists(rmt_vn)) @<Read in README file@>;
-			rmt_vn = Filenames::in_folder(Pathnames::from_text(program), I"README.md");
+			rmt_vn = Filenames::in(Pathnames::from_text(program), I"README.md");
 			if (TextFiles::exists(rmt_vn)) @<Read in README file@>;
 		}
 	}

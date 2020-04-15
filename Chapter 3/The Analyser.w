@@ -383,15 +383,15 @@ folder: failing that, we fall back on a default script belonging to Inweb.
 
 =
 void Analyser::write_makefile(web *W, filename *F, module_search *I) {
-	filename *prototype = Filenames::in_folder(W->md->path_to_web, I"makescript.txt");
+	filename *prototype = Filenames::in(W->md->path_to_web, I"makescript.txt");
 	if (!(TextFiles::exists(prototype)))
-		prototype = Filenames::in_folder(path_to_inweb_materials, I"makescript.txt");
+		prototype = Filenames::in(path_to_inweb_materials, I"makescript.txt");
 	Makefiles::write(W, prototype, F, I);
 }
 
 void Analyser::write_gitignore(web *W, filename *F) {
-	filename *prototype = Filenames::in_folder(W->md->path_to_web, I"gitignorescript.txt");
+	filename *prototype = Filenames::in(W->md->path_to_web, I"gitignorescript.txt");
 	if (!(TextFiles::exists(prototype)))
-		prototype = Filenames::in_folder(path_to_inweb_materials, I"gitignorescript.txt");
+		prototype = Filenames::in(path_to_inweb_materials, I"gitignorescript.txt");
 	Git::write_gitignore(W, prototype, F);
 }

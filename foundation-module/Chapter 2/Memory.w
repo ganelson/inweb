@@ -616,17 +616,17 @@ exit on any such failure, so that the caller can be certain that the return
 values of these functions are always non-|NULL| pointers.
 
 =
-void *Memory::I7_calloc(int how_many, int size_in_bytes, int reason) {
-	return Memory::I7_alloc(how_many, size_in_bytes, reason);
+void *Memory::calloc(int how_many, int size_in_bytes, int reason) {
+	return Memory::alloc_inner(how_many, size_in_bytes, reason);
 }
-void *Memory::I7_malloc(int size_in_bytes, int reason) {
-	return Memory::I7_alloc(-1, size_in_bytes, reason);
+void *Memory::malloc(int size_in_bytes, int reason) {
+	return Memory::alloc_inner(-1, size_in_bytes, reason);
 }
 
 @ And this, then, is the joint routine implementing both.
 
 =
-void *Memory::I7_alloc(int N, int S, int R) {
+void *Memory::alloc_inner(int N, int S, int R) {
 	CREATE_MUTEX(mutex);
 	LOCK_MUTEX(mutex);
 	void *pointer;
@@ -656,7 +656,7 @@ allocates a tiny but positive amount of memory, just to be safe.
 	}
 
 @ These statistics have no function except to improve the diagnostics in the
-debugging log, but they are very cheap to keep, since |Memory::I7_alloc| is called only
+debugging log, but they are very cheap to keep, since |Memory::alloc_inner| is called only
 rarely and to allocate large blocks of memory.
 
 @<Zero out the statistics on simple memory allocations@> =
@@ -717,7 +717,7 @@ char *Memory::new_string(char *from) {
 	if (!((current_ssa) &&
 		(current_ssa->first_free_byte + length_needed < SSA_CAPACITY))) {
 		current_ssa = CREATE(string_storage_area);
-		current_ssa->storage_at = Memory::I7_malloc(SSA_CAPACITY, STRING_STORAGE_MREASON);
+		current_ssa->storage_at = Memory::malloc(SSA_CAPACITY, STRING_STORAGE_MREASON);
 		current_ssa->first_free_byte = 0;
 	}
 	char *rp = current_ssa->storage_at + current_ssa->first_free_byte;

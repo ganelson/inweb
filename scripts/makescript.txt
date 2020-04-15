@@ -127,6 +127,8 @@ pages:
 	rm -f $(ME)/docs/goldbach/*.html
 	mkdir -p $(ME)/docs/twinprimes
 	rm -f $(ME)/docs/twinprimes/*.html
+	mkdir -p $(ME)/docs/eastertide
+	rm -f $(ME)/docs/eastertide/*.html
 	mkdir -p $(ME)/docs/foundation-module
 	rm -f $(ME)/docs/foundation-module/*.html
 	mkdir -p $(ME)/docs/foundation-test
@@ -134,8 +136,9 @@ pages:
 	$(INWEB) -colony $(COLONY) -member overview -weave
 	$(INWEB) -colony $(COLONY) -member goldbach -weave
 	$(INWEB) -colony $(COLONY) -member twinprimes -weave
+	$(INWEB) -colony $(COLONY) -member eastertide -weave
 	$(INWEB) -colony $(COLONY) -member inweb -weave
-	$(INWEB) -colony $(COLONY) -member foundation-module -weave
+	$(INWEB) -colony $(COLONY) -member foundation -weave
 	$(INWEB) -colony $(COLONY) -member foundation-test -weave
 
 # Cleaning up:

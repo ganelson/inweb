@@ -391,8 +391,8 @@ all other switches are delegated to the client's callback function |f|.
 @<Parse debugging log inclusion@> =
 	if (Log::get_debug_log_filename() == NULL) {
 		TEMPORARY_TEXT(itn);
-		WRITE_TO(itn, "%s", INTOOL_NAME);
-		filename *F = Filenames::in_folder(Pathnames::from_text(itn), I"debug-log.txt");
+		WRITE_TO(itn, "%s", PROGRAM_NAME);
+		filename *F = Filenames::in(Pathnames::from_text(itn), I"debug-log.txt");
 		DISCARD_TEXT(itn);
 		Log::set_debug_log_filename(F);
 	}
@@ -424,7 +424,7 @@ void CommandLine::write_help(OUTPUT_STREAM) {
 		N++;
 	}
 	command_line_switch **sorted_table =
-		Memory::I7_calloc(N, (int) sizeof(command_line_switch *), CLS_SORTING_MREASON);
+		Memory::calloc(N, (int) sizeof(command_line_switch *), CLS_SORTING_MREASON);
 	int i=0; LOOP_OVER(cls, command_line_switch) sorted_table[i++] = cls;
 	qsort(sorted_table, (size_t) N, sizeof(command_line_switch *), CommandLine::compare_names);
 

@@ -8,9 +8,9 @@ file exists, we look for the same thing in the current working directory.
 
 =
 filename *BuildFiles::build_file_for_web(web_md *WS) {
-	filename *F = Filenames::in_folder(WS->path_to_web, I"build.txt");
+	filename *F = Filenames::in(WS->path_to_web, I"build.txt");
 	if (TextFiles::exists(F)) return F;
-	F = Filenames::in_folder(NULL, I"build.txt");
+	F = Filenames::in(NULL, I"build.txt");
 	if (TextFiles::exists(F)) return F;
 	return NULL;
 }

@@ -129,12 +129,12 @@ typedef struct weave_target {
 		if (W->md->single_file == NULL)
 	 		H = Reader::woven_folder(W);
 	 	else
-	 		H = Filenames::get_path_to(W->md->single_file);
+	 		H = Filenames::up(W->md->single_file);
 	}
 	if (to) {
 		wt->weave_to = to;
 		wt->self_contained = TRUE;
-	} else wt->weave_to = Filenames::in_folder(H, leafname);
+	} else wt->weave_to = Filenames::in(H, leafname);
 	DISCARD_TEXT(leafname);
 
 @ From the range and the theme, we work out the weave title, the leafname,
@@ -217,7 +217,7 @@ void Swarm::weave_index_templates(web *W, text_stream *range, weave_pattern *pat
 	if (INF) {
 		pathname *H = W->redirect_weaves_to;
 		if (H == NULL) H = Reader::woven_folder(W);
-		filename *Contents = Filenames::in_folder(H, I"index.html");
+		filename *Contents = Filenames::in(H, I"index.html");
 		text_stream TO_struct; text_stream *OUT = &TO_struct;
 		if (STREAM_OPEN_TO_FILE(OUT, Contents, ISO_ENC) == FALSE)
 			Errors::fatal_with_file("unable to write contents file", Contents);

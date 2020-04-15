@@ -4,7 +4,7 @@ Choosing which unit test to run on the basis of the command-line arguments.
 
 @h Main routine.
 
-@d INTOOL_NAME "foundation-test"
+@d PROGRAM_NAME "foundation-test"
 
 @e TEST_STRINGS_CLSW
 @e TEST_RE_CLSW

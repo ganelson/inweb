@@ -1,51 +1,57 @@
-web "twinprimes": 1 section : 4 paragraphs : 48 lines
+web "The Twin Primes Conjecture": 1 section : 3 paragraphs : 55 lines
 Scan of source lines for '0'
 0000001  SECTION_HEADING.....  Main.
-0000002  PURPOSE_BODY........  
-0000003  PB_PARAGRAPH_START..  @h The conjecture.
-0000004  COMMENT_BODY........  It is widely believed that there are an infinite number of twin primes, that
-0000005  COMMENT_BODY........  is, prime numbers occurring in pairs different by 2. Twins are known to exist
-0000006  COMMENT_BODY........  at least as far out as $10^{388,342}$ (as of 2016), and there are infinitely
-0000007  COMMENT_BODY........  many pairs of primes closer together than about 250 (Zhang, 2013; Tao, Maynard,
-0000008  COMMENT_BODY........  and many others, 2014). This program finds a few small pairs of twins, by the
-0000009  COMMENT_BODY........  simplest method possible.
-0000010  COMMENT_BODY........  
-0000011  BEGIN_DEFINITION....  @d RANGE 100
-0000012  COMMENT_BODY........  
-0000013  BEGIN_CODE..........  =
-0000014  C_LIBRARY_INCLUDE...  #include <stdio.h>
-0000015  CODE_BODY...........  
-0000016  CODE_BODY...........  int main(int argc, char *argv[]) {
-0000017  CODE_BODY...........  	for (int i=1; i<RANGE; i++)
-0000018  CODE_BODY...........  		@<Test for twin prime at i@>;
-0000019  CODE_BODY...........  }
-0000020  CODE_BODY...........  
-0000021  PARAGRAPH_START.....  @
-0000022  MACRO_DEFINITION....  @<Test for twin prime at i@> =
-0000023  CODE_BODY...........  	if ((isprime(i)) && (isprime(i+2)))
-0000024  CODE_BODY...........  		printf("%d and %d\n", i, i+2);
+0000002  COMMENT_BODY........  
+0000003  PURPOSE.............  Implied Purpose: This example of using inweb is a whole web in a single short file, to look for twin primes, a classic problem in number theory.
+0000004  COMMENT_BODY........  
+0000005  PB_PARAGRAPH_START..  @h The conjecture.
+0000006  COMMENT_BODY........  It is widely believed that there are an infinite number of twin primes, that
+0000007  COMMENT_BODY........  is, prime numbers occurring in pairs different by 2. Twins are known to exist
+0000008  COMMENT_BODY........  at least as far out as $10^{388,342}$ (as of 2016), and there are infinitely
+0000009  COMMENT_BODY........  many pairs of primes closer together than about 250 (Zhang, 2013; Tao, Maynard,
+0000010  COMMENT_BODY........  and many others, 2014).
+0000011  COMMENT_BODY........  
+0000012  COMMENT_BODY........  This program finds a few small pairs of twins, by the simplest method possible,
+0000013  COMMENT_BODY........  and should print output like so:
+0000014  BEGIN_CODE..........  = (text)
+0000015  TEXT_EXTRACT........  	3 and 5
+0000016  TEXT_EXTRACT........  	5 and 7
+0000017  TEXT_EXTRACT........  	11 and 13
+0000018  TEXT_EXTRACT........  	...
+0000019  END_EXTRACT.........  =
+0000020  COMMENT_BODY........  
+0000021  BEGIN_DEFINITION....  @d RANGE 100 /* the upper limit to the numbers we will consider */
+0000022  COMMENT_BODY........  
+0000023  BEGIN_CODE..........  =
+0000024  C_LIBRARY_INCLUDE...  #include <stdio.h>
 0000025  CODE_BODY...........  
-0000026  PARAGRAPH_START.....  @ This ought to print:
-0000027  COMMENT_BODY........  
-0000028  BEGIN_CODE..........  = (not code)
-0000029  TEXT_EXTRACT........  	3 and 5
-0000030  TEXT_EXTRACT........  	5 and 7
-0000031  TEXT_EXTRACT........  	11 and 13
-0000032  TEXT_EXTRACT........  	...
-0000033  TEXT_EXTRACT........  
-0000034  PB_PARAGRAPH_START..  @h Primality.
-0000035  COMMENT_BODY........  This simple and slow test tries to divide by every whole number at least
-0000036  COMMENT_BODY........  2 and up to the square root: if none divide exactly, the number is prime.
-0000037  COMMENT_BODY........  
-0000038  BEGIN_DEFINITION....  @d TRUE 1
-0000039  BEGIN_DEFINITION....  @d FALSE 0
-0000040  COMMENT_BODY........  
-0000041  BEGIN_CODE..........  =
-0000042  CODE_BODY...........  int isprime(int n) {
-0000043  CODE_BODY...........  	if (n <= 1) return FALSE;
-0000044  CODE_BODY...........  	for (int m = 2; m*m <= n; m++)
-0000045  CODE_BODY...........  		if (n % m == 0)
-0000046  CODE_BODY...........  			return FALSE;
-0000047  CODE_BODY...........  	return TRUE;
-0000048  CODE_BODY...........  }
-0000049  CODE_BODY...........  
+0000026  CODE_BODY...........  int main(int argc, char *argv[]) {
+0000027  CODE_BODY...........  	for (int i=1; i<RANGE; i++)
+0000028  CODE_BODY...........  		@<Test for twin prime at i@>;
+0000029  CODE_BODY...........  }
+0000030  CODE_BODY...........  
+0000031  PARAGRAPH_START.....  @
+0000032  MACRO_DEFINITION....  @<Test for twin prime at i@> =
+0000033  CODE_BODY...........  	if ((isprime(i)) && (isprime(i+2)))
+0000034  CODE_BODY...........  		printf("%d and %d\n", i, i+2);
+0000035  CODE_BODY...........  
+0000036  PB_PARAGRAPH_START..  @h Primality.
+0000037  COMMENT_BODY........  This simple and slow test tries to divide by every whole number at least
+0000038  COMMENT_BODY........  2 and up to the square root: if none divide exactly, the number is prime.
+0000039  COMMENT_BODY........  A common error with this algorithm is to check where $m^2 < n$, rather
+0000040  COMMENT_BODY........  than $m^2 \leq n$, thus wrongly considering 4, 9, 25, 49, ... as prime:
+0000041  COMMENT_BODY........  Cambridge folklore has it that this bug occurred on the first computation
+0000042  COMMENT_BODY........  of the EDSAC computer on 6 May 1949.
+0000043  COMMENT_BODY........  
+0000044  BEGIN_DEFINITION....  @d TRUE 1
+0000045  BEGIN_DEFINITION....  @d FALSE 0
+0000046  COMMENT_BODY........  
+0000047  BEGIN_CODE..........  =
+0000048  CODE_BODY...........  int isprime(int n) {
+0000049  CODE_BODY...........  	if (n <= 1) return FALSE;
+0000050  CODE_BODY...........  	for (int m = 2; m*m <= n; m++)
+0000051  CODE_BODY...........  		if (n % m == 0)
+0000052  CODE_BODY...........  			return FALSE;
+0000053  CODE_BODY...........  	return TRUE;
+0000054  CODE_BODY...........  }
+0000055  CODE_BODY...........  

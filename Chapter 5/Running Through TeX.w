@@ -61,7 +61,7 @@ typedef struct tex_results {
 	filename *console_rel = Filenames::without_path(console_filename);
 
 	Shell::plain(TEMP, "cd ");
-	Shell::quote_path(TEMP, Filenames::get_path_to(wv->weave_to));
+	Shell::quote_path(TEMP, Filenames::up(wv->weave_to));
 	Shell::plain(TEMP, "; ");
 
 	text_stream *tool = wv->pattern->pdftex_command;

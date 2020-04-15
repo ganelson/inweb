@@ -20,6 +20,7 @@
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
+<li><a href="../eastertide/index.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -72,15 +73,15 @@ because tangled code doesn't need to know its own paragraph numbers.
 <pre class="displaydefn">
         <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">first_line</span><span class="plain">; </span><span class="identifier">L</span><span class="plain">; </span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">next_line</span><span class="plain">) {</span>
             <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
-            <span class="functiontext"><a href="4-sm.html#SP16">Str::copy</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">text</span><span class="plain">);</span>
+            <span class="functiontext"><a href="../foundation-module/4-sm.html#SP16">Str::copy</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">text</span><span class="plain">);</span>
             <span class="reserved">int</span><span class="plain"> </span><span class="identifier">mlen</span><span class="plain">, </span><span class="identifier">mpos</span><span class="plain">;</span>
-            <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">mpos</span><span class="plain"> = </span><span class="functiontext"><a href="4-pm.html#SP3">Regexp::find_expansion</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="character">'@'</span><span class="plain">, </span><span class="character">'&lt;'</span><span class="plain">, </span><span class="character">'@'</span><span class="plain">, </span><span class="character">'&gt;'</span><span class="plain">, &amp;</span><span class="identifier">mlen</span><span class="plain">)) != -1) {</span>
+            <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">mpos</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/4-pm.html#SP3">Regexp::find_expansion</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="character">'@'</span><span class="plain">, </span><span class="character">'&lt;'</span><span class="plain">, </span><span class="character">'@'</span><span class="plain">, </span><span class="character">'&gt;'</span><span class="plain">, &amp;</span><span class="identifier">mlen</span><span class="plain">)) != -1) {</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">found_macro</span><span class="plain">);</span>
-                <span class="functiontext"><a href="4-sm.html#SP25">Str::substr</a></span><span class="plain">(</span><span class="identifier">found_macro</span><span class="plain">, </span><span class="functiontext"><a href="4-sm.html#SP10">Str::at</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">mpos</span><span class="plain">+2), </span><span class="functiontext"><a href="4-sm.html#SP10">Str::at</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">mpos</span><span class="plain">+</span><span class="identifier">mlen</span><span class="plain">-2));</span>
+                <span class="functiontext"><a href="../foundation-module/4-sm.html#SP25">Str::substr</a></span><span class="plain">(</span><span class="identifier">found_macro</span><span class="plain">, </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP10">Str::at</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">mpos</span><span class="plain">+2), </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP10">Str::at</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">mpos</span><span class="plain">+</span><span class="identifier">mlen</span><span class="plain">-2));</span>
                 <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">original_p</span><span class="plain">);</span>
-                <span class="functiontext"><a href="4-sm.html#SP16">Str::copy</a></span><span class="plain">(</span><span class="identifier">original_p</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
-                <span class="functiontext"><a href="4-sm.html#SP15">Str::clear</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
-                <span class="functiontext"><a href="4-sm.html#SP25">Str::substr</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="functiontext"><a href="4-sm.html#SP10">Str::at</a></span><span class="plain">(</span><span class="identifier">original_p</span><span class="plain">, </span><span class="identifier">mpos</span><span class="plain"> + </span><span class="identifier">mlen</span><span class="plain">), </span><span class="functiontext"><a href="4-sm.html#SP10">Str::end</a></span><span class="plain">(</span><span class="identifier">original_p</span><span class="plain">));</span>
+                <span class="functiontext"><a href="../foundation-module/4-sm.html#SP16">Str::copy</a></span><span class="plain">(</span><span class="identifier">original_p</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
+                <span class="functiontext"><a href="../foundation-module/4-sm.html#SP15">Str::clear</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">);</span>
+                <span class="functiontext"><a href="../foundation-module/4-sm.html#SP25">Str::substr</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP10">Str::at</a></span><span class="plain">(</span><span class="identifier">original_p</span><span class="plain">, </span><span class="identifier">mpos</span><span class="plain"> + </span><span class="identifier">mlen</span><span class="plain">), </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP10">Str::end</a></span><span class="plain">(</span><span class="identifier">original_p</span><span class="plain">));</span>
                 <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">original_p</span><span class="plain">);</span>
                 <span class="reserved">para_macro</span><span class="plain"> *</span><span class="identifier">pmac</span><span class="plain"> = </span><span class="functiontext"><a href="2-pm.html#SP3">Macros::find_by_name</a></span><span class="plain">(</span><span class="identifier">found_macro</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">);</span>
                 <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pmac</span><span class="plain">) </span>&lt;<span class="cwebmacro">Add a record that the macro is used in this paragraph</span> <span class="cwebmacronumber">1.1.2</span>&gt;<span class="plain">;</span>
@@ -92,7 +93,7 @@ because tangled code doesn't need to know its own paragraph numbers.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1">&#167;1</a>.</p>
+<p class="endnote">This code is used in <a href="2-pn.html#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP1_1_1"></a><b>&#167;1.1.1.  </b>Each macro comes with a linked list of notes about which paragraphs use
 it; necessarily paragraphs within the same section.
@@ -141,7 +142,7 @@ lexicographic sequence.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1_1">&#167;1.1</a>.</p>
+<p class="endnote">This code is used in <a href="2-pn.html#SP1_1">&#167;1.1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP1_2"></a><b>&#167;1.2.  </b>Basically we'll form the paragraphs into a tree, or in fact a forest. If a
 paragraph defines a macro then we want it to be a child node of the
@@ -165,7 +166,7 @@ other nodes a bit speculatively.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1">&#167;1</a>.</p>
+<p class="endnote">This code is used in <a href="2-pn.html#SP1">&#167;1</a>.</p>
 
 <p class="inwebparagraph"><a id="SP1_2_1"></a><b>&#167;1.2.1.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">The parent of a macro definition is the place where it's first used</span> <span class="cwebmacronumber">1.2.1</span>&gt; =
@@ -184,7 +185,7 @@ other nodes a bit speculatively.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1_2">&#167;1.2</a>.</p>
+<p class="endnote">This code is used in <a href="2-pn.html#SP1_2">&#167;1.2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP1_2_2"></a><b>&#167;1.2.2.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Otherwise share the parent of a following paragraph, provided it precedes us</span> <span class="cwebmacronumber">1.2.2</span>&gt; =
@@ -207,7 +208,7 @@ other nodes a bit speculatively.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1_2">&#167;1.2</a>.</p>
+<p class="endnote">This code is used in <a href="2-pn.html#SP1_2">&#167;1.2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP1_2_3"></a><b>&#167;1.2.3.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Create paragraph number texts</span> <span class="cwebmacronumber">1.2.3</span>&gt; =
@@ -217,12 +218,12 @@ other nodes a bit speculatively.
 <pre class="displaydefn">
         <span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">paragraphs</span><span class="plain">)</span>
-            <span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP2">Str::new</a></span><span class="plain">();</span>
+            <span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP2">Str::new</a></span><span class="plain">();</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1_2">&#167;1.2</a>.</p>
+<p class="endnote">This code is used in <a href="2-pn.html#SP1_2">&#167;1.2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP1_2_4"></a><b>&#167;1.2.4.  </b>Now we have our tree, and we number paragraphs accordingly: root notes are
 numbered 1, 2, 3, ..., and then children are numbered with suffixes .1, .2, .3,
@@ -243,12 +244,12 @@ numbered 1, 2, 3, ..., and then children are numbered with suffixes .1, .2, .3,
                 <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">, </span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">top_level</span><span class="plain">++);</span>
                 <span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">next_child_number</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span>
-                <span class="functiontext"><a href="4-sm.html#SP15">Str::clear</a></span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">);</span>
+                <span class="functiontext"><a href="../foundation-module/4-sm.html#SP15">Str::clear</a></span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1_2">&#167;1.2</a>.</p>
+<p class="endnote">This code is used in <a href="2-pn.html#SP1_2">&#167;1.2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP1_2_5"></a><b>&#167;1.2.5.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Recursively derive the numbers of parented paragraphs from those of their parents</span> <span class="cwebmacronumber">1.2.5</span>&gt; =
@@ -258,12 +259,12 @@ numbered 1, 2, 3, ..., and then children are numbered with suffixes .1, .2, .3,
 <pre class="displaydefn">
         <span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">paragraphs</span><span class="plain">)</span>
-            <span class="functiontext"><a href="#SP2">Numbering::settle_paragraph_number</a></span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
+            <span class="functiontext"><a href="2-pn.html#SP2">Numbering::settle_paragraph_number</a></span><span class="plain">(</span><span class="identifier">P</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP1_2">&#167;1.2</a>.</p>
+<p class="endnote">This code is used in <a href="2-pn.html#SP1_2">&#167;1.2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The following paragraph shows the deficiencies of the algorithm: it's going
 to end up numbered 2, because it isn't used anywhere and doesn't seem to be
@@ -272,11 +273,11 @@ chosen by the author, so 2 it is.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Numbering::settle_paragraph_number<button class="popup" onclick="togglePopup('usagePopup49')">...<span class="popuptext" id="usagePopup49">Usage of <b>Numbering::settle_paragraph_number</b>:<br><a href="#SP1_2_5">&#167;1.2.5</a></span></button></span><span class="plain">(</span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP8">Str::len</a></span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Numbering::settle_paragraph_number<button class="popup" onclick="togglePopup('usagePopup49')">...<span class="popuptext" id="usagePopup49">Usage of <b>Numbering::settle_paragraph_number</b>:<br><a href="2-pn.html#SP1_2_5">&#167;1.2.5</a></span></button></span><span class="plain">(</span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP8">Str::len</a></span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">, </span><span class="string">"X"</span><span class="plain">); </span><span class="comment"> to prevent malformed sections hanging this</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain">) </span><span class="functiontext"><a href="#SP2">Numbering::settle_paragraph_number</a></span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain">);</span>
-        <span class="functiontext"><a href="4-sm.html#SP15">Str::clear</a></span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">);</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain">) </span><span class="functiontext"><a href="2-pn.html#SP2">Numbering::settle_paragraph_number</a></span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain">);</span>
+        <span class="functiontext"><a href="../foundation-module/4-sm.html#SP15">Str::clear</a></span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">, </span><span class="string">"%S.%d"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain">-&gt;</span><span class="element">paragraph_number</span><span class="plain">,</span>
                 <span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">parent_paragraph</span><span class="plain">-&gt;</span><span class="element">next_child_number</span><span class="plain">++);</span>
         <span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">next_child_number</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>

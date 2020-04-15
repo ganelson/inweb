@@ -628,12 +628,12 @@ navigation purposes.
 
 @<Substitute a Docs@> =
 	Pathnames::relative_URL(substituted,
-		Filenames::get_path_to(Indexer::current_file()),
+		Filenames::up(Indexer::current_file()),
 		Pathnames::from_text(Colonies::home()));
 
 @<Substitute a URL@> =
 	Pathnames::relative_URL(substituted,
-		Filenames::get_path_to(Indexer::current_file()),
+		Filenames::up(Indexer::current_file()),
 		Pathnames::from_text(link_text));
 
 @<Substitute a Link@> =
@@ -694,7 +694,7 @@ navigation purposes.
 	if (Str::len(icon_text) > 0) {
 		WRITE_TO(substituted, "<img src=\"");
 		Pathnames::relative_URL(substituted,
-			Filenames::get_path_to(Indexer::current_file()),
+			Filenames::up(Indexer::current_file()),
 			Pathnames::from_text(Colonies::home()));
 		WRITE_TO(substituted, "%S\" height=18> ", icon_text);
 	}

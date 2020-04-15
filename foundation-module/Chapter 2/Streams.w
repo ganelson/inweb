@@ -442,7 +442,7 @@ int Streams::open_to_memory(text_stream *stream, int capacity) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	capacity += SPACE_AT_END_OF_STREAM;
 	Streams::initialise(stream, FOR_OM_STRF);
-	stream->write_to_memory = Memory::I7_calloc(capacity, sizeof(wchar_t), STREAM_MREASON);
+	stream->write_to_memory = Memory::calloc(capacity, sizeof(wchar_t), STREAM_MREASON);
 	if (stream->write_to_memory == NULL) return FALSE;
 	(stream->write_to_memory)[0] = 0;
 	stream->stream_flags |= MALLOCED_STRF;
@@ -770,7 +770,7 @@ hold any escape sequence when opened.
 		if (stream->write_to_memory) {
 			int offset = (32 + 2*(stream->chars_capacity))*((int) sizeof(wchar_t));
 			int needed = offset + ((int) sizeof(text_stream)) + 32;
-			void *further_allocation = Memory::I7_malloc(needed, STREAM_MREASON);
+			void *further_allocation = Memory::malloc(needed, STREAM_MREASON);
 			if (further_allocation == NULL) Errors::fatal("Out of memory");
 			text_stream *continuation = (text_stream *) (further_allocation + offset);
 			Streams::initialise(continuation, FOR_CO_STRF);

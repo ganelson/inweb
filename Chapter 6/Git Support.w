@@ -42,7 +42,7 @@ void Git::copy_gitignore_line(text_stream *line, text_file_position *tfp, void *
 
 @<Expand basics@> =
 	filename *prototype =
-		Filenames::in_folder(path_to_inweb_materials, I"gitignorescript.txt");
+		Filenames::in(path_to_inweb_materials, I"gitignorescript.txt");
 	TextFiles::read(prototype, FALSE, "can't open make settings file",
 		TRUE, Git::copy_gitignore_line, NULL, MS);
 	Regexp::dispose_of(&mr);

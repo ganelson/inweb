@@ -77,6 +77,8 @@ typedef struct section_md {
 	struct text_stream *sect_independent_language;
 	struct text_stream *sect_language_name;
 	struct text_stream *titling_line_to_insert;
+
+	struct module *owning_module;
 	MEMORY_MANAGEMENT
 } section_md;
 
@@ -114,7 +116,7 @@ web_md *WebMetadata::get(pathname *P, filename *alt_F, int syntax_version,
 		Wm->single_file = NULL;
 		Wm->contents_filename = WebMetadata::contents_filename(P);
 	} else {
-		Wm->path_to_web = Filenames::get_path_to(alt_F);
+		Wm->path_to_web = Filenames::up(alt_F);
 		Wm->single_file = alt_F;
 		Wm->contents_filename = NULL;
 	}
@@ -247,7 +249,7 @@ typedef struct reader_state {
 	int in_biblio;
 	int in_purpose; /* Reading the bit just after the new chapter? */
 	struct chapter_md *chapter_being_scanned;
-	struct text_stream *chapter_folder_name; /* Where sections in the current chapter live */
+	struct text_stream *chapter_dir_name; /* Where sections in the current chapter live */
 	struct text_stream *titling_line_to_insert; /* To be inserted automagically */
 	struct pathname *path_to; /* Where web material is being read from */
 	struct module *reading_from;
@@ -286,7 +288,7 @@ void WebMetadata::read_contents_page(web_md *Wm, module *of_module,
 	RS.in_biblio = TRUE;
 	RS.in_purpose = FALSE;
 	RS.chapter_being_scanned = NULL;
-	RS.chapter_folder_name = Str::new();
+	RS.chapter_dir_name = Str::new();
 	RS.titling_line_to_insert = Str::new();
 	RS.scan_verbosely = verbosely;
 	RS.including_modules = including_modules;
@@ -462,23 +464,23 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 		Str::copy(line, title_alone);
 	}
 	int this_is_a_chapter = TRUE;
-	Str::clear(RS->chapter_folder_name);
+	Str::clear(RS->chapter_dir_name);
 	if (Str::eq_wide_string(line, L"Sections")) {
 		WRITE_TO(new_chapter_range, "S");
-		WRITE_TO(RS->chapter_folder_name, "Sections");
+		WRITE_TO(RS->chapter_dir_name, "Sections");
 		WRITE_TO(pdf_leafname, "Sections.pdf");
 		RS->Wm->chaptered = FALSE;
 		Str::clear(RS->titling_line_to_insert);
 	} else if (Str::eq_wide_string(line, L"Preliminaries")) {
 		WRITE_TO(new_chapter_range, "P");
-		WRITE_TO(RS->chapter_folder_name, "Preliminaries");
+		WRITE_TO(RS->chapter_dir_name, "Preliminaries");
 		Str::clear(RS->titling_line_to_insert);
 		WRITE_TO(RS->titling_line_to_insert, "%S.", line);
 		WRITE_TO(pdf_leafname, "Preliminaries.pdf");
 		RS->Wm->chaptered = TRUE;
 	} else if (Str::eq_wide_string(line, L"Manual")) {
 		WRITE_TO(new_chapter_range, "M");
-		WRITE_TO(RS->chapter_folder_name, "Manual");
+		WRITE_TO(RS->chapter_dir_name, "Manual");
 		Str::clear(RS->titling_line_to_insert);
 		WRITE_TO(RS->titling_line_to_insert, "%S.", line);
 		WRITE_TO(pdf_leafname, "Manual.pdf");
@@ -486,12 +488,14 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 	} else if (Regexp::match(&mr, line, L"Header: (%c+)")) {
 		pathname *P = RS->path_to;
 		if (P == NULL) P = RS->Wm->path_to_web;
-		P = Pathnames::subfolder(P, I"Headers");
-		filename *HF = Filenames::in_folder(P, mr.exp[0]);
+		P = Pathnames::down(P, I"Headers");
+		filename *HF = Filenames::in(P, mr.exp[0]);
 		ADD_TO_LINKED_LIST(HF, filename, RS->Wm->header_filenames);
 		this_is_a_chapter = FALSE;
 	} else if (Regexp::match(&mr, line, L"Import: (%c+)")) {
-		if (RS->import_from) {
+		if (RS->halt_at_at)
+			Errors::in_text_file_S(I"single-file webs cannot Import modules", tfp);
+		else if (RS->import_from) {
 			module *imported =
 				WebModules::find(RS->Wm, RS->import_from, mr.exp[0], RS->path_to_inweb);
 			if (imported == NULL) {
@@ -513,7 +517,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 	} else if (Regexp::match(&mr, line, L"Chapter (%d+): %c+")) {
 		int n = Str::atoi(mr.exp[0], 0);
 		WRITE_TO(new_chapter_range, "%d", n);
-		WRITE_TO(RS->chapter_folder_name, "Chapter %d", n);
+		WRITE_TO(RS->chapter_dir_name, "Chapter %d", n);
 		Str::clear(RS->titling_line_to_insert);
 		WRITE_TO(RS->titling_line_to_insert, "%S.", line);
 		WRITE_TO(pdf_leafname, "Chapter-%d.pdf", n);
@@ -521,7 +525,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 	} else if (Regexp::match(&mr, line, L"Appendix (%c): %c+")) {
 		text_stream *letter = mr.exp[0];
 		Str::copy(new_chapter_range, letter);
-		WRITE_TO(RS->chapter_folder_name, "Appendix %S", letter);
+		WRITE_TO(RS->chapter_dir_name, "Appendix %S", letter);
 		Str::clear(RS->titling_line_to_insert);
 		WRITE_TO(RS->titling_line_to_insert, "%S.", line);
 		WRITE_TO(pdf_leafname, "Appendix-%S.pdf", letter);
@@ -606,6 +610,7 @@ we also read in and process its file.
 		Sm->tag_name = NULL;
 	}
 	Regexp::dispose_of(&mr);
+	Sm->owning_module = RS->reading_from;
 
 @<Add the section to the web and the current chapter@> =
 	chapter_md *Cm = RS->chapter_being_scanned;
@@ -641,13 +646,13 @@ the extension needs to be |.i6t|. We allow either.
 	WRITE_TO(leafname_to_use, "%S.i6t", Sm->sect_title);
 	pathname *P = RS->path_to;
 	if (P == NULL) P = RS->Wm->path_to_web;
-	if (Str::len(RS->chapter_folder_name) > 0)
-		P = Pathnames::subfolder(P, RS->chapter_folder_name);
-	Sm->source_file_for_section = Filenames::in_folder(P, leafname_to_use);
+	if (Str::len(RS->chapter_dir_name) > 0)
+		P = Pathnames::down(P, RS->chapter_dir_name);
+	Sm->source_file_for_section = Filenames::in(P, leafname_to_use);
 	if (TextFiles::exists(Sm->source_file_for_section) == FALSE) {
 		Str::clear(leafname_to_use);
 		WRITE_TO(leafname_to_use, "%S.w", Sm->sect_title);
-		Sm->source_file_for_section = Filenames::in_folder(P, leafname_to_use);
+		Sm->source_file_for_section = Filenames::in(P, leafname_to_use);
 	}
 	DISCARD_TEXT(leafname_to_use);
 
@@ -659,7 +664,7 @@ int WebMetadata::directory_looks_like_a_web(pathname *P) {
 }
 
 filename *WebMetadata::contents_filename(pathname *P) {
-	return Filenames::in_folder(P, I"Contents.w");
+	return Filenames::in(P, I"Contents.w");
 }
 
 @h Statistics.

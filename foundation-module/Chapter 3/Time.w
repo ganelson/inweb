@@ -66,15 +66,33 @@ seen from a longitude near Rome, except that the ratios used to adjust lunar and
 solar calendars are not quite right. The result is also tampered with to
 stop Easter from coinciding with the pagan anniversary of the founding of
 Rome (for the convenience of people living in the Vatican) and also to
-stop it from coinciding with the Jewish Passover (a change motivated purely
-by anti-Semitism). However, since they botched this tampering, it sometimes
-does.
+stop it from coinciding with Passover (because of anti-Semitism). However,
+since they botched this tampering, it sometimes does.
 
 Knuth remarks that calculating Easter was almost the only algorithmic
 research in the West for many centuries. Nevertheless the result is
 practically a random-number generator. The one thing to be said in its
 favour is that it can be computed accurately with integer arithmetic using
 fairly low numbers, and this we now do.
+
+=
+void Time::easter(int year, int *d, int *m) {
+	int c, y, k, i, n, j, l;
+	y = year;
+	c = y/100;
+	n = y-19*(y/19);
+	k = (c-17)/25;
+	i = c-c/4-(c-k)/3+19*n+15;
+	i = i-30*(i/30);
+	i = i-(i/28)*(1-(i/28)*(29/(i+1))*((21-n)/11));
+	j = y+y/4+i+2-c+c/4;
+	j = j-7*(j/7);
+	l = i-j;
+	*m = 3+(l+40)/44;
+	*d = l+28-31*(*m/4);
+}
+
+@ And we can use this to tell if the season's merry:
 
 @d CHRISTMAS_FEAST 1
 @d EASTER_FEAST 2
@@ -86,19 +104,8 @@ int Time::feast(void) {
 	int this_day = the_present->tm_mday;
 	int this_year = the_present->tm_year + 1900;
 
-	int c, y, k, i, n, j, l, m, d;
-	y = this_year;
-	c = y/100;
-	n = y-19*(y/19);
-	k = (c-17)/25;
-	i = c-c/4-(c-k)/3+19*n+15;
-	i = i-30*(i/30);
-	i = i-(i/28)*(1-(i/28)*(29/(i+1))*((21-n)/11));
-	j = y+y/4+i+2-c+c/4;
-	j = j-7*(j/7);
-	l = i-j;
-	m = 3+(l+40)/44;
-	d = l+28-31*(m/4);
+	int m, d;
+	Time::easter(this_year, &m, &d);
 
 	if ((this_month == m) && (this_day >= d-2) && (this_day <= d+1))
 		return EASTER_FEAST; /* that is, Good Friday to Easter Monday */

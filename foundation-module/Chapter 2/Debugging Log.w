@@ -122,7 +122,7 @@ int Log::open(void) {
 			return FALSE;
 		DL = debug_log_file;
 		Streams::enable_debugging(DL);
-		LOG("Debugging log of %s\n", INTOOL_NAME);
+		LOG("Debugging log of %s\n", PROGRAM_NAME);
 		return TRUE;
 	}
 	return FALSE;
@@ -133,7 +133,7 @@ int Log::open_alternative(filename *F, text_stream *at) {
 		return FALSE;
 	DL = at;
 	Streams::enable_debugging(DL);
-	LOG("Debugging log of %s\n", INTOOL_NAME);
+	LOG("Debugging log of %s\n", PROGRAM_NAME);
 	return TRUE;
 }
 

@@ -66,8 +66,8 @@ int main(int argc, char **argv) {
 	fundamental_mode = args.inweb_mode;
 	path_to_inweb = Pathnames::installation_path("INWEB_PATH", I"inweb");
 	if (args.verbose_switch) PRINT("Installation path is %p\n", path_to_inweb);
-	path_to_inweb_patterns = Pathnames::subfolder(path_to_inweb, I"Patterns");
-	path_to_inweb_materials = Pathnames::subfolder(path_to_inweb, I"Materials");
+	path_to_inweb_patterns = Pathnames::down(path_to_inweb, I"Patterns");
+	path_to_inweb_materials = Pathnames::down(path_to_inweb, I"Materials");
 
 	Main::follow_instructions(&args);
 
@@ -202,8 +202,8 @@ line , but otherwise we impose a sensible choice based on the target.
 	filename *tangle_to = ins->tangle_setting;
 	if (tangle_to == NULL) {
 		pathname *P = Reader::tangled_folder(W);
-		if (W->md->single_file) P = Filenames::get_path_to(W->md->single_file);
-		tangle_to = Filenames::in_folder(P, tangle_leaf);
+		if (W->md->single_file) P = Filenames::up(W->md->single_file);
+		tangle_to = Filenames::in(P, tangle_leaf);
 	}
 	if (tn == NULL) tn = Tangler::primary_target(W);
 	Tangler::go(W, tn, tangle_to);

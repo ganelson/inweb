@@ -1,8 +1,6 @@
 [Filenames::] Filenames.
 
-Given the different environments in which we might be running, and
-the large range of files we may need from within a project folder, it's useful
-to have a section of code simply to deduce filenames.
+Names of hypothetical or real files in the filing system.
 
 @h Storage.
 Filename objects behave much like pathname ones, but they have their own
@@ -21,7 +19,7 @@ typedef struct filename {
 A filename is made by supplying a pathname and a leafname.
 
 =
-filename *Filenames::in_folder(pathname *P, text_stream *file_name) {
+filename *Filenames::in(pathname *P, text_stream *file_name) {
 	return Filenames::primitive(file_name, 0, Str::len(file_name), P);
 }
 
@@ -104,10 +102,10 @@ void Filenames::to_text_relative(OUTPUT_STREAM, filename *F, pathname *P) {
 	DISCARD_TEXT(pt);
 }
 
-@h Reading off the folder.
+@h Reading off the directory.
 
 =
-pathname *Filenames::get_path_to(filename *F) {
+pathname *Filenames::up(filename *F) {
 	if (F == NULL) return NULL;
 	return F->pathname_of_location;
 }
@@ -116,7 +114,7 @@ pathname *Filenames::get_path_to(filename *F) {
 
 =
 filename *Filenames::without_path(filename *F) {
-	return Filenames::in_folder(NULL, F->leafname);
+	return Filenames::in(NULL, F->leafname);
 }
 
 text_stream *Filenames::get_leafname(filename *F) {
@@ -160,7 +158,7 @@ filename *Filenames::set_extension(filename *F, char *extension) {
 		if (extension[0] == '.') extension++;
 		if (extension[0]) WRITE_TO(NEWLEAF, ".%s", extension);
 	}
-	filename *N = Filenames::in_folder(F->pathname_of_location, NEWLEAF);
+	filename *N = Filenames::in(F->pathname_of_location, NEWLEAF);
 	DISCARD_TEXT(NEWLEAF);
 	return N;
 }

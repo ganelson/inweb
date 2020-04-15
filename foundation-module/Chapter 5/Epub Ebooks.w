@@ -225,16 +225,16 @@ pathname *Epub::begin_construction(ebook *B, pathname *P, filename *cover_image)
 
 	TEMPORARY_TEXT(TEMP)
 	WRITE_TO(TEMP, "%S.epub", Epub::get_metadata(B, L"title"));
-	B->eventual_epub = Filenames::in_folder(P, TEMP);
+	B->eventual_epub = Filenames::in(P, TEMP);
 	DISCARD_TEXT(TEMP)
 
-	pathname *Holder = Pathnames::subfolder(P, I"ePub");
+	pathname *Holder = Pathnames::down(P, I"ePub");
 	if (Pathnames::create_in_file_system(Holder) == FALSE) return NULL;
 	B->holder = Holder;
 
 	@<Write the EPUB mimetype file@>;
 	@<Write the EPUB meta-inf directory@>;
-	pathname *OEBPS = Pathnames::subfolder(Holder, I"OEBPS");
+	pathname *OEBPS = Pathnames::down(Holder, I"OEBPS");
 	if (Pathnames::create_in_file_system(OEBPS) == FALSE) return NULL;
 	if (cover_image) @<Make the cover image page@>;
 	B->OEBPS_path = OEBPS;
@@ -242,7 +242,7 @@ pathname *Epub::begin_construction(ebook *B, pathname *P, filename *cover_image)
 }
 
 @<Write the EPUB mimetype file@> =
-	filename *Mimetype = Filenames::in_folder(Holder, I"mimetype");
+	filename *Mimetype = Filenames::in(Holder, I"mimetype");
 	text_stream EM_struct; text_stream *OUT = &EM_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, Mimetype, ISO_ENC) == FALSE)
 		Errors::fatal_with_file("unable to open mimetype file for output: %f",
@@ -251,9 +251,9 @@ pathname *Epub::begin_construction(ebook *B, pathname *P, filename *cover_image)
 	STREAM_CLOSE(OUT);
 
 @<Write the EPUB meta-inf directory@> =
-	pathname *META_INF = Pathnames::subfolder(Holder, I"META-INF");
+	pathname *META_INF = Pathnames::down(Holder, I"META-INF");
 	if (Pathnames::create_in_file_system(META_INF) == FALSE) return NULL;
-	filename *container = Filenames::in_folder(META_INF, I"container.xml");
+	filename *container = Filenames::in(META_INF, I"container.xml");
 	text_stream C_struct; text_stream *OUT = &C_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, container, ISO_ENC) == FALSE)
 		Errors::fatal_with_file("unable to open container file for output: %f",
@@ -277,7 +277,7 @@ on Apple devices. (See Keith Fahlgren's post "Best practices in ePub cover
 images" at the ThreePress Consulting blog.)
 
 @<Make the cover image page@> =
-	filename *cover = Filenames::in_folder(OEBPS, I"cover.html");
+	filename *cover = Filenames::in(OEBPS, I"cover.html");
 	text_stream C_struct; text_stream *OUT = &C_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, cover, ISO_ENC) == FALSE)
 		Errors::fatal_with_file("unable to open cover file for output: %f",
@@ -332,7 +332,7 @@ void Epub::end_construction(ebook *B) {
 	if (Str::len(lang) == 0) WRITE_TO(lang, "en-UK");
 
 @<Write the EPUB OPF file@> =
-	filename *content = Filenames::in_folder(B->OEBPS_path, I"content.opf");
+	filename *content = Filenames::in(B->OEBPS_path, I"content.opf");
 	text_stream C_struct; text_stream *OUT = &C_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, content, UTF8_ENC) == FALSE)
 		Errors::fatal_with_file("unable to open content file for output: %f",
@@ -431,7 +431,7 @@ it's left over from an earlier standard used by book-readers for visually
 impaired people.
 
 @<Write the EPUB NCX file@> =
-	filename *toc = Filenames::in_folder(B->OEBPS_path, I"toc.ncx");
+	filename *toc = Filenames::in(B->OEBPS_path, I"toc.ncx");
 	text_stream C_struct; text_stream *OUT = &C_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, toc, UTF8_ENC) == FALSE)
 		Errors::fatal_with_file("unable to open ncx file for output: %f",
@@ -550,7 +550,7 @@ impaired people.
 @<Zip the EPUB@> =
 	pathname *up = Pathnames::from_text(I"..");
 	filename *ePub_relative =
-		Filenames::in_folder(up, Filenames::get_leafname(B->eventual_epub));
+		Filenames::in(up, Filenames::get_leafname(B->eventual_epub));
 	@<Issue first zip instruction@>;
 	@<Issue second zip instruction@>;
 

@@ -25,7 +25,7 @@ programming_language *Languages::find_by_name(text_stream *lname, web *W) {
 @<Read the language definition file with this name@> =
 	filename *F = NULL;
 	if (W) {
-		pathname *P = Pathnames::subfolder(W->md->path_to_web, I"Dialects");
+		pathname *P = Pathnames::down(W->md->path_to_web, I"Dialects");
 		@<Try P@>;
 	}
 	pathname *P = Languages::default_directory();
@@ -39,7 +39,7 @@ programming_language *Languages::find_by_name(text_stream *lname, web *W) {
 	if (F == NULL) {
 		TEMPORARY_TEXT(leaf);
 		WRITE_TO(leaf, "%S.ildf", lname);
-		F = Filenames::in_folder(P, leaf);
+		F = Filenames::in(P, leaf);
 		DISCARD_TEXT(leaf);
 		if (TextFiles::exists(F) == FALSE) F = NULL;
 	}
@@ -55,7 +55,7 @@ void Languages::show(OUTPUT_STREAM) {
 	WRITE("Inweb can see the following programming language definitions:\n\n");
 	int N = NUMBER_CREATED(programming_language);
 	programming_language **sorted_table =
-		Memory::I7_calloc(N, (int) sizeof(programming_language *), CLS_SORTING_MREASON);
+		Memory::calloc(N, (int) sizeof(programming_language *), CLS_SORTING_MREASON);
 	int i=0; programming_language *pl;
 	LOOP_OVER(pl, programming_language) sorted_table[i++] = pl;
 	qsort(sorted_table, (size_t) N, sizeof(programming_language *), Languages::compare_names);
@@ -83,7 +83,7 @@ void Languages::read_definitions(pathname *P) {
 	TEMPORARY_TEXT(leafname);
 	while (Directories::next(D, leafname)) {
 		if (Str::get_last_char(leafname) != FOLDER_SEPARATOR) {
-			filename *F = Filenames::in_folder(P, leafname);
+			filename *F = Filenames::in(P, leafname);
 			Languages::read_definition(F);
 		}
 	}
@@ -92,7 +92,7 @@ void Languages::read_definitions(pathname *P) {
 }
 
 pathname *Languages::default_directory(void) {
-	return Pathnames::subfolder(path_to_inweb, I"Languages");
+	return Pathnames::down(path_to_inweb, I"Languages");
 }
 
 @ So, then, languages are defined by files which are read in, and parsed

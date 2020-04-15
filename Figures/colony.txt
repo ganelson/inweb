@@ -8,10 +8,11 @@ web: "overview" at "inweb/docs/docs-src/index.inweb" in "inweb/docs"
 
 breadcrumbs: "Home: //overview//"
 web: "inweb" at "inweb" in "inweb/docs/inweb"
-module: "foundation-module" at "inweb/foundation-module" in "inweb/docs/foundation-module"
+module: "foundation" at "inweb/foundation-module" in "inweb/docs/foundation-module"
 web: "foundation-test" at "inweb/foundation-test" in "inweb/docs/foundation-test"
 web: "goldbach" at "inweb/Examples/goldbach" in "inweb/docs/goldbach"
 web: "twinprimes" at "inweb/Examples/twinprimes.inweb" in "inweb/docs/twinprimes"
+web: "eastertide" at "inweb/Examples/eastertide" in "inweb/docs/eastertide"
 
 web: "intest" at "intest" in "intest/docs"
 web: "inform" at "inform/docs/docs-src/index.inweb" in "inform/docs"

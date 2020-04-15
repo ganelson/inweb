@@ -20,6 +20,7 @@
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
+<li><a href="../eastertide/index.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -50,11 +51,11 @@ file by following a "prototype".
         <span class="identifier">MS</span><span class="plain">.</span><span class="element">last_line_was_blank</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = &amp;(</span><span class="identifier">MS</span><span class="plain">.</span><span class="element">to_gitignore</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">ISO_ENC</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
-            <span class="functiontext"><a href="3-em.html#SP2">Errors::fatal_with_file</a></span><span class="plain">(</span><span class="string">"unable to write tangled file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+            <span class="functiontext"><a href="../foundation-module/3-em.html#SP2">Errors::fatal_with_file</a></span><span class="plain">(</span><span class="string">"unable to write tangled file"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"# This gitignore was automatically written by inweb -gitignore\n"</span><span class="plain">);</span>
         <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"# and is not intended for human editing\n\n"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="4-tf.html#SP5">TextFiles::read</a></span><span class="plain">(</span><span class="identifier">prototype</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open prototype file"</span><span class="plain">,</span>
-            <span class="constant">TRUE</span><span class="plain">, </span><span class="functiontext"><a href="#SP2">Git::copy_gitignore_line</a></span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="identifier">MS</span><span class="plain">);</span>
+        <span class="functiontext"><a href="../foundation-module/4-tf.html#SP5">TextFiles::read</a></span><span class="plain">(</span><span class="identifier">prototype</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open prototype file"</span><span class="plain">,</span>
+            <span class="constant">TRUE</span><span class="plain">, </span><span class="functiontext"><a href="6-gs.html#SP2">Git::copy_gitignore_line</a></span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="identifier">MS</span><span class="plain">);</span>
         <span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">);</span>
         <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">, </span><span class="string">"Wrote gitignore file '%f' from script '%f'\n"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="identifier">prototype</span><span class="plain">);</span>
     <span class="plain">}</span>
@@ -67,14 +68,14 @@ file by following a "prototype".
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Git::copy_gitignore_line<button class="popup" onclick="togglePopup('usagePopup346')">...<span class="popuptext" id="usagePopup346">Usage of <b>Git::copy_gitignore_line</b>:<br><a href="#SP1">&#167;1</a>, <a href="#SP2_1">&#167;2.1</a></span></button></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">) {</span>
+    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Git::copy_gitignore_line<button class="popup" onclick="togglePopup('usagePopup346')">...<span class="popuptext" id="usagePopup346">Usage of <b>Git::copy_gitignore_line</b>:<br><a href="6-gs.html#SP1">&#167;1</a>, <a href="6-gs.html#SP2_1">&#167;2.1</a></span></button></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">X</span><span class="plain">) {</span>
         <span class="reserved">gitignore_state</span><span class="plain"> *</span><span class="identifier">MS</span><span class="plain"> = (</span><span class="reserved">gitignore_state</span><span class="plain"> *) </span><span class="identifier">X</span><span class="plain">;</span>
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain"> = &amp;(</span><span class="identifier">MS</span><span class="plain">-&gt;</span><span class="element">to_gitignore</span><span class="plain">);</span>
 
-        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext"><a href="4-pm.html#SP9">Regexp::create_mr</a></span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *#%c*"</span><span class="plain">)) { </span><span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{basics} *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Expand basics</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
-        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/4-pm.html#SP9">Regexp::create_mr</a></span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="../foundation-module/4-pm.html#SP10">Regexp::match</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *#%c*"</span><span class="plain">)) { </span><span class="functiontext"><a href="../foundation-module/4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">); </span><span class="reserved">return</span><span class="plain">; }</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="../foundation-module/4-pm.html#SP10">Regexp::match</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="string">" *{basics} *"</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Expand basics</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
+        <span class="functiontext"><a href="../foundation-module/4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
 
         &lt;<span class="cwebmacro">And otherwise copy the line straight through</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
     <span class="plain">}</span>
@@ -89,16 +90,16 @@ file by following a "prototype".
 
 <pre class="displaydefn">
         <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">prototype</span><span class="plain"> =</span>
-            <span class="functiontext"><a href="3-fln.html#SP2">Filenames::in_folder</a></span><span class="plain">(</span><span class="identifier">path_to_inweb_materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"gitignorescript.txt"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="4-tf.html#SP5">TextFiles::read</a></span><span class="plain">(</span><span class="identifier">prototype</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open make settings file"</span><span class="plain">,</span>
-            <span class="constant">TRUE</span><span class="plain">, </span><span class="functiontext"><a href="#SP2">Git::copy_gitignore_line</a></span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">);</span>
-        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+            <span class="functiontext"><a href="../foundation-module/3-fln.html#SP2">Filenames::in</a></span><span class="plain">(</span><span class="identifier">path_to_inweb_materials</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"gitignorescript.txt"</span><span class="plain">);</span>
+        <span class="functiontext"><a href="../foundation-module/4-tf.html#SP5">TextFiles::read</a></span><span class="plain">(</span><span class="identifier">prototype</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open make settings file"</span><span class="plain">,</span>
+            <span class="constant">TRUE</span><span class="plain">, </span><span class="functiontext"><a href="6-gs.html#SP2">Git::copy_gitignore_line</a></span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">MS</span><span class="plain">);</span>
+        <span class="functiontext"><a href="../foundation-module/4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
         <span class="reserved">return</span><span class="plain">;</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="6-gs.html#SP2">&#167;2</a>.</p>
 
 <p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">And otherwise copy the line straight through</span> <span class="cwebmacronumber">2.2</span>&gt; =
@@ -106,7 +107,7 @@ file by following a "prototype".
 
 
 <pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP8">Str::len</a></span><span class="plain">(</span><span class="identifier">line</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) {</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP8">Str::len</a></span><span class="plain">(</span><span class="identifier">line</span><span class="plain">) == </span><span class="constant">0</span><span class="plain">) {</span>
             <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">MS</span><span class="plain">-&gt;</span><span class="element">last_line_was_blank</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
             <span class="identifier">MS</span><span class="plain">-&gt;</span><span class="element">last_line_was_blank</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
         <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
@@ -117,7 +118,7 @@ file by following a "prototype".
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP2">&#167;2</a>.</p>
+<p class="endnote">This code is used in <a href="6-gs.html#SP2">&#167;2</a>.</p>
 
 <hr class="tocbar">
 <ul class="toc"><li><a href="6-mkf.html">Back to 'Makefiles'</a></li><li><a href="6-rw.html">Continue with 'Readme Writeme'</a></li></ul><hr class="tocbar">

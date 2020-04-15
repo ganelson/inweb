@@ -7,7 +7,7 @@ to manage memory for us.
 First we define the build, using a notation which tangles out to the current
 build number as specified in the contents section of this web.
 
-@d INTOOL_NAME "inweb"
+@d PROGRAM_NAME "inweb"
 @d INWEB_BUILD "[[Version Number]]"
 
 @h Setting up the memory manager.

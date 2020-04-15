@@ -1,10 +1,10 @@
 [Pathnames::] Pathnames.
 
-To manage references to locations in the host computer's file system.
+Locations of hypothetical or real directories in the filing system.
 
 @h About pathnames.
-We use the word "pathname" to mean a file-system location of a folder (or
-directory), and "filename" to mean a location of a file. For example:
+We use the word "pathname" to mean a file-system location of a directory,
+and "filename" to mean a location of a file. For example:
 = (text)
 	/Users/rblackmore/Documents/Fireball
 =
@@ -12,13 +12,13 @@ is a pathname, whereas
 = (text)
 	/Users/rblackmore/Documents/Fireball/whoosh.aiff
 =
-is a filename. All references to folder locations in the filing system will be
+is a filename. All references to directory locations in the filing system will be
 held internally as |pathname| objects, and all references to file locations as
 |filename| objects. Once created, these are never destroyed or modified,
 so that it's safe to store a pointer to a pathname or filename anywhere.
 
 Note that a pathname may well be hypothetical, that is, it may well
-describe a folder which doesn't exist on disc.
+describe a directory which doesn't exist on disc.
 
 A full path is a linked list, but reverse-ordered: thus,
 = (text)
@@ -42,8 +42,8 @@ typedef struct pathname {
 	MEMORY_MANAGEMENT
 } pathname;
 
-@h Home folder.
-We get the path to the user's home folder from the environment variable
+@h Home directory.
+We get the path to the user's home directory from the environment variable
 |HOME|, if it exists.
 
 =
@@ -57,7 +57,7 @@ void Pathnames::start(void) {
 	}
 }
 
-@h Installation folder.
+@h Installation directory.
 
 =
 pathname *installation_path = NULL;
@@ -72,7 +72,7 @@ pathname *Pathnames::installation_path(const char *V, text_stream *def) {
 	if (where[0]) {
 		text_stream *v = Str::new_from_wide_string(where);
 		filename *F = Filenames::from_text(v);
-		pathname *P = Filenames::get_path_to(F);
+		pathname *P = Filenames::up(F);
 		if ((P) && (Str::eq(P->intermediate, I"Tangled")))
 			P = P->pathname_of_parent;
 		return P;
@@ -89,12 +89,12 @@ pathname *Pathnames::installation_path(const char *V, text_stream *def) {
 }
 
 @h Creation.
-A subfolder is made by taking an existing pathname (or possible |NULL|) and
+A subdirectory is made by taking an existing pathname (or possible |NULL|) and
 then going one level deeper, using the supplied name.
 
 =
-pathname *Pathnames::subfolder(pathname *P, text_stream *folder_name) {
-	return Pathnames::primitive(folder_name, 0, Str::len(folder_name), P);
+pathname *Pathnames::down(pathname *P, text_stream *dir_name) {
+	return Pathnames::primitive(dir_name, 0, Str::len(dir_name), P);
 }
 
 pathname *Pathnames::primitive(text_stream *str, int from, int to, pathname *par) {
@@ -111,7 +111,7 @@ pathname *Pathnames::primitive(text_stream *str, int from, int to, pathname *par
 
 @h Text to pathnames.
 The following takes a text of a name and returns a pathname,
-possibly relative to the home folder. Empty folder names are ignored
+possibly relative to the home directory. Empty directory names are ignored
 except possibly for an initial slash, so for example |paris/roubaix|,
 |paris//roubaix| and |paris/roubaix/| are indistinguishable here, but
 |/paris/roubaix| is different.
@@ -234,7 +234,7 @@ void Pathnames::relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) {
 }
 
 @h Existence in the file system.
-Just because we have a pathname, it doesn't follow that any folder exists
+Just because we have a pathname, it doesn't follow that any directory exists
 on the file system with that path.
 
 =

@@ -63,13 +63,13 @@ weave_pattern *Patterns::find(web *W, text_stream *name) {
 
 @<Locate the pattern directory@> =
 	wp->pattern_location =
-		Pathnames::subfolder(
-			Pathnames::subfolder(W->md->path_to_web, I"Patterns"),
+		Pathnames::down(
+			Pathnames::down(W->md->path_to_web, I"Patterns"),
 			name);
-	pattern_file = Filenames::in_folder(wp->pattern_location, I"pattern.txt");
+	pattern_file = Filenames::in(wp->pattern_location, I"pattern.txt");
 	if (TextFiles::exists(pattern_file) == FALSE) {
-		wp->pattern_location = Pathnames::subfolder(path_to_inweb_patterns, name);
-		pattern_file = Filenames::in_folder(wp->pattern_location, I"pattern.txt");
+		wp->pattern_location = Pathnames::down(path_to_inweb_patterns, name);
+		pattern_file = Filenames::in(wp->pattern_location, I"pattern.txt");
 		if (TextFiles::exists(pattern_file) == FALSE)
 			Errors::fatal_with_text("no such weave pattern as '%S'", name);
 	}
@@ -190,7 +190,7 @@ filename *Patterns::obtain_filename(weave_pattern *pattern, text_stream *leafnam
 		Str::delete_first_character(leafname);
 		Str::delete_first_character(leafname);
 	}
-	filename *F = Filenames::in_folder(pattern->pattern_location, leafname);
+	filename *F = Filenames::in(pattern->pattern_location, leafname);
 	if (TextFiles::exists(F)) return F;
 	if (pattern->based_on) return Patterns::obtain_filename(pattern->based_on, leafname);
 	return NULL;
@@ -206,7 +206,7 @@ void Patterns::copy_payloads_into_weave(web *W, weave_pattern *pattern) {
 		filename *F = Patterns::obtain_filename(pattern, leafname);
 		Patterns::copy_file_into_weave(W, F);
 		if (W->as_ebook) {
-			filename *rel = Filenames::in_folder(NULL, leafname);
+			filename *rel = Filenames::in(NULL, leafname);
 			Epub::note_image(W->as_ebook, rel);
 		}
 	}
@@ -214,7 +214,7 @@ void Patterns::copy_payloads_into_weave(web *W, weave_pattern *pattern) {
 		filename *F = Patterns::obtain_filename(pattern, leafname);
 		Patterns::copy_up_file_into_weave(W, F);
 		if (W->as_ebook) {
-			filename *rel = Filenames::in_folder(NULL, leafname);
+			filename *rel = Filenames::in(NULL, leafname);
 			Epub::note_image(W->as_ebook, rel);
 		}
 	}

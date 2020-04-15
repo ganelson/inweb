@@ -20,6 +20,7 @@
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
+<li><a href="../eastertide/index.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -63,10 +64,10 @@ compare all against all:
 </p>
 
 <pre class="display">
-    <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="functiontext">Enumerations::find<button class="popup" onclick="togglePopup('usagePopup45')">...<span class="popuptext" id="usagePopup45">Usage of <b>Enumerations::find</b>:<br><a href="#SP3">&#167;3</a></span></button></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">post</span><span class="plain">) {</span>
+    <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="functiontext">Enumerations::find<button class="popup" onclick="togglePopup('usagePopup45')">...<span class="popuptext" id="usagePopup45">Usage of <b>Enumerations::find</b>:<br><a href="2-ec.html#SP3">&#167;3</a></span></button></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">post</span><span class="plain">) {</span>
         <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="identifier">es</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
         <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">es</span><span class="plain">, </span><span class="reserved">enumeration_set</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="plain">(</span><span class="identifier">post</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">postfix</span><span class="plain">))</span>
+            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP18">Str::eq</a></span><span class="plain">(</span><span class="identifier">post</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">postfix</span><span class="plain">))</span>
                 <span class="reserved">return</span><span class="plain"> </span><span class="identifier">es</span><span class="plain">;</span>
         <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
     <span class="plain">}</span>
@@ -84,7 +85,7 @@ a further constant in what ought to be an existing set.
         <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
         <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
         &lt;<span class="cwebmacro">Find the postfix in this symbol name</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="identifier">es</span><span class="plain"> = </span><span class="functiontext"><a href="#SP2">Enumerations::find</a></span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
+        <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="identifier">es</span><span class="plain"> = </span><span class="functiontext"><a href="2-ec.html#SP2">Enumerations::find</a></span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Continue existing set</span> <span class="cwebmacronumber">3.2</span>&gt;
         <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Begin new set</span> <span class="cwebmacronumber">3.3</span>&gt;<span class="plain">;</span>
         <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
@@ -104,18 +105,18 @@ a further constant in what ought to be an existing set.
 
 
 <pre class="displaydefn">
-        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext"><a href="4-pm.html#SP9">Regexp::create_mr</a></span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">symbol</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%c*_(%C+?)"</span><span class="plain">)) </span><span class="functiontext"><a href="4-sm.html#SP16">Str::copy</a></span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
+        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/4-pm.html#SP9">Regexp::create_mr</a></span><span class="plain">();</span>
+        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="../foundation-module/4-pm.html#SP10">Regexp::match</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">symbol</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%c*_(%C+?)"</span><span class="plain">)) </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP16">Str::copy</a></span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="functiontext"><a href="1-pc.html#SP8">Main::error_in_web</a></span><span class="plain">(</span><span class="identifier">I</span><span class="string">"enumeration constants must belong to a _FAMILY"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
             <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">, </span><span class="string">"BOGUS"</span><span class="plain">);</span>
         <span class="plain">}</span>
-        <span class="functiontext"><a href="4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+        <span class="functiontext"><a href="../foundation-module/4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
+<p class="endnote">This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3_2"></a><b>&#167;3.2.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Continue existing set</span> <span class="cwebmacronumber">3.2</span>&gt; =
@@ -132,7 +133,7 @@ a further constant in what ought to be an existing set.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
+<p class="endnote">This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP3_3"></a><b>&#167;3.3.  </b><code class="display">
 &lt;<span class="cwebmacrodefn">Begin new set</span> <span class="cwebmacronumber">3.3</span>&gt; =
@@ -143,15 +144,15 @@ a further constant in what ought to be an existing set.
         <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">) </span><span class="functiontext"><a href="1-pc.html#SP8">Main::error_in_web</a></span><span class="plain">(</span><span class="identifier">I</span><span class="string">"this enumeration _FAMILY already exists"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
         <span class="reserved">else</span><span class="plain"> {</span>
             <span class="identifier">es</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">enumeration_set</span><span class="plain">);</span>
-            <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">postfix</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
+            <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">postfix</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
             <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext"><a href="4-sm.html#SP8">Str::len</a></span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) &lt; </span><span class="constant">8</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">((</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%d+"</span><span class="plain">)) ||</span>
-                    <span class="plain">(</span><span class="functiontext"><a href="4-pm.html#SP10">Regexp::match</a></span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"-%d+"</span><span class="plain">)))) {</span>
-                <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">first_value</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP7">Str::atoi</a></span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
+            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP8">Str::len</a></span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) &lt; </span><span class="constant">8</span><span class="plain">) &amp;&amp;</span>
+                <span class="plain">((</span><span class="functiontext"><a href="../foundation-module/4-pm.html#SP10">Regexp::match</a></span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%d+"</span><span class="plain">)) ||</span>
+                    <span class="plain">(</span><span class="functiontext"><a href="../foundation-module/4-pm.html#SP10">Regexp::match</a></span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"-%d+"</span><span class="plain">)))) {</span>
+                <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">first_value</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP7">Str::atoi</a></span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
                 <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">next_free_value</span><span class="plain"> = </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">first_value</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">;</span>
             <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
+                <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
                 <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">first_value</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
                 <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">next_free_value</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
             <span class="plain">}</span>
@@ -163,7 +164,7 @@ a further constant in what ought to be an existing set.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">This code is used in <a href="#SP3">&#167;3</a>.</p>
+<p class="endnote">This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>For each set, a further constant is defined to give the range; for example,
 we would have <code class="display"><span class="extract">NO_DEFINED_ST_VALUES</span></code> set to 3. This is notionally placed in

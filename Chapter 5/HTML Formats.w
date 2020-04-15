@@ -203,7 +203,7 @@ void HTMLFormat::toc(weave_format *self, text_stream *OUT, weave_target *wv,
 			break;
 		case 3: {
 			TEMPORARY_TEXT(TEMP)
-			Colonies::paragraph_URL(TEMP, P, NULL, TRUE);
+			Colonies::paragraph_URL(TEMP, P, wv->weave_to);
 			HTML::begin_link(OUT, TEMP);
 			DISCARD_TEXT(TEMP)
 			WRITE("%s%S", (Str::get_first_char(P->ornament) == 'S')?"&#167;":"&para;",
@@ -234,7 +234,7 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 	if (P) {
 		HTMLFormat::p(OUT, "inwebparagraph");
 		TEMPORARY_TEXT(TEMP)
-		Colonies::paragraph_URL(TEMP, P, NULL, FALSE);
+		Colonies::paragraph_anchor(TEMP, P);
 		HTML::anchor(OUT, TEMP);
 		DISCARD_TEXT(TEMP)
 		HTML_OPEN("b");
@@ -415,7 +415,7 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 					if ((defn_line) && (defn_line->owning_paragraph)) {
 						TEMPORARY_TEXT(TEMP)
 						Colonies::paragraph_URL(TEMP, defn_line->owning_paragraph,
-							wv->current_weave_line->owning_section, TRUE);
+							wv->weave_to);
 						HTML::begin_link(OUT, TEMP);
 						DISCARD_TEXT(TEMP)
 						WRITE("%S", fname);
@@ -509,8 +509,8 @@ void HTMLFormat::bar(weave_format *self, text_stream *OUT, weave_target *wv) {
 void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
 	text_stream *figname, int w, int h, programming_language *pl) {
 	HTMLFormat::exit_current_paragraph(OUT);
-	filename *F = Filenames::in_folder(
-		Pathnames::subfolder(wv->weave_web->md->path_to_web, I"Figures"),
+	filename *F = Filenames::in(
+		Pathnames::down(wv->weave_web->md->path_to_web, I"Figures"),
 		figname);
 	filename *RF = Filenames::from_text(figname);
 	HTML_OPEN("center");
@@ -537,11 +537,11 @@ void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_target *wv,
 	HTMLFormat::exit_current_paragraph(OUT);
 	TEMPORARY_TEXT(embed_leaf);
 	WRITE_TO(embed_leaf, "%S.html", service);
-	filename *F = Filenames::in_folder(	
-		Pathnames::subfolder(wv->weave_web->md->path_to_web, I"Embedding"), embed_leaf);
+	filename *F = Filenames::in(	
+		Pathnames::down(wv->weave_web->md->path_to_web, I"Embedding"), embed_leaf);
 	if (TextFiles::exists(F) == FALSE)
-		F = Filenames::in_folder(	
-			Pathnames::subfolder(path_to_inweb, I"Embedding"), embed_leaf);
+		F = Filenames::in(	
+			Pathnames::down(path_to_inweb, I"Embedding"), embed_leaf);
 	DISCARD_TEXT(embed_leaf);
 
 	if (TextFiles::exists(F) == FALSE) {
@@ -717,7 +717,7 @@ void HTMLFormat::commentary_text(weave_format *self, text_stream *OUT, weave_tar
 void HTMLFormat::locale(weave_format *self, text_stream *OUT, weave_target *wv,
 	paragraph *par1, paragraph *par2) {
 	TEMPORARY_TEXT(TEMP)
-	Colonies::paragraph_URL(TEMP, par1, page_section, TRUE);
+	Colonies::paragraph_URL(TEMP, par1, wv->weave_to);
 	HTML::begin_link(OUT, TEMP);
 	DISCARD_TEXT(TEMP)
 	WRITE("%s%S",

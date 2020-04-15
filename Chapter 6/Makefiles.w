@@ -144,7 +144,7 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	return;
 
 @<Expand platform-settings@> =
-	filename *prototype = Filenames::in_folder(path_to_inweb, I"platform-settings.mk");
+	filename *prototype = Filenames::in(path_to_inweb, I"platform-settings.mk");
 	MS->allow_commands = FALSE;
 	TextFiles::read(prototype, FALSE, "can't open make settings file",
 		TRUE, Makefiles::scan_makefile_line, NULL, MS);
@@ -154,7 +154,7 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 
 @<Expand identity-settings@> =
 	WRITE("INWEB = "); Makefiles::pathname_slashed(OUT, path_to_inweb); WRITE("/Tangled/inweb\n");
-	pathname *path_to_intest = Pathnames::subfolder(Pathnames::up(path_to_inweb), I"intest");
+	pathname *path_to_intest = Pathnames::down(Pathnames::up(path_to_inweb), I"intest");
 	WRITE("INTEST = "); Makefiles::pathname_slashed(OUT, path_to_intest); WRITE("/Tangled/intest\n");
 	if (MS->for_web) {
 		WRITE("MYNAME = %S\n", Pathnames::directory_name(MS->for_web->md->path_to_web));
@@ -283,7 +283,7 @@ void Makefiles::pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 }
 
 @<Add pattern for file F, if not already given@> =
-	pathname *P = Filenames::get_path_to(F);
+	pathname *P = Filenames::up(F);
 	TEMPORARY_TEXT(leaf_pattern);
 	WRITE_TO(leaf_pattern, "%S", Pathnames::directory_name(P));
 	match_results mr = Regexp::create_mr();

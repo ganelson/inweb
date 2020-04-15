@@ -40,14 +40,14 @@ the temporary stream, not some other string which might need fresh allocation.
 =
 void Errors::fatal(char *message) {
 	TEMPORARY_TEXT(ERM)
-	WRITE_TO(ERM, "%s: fatal error: %s\n", INTOOL_NAME, message);
+	WRITE_TO(ERM, "%s: fatal error: %s\n", PROGRAM_NAME, message);
 	Errors::issue(ERM, TRUE);
 	DISCARD_TEXT(ERM)
 }
 
 void Errors::fatal_with_C_string(char *message, char *parameter) {
 	TEMPORARY_TEXT(ERM)
-	WRITE_TO(ERM, "%s: fatal error: ", INTOOL_NAME);
+	WRITE_TO(ERM, "%s: fatal error: ", PROGRAM_NAME);
 	WRITE_TO(ERM, message, parameter);
 	WRITE_TO(ERM, "\n");
 	Errors::issue(ERM, TRUE);
@@ -56,7 +56,7 @@ void Errors::fatal_with_C_string(char *message, char *parameter) {
 
 void Errors::fatal_with_text(char *message, text_stream *parameter) {
 	TEMPORARY_TEXT(ERM)
-	WRITE_TO(ERM, "%s: fatal error: ", INTOOL_NAME);
+	WRITE_TO(ERM, "%s: fatal error: ", PROGRAM_NAME);
 	WRITE_TO(ERM, message, parameter);
 	WRITE_TO(ERM, "\n");
 	Errors::issue(ERM, TRUE);
@@ -65,14 +65,14 @@ void Errors::fatal_with_text(char *message, text_stream *parameter) {
 
 void Errors::fatal_with_file(char *message, filename *F) {
 	TEMPORARY_TEXT(ERM)
-	WRITE_TO(ERM, "%s: fatal error: %s: %f\n", INTOOL_NAME, message, F);
+	WRITE_TO(ERM, "%s: fatal error: %s: %f\n", PROGRAM_NAME, message, F);
 	Errors::issue(ERM, TRUE);
 	DISCARD_TEXT(ERM)
 }
 
 void Errors::fatal_with_path(char *message, pathname *P) {
 	TEMPORARY_TEXT(ERM)
-	WRITE_TO(ERM, "%s: fatal error: %s: %p\n", INTOOL_NAME, message, P);
+	WRITE_TO(ERM, "%s: fatal error: %s: %p\n", PROGRAM_NAME, message, P);
 	Errors::issue(ERM, TRUE);
 	DISCARD_TEXT(ERM)
 }
@@ -140,7 +140,7 @@ void Errors::in_text_file_S(text_stream *message, text_file_position *here) {
 =
 void Errors::at_position(char *message, filename *file, int line) {
 	TEMPORARY_TEXT(ERM)
-	WRITE_TO(ERM, "%s: ", INTOOL_NAME);
+	WRITE_TO(ERM, "%s: ", PROGRAM_NAME);
 	if (file) WRITE_TO(ERM, "%f, line %d: ", file, line);
 	WRITE_TO(ERM, "%s\n", message);
 	Errors::issue(ERM, FALSE);
@@ -149,7 +149,7 @@ void Errors::at_position(char *message, filename *file, int line) {
 
 void Errors::at_position_S(text_stream *message, filename *file, int line) {
 	TEMPORARY_TEXT(ERM)
-	WRITE_TO(ERM, "%s: ", INTOOL_NAME);
+	WRITE_TO(ERM, "%s: ", PROGRAM_NAME);
 	if (file) WRITE_TO(ERM, "%f, line %d: ", file, line);
 	WRITE_TO(ERM, "%S\n", message);
 	Errors::issue(ERM, FALSE);
@@ -161,14 +161,14 @@ void Errors::at_position_S(text_stream *message, filename *file, int line) {
 =
 void Errors::with_file(char *message, filename *F) {
 	TEMPORARY_TEXT(ERM)
-	WRITE_TO(ERM, "%s: %f: %s\n", INTOOL_NAME, F, message);
+	WRITE_TO(ERM, "%s: %f: %s\n", PROGRAM_NAME, F, message);
 	Errors::issue(ERM, FALSE);
 	DISCARD_TEXT(ERM)
 }
 
 void Errors::with_text(char *message, text_stream *T) {
 	TEMPORARY_TEXT(ERM)
-	WRITE_TO(ERM, "%s: ", INTOOL_NAME);
+	WRITE_TO(ERM, "%s: ", PROGRAM_NAME);
 	WRITE_TO(ERM, message, T);
 	WRITE_TO(ERM, "\n");
 	Errors::issue(ERM, FALSE);

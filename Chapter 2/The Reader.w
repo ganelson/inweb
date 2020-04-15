@@ -296,13 +296,13 @@ We abstract these in order to be able to respond well to their not existing:
 
 =
 pathname *Reader::woven_folder(web *W) {
-	pathname *P = Pathnames::subfolder(W->md->path_to_web, I"Woven");
+	pathname *P = Pathnames::down(W->md->path_to_web, I"Woven");
 	if (Pathnames::create_in_file_system(P) == FALSE)
 		Errors::fatal_with_path("unable to create Woven subdirectory", P);
 	return P;
 }
 pathname *Reader::tangled_folder(web *W) {
-	pathname *P = Pathnames::subfolder(W->md->path_to_web, I"Tangled");
+	pathname *P = Pathnames::down(W->md->path_to_web, I"Tangled");
 	if (Pathnames::create_in_file_system(P) == FALSE)
 		Errors::fatal_with_path("unable to create Tangled subdirectory", P);
 	return P;

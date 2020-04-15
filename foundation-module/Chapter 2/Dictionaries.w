@@ -36,7 +36,7 @@ dictionary *Dictionaries::new(int S, int textual) {
 	D->textual = textual;
 	D->hash_table_size = S;
 	D->no_entries = 0;
-	D->hash_table = Memory::I7_calloc(S, sizeof(dict_entry), DICTIONARY_MREASON);
+	D->hash_table = Memory::calloc(S, sizeof(dict_entry), DICTIONARY_MREASON);
 	for (int i=0; i<S; i++) {
 		D->hash_table[i].vacant = TRUE;
 		D->hash_table[i].value = NULL;

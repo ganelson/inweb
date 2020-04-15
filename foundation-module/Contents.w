@@ -4,6 +4,9 @@ Purpose: A library of common code used by all of the Inform tools.
 Language: InC
 Licence: Artistic License 2.0
 
+Preliminaries
+	A Brief Guide to Foundation
+
 Chapter 1: Setting Up
 "Absolute basics."
 	Foundation Module

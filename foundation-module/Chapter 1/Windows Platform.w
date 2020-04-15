@@ -131,20 +131,20 @@ int Platform::mkdir(char *transcoded_pathname) {
 	return FALSE;
 }
 
-void *Platform::opendir(char *path_to_folder) {
-	DIR *dirp = opendir(path_to_folder);
+void *Platform::opendir(char *dir_name) {
+	DIR *dirp = opendir(dir_name);
     return (void *) dirp;
 }
 
-int Platform::readdir(void *folder, char *path_to_folder,
+int Platform::readdir(void *D, char *dir_name,
 	char *leafname) {
 	char path_to[2*MAX_FILENAME_LENGTH+2];
 	struct _stat file_status;
 	int rv;
-	DIR *dirp = (DIR *) folder;
+	DIR *dirp = (DIR *) D;
 	struct dirent *dp;
 	if ((dp = readdir(dirp)) == NULL) return FALSE;
-	sprintf(path_to, "%s%c%s", path_to_folder, FOLDER_SEPARATOR, dp->d_name);
+	sprintf(path_to, "%s%c%s", dir_name, FOLDER_SEPARATOR, dp->d_name);
 	rv = _stat(path_to, &file_status);
 	if (rv != 0) return FALSE;
 	if (S_ISDIR(file_status.st_mode))
@@ -153,8 +153,8 @@ int Platform::readdir(void *folder, char *path_to_folder,
 	return TRUE;
 }
 
-void Platform::closedir(void *folder) {
-	DIR *dirp = (DIR *) folder;
+void Platform::closedir(void *D) {
+	DIR *dirp = (DIR *) D;
 	closedir(dirp);
 }
 

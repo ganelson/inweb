@@ -785,7 +785,7 @@ will read in at run-time. This is how that happens:
 void InCSupport::additional_tangling(programming_language *self, web *W, tangle_target *target) {
 	if (NUMBER_CREATED(preform_nonterminal) > 0) {
 		pathname *P = Reader::tangled_folder(W);
-		filename *Syntax = Filenames::in_folder(P, I"Syntax.preform");
+		filename *Syntax = Filenames::in(P, I"Syntax.preform");
 
 		text_stream TO_struct;
 		text_stream *OUT = &TO_struct;
