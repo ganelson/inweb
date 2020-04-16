@@ -125,7 +125,7 @@ void HTMLFormat::exit_current_paragraph(OUTPUT_STREAM) {
 For documentation, see "Weave Fornats".
 
 =
-void HTMLFormat::top(weave_format *self, text_stream *OUT, weave_target *wv, text_stream *comment) {
+void HTMLFormat::top(weave_format *self, text_stream *OUT, weave_order *wv, text_stream *comment) {
 	HTML::declare_as_HTML(OUT, FALSE);
 	Indexer::cover_sheet_maker(OUT, wv->weave_web, I"template", wv, WEAVE_FIRST_HALF);
 	filename *CSS = Patterns::obtain_filename(wv->pattern, I"inweb.css");
@@ -137,7 +137,7 @@ void HTMLFormat::top(weave_format *self, text_stream *OUT, weave_target *wv, tex
 	html_in_para = HTML_OUT;
 }
 
-int HTMLFormat::preserve_math_mode(weave_format *self, weave_target *wv,
+int HTMLFormat::preserve_math_mode(weave_format *self, weave_order *wv,
 	text_stream *matter, text_stream *text) {
 	text_stream *plugin_name =
 		Bibliographic::get_datum(wv->weave_web->md, I"TeX Mathematics Plugin");
@@ -163,7 +163,7 @@ int HTMLFormat::preserve_math_mode(weave_format *self, weave_target *wv,
 	return TRUE;
 }
 
-void HTMLFormat::top_EPUB(weave_format *self, text_stream *OUT, weave_target *wv, text_stream *comment) {
+void HTMLFormat::top_EPUB(weave_format *self, text_stream *OUT, weave_order *wv, text_stream *comment) {
 	HTML::declare_as_HTML(OUT, TRUE);
 	Epub::note_page(wv->weave_web->as_ebook, wv->weave_to, wv->booklet_title, I"");
 	Indexer::cover_sheet_maker(OUT, wv->weave_web, I"template", wv, WEAVE_FIRST_HALF);
@@ -172,7 +172,7 @@ void HTMLFormat::top_EPUB(weave_format *self, text_stream *OUT, weave_target *wv
 }
 
 @ =
-void HTMLFormat::subheading(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::subheading(weave_format *self, text_stream *OUT, weave_order *wv,
 	int level, text_stream *comment, text_stream *head) {
 	HTMLFormat::exit_current_paragraph(OUT);
 	switch (level) {
@@ -189,7 +189,7 @@ void HTMLFormat::subheading(weave_format *self, text_stream *OUT, weave_target *
 }
 
 @ =
-void HTMLFormat::toc(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::toc(weave_format *self, text_stream *OUT, weave_order *wv,
 	int stage, text_stream *text1, text_stream *text2, paragraph *P) {
 	HTMLFormat::exit_current_paragraph(OUT);
 	switch (stage) {
@@ -225,7 +225,7 @@ section *page_section = NULL;
 int crumbs_dropped = FALSE;
 
 void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
-	weave_target *wv, text_stream *TeX_macro, section *S, paragraph *P,
+	weave_order *wv, text_stream *TeX_macro, section *S, paragraph *P,
 	text_stream *heading_text, text_stream *chaptermark, text_stream *sectionmark,
 	int weight) {
 	page_section = S;
@@ -278,7 +278,7 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 @ =
 int popup_counter = 0;
 
-void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_order *wv,
 	int tab_stops_of_indentation, text_stream *prefatory, text_stream *matter,
 	text_stream *colouring, text_stream *concluding_comment,
 	int starts, int finishes, int code_mode, int linked) {
@@ -430,7 +430,7 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_target 
 	}
 
 @ =
-void HTMLFormat::inline_code(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::inline_code(weave_format *self, text_stream *OUT, weave_order *wv,
 	int enter) {
 	if (enter) {
 		if (html_in_para == HTML_OUT) HTMLFormat::p(OUT, "inwebparagraph");
@@ -441,7 +441,7 @@ void HTMLFormat::inline_code(weave_format *self, text_stream *OUT, weave_target 
 }
 
 @ =
-void HTMLFormat::url(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::url(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *url, text_stream *content, int external) {
 	HTML::begin_link_with_class(OUT, (external)?I"external":I"internal", url);
 	WRITE("%S", content);
@@ -449,7 +449,7 @@ void HTMLFormat::url(weave_format *self, text_stream *OUT, weave_target *wv,
 }
 
 @=
-void HTMLFormat::footnote_cue(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::footnote_cue(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *cue) {
 	text_stream *fn_plugin_name =
 		Bibliographic::get_datum(wv->weave_web->md, I"Footnotes Plugin");
@@ -460,7 +460,7 @@ void HTMLFormat::footnote_cue(weave_format *self, text_stream *OUT, weave_target
 }
 
 @=
-void HTMLFormat::begin_footnote_text(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::begin_footnote_text(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *cue) {
 	text_stream *fn_plugin_name =
 		Bibliographic::get_datum(wv->weave_web->md, I"Footnotes Plugin");
@@ -470,7 +470,7 @@ void HTMLFormat::begin_footnote_text(weave_format *self, text_stream *OUT, weave
 }
 
 @=
-void HTMLFormat::end_footnote_text(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::end_footnote_text(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *cue) {
 	text_stream *fn_plugin_name =
 		Bibliographic::get_datum(wv->weave_web->md, I"Footnotes Plugin");
@@ -480,7 +480,7 @@ void HTMLFormat::end_footnote_text(weave_format *self, text_stream *OUT, weave_t
 }
 
 @ =
-void HTMLFormat::display_line(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::display_line(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *from) {
 	HTMLFormat::exit_current_paragraph(OUT);
 	HTML_OPEN("blockquote"); WRITE("\n"); INDENT;
@@ -491,7 +491,7 @@ void HTMLFormat::display_line(weave_format *self, text_stream *OUT, weave_target
 }
 
 @ =
-void HTMLFormat::item(weave_format *self, text_stream *OUT, weave_target *wv, int depth,
+void HTMLFormat::item(weave_format *self, text_stream *OUT, weave_order *wv, int depth,
 	text_stream *label) {
 	HTMLFormat::go_to_depth(OUT, depth);
 	if (Str::len(label) > 0) WRITE("(%S) ", label);
@@ -500,13 +500,13 @@ void HTMLFormat::item(weave_format *self, text_stream *OUT, weave_target *wv, in
 }
 
 @ =
-void HTMLFormat::bar(weave_format *self, text_stream *OUT, weave_target *wv) {
+void HTMLFormat::bar(weave_format *self, text_stream *OUT, weave_order *wv) {
 	HTMLFormat::exit_current_paragraph(OUT);
 	HTML::hr(OUT, NULL);
 }
 
 @ =
-void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *figname, int w, int h, programming_language *pl) {
 	HTMLFormat::exit_current_paragraph(OUT);
 	filename *F = Filenames::in(
@@ -521,7 +521,7 @@ void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_target *wv,
 }
 
 @ =
-void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *service, text_stream *ID) {
 	text_stream *CH = I"405";
 	text_stream *CW = I"720";
@@ -560,7 +560,7 @@ void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_target *wv,
 }
 
 @ =
-void HTMLFormat::para_macro(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::para_macro(weave_format *self, text_stream *OUT, weave_order *wv,
 	para_macro *pmac, int defn) {
 	paragraph *P = pmac->defining_paragraph;
 	WRITE("&lt;");
@@ -575,12 +575,12 @@ void HTMLFormat::para_macro(weave_format *self, text_stream *OUT, weave_target *
 }
 
 @ =
-void HTMLFormat::pagebreak(weave_format *self, text_stream *OUT, weave_target *wv) {
+void HTMLFormat::pagebreak(weave_format *self, text_stream *OUT, weave_order *wv) {
 	HTMLFormat::exit_current_paragraph(OUT);
 }
 
 @ =
-void HTMLFormat::blank_line(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::blank_line(weave_format *self, text_stream *OUT, weave_order *wv,
 	int in_comment) {
 	if (html_in_para == HTML_IN_PRE) {
 		WRITE("\n");
@@ -593,7 +593,7 @@ void HTMLFormat::blank_line(weave_format *self, text_stream *OUT, weave_target *
 }
 
 @ =
-void HTMLFormat::change_material(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::change_material(weave_format *self, text_stream *OUT, weave_order *wv,
 	int old_material, int new_material, int content, int plainly) {
 	if (old_material != new_material) {
 		if (old_material == MACRO_MATERIAL) HTML_CLOSE("code");
@@ -662,7 +662,7 @@ void HTMLFormat::change_material(weave_format *self, text_stream *OUT, weave_tar
 }
 
 @ =
-void HTMLFormat::change_colour(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::change_colour(weave_format *self, text_stream *OUT, weave_order *wv,
 	int col, int in_code) {
 	char *cl = "plain";
 	switch (col) {
@@ -683,7 +683,7 @@ void HTMLFormat::change_colour(weave_format *self, text_stream *OUT, weave_targe
 }
 
 @ =
-void HTMLFormat::endnote(weave_format *self, text_stream *OUT, weave_target *wv, int end) {
+void HTMLFormat::endnote(weave_format *self, text_stream *OUT, weave_order *wv, int end) {
 	if (end == 1) {
 		HTMLFormat::exit_current_paragraph(OUT);
 		HTMLFormat::p(OUT, "endnote");
@@ -693,7 +693,7 @@ void HTMLFormat::endnote(weave_format *self, text_stream *OUT, weave_target *wv,
 }
 
 @ =
-void HTMLFormat::commentary_text(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::commentary_text(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *id) {
 	for (int i=0; i < Str::len(id); i++) {
 		if (html_in_para == HTML_OUT) HTMLFormat::p(OUT, "inwebparagraph");
@@ -714,7 +714,7 @@ void HTMLFormat::commentary_text(weave_format *self, text_stream *OUT, weave_tar
 }
 
 @ =
-void HTMLFormat::locale(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::locale(weave_format *self, text_stream *OUT, weave_order *wv,
 	paragraph *par1, paragraph *par2) {
 	TEMPORARY_TEXT(TEMP)
 	Colonies::paragraph_URL(TEMP, par1, wv->weave_to);
@@ -728,7 +728,7 @@ void HTMLFormat::locale(weave_format *self, text_stream *OUT, weave_target *wv,
 }
 
 @ =
-void HTMLFormat::tail(weave_format *self, text_stream *OUT, weave_target *wv,
+void HTMLFormat::tail(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *comment, section *this_S) {
 	HTMLFormat::exit_current_paragraph(OUT);
 	chapter *C = this_S->owning_chapter;

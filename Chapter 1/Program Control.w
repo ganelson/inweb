@@ -206,7 +206,7 @@ line , but otherwise we impose a sensible choice based on the target.
 		tangle_to = Filenames::in(P, tangle_leaf);
 	}
 	if (tn == NULL) tn = Tangler::primary_target(W);
-	Tangler::go(W, tn, tangle_to);
+	Tangler::tangle(W, tn, tangle_to);
 	DISCARD_TEXT(tangle_leaf);
 
 @ Here the target number is 0, and the tangle is of the main part of the web,

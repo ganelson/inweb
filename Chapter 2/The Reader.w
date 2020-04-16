@@ -53,7 +53,7 @@ typedef struct chapter {
 	struct web *owning_web;
 	struct linked_list *sections; /* of |section| */
 
-	struct weave_target *ch_weave; /* |NULL| unless this chapter produces a weave of its own */
+	struct weave_order *ch_weave; /* |NULL| unless this chapter produces a weave of its own */
 	int titling_line_inserted; /* has an interleaved chapter heading been added yet? */
 	struct programming_language *ch_language; /* in which this chapter is written */
 	MEMORY_MANAGEMENT
@@ -72,7 +72,7 @@ typedef struct section {
 	int barred; /* if version 1 syntax, contains a dividing bar? */
 	struct programming_language *sect_language; /* in which this section is written */
 	struct tangle_target *sect_target; /* |NULL| unless this section produces a tangle of its own */
-	struct weave_target *sect_weave; /* |NULL| unless this section produces a weave of its own */
+	struct weave_order *sect_weave; /* |NULL| unless this section produces a weave of its own */
 
 	int sect_extent; /* total number of lines in this section */
 	struct source_line *first_line; /* for efficiency's sake not held as a |linked_list|, */
@@ -96,7 +96,7 @@ typedef struct section {
 =
 web_md *Reader::load_web_md(pathname *P, filename *alt_F, module_search *I, int verbosely,
 	int including_modules) {
-	return  WebMetadata::get(P, alt_F, default_inweb_syntax, I, verbosely,
+	return WebMetadata::get(P, alt_F, default_inweb_syntax, I, verbosely,
 		including_modules, path_to_inweb);
 }
 
@@ -132,7 +132,7 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbos
 
 @<Write the Inweb Version bibliographic datum@> =
 	TEMPORARY_TEXT(IB);
-	WRITE_TO(IB, "%s", INWEB_BUILD);
+	WRITE_TO(IB, "[[Version Number]]");
 	web_bibliographic_datum *bd = Bibliographic::set_datum(W->md, I"Inweb Version", IB);
 	bd->declaration_permitted = FALSE;
 	DISCARD_TEXT(IB);

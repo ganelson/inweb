@@ -59,7 +59,7 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	@<Initialise the args@>;
 	@<Declare the command-line switches specific to Inweb@>;
 	CommandLine::read(argc, argv, &args, &Configuration::switch, &Configuration::bareword);
-	@<Use the colony file to impose further settings@>;
+	Configuration::member_and_colony(&args);
 	if (Str::len(args.weave_pattern) == 0) WRITE_TO(args.weave_pattern, "HTML");
 	if ((args.chosen_web == NULL) && (args.chosen_file == NULL)) {
 		if ((args.makefile_setting) || (args.gitignore_setting))
@@ -360,25 +360,27 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 @ The colony file is, in one sense, a collection of presets for the web
 location and its navigational aids.
 
-@<Use the colony file to impose further settings@> =
-	if (args.colony_setting) Colonies::load(args.colony_setting);
-	if (Str::len(args.member_setting) > 0) {
-		if ((args.chosen_web == NULL) && (args.chosen_file == NULL)) {
-			colony_member *CM = Colonies::find(args.member_setting);
+=
+void Configuration::member_and_colony(inweb_instructions *args) {
+	if (args->colony_setting) Colonies::load(args->colony_setting);
+	if (Str::len(args->member_setting) > 0) {
+		if ((args->chosen_web == NULL) && (args->chosen_file == NULL)) {
+			colony_member *CM = Colonies::find(args->member_setting);
 			if (CM == NULL) Errors::fatal("the colony has no member of that name");
-			Configuration::bareword(0, CM->path, &args);
-			if (Str::len(args.weave_pattern) == 0)
-				args.weave_pattern = CM->default_weave_pattern;
-			if (LinkedLists::len(args.breadcrumb_setting) == 0)
-				args.breadcrumb_setting = CM->breadcrumb_tail;
-			if (args.navigation_setting == NULL)
-				args.navigation_setting = CM->navigation;
-			if (args.weave_into_setting == NULL)
-				args.weave_into_setting = CM->weave_path;
+			Configuration::bareword(0, CM->path, args);
+			if (Str::len(args->weave_pattern) == 0)
+				args->weave_pattern = CM->default_weave_pattern;
+			if (LinkedLists::len(args->breadcrumb_setting) == 0)
+				args->breadcrumb_setting = CM->breadcrumb_tail;
+			if (args->navigation_setting == NULL)
+				args->navigation_setting = CM->navigation;
+			if (args->weave_into_setting == NULL)
+				args->weave_into_setting = CM->weave_path;
 		} else {
 			Errors::fatal("cannot specify a web and also use -member");
 		}
 	}
+}
 
 @ Foundation calls this routine on any command-line argument which is
 neither a switch (like |-weave|), nor an argument for a switch (like

@@ -132,7 +132,7 @@ void Tags::close_ifdefs(OUTPUT_STREAM, paragraph *P) {
 				P->under_section->sect_language, pt->the_tag->ifdef_symbol, pt->the_tag->ifdef_positive);
 }
 
-void Tags::show_endnote_on_ifdefs(OUTPUT_STREAM, weave_target *wv, paragraph *P) {
+void Tags::show_endnote_on_ifdefs(OUTPUT_STREAM, weave_order *wv, paragraph *P) {
 	int d = 0, sense = TRUE;
 	@<Show ifdef endnoting@>;
 	sense = FALSE;

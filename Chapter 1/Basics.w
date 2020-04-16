@@ -1,19 +1,14 @@
 [Basics::] Basics.
 
-Some fundamental definitions, mostly setting up for the Foundation module
-to manage memory for us.
+Some fundamental definitions, mostly declaring object types to the Foundation
+module.
 
-@h Build identity.
-First we define the build, using a notation which tangles out to the current
-build number as specified in the contents section of this web.
+@ Every program using //foundation// must define this:
 
 @d PROGRAM_NAME "inweb"
-@d INWEB_BUILD "[[Version Number]]"
 
-@h Setting up the memory manager.
-We need to itemise the structures we'll want to allocate. To explicate this
-see Foundation, but these are all struct names with either |_MT| or, in one
-case, |_array_MT| appended. MT stands for "memory type".
+@ We need to itemise the structures we'll want to allocate. For explanations,
+see //foundation: A Brief Guide to Foundation//.
 
 @e breadcrumb_request_MT
 @e chapter_MT
@@ -46,13 +41,11 @@ case, |_array_MT| appended. MT stands for "memory type".
 @e weave_format_MT
 @e weave_pattern_MT
 @e weave_plugin_MT
-@e weave_target_MT
+@e weave_order_MT
 @e web_MT
 @e writeme_asset_MT
 
-@ And then expand the following macros, all defined in Foundation. This
-makes all the necessary constructor functions for creating objects of these
-types.
+@ And then expand the following macros, all defined in //Memory//.
 
 =
 ALLOCATE_IN_ARRAYS(source_line, 1000)
@@ -86,6 +79,6 @@ ALLOCATE_INDIVIDUALLY(theme_tag)
 ALLOCATE_INDIVIDUALLY(weave_format)
 ALLOCATE_INDIVIDUALLY(weave_pattern)
 ALLOCATE_INDIVIDUALLY(weave_plugin)
-ALLOCATE_INDIVIDUALLY(weave_target)
+ALLOCATE_INDIVIDUALLY(weave_order)
 ALLOCATE_INDIVIDUALLY(web)
 ALLOCATE_INDIVIDUALLY(writeme_asset)

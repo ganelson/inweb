@@ -49,6 +49,7 @@ markup syntax, and trying to detect incorrect uses of one within the other.
 	DISCARD_TEXT(tag_list);
 	@<In version 2 syntax, construe the comment under the heading as the purpose@>;
 	@<If the section as a whole is tagged, apply that tag to each paragraph in it@>;
+	@<Work out footnote numbering for this section@>;
 
 @ In versiom 2 syntax, the notation for tags was clarified. The tag list
 for a paragraph is the run of |^"This"| and |^"That"| markers at the end of
@@ -88,6 +89,14 @@ now points to the para which was created by this line, not the one before.
 	if (S->tag_with)
 		LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
 			Tags::add_to_paragraph(P, S->tag_with, NULL);
+
+@ In the woven form of each section, footnotes are counting upwards from 1.
+
+@<Work out footnote numbering for this section@> =
+	int next_footnote = 1;
+	paragraph *P;
+	LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
+		@<Work out footnote numbering for this paragraph@>;
 
 @ The "purpose" of a section is a brief note about what it's for. In version 1
 syntax, this had to be explicitly declared with a |@Purpose:| command; in
@@ -743,21 +752,33 @@ text_stream *Parser::extract_purpose(text_stream *prologue, source_line *XL, sec
 	return P;
 }
 
-@h Version errors.
-These are not fatal (why should they be?): Inweb carries on and allows the use
-of the feature despite the version mismatch. They nevertheless count as errors
-when it comes to Inweb's exit code, so they will halt a make.
-
-=
-void Parser::wrong_version(int using, source_line *L, char *feature, int need) {
-	TEMPORARY_TEXT(warning);
-	WRITE_TO(warning, "%s is a feature available only in version %d syntax (you're using version %d)",
-		feature, need, using);
-	Main::error_in_web(warning, L);
-	DISCARD_TEXT(warning);
-}
-
 @h Footnote notation.
+
+@<Work out footnote numbering for this paragraph@> =
+	TEMPORARY_TEXT(before);
+	TEMPORARY_TEXT(cue);
+	TEMPORARY_TEXT(after);
+	for (source_line *L = P->first_line_in_paragraph;
+		((L) && (L->owning_paragraph == P)); L = L->next_line) {
+		Str::clear(before); Str::clear(cue); Str::clear(after);
+		if (Parser::detect_footnote(W, L->text, before, cue, after)) {
+			int this_is_a_cue = FALSE;
+			LOOP_THROUGH_TEXT(pos, before)
+				if (Characters::is_whitespace(Str::get(pos)) == FALSE)
+					this_is_a_cue = TRUE;
+			if (this_is_a_cue == FALSE)
+				@<This line begins a footnote text@>;
+		}
+	}
+	DISCARD_TEXT(before);
+	DISCARD_TEXT(cue);
+	DISCARD_TEXT(after);
+
+@<This line begins a footnote text@> =
+	// PRINT("I see a footnote text! %S\n", cue);	
+	next_footnote++;
+
+@ Where:
 
 =
 int Parser::detect_footnote(web *W, text_stream *matter, text_stream *before,
@@ -801,4 +822,18 @@ int Parser::detect_footnote(web *W, text_stream *matter, text_stream *before,
 			}
 	}
 	return FALSE;
+}
+
+@h Version errors.
+These are not fatal (why should they be?): Inweb carries on and allows the use
+of the feature despite the version mismatch. They nevertheless count as errors
+when it comes to Inweb's exit code, so they will halt a make.
+
+=
+void Parser::wrong_version(int using, source_line *L, char *feature, int need) {
+	TEMPORARY_TEXT(warning);
+	WRITE_TO(warning, "%s is a feature available only in version %d syntax (you're using version %d)",
+		feature, need, using);
+	Main::error_in_web(warning, L);
+	DISCARD_TEXT(warning);
 }

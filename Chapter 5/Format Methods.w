@@ -88,8 +88,8 @@ HTML comment.
 @e TOP_FOR_MTID
 
 =
-VMETHOD_TYPE(TOP_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv, text_stream *comment)
-void Formats::top(OUTPUT_STREAM, weave_target *wv, text_stream *comment) {
+VMETHOD_TYPE(TOP_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv, text_stream *comment)
+void Formats::top(OUTPUT_STREAM, weave_order *wv, text_stream *comment) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, TOP_FOR_MTID, OUT, wv, comment);
 }
@@ -105,9 +105,9 @@ It is called with four possible values of |stage|:
 @e TOC_FOR_MTID
 
 =
-VMETHOD_TYPE(TOC_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(TOC_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	int stage, text_stream *text1, text_stream *text2, paragraph *P)
-void Formats::toc(OUTPUT_STREAM, weave_target *wv, int stage, text_stream *text1,
+void Formats::toc(OUTPUT_STREAM, weave_order *wv, int stage, text_stream *text1,
 	text_stream *text2, paragraph *P) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, TOC_FOR_MTID, OUT, wv, stage, text1, text2, P);
@@ -120,8 +120,8 @@ interstitial material. This is how:
 @e CHAPTER_TP_FOR_MTID
 
 =
-VMETHOD_TYPE(CHAPTER_TP_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv, chapter *C)
-void Formats::chapter_title_page(OUTPUT_STREAM, weave_target *wv, chapter *C) {
+VMETHOD_TYPE(CHAPTER_TP_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv, chapter *C)
+void Formats::chapter_title_page(OUTPUT_STREAM, weave_order *wv, chapter *C) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, CHAPTER_TP_FOR_MTID, OUT, wv, C);
 }
@@ -140,9 +140,9 @@ some supplementary text, used in some cases for running heads.
 @e SUBHEADING_FOR_MTID
 
 =
-VMETHOD_TYPE(SUBHEADING_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(SUBHEADING_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	int level, text_stream *heading, text_stream *addendum)
-void Formats::subheading(OUTPUT_STREAM, weave_target *wv, int level,
+void Formats::subheading(OUTPUT_STREAM, weave_order *wv, int level,
 	text_stream *heading, text_stream *addendum) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, SUBHEADING_FOR_MTID, OUT, wv, level, heading, addendum);
@@ -165,9 +165,9 @@ In each case, the text of the heading is (unsurprisingly) in |heading_text|.
 
 =
 VMETHOD_TYPE(PARAGRAPH_HEADING_FOR_MTID, weave_format *wf, text_stream *OUT,
-	weave_target *wv, text_stream *TeX_macro, section *S, paragraph *P,
+	weave_order *wv, text_stream *TeX_macro, section *S, paragraph *P,
 	text_stream *heading_text, text_stream *chaptermark, text_stream *sectionmark, int weight)
-void Formats::paragraph_heading(OUTPUT_STREAM, weave_target *wv, text_stream *TeX_macro,
+void Formats::paragraph_heading(OUTPUT_STREAM, weave_order *wv, text_stream *TeX_macro,
 	section *S, paragraph *P, text_stream *heading_text, text_stream *chaptermark,
 	text_stream *sectionmark, int weight) {
 	weave_format *wf = wv->format;
@@ -183,12 +183,12 @@ been syntax-coloured; there can also be some indentation, and perhaps even some
 @e SOURCE_CODE_FOR_MTID
 
 =
-VMETHOD_TYPE(SOURCE_CODE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(SOURCE_CODE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	int tab_stops_of_indentation, text_stream *prefatory, text_stream *matter,
 	text_stream *colouring, text_stream *concluding_comment, int starts, int finishes,
 	int code_mode, int linked)
 
-void Formats::source_code(OUTPUT_STREAM, weave_target *wv, int tab_stops_of_indentation,
+void Formats::source_code(OUTPUT_STREAM, weave_order *wv, int tab_stops_of_indentation,
 	text_stream *prefatory, text_stream *matter, text_stream *colouring,
 	text_stream *concluding_comment, int starts, int finishes, int code_mode, int linked) {
 	weave_format *wf = wv->format;
@@ -203,8 +203,8 @@ drably in a uniform |EXTRACT_COLOUR| colour. This is used for weaving words like
 @e INLINE_CODE_FOR_MTID
 
 =
-VMETHOD_TYPE(INLINE_CODE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv, int pre)
-void Formats::source_fragment(OUTPUT_STREAM, weave_target *wv, text_stream *fragment) {
+VMETHOD_TYPE(INLINE_CODE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv, int pre)
+void Formats::source_fragment(OUTPUT_STREAM, weave_order *wv, text_stream *fragment) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, INLINE_CODE_FOR_MTID, OUT, wv, TRUE);
 	TEMPORARY_TEXT(colouring);
@@ -219,9 +219,9 @@ void Formats::source_fragment(OUTPUT_STREAM, weave_target *wv, text_stream *frag
 @e URL_FOR_MTID
 
 =
-VMETHOD_TYPE(URL_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(URL_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	text_stream *url, text_stream *content, int external)
-void Formats::url(OUTPUT_STREAM, weave_target *wv, text_stream *url,
+void Formats::url(OUTPUT_STREAM, weave_order *wv, text_stream *url,
 	text_stream *content, int external) {
 	weave_format *wf = wv->format;
 	if (Methods::provided(wf->methods, URL_FOR_MTID)) {
@@ -236,9 +236,9 @@ void Formats::url(OUTPUT_STREAM, weave_target *wv, text_stream *url,
 @e FOOTNOTE_CUE_FOR_MTID
 
 =
-VMETHOD_TYPE(FOOTNOTE_CUE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(FOOTNOTE_CUE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	text_stream *cue)
-void Formats::footnote_cue(OUTPUT_STREAM, weave_target *wv, text_stream *cue) {
+void Formats::footnote_cue(OUTPUT_STREAM, weave_order *wv, text_stream *cue) {
 	weave_format *wf = wv->format;
 	if (Methods::provided(wf->methods, FOOTNOTE_CUE_FOR_MTID)) {
 		VMETHOD_CALL(wf, FOOTNOTE_CUE_FOR_MTID, OUT, wv, cue);
@@ -252,9 +252,9 @@ void Formats::footnote_cue(OUTPUT_STREAM, weave_target *wv, text_stream *cue) {
 @e BEGIN_FOOTNOTE_TEXT_FOR_MTID
 
 =
-VMETHOD_TYPE(BEGIN_FOOTNOTE_TEXT_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(BEGIN_FOOTNOTE_TEXT_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	text_stream *cue)
-void Formats::begin_footnote_text(OUTPUT_STREAM, weave_target *wv, text_stream *cue) {
+void Formats::begin_footnote_text(OUTPUT_STREAM, weave_order *wv, text_stream *cue) {
 	weave_format *wf = wv->format;
 	if (Methods::provided(wf->methods, BEGIN_FOOTNOTE_TEXT_FOR_MTID)) {
 		VMETHOD_CALL(wf, BEGIN_FOOTNOTE_TEXT_FOR_MTID, OUT, wv, cue);
@@ -269,9 +269,9 @@ in pairs and do not nest.
 @e END_FOOTNOTE_TEXT_FOR_MTID
 
 =
-VMETHOD_TYPE(END_FOOTNOTE_TEXT_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(END_FOOTNOTE_TEXT_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	text_stream *cue)
-void Formats::end_footnote_text(OUTPUT_STREAM, weave_target *wv, text_stream *cue) {
+void Formats::end_footnote_text(OUTPUT_STREAM, weave_order *wv, text_stream *cue) {
 	weave_format *wf = wv->format;
 	if (Methods::provided(wf->methods, END_FOOTNOTE_TEXT_FOR_MTID)) {
 		VMETHOD_CALL(wf, END_FOOTNOTE_TEXT_FOR_MTID, OUT, wv, cue);
@@ -287,8 +287,8 @@ a convenience for Inform 7 code commentary.
 
 =
 VMETHOD_TYPE(DISPLAY_LINE_FOR_MTID, weave_format *wf, text_stream *OUT,
-	weave_target *wv, text_stream *from)
-void Formats::display_line(OUTPUT_STREAM, weave_target *wv, text_stream *from) {
+	weave_order *wv, text_stream *from)
+void Formats::display_line(OUTPUT_STREAM, weave_order *wv, text_stream *from) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, DISPLAY_LINE_FOR_MTID, OUT, wv, from);
 }
@@ -308,9 +308,9 @@ indentation but not weave any bracketed marker.
 @e ITEM_FOR_MTID
 
 =
-VMETHOD_TYPE(ITEM_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(ITEM_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	int depth, text_stream *label)
-void Formats::item(OUTPUT_STREAM, weave_target *wv, int depth, text_stream *label) {
+void Formats::item(OUTPUT_STREAM, weave_order *wv, int depth, text_stream *label) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, ITEM_FOR_MTID, OUT, wv, depth, label);
 }
@@ -321,8 +321,8 @@ very old webs nowadays. New formats really needn't implement this.
 @e BAR_FOR_MTID
 
 =
-VMETHOD_TYPE(BAR_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv)
-void Formats::bar(OUTPUT_STREAM, weave_target *wv) {
+VMETHOD_TYPE(BAR_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv)
+void Formats::bar(OUTPUT_STREAM, weave_order *wv) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, BAR_FOR_MTID, OUT, wv);
 }
@@ -334,9 +334,9 @@ of the web.
 @e FIGURE_FOR_MTID
 
 =
-VMETHOD_TYPE(FIGURE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(FIGURE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	text_stream *figname, int w, int h, programming_language *pl)
-void Formats::figure(OUTPUT_STREAM, weave_target *wv, text_stream *figname,
+void Formats::figure(OUTPUT_STREAM, weave_order *wv, text_stream *figname,
 	int w, int h, programming_language *pl) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, FIGURE_FOR_MTID, OUT, wv, figname, w, h, pl);
@@ -349,9 +349,9 @@ that service uses to identify the video/audio in question.
 @e EMBED_FOR_MTID
 
 =
-VMETHOD_TYPE(EMBED_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(EMBED_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	text_stream *service, text_stream *ID)
-void Formats::embed(OUTPUT_STREAM, weave_target *wv, text_stream *service,
+void Formats::embed(OUTPUT_STREAM, weave_order *wv, text_stream *service,
 	text_stream *ID) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, EMBED_FOR_MTID, OUT, wv, service, ID);
@@ -364,9 +364,9 @@ thing is to render some sort of equals sign after it, if so.
 @e PARA_MACRO_FOR_MTID
 
 =
-VMETHOD_TYPE(PARA_MACRO_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(PARA_MACRO_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	para_macro *pmac, int defn)
-void Formats::para_macro(OUTPUT_STREAM, weave_target *wv, para_macro *pmac, int defn) {
+void Formats::para_macro(OUTPUT_STREAM, weave_order *wv, para_macro *pmac, int defn) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, PARA_MACRO_FOR_MTID, OUT, wv, pmac, defn);
 }
@@ -378,8 +378,8 @@ at that), so no harm is done if there's no visual indication here.
 @e PAGEBREAK_FOR_MTID
 
 =
-VMETHOD_TYPE(PAGEBREAK_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv)
-void Formats::pagebreak(OUTPUT_STREAM, weave_target *wv) {
+VMETHOD_TYPE(PAGEBREAK_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv)
+void Formats::pagebreak(OUTPUT_STREAM, weave_order *wv) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, PAGEBREAK_FOR_MTID, OUT, wv);
 }
@@ -392,9 +392,9 @@ information.
 @e BLANK_LINE_FOR_MTID
 
 =
-VMETHOD_TYPE(BLANK_LINE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(BLANK_LINE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	int in_comment)
-void Formats::blank_line(OUTPUT_STREAM, weave_target *wv, int in_comment) {
+void Formats::blank_line(OUTPUT_STREAM, weave_order *wv, int in_comment) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, BLANK_LINE_FOR_MTID, OUT, wv, in_comment);
 }
@@ -407,8 +407,8 @@ the definitions.
 @e AFTER_DEFINITIONS_FOR_MTID
 
 =
-VMETHOD_TYPE(AFTER_DEFINITIONS_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv)
-void Formats::after_definitions(OUTPUT_STREAM, weave_target *wv) {
+VMETHOD_TYPE(AFTER_DEFINITIONS_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv)
+void Formats::after_definitions(OUTPUT_STREAM, weave_order *wv) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, AFTER_DEFINITIONS_FOR_MTID, OUT, wv);
 }
@@ -423,8 +423,8 @@ weaver and turned into something else (such as list items).
 
 =
 VMETHOD_TYPE(CHANGE_MATERIAL_FOR_MTID, weave_format *wf, text_stream *OUT,
-	weave_target *wv, int old_material, int new_material, int content, int plainly)
-void Formats::change_material(OUTPUT_STREAM, weave_target *wv,
+	weave_order *wv, int old_material, int new_material, int content, int plainly)
+void Formats::change_material(OUTPUT_STREAM, weave_order *wv,
 	int old_material, int new_material, int content, int plainly) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, CHANGE_MATERIAL_FOR_MTID, OUT, wv, old_material, new_material,
@@ -440,8 +440,8 @@ nothing.
 
 =
 VMETHOD_TYPE(CHANGE_COLOUR_FOR_MTID, weave_format *wf, text_stream *OUT,
-	weave_target *wv, int col, int in_code)
-void Formats::change_colour(OUTPUT_STREAM, weave_target *wv, int col, int in_code) {
+	weave_order *wv, int col, int in_code)
+void Formats::change_colour(OUTPUT_STREAM, weave_order *wv, int col, int in_code) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, CHANGE_COLOUR_FOR_MTID, OUT, wv, col, in_code);
 }
@@ -452,14 +452,14 @@ of it either to |Formats::source_fragment| or |Formats::text_fragment|
 as appropriate.
 
 =
-void Formats::text(OUTPUT_STREAM, weave_target *wv, text_stream *id) {
+void Formats::text(OUTPUT_STREAM, weave_order *wv, text_stream *id) {
 	Formats::text_r(OUT, wv, id, FALSE, FALSE);
 }
-void Formats::text_comment(OUTPUT_STREAM, weave_target *wv, text_stream *id) {
+void Formats::text_comment(OUTPUT_STREAM, weave_order *wv, text_stream *id) {
 	Formats::text_r(OUT, wv, id, FALSE, TRUE);
 }
 
-void Formats::text_r(OUTPUT_STREAM, weave_target *wv, text_stream *id,
+void Formats::text_r(OUTPUT_STREAM, weave_order *wv, text_stream *id,
 	int within, int comments) {
 	text_stream *code_in_comments_notation =
 		Bibliographic::get_datum(wv->weave_web->md,
@@ -583,12 +583,12 @@ format does, because it wants to keep the formulae in all their glory.)
 @e PRESERVE_MATH_MODE_FOR_MTID
 
 =
-IMETHOD_TYPE(PRESERVE_MATH_MODE_FOR_MTID, weave_format *wf, weave_target *wv,
+IMETHOD_TYPE(PRESERVE_MATH_MODE_FOR_MTID, weave_format *wf, weave_order *wv,
 	text_stream *matter, text_stream *id)
 VMETHOD_TYPE(COMMENTARY_TEXT_FOR_MTID, weave_format *wf, text_stream *OUT,
-	weave_target *wv, text_stream *matter)
+	weave_order *wv, text_stream *matter)
 
-void Formats::text_fragment(OUTPUT_STREAM, weave_target *wv, text_stream *fragment) {
+void Formats::text_fragment(OUTPUT_STREAM, weave_order *wv, text_stream *fragment) {
 	weave_format *wf = wv->format;
 	TEMPORARY_TEXT(matter);
 	int rv = TRUE;
@@ -611,9 +611,9 @@ should ignore it.
 
 =
 IMETHOD_TYPE(PREFORM_DOCUMENT_FOR_MTID, weave_format *wf, text_stream *OUT,
-	weave_target *wv, web *W, chapter *C, section *S, source_line *L,
+	weave_order *wv, web *W, chapter *C, section *S, source_line *L,
 	text_stream *matter, text_stream *concluding_comment)
-int Formats::preform_document(OUTPUT_STREAM, weave_target *wv, web *W,
+int Formats::preform_document(OUTPUT_STREAM, weave_order *wv, web *W,
 	chapter *C, section *S, source_line *L, text_stream *matter,
 	text_stream *concluding_comment) {
 	weave_format *wf = wv->format;
@@ -630,8 +630,8 @@ or some such -- it calls this method twice, once before the start, with
 @e ENDNOTE_FOR_MTID
 
 =
-VMETHOD_TYPE(ENDNOTE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv, int end)
-void Formats::endnote(OUTPUT_STREAM, weave_target *wv, int end) {
+VMETHOD_TYPE(ENDNOTE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv, int end)
+void Formats::endnote(OUTPUT_STREAM, weave_order *wv, int end) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, ENDNOTE_FOR_MTID, OUT, wv, end);
 }
@@ -644,9 +644,9 @@ is often used in endnotes.)
 @e LOCALE_FOR_MTID
 
 =
-VMETHOD_TYPE(LOCALE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(LOCALE_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	paragraph *par1, paragraph *par2)
-void Formats::locale(OUTPUT_STREAM, weave_target *wv, paragraph *par1, paragraph *par2) {
+void Formats::locale(OUTPUT_STREAM, weave_order *wv, paragraph *par1, paragraph *par2) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, LOCALE_FOR_MTID, OUT, wv, par1, par2);
 }
@@ -657,9 +657,9 @@ intended for human eyes, and will be some sort of "End of weave" remark.
 @e TAIL_FOR_MTID
 
 =
-VMETHOD_TYPE(TAIL_FOR_MTID, weave_format *wf, text_stream *OUT, weave_target *wv,
+VMETHOD_TYPE(TAIL_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv,
 	text_stream *comment, section *S)
-void Formats::tail(OUTPUT_STREAM, weave_target *wv, text_stream *comment, section *S) {
+void Formats::tail(OUTPUT_STREAM, weave_order *wv, text_stream *comment, section *S) {
 	weave_format *wf = wv->format;
 	VMETHOD_CALL(wf, TAIL_FOR_MTID, OUT, wv, comment, S);
 }
@@ -674,8 +674,8 @@ to turn TeX into PDF. The important method is this one:
 @e POST_PROCESS_POS_MTID
 
 =
-VMETHOD_TYPE(POST_PROCESS_POS_MTID, weave_format *wf, weave_target *wv, int open_afterwards)
-void Formats::post_process_weave(weave_target *wv, int open_afterwards) {
+VMETHOD_TYPE(POST_PROCESS_POS_MTID, weave_format *wf, weave_order *wv, int open_afterwards)
+void Formats::post_process_weave(weave_order *wv, int open_afterwards) {
 	VMETHOD_CALL(wv->format, POST_PROCESS_POS_MTID, wv, open_afterwards);
 }
 
@@ -685,8 +685,8 @@ done:
 @e POST_PROCESS_REPORT_POS_MTID
 
 =
-VMETHOD_TYPE(POST_PROCESS_REPORT_POS_MTID, weave_format *wf, weave_target *wv)
-void Formats::report_on_post_processing(weave_target *wv) {
+VMETHOD_TYPE(POST_PROCESS_REPORT_POS_MTID, weave_format *wf, weave_order *wv)
+void Formats::report_on_post_processing(weave_order *wv) {
 	VMETHOD_CALL(wv->format, POST_PROCESS_REPORT_POS_MTID, wv);
 }
 
@@ -713,8 +713,8 @@ text like |[[PDF Size]]| in the template file. This is the |detail|.
 
 =
 IMETHOD_TYPE(POST_PROCESS_SUBSTITUTE_POS_MTID, weave_format *wf, text_stream *OUT,
-	weave_target *wv, text_stream *detail, weave_pattern *pattern)
-int Formats::substitute_post_processing_data(OUTPUT_STREAM, weave_target *wv,
+	weave_order *wv, text_stream *detail, weave_pattern *pattern)
+int Formats::substitute_post_processing_data(OUTPUT_STREAM, weave_order *wv,
 	text_stream *detail, weave_pattern *pattern) {
 	int rv = FALSE;
 	IMETHOD_CALL(rv, wv->format, POST_PROCESS_SUBSTITUTE_POS_MTID, OUT, wv, detail, pattern);

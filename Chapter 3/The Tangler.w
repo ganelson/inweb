@@ -11,7 +11,7 @@ of the arrays and hashes populated. Program Control then sent us straight
 here for the tangling to begin...
 
 =
-void Tangler::go(web *W, tangle_target *target, filename *dest_file) {
+void Tangler::tangle(web *W, tangle_target *target, filename *dest_file) {
 	programming_language *lang = target->tangle_language;
 	PRINT("  tangling <%/f> (written in %S)\n", dest_file, lang->language_name);
 
@@ -119,7 +119,7 @@ void Tangler::tangle_paragraph(OUTPUT_STREAM, paragraph *P) {
 			contiguous = FALSE;
 		} else {
 			@<Insert line marker if necessary to show the origin of this code@>;
-			Tangler::tangle_code(OUT, L->text, P->under_section, L); WRITE("\n");
+			Tangler::tangle_line(OUT, L->text, P->under_section, L); WRITE("\n");
 		}
 	}
 	Tags::close_ifdefs(OUT, P);
@@ -141,7 +141,7 @@ All of the final tangled code passes through the following routine.
 Almost all of the time, it simply prints |original| verbatim to the file |OUT|.
 
 =
-void Tangler::tangle_code(OUTPUT_STREAM, text_stream *original, section *S, source_line *L) {
+void Tangler::tangle_line(OUTPUT_STREAM, text_stream *original, section *S, source_line *L) {
 	int mlen, slen;
 	int mpos = Regexp::find_expansion(original, '@', '<', '@', '>', &mlen);
 	int spos = Regexp::find_expansion(original, '[', '[', ']', ']', &slen);
@@ -151,7 +151,7 @@ void Tangler::tangle_code(OUTPUT_STREAM, text_stream *original, section *S, sour
 	else if (spos >= 0)
 		@<Expand a double-square command@>
 	else
-		LanguageMethods::tangle_code(OUT, S->sect_language, original); /* this is usually what happens */
+		LanguageMethods::tangle_line(OUT, S->sect_language, original); /* this is usually what happens */
 }
 
 @ The first form of escape is a paragraph macro in the middle of code. For
@@ -175,7 +175,7 @@ So we insert a fresh line marker.
 @<Expand a paragraph macro@> =
 	TEMPORARY_TEXT(temp);
 	Str::copy(temp, original); Str::truncate(temp, mpos);
-	LanguageMethods::tangle_code(OUT, S->sect_language, temp);
+	LanguageMethods::tangle_line(OUT, S->sect_language, temp);
 
 	programming_language *lang = S->sect_language;
 	for (int i=0; i<mlen-4; i++) Str::put_at(temp, i, Str::get_at(original, mpos+2+i));
@@ -193,7 +193,7 @@ So we insert a fresh line marker.
 	}
 	TEMPORARY_TEXT(rest);
 	Str::substr(rest, Str::at(original, mpos + mlen), Str::end(original));
-	Tangler::tangle_code(OUT, rest, S, L);
+	Tangler::tangle_line(OUT, rest, S, L);
 	DISCARD_TEXT(rest);
 	DISCARD_TEXT(temp);
 
@@ -217,7 +217,7 @@ passes straight through. So |[[water]]| becomes just |[[water]]|.
 
 	TEMPORARY_TEXT(temp);
 	for (int i=0; i<spos; i++) PUT_TO(temp, Str::get_at(original, i));
-	LanguageMethods::tangle_code(OUT, S->sect_language, temp);
+	LanguageMethods::tangle_line(OUT, S->sect_language, temp);
 
 	for (int i=0; i<slen-4; i++) Str::put_at(temp, i, Str::get_at(original, spos+2+i));
 	Str::truncate(temp, slen-4);
@@ -230,7 +230,7 @@ passes straight through. So |[[water]]| becomes just |[[water]]|.
 
 	TEMPORARY_TEXT(rest);
 	Str::substr(rest, Str::at(original, spos + slen), Str::end(original));
-	Tangler::tangle_code(OUT, rest, S, L);
+	Tangler::tangle_line(OUT, rest, S, L);
 	DISCARD_TEXT(rest);
 	DISCARD_TEXT(temp);
 

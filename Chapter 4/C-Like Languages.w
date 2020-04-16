@@ -13,9 +13,6 @@ void CLike::make_c_like(programming_language *pl) {
 
 	METHOD_ADD(pl, ADDITIONAL_EARLY_MATTER_TAN_MTID, CLike::additional_early_matter);
 	METHOD_ADD(pl, ADDITIONAL_PREDECLARATIONS_TAN_MTID, CLike::additional_predeclarations);
-
-	METHOD_ADD(pl, EARLY_PREWEAVE_ANALYSIS_ANA_MTID, CLike::analyse_code);
-	METHOD_ADD(pl, LATE_PREWEAVE_ANALYSIS_ANA_MTID, CLike::post_analysis);
 }
 
 @h Parsing.
@@ -349,7 +346,7 @@ void CLike::additional_early_matter(programming_language *self, text_stream *OUT
 	LOOP_WITHIN_TANGLE(C, S, target)
 		if (L->category == C_LIBRARY_INCLUDE_LCAT) {
 			Tags::open_ifdefs(OUT, L->owning_paragraph);
-			Tangler::tangle_code(OUT, L->text, S, L);
+			Tangler::tangle_line(OUT, L->text, S, L);
 			WRITE("\n");
 			Tags::close_ifdefs(OUT, L->owning_paragraph);
 		}
@@ -377,7 +374,7 @@ a structure: for example |typedef unsigned int uint;| would be a simple typedef.
 	LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W))
 		if (L->category == TYPEDEF_LCAT) {
 			Tags::open_ifdefs(OUT, L->owning_paragraph);
-			LanguageMethods::tangle_code(OUT, W->main_language, L->text);
+			LanguageMethods::tangle_line(OUT, W->main_language, L->text);
 			WRITE("\n");
 			Tags::close_ifdefs(OUT, L->owning_paragraph);
 		}
@@ -450,7 +447,7 @@ exist either way.
 			Tags::open_ifdefs(OUT, L->owning_paragraph);
 			LanguageMethods::insert_line_marker(OUT, W->main_language, L);
 			WRITE("%S ", fn->function_type);
-			LanguageMethods::tangle_code(OUT, W->main_language, fn->function_name);
+			LanguageMethods::tangle_line(OUT, W->main_language, fn->function_name);
 			WRITE("(%S;\n", fn->function_arguments);
 			Tags::close_ifdefs(OUT, L->owning_paragraph);
 			for (int i=0; i<to_close; i++) {
@@ -461,61 +458,3 @@ exist either way.
 @h Overriding regular code weaving.
 We have the opportunity here to sidestep the regular weaving algorithm, and do
 our own thing. We decline.
-
-@h Analysis.
-Having found all those functions and structure elements, we make sure they
-are all known to Inweb's hash table of interesting identifiers:
-
-=
-void CLike::analyse_code(programming_language *self, web *W) {
-	language_function *fn;
-	LOOP_OVER(fn, language_function)
-		Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,
-			fn->function_name, TRUE);
-	language_type *str;
-	structure_element *elt;
-	LOOP_OVER_LINKED_LIST(str, language_type, W->language_types)
-		LOOP_OVER_LINKED_LIST(elt, structure_element, str->elements)
-			if (elt->allow_sharing == FALSE)
-				Analyser::find_hash_entry_for_section(elt->element_created_at->owning_section,
-					elt->element_name, TRUE);
-}
-
-@ The following is an opportunity for us to scold the author for any
-specifically C-like errors. We're going to look for functions named
-|Whatever::name()| whose definitions are not in the |Whatever::| section;
-in other words, we police the rule that functions actually are defined in the
-namespace which their names imply. This can be turned off with a special
-bibliographic variable, but don't do that.
-
-=
-void CLike::post_analysis(programming_language *self, web *W) {
-	int check_namespaces = FALSE;
-	if (Str::eq_wide_string(Bibliographic::get_datum(W->md, I"Namespaces"), L"On")) check_namespaces = TRUE;
-	language_function *fn;
-	LOOP_OVER(fn, language_function) {
-		hash_table_entry *hte =
-			Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,
-				fn->function_name, FALSE);
-		if (hte) {
-			hash_table_entry_usage *hteu;
-			LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages) {
-				if ((hteu->form_of_usage & FCALL_USAGE) || (fn->within_namespace))
-					if (hteu->usage_recorded_at->under_section != fn->function_header_at->owning_section)
-						fn->called_from_other_sections = TRUE;
-			}
-		}
-		if ((fn->within_namespace != fn->called_from_other_sections)
-			&& (check_namespaces)
-			&& (fn->call_freely == FALSE)) {
-			if (fn->within_namespace)
-				Main::error_in_web(
-					I"Being internally called, this function mustn't belong to a :: namespace",
-					fn->function_header_at);
-			else
-				Main::error_in_web(
-					I"Being externally called, this function must belong to a :: namespace",
-					fn->function_header_at);
-		}
-	}
-}

@@ -18,6 +18,10 @@ void ACMESupport::add_fallbacks(programming_language *pl) {
 		METHOD_ADD(pl, PARSE_TYPES_PAR_MTID, ACMESupport::parse_types);
 	if (Methods::provided(pl->methods, PARSE_FUNCTIONS_PAR_MTID) == FALSE)
 		METHOD_ADD(pl, PARSE_FUNCTIONS_PAR_MTID, ACMESupport::parse_functions);
+	if (Methods::provided(pl->methods, ANALYSIS_ANA_MTID) == FALSE)
+		METHOD_ADD(pl, ANALYSIS_ANA_MTID, ACMESupport::analyse_code);
+	if (Methods::provided(pl->methods, POST_ANALYSIS_ANA_MTID) == FALSE)
+		METHOD_ADD(pl, POST_ANALYSIS_ANA_MTID, ACMESupport::post_analysis);
 	if (Methods::provided(pl->methods, PARSE_COMMENT_TAN_MTID) == FALSE)
 		METHOD_ADD(pl, PARSE_COMMENT_TAN_MTID, ACMESupport::parse_comment);
 	if (Methods::provided(pl->methods, COMMENT_TAN_MTID) == FALSE)
@@ -98,7 +102,7 @@ int ACMESupport::start_definition(programming_language *pl, text_stream *OUT,
 	text_stream *term, text_stream *start, section *S, source_line *L) {
 	if (LanguageMethods::supports_definitions(pl)) {
 		ACMESupport::expand(OUT, pl->start_definition, term, -1, NULL);
-		Tangler::tangle_code(OUT, start, S, L);
+		Tangler::tangle_line(OUT, start, S, L);
 	}
 	return TRUE;
 }
@@ -107,7 +111,7 @@ int ACMESupport::prolong_definition(programming_language *pl,
 	text_stream *OUT, text_stream *more, section *S, source_line *L) {
 	if (LanguageMethods::supports_definitions(pl)) {
 		ACMESupport::expand(OUT, pl->prolong_definition, NULL, -1, NULL);
-		Tangler::tangle_code(OUT, more, S, L);
+		Tangler::tangle_line(OUT, more, S, L);
 	}
 	return TRUE;
 }
@@ -252,6 +256,64 @@ void ACMESupport::parse_functions(programming_language *self, web *W) {
 	}
 }
 
+@ The following is an opportunity for us to scold the author for any
+violation of the namespace rules. We're going to look for functions named
+|Whatever::name()| whose definitions are not in the |Whatever::| section;
+in other words, we police the rule that functions actually are defined in the
+namespace which their names imply. This can be turned off with a special
+bibliographic variable, but don't do that.
+
+=
+void ACMESupport::post_analysis(programming_language *self, web *W) {
+	int check_namespaces = FALSE;
+	if (Str::eq_wide_string(Bibliographic::get_datum(W->md, I"Namespaces"), L"On"))
+		check_namespaces = TRUE;
+	language_function *fn;
+	LOOP_OVER(fn, language_function) {
+		hash_table_entry *hte =
+			Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,
+				fn->function_name, FALSE);
+		if (hte) {
+			hash_table_entry_usage *hteu;
+			LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages) {
+				if ((hteu->form_of_usage & FCALL_USAGE) || (fn->within_namespace))
+					if (hteu->usage_recorded_at->under_section != fn->function_header_at->owning_section)
+						fn->called_from_other_sections = TRUE;
+			}
+		}
+		if ((fn->within_namespace != fn->called_from_other_sections)
+			&& (check_namespaces)
+			&& (fn->call_freely == FALSE)) {
+			if (fn->within_namespace)
+				Main::error_in_web(
+					I"Being internally called, this function mustn't belong to a :: namespace",
+					fn->function_header_at);
+			else
+				Main::error_in_web(
+					I"Being externally called, this function must belong to a :: namespace",
+					fn->function_header_at);
+		}
+	}
+}
+
+@ Having found all those functions and structure elements, we make sure they
+are all known to Inweb's hash table of interesting identifiers:
+
+=
+void ACMESupport::analyse_code(programming_language *self, web *W) {
+	language_function *fn;
+	LOOP_OVER(fn, language_function)
+		Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,
+			fn->function_name, TRUE);
+	language_type *str;
+	structure_element *elt;
+	LOOP_OVER_LINKED_LIST(str, language_type, W->language_types)
+		LOOP_OVER_LINKED_LIST(elt, structure_element, str->elements)
+			if (elt->allow_sharing == FALSE)
+				Analyser::find_hash_entry_for_section(elt->element_created_at->owning_section,
+					elt->element_name, TRUE);
+}
+
 @ This is here so that tangling the Standard Rules extension doesn't insert
 a spurious comment betraying Inweb's involvement in the process.
 
@@ -263,7 +325,7 @@ int ACMESupport::suppress_disclaimer(programming_language *pl) {
 @
 
 =
-void ACMESupport::begin_weave(programming_language *pl, section *S, weave_target *wv) {
+void ACMESupport::begin_weave(programming_language *pl, section *S, weave_order *wv) {
 	reserved_word *rw;
 	LOOP_OVER_LINKED_LIST(rw, reserved_word, pl->reserved_words)
 		Analyser::mark_reserved_word_for_section(S, rw->word, rw->colour);
@@ -277,7 +339,7 @@ void ACMESupport::reset_syntax_colouring(programming_language *pl) {
 }
 
 int ACMESupport::syntax_colour(programming_language *pl, text_stream *OUT,
-	weave_target *wv, source_line *L, text_stream *matter, text_stream *colouring) {
+	weave_order *wv, source_line *L, text_stream *matter, text_stream *colouring) {
 	section *S = L->owning_section;
 	hash_table *ht = &(S->sect_target->symbols);
 	if ((L->category == TEXT_EXTRACT_LCAT) && (pl != S->sect_language))

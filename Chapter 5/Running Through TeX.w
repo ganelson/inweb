@@ -19,7 +19,7 @@ of the page properly. (In practice we get this here by having code lines which
 are too wide to display.)
 
 @ =
-void RunningTeX::post_process_weave(weave_target *wv, int open_afterwards, int to_DVI) {
+void RunningTeX::post_process_weave(weave_order *wv, int open_afterwards, int to_DVI) {
 	filename *console_filename = Filenames::set_extension(wv->weave_to, "console");
 	filename *log_filename = Filenames::set_extension(wv->weave_to, "log");
 	filename *pdf_filename = Filenames::set_extension(wv->weave_to, "pdf");
@@ -126,7 +126,7 @@ void RunningTeX::scan_console_line(text_stream *line, text_file_position *tfp,
 @h Reporting.
 
 =
-void RunningTeX::report_on_post_processing(weave_target *wv) {
+void RunningTeX::report_on_post_processing(weave_order *wv) {
 	tex_results *res = wv->post_processing_results;
 	if (res) {
 		PRINT(": %dpp %dK", res->page_count, res->pdf_size/1024);
@@ -140,7 +140,7 @@ void RunningTeX::report_on_post_processing(weave_target *wv) {
 @ And here are some details to do with the results of post-processing.
 
 =
-int RunningTeX::substitute_post_processing_data(text_stream *to, weave_target *wv,
+int RunningTeX::substitute_post_processing_data(text_stream *to, weave_order *wv,
 	text_stream *detail) {
 	if (wv) {
 		tex_results *res = wv->post_processing_results;

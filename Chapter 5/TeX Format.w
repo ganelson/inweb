@@ -64,17 +64,17 @@ void TeX::create(void) {
 For documentation, see "Weave Fornats".
 
 =
-int TeX::preserve_math_mode(weave_format *self, weave_target *wv,
+int TeX::preserve_math_mode(weave_format *self, weave_order *wv,
 	text_stream *matter, text_stream *id) {
 	return TRUE;
 }
 
-int TeX::yes(weave_format *self, weave_target *wv) {
+int TeX::yes(weave_format *self, weave_order *wv) {
 	return TRUE;
 }
 
 @ =
-void TeX::top(weave_format *self, text_stream *OUT, weave_target *wv, text_stream *comment) {
+void TeX::top(weave_format *self, text_stream *OUT, weave_order *wv, text_stream *comment) {
 	WRITE("%% %S\n", comment);
 	@<Incorporate suitable TeX macro definitions into the woven output@>;
 }
@@ -98,7 +98,7 @@ Instead we paste the entire text of our macros file into the woven TeX:
 	fclose(MACROS);
 
 @ =
-void TeX::subheading(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::subheading(weave_format *self, text_stream *OUT, weave_order *wv,
 	int level, text_stream *comment, text_stream *head) {
 	switch (level) {
 		case 1:
@@ -114,7 +114,7 @@ void TeX::subheading(weave_format *self, text_stream *OUT, weave_target *wv,
 }
 
 @ =
-void TeX::toc(weave_format *self, text_stream *OUT, weave_target *wv, int stage,
+void TeX::toc(weave_format *self, text_stream *OUT, weave_order *wv, int stage,
 	text_stream *text1, text_stream *text2, paragraph *P) {
 	switch (stage) {
 		case 1:
@@ -136,7 +136,7 @@ void TeX::toc(weave_format *self, text_stream *OUT, weave_target *wv, int stage,
 }
 
 @ =
-void TeX::chapter_title_page(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::chapter_title_page(weave_format *self, text_stream *OUT, weave_order *wv,
 	chapter *C) {
 	WRITE("%S\\medskip\n", C->md->rubric);
 	section *S;
@@ -150,7 +150,7 @@ void TeX::chapter_title_page(weave_format *self, text_stream *OUT, weave_target 
 
 @ =
 text_stream *P_literal = NULL;
-void TeX::paragraph_heading(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::paragraph_heading(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *TeX_macro, section *S, paragraph *P, text_stream *heading_text,
 	text_stream *chaptermark, text_stream *sectionmark, int weight) {
 	if (P_literal == NULL) P_literal = Str::new_from_wide_string(L"P");
@@ -182,7 +182,7 @@ escape from code mode, escape it using a backslash, then re-enter code
 mode once again:
 
 =
-void TeX::source_code(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::source_code(weave_format *self, text_stream *OUT, weave_order *wv,
 	int tab_stops_of_indentation, text_stream *prefatory, text_stream *matter,
 	text_stream *colouring, text_stream *concluding_comment,
 	int starts, int finishes, int code_mode, int linked) {
@@ -224,13 +224,13 @@ messy alignment system:
 	}
 
 @ =
-void TeX::inline_code(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::inline_code(weave_format *self, text_stream *OUT, weave_order *wv,
 	int enter) {
 	WRITE("|");
 }
 
 @ =
-void TeX::change_colour_PDF(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::change_colour_PDF(weave_format *self, text_stream *OUT, weave_order *wv,
 	int col, int in_code) {
 	char *inout = "";
 	if (in_code) inout = "|";
@@ -247,13 +247,13 @@ void TeX::change_colour_PDF(weave_format *self, text_stream *OUT, weave_target *
 }
 
 @ =
-void TeX::display_line(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::display_line(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *text) {
 	WRITE("\\quotesource{%S}\n", text);
 }
 
 @ =
-void TeX::item(weave_format *self, text_stream *OUT, weave_target *wv, int depth,
+void TeX::item(weave_format *self, text_stream *OUT, weave_order *wv, int depth,
 	text_stream *label) {
 	if (Str::len(label) > 0) {
 		if (depth == 1) WRITE("\\item{(%S)}", label);
@@ -265,7 +265,7 @@ void TeX::item(weave_format *self, text_stream *OUT, weave_target *wv, int depth
 }
 
 @ =
-void TeX::bar(weave_format *self, text_stream *OUT, weave_target *wv) {
+void TeX::bar(weave_format *self, text_stream *OUT, weave_order *wv) {
 	WRITE("\\par\\medskip\\noindent\\hrule\\medskip\\noindent\n");
 }
 
@@ -277,7 +277,7 @@ having nothing better. All we're trying for is to insert a picture, scaled
 to a given width, into the text at the current position.
 
 =
-void TeX::figure_PDF(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::figure_PDF(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *figname, int w, int h, programming_language *pl) {
 	WRITE("\\pdfximage");
 	if (w >= 0)
@@ -299,7 +299,7 @@ In the PDF format, these three are all called, in sequence below; in TeX
 or DVI, only the middle one is.
 
 =
-void TeX::para_macro_PDF_1(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::para_macro_PDF_1(weave_format *self, text_stream *OUT, weave_order *wv,
 	para_macro *pmac, int defn) {
 	if (defn)
 		WRITE("|\\pdfdest num %d fit ",
@@ -308,7 +308,7 @@ void TeX::para_macro_PDF_1(weave_format *self, text_stream *OUT, weave_target *w
 		WRITE("|\\pdfstartlink attr{/C [0.9 0 0] /Border [0 0 0]} goto num %d ",
 			pmac->allocation_id + 100);
 }
-void TeX::para_macro(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::para_macro(weave_format *self, text_stream *OUT, weave_order *wv,
 	para_macro *pmac, int defn) {
 	WRITE("$\\langle${\\xreffont");
 	Formats::change_colour(OUT, wv, DEFINITION_COLOUR, FALSE);
@@ -317,7 +317,7 @@ void TeX::para_macro(weave_format *self, text_stream *OUT, weave_target *wv,
 	Formats::change_colour(OUT, wv, PLAIN_COLOUR, FALSE);
 	WRITE("$\\rangle$ ");
 }
-void TeX::para_macro_PDF_2(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::para_macro_PDF_2(weave_format *self, text_stream *OUT, weave_order *wv,
 	para_macro *pmac, int defn) {
 	if (defn)
 		WRITE("$\\equiv$|");
@@ -326,24 +326,24 @@ void TeX::para_macro_PDF_2(weave_format *self, text_stream *OUT, weave_target *w
 }
 
 @ =
-void TeX::pagebreak(weave_format *self, text_stream *OUT, weave_target *wv) {
+void TeX::pagebreak(weave_format *self, text_stream *OUT, weave_order *wv) {
 	WRITE("\\vfill\\eject\n");
 }
 
 @ =
-void TeX::blank_line(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::blank_line(weave_format *self, text_stream *OUT, weave_order *wv,
 	int in_comment) {
 	if (in_comment) WRITE("\\smallskip\\par\\noindent%%\n");
 	else WRITE("\\smallskip\n");
 }
 
 @ =
-void TeX::after_definitions(weave_format *self, text_stream *OUT, weave_target *wv) {
+void TeX::after_definitions(weave_format *self, text_stream *OUT, weave_order *wv) {
 	WRITE("\\smallskip\n");
 }
 
 @ =
-void TeX::endnote(weave_format *self, text_stream *OUT, weave_target *wv, int end) {
+void TeX::endnote(weave_format *self, text_stream *OUT, weave_order *wv, int end) {
 	if (end == 1) {
 		WRITE("\\par\\noindent\\penalty10000\n");
 		WRITE("{\\usagefont ");
@@ -353,7 +353,7 @@ void TeX::endnote(weave_format *self, text_stream *OUT, weave_target *wv, int en
 }
 
 @ =
-void TeX::commentary_text(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::commentary_text(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *id) {
 	int math_mode = FALSE;
 	for (int i=0; i < Str::len(id); i++) {
@@ -376,14 +376,14 @@ void TeX::commentary_text(weave_format *self, text_stream *OUT, weave_target *wv
 }
 
 @ =
-void TeX::locale(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::locale(weave_format *self, text_stream *OUT, weave_order *wv,
 	paragraph *par1, paragraph *par2) {
 	WRITE("$\\%S$%S", par1->ornament, par1->paragraph_number);
 	if (par2) WRITE("-%S", par2->paragraph_number);
 }
 
 @ =
-void TeX::change_material(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::change_material(weave_format *self, text_stream *OUT, weave_order *wv,
 	int old_material, int new_material, int content, int change_material) {
 	if (old_material != new_material) {
 		switch (old_material) {
@@ -409,7 +409,7 @@ void TeX::change_material(weave_format *self, text_stream *OUT, weave_target *wv
 }
 
 @ =
-void TeX::tail(weave_format *self, text_stream *OUT, weave_target *wv,
+void TeX::tail(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *comment, section *S) {
 	WRITE("%% %S\n", comment);
 	WRITE("\\end\n");
@@ -419,7 +419,7 @@ void TeX::tail(weave_format *self, text_stream *OUT, weave_target *wv,
 the special Preform grammar document.
 
 =
-int TeX::preform_document(weave_format *self, text_stream *OUT, web *W, weave_target *wv,
+int TeX::preform_document(weave_format *self, text_stream *OUT, web *W, weave_order *wv,
 	chapter *C, section *S, source_line *L, text_stream *matter,
 	text_stream *concluding_comment) {
 	if (L->preform_nonterminal_defined) {
@@ -499,21 +499,21 @@ int TeX::preform_document(weave_format *self, text_stream *OUT, web *W, weave_ta
 @h Post-processing.
 
 =
-void TeX::post_process_PDF(weave_format *self, weave_target *wv, int open) {
+void TeX::post_process_PDF(weave_format *self, weave_order *wv, int open) {
 	RunningTeX::post_process_weave(wv, open, FALSE);
 }
-void TeX::post_process_DVI(weave_format *self, weave_target *wv, int open) {
+void TeX::post_process_DVI(weave_format *self, weave_order *wv, int open) {
 	RunningTeX::post_process_weave(wv, open, TRUE);
 }
 
 @ =
-void TeX::post_process_report(weave_format *self, weave_target *wv) {
+void TeX::post_process_report(weave_format *self, weave_order *wv) {
 	RunningTeX::report_on_post_processing(wv);
 }
 
 @ =
 int TeX::post_process_substitute(weave_format *self, text_stream *OUT,
-	weave_target *wv, text_stream *detail, weave_pattern *pattern) {
+	weave_order *wv, text_stream *detail, weave_pattern *pattern) {
 	return RunningTeX::substitute_post_processing_data(OUT, wv, detail);
 }
 

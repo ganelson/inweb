@@ -290,13 +290,13 @@ void LanguageMethods::comment(OUTPUT_STREAM, programming_language *pl, text_stre
 macros or double-square substitutions. In almost every language this simply
 passes the code straight through, printing |original| to |OUT|.
 
-@e TANGLE_CODE_UNUSUALLY_TAN_MTID
+@e TANGLE_LINE_UNUSUALLY_TAN_MTID
 
 =
-IMETHOD_TYPE(TANGLE_CODE_UNUSUALLY_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *original)
-void LanguageMethods::tangle_code(OUTPUT_STREAM, programming_language *pl, text_stream *original) {
+IMETHOD_TYPE(TANGLE_LINE_UNUSUALLY_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *original)
+void LanguageMethods::tangle_line(OUTPUT_STREAM, programming_language *pl, text_stream *original) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pl, TANGLE_CODE_UNUSUALLY_TAN_MTID, OUT, original);
+	IMETHOD_CALL(rv, pl, TANGLE_LINE_UNUSUALLY_TAN_MTID, OUT, original);
 	if (rv == FALSE) WRITE("%S", original);
 }
 
@@ -329,8 +329,8 @@ anything that the language in question might need later.
 @e BEGIN_WEAVE_WEA_MTID
 
 =
-VMETHOD_TYPE(BEGIN_WEAVE_WEA_MTID, programming_language *pl, section *S, weave_target *wv)
-void LanguageMethods::begin_weave(section *S, weave_target *wv) {
+VMETHOD_TYPE(BEGIN_WEAVE_WEA_MTID, programming_language *pl, section *S, weave_order *wv)
+void LanguageMethods::begin_weave(section *S, weave_order *wv) {
 	VMETHOD_CALL(S->sect_language, BEGIN_WEAVE_WEA_MTID, S, wv);
 }
 
@@ -339,8 +339,8 @@ void LanguageMethods::begin_weave(section *S, weave_target *wv) {
 @e SKIP_IN_WEAVING_WEA_MTID
 
 =
-IMETHOD_TYPE(SKIP_IN_WEAVING_WEA_MTID, programming_language *pl, weave_target *wv, source_line *L)
-int LanguageMethods::skip_in_weaving(programming_language *pl, weave_target *wv, source_line *L) {
+IMETHOD_TYPE(SKIP_IN_WEAVING_WEA_MTID, programming_language *pl, weave_order *wv, source_line *L)
+int LanguageMethods::skip_in_weaving(programming_language *pl, weave_order *wv, source_line *L) {
 	int rv = FALSE;
 	IMETHOD_CALL(rv, pl, SKIP_IN_WEAVING_WEA_MTID, wv, L);
 	return rv;
@@ -367,9 +367,9 @@ void LanguageMethods::reset_syntax_colouring(programming_language *pl) {
 int colouring_state = PLAIN_COLOUR;
 
 IMETHOD_TYPE(SYNTAX_COLOUR_WEA_MTID, programming_language *pl, text_stream *OUT,
-	weave_target *wv, source_line *L, text_stream *matter, text_stream *colouring)
+	weave_order *wv, source_line *L, text_stream *matter, text_stream *colouring)
 int LanguageMethods::syntax_colour(OUTPUT_STREAM, programming_language *pl,
-	weave_target *wv, source_line *L, text_stream *matter, text_stream *colouring) {
+	weave_order *wv, source_line *L, text_stream *matter, text_stream *colouring) {
 	for (int i=0; i < Str::len(matter); i++) Str::put_at(colouring, i, PLAIN_COLOUR);
 	int rv = FALSE;
 	programming_language *colour_as = pl;
@@ -387,9 +387,9 @@ method has already woven something more attractive.
 @e WEAVE_CODE_LINE_WEA_MTID
 
 =
-IMETHOD_TYPE(WEAVE_CODE_LINE_WEA_MTID, programming_language *pl, text_stream *OUT, weave_target *wv, web *W,
+IMETHOD_TYPE(WEAVE_CODE_LINE_WEA_MTID, programming_language *pl, text_stream *OUT, weave_order *wv, web *W,
 	chapter *C, section *S, source_line *L, text_stream *matter, text_stream *concluding_comment)
-int LanguageMethods::weave_code_line(OUTPUT_STREAM, programming_language *pl, weave_target *wv,
+int LanguageMethods::weave_code_line(OUTPUT_STREAM, programming_language *pl, weave_order *wv,
 	web *W, chapter *C, section *S, source_line *L, text_stream *matter, text_stream *concluding_comment) {
 	int rv = FALSE;
 	IMETHOD_CALL(rv, pl, WEAVE_CODE_LINE_WEA_MTID, OUT, wv, W, C, S, L, matter, concluding_comment);
@@ -419,17 +419,17 @@ are called first and last in the process, respectively. (What happens in
 between is essentially that Inweb looks for identifiers, for later syntax
 colouring purposes.)
 
-@e EARLY_PREWEAVE_ANALYSIS_ANA_MTID
-@e LATE_PREWEAVE_ANALYSIS_ANA_MTID
+@e ANALYSIS_ANA_MTID
+@e POST_ANALYSIS_ANA_MTID
 
 =
-VMETHOD_TYPE(EARLY_PREWEAVE_ANALYSIS_ANA_MTID, programming_language *pl, web *W)
-VMETHOD_TYPE(LATE_PREWEAVE_ANALYSIS_ANA_MTID, programming_language *pl, web *W)
+VMETHOD_TYPE(ANALYSIS_ANA_MTID, programming_language *pl, web *W)
+VMETHOD_TYPE(POST_ANALYSIS_ANA_MTID, programming_language *pl, web *W)
 void LanguageMethods::early_preweave_analysis(programming_language *pl, web *W) {
-	VMETHOD_CALL(pl, EARLY_PREWEAVE_ANALYSIS_ANA_MTID, W);
+	VMETHOD_CALL(pl, ANALYSIS_ANA_MTID, W);
 }
 void LanguageMethods::late_preweave_analysis(programming_language *pl, web *W) {
-	VMETHOD_CALL(pl, LATE_PREWEAVE_ANALYSIS_ANA_MTID, W);
+	VMETHOD_CALL(pl, POST_ANALYSIS_ANA_MTID, W);
 }
 
 @ And finally: in InC only, a few structure element names are given very slightly

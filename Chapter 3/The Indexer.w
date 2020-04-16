@@ -10,7 +10,7 @@ or |[[Navigation]]|).
 
 =
 void Indexer::cover_sheet_maker(OUTPUT_STREAM, web *W, text_stream *unextended_leafname,
-	weave_target *wt, int halves) {
+	weave_order *wt, int halves) {
 	cover_sheet_state state;
 	@<Clear the cover sheet state@>;
 
@@ -34,7 +34,7 @@ the bottom half, of the template; they are divided by the marker |[[Code]]|.
 typedef struct cover_sheet_state {
 	struct text_stream *WEAVE_COVER_TO;
 	int halves; /* a bitmap of the above values */
-	struct weave_target *target;
+	struct weave_order *target;
 } cover_sheet_state;
 
 @<Clear the cover sheet state@> =
@@ -149,7 +149,7 @@ void Indexer::incorporate_template_for_web_and_pattern(text_stream *OUT, web *W,
 	Indexer::incorporate_template(OUT, W, I"", F, pattern, NULL, NULL);
 }
 
-void Indexer::incorporate_template_for_target(text_stream *OUT, weave_target *wv,
+void Indexer::incorporate_template_for_target(text_stream *OUT, weave_order *wv,
 	filename *F) {
 	Indexer::incorporate_template(OUT, wv->weave_web, wv->weave_range, F, wv->pattern,
 		wv->navigation, wv->breadcrumbs);

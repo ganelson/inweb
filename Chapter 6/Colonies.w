@@ -273,7 +273,7 @@ The following must decide what references like the following should refer to:
 	Manual
 	Enumerated Constants
 	Reader::get_section_for_range
-	weave_target
+	weave_order
 	foundation: Text Streams
 	goldbach
 =

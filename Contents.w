@@ -27,6 +27,7 @@ Chapter 1: Top Level
 	Basics
 	Program Control
 	Configuration
+	The Swarm
 	Patterns
 
 Chapter 2: Parsing a Web
@@ -45,7 +46,6 @@ Chapter 3: Outputs
 (or a swarm of many such parts), or tangling the web into an executable program,
 or analysing the web to provide diagnostics on it."
 	The Analyser
-	The Swarm
 	The Indexer
 	The Weaver
 	The Tangler

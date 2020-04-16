@@ -1,21 +1,18 @@
 Title: The Inweb Manual and Source Code
 Author: Graham Nelson
 
-@ This website holds human-readable, or "woven", forms of the source code for
-the literate programming tool Inweb. To download and build Inweb, go to the
-repository's front page and follow the instructions there. These pages are
-purely to help maintainers of Inweb, or anyone interested in looking under the
-hood, to see how it works.
+@ This is the home page for documentation, human-readable source code and
+examples for the literate programming system Inweb. It's hosted on the Github
+Docs area of the Inweb repository, at: https://github.com/ganelson/inweb
+Download and build instructions are there, not here.
 
-@ The Inform software uses literate programming, a doctrine invented by Donald
-Knuth. Under LP, a single program is called a "web", and can either be
-"woven" for humans to read or "tangled" for computers to compile. You are
-reading the woven form. There are five webs accessible from this page:
-(a) The |inweb| tool.
-(b) The |foundation| module, which is not a stand-alone program, but is
-instead a library of utility functions needed by |inweb| and also by some
-of the programs tangled by it (such as the Inform compiler).
-(c) A modest unit test tool, which simply exercises some of the functions
-of |foundation|.
-(d) Two small example webs: |twinprimes|, which is just a single section,
-and |goldbach|, which has two sections.
+To get a sense of Inweb and what it does, see //inweb: Manual//. The simple
+example //twinprimes// and //goldbach// may also help.
+
+But if you're here to look under the hood, or you want to fix a bug or
+add a feature, a good place to begin is //inweb: How This Program Works//.
+
+@ Inweb is built on top of a library of C functions called //foundation//,
+supplied in the same repository. See //foundation: A Brief Guide to Foundation//.
+There's also a small tool for unit-testing it, //foundation-test//, but this
+is not an interesting read.

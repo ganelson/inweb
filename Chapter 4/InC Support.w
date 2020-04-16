@@ -15,7 +15,7 @@ void InCSupport::add_features(programming_language *pl) {
 	METHOD_ADD(pl, ADDITIONAL_PREDECLARATIONS_TAN_MTID, InCSupport::additional_predeclarations);
 	METHOD_ADD(pl, WILL_TANGLE_EXTRA_LINE_TAN_MTID, InCSupport::will_insert_in_tangle);
 	METHOD_ADD(pl, TANGLE_EXTRA_LINE_TAN_MTID, InCSupport::insert_in_tangle);
-	METHOD_ADD(pl, TANGLE_CODE_UNUSUALLY_TAN_MTID, InCSupport::tangle_code);
+	METHOD_ADD(pl, TANGLE_LINE_UNUSUALLY_TAN_MTID, InCSupport::tangle_line);
 	METHOD_ADD(pl, GNABEHS_TAN_MTID, InCSupport::gnabehs);
 	METHOD_ADD(pl, ADDITIONAL_TANGLING_TAN_MTID, InCSupport::additional_tangling);
 
@@ -23,7 +23,7 @@ void InCSupport::add_features(programming_language *pl) {
 	METHOD_ADD(pl, WEAVE_CODE_LINE_WEA_MTID, InCSupport::weave_code_line);
 	METHOD_ADD(pl, NOTIFY_NEW_TAG_WEA_MTID, InCSupport::new_tag_declared);
 
-	METHOD_ADD(pl, EARLY_PREWEAVE_ANALYSIS_ANA_MTID, InCSupport::analyse_code);
+	METHOD_ADD(pl, ANALYSIS_ANA_MTID, InCSupport::analyse_code);
 	METHOD_ADD(pl, SHARE_ELEMENT_ANA_MTID, InCSupport::share_element);
 }
 
@@ -625,7 +625,7 @@ nonterminal being parsed.)
 			PUT_TO(expanded, Str::get_at(formula, i));
 		}
 	}
-	Tangler::tangle_code(OUT, expanded, AL->owning_section, AL);
+	Tangler::tangle_line(OUT, expanded, AL->owning_section, AL);
 	DISCARD_TEXT(expanded);
 	Regexp::dispose_of(&mr);
 
@@ -633,7 +633,7 @@ nonterminal being parsed.)
 we also provide for some other special extensions to C.
 
 =
-void InCSupport::tangle_code(programming_language *self, text_stream *OUT, text_stream *original) {
+void InCSupport::tangle_line(programming_language *self, text_stream *OUT, text_stream *original) {
 	int fcall_pos = -1;
 	for (int i = 0; i < Str::len(original); i++) {
 		@<Double-colons are namespace dividers in function names@>;
@@ -922,7 +922,7 @@ of C code which appear in |internal| nonterminal definitions:
 =
 int skipping_internal = FALSE, preform_production_count = 0;
 
-int InCSupport::skip_in_weaving(programming_language *self, weave_target *wv, source_line *L) {
+int InCSupport::skip_in_weaving(programming_language *self, weave_order *wv, source_line *L) {
 	if ((Preform_theme) && (wv->theme_match == Preform_theme)) {
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, L->text, L"}%c*")) {
@@ -938,7 +938,7 @@ int InCSupport::skip_in_weaving(programming_language *self, weave_target *wv, so
 
 =
 int InCSupport::weave_code_line(programming_language *self, text_stream *OUT,
-	weave_target *wv, web *W, chapter *C, section *S, source_line *L,
+	weave_order *wv, web *W, chapter *C, section *S, source_line *L,
 	text_stream *matter, text_stream *concluding_comment) {
 	if ((Preform_theme) && (wv->theme_match == Preform_theme))
 		return Formats::preform_document(OUT, wv, W, C, S, L,
