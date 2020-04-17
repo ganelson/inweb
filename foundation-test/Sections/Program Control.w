@@ -14,6 +14,7 @@ Choosing which unit test to run on the basis of the command-line arguments.
 @e TEST_LISTS_CLSW
 @e TEST_STACKS_CLSW
 @e TEST_SEMVER_CLSW
+@e TEST_TREES_CLSW
 
 =
 int main(int argc, char **argv) {
@@ -36,6 +37,8 @@ int main(int argc, char **argv) {
 		L"test LIFO stacks (X is ignored)");
 	CommandLine::declare_switch(TEST_SEMVER_CLSW, L"test-semver", 2,
 		L"test semantic version numbers (X is ignored)");
+	CommandLine::declare_switch(TEST_TREES_CLSW, L"test-trees", 2,
+		L"test heterogeneous trees (X is ignored)");
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::ignore);
 	Foundation::end();
@@ -52,6 +55,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 		case TEST_LISTS_CLSW: Unit::test_linked_lists(); break;
 		case TEST_STACKS_CLSW: Unit::test_stacks(); break;
 		case TEST_SEMVER_CLSW: Unit::test_semver(); break;
+		case TEST_TREES_CLSW: Unit::test_trees(); break;
 	}
 }
 

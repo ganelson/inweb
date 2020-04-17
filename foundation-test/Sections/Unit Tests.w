@@ -316,5 +316,100 @@ void Unit::test_semver(void) {
 	Unit::test_intersect(STDOUT, I"6.4.2", -1, I"3.5.5", -1);
 }
 
+@h Trees.
 
+@e prince_MT
+@e princess_MT
 
+=
+ALLOCATE_INDIVIDUALLY(prince)
+ALLOCATE_INDIVIDUALLY(princess)
+
+@ =
+typedef struct prince {
+	struct text_stream *boys_name;
+	MEMORY_MANAGEMENT
+} prince;
+
+typedef struct princess {
+	int meaningless;
+	struct text_stream *girls_name;
+	MEMORY_MANAGEMENT
+} princess;
+
+tree_node_type *M = NULL, *F = NULL;
+
+@ =
+void Unit::test_trees(void) {
+	tree_type *TT = Trees::new_type(I"royal family", &Unit::verifier);
+	heterogeneous_tree *royalty = Trees::new(TT);
+	M = Trees::new_node_type(I"male", prince_MT, &Unit::prince_verifier);
+	F = Trees::new_node_type(I"female", princess_MT, &Unit::princess_verifier);
+
+	prince *charles_I = CREATE(prince);
+	charles_I->boys_name = I"Charles I of England";
+	princess *mary = CREATE(princess);
+	mary->girls_name = I"Mary, Princess Royal";
+	prince *charles_II = CREATE(prince);
+	charles_II->boys_name = I"Charles II of England";
+	prince *james_II = CREATE(prince);
+	james_II->boys_name = I"James II of England";
+					
+	tree_node *charles_I_n = Trees::new_node(royalty, M, STORE_POINTER_prince(charles_I));
+	tree_node *charles_II_n = Trees::new_node(royalty, M, STORE_POINTER_prince(charles_II));
+	tree_node *james_II_n = Trees::new_node(royalty, M, STORE_POINTER_prince(james_II));
+	tree_node *mary_n = Trees::new_node(royalty, F, STORE_POINTER_princess(mary));
+
+	Unit::show_tree(STDOUT, royalty);
+	Trees::make_root(royalty, charles_I_n);
+	Unit::show_tree(STDOUT, royalty);
+	Trees::make_child(charles_II_n, charles_I_n);
+	Unit::show_tree(STDOUT, royalty);
+	Trees::make_eldest_child(mary_n, charles_I_n);
+	Trees::make_child(james_II_n, charles_I_n);
+	Unit::show_tree(STDOUT, royalty);
+}
+
+int Unit::verifier(tree_node *N) {
+	if (N->type == M) PRINT("(Root is M)\n");
+	if (N->type == F) PRINT("(Root is F)\n");
+	if (N->type == M) return TRUE;
+	return FALSE;
+}
+
+int Unit::prince_verifier(tree_node *N) {
+	for (tree_node *C = N->child; C; C = C->next)
+		if (C->type == M) PRINT("(Prince's child is M)\n");
+		else PRINT("(Prince's child is F)\n");
+	PRINT("(verified)\n");
+	return TRUE;
+}
+
+int Unit::princess_verifier(tree_node *N) {
+	for (tree_node *C = N->child; C; C = C->next)
+		if (C->type == M) PRINT("(Princess's child is M)\n");
+		else PRINT("(Princess's child is F)\n");
+	PRINT("(verified)\n");
+	return TRUE;
+}
+
+@ =
+void Unit::show_tree(text_stream *OUT, heterogeneous_tree *T) {
+	WRITE("%S\n", T->type->name);
+	INDENT;
+	Trees::traverse_from(T->root, &Unit::visit, (void *) STDOUT, 0);
+	OUTDENT;
+	WRITE("Done\n");
+}
+
+void Unit::visit(tree_node *N, void *state, int L) {
+	text_stream *OUT = (text_stream *) state;
+	for (int i=0; i<L; i++) WRITE("  ");
+	if (N->type == M) {
+		prince *P = RETRIEVE_POINTER_prince(N->content);
+		WRITE("Male: %S\n", P->boys_name);
+	} else if (N->type == F) {
+		princess *P = RETRIEVE_POINTER_princess(N->content);
+		WRITE("Female: %S\n", P->girls_name);
+	} else WRITE("Unknown node\n");
+}

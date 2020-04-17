@@ -304,6 +304,11 @@ streams) to values (which are usually, but not always, also text streams).
 They behave very like hashes in Perl and, as the name suggests, use hashing
 to make access rapid. See //Dictionaries//.
 
+@ Foundation also provides for //heterogeneous_tree//, which is a structure
+able to hold a rooted tree in which nodes can be a variety of different
+objects, rather than having to be uniform. Functions are provided to
+build and verify such trees.
+
 @h Files and paths.
 Filenames and pathnames are, perhaps controversially, represented by two
 different types: //filename// and //pathname//. The latter should perhaps

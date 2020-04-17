@@ -74,6 +74,10 @@ with the memory system. The ones here are those needed by Foundation.
 @e web_bibliographic_datum_MT
 @e module_MT
 @e module_search_MT
+@e heterogeneous_tree_MT
+@e tree_type_MT
+@e tree_node_MT
+@e tree_node_type_MT
 
 @ For each type of object to be allocated, a single structure of the
 following design is maintained. Types which are allocated individually,
@@ -554,6 +558,10 @@ ALLOCATE_INDIVIDUALLY(chapter_md)
 ALLOCATE_INDIVIDUALLY(section_md)
 ALLOCATE_INDIVIDUALLY(module)
 ALLOCATE_INDIVIDUALLY(module_search)
+ALLOCATE_INDIVIDUALLY(heterogeneous_tree)
+ALLOCATE_INDIVIDUALLY(tree_type)
+ALLOCATE_INDIVIDUALLY(tree_node)
+ALLOCATE_INDIVIDUALLY(tree_node_type)
 
 ALLOCATE_IN_ARRAYS(dict_entry, 100)
 ALLOCATE_IN_ARRAYS(HTML_tag, 1000)

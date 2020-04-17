@@ -1,0 +1,25 @@
+royal family
+Done
+(Root is M)
+royal family
+    Male: Charles I of England
+Done
+(Prince's child is M)
+(verified)
+royal family
+    Male: Charles I of England
+      Male: Charles II of England
+Done
+(Prince's child is F)
+(Prince's child is M)
+(verified)
+(Prince's child is F)
+(Prince's child is M)
+(Prince's child is M)
+(verified)
+royal family
+    Male: Charles I of England
+      Female: Mary, Princess Royal
+      Male: Charles II of England
+      Male: James II of England
+Done

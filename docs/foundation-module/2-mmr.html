@@ -116,6 +116,10 @@ with the memory system. The ones here are those needed by Foundation.
     <span class="definitionkeyword">enum</span> <span class="constant">web_bibliographic_datum_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">module_MT</span>
     <span class="definitionkeyword">enum</span> <span class="constant">module_search_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">heterogeneous_tree_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">tree_type_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">tree_node_MT</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">tree_node_type_MT</span>
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>For each type of object to be allocated, a single structure of the
 following design is maintained. Types which are allocated individually,
@@ -240,7 +244,7 @@ null bytes, followed by actual data.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure memblock_header is accessed in 4/taa and here.</p>
+<p class="endnote">The structure memblock_header is accessed in 2/trs, 4/taa and here.</p>
 
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
 
@@ -731,6 +735,10 @@ used in the lower levels.
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">section_md</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">module</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">module_search</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">heterogeneous_tree</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">tree_type</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">tree_node</span><span class="plain">)</span>
+    <span class="identifier">ALLOCATE_INDIVIDUALLY</span><span class="plain">(</span><span class="reserved">tree_node_type</span><span class="plain">)</span>
 
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">dict_entry</span><span class="plain">, </span><span class="constant">100</span><span class="plain">)</span>
     <span class="identifier">ALLOCATE_IN_ARRAYS</span><span class="plain">(</span><span class="reserved">HTML_tag</span><span class="plain">, </span><span class="constant">1000</span><span class="plain">)</span>
@@ -1212,7 +1220,7 @@ structure.
 
 <p class="inwebparagraph"></p>
 
-<p class="endnote">The structure general_pointer is private to this section.</p>
+<p class="endnote">The structure general_pointer is accessed in 2/trs and here.</p>
 
 <p class="inwebparagraph"><a id="SP37"></a><b>&#167;37.  </b>The symbols tables need to look at pointer values directly without knowing
 their types, but only to test equality, so we abstract that thus. And the

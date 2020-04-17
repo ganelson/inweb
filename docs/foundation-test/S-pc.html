@@ -49,6 +49,7 @@
     <span class="definitionkeyword">enum</span> <span class="constant">TEST_LISTS_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TEST_STACKS_CLSW</span>
     <span class="definitionkeyword">enum</span> <span class="constant">TEST_SEMVER_CLSW</span>
+    <span class="definitionkeyword">enum</span> <span class="constant">TEST_TREES_CLSW</span>
 </pre>
 
 <pre class="display">
@@ -72,6 +73,8 @@
             <span class="identifier">L</span><span class="string">"test LIFO stacks (X is ignored)"</span><span class="plain">);</span>
         <span class="functiontext"><a href="../foundation-module/3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">TEST_SEMVER_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-semver"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
             <span class="identifier">L</span><span class="string">"test semantic version numbers (X is ignored)"</span><span class="plain">);</span>
+        <span class="functiontext"><a href="../foundation-module/3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">TEST_TREES_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-trees"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
+            <span class="identifier">L</span><span class="string">"test heterogeneous trees (X is ignored)"</span><span class="plain">);</span>
 
         <span class="functiontext"><a href="../foundation-module/3-cla.html#SP8">CommandLine::read</a></span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="functiontext"><a href="S-pc.html#SP1">Main::respond</a></span><span class="plain">, &amp;</span><span class="functiontext"><a href="S-pc.html#SP1">Main::ignore</a></span><span class="plain">);</span>
         <span class="functiontext"><a href="../foundation-module/1-fm.html#SP9">Foundation::end</a></span><span class="plain">();</span>
@@ -88,6 +91,7 @@
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_LISTS_CLSW:</span><span class="plain"> </span><span class="functiontext"><a href="S-ut.html#SP6">Unit::test_linked_lists</a></span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_STACKS_CLSW:</span><span class="plain"> </span><span class="functiontext"><a href="S-ut.html#SP7">Unit::test_stacks</a></span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
             <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_SEMVER_CLSW:</span><span class="plain"> </span><span class="functiontext"><a href="S-ut.html#SP8">Unit::test_semver</a></span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
+            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_TREES_CLSW:</span><span class="plain"> </span><span class="functiontext"><a href="S-ut.html#SP11">Unit::test_trees</a></span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
         <span class="plain">}</span>
     <span class="plain">}</span>
 

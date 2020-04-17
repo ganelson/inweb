@@ -22,6 +22,7 @@ Chapter 2: Memory, Streams and Collections
 	Methods
 	Linked Lists and Stacks
 	Dictionaries
+	Trees
 
 Chapter 3: The Operating System
 "Dealing with the host operating system."
