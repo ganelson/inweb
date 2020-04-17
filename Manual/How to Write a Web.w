@@ -581,6 +581,10 @@ Computers & Mathematics with Applications, 2, 137-39 (1976).
 	[2] For example, to cite Donald Knuth, "Evaluation of Porter's constant",
 	Computers & Mathematics with Applications, 2, 137-39 (1976).
 =
+Note that footnotes should be numbered upwards from 1 in each individual
+paragraph; Inweb automatically renumbers them for each woven section, but
+we don't have to worry about that when typing.
+
 If you're reading this as a web page (with Javascript on), then you should
 have seen clickable footnote blobs, which reveal the text. If Javascript is
 off, there's a more conventionally textual presentation.

@@ -53,8 +53,8 @@ modules it imports. The real work is done by the Foundation library function
 such as its declared author and title (see //Bibliographic Data for Webs//),
 and also references to a //chapter_md// for each chapter, and a //section_md//
 for each section. There is always at least one //chapter_md//, each of which
-has at least one //section_md//.[2] The "range text" for each chapter and
-section is set here, which affects leafnames used in woven websites.[3] The
+has at least one //section_md//.[1] The "range text" for each chapter and
+section is set here, which affects leafnames used in woven websites.[2] The
 optional |build.txt| file for a web is read by //BuildFiles::read//, and the
 semantic version number determined at //BuildFiles::deduce_semver//.
 
@@ -62,21 +62,21 @@ Where a web imports a module, as for instance the //eastertide// example does,
 //WebMetadata::get// creates a //module// object for each import. In any event,
 it also creates a module called |"(main)"| to represent the main, non-imported,
 part of the overall program. Each module object also refers to the //chapter_md//
-and //section_md// objects.[4]
+and //section_md// objects.[3]
 
 The result of //Reader::load_web// is an object called a //web//, which expands
 on the metadata considerably. If |W| is a web, |W->md| produces its //web_md//
 metadata, but |W| also has numerous other fields.
 
-[2] For single-file webs like //twinprimes//, with no contents pages, Inweb
+[1] For single-file webs like //twinprimes//, with no contents pages, Inweb
 makes what it calls an "implied" chapter and section heading.
 
-[3] Range texts are used at the command line, and in |-catalogue| output, for
+[2] Range texts are used at the command line, and in |-catalogue| output, for
 example; and also to determine leafnames of pages in a website being woven.
 A range is really just an abbreviation. For example, |M| is the range for the
 Manual chapter, |2/tp| for the section "The Parser" in Chapter 2.
 
-[4] The difference is that the //web_md// lists every chapter and section,
+[3] The difference is that the //web_md// lists every chapter and section,
 imported or not, whereas the //module// lists only those falling under its
 own aegis.
 
@@ -102,19 +102,21 @@ FOUNDATION   //web_md//  ---->  //chapter_md//  ---->  //section_md//
 the web is syntactically valid line-by-line, reporting errors if any using
 by calling //Main::error_in_web//. Each line is assigned a "category": for
 example, the category |DEFINITIONS_LCAT| is given to lines holding definitions
-made with |@d| or |@e|. See //Line Categories// for the complete roster.[5]
+made with |@d| or |@e|. See //Line Categories// for the complete roster.[1]
 
 The parser also recognises headings and footnotes, but most importantly, it
 introduces an additional concept: the //paragraph//. Each nunbered passage
 corresponds to one //paragraph// object; it may actually contain several
 paragraphs of prose in the everyday English sense, but has just one heading,
-usually a number like "2.3.1". Those numbers are assigned hierarchically,[6]
+usually a number like "2.3.1". Those numbers are assigned hierarchically,[2]
 which is not a trivial algorithm: see //Numbering::number_web//.
 
-Finally, the parsing stage finds all of the "paragraph macros", the term used
+It is the parser which finds all of the "paragraph macros", the term used
 in the source code for named stretches of code in |@<...@>| notation. A
 //para_macro// object is created for each one, and every section has its own
-collection, stored in a |linked_list|.[7]
+collection, stored in a |linked_list|.[3] Similarly, the parser finds all of
+the footnote texts, and works out their proper numbering; each becomes a
+//footnote// object.[4]
 
 At the end of the third stage, then, everything's ready to go, and in memory
 we now have something like this:
@@ -125,19 +127,22 @@ FOUNDATION   //web_md//  ---->  //chapter_md//  ---->  //section_md//
              //module//
 =
 
-[5] There are more than 20, but many are no longer needed in "version 2" of
+[1] There are more than 20, but many are no longer needed in "version 2" of
 the Inweb syntax, which is the only one anyone should still use. Continuing
 to support version 1 makes //The Parser// much fiddlier, and at some point we
 will probably drop this quixotic goal.
 
-[6] Unlike in CWEB and other past literate programming tools, in which
+[2] Unlike in CWEB and other past literate programming tools, in which
 paragraphs -- sometimes called "sections" by those programs, a different use
 of the word to ours -- are numbered simply 1, 2, 3, ..., through the entire
 program. Doing this would entail some webs in the Inform project running up
 to nearly 8000.
 
-[7] In real-world use, to use a |dictionary| instead would involve more
+[3] In real-world use, to use a |dictionary| instead would involve more
 overhead than gain: there are never very many paragraph macros per section.
+
+[4] Though the parser is not able to check that the footnotes are all used;
+that's done at weaving time instead.
 
 @h Programming languages.
 The contents page of a web usually mentions one or more programming languages.
@@ -146,7 +151,7 @@ A line at the top like
 	Language: C
 =
 results in the text "C" being stored in the bibliographic datum |"Language"|,
-and if contents lines for chapters or sections specify other languages,[8]
+and if contents lines for chapters or sections specify other languages,[1]
 the loader stores those in the relevant //chapter_md// or //section_md//
 objects. But to the loader, these are all just names.
 
@@ -170,7 +175,7 @@ the main use case is to have just one throughout. //web//, //chapter//,
 //section// and even individual //source_line// objects all contain pointers
 to a //programming_language//.
 
-[8] A little-used feature of Inweb, which should arguably be taken out as
+[1] A little-used feature of Inweb, which should arguably be taken out as
 unnecessary now that colonies allow for multiple webs to coexist happily.
 
 @h Weaving mode.
@@ -186,13 +191,18 @@ pattern is a choice of format together with some naming conventions and
 auxiliary files. For example, GitHubPages is a pattern which imposes HTML
 format but also throws in, for example, the GitHub logo icon.
 (c) Whether a filter to particular tags is used, as represented by a
-//theme_tag//.[9]
+//theme_tag//.[1]
 (d) What subset of the web the user wants to weave -- by default the whole
 thing, but sometimes just one chapter, or just one section, and sometimes
 a special setting for "do all chapters one at a time" or "do all sections
 one at a time", a procedure called //The Swarm//.
 
-//Program Control// begins by attempting to load the weave pattern, with
+[1] For example, Inweb automatically applies the |"Functions"| tag to any
+paragraph defining one (see //Types and Functions//), and using |-weave-tag|
+at the command line filters the weave down to just these. Sing to the tune
+of Suzanne Vega's "Freeze Tag".
+
+@ //Program Control// begins by attempting to load the weave pattern, with
 //Patterns::find//; the syntax of weave pattern files can be found in
 //Patterns::scan_pattern_line//.
 
@@ -205,27 +215,22 @@ an icon or a CSS file used in the website being constructed is a "payload".
 
 //Swarm::weave// also causes an "index" to be made, though "index" here is
 Inweb jargon for something which is more likely a contents page listing the
-sections and linking to them.[10]
+sections and linking to them.[1]
 
 Either way, each single weaving operation arrives at //Swarm::weave_subset//,
 which consolidates all the settings needed into a //weave_order// object:
-it says, in effect, "weave content X into file Y using pattern Z".[11]
+it says, in effect, "weave content X into file Y using pattern Z".[2]
 
-[9] For example, Inweb automatically applies the |"Functions"| tag to any
-paragraph defining one (see //Types and Functions//), and using |-weave-tag|
-at the command line filters the weave down to just these. Sing to the tune
-of Suzanne Vega's "Freeze Tag".
-
-[10] No index is made if the user asked for only a single section or chapter
+[1] No index is made if the user asked for only a single section or chapter
 to be woven; only if there was a swarm.
 
-[11] So when Inweb is used to construct the website you are, perhaps, reading
+[2] So when Inweb is used to construct the website you are, perhaps, reading
 this text on, around 80 //weave_order// objects will be made, one for each
 call to //Swarm::weave_subset//, which in turn is one for each section of the
 source-code web of Inweb itself.
 
 @ And so we descend into //The Weaver//, where the function //Weaver::weave//
-is given the //weave_order// and told to get on with it.[12]
+is given the //weave_order// and told to get on with it.[1]
 
 The method is actually very simple, and is just a depth-first traverse of the
 above tree structure for the web, weaving the lines one at a time and keeping
@@ -245,23 +250,23 @@ example, to weave a line of C into HTML format, the weaver first calls
 and then calls //Formats::source_code//, which in turn calls |SOURCE_CODE_FOR_MTID|
 on the //weave_format// object representing HTML.
 
-[12] "Weaver, weave" really ought to be a folk song, but if so, I can't find
+[1] "Weaver, weave" really ought to be a folk song, but if so, I can't find
 it on Spotify.
 
 @ Syntax-colouring is worth further mention, since it demonstrates how
 language support works. In principle, any //programming_language// object
 can do whatever it likes in response to |SYNTAX_COLOUR_WEA_MTID|. But if Inweb
 assigns no particular code to this, what instead happens is that the generic
-handler function in //ACME Support// takes on the task.[13] This runs the
+handler function in //ACME Support// takes on the task.[1] This runs the
 colouring program in the language's definition file, by calling an algorithm
 called //The Painter//. Colouring programs are, in effect, a mini-language
 of their own, which is compiled by //Programming Languages// and then run
 in a low-level interpreter by //The Painter//.
 
-[13] "ACME" is used here in the sense of "generic".
+[1] "ACME" is used here in the sense of "generic".
 
 @ As for the formats, see //TeX Format// for how TeX output is done, and see
-//Running Through TeX// for issuing shell commands to turn that into PDFs.[14]
+//Running Through TeX// for issuing shell commands to turn that into PDFs.[1]
 
 See //HTML Formats// for HTML and ebook weaving, but see also a suite of
 useful functions in //Colonies// which coordinate URLs across websites so
@@ -269,7 +274,7 @@ that one web's weave can safely link to another's. In particular, cross-referenc
 written in |//this notation//| are "resolved" by //Colonies::resolve_reference_in_weave//,
 and the function //Colonies::reference_URL// turns them into relative URLs
 from any given file. Within the main web being woven, //Colonies::paragraph_URL//
-can make a link to any paragraph of your choice.[15]
+can make a link to any paragraph of your choice.[2]
 
 The HTML format also has the ability to request a //weave_plugin//, which is
 a bundle of JavaScriot and CSS to implement some unusual feature. Inweb uses
@@ -277,11 +282,11 @@ two already, one for footnotes, one for mathematics. Plugins are only woven
 into web pages actually using them, to save loading unnecessary JavaScript
 in the browser. See //Weave Plugins//.
 
-[14] When Inweb was begun, this seemed the main use case, the most important
+[1] When Inweb was begun, this seemed the main use case, the most important
 thing, the big deal -- all Knuthian points of view. It now seems clear that
 TeX/PDF is much less important than HTML/ePub.
 
-[15] Inweb anchors at paragraphs; it does not anchor at individual lines.
+[2] Inweb anchors at paragraphs; it does not anchor at individual lines.
 This is intentional, as it's intended to take the reader to just enough
 context and explanation to understand what is being linked to.
 
@@ -305,7 +310,7 @@ appropriate //tangle_target// object, and calls //Tangler::tangle//.
 Most webs have just one "tangle target", meaning that the whole web makes
 a single program -- in that case, the choice is obvious. However, the
 contents section can mark certain chapters or sections as being independent
-targets.[16]
+targets.[1]
 
 //Tangler::tangle// works hierarchically, calling down to //Tangler::tangle_paragraph//
 and finally //Tangler::tangle_line// on individual lines of code. Throughout
@@ -325,7 +330,7 @@ in particular //text_literal// for text constants like |I"banana"|
 and //preform_nonterminal// for Preform grammar notation like
 |<sentence-ending>|.
 
-[16] The original intention of this feature was that a program might want
+[1] The original intention of this feature was that a program might want
 to have, as "appendices", certain configuration files or other extraneous
 matter needing explanation. The author was motivated here by the example of
 "TeX", which was presented as a literate program, but was difficult fully
@@ -357,16 +362,13 @@ were errors, or 0 if not, like a good Unix citizen.
 @h Adding to Inweb.
 Here's some miscellaneous advice for those tempted to do so:
 
-(a) If you are creating a new class of object, don't forget to declare it
-in //Basics//.
-
-(b) To add a new command-line switch, declare at //Configuration::read// and
+1. To add a new command-line switch, declare at //Configuration::read// and
 add a field to //inweb_instructions// which holds the setting; don't act on it
 then and there, only in //Program Control// later. But we don't want these
 settings to proliferate: ask first if adding a feature to, say, //Colonies//
 or //weave_pattern// files would meet the same need.
 
-(c) To add new programming languages, try if possible to do everything you
+2. To add new programming languages, try if possible to do everything you
 need with a new definition file alone: see //Supporting Programming Languages//.
 Failing that, see if making definition files more powerful would do it (for
 example, by making the ACME support more general-purpose). Failing even that,
@@ -376,10 +378,14 @@ to a language with a given name, or, preferably, some given declaration in
 the language definition file. On no account insert any language bias into
 //The Weaver// or //The Tangler//.
 
-(d) To add new formats, make a new section in //Chapter 5// following the
+3. To add new formats, make a new section in //Chapter 5// following the
 model of, say, //Plain Text Format// and then adding methods gradually.
 But don't forget to call your new format's creator function from
 //Formats::create_weave_formats//. Also, don't create a new format if what
 you really want is a new pattern: for example, "an HTML website but done
 differently" should be a pattern based on HTML; but Markdown would be a
-genuinely new format.
+genuinely new format. (And in any case, if you do create a new format, you
+must also create a new pattern in order to use it.)
+
+4. If you are creating a new class of object, don't forget to declare it
+in //Basics//.

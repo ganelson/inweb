@@ -73,6 +73,12 @@ p.inwebparagraph {
 	padding-bottom: 5px;
 }
 
+/* For the text of a footnote: */
+
+p.inwebfootnote {
+	line-height: 130%;
+}
+
 /* If a web macro definition begins in its own paragraph, this is it: */
 
 p.macrodefinition {

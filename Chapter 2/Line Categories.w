@@ -33,6 +33,7 @@ typedef struct source_line {
 	struct preform_nonterminal *preform_nonterminal_defined; /* similarly */
 	int suppress_tangling; /* if e.g., lines are tangled out of order */
 	int interface_line_identified; /* only relevant during parsing of Interface lines */
+	struct footnote *footnote_text; /* which fn this is the text of, if it is at all */
 
 	struct text_file_position source; /* which file this was read in from, if any */
 
@@ -60,6 +61,7 @@ source_line *Lines::new_source_line_in(text_stream *line, text_file_position *tf
 	sl->preform_nonterminal_defined = NULL;
 	sl->suppress_tangling = FALSE;
 	sl->interface_line_identified = FALSE;
+	sl->footnote_text = NULL;
 
 	if (tfp) sl->source = *tfp; else sl->source = TextFiles::nowhere();
 
@@ -92,6 +94,7 @@ version 1 syntax; version 2 removed the need for |BAR_LCAT|,
 @e CONT_DEFINITION_LCAT    /* subsequent lines of an |@d| definition */
 @e DEFINITIONS_LCAT        /* line holding the |@Definitions:| heading */
 @e END_EXTRACT_LCAT        /* an |=| line used to mark the end of an extract */
+@e FOOTNOTE_TEXT_LCAT      /* the opening of the text of a footnote */
 @e HEADING_START_LCAT      /* |@h| paragraph start: TO is title, TO2 is rest of line */
 @e INTERFACE_BODY_LCAT     /* line within the interface, under this heading */
 @e INTERFACE_LCAT          /* line holding the |@Interface:| heading */
@@ -125,6 +128,7 @@ char *Lines::category_name(int cat) {
 		case CONT_DEFINITION_LCAT: return "CONT_DEFINITION";
 		case DEFINITIONS_LCAT: return "DEFINITIONS";
 		case END_EXTRACT_LCAT: return "END_EXTRACT";
+		case FOOTNOTE_TEXT_LCAT: return "FOOTNOTE_TEXT";
 		case HEADING_START_LCAT: return "PB_PARAGRAPH_START";
 		case INTERFACE_BODY_LCAT: return "INTERFACE_BODY";
 		case INTERFACE_LCAT: return "INTERFACE";

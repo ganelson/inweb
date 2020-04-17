@@ -83,9 +83,7 @@ typedef struct weave_order {
 
 	/* used for workspace during an actual weave: */
 	struct source_line *current_weave_line;
-	struct linked_list *footnotes_cued; /* of |text_stream| */
-	struct linked_list *footnotes_written; /* of |text_stream| */
-	struct text_stream *current_footnote;
+	struct footnote *current_footnote;
 	MEMORY_MANAGEMENT
 } weave_order;
 
@@ -107,9 +105,7 @@ typedef struct weave_order {
 	Str::copy(wv->cover_sheet_to_use, I"cover-sheet");
 	
 	wv->current_weave_line = NULL;
-	wv->footnotes_cued = NEW_LINKED_LIST(text_stream);
-	wv->footnotes_written = NEW_LINKED_LIST(text_stream);
-	wv->current_footnote = Str::new();
+	wv->current_footnote = NULL;
 
 	int has_content = FALSE;
 	chapter *C;

@@ -113,9 +113,7 @@ typedef struct weaver_state {
 	state->sectionmark = Str::new();
 
 @<Wipe the slate clean of footnotes@> =
-	wv->footnotes_cued = NEW_LINKED_LIST(text_stream);
-	wv->footnotes_written = NEW_LINKED_LIST(text_stream);
-	wv->current_footnote = Str::new();
+	wv->current_footnote = NULL;
 
 @h Weaving a section.
 
@@ -370,41 +368,21 @@ in the source is set indented in code style.
 	Regexp::dispose_of(&mr);
 
 @<Weave footnotes@> =
-	TEMPORARY_TEXT(before);
-	TEMPORARY_TEXT(cue);
-	TEMPORARY_TEXT(after);
-	int this_is_a_cue = FALSE;
-	if (Parser::detect_footnote(wv->weave_web, matter, before, cue, after)) {
-		LOOP_THROUGH_TEXT(pos, before)
-			if (Characters::is_whitespace(Str::get(pos)) == FALSE)
-				this_is_a_cue = TRUE;
-		if (this_is_a_cue) {
-			text_stream *T;
-			LOOP_OVER_LINKED_LIST(T, text_stream, wv->footnotes_cued)
-				if (Str::eq(T, cue))
-					Main::error_in_web(I"this is a duplicate footnote cue", L);
-			ADD_TO_LINKED_LIST(T, text_stream, wv->footnotes_cued);
-			if (Str::len(wv->current_footnote) > 0)
-				Main::error_in_web(I"this is a footnote cue within a footnote", L);
-		} else {
-			text_stream *T;
-			LOOP_OVER_LINKED_LIST(T, text_stream, wv->footnotes_written)
-				if (Str::eq(T, cue))
-					Main::error_in_web(I"this is a duplicate footnote text", L);
-			ADD_TO_LINKED_LIST(T, text_stream, wv->footnotes_written);
-			@<End any currently weaving footnote text@>;
-			Str::copy(wv->current_footnote, cue);
-			Formats::begin_footnote_text(OUT, wv, cue);
-		}
+	if (L->category == FOOTNOTE_TEXT_LCAT) {
+		@<End any currently weaving footnote text@>;
+		footnote *F = L->footnote_text;
+		wv->current_footnote = F;
+		Formats::begin_footnote_text(OUT, wv, F->cue_text);
+		if (F->cued_already == FALSE) Main::error_in_web(I"footnote never cued", L);
 	}
-	DISCARD_TEXT(before);
-	DISCARD_TEXT(cue);
-	DISCARD_TEXT(after);
 
 @<End any currently weaving footnote text@> =
-	if (Str::len(wv->current_footnote) > 0) {
-		Formats::end_footnote_text(OUT, wv, wv->current_footnote);
-		Str::clear(wv->current_footnote);
+	if (wv->current_footnote) {
+		TEMPORARY_TEXT(cue);
+		WRITE_TO(cue, "%d", wv->current_footnote->footnote_text_number);
+		Formats::end_footnote_text(OUT, wv, cue);
+		DISCARD_TEXT(cue);
+		wv->current_footnote = NULL;
 	}	
 
 @h Code-like matter.

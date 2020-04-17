@@ -664,6 +664,7 @@ typedef struct paragraph {
 	struct linked_list *functions; /* of |function|: those defined in this para */
 	struct linked_list *structures; /* of |language_type|: similarly */
 	struct linked_list *taggings; /* of |paragraph_tagging| */
+	struct linked_list *footnotes; /* of |footnote| */
 	struct source_line *first_line_in_paragraph;
 	struct section *under_section;
 	MEMORY_MANAGEMENT
@@ -694,6 +695,7 @@ typedef struct paragraph {
 	P->functions = NEW_LINKED_LIST(function);
 	P->structures = NEW_LINKED_LIST(language_type);
 	P->taggings = NEW_LINKED_LIST(paragraph_tagging);
+	P->footnotes = NEW_LINKED_LIST(footnote);
 
 	P->under_section = S;
 	S->sect_paragraphs++;
@@ -754,29 +756,57 @@ text_stream *Parser::extract_purpose(text_stream *prologue, source_line *XL, sec
 
 @h Footnote notation.
 
+=
+typedef struct footnote {
+	int footnote_cue_number; /* used only for |FOOTNOTE_TEXT_LCAT| lines */
+	int footnote_text_number; /* used only for |FOOTNOTE_TEXT_LCAT| lines */
+	struct text_stream *cue_text;
+	int cued_already;
+	MEMORY_MANAGEMENT
+} footnote;
+
 @<Work out footnote numbering for this paragraph@> =
+	int next_footnote_in_para = 1;
+	footnote *current_text = NULL;
 	TEMPORARY_TEXT(before);
 	TEMPORARY_TEXT(cue);
 	TEMPORARY_TEXT(after);
 	for (source_line *L = P->first_line_in_paragraph;
-		((L) && (L->owning_paragraph == P)); L = L->next_line) {
-		Str::clear(before); Str::clear(cue); Str::clear(after);
-		if (Parser::detect_footnote(W, L->text, before, cue, after)) {
-			int this_is_a_cue = FALSE;
-			LOOP_THROUGH_TEXT(pos, before)
-				if (Characters::is_whitespace(Str::get(pos)) == FALSE)
-					this_is_a_cue = TRUE;
-			if (this_is_a_cue == FALSE)
-				@<This line begins a footnote text@>;
+		((L) && (L->owning_paragraph == P)); L = L->next_line)
+		if (L->is_commentary) {
+			Str::clear(before); Str::clear(cue); Str::clear(after);
+			if (Parser::detect_footnote(W, L->text, before, cue, after)) {
+				int this_is_a_cue = FALSE;
+				LOOP_THROUGH_TEXT(pos, before)
+					if (Characters::is_whitespace(Str::get(pos)) == FALSE)
+						this_is_a_cue = TRUE;
+				if (this_is_a_cue == FALSE)
+					@<This line begins a footnote text@>;
+			}
+			L->footnote_text = current_text;
 		}
-	}
 	DISCARD_TEXT(before);
 	DISCARD_TEXT(cue);
 	DISCARD_TEXT(after);
 
 @<This line begins a footnote text@> =
-	// PRINT("I see a footnote text! %S\n", cue);	
-	next_footnote++;
+	L->category = FOOTNOTE_TEXT_LCAT;
+	footnote *F = CREATE(footnote);	
+	F->footnote_cue_number = Str::atoi(cue, 0);
+	if (F->footnote_cue_number != next_footnote_in_para) {
+		TEMPORARY_TEXT(err);
+		WRITE_TO(err, "footnote should be numbered [%d], not [%d]",
+			next_footnote_in_para, F->footnote_cue_number);
+		Main::error_in_web(err, L);
+		DISCARD_TEXT(err);
+	}
+	next_footnote_in_para++;
+	F->footnote_text_number = next_footnote++;
+	F->cue_text = Str::new();
+	F->cued_already = FALSE;
+	WRITE_TO(F->cue_text, "%d", F->footnote_text_number);
+	ADD_TO_LINKED_LIST(F, footnote, P->footnotes);
+	current_text = F;
 
 @ Where:
 
@@ -822,6 +852,16 @@ int Parser::detect_footnote(web *W, text_stream *matter, text_stream *before,
 			}
 	}
 	return FALSE;
+}
+
+footnote *Parser::find_footnote_in_para(paragraph *P, text_stream *cue) {
+	int N = Str::atoi(cue, 0);		
+	footnote *F;
+	if (P)
+		LOOP_OVER_LINKED_LIST(F, footnote, P->footnotes)
+			if (N == F->footnote_cue_number)
+				return F;
+	return NULL;
 }
 
 @h Version errors.

@@ -525,10 +525,17 @@ void Formats::text_r(OUTPUT_STREAM, weave_order *wv, text_stream *id,
 	TEMPORARY_TEXT(after);
 	int allow = FALSE;
 	if (Parser::detect_footnote(wv->weave_web, id, before, cue, after)) {
-		allow = TRUE;
-		Formats::text_r(OUT, wv, before, within, comments);
-		Formats::footnote_cue(OUT, wv, cue);
-		Formats::text_r(OUT, wv, after, within, comments);
+		footnote *F = Parser::find_footnote_in_para(
+			wv->current_weave_line->owning_paragraph, cue);
+		if (F) {
+			F->cued_already = TRUE;
+			allow = TRUE;
+			Formats::text_r(OUT, wv, before, within, comments);
+			Formats::footnote_cue(OUT, wv, F->cue_text);
+			Formats::text_r(OUT, wv, after, within, comments);
+		} else {
+			Main::error_in_web(I"this is a cue for a missing note", wv->current_weave_line);
+		}
 	}
 	DISCARD_TEXT(before);
 	DISCARD_TEXT(cue);

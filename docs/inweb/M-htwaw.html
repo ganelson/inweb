@@ -818,11 +818,9 @@ deactivated entirely by writing the following in the Contents section of a web:
 
 <p class="inwebparagraph"><a id="SP23"></a><b>&#167;23. Footnotes. </b>Not everyone likes footnotes,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> but sometimes they're a tidy way to make
 references.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
-</p>
-
-<p class="inwebparagraph"><li class="footnote" id="fn:1"><p><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> But see Anthony Grafton, "The Footnote: A Curious History" (Harvard
+<li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> But see Anthony Grafton, "The Footnote: A Curious History" (Harvard
 University Press, 1999).
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> For example, to cite Donald Knuth, "Evaluation of Porter's constant",
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> For example, to cite Donald Knuth, "Evaluation of Porter's constant",
 Computers &amp; Mathematics with Applications, 2, 137-39 (1976).
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></p>
 
@@ -838,6 +836,11 @@ Computers &amp; Mathematics with Applications, 2, 137-39 (1976).
         <span class="identifier">[2]</span><span class="plain"> For example, to cite Donald Knuth, "Evaluation of Porter's constant",</span>
         <span class="plain">Computers &amp; Mathematics with Applications, 2, 137-39 (1976).</span>
 </pre>
+
+<p class="inwebparagraph">Note that footnotes should be numbered upwards from 1 in each individual
+paragraph; Inweb automatically renumbers them for each woven section, but
+we don't have to worry about that when typing.
+</p>
 
 <p class="inwebparagraph">If you're reading this as a web page (with Javascript on), then you should
 have seen clickable footnote blobs, which reveal the text. If Javascript is

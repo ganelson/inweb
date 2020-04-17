@@ -466,7 +466,7 @@ void HTMLFormat::begin_footnote_text(weave_format *self, text_stream *OUT, weave
 		Bibliographic::get_datum(wv->weave_web->md, I"Footnotes Plugin");
 	if (Str::ne_insensitive(fn_plugin_name, I"None"))	
 		Swarm::ensure_plugin(wv, fn_plugin_name);
-	WRITE("<li class=\"footnote\" id=\"fn:%S\"><p>", cue);	
+	WRITE("<li class=\"footnote\" id=\"fn:%S\"><p class=\"inwebfootnote\">", cue);	
 }
 
 @=

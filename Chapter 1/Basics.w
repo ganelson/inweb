@@ -17,6 +17,7 @@ see //foundation: A Brief Guide to Foundation//.
 @e colouring_language_block_MT
 @e colouring_rule_MT
 @e enumeration_set_MT
+@e footnote_MT
 @e hash_table_entry_MT
 @e hash_table_entry_usage_MT
 @e language_function_MT
@@ -56,6 +57,7 @@ ALLOCATE_INDIVIDUALLY(colony_member)
 ALLOCATE_INDIVIDUALLY(colouring_language_block)
 ALLOCATE_INDIVIDUALLY(colouring_rule)
 ALLOCATE_INDIVIDUALLY(enumeration_set)
+ALLOCATE_INDIVIDUALLY(footnote)
 ALLOCATE_INDIVIDUALLY(hash_table_entry_usage)
 ALLOCATE_INDIVIDUALLY(hash_table_entry)
 ALLOCATE_INDIVIDUALLY(language_function)
