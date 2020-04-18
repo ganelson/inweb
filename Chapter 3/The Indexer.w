@@ -84,10 +84,12 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 	if (Str::eq_wide_string(command, L"Code")) {
 		state->halves |= IN_SECOND_HALF;
 	} else if (Str::eq_wide_string(command, L"Plugins")) {
-		weave_plugin *wp;
-		LOOP_OVER_LINKED_LIST(wp, weave_plugin, state->target->plugins)
-			WeavePlugins::include(OUT, state->target->weave_web, wp,
-				state->target->pattern);
+		if (include) {
+			weave_plugin *wp;
+			LOOP_OVER_LINKED_LIST(wp, weave_plugin, state->target->plugins)
+				WeavePlugins::include(OUT, state->target->weave_web, wp,
+					state->target->pattern);
+		}
 	} else if (Str::eq_wide_string(command, L"Cover Sheet")) {
 		if (include) @<Weave in the parent pattern's cover sheet@>;
 	} else if (Regexp::match(&mr2, command, L"Navigation")) {

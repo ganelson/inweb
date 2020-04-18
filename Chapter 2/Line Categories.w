@@ -129,7 +129,7 @@ char *Lines::category_name(int cat) {
 		case DEFINITIONS_LCAT: return "DEFINITIONS";
 		case END_EXTRACT_LCAT: return "END_EXTRACT";
 		case FOOTNOTE_TEXT_LCAT: return "FOOTNOTE_TEXT";
-		case HEADING_START_LCAT: return "PB_PARAGRAPH_START";
+		case HEADING_START_LCAT: return "HEADING_START";
 		case INTERFACE_BODY_LCAT: return "INTERFACE_BODY";
 		case INTERFACE_LCAT: return "INTERFACE";
 		case MACRO_DEFINITION_LCAT: return "MACRO_DEFINITION";

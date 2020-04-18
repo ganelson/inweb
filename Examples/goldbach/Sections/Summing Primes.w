@@ -4,9 +4,10 @@ Here we verify the conjecture for small numbers.
 
 @ So, this is a program to see if even numbers from 4 to 100 can all be written
 as a sum of two primes. Christian Goldbach asked Euler in 1742 if every even
-number greater than 2 can be written this way. This remains open, though
-every even number is a sum of at most six primes (Ramaré, 1995) and every
-odd number is a sum of at most five (Tao, 2012).
+number greater than 2 can be written this way. This remains open, though --
+
+(a) every even number is a sum of at most six primes (Ramaré, 1995), and
+(b) every odd number is a sum of at most five (Tao, 2012).
 
 = (figure Letter.jpg height 10cm)
 

@@ -63,10 +63,12 @@ in different programming languages."
 
 Chapter 5: Formats
 "Weaving to a variety of different human-readable formats."
+	Weave Tree
 	Format Methods
 	Plain Text Format
 	TeX Format
 	HTML Formats
+	Debugging Format
 	Weave Plugins
 	Running Through TeX
 

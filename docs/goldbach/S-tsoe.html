@@ -6,7 +6,15 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+		<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
@@ -36,7 +44,7 @@
 
 <ul class="toc"><li><a href="S-tsoe.html#SP1">&#167;1. Storage</a></li><li><a href="S-tsoe.html#SP2">&#167;2. Primality</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Storage. </b>This technique, still essentially the best sieve for finding prime
+<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Storage. </b><p class="inwebparagraph">This technique, still essentially the best sieve for finding prime
 numbers, is attributed to Eratosthenes of Cyrene and dates from the 200s BC.
 Since composite numbers are exactly those numbers which are multiples of
 something, the idea is to remove everything which is a multiple: whatever
@@ -130,14 +138,6 @@ for example.
 <hr class="tocbar">
 <ul class="toc"><li><a href="S-sp.html">Back to 'Summing Two Primes'</a></li><li><i>(This section ends Sections.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
-<script>
-function togglePopup(material_id) {
-  var popup = document.getElementById(material_id);
-  popup.classList.toggle("show");
-}
-</script>
-
-<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

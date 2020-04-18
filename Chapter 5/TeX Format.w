@@ -14,10 +14,12 @@ void TeX::create(void) {
 
 @<Create TeX format@> =
 	weave_format *wf = Formats::create_weave_format(I"TeX", I".tex");
+	METHOD_ADD(wf, RENDER_FOR_MTID, TeX::render_TeX);
 	@<Make this format basically TeX@>;
 
 @<Create DVI format@> =
 	weave_format *wf = Formats::create_weave_format(I"DVI", I".tex");
+	METHOD_ADD(wf, RENDER_FOR_MTID, TeX::render_DVI);
 	@<Make this format basically TeX@>;
 	METHOD_ADD(wf, POST_PROCESS_POS_MTID, TeX::post_process_DVI);
 	METHOD_ADD(wf, POST_PROCESS_POS_MTID, TeX::post_process_report);
@@ -26,36 +28,24 @@ void TeX::create(void) {
 
 @<Create PDF format@> =
 	weave_format *wf = Formats::create_weave_format(I"PDF", I".tex");
+	METHOD_ADD(wf, RENDER_FOR_MTID, TeX::render_PDF);
 	METHOD_ADD(wf, PARA_MACRO_FOR_MTID, TeX::para_macro_PDF_1);
 	@<Make this format basically TeX@>;
 	METHOD_ADD(wf, PARA_MACRO_FOR_MTID, TeX::para_macro_PDF_2);
 	METHOD_ADD(wf, CHANGE_COLOUR_FOR_MTID, TeX::change_colour_PDF);
-	METHOD_ADD(wf, FIGURE_FOR_MTID, TeX::figure_PDF);
 	METHOD_ADD(wf, POST_PROCESS_POS_MTID, TeX::post_process_PDF);
 	METHOD_ADD(wf, POST_PROCESS_SUBSTITUTE_POS_MTID, TeX::post_process_substitute);
 	METHOD_ADD(wf, INDEX_PDFS_POS_MTID, TeX::yes);
 	METHOD_ADD(wf, PRESERVE_MATH_MODE_FOR_MTID, TeX::preserve_math_mode);
 
 @<Make this format basically TeX@> =
-	METHOD_ADD(wf, TOP_FOR_MTID, TeX::top);
-	METHOD_ADD(wf, SUBHEADING_FOR_MTID, TeX::subheading);
-	METHOD_ADD(wf, TOC_FOR_MTID, TeX::toc);
 	METHOD_ADD(wf, CHAPTER_TP_FOR_MTID, TeX::chapter_title_page);
-	METHOD_ADD(wf, PARAGRAPH_HEADING_FOR_MTID, TeX::paragraph_heading);
 	METHOD_ADD(wf, SOURCE_CODE_FOR_MTID, TeX::source_code);
 	METHOD_ADD(wf, INLINE_CODE_FOR_MTID, TeX::inline_code);
-	METHOD_ADD(wf, DISPLAY_LINE_FOR_MTID, TeX::display_line);
-	METHOD_ADD(wf, ITEM_FOR_MTID, TeX::item);
-	METHOD_ADD(wf, BAR_FOR_MTID, TeX::bar);
 	METHOD_ADD(wf, PARA_MACRO_FOR_MTID, TeX::para_macro);
-	METHOD_ADD(wf, PAGEBREAK_FOR_MTID, TeX::pagebreak);
-	METHOD_ADD(wf, BLANK_LINE_FOR_MTID, TeX::blank_line);
 	METHOD_ADD(wf, AFTER_DEFINITIONS_FOR_MTID, TeX::after_definitions);
-	METHOD_ADD(wf, CHANGE_MATERIAL_FOR_MTID, TeX::change_material);
-	METHOD_ADD(wf, ENDNOTE_FOR_MTID, TeX::endnote);
 	METHOD_ADD(wf, COMMENTARY_TEXT_FOR_MTID, TeX::commentary_text);
 	METHOD_ADD(wf, LOCALE_FOR_MTID, TeX::locale);
-	METHOD_ADD(wf, TAIL_FOR_MTID, TeX::tail);
 	METHOD_ADD(wf, PREFORM_DOCUMENT_FOR_MTID, TeX::preform_document);
 	METHOD_ADD(wf, POST_PROCESS_SUBSTITUTE_POS_MTID, TeX::post_process_substitute);
 	METHOD_ADD(wf, PRESERVE_MATH_MODE_FOR_MTID, TeX::preserve_math_mode);
@@ -64,20 +54,258 @@ void TeX::create(void) {
 For documentation, see "Weave Fornats".
 
 =
-int TeX::preserve_math_mode(weave_format *self, weave_order *wv,
-	text_stream *matter, text_stream *id) {
+typedef struct TeX_render_state {
+	struct text_stream *OUT;
+	struct weave_order *wv;
+	int as_DVI;
+	int as_PDF;
+} TeX_render_state;
+
+void TeX::render_TeX(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) {
+	TeX::render_inner(self, OUT, tree, FALSE, FALSE);
+}
+void TeX::render_DVI(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) {
+	TeX::render_inner(self, OUT, tree, TRUE, FALSE);
+}
+void TeX::render_PDF(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) {
+	TeX::render_inner(self, OUT, tree, FALSE, TRUE);
+}
+
+void TeX::render_inner(weave_format *self, text_stream *OUT, heterogeneous_tree *tree, int as_dvi, int as_pdf) {
+	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
+	TeX_render_state trs;
+	trs.OUT = OUT;
+	trs.wv = C->wv;
+	trs.as_DVI = as_dvi;
+	trs.as_PDF = as_pdf;
+	Trees::traverse_from(tree->root, &TeX::render_visit, (void *) &trs, 0);
+}
+
+int TeX::render_visit(tree_node *N, void *state, int L) {
+	TeX_render_state *trs = (TeX_render_state *) state;
+	text_stream *OUT = trs->OUT;
+	if (N->type == weave_document_node_type) @<Render nothing@>
+	else if (N->type == weave_head_node_type) @<Render head@>
+	else if (N->type == weave_body_node_type) @<Render nothing@>
+	else if (N->type == weave_tail_node_type) @<Render tail@>
+	else if (N->type == weave_verbatim_node_type) @<Render verbatim@>
+	else if (N->type == weave_chapter_header_node_type) @<Render chapter header@>
+	else if (N->type == weave_chapter_footer_node_type) @<Render nothing@>
+	else if (N->type == weave_section_header_node_type) @<Render header@>
+	else if (N->type == weave_section_footer_node_type) @<Render nothing@>
+	else if (N->type == weave_section_purpose_node_type) @<Render purpose@>
+	else if (N->type == weave_subheading_node_type) @<Render subheading@>
+	else if (N->type == weave_bar_node_type) @<Render bar@>
+	else if (N->type == weave_pagebreak_node_type) @<Render pagebreak@>
+	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraph heading@>
+	else if (N->type == weave_endnote_node_type) @<Render endnote@>
+	else if (N->type == weave_figure_node_type) @<Render figure@>
+	else if (N->type == weave_chm_node_type) @<Render chm@>
+	else if (N->type == weave_embed_node_type) @<Render weave_embed_node@>
+	else if (N->type == weave_pmac_node_type) @<Render weave_pmac_node@>
+	else if (N->type == weave_vskip_node_type) @<Render vskip@>
+	else if (N->type == weave_apres_defn_node_type) @<Render weave_apres_defn_node@>
+	else if (N->type == weave_change_colour_node_type) @<Render weave_change_colour_node@>
+	else if (N->type == weave_text_node_type) @<Render weave_text_node@>
+	else if (N->type == weave_comment_node_type) @<Render weave_comment_node@>
+	else if (N->type == weave_link_node_type) @<Render weave_link_node@>
+	else if (N->type == weave_commentary_node_type) @<Render weave_commentary_node@>
+	else if (N->type == weave_preform_document_node_type) @<Render weave_preform_document_node@>
+	else if (N->type == weave_toc_node_type) @<Render toc@>
+	else if (N->type == weave_toc_line_node_type) @<Render toc line@>
+	else if (N->type == weave_chapter_title_page_node_type) @<Render weave_chapter_title_page_node@>
+	else if (N->type == weave_source_fragment_node_type) @<Render weave_source_fragment_node@>
+	else if (N->type == weave_source_code_node_type) @<Render weave_source_code_node@>
+	else if (N->type == weave_url_node_type) @<Render weave_url_node@>
+	else if (N->type == weave_footnote_cue_node_type) @<Render weave_footnote_cue_node@>
+	else if (N->type == weave_begin_footnote_text_node_type) @<Render weave_begin_footnote_text_node@>
+	else if (N->type == weave_end_footnote_text_node_type) @<Render weave_end_footnote_text_node@>
+	else if (N->type == weave_display_line_node_type) @<Render display line@>
+	else if (N->type == weave_item_node_type) @<Render item@>
+	else if (N->type == weave_grammar_index_node_type) @<Render grammar index@>
+	else internal_error("unable to render unknown node");
 	return TRUE;
 }
 
-int TeX::yes(weave_format *self, weave_order *wv) {
-	return TRUE;
-}
-
-@ =
-void TeX::top(weave_format *self, text_stream *OUT, weave_order *wv, text_stream *comment) {
-	WRITE("%% %S\n", comment);
+@<Render head@> =
+	weave_head_node *C = RETRIEVE_POINTER_weave_head_node(N->content);
+	WRITE("%% %S\n", C->banner);
 	@<Incorporate suitable TeX macro definitions into the woven output@>;
-}
+
+@<Render tail@> =
+	weave_tail_node *C = RETRIEVE_POINTER_weave_tail_node(N->content);
+	WRITE("%% %S\n", C->rennab);
+	WRITE("\\end\n");
+
+@<Render chapter header@> =
+	weave_chapter_header_node *C = RETRIEVE_POINTER_weave_chapter_header_node(N->content);
+	TeX::paragraph_heading(trs->wv->format, OUT, trs->wv, FIRST_IN_LINKED_LIST(section, C->chap->sections), NULL, C->chap->md->ch_title, 3, FALSE);
+
+@<Render header@> =
+	weave_section_header_node *C = RETRIEVE_POINTER_weave_section_header_node(N->content);
+	TeX::paragraph_heading(trs->wv->format, OUT, trs->wv, C->sect, NULL, C->sect->md->sect_title, 2, FALSE);
+
+@<Render purpose@> =
+	weave_section_purpose_node *C = RETRIEVE_POINTER_weave_section_purpose_node(N->content);
+	TeX::subheading(trs->wv->format, OUT, trs->wv, 2, C->purpose, NULL);
+
+@<Render subheading@> =
+	weave_subheading_node *C = RETRIEVE_POINTER_weave_subheading_node(N->content);
+	TeX::subheading(trs->wv->format, OUT, trs->wv, 1, C->text, NULL);
+
+@<Render bar@> =
+	WRITE("\\par\\medskip\\noindent\\hrule\\medskip\\noindent\n");
+
+@<Render pagebreak@> =
+	WRITE("\\vfill\\eject\n");
+
+@<Render paragraph heading@> =
+	weave_paragraph_heading_node *C = RETRIEVE_POINTER_weave_paragraph_heading_node(N->content);
+	TeX::paragraph_heading(trs->wv->format, OUT, trs->wv, C->para->under_section, C->para, I"Dunno", 0, FALSE);
+
+@<Render endnote@> =
+	weave_endnote_node *C = RETRIEVE_POINTER_weave_endnote_node(N->content);
+	WRITE("\\par\\noindent\\penalty10000\n");
+	WRITE("{\\usagefont ");
+	WRITE("%S", C->text);
+	WRITE("}\\smallskip\n");
+
+@ TeX itself has an almost defiant lack of support for anything pictorial,
+which is one reason it didn't live up to its hope of being the definitive basis
+for typography; even today the loose confederation of TeX-like programs and
+extensions lack standard approaches. Here we're going to use |pdftex| features,
+having nothing better. All we're trying for is to insert a picture, scaled
+to a given width, into the text at the current position.
+
+@<Render figure@> =
+	if (trs->as_PDF) {
+		weave_figure_node *C = RETRIEVE_POINTER_weave_figure_node(N->content);
+		WRITE("\\pdfximage");
+		if (C->w >= 0)
+			WRITE(" width %d cm{../Figures/%S}\n", C->w, C->figname);
+		else if (C->h >= 0)
+			WRITE(" height %d cm{../Figures/%S}\n", C->h, C->figname);
+		else
+			WRITE("{../Figures/%S}\n", C->figname);
+		WRITE("\\smallskip\\noindent"
+			"\\hbox to\\hsize{\\hfill\\pdfrefximage \\pdflastximage\\hfill}"
+			"\\smallskip\n");
+	}
+
+@<Render chm@> =
+	weave_chm_node *C = RETRIEVE_POINTER_weave_chm_node(N->content);
+	TeX::change_material(trs->wv->format, OUT, trs->wv, C->old_material, C->new_material,
+		C->content, C->plainly);
+
+@<Render verbatim@> =
+	weave_verbatim_node *C = RETRIEVE_POINTER_weave_verbatim_node(N->content);
+	WRITE("%S", C->content);
+
+@<Render nothing@> =
+	;
+
+@<Render weave_embed_node@> =
+	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render weave_pmac_node@> =
+	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render vskip@> =
+	weave_vskip_node *C = RETRIEVE_POINTER_weave_vskip_node(N->content);
+	if (C->in_comment) WRITE("\\smallskip\\par\\noindent%%\n");
+	else WRITE("\\smallskip\n");
+
+@<Render weave_apres_defn_node@> =
+	weave_apres_defn_node *C = RETRIEVE_POINTER_weave_apres_defn_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render weave_change_colour_node@> =
+	weave_change_colour_node *C = RETRIEVE_POINTER_weave_change_colour_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render weave_text_node@> =
+	weave_text_node *C = RETRIEVE_POINTER_weave_text_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render weave_comment_node@> =
+	weave_comment_node *C = RETRIEVE_POINTER_weave_comment_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render weave_link_node@> =
+	weave_link_node *C = RETRIEVE_POINTER_weave_link_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render weave_commentary_node@> =
+	weave_commentary_node *C = RETRIEVE_POINTER_weave_commentary_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render weave_preform_document_node@> =
+	weave_preform_document_node *C = RETRIEVE_POINTER_weave_preform_document_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render toc@> =
+	weave_toc_node *C = RETRIEVE_POINTER_weave_toc_node(N->content);
+	if (trs->wv->pattern->show_abbrevs)
+		WRITE("\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont %S.", C->text1);
+	else
+		WRITE("\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont ");
+	for (tree_node *M = N->child; M; M = M->next) {
+		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) trs, L+1);
+		if (M->next) WRITE("; ");
+	}
+	WRITE("}\\par\\medskip\\hrule\\bigskip\n");
+	return FALSE;
+
+@<Render toc line@> =
+	weave_toc_line_node *C = RETRIEVE_POINTER_weave_toc_line_node(N->content);
+	WRITE("%S~%S", C->text1, C->text2);
+
+@<Render weave_chapter_title_page_node@> =
+	weave_chapter_title_page_node *C = RETRIEVE_POINTER_weave_chapter_title_page_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render weave_source_fragment_node@> =
+	weave_source_fragment_node *C = RETRIEVE_POINTER_weave_source_fragment_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render weave_source_code_node@> =
+	weave_source_code_node *C = RETRIEVE_POINTER_weave_source_code_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render weave_url_node@> =
+	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render weave_footnote_cue_node@> =
+	weave_footnote_cue_node *C = RETRIEVE_POINTER_weave_footnote_cue_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render weave_begin_footnote_text_node@> =
+	weave_begin_footnote_text_node *C = RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render weave_end_footnote_text_node@> =
+	weave_end_footnote_text_node *C = RETRIEVE_POINTER_weave_end_footnote_text_node(N->content);
+	LOG("It was %d\n", C->allocation_id);
+
+@<Render display line@> =
+	weave_display_line_node *C = RETRIEVE_POINTER_weave_display_line_node(N->content);
+	WRITE("\\quotesource{%S}\n", C->text);
+
+@<Render item@> =
+	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
+	if (Str::len(C->label) > 0) {
+		if (C->depth == 1) WRITE("\\item{(%S)}", C->label);
+		else WRITE("\\itemitem{(%S)}", C->label);
+	} else {
+		if (C->depth == 1) WRITE("\\item{}");
+		else WRITE("\\itemitem{}");
+	}
+
+@<Render grammar index@> =
+	InCSupport::weave_grammar_index(OUT);
 
 @ We don't use TeX's |\input| mechanism for macros because it is so prone to
 failures when searching directories (especially those with spaces in the
@@ -87,7 +315,7 @@ which is rather hard to escape from.
 Instead we paste the entire text of our macros file into the woven TeX:
 
 @<Incorporate suitable TeX macro definitions into the woven output@> =
-	filename *Macros = Patterns::obtain_filename(wv->pattern, I"inweb-macros.tex");
+	filename *Macros = Patterns::obtain_filename(trs->wv->pattern, I"inweb-macros.tex");
 	FILE *MACROS = Filenames::fopen(Macros, "r");
 	if (MACROS == NULL) Errors::fatal_with_file("can't open file of TeX macros", Macros);
 	while (TRUE) {
@@ -96,6 +324,16 @@ Instead we paste the entire text of our macros file into the woven TeX:
 		PUT(c);
 	}
 	fclose(MACROS);
+
+@ =
+int TeX::preserve_math_mode(weave_format *self, weave_order *wv,
+	text_stream *matter, text_stream *id) {
+	return TRUE;
+}
+
+int TeX::yes(weave_format *self, weave_order *wv) {
+	return TRUE;
+}
 
 @ =
 void TeX::subheading(weave_format *self, text_stream *OUT, weave_order *wv,
@@ -151,13 +389,15 @@ void TeX::chapter_title_page(weave_format *self, text_stream *OUT, weave_order *
 @ =
 text_stream *P_literal = NULL;
 void TeX::paragraph_heading(weave_format *self, text_stream *OUT, weave_order *wv,
-	text_stream *TeX_macro, section *S, paragraph *P, text_stream *heading_text,
-	text_stream *chaptermark, text_stream *sectionmark, int weight) {
+	section *S, paragraph *P, text_stream *heading_text, int weight, int no_skip) {
+	text_stream *TeX_macro = NULL;
+	@<Choose which TeX macro to use in order to typeset the new paragraph heading@>;
+	
 	if (P_literal == NULL) P_literal = Str::new_from_wide_string(L"P");
 	text_stream *orn = (P)?(P->ornament):P_literal;
 	text_stream *N = (P)?(P->paragraph_number):NULL;
 	TEMPORARY_TEXT(mark);
-	WRITE_TO(mark, "%S%S\\quad$\\%S$%S", chaptermark, sectionmark, orn, N);
+	@<Work out the next mark to place into the TeX vertical list@>;
 	TEMPORARY_TEXT(modified);
 	Str::copy(modified, heading_text);
 	match_results mr = Regexp::create_mr();
@@ -175,6 +415,70 @@ void TeX::paragraph_heading(weave_format *self, text_stream *OUT, weave_order *w
 	DISCARD_TEXT(modified);
 	Regexp::dispose_of(&mr);
 }
+
+@ We want to have different heading styles for different weights, and TeX is
+horrible at using macro parameters as function arguments, so we don't want
+to pass the weight that way. Instead we use
+= (text)
+	\weavesection
+	\weavesections
+	\weavesectionss
+	\weavesectionsss
+=
+where the weight is the number of terminal |s|s, 0 to 3. (TeX macros,
+lamentably, are not allowed digits in their name.) In the cases 0 and 1, we
+also have variants |\nsweavesection| and |\nsweavesections| which are
+the same, but with the initial vertical spacing removed; these allow us to
+prevent unsightly excess white space in certain configurations of a section.
+
+@<Choose which TeX macro to use in order to typeset the new paragraph heading@> =
+	switch (weight) {
+		case 0: TeX_macro = I"weavesection"; break;
+		case 1: TeX_macro = I"weavesections"; break;
+		case 2: TeX_macro = I"weavesectionss"; break;
+		default: TeX_macro = I"weavesectionsss"; break;
+	}
+	if (wv->theme_match) {
+		switch (weight) {
+			case 0: TeX_macro = I"tweavesection"; break;
+			case 1: TeX_macro = I"tweavesections"; break;
+			case 2: TeX_macro = I"tweavesectionss"; break;
+			default: TeX_macro = I"tweavesectionsss"; break;
+		}
+	}
+	if (no_skip) {
+		switch (weight) {
+			case 0: TeX_macro = I"nsweavesection"; break;
+			case 1: TeX_macro = I"nsweavesections"; break;
+		}
+	}
+
+@ "Marks" are the contrivance by which TeX produces running heads on pages
+which follow the material on those pages: so that the running head for a page
+can show the paragraph range for the material which tops it, for instance.
+
+The ornament has to be set in math mode, even in the mark. |\S| and |\P|,
+making a section sign and a pilcrow respectively, only work in math mode
+because they abbreviate characters found in math fonts but not regular ones,
+in TeX's deeply peculiar font encoding system.
+
+@<Work out the next mark to place into the TeX vertical list@> =
+	text_stream *chaptermark = Str::new();
+	text_stream *sectionmark = Str::new();
+	if (weight == 3) {
+		Str::copy(chaptermark, S->owning_chapter->md->ch_title);
+		Str::clear(sectionmark);
+	}
+	if (weight == 2) {
+		Str::copy(sectionmark, S->md->sect_title);
+		if (wv->pattern->show_abbrevs == FALSE) Str::clear(chaptermark);
+		else if (Str::len(S->md->sect_range) > 0) Str::copy(chaptermark, S->md->sect_range);
+		if (Str::len(chaptermark) > 0) {
+			Str::clear(sectionmark);
+			WRITE_TO(sectionmark, " - %S", S->md->sect_title);
+		}
+	}
+	WRITE_TO(mark, "%S%S\\quad$\\%S$%S", chaptermark, sectionmark, orn, N);
 
 @ Code is typeset by TeX within vertical strokes; these switch a sort of
 typewriter-type verbatim mode on and off. To get an actual stroke, we must
@@ -246,51 +550,6 @@ void TeX::change_colour_PDF(weave_format *self, text_stream *OUT, weave_order *w
 	}
 }
 
-@ =
-void TeX::display_line(weave_format *self, text_stream *OUT, weave_order *wv,
-	text_stream *text) {
-	WRITE("\\quotesource{%S}\n", text);
-}
-
-@ =
-void TeX::item(weave_format *self, text_stream *OUT, weave_order *wv, int depth,
-	text_stream *label) {
-	if (Str::len(label) > 0) {
-		if (depth == 1) WRITE("\\item{(%S)}", label);
-		else WRITE("\\itemitem{(%S)}", label);
-	} else {
-		if (depth == 1) WRITE("\\item{}");
-		else WRITE("\\itemitem{}");
-	}
-}
-
-@ =
-void TeX::bar(weave_format *self, text_stream *OUT, weave_order *wv) {
-	WRITE("\\par\\medskip\\noindent\\hrule\\medskip\\noindent\n");
-}
-
-@ TeX itself has an almost defiant lack of support for anything pictorial,
-which is one reason it didn't live up to its hope of being the definitive basis
-for typography; even today the loose confederation of TeX-like programs and
-extensions lack standard approaches. Here we're going to use |pdftex| features,
-having nothing better. All we're trying for is to insert a picture, scaled
-to a given width, into the text at the current position.
-
-=
-void TeX::figure_PDF(weave_format *self, text_stream *OUT, weave_order *wv,
-	text_stream *figname, int w, int h, programming_language *pl) {
-	WRITE("\\pdfximage");
-	if (w >= 0)
-		WRITE(" width %d cm{../Figures/%S}\n", w, figname);
-	else if (h >= 0)
-		WRITE(" height %d cm{../Figures/%S}\n", h, figname);
-	else
-		WRITE("{../Figures/%S}\n", figname);
-	WRITE("\\smallskip\\noindent"
-		"\\hbox to\\hsize{\\hfill\\pdfrefximage \\pdflastximage\\hfill}"
-		"\\smallskip\n");
-}
-
 @ Any usage of angle-macros is highlighted in several cute ways: first,
 we make use of colour and we drop in the paragraph number of the definition
 of the macro in small type; and second, we use cross-reference links.
@@ -326,30 +585,8 @@ void TeX::para_macro_PDF_2(weave_format *self, text_stream *OUT, weave_order *wv
 }
 
 @ =
-void TeX::pagebreak(weave_format *self, text_stream *OUT, weave_order *wv) {
-	WRITE("\\vfill\\eject\n");
-}
-
-@ =
-void TeX::blank_line(weave_format *self, text_stream *OUT, weave_order *wv,
-	int in_comment) {
-	if (in_comment) WRITE("\\smallskip\\par\\noindent%%\n");
-	else WRITE("\\smallskip\n");
-}
-
-@ =
 void TeX::after_definitions(weave_format *self, text_stream *OUT, weave_order *wv) {
 	WRITE("\\smallskip\n");
-}
-
-@ =
-void TeX::endnote(weave_format *self, text_stream *OUT, weave_order *wv, int end) {
-	if (end == 1) {
-		WRITE("\\par\\noindent\\penalty10000\n");
-		WRITE("{\\usagefont ");
-	} else {
-		WRITE("}\\smallskip\n");
-	}
 }
 
 @ =

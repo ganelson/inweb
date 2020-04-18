@@ -46,6 +46,46 @@ see //foundation: A Brief Guide to Foundation//.
 @e web_MT
 @e writeme_asset_MT
 
+@e weave_document_node_MT
+@e weave_head_node_MT
+@e weave_body_node_MT
+@e weave_tail_node_MT
+@e weave_section_header_node_MT
+@e weave_section_footer_node_MT
+@e weave_chapter_header_node_MT
+@e weave_chapter_footer_node_MT
+@e weave_verbatim_node_MT
+@e weave_section_purpose_node_MT
+@e weave_subheading_node_MT
+@e weave_bar_node_MT
+@e weave_pagebreak_node_MT
+@e weave_paragraph_heading_node_MT
+@e weave_endnote_node_MT
+@e weave_chm_node_MT
+@e weave_figure_node_MT
+@e weave_embed_node_MT
+@e weave_pmac_node_MT
+@e weave_vskip_node_MT
+@e weave_apres_defn_node_MT
+@e weave_change_colour_node_MT
+@e weave_text_node_MT
+@e weave_comment_node_MT
+@e weave_link_node_MT
+@e weave_commentary_node_MT
+@e weave_preform_document_node_MT
+@e weave_toc_node_MT
+@e weave_toc_line_node_MT
+@e weave_chapter_title_page_node_MT
+@e weave_source_fragment_node_MT
+@e weave_source_code_node_MT
+@e weave_url_node_MT
+@e weave_footnote_cue_node_MT
+@e weave_begin_footnote_text_node_MT
+@e weave_end_footnote_text_node_MT
+@e weave_display_line_node_MT
+@e weave_item_node_MT
+@e weave_grammar_index_node_MT
+
 @ And then expand the following macros, all defined in //Memory//.
 
 =
@@ -84,3 +124,43 @@ ALLOCATE_INDIVIDUALLY(weave_plugin)
 ALLOCATE_INDIVIDUALLY(weave_order)
 ALLOCATE_INDIVIDUALLY(web)
 ALLOCATE_INDIVIDUALLY(writeme_asset)
+
+ALLOCATE_INDIVIDUALLY(weave_document_node)
+ALLOCATE_INDIVIDUALLY(weave_head_node)
+ALLOCATE_INDIVIDUALLY(weave_body_node)
+ALLOCATE_INDIVIDUALLY(weave_tail_node)
+ALLOCATE_INDIVIDUALLY(weave_section_header_node)
+ALLOCATE_INDIVIDUALLY(weave_section_footer_node)
+ALLOCATE_INDIVIDUALLY(weave_chapter_header_node)
+ALLOCATE_INDIVIDUALLY(weave_chapter_footer_node)
+ALLOCATE_INDIVIDUALLY(weave_verbatim_node)
+ALLOCATE_INDIVIDUALLY(weave_section_purpose_node)
+ALLOCATE_INDIVIDUALLY(weave_subheading_node)
+ALLOCATE_INDIVIDUALLY(weave_bar_node)
+ALLOCATE_INDIVIDUALLY(weave_pagebreak_node)
+ALLOCATE_INDIVIDUALLY(weave_paragraph_heading_node)
+ALLOCATE_INDIVIDUALLY(weave_endnote_node)
+ALLOCATE_INDIVIDUALLY(weave_chm_node)
+ALLOCATE_INDIVIDUALLY(weave_figure_node)
+ALLOCATE_INDIVIDUALLY(weave_embed_node)
+ALLOCATE_INDIVIDUALLY(weave_pmac_node)
+ALLOCATE_INDIVIDUALLY(weave_vskip_node)
+ALLOCATE_INDIVIDUALLY(weave_apres_defn_node)
+ALLOCATE_INDIVIDUALLY(weave_change_colour_node)
+ALLOCATE_INDIVIDUALLY(weave_text_node)
+ALLOCATE_INDIVIDUALLY(weave_comment_node)
+ALLOCATE_INDIVIDUALLY(weave_link_node)
+ALLOCATE_INDIVIDUALLY(weave_commentary_node)
+ALLOCATE_INDIVIDUALLY(weave_preform_document_node)
+ALLOCATE_INDIVIDUALLY(weave_toc_node)
+ALLOCATE_INDIVIDUALLY(weave_toc_line_node)
+ALLOCATE_INDIVIDUALLY(weave_chapter_title_page_node)
+ALLOCATE_INDIVIDUALLY(weave_source_fragment_node)
+ALLOCATE_INDIVIDUALLY(weave_source_code_node)
+ALLOCATE_INDIVIDUALLY(weave_url_node)
+ALLOCATE_INDIVIDUALLY(weave_footnote_cue_node)
+ALLOCATE_INDIVIDUALLY(weave_begin_footnote_text_node)
+ALLOCATE_INDIVIDUALLY(weave_end_footnote_text_node)
+ALLOCATE_INDIVIDUALLY(weave_display_line_node)
+ALLOCATE_INDIVIDUALLY(weave_item_node)
+ALLOCATE_INDIVIDUALLY(weave_grammar_index_node)

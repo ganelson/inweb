@@ -132,15 +132,18 @@ void Tags::close_ifdefs(OUTPUT_STREAM, paragraph *P) {
 				P->under_section->sect_language, pt->the_tag->ifdef_symbol, pt->the_tag->ifdef_positive);
 }
 
-void Tags::show_endnote_on_ifdefs(OUTPUT_STREAM, weave_order *wv, paragraph *P) {
+void Tags::show_endnote_on_ifdefs(heterogeneous_tree *tree,
+	weave_order *wv, tree_node *body, paragraph *P) {
 	int d = 0, sense = TRUE;
+	TEMPORARY_TEXT(OUT);
 	@<Show ifdef endnoting@>;
 	sense = FALSE;
 	@<Show ifdef endnoting@>;
 	if (d > 0) {
-		Formats::text(OUT, wv, I".");
-		Formats::endnote(OUT, wv, 2);
+		WRITE(".");
+		Weaver::show_endnote(tree, wv, body, OUT);
 	}
+	DISCARD_TEXT(OUT);
 }
 
 @<Show ifdef endnoting@> =
@@ -151,7 +154,6 @@ void Tags::show_endnote_on_ifdefs(OUTPUT_STREAM, weave_order *wv, paragraph *P) 
 			if (Str::len(pt->the_tag->ifdef_symbol) > 0) {
 				if (c++ == 0) {
 					if (d++ == 0) {
-						Formats::endnote(OUT, wv, 1);
 						Formats::text(OUT, wv, I"This paragraph is used only if ");
 					} else {
 						Formats::text(OUT, wv, I" and if ");

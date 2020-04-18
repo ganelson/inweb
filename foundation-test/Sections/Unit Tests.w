@@ -402,7 +402,7 @@ void Unit::show_tree(text_stream *OUT, heterogeneous_tree *T) {
 	WRITE("Done\n");
 }
 
-void Unit::visit(tree_node *N, void *state, int L) {
+int Unit::visit(tree_node *N, void *state, int L) {
 	text_stream *OUT = (text_stream *) state;
 	for (int i=0; i<L; i++) WRITE("  ");
 	if (N->type == M) {
@@ -412,4 +412,5 @@ void Unit::visit(tree_node *N, void *state, int L) {
 		princess *P = RETRIEVE_POINTER_princess(N->content);
 		WRITE("Female: %S\n", P->girls_name);
 	} else WRITE("Unknown node\n");
+	return TRUE;
 }

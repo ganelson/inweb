@@ -181,6 +181,7 @@ come literally from the source web.
 		extract_mode = FALSE;
 		L->is_commentary = TRUE;
 		L->category = CHAPTER_HEADING_LCAT;
+		L->owning_paragraph = NULL;
 	}
 
 @ The top line of a section gives its title; in InC, it can also give the
@@ -203,6 +204,7 @@ namespace for its functions.
 		S->md->sect_title = Str::duplicate(mr.exp[2]);
 		L->text_operand = Str::duplicate(mr.exp[2]);
 		L->category = SECTION_HEADING_LCAT;
+		L->owning_paragraph = NULL;
 	} else if (Regexp::match(&mr, L->text, L"(%C+/%C+): (%c+).")) {
 		if (S->md->using_syntax >= V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L,
@@ -211,15 +213,18 @@ namespace for its functions.
 		S->md->sect_title = Str::duplicate(mr.exp[1]);
 		L->text_operand = Str::duplicate(mr.exp[1]);
 		L->category = SECTION_HEADING_LCAT;
+		L->owning_paragraph = NULL;
 	} else if (Regexp::match(&mr, L->text, L"%[(%C+::)%] (%c+).")) {
 		S->sect_namespace = Str::duplicate(mr.exp[0]);
 		S->md->sect_title = Str::duplicate(mr.exp[1]);
 		L->text_operand = Str::duplicate(mr.exp[1]);
 		L->category = SECTION_HEADING_LCAT;
+		L->owning_paragraph = NULL;
 	} else if (Regexp::match(&mr, L->text, L"(%c+).")) {
 		S->md->sect_title = Str::duplicate(mr.exp[0]);
 		L->text_operand = Str::duplicate(mr.exp[0]);
 		L->category = SECTION_HEADING_LCAT;
+		L->owning_paragraph = NULL;
 	}
 	Regexp::dispose_of(&mr);
 
@@ -496,6 +501,7 @@ in the file made of hyphens, called "the bar". All of that has gone in V2.
 		Parser::wrong_version(S->md->using_syntax, L, "'@Interface'", V1_SYNTAX);
 	if (before_bar == FALSE) Main::error_in_web(I"Interface used after bar", L);
 	L->category = INTERFACE_LCAT;
+	L->owning_paragraph = NULL;
 	L->is_commentary = TRUE;
 	source_line *XL = L->next_line;
 	while ((XL) && (XL->next_line) && (XL->owning_section == L->owning_section)) {
@@ -510,6 +516,7 @@ in the file made of hyphens, called "the bar". All of that has gone in V2.
 		Parser::wrong_version(S->md->using_syntax, L, "'@Definitions' headings", V1_SYNTAX);
 	if (before_bar == FALSE) Main::error_in_web(I"Definitions used after bar", L);
 	L->category = DEFINITIONS_LCAT;
+	L->owning_paragraph = NULL;
 	L->is_commentary = TRUE;
 	before_bar = TRUE;
 	next_par_number = 1;
@@ -522,6 +529,7 @@ constitutes the optional division bar in a section.
 		Parser::wrong_version(S->md->using_syntax, L, "the bar '----...'", V1_SYNTAX);
 	if (before_bar == FALSE) Main::error_in_web(I"second bar in the same section", L);
 	L->category = BAR_LCAT;
+	L->owning_paragraph = NULL;
 	L->is_commentary = TRUE;
 	comment_mode = TRUE;
 	S->barred = TRUE;
@@ -652,6 +660,7 @@ typedef struct paragraph {
 	int above_bar; /* placed above the dividing bar in its section (in Version 1 syntax) */
 	int placed_early; /* should appear early in the tangled code */
 	int placed_very_early; /* should appear very early in the tangled code */
+	struct text_stream *heading_text; /* if any - many paras have none */
 	struct text_stream *ornament; /* a "P" for a pilcrow or "S" for section-marker */
 	struct text_stream *paragraph_number; /* used in combination with the ornament */
 	int next_child_number; /* used when working out paragraph numbers */
@@ -681,6 +690,7 @@ typedef struct paragraph {
 		P->placed_early = before_bar;
 		P->placed_very_early = FALSE;
 	}
+	P->heading_text = Str::duplicate(L->text_operand);
 	if ((S->md->using_syntax == V1_SYNTAX) && (before_bar))
 		P->ornament = Str::duplicate(I"P");
 	else

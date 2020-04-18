@@ -208,23 +208,21 @@ Note that it is legal to traverse the empty node, and does nothing.
 
 =
 void Trees::traverse_tree(heterogeneous_tree *T,
-	void (*visitor)(tree_node *, void *, int L), void *state) {
+	int (*visitor)(tree_node *, void *, int L), void *state) {
 	if (T == NULL) internal_error("no tree");
 	Trees::traverse_from(T->root, visitor, state, 0);
 }
 
 void Trees::traverse_from(tree_node *N,
-	void (*visitor)(tree_node *, void *, int L), void *state, int L) {
-	if (N) {
-		(*visitor)(N, state, L);
-		Trees::traverse(N->child, visitor, state, L+1);
-	}
+	int (*visitor)(tree_node *, void *, int L), void *state, int L) {
+	if (N)
+		if ((*visitor)(N, state, L))
+			Trees::traverse(N->child, visitor, state, L+1);
 }
 
 void Trees::traverse(tree_node *N,
-	void (*visitor)(tree_node *, void *, int L), void *state, int L) {
-	for (tree_node *M = N; M; M = M->next) {
-		(*visitor)(M, state, L);
-		Trees::traverse(M->child, visitor, state, L+1);
-	}
+	int (*visitor)(tree_node *, void *, int L), void *state, int L) {
+	for (tree_node *M = N; M; M = M->next)
+		if ((*visitor)(M, state, L))
+			Trees::traverse(M->child, visitor, state, L+1);
 }
