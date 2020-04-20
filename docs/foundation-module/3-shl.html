@@ -2,16 +2,34 @@
 <html>
 	<head>
 		<title>Shell</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="../inweb/index.html">inweb</a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -38,108 +56,96 @@
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Operating system interface. </b>Some of our programs have to issue commands to the host operating system,
 to copy files, pass them through TeX, and so on. All of that is done using
-the C standard library <code class="display"><span class="extract">system</span></code> function; the commands invoked are all
+the C standard library <code class="display"><span class="extract-syntax">system</span></code> function; the commands invoked are all
 standard for POSIX, so will work on MacOS and Linux, but on a Windows system
 they would need to be read in a POSIX-style environment like Cygwin.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::quote_path<button class="popup" onclick="togglePopup('usagePopup238')">...<span class="popuptext" id="usagePopup238">Usage of <b>Shell::quote_path</b>:<br><a href="3-shl.html#SP3">&#167;3</a>, Epub Ebooks - <a href="5-ee.html#SP7_4_1">&#167;7.4.1</a>, <a href="5-ee.html#SP7_4_2">&#167;7.4.2</a></span></button></span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">) {</span>
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">, </span><span class="string">"%p"</span><span class="plain">, </span><span class="identifier">P</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::quote_text</a></span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">FN</span><span class="plain">);</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Shell::quote_path</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Shell::quote_path</b>:<br><a href="3-shl.html#SP3">&#167;3</a>, Epub Ebooks - <a href="5-ee.html#SP7_4_1">&#167;7.4.1</a>, <a href="5-ee.html#SP7_4_2">&#167;7.4.2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">FN</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">FN</span><span class="plain-syntax">, </span><span class="string-syntax">"%p"</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::quote_text</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">FN</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">FN</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::quote_file<button class="popup" onclick="togglePopup('usagePopup239')">...<span class="popuptext" id="usagePopup239">Usage of <b>Shell::quote_file</b>:<br><a href="3-shl.html#SP2">&#167;2</a>, <a href="3-shl.html#SP3">&#167;3</a>, <a href="3-shl.html#SP4">&#167;4</a>, Epub Ebooks - <a href="5-ee.html#SP7_4_1">&#167;7.4.1</a>, <a href="5-ee.html#SP7_4_2">&#167;7.4.2</a></span></button></span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">, </span><span class="string">"%f"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::quote_text</a></span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">FN</span><span class="plain">);</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">FN</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Shell::quote_file</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Shell::quote_file</b>:<br><a href="3-shl.html#SP2">&#167;2</a>, <a href="3-shl.html#SP3">&#167;3</a>, <a href="3-shl.html#SP4">&#167;4</a>, Epub Ebooks - <a href="5-ee.html#SP7_4_1">&#167;7.4.1</a>, <a href="5-ee.html#SP7_4_2">&#167;7.4.2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">FN</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">FN</span><span class="plain-syntax">, </span><span class="string-syntax">"%f"</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::quote_text</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">FN</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">FN</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::plain<button class="popup" onclick="togglePopup('usagePopup240')">...<span class="popuptext" id="usagePopup240">Usage of <b>Shell::plain</b>:<br><a href="3-shl.html#SP2">&#167;2</a>, <a href="3-shl.html#SP3">&#167;3</a>, <a href="3-shl.html#SP4">&#167;4</a>, Epub Ebooks - <a href="5-ee.html#SP7_4_1">&#167;7.4.1</a>, <a href="5-ee.html#SP7_4_2">&#167;7.4.2</a></span></button></span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%s"</span><span class="plain">, </span><span class="identifier">raw</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Shell::plain</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Shell::plain</b>:<br><a href="3-shl.html#SP2">&#167;2</a>, <a href="3-shl.html#SP3">&#167;3</a>, <a href="3-shl.html#SP4">&#167;4</a>, Epub Ebooks - <a href="5-ee.html#SP7_4_1">&#167;7.4.1</a>, <a href="5-ee.html#SP7_4_2">&#167;7.4.2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">raw</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%s"</span><span class="plain-syntax">, </span><span class="identifier-syntax">raw</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::plain_text<button class="popup" onclick="togglePopup('usagePopup241')">...<span class="popuptext" id="usagePopup241">Usage of <b>Shell::plain_text</b>:<br><a href="3-shl.html#SP2">&#167;2</a></span></button></span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">) {</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%S"</span><span class="plain">, </span><span class="identifier">raw</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Shell::plain_text</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Shell::plain_text</b>:<br><a href="3-shl.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">raw</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">raw</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::quote_text<button class="popup" onclick="togglePopup('usagePopup242')">...<span class="popuptext" id="usagePopup242">Usage of <b>Shell::quote_text</b>:<br>none</span></button></span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">) {</span>
-        <span class="identifier">PUT</span><span class="plain">(</span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">);</span>
-        <span class="identifier">LOOP_THROUGH_TEXT</span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">raw</span><span class="plain">) {</span>
-            <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP13">Str::get</a></span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">) </span><span class="identifier">PUT</span><span class="plain">(</span><span class="character">'\\'</span><span class="plain">);</span>
-            <span class="identifier">PUT</span><span class="plain">(</span><span class="identifier">c</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="identifier">PUT</span><span class="plain">(</span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">);</span>
-        <span class="identifier">PUT</span><span class="plain">(</span><span class="character">' '</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Shell::quote_text</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>Shell::quote_text</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">raw</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">raw</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP13" class="internal">Str::get</a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax">) </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><span class="character-syntax">'\\'</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><span class="character-syntax">' '</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The generic shell code to apply <code class="display"><span class="extract">command</span></code> to a file <code class="display"><span class="extract">F</span></code>:
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The generic shell code to apply <code class="display"><span class="extract-syntax">command</span></code> to a file <code class="display"><span class="extract-syntax">F</span></code>:
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::apply<button class="popup" onclick="togglePopup('usagePopup243')">...<span class="popuptext" id="usagePopup243">Usage of <b>Shell::apply</b>:<br><a href="3-shl.html#SP3">&#167;3</a></span></button></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">command</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">)</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::plain</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::plain</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="string">" "</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::quote_file</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP5">Shell::run</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">);</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">)</span>
-    <span class="plain">}</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::apply_S<button class="popup" onclick="togglePopup('usagePopup244')">...<span class="popuptext" id="usagePopup244">Usage of <b>Shell::apply_S</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">command</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">)</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::plain_text</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">command</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::plain</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="string">" "</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::quote_file</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP5">Shell::run</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">);</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">)</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Shell::apply</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Shell::apply</b>:<br><a href="3-shl.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">command</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::plain</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">, </span><span class="identifier-syntax">command</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::plain</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">, </span><span class="string-syntax">" "</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::quote_file</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP5" class="internal">Shell::run</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Shell::apply_S</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>Shell::apply_S</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">command</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::plain_text</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">, </span><span class="identifier-syntax">command</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::plain</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">, </span><span class="string-syntax">" "</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::quote_file</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP5" class="internal">Shell::run</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Applications to using <code class="display"><span class="extract">rm</span></code> and <code class="display"><span class="extract">cp</span></code>:
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Applications to using <code class="display"><span class="extract-syntax">rm</span></code> and <code class="display"><span class="extract-syntax">cp</span></code>:
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::rm<button class="popup" onclick="togglePopup('usagePopup245')">...<span class="popuptext" id="usagePopup245">Usage of <b>Shell::rm</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="functiontext"><a href="3-shl.html#SP2">Shell::apply</a></span><span class="plain">(</span><span class="string">"rm"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Shell::rm</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>Shell::rm</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP2" class="internal">Shell::apply</a><span class="plain-syntax">(</span><span class="string-syntax">"rm"</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::copy<button class="popup" onclick="togglePopup('usagePopup246')">...<span class="popuptext" id="usagePopup246">Usage of <b>Shell::copy</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">options</span><span class="plain">) {</span>
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">)</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::plain</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="string">"cp "</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::plain</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">options</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::plain</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="string">" "</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::quote_file</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::quote_path</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP5">Shell::run</a></span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">);</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">COMMAND</span><span class="plain">)</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Shell::copy</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Shell::copy</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">options</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::plain</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">, </span><span class="string-syntax">"cp "</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::plain</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">, </span><span class="identifier-syntax">options</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::plain</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">, </span><span class="string-syntax">" "</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::quote_file</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::quote_path</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP5" class="internal">Shell::run</a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>This writes the traditional Unix shell syntax for redirecting the output
-from both <code class="display"><span class="extract">stdout</span></code> and <code class="display"><span class="extract">stderr</span></code> to the same named file.
+from both <code class="display"><span class="extract-syntax">stdout</span></code> and <code class="display"><span class="extract-syntax">stderr</span></code> to the same named file.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::redirect<button class="popup" onclick="togglePopup('usagePopup247')">...<span class="popuptext" id="usagePopup247">Usage of <b>Shell::redirect</b>:<br>none</span></button></span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::plain</a></span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"&gt;"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::quote_file</a></span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP1">Shell::plain</a></span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"2&gt;&amp;1"</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Shell::redirect</span><button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>Shell::redirect</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::plain</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"&gt;"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::quote_file</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP1" class="internal">Shell::plain</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"2&gt;&amp;1"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Actual commands. </b>The scheme is that commands are composed using the above functions, and
 then sent to this one.
 </p>
@@ -150,50 +156,38 @@ all transcoded to UTF-8 in the most unlucky way imaginable.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">SPOOL_LENGTH</span><span class="plain"> </span><span class="constant">4</span><span class="plain">*8*</span><span class="constant">MAX_FILENAME_LENGTH</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">SPOOL_LENGTH</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax">*8*</span><span class="constant-syntax">MAX_FILENAME_LENGTH</span>
 </pre>
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">shell_verbosity</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Shell::verbose<button class="popup" onclick="togglePopup('usagePopup248')">...<span class="popuptext" id="usagePopup248">Usage of <b>Shell::verbose</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="identifier">shell_verbosity</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">shell_verbosity</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Shell::verbose</span><button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>Shell::verbose</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">shell_verbosity</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Shell::run<button class="popup" onclick="togglePopup('usagePopup249')">...<span class="popuptext" id="usagePopup249">Usage of <b>Shell::run</b>:<br><a href="3-shl.html#SP2">&#167;2</a>, <a href="3-shl.html#SP3">&#167;3</a>, POSIX Platforms - <a href="1-pp.html#SP16">&#167;16</a><br>Epub Ebooks - <a href="5-ee.html#SP7_4_1">&#167;7.4.1</a>, <a href="5-ee.html#SP7_4_2">&#167;7.4.2</a></span></button></span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">shell_verbosity</span><span class="plain">) </span><span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"shell: %S\n"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
-        <span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">SHELL_USAGE</span><span class="plain">, </span><span class="string">"shell: %S\n"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
-        <span class="reserved">char</span><span class="plain"> </span><span class="identifier">spool</span><span class="plain">[</span><span class="constant">SPOOL_LENGTH</span><span class="plain">];</span>
-        <span class="functiontext"><a href="2-str.html#SP32">Streams::write_as_locale_string</a></span><span class="plain">(</span><span class="identifier">spool</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">, </span><span class="constant">SPOOL_LENGTH</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">debugger_mode</span><span class="plain">) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDOUT</span><span class="plain">, </span><span class="string">"debugger mode suppressing shell command: %S\n"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="functiontext"><a href="1-wp.html#SP6">Platform::system</a></span><span class="plain">(</span><span class="identifier">spool</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == -1) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"shell: %S\n"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
-            <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"OS shell error"</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">127</span><span class="plain">) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"shell: %S\n"</span><span class="plain">, </span><span class="identifier">OUT</span><span class="plain">);</span>
-            <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"Execution of the shell failed"</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Shell::run</span><button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>Shell::run</b>:<br><a href="3-shl.html#SP2">&#167;2</a>, <a href="3-shl.html#SP3">&#167;3</a>, POSIX Platforms - <a href="1-pp.html#SP16">&#167;16</a>&lt;br&gt;Epub Ebooks - <a href="5-ee.html#SP7_4_1">&#167;7.4.1</a>, <a href="5-ee.html#SP7_4_2">&#167;7.4.2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">shell_verbosity</span><span class="plain-syntax">) </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"shell: %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">SHELL_USAGE</span><span class="plain-syntax">, </span><span class="string-syntax">"shell: %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">spool</span><span class="plain-syntax">[</span><span class="constant-syntax">SPOOL_LENGTH</span><span class="plain-syntax">];</span>
+    <span class="plain-syntax">    </span><a href="2-str.html#SP32" class="internal">Streams::write_as_locale_string</a><span class="plain-syntax">(</span><span class="identifier-syntax">spool</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="constant-syntax">SPOOL_LENGTH</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">debugger_mode</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">, </span><span class="string-syntax">"debugger mode suppressing shell command: %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><a href="1-wp.html#SP6" class="internal">Platform::system</a><span class="plain-syntax">(</span><span class="identifier-syntax">spool</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rv</span><span class="plain-syntax"> == -1) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="constant-syntax">STDERR</span><span class="plain-syntax">, </span><span class="string-syntax">"shell: %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"OS shell error"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rv</span><span class="plain-syntax"> == </span><span class="constant-syntax">127</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="constant-syntax">STDERR</span><span class="plain-syntax">, </span><span class="string-syntax">"shell: %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"Execution of the shell failed"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <hr class="tocbar">
 <ul class="toc"><li><a href="3-cf.html">Back to 'Case-Insensitive Filenames'</a></li><li><a href="3-drc.html">Continue with 'Directories'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
-<script>
-function togglePopup(material_id) {
-  var popup = document.getElementById(material_id);
-  popup.classList.toggle("show");
-}
-</script>
-
-<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

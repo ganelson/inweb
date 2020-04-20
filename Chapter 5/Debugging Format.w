@@ -46,32 +46,35 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_subheading_node_type) @<Render subheading@>
 	else if (N->type == weave_bar_node_type) @<Render bar@>
 	else if (N->type == weave_pagebreak_node_type) @<Render pagebreak@>
-	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraoh heading@>
+	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraph heading@>
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
 	else if (N->type == weave_figure_node_type) @<Render figure@>
-	else if (N->type == weave_chm_node_type) @<Render chm@>
+	else if (N->type == weave_material_node_type) @<Render material@>
 	else if (N->type == weave_embed_node_type) @<Render weave_embed_node@>
-	else if (N->type == weave_pmac_node_type) @<Render weave_pmac_node@>
+	else if (N->type == weave_pmac_node_type) @<Render pmac@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
-	else if (N->type == weave_apres_defn_node_type) @<Render weave_apres_defn_node@>
-	else if (N->type == weave_change_colour_node_type) @<Render weave_change_colour_node@>
-	else if (N->type == weave_text_node_type) @<Render weave_text_node@>
-	else if (N->type == weave_comment_node_type) @<Render weave_comment_node@>
-	else if (N->type == weave_link_node_type) @<Render weave_link_node@>
-	else if (N->type == weave_commentary_node_type) @<Render weave_commentary_node@>
+	else if (N->type == weave_apres_defn_node_type) @<Render apres-defn@>
+	else if (N->type == weave_chapter_node_type) @<Render chapter@>
+	else if (N->type == weave_section_node_type) @<Render section@>
+	else if (N->type == weave_code_line_node_type) @<Render code line@>
+	else if (N->type == weave_function_usage_node_type) @<Render function usage@>
+	else if (N->type == weave_commentary_node_type) @<Render commentary@>
 	else if (N->type == weave_preform_document_node_type) @<Render weave_preform_document_node@>
 	else if (N->type == weave_toc_node_type) @<Render toc@>
 	else if (N->type == weave_toc_line_node_type) @<Render toc line@>
 	else if (N->type == weave_chapter_title_page_node_type) @<Render weave_chapter_title_page_node@>
-	else if (N->type == weave_source_fragment_node_type) @<Render weave_source_fragment_node@>
-	else if (N->type == weave_source_code_node_type) @<Render weave_source_code_node@>
-	else if (N->type == weave_url_node_type) @<Render weave_url_node@>
-	else if (N->type == weave_footnote_cue_node_type) @<Render weave_footnote_cue_node@>
-	else if (N->type == weave_begin_footnote_text_node_type) @<Render weave_begin_footnote_text_node@>
-	else if (N->type == weave_end_footnote_text_node_type) @<Render weave_end_footnote_text_node@>
+	else if (N->type == weave_defn_node_type) @<Render defn@>
+	else if (N->type == weave_source_code_node_type) @<Render source code@>
+	else if (N->type == weave_url_node_type) @<Render URL@>
+	else if (N->type == weave_footnote_cue_node_type) @<Render footnote cue@>
+	else if (N->type == weave_begin_footnote_text_node_type) @<Render footnote text@>
 	else if (N->type == weave_display_line_node_type) @<Render display line@>
+	else if (N->type == weave_function_defn_node_type) @<Render function defn@>
 	else if (N->type == weave_item_node_type) @<Render item@>
 	else if (N->type == weave_grammar_index_node_type) @<Render grammar index@>
+	else if (N->type == weave_inline_node_type) @<Render inline@>
+	else if (N->type == weave_locale_node_type) @<Render locale@>
+	else if (N->type == weave_maths_node_type) @<Render maths@>
 	else WRITE("Unknown node");
 	WRITE("\n");
 	return TRUE;
@@ -79,46 +82,46 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 
 @<Render document@> =
 	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(N->content);
-	WRITE(" - weave order %d", C->wv->allocation_id);
+	WRITE(" weave order %d", C->wv->allocation_id);
 
 @<Render head@> =
 	weave_head_node *C = RETRIEVE_POINTER_weave_head_node(N->content);
-	WRITE(" - banner <%S>", C->banner);
+	WRITE(" banner <%S>", C->banner);
 
 @<Render body@> =
 	;
 
 @<Render tail@> =
 	weave_tail_node *C = RETRIEVE_POINTER_weave_tail_node(N->content);
-	WRITE(" - rennab <%S>", C->rennab);
+	WRITE(" rennab <%S>", C->rennab);
 
 @<Render verbatim@> =
 	weave_verbatim_node *C = RETRIEVE_POINTER_weave_verbatim_node(N->content);
-	WRITE(" - content %d chars", Str::len(C->content));
+	Debugging::show_text(OUT, C->content, 80);
 
 @<Render section header@> =
 	weave_section_header_node *C = RETRIEVE_POINTER_weave_section_header_node(N->content);
-	WRITE(" - section %S", C->sect->md->sect_title);
+	WRITE(" <%S>", C->sect->md->sect_title);
 
 @<Render section footer@> =
 	weave_section_footer_node *C = RETRIEVE_POINTER_weave_section_footer_node(N->content);
-	WRITE(" - section %S", C->sect->md->sect_title);
+	WRITE(" <%S>", C->sect->md->sect_title);
 
 @<Render chapter header@> =
 	weave_chapter_header_node *C = RETRIEVE_POINTER_weave_chapter_header_node(N->content);
-	WRITE(" - chapter %S", C->chap->md->ch_title);
+	WRITE(" <%S>", C->chap->md->ch_title);
 
 @<Render chapter footer@> =
 	weave_chapter_footer_node *C = RETRIEVE_POINTER_weave_chapter_footer_node(N->content);
-	WRITE(" - chapter %S", C->chap->md->ch_title);
+	WRITE(" <%S>", C->chap->md->ch_title);
 
 @<Render purpose@> =
 	weave_section_purpose_node *C = RETRIEVE_POINTER_weave_section_purpose_node(N->content);
-	WRITE(" - %S", C->purpose);
+	WRITE(" <%S>", C->purpose);
 
 @<Render subheading@> =
 	weave_subheading_node *C = RETRIEVE_POINTER_weave_subheading_node(N->content);
-	WRITE(" - %S", C->text);
+	WRITE(" <%S>", C->text);
 
 @<Render bar@> =
 	;
@@ -126,58 +129,58 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 @<Render pagebreak@> =
 	;
 
-@<Render paragraoh heading@> =
+@<Render paragraph heading@> =
 	weave_paragraph_heading_node *C = RETRIEVE_POINTER_weave_paragraph_heading_node(N->content);
-	if (Str::len(C->para->heading_text) > 0) WRITE(" - title <%S>", C->para->heading_text);
+	Debugging::show_para(OUT, C->para);
 	if (C->no_skip) WRITE(" (no skip)");
 
 @<Render endnote@> =
-	weave_endnote_node *C = RETRIEVE_POINTER_weave_endnote_node(N->content);
-	WRITE(" <%S>", C->text);
+	;
 
 @<Render figure@> =
 	weave_figure_node *C = RETRIEVE_POINTER_weave_figure_node(N->content);
 	WRITE(" <%S> %d by %d", C->figname, C->w, C->h);
 
-@<Render chm@> =
-	weave_chm_node *C = RETRIEVE_POINTER_weave_chm_node(N->content);
-	WRITE(" %d -> %d", C->old_material, C->new_material);
+@<Render material@> =
+	weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
+	WRITE(" ");
+	Debugging::show_mat(OUT, C->new_material);
 
 @<Render weave_embed_node@> =
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
 	WRITE(" - something %d", C->allocation_id);
 
-@<Render weave_pmac_node@> =
+@<Render pmac@> =
 	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+	WRITE(" <%S>", C->pmac->macro_name);
+	if (C->defn) WRITE(" (definition)");
 
 @<Render vskip@> =
 	weave_vskip_node *C = RETRIEVE_POINTER_weave_vskip_node(N->content);
 	if (C->in_comment) WRITE(" (in comment)");
 
-@<Render weave_apres_defn_node@> =
-	weave_apres_defn_node *C = RETRIEVE_POINTER_weave_apres_defn_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+@<Render apres-defn@> =
+	;
 
-@<Render weave_change_colour_node@> =
-	weave_change_colour_node *C = RETRIEVE_POINTER_weave_change_colour_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+@<Render chapter@> =
+	weave_chapter_node *C = RETRIEVE_POINTER_weave_chapter_node(N->content);
+	WRITE(" <%S>", C->chap->md->ch_title);
 
-@<Render weave_text_node@> =
-	weave_text_node *C = RETRIEVE_POINTER_weave_text_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+@<Render section@> =
+	weave_section_node *C = RETRIEVE_POINTER_weave_section_node(N->content);
+	WRITE(" <%S>", C->sect->md->sect_title);
 
-@<Render weave_comment_node@> =
-	weave_comment_node *C = RETRIEVE_POINTER_weave_comment_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+@<Render code line@> =
+	;
 
-@<Render weave_link_node@> =
-	weave_link_node *C = RETRIEVE_POINTER_weave_link_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+@<Render function usage@> =
+	weave_function_usage_node *C = RETRIEVE_POINTER_weave_function_usage_node(N->content);
+	WRITE(" <%S>", C->fn->function_name);
 
-@<Render weave_commentary_node@> =
+@<Render commentary@> =
 	weave_commentary_node *C = RETRIEVE_POINTER_weave_commentary_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+	Debugging::show_text(OUT, C->text, 80);
+	if (C->in_code) WRITE(" (code)");
 
 @<Render weave_preform_document_node@> =
 	weave_preform_document_node *C = RETRIEVE_POINTER_weave_preform_document_node(N->content);
@@ -189,39 +192,43 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 
 @<Render toc line@> =
 	weave_toc_line_node *C = RETRIEVE_POINTER_weave_toc_line_node(N->content);
-	WRITE(" - <%S, %S> para %S", C->text1, C->text2, (C->para)?C->para->paragraph_number:I"NONE");
+	WRITE(" - <%S, %S>", C->text1, C->text2);
+	if (C->para) Debugging::show_para(OUT, C->para);
 
 @<Render weave_chapter_title_page_node@> =
 	weave_chapter_title_page_node *C = RETRIEVE_POINTER_weave_chapter_title_page_node(N->content);
 	WRITE(" - something %d", C->allocation_id);
 
-@<Render weave_source_fragment_node@> =
-	weave_source_fragment_node *C = RETRIEVE_POINTER_weave_source_fragment_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+@<Render defn@> =
+	weave_defn_node *C = RETRIEVE_POINTER_weave_defn_node(N->content);
+	WRITE(" <%S>", C->keyword);
 
-@<Render weave_source_code_node@> =
+@<Render source code@> =
 	weave_source_code_node *C = RETRIEVE_POINTER_weave_source_code_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+	WRITE(" <%S>\n", C->matter);
+	for (int i=0; i<L; i++) WRITE("  ");
+	WRITE("           ");
+	WRITE(" _%S_", C->colouring);
 
-@<Render weave_url_node@> =
+@<Render URL@> =
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+	WRITE(" <%S>", C->url);
 
-@<Render weave_footnote_cue_node@> =
+@<Render footnote cue@> =
 	weave_footnote_cue_node *C = RETRIEVE_POINTER_weave_footnote_cue_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+	WRITE(" [%S]", C->cue_text);
 
-@<Render weave_begin_footnote_text_node@> =
+@<Render footnote text@> =
 	weave_begin_footnote_text_node *C = RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
-
-@<Render weave_end_footnote_text_node@> =
-	weave_end_footnote_text_node *C = RETRIEVE_POINTER_weave_end_footnote_text_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+	WRITE(" [%S]", C->cue_text);
 
 @<Render display line@> =
 	weave_display_line_node *C = RETRIEVE_POINTER_weave_display_line_node(N->content);
 	WRITE(" <%S>", C->text);
+
+@<Render function defn@> =
+	weave_function_defn_node *C = RETRIEVE_POINTER_weave_function_defn_node(N->content);
+	WRITE(" <%S>", C->fn->function_name);
 
 @<Render item@> =
 	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
@@ -229,3 +236,48 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 
 @<Render grammar index@> =
 	;
+
+@<Render inline@> =
+	;
+
+@<Render locale@> =
+	weave_locale_node *C = RETRIEVE_POINTER_weave_locale_node(N->content);
+	Debugging::show_para(OUT, C->par1);
+	if (C->par2) {
+		WRITE(" to ");
+		Debugging::show_para(OUT, C->par2);
+	}
+
+@<Render maths@> =
+	weave_maths_node *C = RETRIEVE_POINTER_weave_maths_node(N->content);
+	WRITE(" <%S>", C->content);
+	if (C->displayed) WRITE(" (displayed)");
+
+@ =
+void Debugging::show_text(text_stream *OUT, text_stream *text, int limit) {
+	WRITE(" <");
+	for (int i=0; (i<limit) && (i<Str::len(text)); i++)
+		if (Str::get_at(text, i) == '\n')
+			WRITE("\\n");
+		else
+			PUT(Str::get_at(text, i));
+	WRITE(">");
+	if (Str::len(text) > limit) WRITE(" ... continues to %d chars", Str::len(text));
+}
+
+void Debugging::show_para(text_stream *OUT, paragraph *P) {
+	WRITE(" P%S", P->paragraph_number);
+	if (Str::len(P->heading_text) > 0) WRITE("'%S'", P->heading_text);
+}
+
+void Debugging::show_mat(text_stream *OUT, int m) {
+	switch (m) {
+		case REGULAR_MATERIAL: WRITE("discussion"); break;
+		case MACRO_MATERIAL: WRITE("paragraph macro"); break;
+		case DEFINITION_MATERIAL: WRITE("definition"); break;
+		case CODE_MATERIAL: WRITE("code"); break;
+		case ENDNOTES_MATERIAL: WRITE("endnotes"); break;
+		case FOOTNOTES_MATERIAL: WRITE("footnotes"); break;
+		default: WRITE("unknown"); break;
+	}
+}

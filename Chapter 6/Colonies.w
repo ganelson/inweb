@@ -21,6 +21,7 @@ Orb-Weaving Spiders With Communal Webbing in a Man-Made Structural Habitat
 typedef struct colony {
 	struct linked_list *members; /* of |colony_member| */
 	struct text_stream *home; /* path of home repository */
+	struct pathname *assets_path; /* where assets shared between weaves live */
 	MEMORY_MANAGEMENT
 } colony;
 
@@ -65,6 +66,7 @@ void Colonies::load(filename *F) {
 	colony *C = CREATE(colony);
 	C->members = NEW_LINKED_LIST(colony_member);
 	C->home = I"docs";
+	C->assets_path = NULL;
 	colony_reader_state crs;
 	crs.province = C;
 	crs.nav = NULL;
@@ -112,6 +114,8 @@ void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_crs
 		ADD_TO_LINKED_LIST(CM, colony_member, C->members);
 	} else if (Regexp::match(&mr, line, L"home: *(%c*)")) {
 		C->home = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, line, L"assets: *(%c*)")) {
+		C->assets_path = Pathnames::from_text(mr.exp[0]);
 	} else if (Regexp::match(&mr, line, L"pattern: none")) {
 		crs->pattern = NULL;
 	} else if (Regexp::match(&mr, line, L"pattern: *(%c*)")) {
@@ -264,6 +268,13 @@ text_stream *Colonies::home(void) {
 	LOOP_OVER(C, colony)
 		return C->home;
 	return I"docs";
+}
+
+pathname *Colonies::assets_path(void) {
+	colony *C;
+	LOOP_OVER(C, colony)
+		return C->assets_path;
+	return NULL;
 }
 
 @h Cross-references.

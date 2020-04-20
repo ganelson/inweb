@@ -584,7 +584,7 @@ but which are not expressible in the syntax of this file.
 @d RESERVED_COLOUR		'r'
 @d ELEMENT_COLOUR		'e'
 @d IDENTIFIER_COLOUR	'i'
-@d CHAR_LITERAL_COLOUR	'c'
+@d CHARACTER_COLOUR	'c'
 @d CONSTANT_COLOUR		'n'
 @d STRING_COLOUR		's'
 @d PLAIN_COLOUR			'p'
@@ -607,7 +607,7 @@ int Languages::colour(text_stream *T, text_file_position *tfp) {
 	else if (Str::eq(T, I"!reserved")) return RESERVED_COLOUR;
 	else if (Str::eq(T, I"!element")) return ELEMENT_COLOUR;
 	else if (Str::eq(T, I"!identifier")) return IDENTIFIER_COLOUR;
-	else if (Str::eq(T, I"!character")) return CHAR_LITERAL_COLOUR;
+	else if (Str::eq(T, I"!character")) return CHARACTER_COLOUR;
 	else if (Str::eq(T, I"!constant")) return CONSTANT_COLOUR;
 	else if (Str::eq(T, I"!plain")) return PLAIN_COLOUR;
 	else if (Str::eq(T, I"!extract")) return EXTRACT_COLOUR;

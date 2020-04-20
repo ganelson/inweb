@@ -2,16 +2,26 @@
 <html>
 	<head>
 		<title>Introduction to Inweb</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">inweb</span></a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -66,29 +76,29 @@ an ebook then you're looking at the woven form.
 </p>
 
 <p class="inwebparagraph">While small webs can be written as single files, Inweb is not a small web,
-so it occupies a directory called <code class="display"><span class="extract">inweb</span></code>. This is what you see if you pull
+so it occupies a directory called <code class="display"><span class="extract-syntax">inweb</span></code>. This is what you see if you pull
 the project from GitHub, for example.
 </p>
 
 <p class="inwebparagraph">There is clearly a circularity here. To compile Inweb, you must first run
 Inweb to tangle it. But if you already had Inweb, you wouldn't need to compile
 it. Here's what to do. From a command-line prompt, set the current working
-directory to be the one in which Inweb is stored - that is, not the <code class="display"><span class="extract">inweb</span></code>
+directory to be the one in which Inweb is stored - that is, not the <code class="display"><span class="extract-syntax">inweb</span></code>
 directory itself, but its parent. Then type one of the following:
 </p>
 
 <pre class="display">
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk macos</span>
+    <span class="plain-syntax">    $ make -f inweb/inweb.mk macos</span>
 
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk macos32</span>
+    <span class="plain-syntax">    $ make -f inweb/inweb.mk macos32</span>
 
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk linux</span>
+    <span class="plain-syntax">    $ make -f inweb/inweb.mk linux</span>
 
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk windows</span>
+    <span class="plain-syntax">    $ make -f inweb/inweb.mk windows</span>
 
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk unix</span>
+    <span class="plain-syntax">    $ make -f inweb/inweb.mk unix</span>
 
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk android</span>
+    <span class="plain-syntax">    $ make -f inweb/inweb.mk android</span>
 </pre>
 
 <p class="inwebparagraph">Unix is for any generic version of Unix, non-Linux, non-MacOS: Solaris, for
@@ -103,28 +113,28 @@ the default macos unless you need to build for an old version of MacOS.
 </p>
 
 <pre class="display">
-        <span class="plain">=== Platform set to 64-bit MacOS. Now: make -f inweb/inweb.mk initial ===</span>
+    <span class="plain-syntax">    === Platform set to 64-bit MacOS. Now: make -f inweb/inweb.mk initial ===</span>
 </pre>
 
 <p class="inwebparagraph">(All that happened, in fact, was that a platform-specific file of make
 settings &mdash; what compilers to use, what options, and so on &mdash; was copied
-over to become the file <code class="display"><span class="extract">inweb/platform-settings.mk</span></code>. This is a file which
+over to become the file <code class="display"><span class="extract-syntax">inweb/platform-settings.mk</span></code>. This is a file which
 is necessary for Inweb to be fully used, but which is intentionally not
 included in the Git repository for Inweb, in order to oblige users to choose
 a platform before doing anything else.) Anyway, next do as instructed:
 </p>
 
 <pre class="display">
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk initial</span>
+    <span class="plain-syntax">    $ make -f inweb/inweb.mk initial</span>
 </pre>
 
 <p class="inwebparagraph">With that done, make should go on to compile the Inweb executable, leaving
 you with a working copy of the software. You need never run that
-platform-specific command, or make as <code class="display"><span class="extract">initial</span></code>, again: you can simply:
+platform-specific command, or make as <code class="display"><span class="extract-syntax">initial</span></code>, again: you can simply:
 </p>
 
 <pre class="display">
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">make</span><span class="identifier"> -f</span><span class="plain"> inweb/inweb.mk</span>
+    <span class="plain-syntax">    $ make -f inweb/inweb.mk</span>
 </pre>
 
 <p class="inwebparagraph">if you want to alter and recompile Inweb.
@@ -134,15 +144,15 @@ platform-specific command, or make as <code class="display"><span class="extract
 </p>
 
 <pre class="display">
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inweb/Tangled/inweb</span><span class="identifier"> -help</span>
+    <span class="plain-syntax">    $ inweb/Tangled/inweb -help</span>
 </pre>
 
 <p class="inwebparagraph">That location is where the compiled tool ended up. Users of, for example,
-the <code class="display"><span class="extract">bash</span></code> shell may want to
+the <code class="display"><span class="extract-syntax">bash</span></code> shell may want to
 </p>
 
 <pre class="display">
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">alias</span><span class="plain"> inweb='inweb/Tangled/inweb'</span>
+    <span class="plain-syntax">    $ alias inweb='inweb/Tangled/inweb'</span>
 </pre>
 
 <p class="inwebparagraph">to save a little typing, but in this documentation we always spell it out.
@@ -154,20 +164,18 @@ system. There is no completely foolproof, cross-platform way to know this
 decides by the following set of rules:
 </p>
 
-<p class="inwebparagraph"></p>
-
-<ul class="items"><li>(a) If the user, at the command line, specified <code class="display"><span class="extract">-at P</span></code>, for some path
-<code class="display"><span class="extract">P</span></code>, then we use that.
+<ul class="items"><li>(a) If the user, at the command line, specified <code class="display"><span class="extract-syntax">-at P</span></code>, for some path
+<code class="display"><span class="extract-syntax">P</span></code>, then we use that.
 </li><li>(b) Otherwise, if the host operating system can indeed tell us where the
 executable is, we use that. This is currently implemented only on MacOS,
 Windows and Linux.
-</li><li>(c) Otherwise, if the environment variable <code class="display"><span class="extract">$INWEB_PATH</span></code> exists and is
+</li><li>(c) Otherwise, if the environment variable <code class="display"><span class="extract-syntax">$INWEB_PATH</span></code> exists and is
 non-empty, we use that.
-</li><li>(d) And if all else fails, we assume that the location is <code class="display"><span class="extract">inweb</span></code>, with
+</li><li>(d) And if all else fails, we assume that the location is <code class="display"><span class="extract-syntax">inweb</span></code>, with
 respect to the current working directory.
 </li></ul>
 <p class="inwebparagraph">If you're not sure what Inweb has decided and suspect it may be wrong,
-running Inweb with the <code class="display"><span class="extract">-verbose</span></code> switch will cause it to print its belief
+running Inweb with the <code class="display"><span class="extract-syntax">-verbose</span></code> switch will cause it to print its belief
 about its location as it starts up.
 </p>
 
@@ -239,16 +247,12 @@ script; it was reimplemented in C for speed in 2011.
 differences:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <ul class="items"><li>(a) Many bells and whistles have been removed. Inweb aspires to be as
 simple as possible in markup, with as few escape characters as possible.
-</li></ul>
-<ul class="items"><li>(b) In Inweb, when writing code for C-like languages, named paragraphs are
+</li><li>(b) In Inweb, when writing code for C-like languages, named paragraphs are
 expanded inside implicit braces. As a result, they behave like compound
 statements, and can be used as loop bodies, or if/else clauses.
-</li></ul>
-<ul class="items"><li>(c) Inweb does not follow the disastrous rule of CWEB that every name is
+</li><li>(c) Inweb does not follow the disastrous rule of CWEB that every name is
 equal to every other name of which it is an initial substring, so
 that, say, "Finish" would be considered the same name as "Finish with error".
 This was a rule Knuth adopted to save typing. He habitually wrote
@@ -259,10 +263,10 @@ current page; if this node is an insertion, goto contribute;
 otherwise if this node is not legal breakpoint, goto contribute
 or update_heights; otherwise set pi to the penalty associated
 with this breakpoint". We do not recommend this.
-</li></ul>
-<ul class="items"><li>(d) Inweb can be used with much larger programs divided into sections
+</li><li>(d) Inweb can be used with much larger programs divided into sections
 and, if desired, chapters.
-</li></ul>
+</p>
+
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Manual.)</i></li><li><a href="M-wtaw.html">Continue with 'Webs, Tangling and Weaving'</a></li></ul><hr class="tocbar">
 <!--End of weave-->

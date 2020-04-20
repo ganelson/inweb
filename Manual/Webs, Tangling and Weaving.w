@@ -318,10 +318,9 @@ example,
 = (text as ConsoleText)
 	$ inweb inweb/Examples/goldbach -weave sections
 =
-makes a miniature website of four files:
+makes a miniature website; files include some CSS, and:
 = (text)
 	inweb/Examples/goldbach/Woven/index.html
-	inweb/Examples/goldbach/Woven/inweb.css
 	inweb/Examples/goldbach/Woven/S-tgc.html
 	inweb/Examples/goldbach/Woven/S-tsoe.html
 =

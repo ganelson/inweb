@@ -144,8 +144,8 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 @ "Plugins" here refer to //Weave Plugins//.
 
 @<This is a plugin command@> =
-	text_stream *leafname = Str::duplicate(mr.exp[0]);
-	ADD_TO_LINKED_LIST(leafname, text_stream, wp->plugins);
+	weave_plugin *plugin = WeavePlugins::new(mr.exp[0]);
+	ADD_TO_LINKED_LIST(plugin, weave_plugin, wp->plugins);
 	Regexp::dispose_of(&mr);
 	return;
 
@@ -204,7 +204,7 @@ void Patterns::copy_payloads_into_weave(web *W, weave_pattern *pattern) {
 	text_stream *leafname;
 	LOOP_OVER_LINKED_LIST(leafname, text_stream, pattern->payloads) {
 		filename *F = Patterns::obtain_filename(pattern, leafname);
-		Patterns::copy_file_into_weave(W, F);
+		Patterns::copy_file_into_weave(W, F, NULL);
 		if (W->as_ebook) {
 			filename *rel = Filenames::in(NULL, leafname);
 			Epub::note_image(W->as_ebook, rel);
@@ -212,7 +212,7 @@ void Patterns::copy_payloads_into_weave(web *W, weave_pattern *pattern) {
 	}
 	LOOP_OVER_LINKED_LIST(leafname, text_stream, pattern->up_payloads) {
 		filename *F = Patterns::obtain_filename(pattern, leafname);
-		Patterns::copy_up_file_into_weave(W, F);
+		Patterns::copy_up_file_into_weave(W, F, NULL);
 		if (W->as_ebook) {
 			filename *rel = Filenames::in(NULL, leafname);
 			Epub::note_image(W->as_ebook, rel);
@@ -221,14 +221,16 @@ void Patterns::copy_payloads_into_weave(web *W, weave_pattern *pattern) {
 }
 
 @ =
-void Patterns::copy_file_into_weave(web *W, filename *F) {
+void Patterns::copy_file_into_weave(web *W, filename *F, pathname *P) {
 	pathname *H = W->redirect_weaves_to;
 	if (H == NULL) H = Reader::woven_folder(W);
+	if (P) H = P;
 	Shell::copy(F, H, "");
 }
-void Patterns::copy_up_file_into_weave(web *W, filename *F) {
+void Patterns::copy_up_file_into_weave(web *W, filename *F, pathname *P) {
 	pathname *H = W->redirect_weaves_to;
 	if (H == NULL) H = Reader::woven_folder(W);
 	H = Pathnames::up(H);
+	if (P) H = P;
 	Shell::copy(F, H, "");
 }

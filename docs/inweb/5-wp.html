@@ -2,16 +2,34 @@
 <html>
 	<head>
 		<title>Weave Plugins</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">inweb</span></a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -39,35 +57,27 @@
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Creation. </b>At present, plugins are simply their names: Inweb knows as little as possible
 about how they work. The model is just that a file being woven either does or
 does not need a plugin of a given name: for example, if it uses maths notation,
-it will likely need the <code class="display"><span class="extract">MathJax3</span></code> plugin.
+it will likely need the <code class="display"><span class="extract-syntax">MathJax3</span></code> plugin.
 </p>
 
 <pre class="display">
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">weave_plugin</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">plugin_name</span><span class="plain">;</span>
-        <span class="constant">MEMORY_MANAGEMENT</span>
-    <span class="plain">} </span><span class="reserved">weave_plugin</span><span class="plain">;</span>
+    <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">plugin_name</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+    <span class="plain-syntax">} </span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax">;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The structure weave_plugin is accessed in 1/ts and here.</p>
-
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
+<ul class="endnotetexts"><li>The structure weave_plugin is accessed in 1/ts and here.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
 <pre class="display">
-    <span class="reserved">weave_plugin</span><span class="plain"> *</span><span class="functiontext">WeavePlugins::new<button class="popup" onclick="togglePopup('usagePopup336')">...<span class="popuptext" id="usagePopup336">Usage of <b>WeavePlugins::new</b>:<br>The Swarm - <a href="1-ts.html#SP3">&#167;3</a></span></button></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
-        <span class="reserved">weave_plugin</span><span class="plain"> *</span><span class="identifier">wp</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">weave_plugin</span><span class="plain">);</span>
-        <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">plugin_name</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">wp</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">weave_plugin</span><span class="plain-syntax"> *</span><span class="function-syntax">WeavePlugins::new</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>WeavePlugins::new</b>:<br>The Swarm - <a href="1-ts.html#SP3">&#167;3</a>&lt;br&gt;Patterns - <a href="1-ptt.html#SP3_5">&#167;3.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">plugin_name</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">wp</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>When a file is woven, then, the following function can add the plugins
-necessary. If a plugin is called <code class="display"><span class="extract">X</span></code>, then we try to find <code class="display"><span class="extract">X.html</span></code> and
-weave that into the page header; and we try to find <code class="display"><span class="extract">X.css</span></code>, weave an
+necessary. If a plugin is called <code class="display"><span class="extract-syntax">X</span></code>, then we try to find <code class="display"><span class="extract-syntax">X.html</span></code> and
+weave that into the page header; and we try to find <code class="display"><span class="extract-syntax">X.css</span></code>, weave an
 inclusion of that, and also copy the file into the weave destination.
 </p>
 
@@ -75,50 +85,90 @@ inclusion of that, and also copy the file into the weave destination.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">WeavePlugins::include<button class="popup" onclick="togglePopup('usagePopup337')">...<span class="popuptext" id="usagePopup337">Usage of <b>WeavePlugins::include</b>:<br>The Indexer - <a href="3-ti.html#SP2_1">&#167;2.1</a>, <a href="3-ti.html#SP6_1_8_4">&#167;6.1.8.4</a></span></button></span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">web</span><span class="plain"> *</span><span class="identifier">W</span><span class="plain">, </span><span class="reserved">weave_plugin</span><span class="plain"> *</span><span class="identifier">wp</span><span class="plain">,</span>
-        <span class="reserved">weave_pattern</span><span class="plain"> *</span><span class="identifier">pattern</span><span class="plain">) {</span>
-        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P1</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/3-pth.html#SP4">Pathnames::down</a></span><span class="plain">(</span><span class="identifier">W</span><span class="plain">-&gt;</span><span class="element">md</span><span class="plain">-&gt;</span><span class="element">path_to_web</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Plugins"</span><span class="plain">);</span>
-        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P2</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/3-pth.html#SP4">Pathnames::down</a></span><span class="plain">(</span><span class="identifier">path_to_inweb</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Plugins"</span><span class="plain">);</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">WeavePlugins::include</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>WeavePlugins::include</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wp</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">AP</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP9" class="internal">Colonies::assets_path</a><span class="plain-syntax">();</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">html_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="internal">Str::eq</a><span class="plain-syntax">(</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern_format</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">format_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"HTML"</span><span class="plain-syntax">)) </span><span class="identifier-syntax">html_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">finds</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">required</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">required</span><span class="plain-syntax">, </span><span class="string-syntax">"%S.html"</span><span class="plain-syntax">, </span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">plugin_name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leaves_gathered</span><span class="plain-syntax"> = </span><a href="../foundation-module/2-dct.html#SP2" class="internal">Dictionaries::new</a><span class="plain-syntax">(128, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">; </span><span class="identifier-syntax">p</span><span class="plain-syntax">; </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">based_on</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-pth.html#SP4" class="internal">Pathnames::down</a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern_location</span><span class="plain-syntax">, </span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">plugin_name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">scan_directory</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-drc.html#SP2" class="internal">Directories::open</a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">D</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><a href="../foundation-module/3-drc.html#SP2" class="internal">Directories::next</a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="identifier-syntax">leafname</span><span class="plain-syntax">)) {</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="../foundation-module/4-sm.html#SP13" class="internal">Str::get_last_char</a><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">) != </span><span class="constant-syntax">FOLDER_SEPARATOR</span><span class="plain-syntax">) &amp;&amp;</span>
+    <span class="plain-syntax">                    (</span><a href="../foundation-module/4-sm.html#SP13" class="internal">Str::get_first_char</a><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">) != </span><span class="character-syntax">'.'</span><span class="plain-syntax">)) {</span>
+    <span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/2-dct.html#SP5" class="internal">Dictionaries::find</a><span class="plain-syntax">(</span><span class="identifier-syntax">leaves_gathered</span><span class="plain-syntax">, </span><span class="identifier-syntax">leafname</span><span class="plain-syntax">) == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">                        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><a href="../foundation-module/2-dct.html#SP9" class="internal">Dictionaries::create_text</a><span class="plain-syntax">(</span><span class="identifier-syntax">leaves_gathered</span><span class="plain-syntax">, </span><span class="identifier-syntax">leafname</span><span class="plain-syntax">), </span><span class="string-syntax">"got this"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">                        </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP2" class="internal">Filenames::in</a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">                        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="internal">Str::eq_insensitive</a><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">, </span><span class="identifier-syntax">required</span><span class="plain-syntax">)) {</span>
+    <span class="plain-syntax">                            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">html_mode</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">                                </span><a href="3-ti.html#SP3" class="internal">Indexer::incorporate_template_for_web_and_pattern</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">                                    </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">                            } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">                                </span><a href="1-ptt.html#SP7" class="internal">Patterns::copy_file_into_weave</a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">AP</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">                            }</span>
+    <span class="plain-syntax">                        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">                            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">html_mode</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">                                </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">ext</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">                                </span><a href="../foundation-module/3-fln.html#SP8" class="internal">Filenames::write_extension</a><span class="plain-syntax">(</span><span class="identifier-syntax">ext</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">                                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="internal">Str::eq_insensitive</a><span class="plain-syntax">(</span><span class="identifier-syntax">ext</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">".css"</span><span class="plain-syntax">)) {</span>
+    <span class="plain-syntax">                                    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">                                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">AP</span><span class="plain-syntax">) </span><a href="../foundation-module/3-pth.html#SP8" class="internal">Pathnames::relative_URL</a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><a href="../foundation-module/3-fln.html#SP6" class="internal">Filenames::up</a><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">), </span><span class="identifier-syntax">AP</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">                                    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">                                    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;link href=\"%S\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\"&gt;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">                                    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">                                }</span>
+    <span class="plain-syntax">                            }</span>
+    <span class="plain-syntax">                            </span><a href="1-ptt.html#SP7" class="internal">Patterns::copy_file_into_weave</a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">AP</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">                        }</span>
+    <span class="plain-syntax">                        </span><span class="identifier-syntax">finds</span><span class="plain-syntax">++;</span>
+    <span class="plain-syntax">                    }</span>
+    <span class="plain-syntax">                }</span>
+    <span class="plain-syntax">            }</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">            </span><a href="../foundation-module/3-drc.html#SP2" class="internal">Directories::close</a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        }</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">finds</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">, </span><span class="string-syntax">"The plugin '%S' is not supported"</span><span class="plain-syntax">, </span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">plugin_name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><a href="1-pc.html#SP8" class="internal">Main::error_in_web</a><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">required</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">embed_leaf</span><span class="plain">);</span>
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">css_leaf</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">embed_leaf</span><span class="plain">, </span><span class="string">"%S.html"</span><span class="plain">, </span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">plugin_name</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">css_leaf</span><span class="plain">, </span><span class="string">"%S.css"</span><span class="plain">, </span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="identifier">plugin_name</span><span class="plain">);</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">P1</span><span class="plain">?(</span><span class="functiontext"><a href="../foundation-module/3-fln.html#SP2">Filenames::in</a></span><span class="plain">(</span><span class="identifier">P1</span><span class="plain">, </span><span class="identifier">embed_leaf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="../foundation-module/4-tf.html#SP1">TextFiles::exists</a></span><span class="plain">(</span><span class="identifier">F</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">P2</span><span class="plain">?(</span><span class="functiontext"><a href="../foundation-module/3-fln.html#SP2">Filenames::in</a></span><span class="plain">(</span><span class="identifier">P2</span><span class="plain">, </span><span class="identifier">embed_leaf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">CF</span><span class="plain"> = </span><span class="identifier">P1</span><span class="plain">?(</span><span class="functiontext"><a href="../foundation-module/3-fln.html#SP2">Filenames::in</a></span><span class="plain">(</span><span class="identifier">P1</span><span class="plain">, </span><span class="identifier">css_leaf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="../foundation-module/4-tf.html#SP1">TextFiles::exists</a></span><span class="plain">(</span><span class="identifier">CF</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">CF</span><span class="plain"> = </span><span class="identifier">P2</span><span class="plain">?(</span><span class="functiontext"><a href="../foundation-module/3-fln.html#SP2">Filenames::in</a></span><span class="plain">(</span><span class="identifier">P2</span><span class="plain">, </span><span class="identifier">css_leaf</span><span class="plain">)):</span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">embed_leaf</span><span class="plain">);</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">css_leaf</span><span class="plain">);</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">WeavePlugins::include_from_pattern</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>WeavePlugins::include_from_pattern</b>:<br>The Indexer - <a href="3-ti.html#SP2_1">&#167;2.1</a>, <a href="3-ti.html#SP6_1_8_4">&#167;6.1.8.4</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">; </span><span class="identifier-syntax">p</span><span class="plain-syntax">; </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">based_on</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wp</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">wp</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">plugins</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">            </span><a href="5-wp.html#SP3" class="internal">WeavePlugins::include</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">wp</span><span class="plain-syntax">, </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">}</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="../foundation-module/4-tf.html#SP1">TextFiles::exists</a></span><span class="plain">(</span><span class="identifier">F</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">err</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">err</span><span class="plain">, </span><span class="string">"The plugin '%S' is not supported"</span><span class="plain">, </span><span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">plugin_name</span><span class="plain">);</span>
-            <span class="functiontext"><a href="1-pc.html#SP8">Main::error_in_web</a></span><span class="plain">(</span><span class="identifier">err</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="functiontext"><a href="3-ti.html#SP3">Indexer::incorporate_template_for_web_and_pattern</a></span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">pattern</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="../foundation-module/4-tf.html#SP1">TextFiles::exists</a></span><span class="plain">(</span><span class="identifier">CF</span><span class="plain">)) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"&lt;link href=\"%S.css\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\"&gt;\n"</span><span class="plain">,</span>
-                <span class="identifier">wp</span><span class="plain">-&gt;</span><span class="element">plugin_name</span><span class="plain">);</span>
-            <span class="functiontext"><a href="1-ptt.html#SP7">Patterns::copy_file_into_weave</a></span><span class="plain">(</span><span class="identifier">W</span><span class="plain">, </span><span class="identifier">CF</span><span class="plain">);</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">WeavePlugins::include_from_target</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>WeavePlugins::include_from_target</b>:<br>The Indexer - <a href="3-ti.html#SP2_1">&#167;2.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">target</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wp</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">wp</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax">, </span><span class="identifier-syntax">target</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">plugins</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">        </span><a href="5-wp.html#SP3" class="internal">WeavePlugins::include</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">wp</span><span class="plain-syntax">, </span><span class="identifier-syntax">target</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
+
+    <span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">WeavePlugins::find_asset</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>WeavePlugins::find_asset</b>:<br>HTML Formats - <a href="5-hf.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">; </span><span class="identifier-syntax">wp</span><span class="plain-syntax">; </span><span class="identifier-syntax">wp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">based_on</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-pth.html#SP4" class="internal">Pathnames::down</a><span class="plain-syntax">(</span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern_location</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">?(</span><a href="../foundation-module/3-fln.html#SP2" class="internal">Filenames::in</a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">leafname</span><span class="plain-syntax">)):</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-tf.html#SP1" class="internal">TextFiles::exists</a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <hr class="tocbar">
-<ul class="toc"><li><a href="5-hf.html">Back to 'HTML Formats'</a></li><li><a href="5-rtt.html">Continue with 'Running Through TeX'</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-df.html">Back to 'Debugging Format'</a></li><li><a href="5-rtt.html">Continue with 'Running Through TeX'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
-<script>
-function togglePopup(material_id) {
-  var popup = document.getElementById(material_id);
-  popup.classList.toggle("show");
-}
-</script>
-
-<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

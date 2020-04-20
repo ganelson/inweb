@@ -1,6 +1,5 @@
 from HTML
 format = HTML
 default-range = sections
-use crumbs.gif
-use inweb.css
-use github.png
+plugin GitHub
+plugin Breadcrumbs

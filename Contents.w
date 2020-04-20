@@ -48,6 +48,7 @@ or analysing the web to provide diagnostics on it."
 	The Analyser
 	The Indexer
 	The Weaver
+	The Weaver of Text
 	The Tangler
 
 Chapter 4: Languages

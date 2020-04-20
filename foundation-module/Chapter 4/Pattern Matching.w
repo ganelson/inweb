@@ -369,9 +369,9 @@ int Regexp::test_cclass(int c, int chcl, int range_from, int range_to, wchar_t *
 	switch (chcl) {
 		case ANY_CLASS: if (c) match = TRUE; break;
 		case DIGIT_CLASS: if (isdigit(c)) match = TRUE; break;
-		case WHITESPACE_CLASS: if (Characters::is_space_or_tab(c)) match = TRUE; break;
+		case WHITESPACE_CLASS: if (Characters::is_whitespace(c)) match = TRUE; break;
 		case TAB_CLASS: if (c == '\t') match = TRUE; break;
-		case NONWHITESPACE_CLASS: if (!(Characters::is_space_or_tab(c))) match = TRUE; break;
+		case NONWHITESPACE_CLASS: if (!(Characters::is_whitespace(c))) match = TRUE; break;
 		case QUOTE_CLASS: if (c != '\"') match = TRUE; break;
 		case IDENTIFIER_CLASS: if (Regexp::identifier_char(c)) match = TRUE; break;
 		case PREFORM_CLASS: if ((c == '-') || (c == '_') ||

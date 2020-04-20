@@ -2,16 +2,34 @@
 <html>
 	<head>
 		<title>POSIX Platforms</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="../inweb/index.html">inweb</a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -47,46 +65,36 @@ two groups: the POSIX group, and Windows.
 </p>
 
 <p class="inwebparagraph">This Foundation module therefore comes with two variant versions of the
-<code class="display"><span class="extract">Platform::</span></code> section of code. The one you're reading compiles on a POSIX
+<code class="display"><span class="extract-syntax">Platform::</span></code> section of code. The one you're reading compiles on a POSIX
 operating system, and the other one on Windows.
 </p>
 
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Some basics that apply to all POSIX-supporting systems.
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Some basics that apply to all POSIX-supporting systems.
 </p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">FOLDER_SEPARATOR</span><span class="plain"> </span><span class="character">'/'</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain"> </span><span class="character">'\''</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">FOLDER_SEPARATOR</span><span class="plain-syntax"> </span><span class="character-syntax">'/'</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax"> </span><span class="character-syntax">'\''</span>
 </pre>
-
 <pre class="display">
-    <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">sys</span><span class="plain">/</span><span class="identifier">stat</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
-    <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">sys</span><span class="plain">/</span><span class="identifier">types</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
-    <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">errno</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
-    <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">dirent</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
-    <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">pthread</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
-    <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">limits</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
-    <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">unistd</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">sys</span><span class="plain-syntax">/</span><span class="identifier-syntax">stat</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">sys</span><span class="plain-syntax">/</span><span class="identifier-syntax">types</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">errno</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">dirent</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">pthread</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">limits</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">unistd</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Mac OS X. </b></p>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Mac OS X. </b></p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">PLATFORM_STRING</span><span class="plain"> </span><span class="string">"macos"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain"> </span><span class="character">'\''</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain"> </span><span class="string">"Library"</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">PLATFORM_STRING</span><span class="plain-syntax"> </span><span class="string-syntax">"macos"</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax"> </span><span class="character-syntax">'\''</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">"Library"</span>
 </pre>
-<p class="endnote">This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</p>
-
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Generic Unix. </b>These settings are used both for the Linux versions (both command-line, by
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Generic Unix. </b>These settings are used both for the Linux versions (both command-line, by
 Adam Thornton, and for Ubuntu, Fedora, Debian and so forth, by Philip
 Chimento) and also for Solaris variants: they can probably be used for any
 Unix-based system.
@@ -94,19 +102,13 @@ Unix-based system.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">PLATFORM_STRING</span><span class="plain"> </span><span class="string">"unix"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain"> </span><span class="string">""</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">PLATFORM_STRING</span><span class="plain-syntax"> </span><span class="string-syntax">"unix"</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">""</span>
 </pre>
-
 <pre class="display">
-    <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">strings</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">strings</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_UNIX and PLATFORM_POSIX are defined.</p>
-
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Linux. </b>These settings are used both for the Linux versions (both command-line, by
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_UNIX and PLATFORM_POSIX are defined.</li></ul><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Linux. </b>These settings are used both for the Linux versions (both command-line, by
 Adam Thornton, and for Ubuntu, Fedora, Debian and so forth, by Philip
 Chimento) and also for Solaris variants: they can probably be used for any
 Unix-based system.
@@ -114,37 +116,25 @@ Unix-based system.
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">PLATFORM_STRING</span><span class="plain"> </span><span class="string">"linux"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain"> </span><span class="string">""</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">PLATFORM_STRING</span><span class="plain-syntax"> </span><span class="string-syntax">"linux"</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">""</span>
 </pre>
-
 <pre class="display">
-    <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">strings</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">strings</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</p>
-
-<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Android. </b>These settings are used for Nathan Summers's Android versions.
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</li></ul><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Android. </b>These settings are used for Nathan Summers's Android versions.
 </p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">PLATFORM_STRING</span><span class="plain"> </span><span class="string">"android"</span>
-    <span class="definitionkeyword">define</span> <span class="constant">SUPPRESS_MAIN</span>
-    <span class="definitionkeyword">define</span> <span class="constant">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain"> </span><span class="string">""</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">PLATFORM_STRING</span><span class="plain-syntax"> </span><span class="string-syntax">"android"</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">SUPPRESS_MAIN</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">""</span>
 </pre>
-
 <pre class="display">
-    <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">strings</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">strings</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_ANDROID and PLATFORM_POSIX are defined.</p>
-
-<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Locale. </b>The following definition handles possible differences of text encoding
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_ANDROID and PLATFORM_POSIX are defined.</li></ul><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Locale. </b>The following definition handles possible differences of text encoding
 in filenames, which depend on the current "locale". Locale is an odd piece
 of old Unix terminology, but one thing it includes is how the textual names
 of files are encoded (as ASCII, as ISO Latin-1, as UTF-8, etc.). The default
@@ -152,293 +142,202 @@ here is UTF-8 since OS X and Linux both adopt this.
 </p>
 
 <pre class="display">
-    <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="constant">LOCALE_IS_ISO</span>
-    <span class="plain">#</span><span class="identifier">ifndef</span><span class="plain"> </span><span class="identifier">LOCALE_IS_UTF8</span>
-    <span class="plain">#</span><span class="identifier">define</span><span class="plain"> </span><span class="identifier">LOCALE_IS_UTF8</span><span class="plain"> </span><span class="constant">1</span>
-    <span class="plain">#</span><span class="identifier">endif</span>
-    <span class="plain">#</span><span class="identifier">endif</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="constant-syntax">LOCALE_IS_ISO</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="identifier-syntax">LOCALE_IS_UTF8</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">define</span><span class="plain-syntax"> </span><span class="identifier-syntax">LOCALE_IS_UTF8</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Environment variables. </b></p>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Environment variables. </b></p>
 
 <pre class="display">
-    <span class="reserved">char</span><span class="plain"> *</span><span class="functiontext"><a href="1-wp.html#SP4">Platform::getenv</a></span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">getenv</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><a href="1-wp.html#SP4" class="internal">Platform::getenv</a><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">getenv</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<p class="endnote">The function Platform::getenv is used in Windows Platform (<a href="1-wp.html#SP4">&#167;4</a>), Pathnames (<a href="3-pth.html#SP2">&#167;2</a>, <a href="3-pth.html#SP3">&#167;3</a>).</p>
-
-<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Executable location. </b>Fill the wide-char buffer <code class="display"><span class="extract">p</span></code> with the path to the current executable, up to
-length <code class="display"><span class="extract">length</span></code>. This function is guaranteed to be called from only one
-thread. Should the information be unavailable, or fail to fit into <code class="display"><span class="extract">p</span></code>,
-truncate <code class="display"><span class="extract">p</span></code> to zero length. (On some platforms, the information will
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::getenv is used in Windows Platform (<a href="1-wp.html#SP4">&#167;4</a>), Pathnames (<a href="3-pth.html#SP2">&#167;2</a>, <a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Executable location. </b>Fill the wide-char buffer <code class="display"><span class="extract-syntax">p</span></code> with the path to the current executable, up to
+length <code class="display"><span class="extract-syntax">length</span></code>. This function is guaranteed to be called from only one
+thread. Should the information be unavailable, or fail to fit into <code class="display"><span class="extract-syntax">p</span></code>,
+truncate <code class="display"><span class="extract-syntax">p</span></code> to zero length. (On some platforms, the information will
 always be unavailable: that doesn't mean we can't run on those platforms,
 just that installation and use of Foundation-built tools is less convenient.)
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
-        <span class="reserved">char</span><span class="plain"> </span><span class="identifier">buffer</span><span class="plain">[</span><span class="identifier">PATH_MAX</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">];</span>
-        &lt;<span class="cwebmacro">Follow the proc filesystem symlink to the real filesystem's file</span> <span class="cwebmacronumber">9.1</span>&gt;<span class="character">;</span>
-        &lt;<span class="cwebmacro">Transcode buffer, which is locale-encoded, into the wide-char buffer</span> <span class="cwebmacronumber">9.2</span>&gt;<span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP5" class="internal">Platform::where_am_i</a><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">length</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">buffer</span><span class="plain-syntax">[</span><span class="identifier-syntax">PATH_MAX</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">];</span>
+    <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Follow the proc filesystem symlink to the real filesystem's file</span> <span class="named-paragraph-number">9.1</span>&gt;<span class="character-syntax">;</span>
+    <span class="character-syntax">    </span>&lt;<span class="named-paragraph">Transcode buffer, which is locale-encoded, into the wide-char buffer</span> <span class="named-paragraph-number">9.2</span>&gt;<span class="character-syntax">;</span>
+    <span class="character-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</p>
-
-<p class="endnote">The function Platform::where_am_i is used in <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</p>
-
-<p class="inwebparagraph"><a id="SP9_1"></a><b>&#167;9.1.  </b>On Linux, <code class="display"><span class="extract">/proc/self/exe</span></code> is a symlink to the current process's executable.
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9_1"></a><b>&#167;9.1.  </b>On Linux, <code class="display"><span class="extract-syntax">/proc/self/exe</span></code> is a symlink to the current process's executable.
 Follow that link to find the path. Normally when reading a symlink, one uses
-<code class="display"><span class="extract">lstat()</span></code> to find the path length instead of guessing <code class="display"><span class="extract">PATH_MAX</span></code>, but the
-symlinks in <code class="display"><span class="extract">/proc</span></code> are special and don't provide a length to <code class="display"><span class="extract">lstat()</span></code>.
+<code class="display"><span class="extract-syntax">lstat()</span></code> to find the path length instead of guessing <code class="display"><span class="extract-syntax">PATH_MAX</span></code>, but the
+symlinks in <code class="display"><span class="extract-syntax">/proc</span></code> are special and don't provide a length to <code class="display"><span class="extract-syntax">lstat()</span></code>.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Follow the proc filesystem symlink to the real filesystem's file</span> <span class="cwebmacronumber">9.1</span>&gt; =
+&lt;<span class="named-paragraph-defn">Follow the proc filesystem symlink to the real filesystem's file</span> <span class="named-paragraph-number">9.1</span>&gt; =
 </code></p>
 
-
-<pre class="displaydefn">
-        <span class="identifier">ssize_t</span><span class="plain"> </span><span class="identifier">link_len</span><span class="plain"> = </span><span class="identifier">readlink</span><span class="plain">(</span><span class="string">"/proc/self/exe"</span><span class="plain">, </span><span class="identifier">buffer</span><span class="plain">, </span><span class="identifier">PATH_MAX</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">link_len</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">; </span>    <span class="comment"> unable to find</span>
-        <span class="identifier">buffer</span><span class="plain">[</span><span class="identifier">link_len</span><span class="plain">] = </span><span class="character">'\0'</span><span class="plain">;</span>
+<pre class="display">
+    <span class="character-syntax">    ssize_t link_len = readlink("/proc/self/exe", buffer, PATH_MAX);</span>
+    <span class="character-syntax">    if (link_len &lt; 0) </span><span class="comment"> unable to find</span>&lt;<span class="named-paragraph">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt;<span class="character-syntax">; </span><span class="comment"> unable to find</span>
+    <span class="character-syntax">    buffer[link_len] = '</span><span class="plain-syntax">\0</span><span class="character-syntax">';</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<p class="endnote">This code is used in <a href="1-pp.html#SP9">&#167;9</a>.</p>
-
-<p class="inwebparagraph"><a id="SP9_2"></a><b>&#167;9.2.  </b>Next, convert the obtained buffer (which is a string in the local filename
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>This code is used in <a href="1-pp.html#SP9">&#167;9</a>.</li></ul><p class="inwebparagraph"><a id="SP9_2"></a><b>&#167;9.2.  </b>Next, convert the obtained buffer (which is a string in the local filename
 encoding, and possibly in a multibyte encoding such as UTF-8) to a wide-char
 string.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Transcode buffer, which is locale-encoded, into the wide-char buffer</span> <span class="cwebmacronumber">9.2</span>&gt; =
+&lt;<span class="named-paragraph-defn">Transcode buffer, which is locale-encoded, into the wide-char buffer</span> <span class="named-paragraph-number">9.2</span>&gt; =
 </code></p>
 
-
-<pre class="displaydefn">
-        <span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">convert_len</span><span class="plain"> = </span><span class="identifier">mbstowcs</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">buffer</span><span class="plain">, </span><span class="identifier">length</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">convert_len</span><span class="plain"> == (</span><span class="identifier">size_t</span><span class="plain">)-1) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">; </span>    <span class="comment"> wouldn't fit</span>
+<pre class="display">
+    <span class="plain-syntax">    </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">convert_len</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mbstowcs</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">buffer</span><span class="plain-syntax">, </span><span class="identifier-syntax">length</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">convert_len</span><span class="plain-syntax"> == (</span><span class="identifier-syntax">size_t</span><span class="plain-syntax">)-1) </span><span class="comment"> wouldn't fit</span>&lt;<span class="named-paragraph">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt;<span class="plain-syntax">; </span><span class="comment"> wouldn't fit</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<p class="endnote">This code is used in <a href="1-pp.html#SP9">&#167;9</a>.</p>
-
-<p class="inwebparagraph"><a id="SP9_1_1"></a><b>&#167;9.1.1.  </b>And now the Mac version: 
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>This code is used in <a href="1-pp.html#SP9">&#167;9</a>.</li></ul><p class="inwebparagraph"><a id="SP9_1_1"></a><b>&#167;9.1.1.  </b>And now the Mac version: 
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">_NSGetExecutablePath<button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>_NSGetExecutablePath</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">char</span><span class="plain">* </span><span class="identifier">buf</span><span class="plain">, </span><span class="identifier">uint32_t</span><span class="plain">* </span><span class="identifier">bufsize</span><span class="plain">);</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">_NSGetExecutablePath</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>_NSGetExecutablePath</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax">* </span><span class="identifier-syntax">buf</span><span class="plain-syntax">, </span><span class="identifier-syntax">uint32_t</span><span class="plain-syntax">* </span><span class="identifier-syntax">bufsize</span><span class="plain-syntax">);</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
-        <span class="reserved">char</span><span class="plain"> </span><span class="identifier">relative_path</span><span class="plain">[4 * </span><span class="identifier">PATH_MAX</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">];</span>
-        <span class="reserved">char</span><span class="plain"> </span><span class="identifier">absolute_path</span><span class="plain">[</span><span class="identifier">PATH_MAX</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">];</span>
-        <span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">convert_len</span><span class="plain">;</span>
-        <span class="identifier">uint32_t</span><span class="plain"> </span><span class="identifier">pathsize</span><span class="plain"> = </span><span class="reserved">sizeof</span><span class="plain">(</span><span class="identifier">relative_path</span><span class="plain">);</span>
-        <span class="identifier">uint32_t</span><span class="plain"> </span><span class="identifier">tempsize</span><span class="plain"> = </span><span class="identifier">pathsize</span><span class="plain">;</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP5" class="internal">Platform::where_am_i</a><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">length</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">relative_path</span><span class="plain-syntax">[4 * </span><span class="identifier-syntax">PATH_MAX</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">];</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">absolute_path</span><span class="plain-syntax">[</span><span class="identifier-syntax">PATH_MAX</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">];</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">convert_len</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">uint32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">pathsize</span><span class="plain-syntax"> = </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="identifier-syntax">relative_path</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">uint32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">tempsize</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pathsize</span><span class="plain-syntax">;</span>
 
-        <span class="comment"> Get "a path" to the executable</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="1-pp.html#SP9_1_1">_NSGetExecutablePath</a></span><span class="plain">(</span><span class="identifier">relative_path</span><span class="plain">, &amp;</span><span class="identifier">tempsize</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
+    <span class="plain-syntax">    </span><span class="comment"> Get "a path" to the executable</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="1-pp.html#SP9_1_1" class="internal">_NSGetExecutablePath</a><span class="plain-syntax">(</span><span class="identifier-syntax">relative_path</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">tempsize</span><span class="plain-syntax">) != </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt;<span class="plain-syntax">;</span>
 
-        <span class="comment"> Convert to canonical absolute path</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">realpath</span><span class="plain">(</span><span class="identifier">relative_path</span><span class="plain">, </span><span class="identifier">absolute_path</span><span class="plain">) == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
+    <span class="plain-syntax">    </span><span class="comment"> Convert to canonical absolute path</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">realpath</span><span class="plain-syntax">(</span><span class="identifier-syntax">relative_path</span><span class="plain-syntax">, </span><span class="identifier-syntax">absolute_path</span><span class="plain-syntax">) == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt;<span class="plain-syntax">;</span>
 
-        
-        <span class="plain"> * </span><span class="reserved">filename</span><span class="plain"> </span><span class="identifier">encoding</span><span class="plain">, </span><span class="identifier">possibly</span><span class="plain"> </span><span class="identifier">multibyte</span><span class="plain">) </span><span class="identifier">to</span><span class="plain"> </span><span class="identifier">a</span><span class="plain"> </span><span class="identifier">wide</span><span class="plain">-</span><span class="reserved">char</span><span class="plain"> </span><span class="identifier">string</span><span class="plain">. */</span>
-        <span class="identifier">convert_len</span><span class="plain"> = </span><span class="identifier">mbstowcs</span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">absolute_path</span><span class="plain">, </span><span class="identifier">length</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">convert_len</span><span class="plain"> == (</span><span class="identifier">size_t</span><span class="plain">)-1) </span>&lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="plain-syntax">    </span>
+    <span class="plain-syntax">     * </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> </span><span class="identifier-syntax">encoding</span><span class="plain-syntax">, </span><span class="identifier-syntax">possibly</span><span class="plain-syntax"> </span><span class="identifier-syntax">multibyte</span><span class="plain-syntax">) </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">wide</span><span class="plain-syntax">-</span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">string</span><span class="plain-syntax">. */</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">convert_len</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mbstowcs</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">absolute_path</span><span class="plain-syntax">, </span><span class="identifier-syntax">length</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">convert_len</span><span class="plain-syntax"> == (</span><span class="identifier-syntax">size_t</span><span class="plain-syntax">)-1) </span>&lt;<span class="named-paragraph">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt;<span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</p>
-
-<p class="endnote">The function Platform::where_am_i is used in <a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</p>
-
-<p class="inwebparagraph"><a id="SP9_1_2"></a><b>&#167;9.1.2.  </b>For Unix, there's nothing we can generically do. 
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9_1_2"></a><b>&#167;9.1.2.  </b>For Unix, there's nothing we can generically do. 
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
-        &lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP5" class="internal">Platform::where_am_i</a><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">length</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt;<span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_UNIX and PLATFORM_POSIX are defined.</p>
-
-<p class="endnote">The function Platform::where_am_i is used in <a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</p>
-
-<p class="inwebparagraph"><a id="SP9_1_3"></a><b>&#167;9.1.3.  </b>On Android, there's no real need for this. 
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_UNIX and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9_1_3"></a><b>&#167;9.1.3.  </b>On Android, there's no real need for this. 
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP5">Platform::where_am_i</a></span><span class="plain">(</span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">length</span><span class="plain">) {</span>
-        &lt;<span class="cwebmacro">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt;<span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP5" class="internal">Platform::where_am_i</a><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">length</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt;<span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_ANDROID and PLATFORM_POSIX are defined.</p>
-
-<p class="endnote">The function Platform::where_am_i is used in <a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</p>
-
-<p class="inwebparagraph"><a id="SP9_1_4"></a><b>&#167;9.1.4.  </b>All of the above make use of:
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_ANDROID and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9_1_4"></a><b>&#167;9.1.4.  </b>All of the above make use of:
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Fail</span> <span class="cwebmacronumber">9.1.4</span>&gt; =
+&lt;<span class="named-paragraph-defn">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt; =
 </code></p>
 
-
-<pre class="displaydefn">
-        <span class="identifier">p</span><span class="plain">[0] = </span><span class="character">'\0'</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain">;</span>
+<pre class="display">
+    <span class="plain-syntax">    </span><span class="identifier-syntax">p</span><span class="plain-syntax">[0] = </span><span class="character-syntax">'\0'</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<p class="endnote">This code is used in <a href="1-pp.html#SP9_1">&#167;9.1</a>, <a href="1-pp.html#SP9_2">&#167;9.2</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a> (three times), <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>.</p>
-
-<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Shell commands. </b></p>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>This code is used in <a href="1-pp.html#SP9_1">&#167;9.1</a>, <a href="1-pp.html#SP9_2">&#167;9.2</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a> (three times), <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>.</li></ul><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Shell commands. </b></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP6">Platform::system</a></span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cmd</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">system</span><span class="plain">(</span><span class="identifier">cmd</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><a href="1-wp.html#SP6" class="internal">Platform::system</a><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cmd</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">system</span><span class="plain-syntax">(</span><span class="identifier-syntax">cmd</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined and if PLATFORM_MACOS is undefined.</p>
-
-<p class="endnote">The function Platform::system is used in <a href="1-pp.html#SP11">&#167;11</a>, <a href="1-pp.html#SP14">&#167;14</a>, Windows Platform (<a href="1-wp.html#SP6">&#167;6</a>), Shell (<a href="3-shl.html#SP5">&#167;5</a>).</p>
-
-<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>In MacOS 10.5, a new implementation of the C standard library
-crippled performance of <code class="display"><span class="extract">system()</span></code> by placing it behind a global mutex, so
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined and if PLATFORM_MACOS is undefined.</li><li>The function Platform::system is used in <a href="1-pp.html#SP11">&#167;11</a>, <a href="1-pp.html#SP14">&#167;14</a>, Windows Platform (<a href="1-wp.html#SP6">&#167;6</a>), Shell (<a href="3-shl.html#SP5">&#167;5</a>).</li></ul><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>In MacOS 10.5, a new implementation of the C standard library
+crippled performance of <code class="display"><span class="extract-syntax">system()</span></code> by placing it behind a global mutex, so
 that it was impossible for two cores to be calling the function at the same
 time. The net effect of this is that the Inform test suite, executing in
 Intest, ran in 1/16th speed. This issue didn't come to light until 2019,
-however, because the build setting <code class="display"><span class="extract">-mmacosx-version-min=10.4</span></code> turned out
-to force use of the (perfectly good) pre-10.5 library, where <code class="display"><span class="extract">system()</span></code>
+however, because the build setting <code class="display"><span class="extract-syntax">-mmacosx-version-min=10.4</span></code> turned out
+to force use of the (perfectly good) pre-10.5 library, where <code class="display"><span class="extract-syntax">system()</span></code>
 continued to run in a multi-threaded way, just as it does on Linux and
 most all other Unixes. The old library was eventually withdrawn by Apple
 in 2018, and in any case would stop working at some point in 2019-20 due
 to the final removal of 32-bit binary support from MacOS.
 </p>
 
-<p class="inwebparagraph">It took several days to find a pthread-safe way to reimplement <code class="display"><span class="extract">system()</span></code>.
-The obvious way, using <code class="display"><span class="extract">fork()</span></code> and then running <code class="display"><span class="extract">execve()</span></code> on the child
-process &mdash; essentially the standard way to implement <code class="display"><span class="extract">system()</span></code>, if you forget
+<p class="inwebparagraph">It took several days to find a pthread-safe way to reimplement <code class="display"><span class="extract-syntax">system()</span></code>.
+The obvious way, using <code class="display"><span class="extract-syntax">fork()</span></code> and then running <code class="display"><span class="extract-syntax">execve()</span></code> on the child
+process &mdash; essentially the standard way to implement <code class="display"><span class="extract-syntax">system()</span></code>, if you forget
 about signal-handling &mdash; led to obscure and unrepeatable memory corruption
 bugs in Intest, with the worker threads apparently writing on each other's
-memory space. Using <code class="display"><span class="extract">posix_spawn()</span></code> instead appears to work better.
+memory space. Using <code class="display"><span class="extract-syntax">posix_spawn()</span></code> instead appears to work better.
 </p>
 
 <pre class="display">
-    <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">spawn</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
-    <span class="plain">#</span><span class="identifier">include</span><span class="plain"> &lt;</span><span class="identifier">sys</span><span class="plain">/</span><span class="identifier">wait</span><span class="plain">.</span><span class="identifier">h</span><span class="plain">&gt;</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">spawn</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">sys</span><span class="plain-syntax">/</span><span class="identifier-syntax">wait</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 
-    <span class="reserved">extern</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">environ</span><span class="plain">;</span>
+    <span class="reserved-syntax">extern</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">environ</span><span class="plain-syntax">;</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP6">Platform::system</a></span><span class="plain">(</span><span class="reserved">const</span><span class="plain"> </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">cmd</span><span class="plain">) {</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">argv</span><span class="plain">[] = {</span><span class="string">"sh"</span><span class="plain">, </span><span class="string">"-c"</span><span class="plain">, (</span><span class="reserved">char</span><span class="plain"> *) </span><span class="identifier">cmd</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">};</span>
-        <span class="identifier">pid_t</span><span class="plain"> </span><span class="identifier">pid</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">status</span><span class="plain"> = </span><span class="identifier">posix_spawn</span><span class="plain">(&amp;</span><span class="identifier">pid</span><span class="plain">, </span><span class="string">"/bin/sh"</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">environ</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">status</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">waitpid</span><span class="plain">(</span><span class="identifier">pid</span><span class="plain">, &amp;</span><span class="identifier">status</span><span class="plain">, </span><span class="constant">0</span><span class="plain">) != -1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">status</span><span class="plain">;</span>
-            <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"waitpid failed"</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="constant">STDERR</span><span class="plain">, </span><span class="string">"posix_spawn: %s\n"</span><span class="plain">, </span><span class="identifier">strerror</span><span class="plain">(</span><span class="identifier">status</span><span class="plain">));</span>
-            <span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"posix_spawn failed"</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> -1;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><a href="1-wp.html#SP6" class="internal">Platform::system</a><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cmd</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">argv</span><span class="plain-syntax">[] = {</span><span class="string-syntax">"sh"</span><span class="plain-syntax">, </span><span class="string-syntax">"-c"</span><span class="plain-syntax">, (</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">cmd</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">};</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">pid_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">pid</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">status</span><span class="plain-syntax"> = </span><span class="identifier-syntax">posix_spawn</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">pid</span><span class="plain-syntax">, </span><span class="string-syntax">"/bin/sh"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">argv</span><span class="plain-syntax">, </span><span class="identifier-syntax">environ</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">status</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">waitpid</span><span class="plain-syntax">(</span><span class="identifier-syntax">pid</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">status</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">) != -1) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">status</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"waitpid failed"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="constant-syntax">STDERR</span><span class="plain-syntax">, </span><span class="string-syntax">"posix_spawn: %s\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">strerror</span><span class="plain-syntax">(</span><span class="identifier-syntax">status</span><span class="plain-syntax">));</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"posix_spawn failed"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</p>
-
-<p class="endnote">The function Platform::system is used in <a href="1-pp.html#SP10">&#167;10</a>, <a href="1-pp.html#SP14">&#167;14</a>, Windows Platform (<a href="1-wp.html#SP6">&#167;6</a>), Shell (<a href="3-shl.html#SP5">&#167;5</a>).</p>
-
-<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Directory handling. </b></p>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li><li>The function Platform::system is used in <a href="1-pp.html#SP10">&#167;10</a>, <a href="1-pp.html#SP14">&#167;14</a>, Windows Platform (<a href="1-wp.html#SP6">&#167;6</a>), Shell (<a href="3-shl.html#SP5">&#167;5</a>).</li></ul><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Directory handling. </b></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP7">Platform::mkdir</a></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_pathname</span><span class="plain">) {</span>
-        <span class="identifier">errno</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">mkdir</span><span class="plain">(</span><span class="identifier">transcoded_pathname</span><span class="plain">, </span><span class="identifier">S_IRWXU</span><span class="plain"> | </span><span class="identifier">S_IRWXG</span><span class="plain"> | </span><span class="identifier">S_IROTH</span><span class="plain"> | </span><span class="identifier">S_IXOTH</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">errno</span><span class="plain"> == </span><span class="identifier">EEXIST</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><a href="1-wp.html#SP7" class="internal">Platform::mkdir</a><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transcoded_pathname</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">errno</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mkdir</span><span class="plain-syntax">(</span><span class="identifier-syntax">transcoded_pathname</span><span class="plain-syntax">, </span><span class="identifier-syntax">S_IRWXU</span><span class="plain-syntax"> | </span><span class="identifier-syntax">S_IRWXG</span><span class="plain-syntax"> | </span><span class="identifier-syntax">S_IROTH</span><span class="plain-syntax"> | </span><span class="identifier-syntax">S_IXOTH</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rv</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">errno</span><span class="plain-syntax"> == </span><span class="identifier-syntax">EEXIST</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> *</span><span class="functiontext"><a href="1-wp.html#SP7">Platform::opendir</a></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">dir_name</span><span class="plain">) {</span>
-        <span class="identifier">DIR</span><span class="plain"> *</span><span class="identifier">dirp</span><span class="plain"> = </span><span class="identifier">opendir</span><span class="plain">(</span><span class="identifier">dir_name</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">dirp</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><a href="1-wp.html#SP7" class="internal">Platform::opendir</a><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dir_name</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">DIR</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dirp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">opendir</span><span class="plain-syntax">(</span><span class="identifier-syntax">dir_name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">dirp</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP7">Platform::readdir</a></span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">dir_name</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">leafname</span><span class="plain">) {</span>
-        <span class="reserved">char</span><span class="plain"> </span><span class="identifier">path_to</span><span class="plain">[2*</span><span class="constant">MAX_FILENAME_LENGTH</span><span class="plain">+2];</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">stat</span><span class="plain"> </span><span class="identifier">file_status</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rv</span><span class="plain">;</span>
-        <span class="identifier">DIR</span><span class="plain"> *</span><span class="identifier">dirp</span><span class="plain"> = (</span><span class="identifier">DIR</span><span class="plain"> *) </span><span class="identifier">D</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">dirent</span><span class="plain"> *</span><span class="identifier">dp</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">dp</span><span class="plain"> = </span><span class="identifier">readdir</span><span class="plain">(</span><span class="identifier">dirp</span><span class="plain">)) == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">path_to</span><span class="plain">, </span><span class="string">"%s%c%s"</span><span class="plain">, </span><span class="identifier">dir_name</span><span class="plain">, </span><span class="constant">FOLDER_SEPARATOR</span><span class="plain">, </span><span class="identifier">dp</span><span class="plain">-&gt;</span><span class="identifier">d_name</span><span class="plain">);</span>
-        <span class="identifier">rv</span><span class="plain"> = </span><span class="identifier">stat</span><span class="plain">(</span><span class="identifier">path_to</span><span class="plain">, &amp;</span><span class="identifier">file_status</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rv</span><span class="plain"> != </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">S_ISDIR</span><span class="plain">(</span><span class="identifier">file_status</span><span class="plain">.</span><span class="identifier">st_mode</span><span class="plain">)) </span><span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="string">"%s/"</span><span class="plain">, </span><span class="identifier">dp</span><span class="plain">-&gt;</span><span class="identifier">d_name</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">strcpy</span><span class="plain">(</span><span class="identifier">leafname</span><span class="plain">, </span><span class="identifier">dp</span><span class="plain">-&gt;</span><span class="identifier">d_name</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><a href="1-wp.html#SP7" class="internal">Platform::readdir</a><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dir_name</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">path_to</span><span class="plain-syntax">[2*</span><span class="constant-syntax">MAX_FILENAME_LENGTH</span><span class="plain-syntax">+2];</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">stat</span><span class="plain-syntax"> </span><span class="identifier-syntax">file_status</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">DIR</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dirp</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">DIR</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">D</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">dirent</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dp</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">dp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">readdir</span><span class="plain-syntax">(</span><span class="identifier-syntax">dirp</span><span class="plain-syntax">)) == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">sprintf</span><span class="plain-syntax">(</span><span class="identifier-syntax">path_to</span><span class="plain-syntax">, </span><span class="string-syntax">"%s%c%s"</span><span class="plain-syntax">, </span><span class="identifier-syntax">dir_name</span><span class="plain-syntax">, </span><span class="constant-syntax">FOLDER_SEPARATOR</span><span class="plain-syntax">, </span><span class="identifier-syntax">dp</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">d_name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">stat</span><span class="plain-syntax">(</span><span class="identifier-syntax">path_to</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">file_status</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rv</span><span class="plain-syntax"> != </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S_ISDIR</span><span class="plain-syntax">(</span><span class="identifier-syntax">file_status</span><span class="plain-syntax">.</span><span class="identifier-syntax">st_mode</span><span class="plain-syntax">)) </span><span class="identifier-syntax">sprintf</span><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">, </span><span class="string-syntax">"%s/"</span><span class="plain-syntax">, </span><span class="identifier-syntax">dp</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">d_name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">strcpy</span><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">, </span><span class="identifier-syntax">dp</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">d_name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP7">Platform::closedir</a></span><span class="plain">(</span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">D</span><span class="plain">) {</span>
-        <span class="identifier">DIR</span><span class="plain"> *</span><span class="identifier">dirp</span><span class="plain"> = (</span><span class="identifier">DIR</span><span class="plain"> *) </span><span class="identifier">D</span><span class="plain">;</span>
-        <span class="identifier">closedir</span><span class="plain">(</span><span class="identifier">dirp</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP7" class="internal">Platform::closedir</a><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">DIR</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dirp</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">DIR</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">D</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">closedir</span><span class="plain-syntax">(</span><span class="identifier-syntax">dirp</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<p class="endnote">The function Platform::mkdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Pathnames (<a href="3-pth.html#SP9">&#167;9</a>).</p>
-
-<p class="endnote">The function Platform::opendir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Platform::readdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</p>
-
-<p class="endnote">The function Platform::closedir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</p>
-
-<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Timestamp. </b>There are implementations of the C standard library where <code class="display"><span class="extract">time_t</span></code> has
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::mkdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Pathnames (<a href="3-pth.html#SP9">&#167;9</a>).</li><li>The function Platform::opendir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li><li>The function Platform::readdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li><li>The function Platform::closedir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li></ul><p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Timestamp. </b>There are implementations of the C standard library where <code class="display"><span class="extract-syntax">time_t</span></code> has
 super-weird behaviour, but on almost POSIX systems, time 0 corresponds to
 midnight on 1 January 1970. All we really need is that the "never" value
 is one which is earlier than any possible timestamp on the files we'll
@@ -446,187 +345,124 @@ be dealing with.
 </p>
 
 <pre class="display">
-    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP12">Platform::never_time</a></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> (</span><span class="identifier">time_t</span><span class="plain">) </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="identifier-syntax">time_t</span><span class="plain-syntax"> </span><a href="1-wp.html#SP12" class="internal">Platform::never_time</a><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">time_t</span><span class="plain-syntax">) </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="identifier">time_t</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP12">Platform::timestamp</a></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_filename</span><span class="plain">) {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="identifier">stat</span><span class="plain"> </span><span class="identifier">filestat</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">stat</span><span class="plain">(</span><span class="identifier">transcoded_filename</span><span class="plain">, &amp;</span><span class="identifier">filestat</span><span class="plain">) != -1) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">filestat</span><span class="plain">.</span><span class="identifier">st_mtime</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP12">Platform::never_time</a></span><span class="plain">();</span>
-    <span class="plain">}</span>
+    <span class="identifier-syntax">time_t</span><span class="plain-syntax"> </span><a href="1-wp.html#SP12" class="internal">Platform::timestamp</a><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transcoded_filename</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">stat</span><span class="plain-syntax"> </span><span class="identifier-syntax">filestat</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">stat</span><span class="plain-syntax">(</span><span class="identifier-syntax">transcoded_filename</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">filestat</span><span class="plain-syntax">) != -1) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">filestat</span><span class="plain-syntax">.</span><span class="identifier-syntax">st_mtime</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="1-wp.html#SP12" class="internal">Platform::never_time</a><span class="plain-syntax">();</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<p class="endnote">The function Platform::never_time is used in Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>).</p>
-
-<p class="endnote">The function Platform::timestamp is used in Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>), Filenames (<a href="3-fln.html#SP12">&#167;12</a>).</p>
-
-<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Sync. </b>Both names here are of directories which do exist. The function makes
-the <code class="display"><span class="extract">dest</span></code> tree an exact copy of the <code class="display"><span class="extract">source</span></code> tree (and therefore deletes
-anything different which was originally in <code class="display"><span class="extract">dest</span></code>).
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::never_time is used in Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>).</li><li>The function Platform::timestamp is used in Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>), Filenames (<a href="3-fln.html#SP12">&#167;12</a>).</li></ul><p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Sync. </b>Both names here are of directories which do exist. The function makes
+the <code class="display"><span class="extract-syntax">dest</span></code> tree an exact copy of the <code class="display"><span class="extract-syntax">source</span></code> tree (and therefore deletes
+anything different which was originally in <code class="display"><span class="extract-syntax">dest</span></code>).
 </p>
 
-<p class="inwebparagraph">In POSIX world, we can fairly well depend on <code class="display"><span class="extract">rsync</span></code> being around:
+<p class="inwebparagraph">In POSIX world, we can fairly well depend on <code class="display"><span class="extract-syntax">rsync</span></code> being around:
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::rsync<button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Platform::rsync</b>:<br>Pathnames - <a href="3-pth.html#SP10">&#167;10</a></span></button></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_source</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">transcoded_dest</span><span class="plain">) {</span>
-        <span class="reserved">char</span><span class="plain"> </span><span class="identifier">rsync_command</span><span class="plain">[10*</span><span class="constant">MAX_FILENAME_LENGTH</span><span class="plain">];</span>
-        <span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">, </span><span class="string">"rsync -a --delete "</span><span class="plain">);</span>
-        <span class="functiontext"><a href="1-pp.html#SP14">Platform::quote_text</a></span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="identifier">transcoded_source</span><span class="plain">, </span><span class="constant">TRUE</span><span class="plain">);</span>
-        <span class="identifier">sprintf</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="string">" "</span><span class="plain">);</span>
-        <span class="functiontext"><a href="1-pp.html#SP14">Platform::quote_text</a></span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain"> + </span><span class="identifier">strlen</span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">), </span><span class="identifier">transcoded_dest</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">);</span>
-        <span class="functiontext"><a href="1-wp.html#SP6">Platform::system</a></span><span class="plain">(</span><span class="identifier">rsync_command</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Platform::rsync</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Platform::rsync</b>:<br>Pathnames - <a href="3-pth.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transcoded_source</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transcoded_dest</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax">[10*</span><span class="constant-syntax">MAX_FILENAME_LENGTH</span><span class="plain-syntax">];</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">sprintf</span><span class="plain-syntax">(</span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax">, </span><span class="string-syntax">"rsync -a --delete "</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="1-pp.html#SP14" class="internal">Platform::quote_text</a><span class="plain-syntax">(</span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax"> + </span><span class="identifier-syntax">strlen</span><span class="plain-syntax">(</span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax">), </span><span class="identifier-syntax">transcoded_source</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">sprintf</span><span class="plain-syntax">(</span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax"> + </span><span class="identifier-syntax">strlen</span><span class="plain-syntax">(</span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax">), </span><span class="string-syntax">" "</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="1-pp.html#SP14" class="internal">Platform::quote_text</a><span class="plain-syntax">(</span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax"> + </span><span class="identifier-syntax">strlen</span><span class="plain-syntax">(</span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax">), </span><span class="identifier-syntax">transcoded_dest</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="1-wp.html#SP6" class="internal">Platform::system</a><span class="plain-syntax">(</span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Platform::quote_text<button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Platform::quote_text</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">quoted</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">raw</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">terminate</span><span class="plain">) {</span>
-        <span class="identifier">quoted</span><span class="plain">[0] = </span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">qp</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">rp</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">raw</span><span class="plain">[</span><span class="identifier">rp</span><span class="plain">]; </span><span class="identifier">rp</span><span class="plain">++) {</span>
-            <span class="reserved">char</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">raw</span><span class="plain">[</span><span class="identifier">rp</span><span class="plain">];</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">) </span><span class="identifier">quoted</span><span class="plain">[</span><span class="identifier">qp</span><span class="plain">++] = </span><span class="character">'\\'</span><span class="plain">;</span>
-            <span class="identifier">quoted</span><span class="plain">[</span><span class="identifier">qp</span><span class="plain">++] = </span><span class="identifier">c</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">terminate</span><span class="plain">) </span><span class="identifier">quoted</span><span class="plain">[</span><span class="identifier">qp</span><span class="plain">++] = </span><span class="constant">FOLDER_SEPARATOR</span><span class="plain">;</span>
-        <span class="identifier">quoted</span><span class="plain">[</span><span class="identifier">qp</span><span class="plain">++] = </span><span class="constant">SHELL_QUOTE_CHARACTER</span><span class="plain">;</span>
-        <span class="identifier">quoted</span><span class="plain">[</span><span class="identifier">qp</span><span class="plain">++] = </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Platform::quote_text</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Platform::quote_text</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quoted</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">raw</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">terminate</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">quoted</span><span class="plain-syntax">[0] = </span><span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">qp</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rp</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">raw</span><span class="plain-syntax">[</span><span class="identifier-syntax">rp</span><span class="plain-syntax">]; </span><span class="identifier-syntax">rp</span><span class="plain-syntax">++) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">raw</span><span class="plain-syntax">[</span><span class="identifier-syntax">rp</span><span class="plain-syntax">];</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax">) </span><span class="identifier-syntax">quoted</span><span class="plain-syntax">[</span><span class="identifier-syntax">qp</span><span class="plain-syntax">++] = </span><span class="character-syntax">'\\'</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">quoted</span><span class="plain-syntax">[</span><span class="identifier-syntax">qp</span><span class="plain-syntax">++] = </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">terminate</span><span class="plain-syntax">) </span><span class="identifier-syntax">quoted</span><span class="plain-syntax">[</span><span class="identifier-syntax">qp</span><span class="plain-syntax">++] = </span><span class="constant-syntax">FOLDER_SEPARATOR</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">quoted</span><span class="plain-syntax">[</span><span class="identifier-syntax">qp</span><span class="plain-syntax">++] = </span><span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">quoted</span><span class="plain-syntax">[</span><span class="identifier-syntax">qp</span><span class="plain-syntax">++] = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Sleep. </b></p>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul><p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Sleep. </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP8">Platform::sleep</a></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">seconds</span><span class="plain">) {</span>
-        <span class="identifier">sleep</span><span class="plain">((</span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain">) </span><span class="identifier">seconds</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP8" class="internal">Platform::sleep</a><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">seconds</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">sleep</span><span class="plain-syntax">((</span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><span class="identifier-syntax">seconds</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<p class="endnote">The function Platform::sleep is used in Windows Platform (<a href="1-wp.html#SP8">&#167;8</a>).</p>
-
-<p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Notifications. </b>The "submarine" sound is a gloomy thunk; the "bell" is the three-tone rising
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::sleep is used in Windows Platform (<a href="1-wp.html#SP8">&#167;8</a>).</li></ul><p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Notifications. </b>The "submarine" sound is a gloomy thunk; the "bell" is the three-tone rising
 alert noise which iPhones make when they receive texts, but which hackers of a
 certain age will remember as the "I have ripped your music CD now" alert from
 SoundJam, the program which Apple bought and rebranded as iTunes. Apple now
 seems to consider this alert a general-purpose "something good has happened".
 </p>
 
-<p class="inwebparagraph">It is anybody's guess how long Apple will permit the shell command <code class="display"><span class="extract">osascript</span></code>
+<p class="inwebparagraph">It is anybody's guess how long Apple will permit the shell command <code class="display"><span class="extract-syntax">osascript</span></code>
 to survive, given the MacOS team's current hostility to scripting; we're
 actually running a one-line AppleScript here.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP9">Platform::notification</a></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">happy</span><span class="plain">) {</span>
-        <span class="reserved">char</span><span class="plain"> *</span><span class="identifier">sound_name</span><span class="plain"> = </span><span class="string">"Bell.aiff"</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">happy</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="identifier">sound_name</span><span class="plain"> = </span><span class="string">"Submarine.aiff"</span><span class="plain">;</span>
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">)</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">, </span><span class="string">"osascript -e 'display notification \"%S\" "</span>
-            <span class="string">"sound name \"%s\" with title \"intest Results\"'"</span><span class="plain">, </span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">sound_name</span><span class="plain">);</span>
-        <span class="functiontext"><a href="3-shl.html#SP5">Shell::run</a></span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">);</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">TEMP</span><span class="plain">)</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP9" class="internal">Platform::notification</a><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">happy</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sound_name</span><span class="plain-syntax"> = </span><span class="string-syntax">"Bell.aiff"</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">happy</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">sound_name</span><span class="plain-syntax"> = </span><span class="string-syntax">"Submarine.aiff"</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">, </span><span class="string-syntax">"osascript -e 'display notification \"%S\" "</span>
+    <span class="plain-syntax">        </span><span class="string-syntax">"sound name \"%s\" with title \"intest Results\"'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">sound_name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="3-shl.html#SP5" class="internal">Shell::run</a><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</p>
-
-<p class="endnote">The function Platform::notification is used in <a href="1-pp.html#SP17">&#167;17</a>, Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>).</p>
-
-<p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b></p>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li><li>The function Platform::notification is used in <a href="1-pp.html#SP17">&#167;17</a>, Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>).</li></ul><p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP9">Platform::notification</a></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">text</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">happy</span><span class="plain">) {</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP9" class="internal">Platform::notification</a><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">happy</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined and if PLATFORM_MACOS is undefined.</p>
-
-<p class="endnote">The function Platform::notification is used in <a href="1-pp.html#SP16">&#167;16</a>, Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>).</p>
-
-<p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Concurrency. </b></p>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined and if PLATFORM_MACOS is undefined.</li><li>The function Platform::notification is used in <a href="1-pp.html#SP16">&#167;16</a>, Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>).</li></ul><p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Concurrency. </b></p>
 
 <pre class="display">
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="identifier">pthread_t</span><span class="plain"> </span><span class="identifier">foundation_thread</span><span class="plain">;</span>
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="identifier">pthread_attr_t</span><span class="plain"> </span><span class="identifier">foundation_thread_attributes</span><span class="plain">;</span>
+    <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="identifier-syntax">pthread_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">foundation_thread</span><span class="plain-syntax">;</span>
+    <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="identifier-syntax">pthread_attr_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">foundation_thread_attributes</span><span class="plain-syntax">;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b></p>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul><p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::create_thread</a></span><span class="plain">(</span><span class="identifier">foundation_thread</span><span class="plain"> *</span><span class="identifier">pt</span><span class="plain">,</span>
-        <span class="reserved">const</span><span class="plain"> </span><span class="identifier">foundation_thread_attributes</span><span class="plain"> *</span><span class="identifier">pa</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *(*</span><span class="identifier">fn</span><span class="plain">)(</span><span class="reserved">void</span><span class="plain"> *), </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pthread_create</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">, </span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">fn</span><span class="plain">, </span><span class="identifier">arg</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><a href="1-wp.html#SP11" class="internal">Platform::create_thread</a><span class="plain-syntax">(</span><span class="identifier-syntax">foundation_thread</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pt</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="identifier-syntax">foundation_thread_attributes</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pa</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *(*</span><span class="identifier-syntax">fn</span><span class="plain-syntax">)(</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *), </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pthread_create</span><span class="plain-syntax">(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">, </span><span class="identifier-syntax">pa</span><span class="plain-syntax">, </span><span class="identifier-syntax">fn</span><span class="plain-syntax">, </span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::join_thread</a></span><span class="plain">(</span><span class="identifier">pthread_t</span><span class="plain"> </span><span class="identifier">pt</span><span class="plain">, </span><span class="reserved">void</span><span class="plain">** </span><span class="identifier">rv</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pthread_join</span><span class="plain">(</span><span class="identifier">pt</span><span class="plain">, </span><span class="identifier">rv</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><a href="1-wp.html#SP11" class="internal">Platform::join_thread</a><span class="plain-syntax">(</span><span class="identifier-syntax">pthread_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">pt</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax">** </span><span class="identifier-syntax">rv</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pthread_join</span><span class="plain-syntax">(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">, </span><span class="identifier-syntax">rv</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::init_thread</a></span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">size</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pthread_attr_init</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread initialisation failed"</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pthread_attr_setstacksize</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">, </span><span class="identifier">size</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"thread stack sizing failed"</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP11" class="internal">Platform::init_thread</a><span class="plain-syntax">(</span><span class="identifier-syntax">pthread_attr_t</span><span class="plain-syntax">* </span><span class="identifier-syntax">pa</span><span class="plain-syntax">, </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">size</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pthread_attr_init</span><span class="plain-syntax">(</span><span class="identifier-syntax">pa</span><span class="plain-syntax">) != </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"thread initialisation failed"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pthread_attr_setstacksize</span><span class="plain-syntax">(</span><span class="identifier-syntax">pa</span><span class="plain-syntax">, </span><span class="identifier-syntax">size</span><span class="plain-syntax">) != </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"thread stack sizing failed"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="identifier">size_t</span><span class="plain"> </span><span class="functiontext"><a href="1-wp.html#SP11">Platform::get_thread_stack_size</a></span><span class="plain">(</span><span class="identifier">pthread_attr_t</span><span class="plain">* </span><span class="identifier">pa</span><span class="plain">) {</span>
-        <span class="identifier">size_t</span><span class="plain"> </span><span class="identifier">mystacksize</span><span class="plain">;</span>
-        <span class="identifier">pthread_attr_getstacksize</span><span class="plain">(</span><span class="identifier">pa</span><span class="plain">, &amp;</span><span class="identifier">mystacksize</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">mystacksize</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><a href="1-wp.html#SP11" class="internal">Platform::get_thread_stack_size</a><span class="plain-syntax">(</span><span class="identifier-syntax">pthread_attr_t</span><span class="plain-syntax">* </span><span class="identifier-syntax">pa</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">mystacksize</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">pthread_attr_getstacksize</span><span class="plain-syntax">(</span><span class="identifier-syntax">pa</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">mystacksize</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">mystacksize</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<p class="endnote">The function Platform::create_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</p>
-
-<p class="endnote">The function Platform::join_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</p>
-
-<p class="endnote">The function Platform::init_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</p>
-
-<p class="endnote">The function Platform::get_thread_stack_size is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</p>
-
-<p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Mutexes. </b></p>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::create_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</li><li>The function Platform::join_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</li><li>The function Platform::init_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</li><li>The function Platform::get_thread_stack_size is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</li></ul><p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Mutexes. </b></p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="identifier">CREATE_MUTEX</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">)</span>
-        <span class="reserved">static</span><span class="plain"> </span><span class="identifier">pthread_mutex_t</span><span class="plain"> </span><span class="identifier">name</span><span class="plain"> = </span><span class="identifier">PTHREAD_MUTEX_INITIALIZER</span><span class="plain">;</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">LOCK_MUTEX</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">pthread_mutex_lock</span><span class="plain">(&amp;</span><span class="identifier">name</span><span class="plain">);</span>
-    <span class="definitionkeyword">define</span> <span class="identifier">UNLOCK_MUTEX</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">) </span><span class="identifier">pthread_mutex_unlock</span><span class="plain">(&amp;</span><span class="identifier">name</span><span class="plain">);</span>
+    <span class="definition-keyword">define</span> <span class="identifier-syntax">CREATE_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">static</span><span class="plain-syntax"> </span><span class="identifier-syntax">pthread_mutex_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PTHREAD_MUTEX_INITIALIZER</span><span class="plain-syntax">;</span>
+    <span class="definition-keyword">define</span> <span class="identifier-syntax">LOCK_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">) </span><span class="identifier-syntax">pthread_mutex_lock</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
+    <span class="definition-keyword">define</span> <span class="identifier-syntax">UNLOCK_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">) </span><span class="identifier-syntax">pthread_mutex_unlock</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 </pre>
-<p class="endnote">This paragraph is used only if PLATFORM_POSIX is defined.</p>
-
-<hr class="tocbar">
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul><hr class="tocbar">
 <ul class="toc"><li><a href="1-fm.html">Back to 'Foundation Module'</a></li><li><a href="1-wp.html">Continue with 'Windows Platform'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
-<script>
-function togglePopup(material_id) {
-  var popup = document.getElementById(material_id);
-  popup.classList.toggle("show");
-}
-</script>
-
-<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

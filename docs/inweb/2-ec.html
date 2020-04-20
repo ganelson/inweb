@@ -2,16 +2,34 @@
 <html>
 	<head>
 		<title>Enumerated Constants</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">inweb</span></a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -35,9 +53,9 @@
 <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">inweb</a></li><li><a href="index.html#2">Chapter 2: Parsing a Web</a></li><li><b>Enumerated Constants</b></li></ul><p class="purpose">To define sequentially numbered values for families of constants.</p>
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>The idea here is that each enumeration set is a sequence of named constants
-with a given postfix: for example, <code class="display"><span class="extract">HARRY_ST</span></code>, <code class="display"><span class="extract">NEVILLE_ST</span></code>, <code class="display"><span class="extract">ANGELINA_ST</span></code>
-form the <code class="display"><span class="extract">*_ST</span></code> set. By definition, the postfix part is the portion of the
-name following the final underscore, so in this case <code class="display"><span class="extract">ST</span></code>.
+with a given postfix: for example, <code class="display"><span class="extract-syntax">HARRY_ST</span></code>, <code class="display"><span class="extract-syntax">NEVILLE_ST</span></code>, <code class="display"><span class="extract-syntax">ANGELINA_ST</span></code>
+form the <code class="display"><span class="extract-syntax">*_ST</span></code> set. By definition, the postfix part is the portion of the
+name following the final underscore, so in this case <code class="display"><span class="extract-syntax">ST</span></code>.
 </p>
 
 <p class="inwebparagraph">Each set of constants begins at a given value (typically 0) and then
@@ -45,163 +63,123 @@ increments sequentially in definition order.
 </p>
 
 <pre class="display">
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">enumeration_set</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">postfix</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">stub</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">first_value</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">next_free_value</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">last_observed_at</span><span class="plain">;</span>
-        <span class="constant">MEMORY_MANAGEMENT</span>
-    <span class="plain">} </span><span class="reserved">enumeration_set</span><span class="plain">;</span>
+    <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">postfix</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stub</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">first_value</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">next_free_value</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_observed_at</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+    <span class="plain-syntax">} </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax">;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The structure enumeration_set is private to this section.</p>
-
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>There won't be enough sets to make a hash table worth the overhead, so
+<ul class="endnotetexts"><li>The structure enumeration_set is private to this section.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>There won't be enough sets to make a hash table worth the overhead, so
 compare all against all:
 </p>
 
 <pre class="display">
-    <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="functiontext">Enumerations::find<button class="popup" onclick="togglePopup('usagePopup51')">...<span class="popuptext" id="usagePopup51">Usage of <b>Enumerations::find</b>:<br><a href="2-ec.html#SP3">&#167;3</a></span></button></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">post</span><span class="plain">) {</span>
-        <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="identifier">es</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">es</span><span class="plain">, </span><span class="reserved">enumeration_set</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP18">Str::eq</a></span><span class="plain">(</span><span class="identifier">post</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">postfix</span><span class="plain">))</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">es</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">enumeration_set</span><span class="plain-syntax"> *</span><span class="function-syntax">Enumerations::find</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Enumerations::find</b>:<br><a href="2-ec.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">post</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">es</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">es</span><span class="plain-syntax">, </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="internal">Str::eq</a><span class="plain-syntax">(</span><span class="identifier-syntax">post</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">postfix</span><span class="plain-syntax">))</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">es</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The following is called when an enumeration is found. If <code class="display"><span class="extract">from</span></code> has a
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The following is called when an enumeration is found. If <code class="display"><span class="extract-syntax">from</span></code> has a
 sensible value, this is the start of a new enumeration set; otherwise it's
 a further constant in what ought to be an existing set.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Enumerations::define<button class="popup" onclick="togglePopup('usagePopup52')">...<span class="popuptext" id="usagePopup52">Usage of <b>Enumerations::define</b>:<br>The Parser - <a href="2-tp.html#SP1_1_7_5_1_7">&#167;1.1.7.5.1.7</a></span></button></span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">symbol</span><span class="plain">,</span>
-        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">) {</span>
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
-        &lt;<span class="cwebmacro">Find the postfix in this symbol name</span> <span class="cwebmacronumber">3.1</span>&gt;<span class="plain">;</span>
-        <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="identifier">es</span><span class="plain"> = </span><span class="functiontext"><a href="2-ec.html#SP2">Enumerations::find</a></span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">from</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span>&lt;<span class="cwebmacro">Continue existing set</span> <span class="cwebmacronumber">3.2</span>&gt;
-        <span class="reserved">else</span><span class="plain"> </span>&lt;<span class="cwebmacro">Begin new set</span> <span class="cwebmacronumber">3.3</span>&gt;<span class="plain">;</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">) </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">last_observed_at</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Enumerations::define</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Enumerations::define</b>:<br>The Parser - <a href="2-tp.html#SP1_1_7_5_1_7">&#167;1.1.7.5.1.7</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">symbol</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pf</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Find the postfix in this symbol name</span> <span class="named-paragraph-number">3.1</span>&gt;<span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">es</span><span class="plain-syntax"> = </span><a href="2-ec.html#SP2" class="internal">Enumerations::find</a><span class="plain-syntax">(</span><span class="identifier-syntax">pf</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Continue existing set</span> <span class="named-paragraph-number">3.2</span>&gt;
+    <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span>&lt;<span class="named-paragraph">Begin new set</span> <span class="named-paragraph-number">3.3</span>&gt;<span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pf</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">) </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">last_observed_at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b>So for instance <code class="display"><span class="extract">HARRY_ST</span></code> to <code class="display"><span class="extract">ST</span></code>:
+<p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b>So for instance <code class="display"><span class="extract-syntax">HARRY_ST</span></code> to <code class="display"><span class="extract-syntax">ST</span></code>:
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Find the postfix in this symbol name</span> <span class="cwebmacronumber">3.1</span>&gt; =
+&lt;<span class="named-paragraph-defn">Find the postfix in this symbol name</span> <span class="named-paragraph-number">3.1</span>&gt; =
 </code></p>
 
-
-<pre class="displaydefn">
-        <span class="reserved">match_results</span><span class="plain"> </span><span class="identifier">mr</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/4-pm.html#SP9">Regexp::create_mr</a></span><span class="plain">();</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="../foundation-module/4-pm.html#SP10">Regexp::match</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">, </span><span class="identifier">symbol</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%c*_(%C+?)"</span><span class="plain">)) </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP16">Str::copy</a></span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">, </span><span class="identifier">mr</span><span class="plain">.</span><span class="element">exp</span><span class="plain">[0]);</span>
-        <span class="reserved">else</span><span class="plain"> {</span>
-            <span class="functiontext"><a href="1-pc.html#SP8">Main::error_in_web</a></span><span class="plain">(</span><span class="identifier">I</span><span class="string">"enumeration constants must belong to a _FAMILY"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">, </span><span class="string">"BOGUS"</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="functiontext"><a href="../foundation-module/4-pm.html#SP9">Regexp::dispose_of</a></span><span class="plain">(&amp;</span><span class="identifier">mr</span><span class="plain">);</span>
+<pre class="display">
+    <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::create_mr</a><span class="plain-syntax">();</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"%c*_(%C+?)"</span><span class="plain-syntax">)) </span><a href="../foundation-module/4-sm.html#SP17" class="internal">Str::copy</a><span class="plain-syntax">(</span><span class="identifier-syntax">pf</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">        </span><a href="1-pc.html#SP8" class="internal">Main::error_in_web</a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"enumeration constants must belong to a _FAMILY"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">pf</span><span class="plain-syntax">, </span><span class="string-syntax">"BOGUS"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::dispose_of</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</p>
-
-<p class="inwebparagraph"><a id="SP3_2"></a><b>&#167;3.2.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Continue existing set</span> <span class="cwebmacronumber">3.2</span>&gt; =
+<ul class="endnotetexts"><li>This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</li></ul><p class="inwebparagraph"><a id="SP3_2"></a><b>&#167;3.2.  </b><code class="display">
+&lt;<span class="named-paragraph-defn">Continue existing set</span> <span class="named-paragraph-number">3.2</span>&gt; =
 </code></p>
 
-
-<pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(%S+"</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">next_free_value</span><span class="plain">++);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="functiontext"><a href="1-pc.html#SP8">Main::error_in_web</a></span><span class="plain">(</span><span class="identifier">I</span><span class="string">"this enumeration _FAMILY is unknown"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
+<pre class="display">
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"(%S+"</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_free_value</span><span class="plain-syntax">++);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">")"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="1-pc.html#SP8" class="internal">Main::error_in_web</a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"this enumeration _FAMILY is unknown"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</p>
-
-<p class="inwebparagraph"><a id="SP3_3"></a><b>&#167;3.3.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Begin new set</span> <span class="cwebmacronumber">3.3</span>&gt; =
+<ul class="endnotetexts"><li>This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</li></ul><p class="inwebparagraph"><a id="SP3_3"></a><b>&#167;3.3.  </b><code class="display">
+&lt;<span class="named-paragraph-defn">Begin new set</span> <span class="named-paragraph-number">3.3</span>&gt; =
 </code></p>
 
-
-<pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">) </span><span class="functiontext"><a href="1-pc.html#SP8">Main::error_in_web</a></span><span class="plain">(</span><span class="identifier">I</span><span class="string">"this enumeration _FAMILY already exists"</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">es</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">enumeration_set</span><span class="plain">);</span>
-            <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">postfix</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">pf</span><span class="plain">);</span>
-            <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP8">Str::len</a></span><span class="plain">(</span><span class="identifier">from</span><span class="plain">) &lt; </span><span class="constant">8</span><span class="plain">) &amp;&amp;</span>
-                <span class="plain">((</span><span class="functiontext"><a href="../foundation-module/4-pm.html#SP10">Regexp::match</a></span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"%d+"</span><span class="plain">)) ||</span>
-                    <span class="plain">(</span><span class="functiontext"><a href="../foundation-module/4-pm.html#SP10">Regexp::match</a></span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"-%d+"</span><span class="plain">)))) {</span>
-                <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">first_value</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP7">Str::atoi</a></span><span class="plain">(</span><span class="identifier">from</span><span class="plain">, </span><span class="constant">0</span><span class="plain">);</span>
-                <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">next_free_value</span><span class="plain"> = </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">first_value</span><span class="plain"> + </span><span class="constant">1</span><span class="plain">;</span>
-            <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">from</span><span class="plain">);</span>
-                <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">first_value</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-                <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">next_free_value</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"(%S+"</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">);</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">first_value</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">stub</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">")"</span><span class="plain">);</span>
+<pre class="display">
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">) </span><a href="1-pc.html#SP8" class="internal">Main::error_in_web</a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"this enumeration _FAMILY already exists"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">es</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">postfix</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">pf</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="../foundation-module/4-sm.html#SP8" class="internal">Str::len</a><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">) &lt; </span><span class="constant-syntax">8</span><span class="plain-syntax">) &amp;&amp;</span>
+    <span class="plain-syntax">            ((</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"%d+"</span><span class="plain-syntax">)) ||</span>
+    <span class="plain-syntax">                (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"-%d+"</span><span class="plain-syntax">)))) {</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_value</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP7" class="internal">Str::atoi</a><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_free_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_value</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_value</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_free_value</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        }</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"(%S+"</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_value</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">")"</span><span class="plain-syntax">);</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</p>
-
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>For each set, a further constant is defined to give the range; for example,
-we would have <code class="display"><span class="extract">NO_DEFINED_ST_VALUES</span></code> set to 3. This is notionally placed in
-the code at the last line on which an <code class="display"><span class="extract">*_ST</span></code> value was defined.
+<ul class="endnotetexts"><li>This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>For each set, a further constant is defined to give the range; for example,
+we would have <code class="display"><span class="extract-syntax">NO_DEFINED_ST_VALUES</span></code> set to 3. This is notionally placed in
+the code at the last line on which an <code class="display"><span class="extract-syntax">*_ST</span></code> value was defined.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Enumerations::define_extents<button class="popup" onclick="togglePopup('usagePopup53')">...<span class="popuptext" id="usagePopup53">Usage of <b>Enumerations::define_extents</b>:<br>The Tangler - <a href="3-tt.html#SP1_1_1">&#167;1.1.1</a></span></button></span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">tangle_target</span><span class="plain"> *</span><span class="identifier">target</span><span class="plain">, </span><span class="reserved">programming_language</span><span class="plain"> *</span><span class="identifier">lang</span><span class="plain">) {</span>
-        <span class="reserved">enumeration_set</span><span class="plain"> *</span><span class="identifier">es</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">es</span><span class="plain">, </span><span class="reserved">enumeration_set</span><span class="plain">) {</span>
-            <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">symbol</span><span class="plain">);</span>
-            <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">symbol</span><span class="plain">, </span><span class="string">"NO_DEFINED_%S_VALUES"</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">postfix</span><span class="plain">);</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">, </span><span class="string">"%d"</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">next_free_value</span><span class="plain"> - </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">first_value</span><span class="plain">);</span>
-            <span class="functiontext"><a href="4-lm.html#SP10">LanguageMethods::start_definition</a></span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">lang</span><span class="plain">, </span><span class="identifier">symbol</span><span class="plain">, </span><span class="identifier">value</span><span class="plain">,</span>
-                <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">last_observed_at</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">last_observed_at</span><span class="plain">);</span>
-            <span class="functiontext"><a href="4-lm.html#SP10">LanguageMethods::end_definition</a></span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">lang</span><span class="plain">,</span>
-                <span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">last_observed_at</span><span class="plain">-&gt;</span><span class="element">owning_section</span><span class="plain">, </span><span class="identifier">es</span><span class="plain">-&gt;</span><span class="element">last_observed_at</span><span class="plain">);</span>
-            <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">symbol</span><span class="plain">);</span>
-            <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">value</span><span class="plain">);</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Enumerations::define_extents</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Enumerations::define_extents</b>:<br>The Tangler - <a href="3-tt.html#SP1_1_1">&#167;1.1.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax"> *</span><span class="identifier-syntax">target</span><span class="plain-syntax">, </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lang</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">es</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">es</span><span class="plain-syntax">, </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">symbol</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">value</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">symbol</span><span class="plain-syntax">, </span><span class="string-syntax">"NO_DEFINED_%S_VALUES"</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">postfix</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">value</span><span class="plain-syntax">, </span><span class="string-syntax">"%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_free_value</span><span class="plain-syntax"> - </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_value</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><a href="4-lm.html#SP10" class="internal">LanguageMethods::start_definition</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">symbol</span><span class="plain-syntax">, </span><span class="identifier-syntax">value</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">last_observed_at</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_section</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">last_observed_at</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><a href="4-lm.html#SP10" class="internal">LanguageMethods::end_definition</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">last_observed_at</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_section</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">last_observed_at</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">symbol</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">value</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-tgs.html">Back to 'Tags'</a></li><li><a href="2-pn.html">Continue with 'Paragraph Numbering'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
-<script>
-function togglePopup(material_id) {
-  var popup = document.getElementById(material_id);
-  popup.classList.toggle("show");
-}
-</script>
-
-<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

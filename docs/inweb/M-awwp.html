@@ -2,16 +2,26 @@
 <html>
 	<head>
 		<title>Advanced Weaving with Patterns</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">inweb</span></a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -36,39 +46,39 @@
 
 <ul class="toc"><li><a href="M-awwp.html#SP1">&#167;1. Weave patterns</a></li><li><a href="M-awwp.html#SP4">&#167;4. Cover sheets</a></li><li><a href="M-awwp.html#SP5">&#167;5. Indexing</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Weave patterns. </b>As noted, the two most useful weave patterns are <code class="display"><span class="extract">-weave-as HTML</span></code> and
-<code class="display"><span class="extract">-weave-as TeX</span></code>, and these are both supplied built in to Inweb. When you
-weave something with <code class="display"><span class="extract">-weave-as P</span></code>, for some pattern name <code class="display"><span class="extract">P</span></code>, Inweb first
+<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Weave patterns. </b>As noted, the two most useful weave patterns are <code class="display"><span class="extract-syntax">-weave-as HTML</span></code> and
+<code class="display"><span class="extract-syntax">-weave-as TeX</span></code>, and these are both supplied built in to Inweb. When you
+weave something with <code class="display"><span class="extract-syntax">-weave-as P</span></code>, for some pattern name <code class="display"><span class="extract-syntax">P</span></code>, Inweb first
 looks to see if the web in question defines a custom pattern of that name.
 For example,
 </p>
 
 <pre class="display">
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inweb/Tangled/inweb</span><span class="plain"> inweb/Examples/goldbach</span><span class="identifier"> -weave-as</span><span class="plain"> Tapestry</span>
+    <span class="plain-syntax">    $ inweb/Tangled/inweb inweb/Examples/goldbach -weave-as Tapestry</span>
 </pre>
 
 <p class="inwebparagraph">would look for a directory called:
 </p>
 
 <pre class="display">
-        <span class="plain">inweb/Examples/goldbach/Patterns/Tapestry</span>
+    <span class="plain-syntax">    inweb/Examples/goldbach/Patterns/Tapestry</span>
 </pre>
 
-<p class="inwebparagraph">If that is found, Inweb expects it to define <code class="display"><span class="extract">Tapestry</span></code>. If not, Inweb next
+<p class="inwebparagraph">If that is found, Inweb expects it to define <code class="display"><span class="extract-syntax">Tapestry</span></code>. If not, Inweb next
 tries:
 </p>
 
 <pre class="display">
-        <span class="plain">inweb/Patterns/Tapestry</span>
+    <span class="plain-syntax">    inweb/Patterns/Tapestry</span>
 </pre>
 
-<p class="inwebparagraph">since <code class="display"><span class="extract">inweb/Patterns</span></code> is where the built-in patterns are kept. If it can't
+<p class="inwebparagraph">since <code class="display"><span class="extract-syntax">inweb/Patterns</span></code> is where the built-in patterns are kept. If it can't
 find either, Inweb issues an error.
 </p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Patterns are a relatively new feature of Inweb, but allow for considerable
 customisation of the woven output. In brief, a pattern directory is expected
-to contain a configuration file called <code class="display"><span class="extract">pattern.txt</span></code>. This consists of a
+to contain a configuration file called <code class="display"><span class="extract-syntax">pattern.txt</span></code>. This consists of a
 series of simple one-line commands.
 </p>
 
@@ -76,11 +86,11 @@ series of simple one-line commands.
 </p>
 
 <pre class="display">
-        <span class="plain">from Whatever</span>
+    <span class="plain-syntax">    from Whatever</span>
 </pre>
 
 <p class="inwebparagraph">which tells Inweb that this new pattern inherits from an existing one named
-<code class="display"><span class="extract">Whatever</span></code>. (Do not get these into loops, with A inheriting from B and B
+<code class="display"><span class="extract-syntax">Whatever</span></code>. (Do not get these into loops, with A inheriting from B and B
 also inheriting from A.) The rule is then that if Inweb needs a file to do
 with weaving, it looks first in the new custom pattern, and then, failing
 that, in the pattern inherited from. As a result, the custom pattern need
@@ -91,55 +101,45 @@ only contain actual differences.
 </p>
 
 <pre class="display">
-        <span class="plain">format = HTML</span>
+    <span class="plain-syntax">    format = HTML</span>
 </pre>
 
 <p class="inwebparagraph">or whatever other file format is required (for the TeX pattern, for example,
-this reads <code class="display"><span class="extract">format = PDF</span></code>). A few other settings can also be made with <code class="display"><span class="extract">=</span></code>.
+this reads <code class="display"><span class="extract-syntax">format = PDF</span></code>). A few other settings can also be made with <code class="display"><span class="extract-syntax">=</span></code>.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<ul class="items"><li>(a) <code class="display"><span class="extract">numbered = yes</span></code> causes the weaver to apply numbers to section headings:
-the first included will be number 1, and so on. Default is <code class="display"><span class="extract">no</span></code>.
-</li></ul>
-<ul class="items"><li>(b) <code class="display"><span class="extract">abbrevs = no</span></code> causes the weaver to suppress all mention of abbreviated
-sections ranges, such as <code class="display"><span class="extract">2/tpc</span></code>, which aren't useful for documentation (for
-example). Default is <code class="display"><span class="extract">yes</span></code>.
-</li></ul>
-<ul class="items"><li>(c) <code class="display"><span class="extract">tex-command = C</span></code> tells the weaver that the TeX typesetting system should
-be invoked with the shell command <code class="display"><span class="extract">C</span></code>. Default is <code class="display"><span class="extract">tex</span></code>.
-</li></ul>
-<ul class="items"><li>(d) <code class="display"><span class="extract">pdftex-command = C</span></code> tells the weaver that the TeX typesetting system should
-be invoked with the shell command <code class="display"><span class="extract">C</span></code> when what we want is a PDF, not a DVI
-file. Default is <code class="display"><span class="extract">pdftex</span></code>.
-</li></ul>
-<ul class="items"><li>(e) <code class="display"><span class="extract">open-command = C</span></code> tells the weaver to use the shell command <code class="display"><span class="extract">C</span></code> if it
+<ul class="items"><li>(a) <code class="display"><span class="extract-syntax">numbered = yes</span></code> causes the weaver to apply numbers to section headings:
+the first included will be number 1, and so on. Default is <code class="display"><span class="extract-syntax">no</span></code>.
+</li><li>(b) <code class="display"><span class="extract-syntax">abbrevs = no</span></code> causes the weaver to suppress all mention of abbreviated
+sections ranges, such as <code class="display"><span class="extract-syntax">2/tpc</span></code>, which aren't useful for documentation (for
+example). Default is <code class="display"><span class="extract-syntax">yes</span></code>.
+</li><li>(c) <code class="display"><span class="extract-syntax">tex-command = C</span></code> tells the weaver that the TeX typesetting system should
+be invoked with the shell command <code class="display"><span class="extract-syntax">C</span></code>. Default is <code class="display"><span class="extract-syntax">tex</span></code>.
+</li><li>(d) <code class="display"><span class="extract-syntax">pdftex-command = C</span></code> tells the weaver that the TeX typesetting system should
+be invoked with the shell command <code class="display"><span class="extract-syntax">C</span></code> when what we want is a PDF, not a DVI
+file. Default is <code class="display"><span class="extract-syntax">pdftex</span></code>.
+</li><li>(e) <code class="display"><span class="extract-syntax">open-command = C</span></code> tells the weaver to use the shell command <code class="display"><span class="extract-syntax">C</span></code> if it
 wants to open the woven file (i.e., on the user's computer) after it finishes.
-Default is <code class="display"><span class="extract">open</span></code>, which works nicely for MacOS.
-</li></ul>
-<ul class="items"><li>(f) <code class="display"><span class="extract">default-range = R</span></code> tells the weaver to assume the range <code class="display"><span class="extract">R</span></code>, if the user
+Default is <code class="display"><span class="extract-syntax">open</span></code>, which works nicely for MacOS.
+</li><li>(f) <code class="display"><span class="extract-syntax">default-range = R</span></code> tells the weaver to assume the range <code class="display"><span class="extract-syntax">R</span></code>, if the user
 tries to weave a multi-section web with this pattern. (For example, the standard
-HTML pattern sets <code class="display"><span class="extract">default-range = sections</span></code>.)
-</li></ul>
-<ul class="items"><li>(g) The equals sign can also be used to override values of the bibliographic data
+HTML pattern sets <code class="display"><span class="extract-syntax">default-range = sections</span></code>.)
+</li><li>(g) The equals sign can also be used to override values of the bibliographic data
 for the web. These changes are only temporary for the period in which the weave
 is going on; they enable us to give custom titles to different weaves from the
 same web. For example:
-</li></ul>
+</p>
+
 <pre class="display">
-        <span class="plain">Title = Grammar</span>
-        <span class="plain">Booklet Title = A formal grammar for Inform 7</span>
-        <span class="plain">Author = The Inform Project</span>
+    <span class="plain-syntax">    Title = Grammar</span>
+    <span class="plain-syntax">    Booklet Title = A formal grammar for Inform 7</span>
+    <span class="plain-syntax">    Author = The Inform Project</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The command:
 </p>
 
 <pre class="display">
-        <span class="plain">use X</span>
+    <span class="plain-syntax">    use X</span>
 </pre>
 
 <p class="inwebparagraph">tells Inweb that the file X, also stored in the pattern directory, should
@@ -147,7 +147,7 @@ be copied into any website being woven. For example, the HTML pattern says
 </p>
 
 <pre class="display">
-        <span class="plain">use crumbs.gif</span>
+    <span class="plain-syntax">    use crumbs.gif</span>
 </pre>
 
 <p class="inwebparagraph">to instruct Inweb that an image used by the pages generated needs to be
@@ -158,7 +158,7 @@ copied over.
 </p>
 
 <pre class="display">
-        <span class="plain">embed css</span>
+    <span class="plain-syntax">    embed css</span>
 </pre>
 
 <p class="inwebparagraph">tells Inweb that in any HTML file produced, the CSS necessary should be
@@ -175,34 +175,35 @@ be additional material at the top of the web page.
 </p>
 
 <p class="inwebparagraph">The template for the cover sheet should be given in a file in the pattern
-folder called <code class="display"><span class="extract">cover-sheet.tex</span></code>, <code class="display"><span class="extract">cover-sheet.html</span></code> or similar. Within it,
+folder called <code class="display"><span class="extract-syntax">cover-sheet.tex</span></code>, <code class="display"><span class="extract-syntax">cover-sheet.html</span></code> or similar. Within it,
 double-square brackets can be used to represent values from the bibliographic
 data at the top of the web's Contents section. For example:
 </p>
 
 <pre class="display">
-        <span class="plain">\noindent{{\stitlefont </span><span class="functiontext">[[Author]]</span><span class="plain">}}</span>
+    <span class="plain-syntax">    \noindent{{\stitlefont </span><span class="function-syntax">[[Author]]</span><span class="plain-syntax">}}</span>
 </pre>
 
 <p class="inwebparagraph">In addition:
 </p>
 
-<ul class="items"><li>(a) <code class="display"><span class="extract">[[Cover Sheet]]</span></code> expands to the parent pattern's cover sheet &mdash; this is
+</li><li>(a) <code class="display"><span class="extract-syntax">[[Cover Sheet]]</span></code> expands to the parent pattern's cover sheet &mdash; this is
 convenient if all you want to do is to add a note at the bottom of the
 standard look.
-</li><li>(b) <code class="display"><span class="extract">[[Booklet Title]]</span></code> expands to text such as "Chapter 3", appropriate
+</li><li>(b) <code class="display"><span class="extract-syntax">[[Booklet Title]]</span></code> expands to text such as "Chapter 3", appropriate
 to the weave being made.
-</li><li>(c) <code class="display"><span class="extract">[[Capitalized Title]]</span></code> is a form of the title in block capital letters.
-</li></ul>
+</li><li>(c) <code class="display"><span class="extract-syntax">[[Capitalized Title]]</span></code> is a form of the title in block capital letters.
+</p>
+
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Indexing. </b>Some weaves are accompanied by indexes. For example, a standard weave into
-sections (for the HTML pattern) generates an <code class="display"><span class="extract">index.html</span></code> contents page,
+sections (for the HTML pattern) generates an <code class="display"><span class="extract-syntax">index.html</span></code> contents page,
 linking to the weaves for the individual sections. How is this done?
 </p>
 
 <p class="inwebparagraph">Inweb looks in the pattern for a template file called either
-<code class="display"><span class="extract">chaptered-index.html</span></code> or <code class="display"><span class="extract">unchaptered-index.html</span></code>, according to whether the
-web's sections are in chapters or simply in a single directory of <code class="display"><span class="extract">Sections</span></code>.
-If it doesn't find this, it looks for a template simply called <code class="display"><span class="extract">index.html</span></code>,
+<code class="display"><span class="extract-syntax">chaptered-index.html</span></code> or <code class="display"><span class="extract-syntax">unchaptered-index.html</span></code>, according to whether the
+web's sections are in chapters or simply in a single directory of <code class="display"><span class="extract-syntax">Sections</span></code>.
+If it doesn't find this, it looks for a template simply called <code class="display"><span class="extract-syntax">index.html</span></code>,
 using that template in either case.
 </p>
 
@@ -210,63 +211,63 @@ using that template in either case.
 the "template interpreter". This is basically a filter: that is, it
 works through one line at a time, and most of the time it simply copies
 the input to the output. The filtering consists of making the following
-replacements. Any text in the form <code class="display"><span class="extract">[[...]]</span></code> is substituted with the
-value <code class="display"><span class="extract">...</span></code>, which can be any of:
+replacements. Any text in the form <code class="display"><span class="extract-syntax">[[...]]</span></code> is substituted with the
+value <code class="display"><span class="extract-syntax">...</span></code>, which can be any of:
 </p>
 
-<p class="inwebparagraph"></p>
+</li><li>(a) A bibliographic variable, set at the top of the <code class="display"><span class="extract-syntax">Contents.w</span></code> section.
+</li><li>(b) One of the following details about the entire-web PDF (see below):
+</p>
 
-<ul class="items"><li>(a) A bibliographic variable, set at the top of the <code class="display"><span class="extract">Contents.w</span></code> section.
-</li></ul>
-<ul class="items"><li>(b) One of the following details about the entire-web PDF (see below):
-</li></ul>
 <pre class="display">
-        <span class="functiontext">[[Complete Leafname]]</span><span class="plain">  </span><span class="functiontext">[[Complete Extent]]</span><span class="plain">  </span><span class="functiontext">[[Complete PDF Size]]</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">[[Complete Leafname]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete PDF Size]]</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<ul class="items"><li>(b) One of the following details about the "current chapter" (again, see below):
-</li></ul>
+</li><li>(b) One of the following details about the "current chapter" (again, see below):
+</p>
+
 <pre class="display">
-        <span class="functiontext">[[Chapter Title]]</span><span class="plain">  </span><span class="functiontext">[[Chapter Purpose]]</span><span class="plain">  </span><span class="functiontext">[[Chapter Leafname]]</span>
-        <span class="functiontext">[[Chapter Extent]]</span><span class="plain">  </span><span class="functiontext">[[Chapter PDF Size]]</span><span class="plain">  </span><span class="functiontext">[[Chapter Errors]]</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Leafname]]</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter PDF Size]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Errors]]</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<ul class="items"><li> The leafname is that of the typeset PDF; the extent is a page count;
+</li><li> The leafname is that of the typeset PDF; the extent is a page count;
 the errors result is a usually blank report.
-</li></ul>
-<ul class="items"><li>(c) One of the following details about the "current section" (again, see below):
-</li></ul>
+</li><li>(c) One of the following details about the "current section" (again, see below):
+</p>
+
 <pre class="display">
-        <span class="functiontext">[[Section Title]]</span><span class="plain">  </span><span class="functiontext">[[Section Purpose]]</span><span class="plain">  </span><span class="functiontext">[[Section Leafname]]</span>
-        <span class="functiontext">[[Section Extent]]</span><span class="plain">  </span><span class="functiontext">[[Section PDF Size]]</span><span class="plain">  </span><span class="functiontext">[[Section Errors]]</span>
-        <span class="functiontext">[[Section Lines]]</span><span class="plain">  </span><span class="functiontext">[[Section Paragraphs]]</span><span class="plain">  </span><span class="functiontext">[[Section Mean]]</span>
-        <span class="functiontext">[[Section Source]]</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">[[Section Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Leafname]]</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">[[Section Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section PDF Size]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Errors]]</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">[[Section Lines]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Paragraphs]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Mean]]</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">[[Section Source]]</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<ul class="items"><li> Lines and Paragraphs are counts of the number of each; the Source
-substitution is the leafname of the original <code class="display"><span class="extract">.w</span></code> file. The Mean is the
+</li><li> Lines and Paragraphs are counts of the number of each; the Source
+substitution is the leafname of the original <code class="display"><span class="extract-syntax">.w</span></code> file. The Mean is the
 average number of lines per paragraph: where this is large, the section
 is rather raw and literate programming is not being used to the full.
-</li></ul>
+</p>
+
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>But the template interpreter isn't merely "editing the stream", because
 it can also handle repetitions. The following commands must occupy entire
 lines:
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract">[[Repeat Chapter]]</span></code> and <code class="display"><span class="extract">[[Repeat Section]]</span></code> begin blocks of lines which
+<p class="inwebparagraph"><code class="display"><span class="extract-syntax">[[Repeat Chapter]]</span></code> and <code class="display"><span class="extract-syntax">[[Repeat Section]]</span></code> begin blocks of lines which
 are repeated for each chapter or section: the material to be repeated
-continues to the matching <code class="display"><span class="extract">[[End Repeat]</span></code> line. The ``current chapter or
+continues to the matching <code class="display"><span class="extract-syntax">[[End Repeat]</span></code> line. The ``current chapter or
 section'' mentioned above is the one selected in the current innermost
 loop of that description.
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract">[[Select ...]]</span></code> and <code class="display"><span class="extract">[[End Select]</span></code> form a block which behaves like
+<p class="inwebparagraph"><code class="display"><span class="extract-syntax">[[Select ...]]</span></code> and <code class="display"><span class="extract-syntax">[[End Select]</span></code> form a block which behaves like
 a repetition, but happens just once, for the named chapter or section.
 </p>
 
@@ -274,29 +275,26 @@ a repetition, but happens just once, for the named chapter or section.
 </p>
 
 <pre class="display">
-        <span class="plain">To take chapter 3 as an example, for instance, we find -</span>
-        <span class="functiontext">[[Select 3]]</span>
-        <span class="functiontext">[[Repeat Section]]</span>
-            <span class="plain">Section </span><span class="functiontext">[[Section Title]]</span><span class="plain">, </span><span class="functiontext">[[Section Code]]</span><span class="plain">, </span><span class="functiontext">[[Section Lines]]</span><span class="plain"> lines.</span>
-        <span class="functiontext">[[End Repeat]]</span>
-        <span class="functiontext">[[End Select]]</span>
+    <span class="plain-syntax">    To take chapter 3 as an example, for instance, we find -</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">[[Select 3]]</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">[[Repeat Section]]</span>
+    <span class="plain-syntax">        Section </span><span class="function-syntax">[[Section Title]]</span><span class="plain-syntax">, </span><span class="function-syntax">[[Section Code]]</span><span class="plain-syntax">, </span><span class="function-syntax">[[Section Lines]]</span><span class="plain-syntax"> lines.</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">[[End Repeat]]</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">[[End Select]]</span>
 </pre>
 
 <p class="inwebparagraph">weaves a report somewhat like this:
 </p>
 
 <pre class="display">
-        <span class="plain">To take chapter 3 as an example, for instance, we find -</span>
-            <span class="plain">Section Lexer, 3/lex, 1011 lines.</span>
-            <span class="plain">Section Read Source Text, 3/read, 394 lines.</span>
-            <span class="plain">Section Lexical Writing Back, 3/lwb, 376 lines.</span>
-            <span class="plain">Section Lexical Services, 3/lexs, 606 lines.</span>
-            <span class="plain">Section Vocabulary, 3/vocab, 338 lines.</span>
-            <span class="plain">Section Built-In Words, 3/words, 1207 lines.</span>
+    <span class="plain-syntax">    To take chapter 3 as an example, for instance, we find -</span>
+    <span class="plain-syntax">        Section Lexer, 3/lex, 1011 lines.</span>
+    <span class="plain-syntax">        Section Read Source Text, 3/read, 394 lines.</span>
+    <span class="plain-syntax">        Section Lexical Writing Back, 3/lwb, 376 lines.</span>
+    <span class="plain-syntax">        Section Lexical Services, 3/lexs, 606 lines.</span>
+    <span class="plain-syntax">        Section Vocabulary, 3/vocab, 338 lines.</span>
+    <span class="plain-syntax">        Section Built-In Words, 3/words, 1207 lines.</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <hr class="tocbar">
 <ul class="toc"><li><a href="M-mwiw.html">Back to 'Making Weaves into Websites'</a></li><li><a href="M-spl.html">Continue with 'Supporting Programming Languages'</a></li></ul><hr class="tocbar">
 <!--End of weave-->

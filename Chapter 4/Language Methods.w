@@ -366,16 +366,16 @@ void LanguageMethods::reset_syntax_colouring(programming_language *pl) {
 =
 int colouring_state = PLAIN_COLOUR;
 
-IMETHOD_TYPE(SYNTAX_COLOUR_WEA_MTID, programming_language *pl, text_stream *OUT,
+IMETHOD_TYPE(SYNTAX_COLOUR_WEA_MTID, programming_language *pl,
 	weave_order *wv, source_line *L, text_stream *matter, text_stream *colouring)
-int LanguageMethods::syntax_colour(OUTPUT_STREAM, programming_language *pl,
+int LanguageMethods::syntax_colour(programming_language *pl,
 	weave_order *wv, source_line *L, text_stream *matter, text_stream *colouring) {
 	for (int i=0; i < Str::len(matter); i++) Str::put_at(colouring, i, PLAIN_COLOUR);
 	int rv = FALSE;
 	programming_language *colour_as = pl;
 	if (L->category == TEXT_EXTRACT_LCAT) colour_as = L->colour_as;
 	if (colour_as)
-		IMETHOD_CALL(rv, colour_as, SYNTAX_COLOUR_WEA_MTID, OUT, wv, L,
+		IMETHOD_CALL(rv, colour_as, SYNTAX_COLOUR_WEA_MTID, wv, L,
 			matter, colouring);
 	return rv;
 }

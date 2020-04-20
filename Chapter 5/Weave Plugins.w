@@ -31,31 +31,82 @@ The fragment of HTML is compulsory; the CSS file, optional.
 
 =
 void WeavePlugins::include(OUTPUT_STREAM, web *W, weave_plugin *wp,
-	weave_pattern *pattern) {
-	pathname *P1 = Pathnames::down(W->md->path_to_web, I"Plugins");
-	pathname *P2 = Pathnames::down(path_to_inweb, I"Plugins");
-		
-	TEMPORARY_TEXT(embed_leaf);
-	TEMPORARY_TEXT(css_leaf);
-	WRITE_TO(embed_leaf, "%S.html", wp->plugin_name);
-	WRITE_TO(css_leaf, "%S.css", wp->plugin_name);
-	filename *F = P1?(Filenames::in(P1, embed_leaf)):NULL;
-	if (TextFiles::exists(F) == FALSE) F = P2?(Filenames::in(P2, embed_leaf)):NULL;
-	filename *CF = P1?(Filenames::in(P1, css_leaf)):NULL;
-	if (TextFiles::exists(CF) == FALSE) CF = P2?(Filenames::in(P2, css_leaf)):NULL;
-	DISCARD_TEXT(embed_leaf);
-	DISCARD_TEXT(css_leaf);
-
-	if (TextFiles::exists(F) == FALSE) {
+	weave_pattern *pattern, filename *from) {	
+	pathname *AP = Colonies::assets_path();
+	int html_mode = FALSE;
+	if (Str::eq(pattern->pattern_format->format_name, I"HTML")) html_mode = TRUE;
+	int finds = 0;
+	TEMPORARY_TEXT(required);
+	WRITE_TO(required, "%S.html", wp->plugin_name);
+	dictionary *leaves_gathered = Dictionaries::new(128, TRUE);
+	for (weave_pattern *p = pattern; p; p = p->based_on) {
+		pathname *P = Pathnames::down(p->pattern_location, wp->plugin_name);
+		scan_directory *D = Directories::open(P);
+		if (D) {
+			TEMPORARY_TEXT(leafname);
+			while (Directories::next(D, leafname)) {
+				if ((Str::get_last_char(leafname) != FOLDER_SEPARATOR) &&
+					(Str::get_first_char(leafname) != '.')) {
+					if (Dictionaries::find(leaves_gathered, leafname) == NULL) {
+						WRITE_TO(Dictionaries::create_text(leaves_gathered, leafname), "got this");
+						filename *F = Filenames::in(P, leafname);
+						if (Str::eq_insensitive(leafname, required)) {
+							if (html_mode) {
+								Indexer::incorporate_template_for_web_and_pattern(OUT,
+									W, pattern, F);
+							} else {
+								Patterns::copy_file_into_weave(W, F, AP);
+							}
+						} else {
+							if (html_mode) {
+								TEMPORARY_TEXT(ext);
+								Filenames::write_extension(ext, F);
+								if (Str::eq_insensitive(ext, I".css")) {
+									TEMPORARY_TEXT(url);
+									if (AP) Pathnames::relative_URL(url, Filenames::up(from), AP);
+									WRITE_TO(url, "%S", leafname);
+									WRITE("<link href=\"%S\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\">\n", url);
+									DISCARD_TEXT(url);
+								}
+							}
+							Patterns::copy_file_into_weave(W, F, AP);
+						}
+						finds++;
+					}
+				}
+			}
+			DISCARD_TEXT(leafname);
+			Directories::close(D);	
+		}
+	}
+	if (finds == 0) {
 		TEMPORARY_TEXT(err);
 		WRITE_TO(err, "The plugin '%S' is not supported", wp->plugin_name);
 		Main::error_in_web(err, NULL);
-		return;
 	}
-	Indexer::incorporate_template_for_web_and_pattern(OUT, W, pattern, F);
-	if (TextFiles::exists(CF)) {
-		WRITE("<link href=\"%S.css\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\">\n",
-			wp->plugin_name);
-		Patterns::copy_file_into_weave(W, CF);
+	DISCARD_TEXT(required);
+}
+
+void WeavePlugins::include_from_pattern(OUTPUT_STREAM, web *W, weave_pattern *pattern, filename *from) {
+	for (weave_pattern *p = pattern; p; p = p->based_on) {
+		weave_plugin *wp;
+		LOOP_OVER_LINKED_LIST(wp, weave_plugin, p->plugins)
+			WeavePlugins::include(OUT, W, wp, pattern, from);
 	}
+}
+
+void WeavePlugins::include_from_target(OUTPUT_STREAM, web *W, weave_order *target, filename *from) {
+	weave_plugin *wp;
+	LOOP_OVER_LINKED_LIST(wp, weave_plugin, target->plugins)
+		WeavePlugins::include(OUT, W, wp, target->pattern, from);
+}
+
+filename *WeavePlugins::find_asset(weave_pattern *pattern, text_stream *name,
+	text_stream *leafname) {
+	for (weave_pattern *wp = pattern; wp; wp = wp->based_on) {
+		pathname *P = Pathnames::down(wp->pattern_location, name);
+		filename *F = P?(Filenames::in(P, leafname)):NULL;
+		if (TextFiles::exists(F)) return F;
+	}
+	return NULL;
 }

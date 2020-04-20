@@ -2,16 +2,34 @@
 <html>
 	<head>
 		<title>Debugging Log</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="../inweb/index.html">inweb</a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -40,34 +58,31 @@
 </p>
 
 <pre class="display">
-    <span class="reserved">text_stream</span><span class="plain"> </span><span class="identifier">debug_log_file_struct</span><span class="plain">; </span><span class="comment"> The actual debugging log file</span>
-    <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">debug_log_file</span><span class="plain"> = &amp;</span><span class="identifier">debug_log_file_struct</span><span class="plain">; </span><span class="comment"> The actual debugging log file</span>
+    <span class="reserved-syntax">text_stream</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_log_file_struct</span><span class="plain-syntax">; </span><span class="comment"> The actual debugging log file</span>
+    <span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">debug_log_file</span><span class="plain-syntax"> = &amp;</span><span class="identifier-syntax">debug_log_file_struct</span><span class="plain-syntax">; </span><span class="comment"> The actual debugging log file</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Macros. </b>"The most effective debugging tool is still careful thought, coupled with
 judiciously placed print statements" (Brian Kernighan).
 </p>
 
 <p class="inwebparagraph">To write to the debugging log, we must in principle write to a stream called
-<code class="display"><span class="extract">DL</span></code>. In practice we more often use a pair of pseudo-functions called <code class="display"><span class="extract">LOG</span></code>
-and <code class="display"><span class="extract">LOGIF</span></code>, which are macros defined in the section on Streams. For
+<code class="display"><span class="extract-syntax">DL</span></code>. In practice we more often use a pair of pseudo-functions called <code class="display"><span class="extract-syntax">LOG</span></code>
+and <code class="display"><span class="extract-syntax">LOGIF</span></code>, which are macros defined in the section on Streams. For
 instance, the pseudo-function-call
 </p>
 
 <pre class="display">
-        <span class="plain">LOGIF(WHATEVER, "Heading %d skipped\n", n);</span>
+    <span class="plain-syntax">    LOGIF(WHATEVER, "Heading %d skipped\n", n);</span>
 </pre>
 
-<p class="inwebparagraph">prints the line in question to the debugging log only if the aspect <code class="display"><span class="extract">WHATEVER</span></code>
-is currently switched on. Plain <code class="display"><span class="extract">LOG</span></code> does the same, but unconditionally.
+<p class="inwebparagraph">prints the line in question to the debugging log only if the aspect <code class="display"><span class="extract-syntax">WHATEVER</span></code>
+is currently switched on. Plain <code class="display"><span class="extract-syntax">LOG</span></code> does the same, but unconditionally.
 </p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">LOG_INDENT</span><span class="plain"> </span><span class="identifier">STREAM_INDENT</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">)</span>
-    <span class="definitionkeyword">define</span> <span class="constant">LOG_OUTDENT</span><span class="plain"> </span><span class="identifier">STREAM_OUTDENT</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">)</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">LOG_INDENT</span><span class="plain-syntax"> </span><span class="identifier-syntax">STREAM_INDENT</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">)</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">LOG_OUTDENT</span><span class="plain-syntax"> </span><span class="identifier-syntax">STREAM_OUTDENT</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Debugging aspects. </b>There are many different things which can go into the debugging file, or
 need not: for Inform even a simple half-page source can result in a
@@ -81,175 +96,148 @@ length.
 </p>
 
 <pre class="display">
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">debugging_aspect</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">hyphenated_name</span><span class="plain">; </span><span class="comment"> e.g., "memory-usage"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">negated_name</span><span class="plain">; </span><span class="comment"> e.g., "no-memory-usage"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">unhyphenated_name</span><span class="plain">; </span><span class="comment"> e.g., "memory usage"</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">on_or_off</span><span class="plain">; </span><span class="comment"> whether or not active when writing to debugging log</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">alternate</span><span class="plain">; </span><span class="comment"> whether or not active when writing in trace mode</span>
-        <span class="constant">MEMORY_MANAGEMENT</span>
-    <span class="plain">} </span><span class="reserved">debugging_aspect</span><span class="plain">;</span>
+    <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">hyphenated_name</span><span class="plain-syntax">; </span><span class="comment"> e.g., "memory-usage"</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">negated_name</span><span class="plain-syntax">; </span><span class="comment"> e.g., "no-memory-usage"</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">unhyphenated_name</span><span class="plain-syntax">; </span><span class="comment"> e.g., "memory usage"</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">on_or_off</span><span class="plain-syntax">; </span><span class="comment"> whether or not active when writing to debugging log</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">alternate</span><span class="plain-syntax">; </span><span class="comment"> whether or not active when writing in trace mode</span>
+    <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+    <span class="plain-syntax">} </span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax">;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The structure debugging_aspect is accessed in 8/bdfw and here.</p>
-
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And now we must define all those constants and names. Note that the
-<code class="display"><span class="extract">TRUE</span></code> or <code class="display"><span class="extract">FALSE</span></code> settings below are the defaults, and apply unless the
-source says otherwise. The <code class="display"><span class="extract">alternate</span></code> settings are those used in
+<ul class="endnotetexts"><li>The structure debugging_aspect is accessed in 8/bdfw and here.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And now we must define all those constants and names. Note that the
+<code class="display"><span class="extract-syntax">TRUE</span></code> or <code class="display"><span class="extract-syntax">FALSE</span></code> settings below are the defaults, and apply unless the
+source says otherwise. The <code class="display"><span class="extract-syntax">alternate</span></code> settings are those used in
 trace-sentences mode, that is, between asterisk sentences.
 </p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">enum</span> <span class="constant">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="definitionkeyword"> from </span><span class="constant">0</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">SHELL_USAGE_DA</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">MEMORY_USAGE_DA</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TEXT_FILES_DA</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">SHELL_USAGE_DA</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">MEMORY_USAGE_DA</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">TEXT_FILES_DA</span>
 </pre>
+<pre class="display">
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">das_created</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax"> </span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">NO_DEFINED_DA_VALUES</span><span class="plain-syntax">];</span>
+
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::declare_aspect</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Log::declare_aspect</b>:<br>Foundation Module - <a href="1-fm.html#SP8_2">&#167;8.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">def</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">alt</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">das_created</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">das_created</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Empty the aspects table</span> <span class="named-paragraph-number">4.1</span>&gt;<span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">a</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">a</span><span class="plain-syntax"> &gt;= </span><span class="identifier-syntax">NO_DEFINED_DA_VALUES</span><span class="plain-syntax">)) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"aspect out of range"</span><span class="plain-syntax">);</span>
+
+    <span class="plain-syntax">    </span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax"> *</span><span class="identifier-syntax">da</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">a</span><span class="plain-syntax">]);</span>
+    <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Set up the new aspect</span> <span class="named-paragraph-number">4.2</span>&gt;<span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
+</pre>
+<p class="inwebparagraph"><a id="SP4_1"></a><b>&#167;4.1.  </b><code class="display">
+&lt;<span class="named-paragraph-defn">Empty the aspects table</span> <span class="named-paragraph-number">4.1</span>&gt; =
+</code></p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">das_created</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-    <span class="reserved">debugging_aspect</span><span class="plain"> </span><span class="identifier">the_debugging_aspects</span><span class="plain">[</span><span class="identifier">NO_DEFINED_DA_VALUES</span><span class="plain">];</span>
-
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Log::declare_aspect<button class="popup" onclick="togglePopup('usagePopup29')">...<span class="popuptext" id="usagePopup29">Usage of <b>Log::declare_aspect</b>:<br>Foundation Module - <a href="1-fm.html#SP8_2">&#167;8.2</a></span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">a</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">def</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">alt</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">das_created</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) {</span>
-            <span class="identifier">das_created</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-            &lt;<span class="cwebmacro">Empty the aspects table</span> <span class="cwebmacronumber">4.1</span>&gt;<span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">a</span><span class="plain"> &lt; </span><span class="constant">0</span><span class="plain">) || (</span><span class="identifier">a</span><span class="plain"> &gt;= </span><span class="identifier">NO_DEFINED_DA_VALUES</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"aspect out of range"</span><span class="plain">);</span>
-
-        <span class="reserved">debugging_aspect</span><span class="plain"> *</span><span class="identifier">da</span><span class="plain"> = &amp;(</span><span class="identifier">the_debugging_aspects</span><span class="plain">[</span><span class="identifier">a</span><span class="plain">]);</span>
-        &lt;<span class="cwebmacro">Set up the new aspect</span> <span class="cwebmacronumber">4.2</span>&gt;<span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">a</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">NO_DEFINED_DA_VALUES</span><span class="plain-syntax">; </span><span class="identifier-syntax">a</span><span class="plain-syntax">++) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax"> *</span><span class="identifier-syntax">da</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">a</span><span class="plain-syntax">]);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">hyphenated_name</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP2" class="internal">Str::new</a><span class="plain-syntax">();</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">unhyphenated_name</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP2" class="internal">Str::new</a><span class="plain-syntax">();</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_name</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP2" class="internal">Str::new</a><span class="plain-syntax">();</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_or_off</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">alternate</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="inwebparagraph"><a id="SP4_1"></a><b>&#167;4.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Empty the aspects table</span> <span class="cwebmacronumber">4.1</span>&gt; =
+<ul class="endnotetexts"><li>This code is used in <a href="2-dl.html#SP4">&#167;4</a>.</li></ul><p class="inwebparagraph"><a id="SP4_2"></a><b>&#167;4.2.  </b><code class="display">
+&lt;<span class="named-paragraph-defn">Set up the new aspect</span> <span class="named-paragraph-number">4.2</span>&gt; =
 </code></p>
 
-
-<pre class="displaydefn">
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">a</span><span class="plain">=0; </span><span class="identifier">a</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_DA_VALUES</span><span class="plain">; </span><span class="identifier">a</span><span class="plain">++) {</span>
-            <span class="reserved">debugging_aspect</span><span class="plain"> *</span><span class="identifier">da</span><span class="plain"> = &amp;(</span><span class="identifier">the_debugging_aspects</span><span class="plain">[</span><span class="identifier">a</span><span class="plain">]);</span>
-            <span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">hyphenated_name</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP2">Str::new</a></span><span class="plain">();</span>
-            <span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">unhyphenated_name</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP2">Str::new</a></span><span class="plain">();</span>
-            <span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">negated_name</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP2">Str::new</a></span><span class="plain">();</span>
-            <span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">on_or_off</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-            <span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">alternate</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="plain">}</span>
+<pre class="display">
+    <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_name</span><span class="plain-syntax">, </span><span class="string-syntax">"no-"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">name</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">name</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">];</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">unhyphenated_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-chr.html#SP2" class="internal">Characters::is_space_or_tab</a><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">)) </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="character-syntax">'-'</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">hyphenated_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_or_off</span><span class="plain-syntax"> = </span><span class="identifier-syntax">def</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">alternate</span><span class="plain-syntax"> = </span><span class="identifier-syntax">alt</span><span class="plain-syntax">;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="2-dl.html#SP4">&#167;4</a>.</p>
-
-<p class="inwebparagraph"><a id="SP4_2"></a><b>&#167;4.2.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Set up the new aspect</span> <span class="cwebmacronumber">4.2</span>&gt; =
-</code></p>
-
-
-<pre class="displaydefn">
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">negated_name</span><span class="plain">, </span><span class="string">"no-"</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">name</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="identifier">name</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">];</span>
-            <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="identifier">unhyphenated_name</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-chr.html#SP2">Characters::is_space_or_tab</a></span><span class="plain">(</span><span class="identifier">c</span><span class="plain">)) </span><span class="identifier">c</span><span class="plain"> = </span><span class="character">'-'</span><span class="plain">;</span>
-            <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="identifier">hyphenated_name</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
-            <span class="identifier">PUT_TO</span><span class="plain">(</span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="identifier">negated_name</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">on_or_off</span><span class="plain"> = </span><span class="identifier">def</span><span class="plain">;</span>
-        <span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">alternate</span><span class="plain"> = </span><span class="identifier">alt</span><span class="plain">;</span>
-</pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="2-dl.html#SP4">&#167;4</a>.</p>
-
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The debugging log provides an opportunity to see what has been happening
+<ul class="endnotetexts"><li>This code is used in <a href="2-dl.html#SP4">&#167;4</a>.</li></ul><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The debugging log provides an opportunity to see what has been happening
 behind the scenes; but such a log file is often buffered by the filing system,
 so that a sudden crash of Inform may result in the loss of recent data written to
 the log. Which is a pity, since this is exactly the most useful evidence as to
 the cause of the crash in the first place. Accordingly, we fairly often
-<code class="display"><span class="extract">fflush</span></code> the debug log file, forcing any buffered output to be written.
+<code class="display"><span class="extract-syntax">fflush</span></code> the debug log file, forcing any buffered output to be written.
 </p>
 
-<p class="inwebparagraph">In this rest of this section, we always assume that <code class="display"><span class="extract">DL</span></code> is open. Note that it
-is possible this has been switched to be <code class="display"><span class="extract">stdout</span></code>, or even that it is
+<p class="inwebparagraph">In this rest of this section, we always assume that <code class="display"><span class="extract-syntax">DL</span></code> is open. Note that it
+is possible this has been switched to be <code class="display"><span class="extract-syntax">stdout</span></code>, or even that it is
 temporarily the sentence tracing file: but we don't care.
 </p>
 
 <pre class="display">
-    <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">debug_log_filename</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
+    <span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">debug_log_filename</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
-    <span class="reserved">filename</span><span class="plain"> *</span><span class="functiontext">Log::get_debug_log_filename<button class="popup" onclick="togglePopup('usagePopup30')">...<span class="popuptext" id="usagePopup30">Usage of <b>Log::get_debug_log_filename</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">debug_log_filename</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">Log::get_debug_log_filename</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Log::get_debug_log_filename</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_log_filename</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Log::set_debug_log_filename<button class="popup" onclick="togglePopup('usagePopup31')">...<span class="popuptext" id="usagePopup31">Usage of <b>Log::set_debug_log_filename</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button></span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-        <span class="identifier">debug_log_filename</span><span class="plain"> = </span><span class="identifier">F</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::set_debug_log_filename</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Log::set_debug_log_filename</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">debug_log_filename</span><span class="plain-syntax"> = </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Log::open<button class="popup" onclick="togglePopup('usagePopup32')">...<span class="popuptext" id="usagePopup32">Usage of <b>Log::open</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">debug_log_filename</span><span class="plain">) &amp;&amp; (</span><span class="identifier">DL</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">debug_log_file</span><span class="plain">, </span><span class="identifier">debug_log_filename</span><span class="plain">, </span><span class="constant">ISO_ENC</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-            <span class="identifier">DL</span><span class="plain"> = </span><span class="identifier">debug_log_file</span><span class="plain">;</span>
-            <span class="functiontext"><a href="2-str.html#SP20">Streams::enable_debugging</a></span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Debugging log of %s\n"</span><span class="plain">, </span><span class="identifier">PROGRAM_NAME</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Log::open</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Log::open</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">debug_log_filename</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">DL</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">STREAM_OPEN_TO_FILE</span><span class="plain-syntax">(</span><span class="identifier-syntax">debug_log_file</span><span class="plain-syntax">, </span><span class="identifier-syntax">debug_log_filename</span><span class="plain-syntax">, </span><span class="constant-syntax">ISO_ENC</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">debug_log_file</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><a href="2-str.html#SP20" class="internal">Streams::enable_debugging</a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Debugging log of %s\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">PROGRAM_NAME</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Log::open_alternative<button class="popup" onclick="togglePopup('usagePopup33')">...<span class="popuptext" id="usagePopup33">Usage of <b>Log::open_alternative</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">at</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">STREAM_OPEN_TO_FILE</span><span class="plain">(</span><span class="identifier">at</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">, </span><span class="constant">ISO_ENC</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">)</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="identifier">DL</span><span class="plain"> = </span><span class="identifier">at</span><span class="plain">;</span>
-        <span class="functiontext"><a href="2-str.html#SP20">Streams::enable_debugging</a></span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Debugging log of %s\n"</span><span class="plain">, </span><span class="identifier">PROGRAM_NAME</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Log::open_alternative</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>Log::open_alternative</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">at</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">STREAM_OPEN_TO_FILE</span><span class="plain-syntax">(</span><span class="identifier-syntax">at</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">ISO_ENC</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">at</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><a href="2-str.html#SP20" class="internal">Streams::enable_debugging</a><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Debugging log of %s\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">PROGRAM_NAME</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Log::close<button class="popup" onclick="togglePopup('usagePopup34')">...<span class="popuptext" id="usagePopup34">Usage of <b>Log::close</b>:<br>Foundation Module - <a href="1-fm.html#SP9">&#167;9</a></span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">DL</span><span class="plain">) {</span>
-            <span class="functiontext"><a href="2-dl.html#SP11">Log::show_debugging_contents</a></span><span class="plain">();</span>
-            <span class="identifier">STREAM_CLOSE</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">); </span><span class="identifier">DL</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::close</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Log::close</b>:<br>Foundation Module - <a href="1-fm.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">DL</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><a href="2-dl.html#SP11" class="internal">Log::show_debugging_contents</a><span class="plain-syntax">();</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">); </span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Subheadings. </b>To provide signposts in what is otherwise a huge amorphous pile of text,
 the debugging log can be divided into "phases", subdivided into "stages".
 This is how.
 </p>
 
 <pre class="display">
-    <span class="reserved">char</span><span class="plain"> </span><span class="identifier">debug_log_phase</span><span class="plain">[32];</span>
-    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">debug_log_subheading</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Log::new_phase<button class="popup" onclick="togglePopup('usagePopup35')">...<span class="popuptext" id="usagePopup35">Usage of <b>Log::new_phase</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">char</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">q</span><span class="plain">) {</span>
-        <span class="functiontext"><a href="4-cst.html#SP9">CStrings::truncated_strcpy</a></span><span class="plain">(</span><span class="identifier">debug_log_phase</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">, </span><span class="constant">32</span><span class="plain">);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n\n-----------------------------------------------------\n"</span><span class="plain">);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Phase %s ... %S"</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">q</span><span class="plain">);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n-----------------------------------------------------\n\n"</span><span class="plain">);</span>
-        <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
-        <span class="identifier">debug_log_subheading</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_log_phase</span><span class="plain-syntax">[32];</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_log_subheading</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::new_phase</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>Log::new_phase</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">q</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><a href="4-cst.html#SP9" class="internal">CStrings::truncated_strcpy</a><span class="plain-syntax">(</span><span class="identifier-syntax">debug_log_phase</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="constant-syntax">32</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n\n-----------------------------------------------------\n"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Phase %s ... %S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">q</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n-----------------------------------------------------\n\n"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_FLUSH</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">debug_log_subheading</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Log::new_stage<button class="popup" onclick="togglePopup('usagePopup36')">...<span class="popuptext" id="usagePopup36">Usage of <b>Log::new_stage</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n\n==== Phase %s.%d ... %S ====\n\n"</span><span class="plain">, </span><span class="identifier">debug_log_phase</span><span class="plain">, </span><span class="identifier">debug_log_subheading</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">);</span>
-        <span class="identifier">debug_log_subheading</span><span class="plain">++;</span>
-        <span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::new_stage</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>Log::new_stage</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n\n==== Phase %s.%d ... %S ====\n\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">debug_log_phase</span><span class="plain-syntax">, </span><span class="identifier-syntax">debug_log_subheading</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">debug_log_subheading</span><span class="plain-syntax">++;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_FLUSH</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Aspects. </b>As mentioned above, a wide range of activities can be logged to the debugging
 log: these are called "aspects" and we can switch logging of them off or on
 independently. The following routine tests whether a given aspect is currently
@@ -258,139 +246,116 @@ debug log, and is used when errors occur.
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Log::aspect_switched_on<button class="popup" onclick="togglePopup('usagePopup37')">...<span class="popuptext" id="usagePopup37">Usage of <b>Log::aspect_switched_on</b>:<br><a href="2-dl.html#SP11">&#167;11</a>, Foundation Module - <a href="1-fm.html#SP9">&#167;9</a><br>Streams - <a href="2-str.html#SP3">&#167;3</a></span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">aspect</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">decision</span><span class="plain"> = </span><span class="identifier">the_debugging_aspects</span><span class="plain">[</span><span class="identifier">aspect</span><span class="plain">].</span><span class="element">on_or_off</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">aspect</span><span class="plain"> == </span><span class="constant">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain">) </span><span class="identifier">decision</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">decision</span><span class="plain">) </span><span class="identifier">STREAM_FLUSH</span><span class="plain">(</span><span class="identifier">DL</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">decision</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Log::aspect_switched_on</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Log::aspect_switched_on</b>:<br><a href="2-dl.html#SP11">&#167;11</a>, Foundation Module - <a href="1-fm.html#SP9">&#167;9</a>&lt;br&gt;Streams - <a href="2-str.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">aspect</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">decision</span><span class="plain-syntax"> = </span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">aspect</span><span class="plain-syntax">].</span><span class="element-syntax">on_or_off</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">aspect</span><span class="plain-syntax"> == </span><span class="constant-syntax">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain-syntax">) </span><span class="identifier-syntax">decision</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">decision</span><span class="plain-syntax">) </span><span class="identifier-syntax">STREAM_FLUSH</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">decision</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Log::set_aspect<button class="popup" onclick="togglePopup('usagePopup38')">...<span class="popuptext" id="usagePopup38">Usage of <b>Log::set_aspect</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">aspect</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="identifier">the_debugging_aspects</span><span class="plain">[</span><span class="identifier">aspect</span><span class="plain">].</span><span class="element">on_or_off</span><span class="plain"> = </span><span class="identifier">state</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::set_aspect</span><button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>Log::set_aspect</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">aspect</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">aspect</span><span class="plain-syntax">].</span><span class="element-syntax">on_or_off</span><span class="plain-syntax"> = </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>We sometimes want to switch everything on, or switch everything off:
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Log::set_all_aspects<button class="popup" onclick="togglePopup('usagePopup39')">...<span class="popuptext" id="usagePopup39">Usage of <b>Log::set_all_aspects</b>:<br><a href="2-dl.html#SP9">&#167;9</a></span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">new_state</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">DL</span><span class="plain">) </span><span class="identifier">LOGIF</span><span class="plain">(</span><span class="identifier">DEBUGGING_LOG_INCLUSIONS</span><span class="plain">, </span><span class="string">"Set debugging aspect: everything -&gt; %s\n"</span><span class="plain">,</span>
-            <span class="identifier">new_state</span><span class="plain">?</span><span class="string">"TRUE"</span><span class="plain">:</span><span class="string">"FALSE"</span><span class="plain">);</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">a</span><span class="plain">=0; </span><span class="identifier">a</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_DA_VALUES</span><span class="plain">; </span><span class="identifier">a</span><span class="plain">++) {</span>
-            <span class="reserved">debugging_aspect</span><span class="plain"> *</span><span class="identifier">da</span><span class="plain"> = &amp;(</span><span class="identifier">the_debugging_aspects</span><span class="plain">[</span><span class="identifier">a</span><span class="plain">]);</span>
-            <span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">on_or_off</span><span class="plain"> = </span><span class="identifier">new_state</span><span class="plain">;</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::set_all_aspects</span><button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>Log::set_all_aspects</b>:<br><a href="2-dl.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">new_state</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">DL</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">DEBUGGING_LOG_INCLUSIONS</span><span class="plain-syntax">, </span><span class="string-syntax">"Set debugging aspect: everything -&gt; %s\n"</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">new_state</span><span class="plain-syntax">?</span><span class="string-syntax">"TRUE"</span><span class="plain-syntax">:</span><span class="string-syntax">"FALSE"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">a</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">NO_DEFINED_DA_VALUES</span><span class="plain-syntax">; </span><span class="identifier-syntax">a</span><span class="plain-syntax">++) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax"> *</span><span class="identifier-syntax">da</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">a</span><span class="plain-syntax">]);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_or_off</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_state</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>We also want the ability to change debugging log settings from the command
 line; the command line form is derived from the textual form by replacing
-every space with a hyphen: for instance, <code class="display"><span class="extract">property-provision</span></code>.
+every space with a hyphen: for instance, <code class="display"><span class="extract-syntax">property-provision</span></code>.
 </p>
 
-<p class="inwebparagraph">We also recognise <code class="display"><span class="extract">no-property-provision</span></code> to switch this off again,
-<code class="display"><span class="extract">everything</span></code> and <code class="display"><span class="extract">nothing</span></code> with the obvious meanings, and <code class="display"><span class="extract">list</span></code> to
-print out a list of debugging aspects to <code class="display"><span class="extract">STDOUT</span></code>.
+<p class="inwebparagraph">We also recognise <code class="display"><span class="extract-syntax">no-property-provision</span></code> to switch this off again,
+<code class="display"><span class="extract-syntax">everything</span></code> and <code class="display"><span class="extract-syntax">nothing</span></code> with the obvious meanings, and <code class="display"><span class="extract-syntax">list</span></code> to
+print out a list of debugging aspects to <code class="display"><span class="extract-syntax">STDOUT</span></code>.
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Log::set_aspect_from_command_line<button class="popup" onclick="togglePopup('usagePopup40')">...<span class="popuptext" id="usagePopup40">Usage of <b>Log::set_aspect_from_command_line</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">give_error</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">list_mode</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP21">Str::eq_wide_string</a></span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"everything"</span><span class="plain">)) { </span><span class="functiontext"><a href="2-dl.html#SP8">Log::set_all_aspects</a></span><span class="plain">(</span><span class="constant">TRUE</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">; }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP21">Str::eq_wide_string</a></span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"nothing"</span><span class="plain">)) { </span><span class="functiontext"><a href="2-dl.html#SP8">Log::set_all_aspects</a></span><span class="plain">(</span><span class="constant">FALSE</span><span class="plain">); </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">; }</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP21">Str::eq_wide_string</a></span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"list"</span><span class="plain">)) </span><span class="identifier">list_mode</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">;</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Log::set_aspect_from_command_line</span><button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>Log::set_aspect_from_command_line</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">give_error</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">list_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP22" class="internal">Str::eq_wide_string</a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"everything"</span><span class="plain-syntax">)) { </span><a href="2-dl.html#SP8" class="internal">Log::set_all_aspects</a><span class="plain-syntax">(</span><span class="constant-syntax">TRUE</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP22" class="internal">Str::eq_wide_string</a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"nothing"</span><span class="plain-syntax">)) { </span><a href="2-dl.html#SP8" class="internal">Log::set_all_aspects</a><span class="plain-syntax">(</span><span class="constant-syntax">FALSE</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP22" class="internal">Str::eq_wide_string</a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"list"</span><span class="plain-syntax">)) </span><span class="identifier-syntax">list_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_DA_VALUES</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="reserved">debugging_aspect</span><span class="plain"> *</span><span class="identifier">da</span><span class="plain"> = &amp;(</span><span class="identifier">the_debugging_aspects</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">negated_name</span><span class="plain">)) {</span>
-                <span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">on_or_off</span><span class="plain"> = </span><span class="constant">FALSE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-            <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">hyphenated_name</span><span class="plain">)) ||</span>
-                <span class="plain">(</span><span class="functiontext"><a href="4-sm.html#SP18">Str::eq</a></span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">unhyphenated_name</span><span class="plain">))) {</span>
-                <span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">on_or_off</span><span class="plain"> = </span><span class="constant">TRUE</span><span class="plain">; </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-            <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list_mode</span><span class="plain">) &amp;&amp; (</span><span class="functiontext"><a href="4-sm.html#SP8">Str::len</a></span><span class="plain">(</span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="identifier">hyphenated_name</span><span class="plain">) &gt; </span><span class="constant">0</span><span class="plain">)) {</span>
-                <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"--log %S  (%s)\n"</span><span class="plain">, </span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">hyphenated_name</span><span class="plain">, (</span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">on_or_off</span><span class="plain">)?</span><span class="string">"on"</span><span class="plain">:</span><span class="string">"off"</span><span class="plain">);</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">list_mode</span><span class="plain"> == </span><span class="constant">FALSE</span><span class="plain">) &amp;&amp; (</span><span class="identifier">give_error</span><span class="plain">))</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"No such debugging log aspect as '%S'.\n"</span>
-                <span class="string">"(Try running -log list for a list of the valid aspects.)\n"</span><span class="plain">, </span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">list_mode</span><span class="plain"> == </span><span class="constant">TRUE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">NO_DEFINED_DA_VALUES</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax"> *</span><span class="identifier-syntax">da</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP19" class="internal">Str::eq</a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_name</span><span class="plain-syntax">)) {</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_or_off</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        }</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="4-sm.html#SP19" class="internal">Str::eq</a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">hyphenated_name</span><span class="plain-syntax">)) ||</span>
+    <span class="plain-syntax">            (</span><a href="4-sm.html#SP19" class="internal">Str::eq</a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">unhyphenated_name</span><span class="plain-syntax">))) {</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_or_off</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        }</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">list_mode</span><span class="plain-syntax">) &amp;&amp; (</span><a href="4-sm.html#SP8" class="internal">Str::len</a><span class="plain-syntax">(</span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">hyphenated_name</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)) {</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"--log %S  (%s)\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">hyphenated_name</span><span class="plain-syntax">, (</span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_or_off</span><span class="plain-syntax">)?</span><span class="string-syntax">"on"</span><span class="plain-syntax">:</span><span class="string-syntax">"off"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        }</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">list_mode</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">give_error</span><span class="plain-syntax">))</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"No such debugging log aspect as '%S'.\n"</span>
+    <span class="plain-syntax">            </span><span class="string-syntax">"(Try running -log list for a list of the valid aspects.)\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">list_mode</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. The starred trace. </b>This is a useful way to switch into a more detailed view, and then switch
 out again without having lost our earlier settings.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Log::tracing_on<button class="popup" onclick="togglePopup('usagePopup41')">...<span class="popuptext" id="usagePopup41">Usage of <b>Log::tracing_on</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">starred</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">heading</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">starred</span><span class="plain">) {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n*** Entering sentence trace mode: %S ***\n"</span><span class="plain">, </span><span class="identifier">heading</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-            <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n*** Leaving sentence trace mode: %S ***\n\n"</span><span class="plain">, </span><span class="identifier">heading</span><span class="plain">);</span>
-        <span class="plain">}</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_DA_VALUES</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="reserved">debugging_aspect</span><span class="plain"> *</span><span class="identifier">da</span><span class="plain"> = &amp;(</span><span class="identifier">the_debugging_aspects</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain"> = </span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">on_or_off</span><span class="plain">;</span>
-            <span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">on_or_off</span><span class="plain"> = </span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">alternate</span><span class="plain">;</span>
-            <span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">alternate</span><span class="plain"> = </span><span class="identifier">j</span><span class="plain">;</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::tracing_on</span><button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>Log::tracing_on</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">starred</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">heading</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">starred</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n*** Entering sentence trace mode: %S ***\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">heading</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n*** Leaving sentence trace mode: %S ***\n\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">heading</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">NO_DEFINED_DA_VALUES</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax"> *</span><span class="identifier-syntax">da</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_or_off</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_or_off</span><span class="plain-syntax"> = </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">alternate</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">alternate</span><span class="plain-syntax"> = </span><span class="identifier-syntax">j</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Wrapping up. </b>At the end of the debugging log we list what was in it, mostly to provide
 the reader with a list of other things which could have been put into it,
 but weren't.
 </p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Log::show_debugging_settings_with_state<button class="popup" onclick="togglePopup('usagePopup42')">...<span class="popuptext" id="usagePopup42">Usage of <b>Log::show_debugging_settings_with_state</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain">=0; </span><span class="identifier">i</span><span class="plain">&lt;</span><span class="identifier">NO_DEFINED_DA_VALUES</span><span class="plain">; </span><span class="identifier">i</span><span class="plain">++) {</span>
-            <span class="reserved">debugging_aspect</span><span class="plain"> *</span><span class="identifier">da</span><span class="plain"> = &amp;(</span><span class="identifier">the_debugging_aspects</span><span class="plain">[</span><span class="identifier">i</span><span class="plain">]);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">on_or_off</span><span class="plain"> == </span><span class="identifier">state</span><span class="plain">) {</span>
-                <span class="identifier">c</span><span class="plain">++;</span>
-                <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  %S"</span><span class="plain">, </span><span class="identifier">da</span><span class="plain">-&gt;</span><span class="element">hyphenated_name</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> % </span><span class="constant">6</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">0</span><span class="plain">) { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"  (nothing)\n"</span><span class="plain">); } </span><span class="reserved">else</span><span class="plain"> { </span><span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">); }</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::show_debugging_settings_with_state</span><button class="popup" onclick="togglePopup('usagePopup14')">...<span class="popuptext" id="usagePopup14">Usage of <b>Log::show_debugging_settings_with_state</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">NO_DEFINED_DA_VALUES</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax"> *</span><span class="identifier-syntax">da</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_or_off</span><span class="plain-syntax"> == </span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">c</span><span class="plain-syntax">++;</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"  %S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">hyphenated_name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> % </span><span class="constant-syntax">6</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        }</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"  (nothing)\n"</span><span class="plain-syntax">); } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">); }</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Log::show_debugging_contents<button class="popup" onclick="togglePopup('usagePopup43')">...<span class="popuptext" id="usagePopup43">Usage of <b>Log::show_debugging_contents</b>:<br><a href="2-dl.html#SP5">&#167;5</a></span></button></span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="2-dl.html#SP7">Log::aspect_switched_on</a></span><span class="plain">(</span><span class="constant">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">) </span><span class="reserved">return</span><span class="plain">;</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"\n\nThat concludes the debugging log from this run.\n"</span>
-            <span class="string">"Its contents were as follows -\n\n"</span><span class="plain">);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Included:\n"</span><span class="plain">); </span><span class="functiontext"><a href="2-dl.html#SP11">Log::show_debugging_settings_with_state</a></span><span class="plain">(</span><span class="constant">TRUE</span><span class="plain">);</span>
-        <span class="identifier">LOG</span><span class="plain">(</span><span class="string">"Omitted:\n"</span><span class="plain">); </span><span class="functiontext"><a href="2-dl.html#SP11">Log::show_debugging_settings_with_state</a></span><span class="plain">(</span><span class="constant">FALSE</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::show_debugging_contents</span><button class="popup" onclick="togglePopup('usagePopup15')">...<span class="popuptext" id="usagePopup15">Usage of <b>Log::show_debugging_contents</b>:<br><a href="2-dl.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-dl.html#SP7" class="internal">Log::aspect_switched_on</a><span class="plain-syntax">(</span><span class="constant-syntax">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n\nThat concludes the debugging log from this run.\n"</span>
+    <span class="plain-syntax">        </span><span class="string-syntax">"Its contents were as follows -\n\n"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Included:\n"</span><span class="plain-syntax">); </span><a href="2-dl.html#SP11" class="internal">Log::show_debugging_settings_with_state</a><span class="plain-syntax">(</span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Omitted:\n"</span><span class="plain-syntax">); </span><a href="2-dl.html#SP11" class="internal">Log::show_debugging_settings_with_state</a><span class="plain-syntax">(</span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 2: Memory, Streams and Collections.)</i></li><li><a href="2-mmr.html">Continue with 'Memory'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
-<script>
-function togglePopup(material_id) {
-  var popup = document.getElementById(material_id);
-  popup.classList.toggle("show");
-}
-</script>
-
-<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

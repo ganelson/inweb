@@ -2,16 +2,34 @@
 <html>
 	<head>
 		<title>Tries and Avinues</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="../inweb/index.html">inweb</a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -46,361 +64,306 @@ comparisons when sorting through possible outcomes based on a text.
 <p class="inwebparagraph">The trie is a tree with three kinds of node:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <ul class="items"><li>(a) "Heads". Every trie has exactly one such node, and it's always the root.
 There are two versions of this: a start head represents matching from the
 front of a text, whereas an end head represents matching from the back.
-</li></ul>
-<ul class="items"><li>(b) "Choices". A choice node has a given match character, say an "f", and
+</li><li>(b) "Choices". A choice node has a given match character, say an "f", and
 represents which node to go to next if this is the current character in the
-text. It must either be a valid Unicode character or <code class="display"><span class="extract">TRIE_ANYTHING</span></code>, which
+text. It must either be a valid Unicode character or <code class="display"><span class="extract-syntax">TRIE_ANYTHING</span></code>, which
 is a wildcard representing "any text of any length here". Since a choice
-must always lead somewhere, <code class="display"><span class="extract">on_success</span></code> must point to another node.
+must always lead somewhere, <code class="display"><span class="extract-syntax">on_success</span></code> must point to another node.
 There can be any number of choices at a given position, so choice nodes
-are always organised in linked lists joined by <code class="display"><span class="extract">next</span></code>.
-</li></ul>
-<ul class="items"><li>(c) "Terminals", always leaves, which have match character set to the
-impossible value <code class="display"><span class="extract">TRIE_STOP</span></code>, and for which <code class="display"><span class="extract">match_outcome</span></code> is non-null; thus,
+are always organised in linked lists joined by <code class="display"><span class="extract-syntax">next</span></code>.
+</li><li>(c) "Terminals", always leaves, which have match character set to the
+impossible value <code class="display"><span class="extract-syntax">TRIE_STOP</span></code>, and for which <code class="display"><span class="extract-syntax">match_outcome</span></code> is non-null; thus,
 different terminal nodes can result in different outcomes if they are ever
 reached at the end of a successful scan. A terminal node is always the only item
 in a list.
-</li></ul>
+</p>
+
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">TRIE_START</span><span class="plain"> -1 </span><span class="comment"> head: the root of a trie parsing forwards from the start</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRIE_END</span><span class="plain"> -2 </span><span class="comment"> head: the root of a trie parsing backwards from the end</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRIE_ANYTHING</span><span class="plain"> </span><span class="constant">10003</span><span class="plain"> </span><span class="comment"> choice: match any text here</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRIE_ANY_GROUP</span><span class="plain"> </span><span class="constant">10001</span><span class="plain"> </span><span class="comment"> choice: match any character from this group</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRIE_NOT_GROUP</span><span class="plain"> </span><span class="constant">10002</span><span class="plain"> </span><span class="comment"> choice: match any character not in this group</span>
-    <span class="definitionkeyword">define</span> <span class="constant">TRIE_STOP</span><span class="plain"> -3 </span><span class="comment"> terminal: here's the outcome</span>
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_TRIE_GROUP_SIZE</span><span class="plain"> </span><span class="constant">26</span><span class="plain"> </span><span class="comment"> size of the allowable groups of characters</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">TRIE_START</span><span class="plain-syntax"> -1 </span><span class="comment"> head: the root of a trie parsing forwards from the start</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">TRIE_END</span><span class="plain-syntax"> -2 </span><span class="comment"> head: the root of a trie parsing backwards from the end</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">TRIE_ANYTHING</span><span class="plain-syntax"> </span><span class="constant-syntax">10003</span><span class="plain-syntax"> </span><span class="comment"> choice: match any text here</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">TRIE_ANY_GROUP</span><span class="plain-syntax"> </span><span class="constant-syntax">10001</span><span class="plain-syntax"> </span><span class="comment"> choice: match any character from this group</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">TRIE_NOT_GROUP</span><span class="plain-syntax"> </span><span class="constant-syntax">10002</span><span class="plain-syntax"> </span><span class="comment"> choice: match any character not in this group</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">TRIE_STOP</span><span class="plain-syntax"> -3 </span><span class="comment"> terminal: here's the outcome</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">MAX_TRIE_GROUP_SIZE</span><span class="plain-syntax"> </span><span class="constant-syntax">26</span><span class="plain-syntax"> </span><span class="comment"> size of the allowable groups of characters</span>
 </pre>
-
 <pre class="display">
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">match_trie</span><span class="plain"> {</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">match_character</span><span class="plain">; </span><span class="comment"> or one of the special cases above</span>
-        <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">group_characters</span><span class="plain">[</span><span class="constant">MAX_TRIE_GROUP_SIZE</span><span class="plain">+1];</span>
-        <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">match_outcome</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">on_success</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">next</span><span class="plain">;</span>
-    <span class="plain">} </span><span class="reserved">match_trie</span><span class="plain">;</span>
+    <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">match_character</span><span class="plain-syntax">; </span><span class="comment"> or one of the special cases above</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">group_characters</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_TRIE_GROUP_SIZE</span><span class="plain-syntax">+1];</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">match_outcome</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">on_success</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">} </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax">;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The structure match_trie is accessed in 2/mmr, 2/trs and here.</p>
-
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>We have just one routine for extending and scanning the trie: it either
-tries to find whether a text <code class="display"><span class="extract">p</span></code> leads to any outcome in the existing trie,
+<ul class="endnotetexts"><li>The structure match_trie is accessed in 2/mmr, 2/trs and here.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>We have just one routine for extending and scanning the trie: it either
+tries to find whether a text <code class="display"><span class="extract-syntax">p</span></code> leads to any outcome in the existing trie,
 or else forcibly extends the existing trie to ensure that it does.
 </p>
 
-<p class="inwebparagraph">It might look as if calling <code class="display"><span class="extract">Tries::search</span></code> always returns <code class="display"><span class="extract">add_outcome</span></code> when
+<p class="inwebparagraph">It might look as if calling <code class="display"><span class="extract-syntax">Tries::search</span></code> always returns <code class="display"><span class="extract-syntax">add_outcome</span></code> when
 this is set, but this isn't true: if the trie already contains a node
-representing how to deal with <code class="display"><span class="extract">p</span></code>, we get whatever outcome is already
+representing how to deal with <code class="display"><span class="extract-syntax">p</span></code>, we get whatever outcome is already
 established.
 </p>
 
-<p class="inwebparagraph">There are two motions to keep track of: our progress through the text <code class="display"><span class="extract">p</span></code>
+<p class="inwebparagraph">There are two motions to keep track of: our progress through the text <code class="display"><span class="extract-syntax">p</span></code>
 being scanned, and our progress through the trie which tells us how to scan it.
 </p>
 
 <p class="inwebparagraph">We scan the text either forwards or backwards, starting with the first or
 last character and then working through, finishing with a 0 terminator.
 (This is true even if working backwards: we pretend the character stored
-before the text began is 0.) <code class="display"><span class="extract">i</span></code> represents the index of our current position
-in <code class="display"><span class="extract">p</span></code>, and runs either from 0 up to <code class="display"><span class="extract">N</span></code> or from <code class="display"><span class="extract">N-1</span></code> down to <code class="display"><span class="extract">-1</span></code>,
-where <code class="display"><span class="extract">N</span></code> is the number of characters in <code class="display"><span class="extract">p</span></code>.
+before the text began is 0.) <code class="display"><span class="extract-syntax">i</span></code> represents the index of our current position
+in <code class="display"><span class="extract-syntax">p</span></code>, and runs either from 0 up to <code class="display"><span class="extract-syntax">N</span></code> or from <code class="display"><span class="extract-syntax">N-1</span></code> down to <code class="display"><span class="extract-syntax">-1</span></code>,
+where <code class="display"><span class="extract-syntax">N</span></code> is the number of characters in <code class="display"><span class="extract-syntax">p</span></code>.
 </p>
 
-<p class="inwebparagraph">We scan the trie using a pair of pointers. <code class="display"><span class="extract">prev</span></code> is the last node we
-successfully left, and <code class="display"><span class="extract">pos</span></code> is one we are currently at, which can be
+<p class="inwebparagraph">We scan the trie using a pair of pointers. <code class="display"><span class="extract-syntax">prev</span></code> is the last node we
+successfully left, and <code class="display"><span class="extract-syntax">pos</span></code> is one we are currently at, which can be
 either a terminal node or a choice node (in which case it's the head of
 a linked list of such nodes).
 </p>
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">MAX_TRIE_REWIND</span><span class="plain"> </span><span class="constant">10</span><span class="plain"> </span><span class="comment"> that should be far, far more rewinding than necessary</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">MAX_TRIE_REWIND</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span><span class="plain-syntax"> </span><span class="comment"> that should be far, far more rewinding than necessary</span>
 </pre>
-
 <pre class="display">
-    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="functiontext">Tries::search<button class="popup" onclick="togglePopup('usagePopup359')">...<span class="popuptext" id="usagePopup359">Usage of <b>Tries::search</b>:<br><a href="4-taa.html#SP6">&#167;6</a>, <a href="4-taa.html#SP8">&#167;8</a></span></button></span><span class="plain">(</span><span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">add_outcome</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"no trie to search"</span><span class="plain">);</span>
+    <span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="function-syntax">Tries::search</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Tries::search</b>:<br><a href="4-taa.html#SP6">&#167;6</a>, <a href="4-taa.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">add_outcome</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no trie to search"</span><span class="plain-syntax">);</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">start</span><span class="plain">, </span><span class="identifier">endpoint</span><span class="plain">, </span><span class="identifier">delta</span><span class="plain">;</span>
-        &lt;<span class="cwebmacro">Look at the root node of the trie, setting up the scan accordingly</span> <span class="cwebmacronumber">2.1</span>&gt;<span class="plain">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">start</span><span class="plain-syntax">, </span><span class="identifier-syntax">endpoint</span><span class="plain-syntax">, </span><span class="identifier-syntax">delta</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Look at the root node of the trie, setting up the scan accordingly</span> <span class="named-paragraph-number">2.1</span>&gt;<span class="plain-syntax">;</span>
 
-        <span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">T</span><span class="plain">;</span>
-        &lt;<span class="cwebmacro">Accept the current node of the trie</span> <span class="cwebmacronumber">2.4</span>&gt;<span class="plain">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prev</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Accept the current node of the trie</span> <span class="named-paragraph-number">2.4</span>&gt;<span class="plain-syntax">;</span>
 
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rewind_sp</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">rewind_points</span><span class="plain">[</span><span class="constant">MAX_TRIE_REWIND</span><span class="plain">];</span>
-        <span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">rewind_positions</span><span class="plain">[</span><span class="constant">MAX_TRIE_REWIND</span><span class="plain">];</span>
-        <span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">rewind_prev_positions</span><span class="plain">[</span><span class="constant">MAX_TRIE_REWIND</span><span class="plain">];</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rewind_sp</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rewind_points</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_TRIE_REWIND</span><span class="plain-syntax">];</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rewind_positions</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_TRIE_REWIND</span><span class="plain-syntax">];</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rewind_prev_positions</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_TRIE_REWIND</span><span class="plain-syntax">];</span>
 
-        <span class="reserved">for</span><span class="plain"> (</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">start</span><span class="plain">; </span><span class="identifier">i</span><span class="plain"> != </span><span class="identifier">endpoint</span><span class="plain">+</span><span class="identifier">delta</span><span class="plain">; </span><span class="identifier">i</span><span class="plain"> += </span><span class="identifier">delta</span><span class="plain">) {</span>
-            <span class="identifier">wchar_t</span><span class="plain"> </span><span class="identifier">group</span><span class="plain">[</span><span class="constant">MAX_TRIE_GROUP_SIZE</span><span class="plain">+1];</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">g</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="comment"> size of group</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain"> = (</span><span class="identifier">i</span><span class="plain">&lt;0)?0:(</span><span class="functiontext"><a href="4-sm.html#SP13">Str::get_at</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">i</span><span class="plain">)); </span><span class="comment"> i.e., zero at the two ends of the text</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">c</span><span class="plain"> &gt;= </span><span class="constant">0x20</span><span class="plain">) &amp;&amp; (</span><span class="identifier">c</span><span class="plain"> &lt;= </span><span class="constant">0x7f</span><span class="plain">)) </span><span class="identifier">c</span><span class="plain"> = </span><span class="functiontext"><a href="4-chr.html#SP1">Characters::tolower</a></span><span class="plain">(</span><span class="identifier">c</span><span class="plain">); </span><span class="comment"> normalise it within ASCII</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="constant">0x20</span><span class="plain">) { </span><span class="identifier">c</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">endpoint</span><span class="plain"> - </span><span class="identifier">delta</span><span class="plain">; } </span><span class="comment"> force any space to be equivalent to the final 0</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">add_outcome</span><span class="plain">) {</span>
-                <span class="reserved">int</span><span class="plain"> </span><span class="identifier">pairc</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'&lt;'</span><span class="plain">) </span><span class="identifier">pairc</span><span class="plain"> = </span><span class="character">'&gt;'</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'&gt;'</span><span class="plain">) </span><span class="identifier">pairc</span><span class="plain"> = </span><span class="character">'&lt;'</span><span class="plain">;</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pairc</span><span class="plain">) {</span>
-                    <span class="reserved">int</span><span class="plain"> </span><span class="identifier">j</span><span class="plain">;</span>
-                    <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">j</span><span class="plain"> = </span><span class="identifier">i</span><span class="plain">+</span><span class="identifier">delta</span><span class="plain">; </span><span class="identifier">j</span><span class="plain"> != </span><span class="identifier">endpoint</span><span class="plain">; </span><span class="identifier">j</span><span class="plain"> += </span><span class="identifier">delta</span><span class="plain">) {</span>
-                        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ch</span><span class="plain"> = (</span><span class="identifier">j</span><span class="plain">&lt;0)?0:(</span><span class="functiontext"><a href="4-sm.html#SP13">Str::get_at</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">j</span><span class="plain">));</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ch</span><span class="plain"> == </span><span class="identifier">pairc</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
-                        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">g</span><span class="plain"> &gt; </span><span class="constant">MAX_TRIE_GROUP_SIZE</span><span class="plain">) { </span><span class="identifier">g</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="reserved">break</span><span class="plain">; }</span>
-                        <span class="identifier">group</span><span class="plain">[</span><span class="identifier">g</span><span class="plain">++] = </span><span class="identifier">ch</span><span class="plain">;</span>
-                    <span class="plain">}</span>
-                    <span class="identifier">group</span><span class="plain">[</span><span class="identifier">g</span><span class="plain">] = </span><span class="constant">0</span><span class="plain">;</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">g</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) </span><span class="identifier">i</span><span class="plain"> = </span><span class="identifier">j</span><span class="plain">;</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'*'</span><span class="plain">) </span><span class="identifier">endpoint</span><span class="plain"> -= </span><span class="identifier">delta</span><span class="plain">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">start</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax"> != </span><span class="identifier-syntax">endpoint</span><span class="plain-syntax">+</span><span class="identifier-syntax">delta</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax"> += </span><span class="identifier-syntax">delta</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">group</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_TRIE_GROUP_SIZE</span><span class="plain-syntax">+1];</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">g</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment"> size of group</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;0)?0:(</span><a href="4-sm.html#SP13" class="internal">Str::get_at</a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">)); </span><span class="comment"> i.e., zero at the two ends of the text</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0x20</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">0x7f</span><span class="plain-syntax">)) </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><a href="4-chr.html#SP1" class="internal">Characters::tolower</a><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">); </span><span class="comment"> normalise it within ASCII</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0x20</span><span class="plain-syntax">) { </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">endpoint</span><span class="plain-syntax"> - </span><span class="identifier-syntax">delta</span><span class="plain-syntax">; } </span><span class="comment"> force any space to be equivalent to the final 0</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">add_outcome</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pairc</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'&lt;'</span><span class="plain-syntax">) </span><span class="identifier-syntax">pairc</span><span class="plain-syntax"> = </span><span class="character-syntax">'&gt;'</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'&gt;'</span><span class="plain-syntax">) </span><span class="identifier-syntax">pairc</span><span class="plain-syntax"> = </span><span class="character-syntax">'&lt;'</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pairc</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">j</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i</span><span class="plain-syntax">+</span><span class="identifier-syntax">delta</span><span class="plain-syntax">; </span><span class="identifier-syntax">j</span><span class="plain-syntax"> != </span><span class="identifier-syntax">endpoint</span><span class="plain-syntax">; </span><span class="identifier-syntax">j</span><span class="plain-syntax"> += </span><span class="identifier-syntax">delta</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">                    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ch</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">j</span><span class="plain-syntax">&lt;0)?0:(</span><a href="4-sm.html#SP13" class="internal">Str::get_at</a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">j</span><span class="plain-syntax">));</span>
+    <span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ch</span><span class="plain-syntax"> == </span><span class="identifier-syntax">pairc</span><span class="plain-syntax">) </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">g</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">MAX_TRIE_GROUP_SIZE</span><span class="plain-syntax">) { </span><span class="identifier-syntax">g</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">; }</span>
+    <span class="plain-syntax">                    </span><span class="identifier-syntax">group</span><span class="plain-syntax">[</span><span class="identifier-syntax">g</span><span class="plain-syntax">++] = </span><span class="identifier-syntax">ch</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                }</span>
+    <span class="plain-syntax">                </span><span class="identifier-syntax">group</span><span class="plain-syntax">[</span><span class="identifier-syntax">g</span><span class="plain-syntax">] = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">g</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">j</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            }</span>
+    <span class="plain-syntax">        }</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'*'</span><span class="plain-syntax">) </span><span class="identifier-syntax">endpoint</span><span class="plain-syntax"> -= </span><span class="identifier-syntax">delta</span><span class="plain-syntax">;</span>
 
-            <span class="identifier">RewindHere:</span>
-            &lt;<span class="cwebmacro">Look through the possible exits from this position and move on if any match</span> <span class="cwebmacronumber">2.2</span>&gt;<span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">add_outcome</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">rewind_sp</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
-                    <span class="identifier">i</span><span class="plain"> = </span><span class="identifier">rewind_points</span><span class="plain">[</span><span class="identifier">rewind_sp</span><span class="plain">-1];</span>
-                    <span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">rewind_positions</span><span class="plain">[</span><span class="identifier">rewind_sp</span><span class="plain">-1];</span>
-                    <span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">rewind_prev_positions</span><span class="plain">[</span><span class="identifier">rewind_sp</span><span class="plain">-1];</span>
-                    <span class="identifier">rewind_sp</span><span class="plain">--;</span>
-                    <span class="reserved">goto</span><span class="plain"> </span><span class="identifier">RewindHere</span><span class="plain">;</span>
-                <span class="plain">}</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment"> failure!</span>
-            <span class="plain">}</span>
-            &lt;<span class="cwebmacro">We have run out of trie and must create a new exit to continue</span> <span class="cwebmacronumber">2.3</span>&gt;<span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pos</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain"> == </span><span class="constant">TRIE_ANYTHING</span><span class="plain">)) </span>&lt;<span class="cwebmacro">Accept the current node of the trie</span> <span class="cwebmacronumber">2.4</span>&gt;<span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">pos</span><span class="plain">) &amp;&amp; (</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">match_outcome</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">match_outcome</span><span class="plain">; </span><span class="comment"> success!</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">add_outcome</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">; </span><span class="comment"> failure!</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">RewindHere:</span>
+    <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Look through the possible exits from this position and move on if any match</span> <span class="named-paragraph-number">2.2</span>&gt;<span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">add_outcome</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rewind_sp</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">                </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">rewind_points</span><span class="plain-syntax">[</span><span class="identifier-syntax">rewind_sp</span><span class="plain-syntax">-1];</span>
+    <span class="plain-syntax">                </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="identifier-syntax">rewind_positions</span><span class="plain-syntax">[</span><span class="identifier-syntax">rewind_sp</span><span class="plain-syntax">-1];</span>
+    <span class="plain-syntax">                </span><span class="identifier-syntax">prev</span><span class="plain-syntax"> = </span><span class="identifier-syntax">rewind_prev_positions</span><span class="plain-syntax">[</span><span class="identifier-syntax">rewind_sp</span><span class="plain-syntax">-1];</span>
+    <span class="plain-syntax">                </span><span class="identifier-syntax">rewind_sp</span><span class="plain-syntax">--;</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">goto</span><span class="plain-syntax"> </span><span class="identifier-syntax">RewindHere</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            }</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment"> failure!</span>
+    <span class="plain-syntax">        }</span>
+    <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">We have run out of trie and must create a new exit to continue</span> <span class="named-paragraph-number">2.3</span>&gt;<span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRIE_ANYTHING</span><span class="plain-syntax">)) </span>&lt;<span class="named-paragraph">Accept the current node of the trie</span> <span class="named-paragraph-number">2.4</span>&gt;<span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_outcome</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_outcome</span><span class="plain-syntax">; </span><span class="comment"> success!</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">add_outcome</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment"> failure!</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)</span>
-            &lt;<span class="cwebmacro">We failed by running out of trie, so we must add a terminal node to make this string acceptable</span> <span class="cwebmacronumber">2.5</span>&gt;
-        <span class="reserved">else</span>
-            &lt;<span class="cwebmacro">We failed by finishing at a non-terminal node, so we must add an outcome</span> <span class="cwebmacronumber">2.6</span>&gt;<span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pos</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">We failed by running out of trie, so we must add a terminal node to make this string acceptable</span> <span class="named-paragraph-number">2.5</span>&gt;
+    <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
+    <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">We failed by finishing at a non-terminal node, so we must add an outcome</span> <span class="named-paragraph-number">2.6</span>&gt;<span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Look at the root node of the trie, setting up the scan accordingly</span> <span class="cwebmacronumber">2.1</span>&gt; =
+&lt;<span class="named-paragraph-defn">Look at the root node of the trie, setting up the scan accordingly</span> <span class="named-paragraph-number">2.1</span>&gt; =
 </code></p>
 
-
-<pre class="displaydefn">
-        <span class="identifier">start</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">endpoint</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP8">Str::len</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">); </span><span class="identifier">delta</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain"> == </span><span class="constant">TRIE_END</span><span class="plain">) { </span><span class="identifier">start</span><span class="plain"> = </span><span class="functiontext"><a href="4-sm.html#SP8">Str::len</a></span><span class="plain">(</span><span class="identifier">p</span><span class="plain">)-1; </span><span class="identifier">endpoint</span><span class="plain"> = -1; </span><span class="identifier">delta</span><span class="plain"> = -1; }</span>
+<pre class="display">
+    <span class="plain-syntax">    </span><span class="identifier-syntax">start</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">endpoint</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP8" class="internal">Str::len</a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">); </span><span class="identifier-syntax">delta</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">match_character</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRIE_END</span><span class="plain-syntax">) { </span><span class="identifier-syntax">start</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP8" class="internal">Str::len</a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">)-1; </span><span class="identifier-syntax">endpoint</span><span class="plain-syntax"> = -1; </span><span class="identifier-syntax">delta</span><span class="plain-syntax"> = -1; }</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="4-taa.html#SP2">&#167;2</a>.</p>
-
-<p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b>In general trie searches can be made more efficient if the trie is shuffled
+<ul class="endnotetexts"><li>This code is used in <a href="4-taa.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b>In general trie searches can be made more efficient if the trie is shuffled
 so that the most recently matched exit in the list if moved to the top, as
 this tends to make commonly used exits migrate upwards and rarities downwards.
 But we aren't going to search these tries anything like intensively enough
 to make it worth the trouble.
 </p>
 
-<p class="inwebparagraph">(The following cannot be a <code class="display"><span class="extract">while</span></code> loop since C does not allow us to <code class="display"><span class="extract">break</span></code>
-or <code class="display"><span class="extract">continue</span></code> out of an outer loop from an inner one.)
+<p class="inwebparagraph">(The following cannot be a <code class="display"><span class="extract-syntax">while</span></code> loop since C does not allow us to <code class="display"><span class="extract-syntax">break</span></code>
+or <code class="display"><span class="extract-syntax">continue</span></code> out of an outer loop from an inner one.)
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">Look through the possible exits from this position and move on if any match</span> <span class="cwebmacronumber">2.2</span>&gt; =
+&lt;<span class="named-paragraph-defn">Look through the possible exits from this position and move on if any match</span> <span class="named-paragraph-number">2.2</span>&gt; =
 </code></p>
 
+<pre class="display">
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ambig</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">unambig</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">point</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">point</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pos</span><span class="plain-syntax">; </span><span class="identifier-syntax">point</span><span class="plain-syntax">; </span><span class="identifier-syntax">point</span><span class="plain-syntax"> = </span><span class="identifier-syntax">point</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-taa.html#SP3" class="internal">Tries::is_ambiguous</a><span class="plain-syntax">(</span><span class="identifier-syntax">point</span><span class="plain-syntax">)) </span><span class="identifier-syntax">ambig</span><span class="plain-syntax">++;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">unambig</span><span class="plain-syntax">++;</span>
 
-<pre class="displaydefn">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">ambig</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">, </span><span class="identifier">unambig</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">;</span>
-        <span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">point</span><span class="plain">;</span>
-        <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">point</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">; </span><span class="identifier">point</span><span class="plain">; </span><span class="identifier">point</span><span class="plain"> = </span><span class="identifier">point</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-taa.html#SP3">Tries::is_ambiguous</a></span><span class="plain">(</span><span class="identifier">point</span><span class="plain">)) </span><span class="identifier">ambig</span><span class="plain">++;</span>
-            <span class="reserved">else</span><span class="plain"> </span><span class="identifier">unambig</span><span class="plain">++;</span>
-
-        <span class="identifier">FauxWhileLoop:</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">) {</span>
-            <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">add_outcome</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="functiontext"><a href="4-taa.html#SP3">Tries::is_ambiguous</a></span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">) == </span><span class="constant">FALSE</span><span class="plain">))</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="4-taa.html#SP3">Tries::matches</a></span><span class="plain">(</span><span class="identifier">pos</span><span class="plain">, </span><span class="identifier">c</span><span class="plain">)) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain"> == </span><span class="constant">TRIE_ANYTHING</span><span class="plain">) </span><span class="reserved">break</span><span class="plain">;</span>
-                    <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">add_outcome</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ambig</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) &amp;&amp; (</span><span class="identifier">ambig</span><span class="plain">+</span><span class="identifier">unambig</span><span class="plain"> &gt; </span><span class="constant">1</span><span class="plain">)</span>
-                        <span class="plain">&amp;&amp; (</span><span class="identifier">rewind_sp</span><span class="plain"> &lt; </span><span class="constant">MAX_TRIE_REWIND</span><span class="plain">)) {</span>
-                        <span class="identifier">rewind_points</span><span class="plain">[</span><span class="identifier">rewind_sp</span><span class="plain">] = </span><span class="identifier">i</span><span class="plain">;</span>
-                        <span class="identifier">rewind_positions</span><span class="plain">[</span><span class="identifier">rewind_sp</span><span class="plain">] = </span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
-                        <span class="identifier">rewind_prev_positions</span><span class="plain">[</span><span class="identifier">rewind_sp</span><span class="plain">] = </span><span class="identifier">prev</span><span class="plain">;</span>
-                        <span class="identifier">rewind_sp</span><span class="plain">++;</span>
-                    <span class="plain">}</span>
-                    &lt;<span class="cwebmacro">Accept the current node of the trie</span> <span class="cwebmacronumber">2.4</span>&gt;<span class="plain">;</span>
-                    <span class="reserved">continue</span><span class="plain">;</span>
-                <span class="plain">}</span>
-            <span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain">;</span>
-            <span class="reserved">goto</span><span class="plain"> </span><span class="identifier">FauxWhileLoop</span><span class="plain">;</span>
-        <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">FauxWhileLoop:</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">add_outcome</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><a href="4-taa.html#SP3" class="internal">Tries::is_ambiguous</a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">))</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-taa.html#SP3" class="internal">Tries::matches</a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">)) {</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRIE_ANYTHING</span><span class="plain-syntax">) </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">add_outcome</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">ambig</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">ambig</span><span class="plain-syntax">+</span><span class="identifier-syntax">unambig</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">                    &amp;&amp; (</span><span class="identifier-syntax">rewind_sp</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">MAX_TRIE_REWIND</span><span class="plain-syntax">)) {</span>
+    <span class="plain-syntax">                    </span><span class="identifier-syntax">rewind_points</span><span class="plain-syntax">[</span><span class="identifier-syntax">rewind_sp</span><span class="plain-syntax">] = </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                    </span><span class="identifier-syntax">rewind_positions</span><span class="plain-syntax">[</span><span class="identifier-syntax">rewind_sp</span><span class="plain-syntax">] = </span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                    </span><span class="identifier-syntax">rewind_prev_positions</span><span class="plain-syntax">[</span><span class="identifier-syntax">rewind_sp</span><span class="plain-syntax">] = </span><span class="identifier-syntax">prev</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                    </span><span class="identifier-syntax">rewind_sp</span><span class="plain-syntax">++;</span>
+    <span class="plain-syntax">                }</span>
+    <span class="plain-syntax">                </span>&lt;<span class="named-paragraph">Accept the current node of the trie</span> <span class="named-paragraph-number">2.4</span>&gt;<span class="plain-syntax">;</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            }</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">goto</span><span class="plain-syntax"> </span><span class="identifier-syntax">FauxWhileLoop</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="4-taa.html#SP2">&#167;2</a>.</p>
-
-<p class="inwebparagraph"><a id="SP2_3"></a><b>&#167;2.3.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">We have run out of trie and must create a new exit to continue</span> <span class="cwebmacronumber">2.3</span>&gt; =
+<ul class="endnotetexts"><li>This code is used in <a href="4-taa.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_3"></a><b>&#167;2.3.  </b><code class="display">
+&lt;<span class="named-paragraph-defn">We have run out of trie and must create a new exit to continue</span> <span class="named-paragraph-number">2.3</span>&gt; =
 </code></p>
 
+<pre class="display">
+    <span class="plain-syntax">    </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">new_pos</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">g</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRIE_ANY_GROUP</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">group</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">group</span><span class="plain-syntax">[0] == </span><span class="character-syntax">'!'</span><span class="plain-syntax">) { </span><span class="identifier-syntax">from</span><span class="plain-syntax">++; </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRIE_NOT_GROUP</span><span class="plain-syntax">; }</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">group</span><span class="plain-syntax">[(</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><a href="4-ws.html#SP1" class="internal">Wide::len</a><span class="plain-syntax">(</span><span class="identifier-syntax">group</span><span class="plain-syntax">)-1] == </span><span class="character-syntax">'!'</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">group</span><span class="plain-syntax">[(</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><a href="4-ws.html#SP1" class="internal">Wide::len</a><span class="plain-syntax">(</span><span class="identifier-syntax">group</span><span class="plain-syntax">)-1] = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRIE_NOT_GROUP</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        }</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">new_pos</span><span class="plain-syntax"> = </span><a href="4-taa.html#SP4" class="internal">Tries::new</a><span class="plain-syntax">(</span><span class="identifier-syntax">nt</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">wcscpy</span><span class="plain-syntax">(</span><span class="identifier-syntax">new_pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">group_characters</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'*'</span><span class="plain-syntax">) </span><span class="identifier-syntax">new_pos</span><span class="plain-syntax"> = </span><a href="4-taa.html#SP4" class="internal">Tries::new</a><span class="plain-syntax">(</span><span class="constant-syntax">TRIE_ANYTHING</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">new_pos</span><span class="plain-syntax"> = </span><a href="4-taa.html#SP4" class="internal">Tries::new</a><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
 
-<pre class="displaydefn">
-        <span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">new_pos</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">g</span><span class="plain"> &gt; </span><span class="constant">0</span><span class="plain">) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">nt</span><span class="plain"> = </span><span class="constant">TRIE_ANY_GROUP</span><span class="plain">;</span>
-            <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain"> = </span><span class="identifier">group</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">group</span><span class="plain">[0] == </span><span class="character">'!'</span><span class="plain">) { </span><span class="identifier">from</span><span class="plain">++; </span><span class="identifier">nt</span><span class="plain"> = </span><span class="constant">TRIE_NOT_GROUP</span><span class="plain">; }</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">group</span><span class="plain">[(</span><span class="reserved">int</span><span class="plain">) </span><span class="functiontext"><a href="4-ws.html#SP1">Wide::len</a></span><span class="plain">(</span><span class="identifier">group</span><span class="plain">)-1] == </span><span class="character">'!'</span><span class="plain">) {</span>
-                <span class="identifier">group</span><span class="plain">[(</span><span class="reserved">int</span><span class="plain">) </span><span class="functiontext"><a href="4-ws.html#SP1">Wide::len</a></span><span class="plain">(</span><span class="identifier">group</span><span class="plain">)-1] = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">nt</span><span class="plain"> = </span><span class="constant">TRIE_NOT_GROUP</span><span class="plain">;</span>
-            <span class="plain">}</span>
-            <span class="identifier">new_pos</span><span class="plain"> = </span><span class="functiontext"><a href="4-taa.html#SP4">Tries::new</a></span><span class="plain">(</span><span class="identifier">nt</span><span class="plain">);</span>
-            <span class="identifier">wcscpy</span><span class="plain">(</span><span class="identifier">new_pos</span><span class="plain">-&gt;</span><span class="element">group_characters</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">);</span>
-        <span class="plain">} </span><span class="reserved">else</span><span class="plain"> </span><span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="character">'*'</span><span class="plain">) </span><span class="identifier">new_pos</span><span class="plain"> = </span><span class="functiontext"><a href="4-taa.html#SP4">Tries::new</a></span><span class="plain">(</span><span class="constant">TRIE_ANYTHING</span><span class="plain">);</span>
-        <span class="reserved">else</span><span class="plain"> </span><span class="identifier">new_pos</span><span class="plain"> = </span><span class="functiontext"><a href="4-taa.html#SP4">Tries::new</a></span><span class="plain">(</span><span class="identifier">c</span><span class="plain">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_success</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_success</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_pos</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ppoint</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">point</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">point</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_success</span><span class="plain-syntax">; </span><span class="identifier-syntax">point</span><span class="plain-syntax">; </span><span class="identifier-syntax">ppoint</span><span class="plain-syntax"> = </span><span class="identifier-syntax">point</span><span class="plain-syntax">, </span><span class="identifier-syntax">point</span><span class="plain-syntax"> = </span><span class="identifier-syntax">point</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">new_pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">point</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ppoint</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">                    </span><span class="identifier-syntax">new_pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_success</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                    </span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_success</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_pos</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">                    </span><span class="identifier-syntax">ppoint</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_pos</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                    </span><span class="identifier-syntax">new_pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">point</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                }</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            }</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">point</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">                </span><span class="identifier-syntax">point</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_pos</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            }</span>
+    <span class="plain-syntax">        }</span>
+    <span class="plain-syntax">    }</span>
 
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">prev</span><span class="plain">-&gt;</span><span class="identifier">on_success</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">on_success</span><span class="plain"> = </span><span class="identifier">new_pos</span><span class="plain">;</span>
-        <span class="reserved">else</span><span class="plain"> {</span>
-            <span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">ppoint</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">point</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">point</span><span class="plain"> = </span><span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">on_success</span><span class="plain">; </span><span class="identifier">point</span><span class="plain">; </span><span class="identifier">ppoint</span><span class="plain"> = </span><span class="identifier">point</span><span class="plain">, </span><span class="identifier">point</span><span class="plain"> = </span><span class="identifier">point</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">new_pos</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain"> &lt; </span><span class="identifier">point</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain">) {</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">ppoint</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                        <span class="identifier">new_pos</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">on_success</span><span class="plain">;</span>
-                        <span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">on_success</span><span class="plain"> = </span><span class="identifier">new_pos</span><span class="plain">;</span>
-                    <span class="plain">} </span><span class="reserved">else</span><span class="plain"> {</span>
-                        <span class="identifier">ppoint</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">new_pos</span><span class="plain">;</span>
-                        <span class="identifier">new_pos</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">point</span><span class="plain">;</span>
-                    <span class="plain">}</span>
-                    <span class="reserved">break</span><span class="plain">;</span>
-                <span class="plain">}</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">point</span><span class="plain">-&gt;</span><span class="identifier">next</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) {</span>
-                    <span class="identifier">point</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">new_pos</span><span class="plain">;</span>
-                    <span class="reserved">break</span><span class="plain">;</span>
-                <span class="plain">}</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-
-        <span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">new_pos</span><span class="plain">;</span>
-        &lt;<span class="cwebmacro">Accept the current node of the trie</span> <span class="cwebmacronumber">2.4</span>&gt;<span class="plain">; </span><span class="reserved">continue</span><span class="plain">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_pos</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Accept the current node of the trie</span> <span class="named-paragraph-number">2.4</span>&gt;<span class="plain-syntax">; </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="4-taa.html#SP2">&#167;2</a>.</p>
-
-<p class="inwebparagraph"><a id="SP2_4"></a><b>&#167;2.4.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">Accept the current node of the trie</span> <span class="cwebmacronumber">2.4</span>&gt; =
+<ul class="endnotetexts"><li>This code is used in <a href="4-taa.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_4"></a><b>&#167;2.4.  </b><code class="display">
+&lt;<span class="named-paragraph-defn">Accept the current node of the trie</span> <span class="named-paragraph-number">2.4</span>&gt; =
 </code></p>
 
-
-<pre class="displaydefn">
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"trie invariant broken"</span><span class="plain">);</span>
-        <span class="identifier">prev</span><span class="plain"> = </span><span class="identifier">pos</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain"> = </span><span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">on_success</span><span class="plain">;</span>
+<pre class="display">
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pos</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"trie invariant broken"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">prev</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pos</span><span class="plain-syntax">; </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_success</span><span class="plain-syntax">;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="4-taa.html#SP2">&#167;2</a> (twice), <a href="4-taa.html#SP2_2">&#167;2.2</a>, <a href="4-taa.html#SP2_3">&#167;2.3</a>.</p>
-
-<p class="inwebparagraph"><a id="SP2_5"></a><b>&#167;2.5.  </b>If <code class="display"><span class="extract">pos</span></code> is <code class="display"><span class="extract">NULL</span></code> then it follows that <code class="display"><span class="extract">prev-&gt;on_success</span></code> is <code class="display"><span class="extract">NULL</span></code>, since
-this is how <code class="display"><span class="extract">pos</span></code> was calculated; so to add a new terminal node we simply add
+<ul class="endnotetexts"><li>This code is used in <a href="4-taa.html#SP2">&#167;2</a> (twice), <a href="4-taa.html#SP2_2">&#167;2.2</a>, <a href="4-taa.html#SP2_3">&#167;2.3</a>.</li></ul><p class="inwebparagraph"><a id="SP2_5"></a><b>&#167;2.5.  </b>If <code class="display"><span class="extract-syntax">pos</span></code> is <code class="display"><span class="extract-syntax">NULL</span></code> then it follows that <code class="display"><span class="extract-syntax">prev-&gt;on_success</span></code> is <code class="display"><span class="extract-syntax">NULL</span></code>, since
+this is how <code class="display"><span class="extract-syntax">pos</span></code> was calculated; so to add a new terminal node we simply add
 it there.
 </p>
 
 
 <p class="macrodefinition"><code class="display">
-&lt;<span class="cwebmacrodefn">We failed by running out of trie, so we must add a terminal node to make this string acceptable</span> <span class="cwebmacronumber">2.5</span>&gt; =
+&lt;<span class="named-paragraph-defn">We failed by running out of trie, so we must add a terminal node to make this string acceptable</span> <span class="named-paragraph-number">2.5</span>&gt; =
 </code></p>
 
-
-<pre class="displaydefn">
-        <span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">on_success</span><span class="plain"> = </span><span class="functiontext"><a href="4-taa.html#SP4">Tries::new</a></span><span class="plain">(</span><span class="constant">TRIE_STOP</span><span class="plain">);</span>
-        <span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">on_success</span><span class="plain">-&gt;</span><span class="element">match_outcome</span><span class="plain"> = </span><span class="identifier">add_outcome</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">add_outcome</span><span class="plain">;</span>
+<pre class="display">
+    <span class="plain-syntax">    </span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">on_success</span><span class="plain-syntax"> = </span><a href="4-taa.html#SP4" class="internal">Tries::new</a><span class="plain-syntax">(</span><span class="constant-syntax">TRIE_STOP</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">on_success</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_outcome</span><span class="plain-syntax"> = </span><span class="identifier-syntax">add_outcome</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">add_outcome</span><span class="plain-syntax">;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="4-taa.html#SP2">&#167;2</a>.</p>
-
-<p class="inwebparagraph"><a id="SP2_6"></a><b>&#167;2.6.  </b><code class="display">
-&lt;<span class="cwebmacrodefn">We failed by finishing at a non-terminal node, so we must add an outcome</span> <span class="cwebmacronumber">2.6</span>&gt; =
+<ul class="endnotetexts"><li>This code is used in <a href="4-taa.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_6"></a><b>&#167;2.6.  </b><code class="display">
+&lt;<span class="named-paragraph-defn">We failed by finishing at a non-terminal node, so we must add an outcome</span> <span class="named-paragraph-number">2.6</span>&gt; =
 </code></p>
 
-
-<pre class="displaydefn">
-        <span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">on_success</span><span class="plain"> = </span><span class="functiontext"><a href="4-taa.html#SP4">Tries::new</a></span><span class="plain">(</span><span class="constant">TRIE_STOP</span><span class="plain">);</span>
-        <span class="identifier">prev</span><span class="plain">-&gt;</span><span class="element">on_success</span><span class="plain">-&gt;</span><span class="element">match_outcome</span><span class="plain"> = </span><span class="identifier">add_outcome</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">add_outcome</span><span class="plain">;</span>
+<pre class="display">
+    <span class="plain-syntax">    </span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">on_success</span><span class="plain-syntax"> = </span><a href="4-taa.html#SP4" class="internal">Tries::new</a><span class="plain-syntax">(</span><span class="constant-syntax">TRIE_STOP</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">on_success</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_outcome</span><span class="plain-syntax"> = </span><span class="identifier-syntax">add_outcome</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">add_outcome</span><span class="plain-syntax">;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">This code is used in <a href="4-taa.html#SP2">&#167;2</a>.</p>
-
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Single nodes are matched thus:
+<ul class="endnotetexts"><li>This code is used in <a href="4-taa.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Single nodes are matched thus:
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tries::matches<button class="popup" onclick="togglePopup('usagePopup360')">...<span class="popuptext" id="usagePopup360">Usage of <b>Tries::matches</b>:<br><a href="4-taa.html#SP2_2">&#167;2.2</a></span></button></span><span class="plain">(</span><span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">pos</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">c</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain"> == </span><span class="constant">TRIE_ANYTHING</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain"> == </span><span class="constant">TRIE_ANY_GROUP</span><span class="plain">) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">group_characters</span><span class="plain">[</span><span class="identifier">k</span><span class="plain">]; </span><span class="identifier">k</span><span class="plain">++)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">group_characters</span><span class="plain">[</span><span class="identifier">k</span><span class="plain">])</span>
-                    <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain"> == </span><span class="constant">TRIE_NOT_GROUP</span><span class="plain">) {</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">k</span><span class="plain">;</span>
-            <span class="reserved">for</span><span class="plain"> (</span><span class="identifier">k</span><span class="plain"> = </span><span class="constant">0</span><span class="plain">; </span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">group_characters</span><span class="plain">[</span><span class="identifier">k</span><span class="plain">]; </span><span class="identifier">k</span><span class="plain">++)</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">c</span><span class="plain"> == </span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">group_characters</span><span class="plain">[</span><span class="identifier">k</span><span class="plain">])</span>
-                    <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain"> == </span><span class="identifier">c</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Tries::matches</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Tries::matches</b>:<br><a href="4-taa.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRIE_ANYTHING</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRIE_ANY_GROUP</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">group_characters</span><span class="plain-syntax">[</span><span class="identifier-syntax">k</span><span class="plain-syntax">]; </span><span class="identifier-syntax">k</span><span class="plain-syntax">++)</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">group_characters</span><span class="plain-syntax">[</span><span class="identifier-syntax">k</span><span class="plain-syntax">])</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRIE_NOT_GROUP</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">group_characters</span><span class="plain-syntax">[</span><span class="identifier-syntax">k</span><span class="plain-syntax">]; </span><span class="identifier-syntax">k</span><span class="plain-syntax">++)</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">group_characters</span><span class="plain-syntax">[</span><span class="identifier-syntax">k</span><span class="plain-syntax">])</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax"> == </span><span class="identifier-syntax">c</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">Tries::is_ambiguous<button class="popup" onclick="togglePopup('usagePopup361')">...<span class="popuptext" id="usagePopup361">Usage of <b>Tries::is_ambiguous</b>:<br><a href="4-taa.html#SP2_2">&#167;2.2</a></span></button></span><span class="plain">(</span><span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">pos</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain"> == </span><span class="constant">TRIE_ANYTHING</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain"> == </span><span class="constant">TRIE_ANY_GROUP</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">pos</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain"> == </span><span class="constant">TRIE_NOT_GROUP</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Tries::is_ambiguous</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Tries::is_ambiguous</b>:<br><a href="4-taa.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRIE_ANYTHING</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRIE_ANY_GROUP</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pos</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRIE_NOT_GROUP</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Where:
 </p>
 
 <pre class="display">
-    <span class="reserved">match_trie</span><span class="plain"> *</span><span class="functiontext">Tries::new<button class="popup" onclick="togglePopup('usagePopup362')">...<span class="popuptext" id="usagePopup362">Usage of <b>Tries::new</b>:<br><a href="4-taa.html#SP2_3">&#167;2.3</a>, <a href="4-taa.html#SP2_5">&#167;2.5</a>, <a href="4-taa.html#SP2_6">&#167;2.6</a>, <a href="4-taa.html#SP6">&#167;6</a></span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">mc</span><span class="plain">) {</span>
-        <span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">match_trie</span><span class="plain">);</span>
-        <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain"> = </span><span class="identifier">mc</span><span class="plain">;</span>
-        <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">match_outcome</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">on_success</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">T</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="function-syntax">Tries::new</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Tries::new</b>:<br><a href="4-taa.html#SP2_3">&#167;2.3</a>, <a href="4-taa.html#SP2_5">&#167;2.5</a>, <a href="4-taa.html#SP2_6">&#167;2.6</a>, <a href="4-taa.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mc</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">match_trie</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mc</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_outcome</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_success</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Avinues. </b>A trie is only a limited form of finite state machine. We're not going to need
 the whole power of these, but we do find it useful to chain a series of tries
 together. The idea is to scan against one trie, then, if there's no result,
@@ -409,125 +372,100 @@ against a linked list of tries: we'll call that an "avinue".
 </p>
 
 <pre class="display">
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">match_avinue</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">the_trie</span><span class="plain">;</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">match_avinue</span><span class="plain"> *</span><span class="identifier">next</span><span class="plain">;</span>
-    <span class="plain">} </span><span class="reserved">match_avinue</span><span class="plain">;</span>
+    <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">match_avinue</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">the_trie</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">match_avinue</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">} </span><span class="reserved-syntax">match_avinue</span><span class="plain-syntax">;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The structure match_avinue is accessed in 2/mmr, 2/trs and here.</p>
-
-<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>An avinue starts out with a single trie, which itself has just a single
+<ul class="endnotetexts"><li>The structure match_avinue is accessed in 2/mmr, 2/trs and here.</li></ul><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>An avinue starts out with a single trie, which itself has just a single
 head node (of either sort).
 </p>
 
 <pre class="display">
-    <span class="reserved">match_avinue</span><span class="plain"> *</span><span class="functiontext">Tries::new_avinue<button class="popup" onclick="togglePopup('usagePopup363')">...<span class="popuptext" id="usagePopup363">Usage of <b>Tries::new_avinue</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">from_start</span><span class="plain">) {</span>
-        <span class="reserved">match_avinue</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">match_avinue</span><span class="plain">);</span>
-        <span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">the_trie</span><span class="plain"> = </span><span class="functiontext"><a href="4-taa.html#SP4">Tries::new</a></span><span class="plain">(</span><span class="identifier">from_start</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">A</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">match_avinue</span><span class="plain-syntax"> *</span><span class="function-syntax">Tries::new_avinue</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>Tries::new_avinue</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from_start</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">match_avinue</span><span class="plain-syntax"> *</span><span class="identifier-syntax">A</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">match_avinue</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">A</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">A</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">the_trie</span><span class="plain-syntax"> = </span><a href="4-taa.html#SP4" class="internal">Tries::new</a><span class="plain-syntax">(</span><span class="identifier-syntax">from_start</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tries::add_to_avinue<button class="popup" onclick="togglePopup('usagePopup364')">...<span class="popuptext" id="usagePopup364">Usage of <b>Tries::add_to_avinue</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">match_avinue</span><span class="plain"> *</span><span class="identifier">mt</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">to</span><span class="plain">) {</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">mt</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) || (</span><span class="identifier">mt</span><span class="plain">-&gt;</span><span class="element">the_trie</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) </span><span class="identifier">internal_error</span><span class="plain">(</span><span class="string">"null trie"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="4-taa.html#SP2">Tries::search</a></span><span class="plain">(</span><span class="identifier">mt</span><span class="plain">-&gt;</span><span class="element">the_trie</span><span class="plain">, </span><span class="identifier">from</span><span class="plain">, </span><span class="identifier">to</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tries::add_to_avinue</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Tries::add_to_avinue</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_avinue</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mt</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">mt</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">mt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">the_trie</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"null trie"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="4-taa.html#SP2" class="internal">Tries::search</a><span class="plain-syntax">(</span><span class="identifier-syntax">mt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">the_trie</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>The following duplicates an avinue, pointing to the same sequence of
 tries.
 </p>
 
 <pre class="display">
-    <span class="reserved">match_avinue</span><span class="plain"> *</span><span class="functiontext">Tries::duplicate_avinue<button class="popup" onclick="togglePopup('usagePopup365')">...<span class="popuptext" id="usagePopup365">Usage of <b>Tries::duplicate_avinue</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">match_avinue</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain">) {</span>
-        <span class="reserved">match_avinue</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">, *</span><span class="identifier">FL</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">) {</span>
-            <span class="reserved">match_avinue</span><span class="plain"> *</span><span class="identifier">FN</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">match_avinue</span><span class="plain">);</span>
-            <span class="identifier">FN</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-            <span class="identifier">FN</span><span class="plain">-&gt;</span><span class="element">the_trie</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">the_trie</span><span class="plain">;</span>
-            <span class="identifier">A</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">FL</span><span class="plain">) </span><span class="identifier">FL</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain"> = </span><span class="identifier">FN</span><span class="plain">;</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">F</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">) </span><span class="identifier">F</span><span class="plain"> = </span><span class="identifier">FN</span><span class="plain">;</span>
-            <span class="identifier">FL</span><span class="plain"> = </span><span class="identifier">FN</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">F</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">match_avinue</span><span class="plain-syntax"> *</span><span class="function-syntax">Tries::duplicate_avinue</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>Tries::duplicate_avinue</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_avinue</span><span class="plain-syntax"> *</span><span class="identifier-syntax">A</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">match_avinue</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">FL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">match_avinue</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FN</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">match_avinue</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">FN</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">FN</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">the_trie</span><span class="plain-syntax"> = </span><span class="identifier-syntax">A</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">the_trie</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">A</span><span class="plain-syntax"> = </span><span class="identifier-syntax">A</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">FL</span><span class="plain-syntax">) </span><span class="identifier-syntax">FL</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FN</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">F</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FN</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">FL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FN</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>As noted above, searching an avinue is a matter of searching with each
 trie in turn until one matches (if it does).
 </p>
 
 <pre class="display">
-    <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="functiontext">Tries::search_avinue<button class="popup" onclick="togglePopup('usagePopup366')">...<span class="popuptext" id="usagePopup366">Usage of <b>Tries::search_avinue</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">match_avinue</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">p</span><span class="plain">) {</span>
-        <span class="identifier">wchar_t</span><span class="plain"> *</span><span class="identifier">result</span><span class="plain"> = </span><span class="identifier">NULL</span><span class="plain">;</span>
-        <span class="reserved">while</span><span class="plain"> ((</span><span class="identifier">T</span><span class="plain">) &amp;&amp; (</span><span class="identifier">result</span><span class="plain"> == </span><span class="identifier">NULL</span><span class="plain">)) {</span>
-            <span class="identifier">result</span><span class="plain"> = </span><span class="functiontext"><a href="4-taa.html#SP2">Tries::search</a></span><span class="plain">(</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">the_trie</span><span class="plain">, </span><span class="identifier">p</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">);</span>
-            <span class="identifier">T</span><span class="plain"> = </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">result</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="function-syntax">Tries::search_avinue</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>Tries::search_avinue</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_avinue</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">result</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">T</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">result</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">result</span><span class="plain-syntax"> = </span><a href="4-taa.html#SP2" class="internal">Tries::search</a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">the_trie</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">T</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">result</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Logging. </b></p>
 
 <pre class="display">
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tries::log_avinue<button class="popup" onclick="togglePopup('usagePopup367')">...<span class="popuptext" id="usagePopup367">Usage of <b>Tries::log_avinue</b>:<br>Foundation Module - <a href="1-fm.html#SP8_3">&#167;8.3</a></span></button></span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">vA</span><span class="plain">) {</span>
-        <span class="reserved">match_avinue</span><span class="plain"> *</span><span class="identifier">A</span><span class="plain"> = (</span><span class="reserved">match_avinue</span><span class="plain"> *) </span><span class="identifier">vA</span><span class="plain">;</span>
-        <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Avinue:\n"</span><span class="plain">); </span><span class="constant">INDENT</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">n</span><span class="plain"> = </span><span class="constant">1</span><span class="plain">;</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">A</span><span class="plain">) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Trie %d:\n"</span><span class="plain">, </span><span class="identifier">n</span><span class="plain">++); </span><span class="constant">INDENT</span><span class="plain">;</span>
-            <span class="functiontext"><a href="4-taa.html#SP9">Tries::log</a></span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">the_trie</span><span class="plain">);</span>
-            <span class="constant">OUTDENT</span><span class="plain">;</span>
-            <span class="identifier">A</span><span class="plain"> = </span><span class="identifier">A</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">;</span>
-        <span class="plain">}</span>
-        <span class="constant">OUTDENT</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tries::log_avinue</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Tries::log_avinue</b>:<br>Foundation Module - <a href="1-fm.html#SP8_3">&#167;8.3</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vA</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">match_avinue</span><span class="plain-syntax"> *</span><span class="identifier-syntax">A</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">match_avinue</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">vA</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"Avinue:\n"</span><span class="plain-syntax">); </span><span class="constant-syntax">INDENT</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"Trie %d:\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">++); </span><span class="constant-syntax">INDENT</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><a href="4-taa.html#SP9" class="internal">Tries::log</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">the_trie</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">A</span><span class="plain-syntax"> = </span><span class="identifier-syntax">A</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Tries::log<button class="popup" onclick="togglePopup('usagePopup368')">...<span class="popuptext" id="usagePopup368">Usage of <b>Tries::log</b>:<br>none</span></button></span><span class="plain">(</span><span class="constant">OUTPUT_STREAM</span><span class="plain">, </span><span class="reserved">match_trie</span><span class="plain"> *</span><span class="identifier">T</span><span class="plain">) {</span>
-        <span class="reserved">for</span><span class="plain"> (; </span><span class="identifier">T</span><span class="plain">; </span><span class="identifier">T</span><span class="plain"> = </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">next</span><span class="plain">) {</span>
-            <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="identifier">match_character</span><span class="plain">) {</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRIE_START:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Start"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRIE_END:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"End"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRIE_ANYTHING:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Anything"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRIE_ANY_GROUP:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Group &lt;%w&gt;"</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">group_characters</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRIE_NOT_GROUP:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Negated group &lt;%w&gt;"</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">group_characters</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TRIE_STOP:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"Stop"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0</span><span class="plain">: </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"00"</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-                <span class="identifier">default:</span><span class="plain"> </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"%c"</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">match_character</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="plain">}</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">match_outcome</span><span class="plain">) </span><span class="identifier">WRITE</span><span class="plain">(</span><span class="string">" --&gt; %s"</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">match_outcome</span><span class="plain">);</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"\n"</span><span class="plain">);</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">on_success</span><span class="plain">) {</span>
-                <span class="constant">INDENT</span><span class="plain">; </span><span class="functiontext"><a href="4-taa.html#SP9">Tries::log</a></span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="identifier">T</span><span class="plain">-&gt;</span><span class="element">on_success</span><span class="plain">); </span><span class="constant">OUTDENT</span><span class="plain">;</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tries::log</span><button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>Tries::log</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (; </span><span class="identifier-syntax">T</span><span class="plain-syntax">; </span><span class="identifier-syntax">T</span><span class="plain-syntax"> = </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRIE_START:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"Start"</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRIE_END:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"End"</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRIE_ANYTHING:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"Anything"</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRIE_ANY_GROUP:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"Group &lt;%w&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">group_characters</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRIE_NOT_GROUP:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"Negated group &lt;%w&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">group_characters</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRIE_STOP:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"Stop"</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">: </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"00"</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">default:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%c"</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_character</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        }</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_outcome</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" --&gt; %s"</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_outcome</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_success</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">            </span><span class="constant-syntax">INDENT</span><span class="plain-syntax">; </span><a href="4-taa.html#SP9" class="internal">Tries::log</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_success</span><span class="plain-syntax">); </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        }</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <hr class="tocbar">
 <ul class="toc"><li><a href="4-tf.html">Back to 'Text Files'</a></li><li><a href="4-pm.html">Continue with 'Pattern Matching'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
-<script>
-function togglePopup(material_id) {
-  var popup = document.getElementById(material_id);
-  popup.classList.toggle("show");
-}
-</script>
-
-<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

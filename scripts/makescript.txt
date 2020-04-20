@@ -116,10 +116,15 @@ pages:
 	$(INWEB) -help > $(ME)/Figures/help.txt
 	$(INWEB) -show-languages > $(ME)/Figures/languages.txt
 	cp -f $(COLONY) $(ME)/Figures/colony.txt
-	cp -f $(ME)/docs/docs-src/nav.html $(ME)/Figures/nav.txt
+	cp -f $(ME)/docs-src/nav.html $(ME)/Figures/nav.txt
 	$(INWEB) -advance-build-file $(ME)/build.txt
 	mkdir -p $(ME)/docs
 	rm -f $(ME)/docs/*.html
+	mkdir -p $(ME)/docs/docs-assets
+	rm -f $(ME)/docs/docs-assets/*.css
+	rm -f $(ME)/docs/docs-assets/*.png
+	rm -f $(ME)/docs/docs-assets/*.gif
+	cp -f $(ME)/docs-src/Octagram.png $(ME)/docs/docs-assets/Octagram.png
 	$(INWEB) -prototype inweb/scripts/READMEscript.txt -write-me inweb/README.md
 	mkdir -p $(ME)/docs/inweb
 	rm -f $(ME)/docs/inweb/*.html

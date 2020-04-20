@@ -188,7 +188,7 @@ void Trees::remove(tree_node *N) {
 				S->next = N->next;
 	N->parent = NULL;
 	N->next = NULL;
-	if (p)	Trees::verify_children(p);
+	if (p) Trees::verify_children(p);
 }
 
 int Trees::verify_children(tree_node *N) {
@@ -225,4 +225,32 @@ void Trees::traverse(tree_node *N,
 	for (tree_node *M = N; M; M = M->next)
 		if ((*visitor)(M, state, L))
 			Trees::traverse(M->child, visitor, state, L+1);
+}
+
+@
+
+=
+void Trees::prune_tree(heterogeneous_tree *T,
+	int (*visitor)(tree_node *, void *), void *state) {
+	if (T == NULL) internal_error("no tree");
+	Trees::prune_from(T->root, visitor, state);
+}
+
+void Trees::prune_from(tree_node *N,
+	int (*visitor)(tree_node *, void *), void *state) {
+	if (N) {
+		if ((*visitor)(N, state))
+			Trees::remove(N);
+		else
+			Trees::prune(N->child, visitor, state);
+	}
+}
+
+void Trees::prune(tree_node *N,
+	int (*visitor)(tree_node *, void *), void *state) {
+	for (tree_node *M = N, *next_M = N?(N->next):NULL; M; M = next_M, next_M = M?(M->next):NULL)
+		if ((*visitor)(M, state))
+			Trees::remove(M);
+		else
+			Trees::prune(M->child, visitor, state);
 }

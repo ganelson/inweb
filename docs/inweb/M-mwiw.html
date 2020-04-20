@@ -2,16 +2,26 @@
 <html>
 	<head>
 		<title>Making Weaves into Websites</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">inweb</span></a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -37,23 +47,23 @@
 <ul class="toc"><li><a href="M-mwiw.html#SP1">&#167;1. GitHub Pages</a></li><li><a href="M-mwiw.html#SP2">&#167;2. Colonies</a></li><li><a href="M-mwiw.html#SP6">&#167;6. The navigation sidebar</a></li><li><a href="M-mwiw.html#SP9">&#167;9. The trail of breadcrumbs</a></li></ul><hr class="tocbar">
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. GitHub Pages. </b>If a project is hosted at GitHub, then the GitHub Pages service is the ideal
-place to serve a woven copy of the project to the world: the <code class="display"><span class="extract">docs</span></code> subdirectory
+place to serve a woven copy of the project to the world: the <code class="display"><span class="extract-syntax">docs</span></code> subdirectory
 of a repository is simply served as a website, once this is enabled from the
 owner's Github control panel.
 </p>
 
-<p class="inwebparagraph">First, the simple case: our repository is a single web, called <code class="display"><span class="extract">example</span></code>.
+<p class="inwebparagraph">First, the simple case: our repository is a single web, called <code class="display"><span class="extract-syntax">example</span></code>.
 We suppose that the current working directory is one up from this, and contains
-the installation of <code class="display"><span class="extract">inweb</span></code> as well as <code class="display"><span class="extract">example</span></code>. Then:
+the installation of <code class="display"><span class="extract-syntax">inweb</span></code> as well as <code class="display"><span class="extract-syntax">example</span></code>. Then:
 </p>
 
 <pre class="display">
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">ls</span>
-        <span class="plain">inweb   example</span>
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inweb/Tangled/inweb</span><span class="plain"> example</span><span class="identifier"> -weave-as</span><span class="plain"> GitHubPages</span><span class="identifier"> -weave-into</span><span class="plain"> example/docs</span>
+    <span class="plain-syntax">    $ ls</span>
+    <span class="plain-syntax">    inweb   example</span>
+    <span class="plain-syntax">    $ inweb/Tangled/inweb example -weave-as GitHubPages -weave-into example/docs</span>
 </pre>
 
-<p class="inwebparagraph">will do the trick. (<code class="display"><span class="extract">GitHubPages</span></code> is a pattern refining the default <code class="display"><span class="extract">HTML</span></code> one.)
+<p class="inwebparagraph">will do the trick. (<code class="display"><span class="extract-syntax">GitHubPages</span></code> is a pattern refining the default <code class="display"><span class="extract-syntax">HTML</span></code> one.)
 </p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Colonies. </b>A collection of webs gathered in one place is, for want of a better word,
@@ -63,19 +73,19 @@ webs which are collectively woven.)
 
 <p class="inwebparagraph">Inweb provides support for colonies, and this enables us to manage the more
 complicated case where there are multiple webs in a repository, but which need
-to share the same <code class="display"><span class="extract">docs</span></code> area. Now the problem to tackle is that we have two
-or more webs in our <code class="display"><span class="extract">example</span></code> repository, one at <code class="display"><span class="extract">example/aleph</span></code>, the other
-at <code class="display"><span class="extract">example/beth</span></code>.
+to share the same <code class="display"><span class="extract-syntax">docs</span></code> area. Now the problem to tackle is that we have two
+or more webs in our <code class="display"><span class="extract-syntax">example</span></code> repository, one at <code class="display"><span class="extract-syntax">example/aleph</span></code>, the other
+at <code class="display"><span class="extract-syntax">example/beth</span></code>.
 </p>
 
 <p class="inwebparagraph">The first thing to do is to write a colony file &mdash; we could put this anywhere
-in the repository, but let's say at <code class="display"><span class="extract">example/colony.txt</span></code>:
+in the repository, but let's say at <code class="display"><span class="extract-syntax">example/colony.txt</span></code>:
 </p>
 
 <pre class="display">
-        <span class="plain">pattern: GitHubPages</span>
-        <span class="plain">web: "aleph" at "example/aleph" in "example/docs/aleph"</span>
-        <span class="plain">web: "beth" at "example/beth" in "example/docs/beth"</span>
+    <span class="plain-syntax">    pattern: GitHubPages</span>
+    <span class="plain-syntax">    web: "aleph" at "example/aleph" in "example/docs/aleph"</span>
+    <span class="plain-syntax">    web: "beth" at "example/beth" in "example/docs/beth"</span>
 </pre>
 
 <p class="inwebparagraph">This is, in effect, a set of presets of Inweb's command-line settings. We can
@@ -83,57 +93,57 @@ now write, for example,
 </p>
 
 <pre class="display">
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inweb/Tangled/inweb</span><span class="identifier"> -colony</span><span class="plain"> example/colony.txt</span><span class="identifier"> -member</span><span class="plain"> beth</span><span class="identifier"> -weave</span>
+    <span class="plain-syntax">    $ inweb/Tangled/inweb -colony example/colony.txt -member beth -weave</span>
 </pre>
 
 <p class="inwebparagraph">and this is equivalent to
 </p>
 
 <pre class="display">
-        <span class="element">$</span><span class="plain"> </span><span class="functiontext">inweb/Tangled/inweb</span><span class="plain"> example/beth</span><span class="identifier"> -weave -weave-into</span><span class="plain"> example/docs/beth</span><span class="identifier"> -weave-as</span><span class="plain"> GitHubPages</span>
+    <span class="plain-syntax">    $ inweb/Tangled/inweb example/beth -weave -weave-into example/docs/beth -weave-as GitHubPages</span>
 </pre>
 
-<p class="inwebparagraph">The idea is that <code class="display"><span class="extract">-member M</span></code> chooses <code class="display"><span class="extract">M</span></code> as the current web, and automatically
-sets its default settings: <code class="display"><span class="extract">-weave-to</span></code>, <code class="display"><span class="extract">-weave-as</span></code>, <code class="display"><span class="extract">-navigation</span></code> and
-<code class="display"><span class="extract">-breadcrumb</span></code> are all handled like this.
+<p class="inwebparagraph">The idea is that <code class="display"><span class="extract-syntax">-member M</span></code> chooses <code class="display"><span class="extract-syntax">M</span></code> as the current web, and automatically
+sets its default settings: <code class="display"><span class="extract-syntax">-weave-to</span></code>, <code class="display"><span class="extract-syntax">-weave-as</span></code>, <code class="display"><span class="extract-syntax">-navigation</span></code> and
+<code class="display"><span class="extract-syntax">-breadcrumb</span></code> are all handled like this.
 </p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>These pathnames are taken relative to the current working directory of
-the user (not to the location of the colony file). For <a href="index.html" class="internal">inweb</a>, this
+the user (not to the location of the colony file). For <a href="index.html" class="internal">index.html</a>, this
 is conventionally the directory above the actual web, and that's why the
 file needs to say:
 </p>
 
 <pre class="display">
-        <span class="plain">home: inweb/docs</span>
+    <span class="plain-syntax">    home: inweb/docs</span>
 </pre>
 
-<p class="inwebparagraph">This overrides the default setting (just <code class="display"><span class="extract">docs</span></code>), and is the path to the
+<p class="inwebparagraph">This overrides the default setting (just <code class="display"><span class="extract-syntax">docs</span></code>), and is the path to the
 home page of the Github Docs area for the repository.
 </p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The use of a colony also enables cross-references from the weave of one
 web to the weave of another, even when they are independent programs. For
-example, a section of code in <code class="display"><span class="extract">beth</span></code> could say:
+example, a section of code in <code class="display"><span class="extract-syntax">beth</span></code> could say:
 </p>
 
 <pre class="display">
-        <span class="plain">Handling file system problems is more of a job for //aleph// than</span>
-        <span class="plain">for us, so we'll just proceed. (See //aleph: Error Recovery//.)</span>
+    <span class="plain-syntax">    Handling file system problems is more of a job for //aleph// than</span>
+    <span class="plain-syntax">    for us, so we'll just proceed. (See //aleph: Error Recovery//.)</span>
 </pre>
 
 <p class="inwebparagraph">and these links would both work. Without the use of a colony file, neither
-one could be recognised, because Inweb wouldn't know what <code class="display"><span class="extract">aleph</span></code> even was.
-To demonstrate that right here, see <a href="../goldbach/S-tsoe.html" class="internal">The Sieve of Eratosthenes (in goldbach)</a>.
+one could be recognised, because Inweb wouldn't know what <code class="display"><span class="extract-syntax">aleph</span></code> even was.
+To demonstrate that right here, see <a href="../goldbach/S-tsoe.html" class="internal">../goldbach/S-tsoe.html</a>.
 That last sentence was typed as:
 </p>
 
 <pre class="display">
-        <span class="plain">To demonstrate that right here, see //goldbach: The Sieve of Eratosthenes//.</span>
+    <span class="plain-syntax">    To demonstrate that right here, see //goldbach: The Sieve of Eratosthenes//.</span>
 </pre>
 
 <p class="inwebparagraph">Cross-references to other webs or modules in the same colony can be to chapters
-or sections, or simply to the entire web in question &mdash; see <a href="../goldbach/index.html" class="internal">goldbach</a> &mdash;
+or sections, or simply to the entire web in question &mdash; see <a href="../goldbach/index.html" class="internal">../goldbach/index.html</a> &mdash;
 but not to functions or types in those webs: that would require Inweb to read
 every web in the colony into memory, which would slow it down too much.
 </p>
@@ -143,24 +153,25 @@ for the Inweb repository:
 </p>
 
 <pre class="display">
-    <span class="plain">home: inweb/docs</span>
+    <span class="plain-syntax">home: inweb/docs</span>
+    <span class="plain-syntax">assets: inweb/docs/docs-assets</span>
 
-    <span class="plain">navigation: inweb/docs/docs-src/nav.html</span>
-    <span class="plain">pattern: GitHubPages</span>
+    <span class="plain-syntax">navigation: inweb/docs-src/nav.html</span>
+    <span class="plain-syntax">pattern: GitHubPages</span>
 
-    <span class="plain">breadcrumbs: none</span>
-    <span class="plain">web: "overview" at "inweb/docs/docs-src/index.inweb" in "inweb/docs"</span>
+    <span class="plain-syntax">breadcrumbs: none</span>
+    <span class="plain-syntax">web: "overview" at "inweb/docs-src/index.inweb" in "inweb/docs"</span>
 
-    <span class="plain">breadcrumbs: "Home: //overview//"</span>
-    <span class="plain">web: "inweb" at "inweb" in "inweb/docs/inweb"</span>
-    <span class="plain">module: "foundation" at "inweb/foundation-module" in "inweb/docs/foundation-module"</span>
-    <span class="plain">web: "foundation-test" at "inweb/foundation-test" in "inweb/docs/foundation-test"</span>
-    <span class="plain">web: "goldbach" at "inweb/Examples/goldbach" in "inweb/docs/goldbach"</span>
-    <span class="plain">web: "twinprimes" at "inweb/Examples/twinprimes.inweb" in "inweb/docs/twinprimes"</span>
-    <span class="plain">web: "eastertide" at "inweb/Examples/eastertide" in "inweb/docs/eastertide"</span>
+    <span class="plain-syntax">breadcrumbs: "Home: //overview//"</span>
+    <span class="plain-syntax">web: "inweb" at "inweb" in "inweb/docs/inweb"</span>
+    <span class="plain-syntax">module: "foundation" at "inweb/foundation-module" in "inweb/docs/foundation-module"</span>
+    <span class="plain-syntax">web: "foundation-test" at "inweb/foundation-test" in "inweb/docs/foundation-test"</span>
+    <span class="plain-syntax">web: "goldbach" at "inweb/Examples/goldbach" in "inweb/docs/goldbach"</span>
+    <span class="plain-syntax">web: "twinprimes" at "inweb/Examples/twinprimes.inweb" in "inweb/docs/twinprimes"</span>
+    <span class="plain-syntax">web: "eastertide" at "inweb/Examples/eastertide" in "inweb/docs/eastertide"</span>
 
-    <span class="plain">web: "intest" at "intest" in "intest/docs"</span>
-    <span class="plain">web: "inform" at "inform/docs/docs-src/index.inweb" in "inform/docs"</span>
+    <span class="plain-syntax">web: "intest" at "intest" in "intest/docs"</span>
+    <span class="plain-syntax">web: "inform" at "inform/docs/docs-src/index.inweb" in "inform/docs"</span>
 </pre>
 
 <p class="inwebparagraph">As this demonstrates, either webs, or modules, or both, can be declared.
@@ -168,13 +179,13 @@ Each one gives (a) a short name, (b) a location relative to the current
 working directory, and (c) a similar location for its woven collection of
 files. The file can also specify navigation and breadcrumbs material, and
 the pattern; each of these applies to each subsequent declaration until the
-setting in question changes again. (Setting to <code class="display"><span class="extract">none</span></code> removes them.)
+setting in question changes again. (Setting to <code class="display"><span class="extract-syntax">none</span></code> removes them.)
 </p>
 
 <p class="inwebparagraph">Also notable here is that the colony contains a single-page web called
-<code class="display"><span class="extract">index.inweb</span></code>. (You can see that it's a single-page web, rather than something
-more substantial, because the location ends <code class="display"><span class="extract">.inweb</span></code> rather than being a
-directory name.) The point of this web is that it weaves to the <code class="display"><span class="extract">index.html</span></code>
+<code class="display"><span class="extract-syntax">index.inweb</span></code>. (You can see that it's a single-page web, rather than something
+more substantial, because the location ends <code class="display"><span class="extract-syntax">.inweb</span></code> rather than being a
+directory name.) The point of this web is that it weaves to the <code class="display"><span class="extract-syntax">index.html</span></code>
 home page; it's referred to in links as being the "overview", because that's
 its name as a web.
 </p>
@@ -185,63 +196,63 @@ externally as well as internally: that is, the page for one tool will need
 a way to link to pages for other tools.
 </p>
 
-<p class="inwebparagraph">This is why the <code class="display"><span class="extract">GitHubPages</span></code> pattern has a navigation sidebar, to the left
+<p class="inwebparagraph">This is why the <code class="display"><span class="extract-syntax">GitHubPages</span></code> pattern has a navigation sidebar, to the left
 of the main part of each page. The template file contains a special expansion
-written <code class="display"><span class="extract">[[Navigation]]</span></code>, and this expands to the HTML for a column of links.
+written <code class="display"><span class="extract-syntax">[[Navigation]]</span></code>, and this expands to the HTML for a column of links.
 </p>
 
 <p class="inwebparagraph">The pattern also has a row of breadcrumbs along the top, for navigation within
 the current web.
 </p>
 
-<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>By default, Inweb looks for a file called <code class="display"><span class="extract">nav.html</span></code> in two directories: the
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>By default, Inweb looks for a file called <code class="display"><span class="extract-syntax">nav.html</span></code> in two directories: the
 one above the destination, and the destination. If both exist, they are both
 used. If neither exists, the expansion is empty, but no error is produced.
 </p>
 
-<p class="inwebparagraph">However, this can be overridden at the command line, with <code class="display"><span class="extract">-navigation N</span></code>,
-where <code class="display"><span class="extract">N</span></code> is the filename for a suitable fragment of navigation HTML, and
+<p class="inwebparagraph">However, this can be overridden at the command line, with <code class="display"><span class="extract-syntax">-navigation N</span></code>,
+where <code class="display"><span class="extract-syntax">N</span></code> is the filename for a suitable fragment of navigation HTML, and
 it can also be preset in the Colony file (see above).
 </p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Inweb in fact makes it easy to write such navigation files, providing
 commands which mean that little HTML need be written at all. This is the
 one which generates the sidebar visible to the left of the pages on the
-Inweb <code class="display"><span class="extract">docs</span></code> site:
+Inweb <code class="display"><span class="extract-syntax">docs</span></code> site:
 </p>
 
 <pre class="display">
-    <span class="plain">&lt;h1&gt;[[Link "overview"]]</span>
-    <span class="plain">&lt;img src="[[Docs]]docs-src/Figures/Octagram184x184.png" width=72 height=72"&gt;</span>
-    <span class="plain">&lt;/a&gt;&lt;/h1&gt;</span>
-    <span class="plain">[[Item "inweb"]]</span>
-    <span class="plain">[[Menu "Foundation Module"]]</span>
-    <span class="plain">[[Item "foundation"]]</span>
-    <span class="plain">[[Item "foundation-test"]]</span>
-    <span class="plain">[[Menu "Example Webs"]]</span>
-    <span class="plain">[[Item "goldbach"]]</span>
-    <span class="plain">[[Item "twinprimes"]]</span>
-    <span class="plain">[[Item "eastertide"]]</span>
-    <span class="plain">[[Menu "Repository"]]</span>
-    <span class="plain">[[Item "&lt;github.png&gt; github" -&gt; https://github.com/ganelson/inweb]]</span>
-    <span class="plain">[[Menu "Related Projects"]]</span>
-    <span class="plain">[[Item "inform"]]</span>
-    <span class="plain">[[Item "intest"]]</span>
+    <span class="plain-syntax">&lt;h1&gt;[[Link "overview"]]</span>
+    <span class="plain-syntax">&lt;img src="[[Docs]]docs-assets/Octagram.png" width=72 height=72"&gt;</span>
+    <span class="plain-syntax">&lt;/a&gt;&lt;/h1&gt;</span>
+    <span class="plain-syntax">[[Item "inweb"]]</span>
+    <span class="plain-syntax">[[Menu "Foundation Module"]]</span>
+    <span class="plain-syntax">[[Item "foundation"]]</span>
+    <span class="plain-syntax">[[Item "foundation-test"]]</span>
+    <span class="plain-syntax">[[Menu "Example Webs"]]</span>
+    <span class="plain-syntax">[[Item "goldbach"]]</span>
+    <span class="plain-syntax">[[Item "twinprimes"]]</span>
+    <span class="plain-syntax">[[Item "eastertide"]]</span>
+    <span class="plain-syntax">[[Menu "Repository"]]</span>
+    <span class="plain-syntax">[[Item "&lt;github.png&gt; github" -&gt; https://github.com/ganelson/inweb]]</span>
+    <span class="plain-syntax">[[Menu "Related Projects"]]</span>
+    <span class="plain-syntax">[[Item "inform"]]</span>
+    <span class="plain-syntax">[[Item "intest"]]</span>
 </pre>
 
 <p class="inwebparagraph">As this shows, there's some HTML for the top left corner area, and then
-a list of items and submenus. <code class="display"><span class="extract">[[Link "overview"]]</span></code> opens a link to the
-colony item called <code class="display"><span class="extract">overview</span></code>; <code class="display"><span class="extract">[[URL "inweb"]]</span></code> writes a minimal-length
-relative URL to reach the named directory, and <code class="display"><span class="extract">[[Docs]]</span></code> to the home page
-of the Github Docs area for the repository. <code class="display"><span class="extract">[[Menu "External"]]</span></code> begins
-a submenu among the items. <code class="display"><span class="extract">[[Item "X"]]</span></code> makes a menu item whose title is
-<code class="display"><span class="extract">X</span></code> and which links to the colony item called <code class="display"><span class="extract">X</span></code>; <code class="display"><span class="extract">[[Item "Y" -&gt; Z]]</span></code> is
-more general, and makes the text <code class="display"><span class="extract">Y</span></code> point to either an external web page,
-recognised by beginning with <code class="display"><span class="extract">http</span></code>, or else a web cross-reference. Thus:
+a list of items and submenus. <code class="display"><span class="extract-syntax">[[Link "overview"]]</span></code> opens a link to the
+colony item called <code class="display"><span class="extract-syntax">overview</span></code>; <code class="display"><span class="extract-syntax">[[URL "inweb"]]</span></code> writes a minimal-length
+relative URL to reach the named directory, and <code class="display"><span class="extract-syntax">[[Docs]]</span></code> to the home page
+of the Github Docs area for the repository. <code class="display"><span class="extract-syntax">[[Menu "External"]]</span></code> begins
+a submenu among the items. <code class="display"><span class="extract-syntax">[[Item "X"]]</span></code> makes a menu item whose title is
+<code class="display"><span class="extract-syntax">X</span></code> and which links to the colony item called <code class="display"><span class="extract-syntax">X</span></code>; <code class="display"><span class="extract-syntax">[[Item "Y" -&gt; Z]]</span></code> is
+more general, and makes the text <code class="display"><span class="extract-syntax">Y</span></code> point to either an external web page,
+recognised by beginning with <code class="display"><span class="extract-syntax">http</span></code>, or else a web cross-reference. Thus:
 </p>
 
 <pre class="display">
-        <span class="plain">[[Item "innards" -&gt; //inweb: Programming Languages//]]</span>
+    <span class="plain-syntax">    [[Item "innards" -&gt; //inweb: Programming Languages//]]</span>
 </pre>
 
 <p class="inwebparagraph">would make a menu item called "innards" leading to a section in Chapter 4
@@ -253,11 +264,11 @@ example:
 </p>
 
 <pre class="display">
-        <span class="plain">[[Item "&lt;github.png&gt; github" -&gt; https://github.com/ganelson/intest]]</span>
+    <span class="plain-syntax">    [[Item "&lt;github.png&gt; github" -&gt; https://github.com/ganelson/intest]]</span>
 </pre>
 
-<p class="inwebparagraph">This icon should be in the <code class="display"><span class="extract">docs</span></code> home of the repository. Note that the
-<code class="display"><span class="extract">GithubPages</span></code> pattern automatically includes the <code class="display"><span class="extract">github.png</span></code> icon, so
+<p class="inwebparagraph">This icon should be in the <code class="display"><span class="extract-syntax">docs</span></code> home of the repository. Note that the
+<code class="display"><span class="extract-syntax">GithubPages</span></code> pattern automatically includes the <code class="display"><span class="extract-syntax">github.png</span></code> icon, so
 that one's guaranteed to be present.
 </p>
 
@@ -266,7 +277,7 @@ breadcrumbs above each page: for example,
 </p>
 
 <pre class="display">
-    <span class="plain">Beth &gt; Chapter 4 &gt; File Organisation</span>
+    <span class="plain-syntax">Beth &gt; Chapter 4 &gt; File Organisation</span>
 </pre>
 
 <p class="inwebparagraph">That may be sufficient in itself. However, it's possible to add extra
@@ -274,33 +285,33 @@ crumbs to the left. Suppose we want:
 </p>
 
 <pre class="display">
-    <span class="plain">Home &gt; Beth &gt; Chapter 4 &gt; File Organisation</span>
+    <span class="plain-syntax">Home &gt; Beth &gt; Chapter 4 &gt; File Organisation</span>
 </pre>
 
-<p class="inwebparagraph">where Home is a link to <code class="display"><span class="extract">example/docs/index.html</span></code>. One way is to run Inweb
-with <code class="display"><span class="extract">-breadcrumb 'Home:index.html'</span></code>; another is to add this to the Colony
+<p class="inwebparagraph">where Home is a link to <code class="display"><span class="extract-syntax">example/docs/index.html</span></code>. One way is to run Inweb
+with <code class="display"><span class="extract-syntax">-breadcrumb 'Home:index.html'</span></code>; another is to add this to the Colony
 file, as
 </p>
 
 <pre class="display">
-        <span class="plain">breadcrumbs: "Home: index.html"</span>
+    <span class="plain-syntax">    breadcrumbs: "Home: index.html"</span>
 </pre>
 
-<p class="inwebparagraph">We can add more than one, by, e.g., <code class="display"><span class="extract">-breadcrumb 'Home:index.html' -breadcrumb 'Webs: webs.html'</span></code>.
+<p class="inwebparagraph">We can add more than one, by, e.g., <code class="display"><span class="extract-syntax">-breadcrumb 'Home:index.html' -breadcrumb 'Webs: webs.html'</span></code>.
 </p>
 
 <pre class="display">
-        <span class="plain">breadcrumbs: "Home: index.html" &gt; "Webs: webs.html"</span>
+    <span class="plain-syntax">    breadcrumbs: "Home: index.html" &gt; "Webs: webs.html"</span>
 </pre>
 
 <p class="inwebparagraph">The links after the colon can also be Inweb cross-references, so, for example,
 </p>
 
 <pre class="display">
-        <span class="plain">breadcrumbs: "Overview: //overview//"</span>
+    <span class="plain-syntax">    breadcrumbs: "Overview: //overview//"</span>
 </pre>
 
-<p class="inwebparagraph">makes a link to the web/module called <code class="display"><span class="extract">overview</span></code> in the colony file.
+<p class="inwebparagraph">makes a link to the web/module called <code class="display"><span class="extract-syntax">overview</span></code> in the colony file.
 </p>
 
 <hr class="tocbar">

@@ -1,2 +1,1 @@
 format = ePub
-use crumbs.gif

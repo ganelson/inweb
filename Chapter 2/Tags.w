@@ -132,18 +132,12 @@ void Tags::close_ifdefs(OUTPUT_STREAM, paragraph *P) {
 				P->under_section->sect_language, pt->the_tag->ifdef_symbol, pt->the_tag->ifdef_positive);
 }
 
-void Tags::show_endnote_on_ifdefs(heterogeneous_tree *tree,
-	weave_order *wv, tree_node *body, paragraph *P) {
+void Tags::show_endnote_on_ifdefs(heterogeneous_tree *tree, tree_node *ap, paragraph *P) {
 	int d = 0, sense = TRUE;
-	TEMPORARY_TEXT(OUT);
 	@<Show ifdef endnoting@>;
 	sense = FALSE;
 	@<Show ifdef endnoting@>;
-	if (d > 0) {
-		WRITE(".");
-		Weaver::show_endnote(tree, wv, body, OUT);
-	}
-	DISCARD_TEXT(OUT);
+	if (d > 0) TextWeaver::commentary_text(tree, ap, I".");
 }
 
 @<Show ifdef endnoting@> =
@@ -154,18 +148,20 @@ void Tags::show_endnote_on_ifdefs(heterogeneous_tree *tree,
 			if (Str::len(pt->the_tag->ifdef_symbol) > 0) {
 				if (c++ == 0) {
 					if (d++ == 0) {
-						Formats::text(OUT, wv, I"This paragraph is used only if ");
+						tree_node *E = WeaveTree::endnote(tree);
+						Trees::make_child(E, ap); ap = E;
+						TextWeaver::commentary_text(tree, ap, I"This paragraph is used only if ");
 					} else {
-						Formats::text(OUT, wv, I" and if ");
+						TextWeaver::commentary_text(tree, ap, I" and if ");
 					}
 				} else {
-					Formats::text(OUT, wv, I" and ");
+					TextWeaver::commentary_text(tree, ap, I" and ");
 				}
-				Formats::text(OUT, wv, pt->the_tag->ifdef_symbol);
+				TextWeaver::commentary_text(tree, ap, pt->the_tag->ifdef_symbol);
 			}
 	if (c > 0) {
-		if (c == 1) Formats::text(OUT, wv, I" is");
-		else Formats::text(OUT, wv, I" are");
-		if (sense) Formats::text(OUT, wv, I" defined");
-		else Formats::text(OUT, wv, I" undefined");
+		if (c == 1) TextWeaver::commentary_text(tree, ap, I" is");
+		else TextWeaver::commentary_text(tree, ap, I" are");
+		if (sense) TextWeaver::commentary_text(tree, ap, I" defined");
+		else TextWeaver::commentary_text(tree, ap, I" undefined");
 	}

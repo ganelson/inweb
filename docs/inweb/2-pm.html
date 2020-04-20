@@ -2,16 +2,34 @@
 <html>
 	<head>
 		<title>Paragraph Macros</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">inweb</span></a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -40,38 +58,30 @@
 </p>
 
 <pre class="display">
-    <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="reserved">para_macro</span><span class="plain"> {</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">macro_name</span><span class="plain">; </span><span class="comment"> usually long, like "Create a paragraph macro here"</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">defining_paragraph</span><span class="plain">; </span><span class="comment"> as printed in small type after the name in any usage</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">defn_start</span><span class="plain">; </span><span class="comment"> it ends at the end of its defining paragraph</span>
-        <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">macro_usages</span><span class="plain">; </span><span class="comment"> of <code class="display"><span class="extract">macro_usage</span></code>: only computed for weaves</span>
-        <span class="constant">MEMORY_MANAGEMENT</span>
-    <span class="plain">} </span><span class="reserved">para_macro</span><span class="plain">;</span>
+    <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">para_macro</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">macro_name</span><span class="plain-syntax">; </span><span class="comment"> usually long, like "Create a paragraph macro here"</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">defining_paragraph</span><span class="plain-syntax">; </span><span class="comment"> as printed in small type after the name in any usage</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">defn_start</span><span class="plain-syntax">; </span><span class="comment"> it ends at the end of its defining paragraph</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">macro_usages</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">macro_usage</span></code><span class="comment">: only computed for weaves</span>
+    <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+    <span class="plain-syntax">} </span><span class="reserved-syntax">para_macro</span><span class="plain-syntax">;</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="endnote">The structure para_macro is accessed in 2/pn, 3/tw, 3/tt, 5/ptf, 5/tf, 5/hf and here.</p>
-
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Each section has its own linked list of paragraph macros, since the scope for
+<ul class="endnotetexts"><li>The structure para_macro is accessed in 2/pn, 3/tw, 3/tt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Each section has its own linked list of paragraph macros, since the scope for
 the usage of these is always a single section.
 </p>
 
 <pre class="display">
-    <span class="reserved">para_macro</span><span class="plain"> *</span><span class="functiontext">Macros::create<button class="popup" onclick="togglePopup('usagePopup41')">...<span class="popuptext" id="usagePopup41">Usage of <b>Macros::create</b>:<br>The Parser - <a href="2-tp.html#SP1_1_7_4">&#167;1.1.7.4</a></span></button></span><span class="plain">(</span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">S</span><span class="plain">, </span><span class="reserved">paragraph</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain">, </span><span class="reserved">source_line</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
-        <span class="reserved">para_macro</span><span class="plain"> *</span><span class="identifier">pmac</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="reserved">para_macro</span><span class="plain">);</span>
-        <span class="identifier">pmac</span><span class="plain">-&gt;</span><span class="element">macro_name</span><span class="plain"> = </span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP3">Str::duplicate</a></span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-        <span class="identifier">pmac</span><span class="plain">-&gt;</span><span class="element">defining_paragraph</span><span class="plain"> = </span><span class="identifier">P</span><span class="plain">;</span>
-        <span class="identifier">P</span><span class="plain">-&gt;</span><span class="element">defines_macro</span><span class="plain"> = </span><span class="identifier">pmac</span><span class="plain">;</span>
-        <span class="identifier">pmac</span><span class="plain">-&gt;</span><span class="element">defn_start</span><span class="plain"> = </span><span class="identifier">L</span><span class="plain">-&gt;</span><span class="element">next_line</span><span class="plain">;</span>
-        <span class="identifier">pmac</span><span class="plain">-&gt;</span><span class="element">macro_usages</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">macro_usage</span><span class="plain">);</span>
-        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">pmac</span><span class="plain">, </span><span class="reserved">para_macro</span><span class="plain">, </span><span class="identifier">S</span><span class="plain">-&gt;</span><span class="element">macros</span><span class="plain">);</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pmac</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">para_macro</span><span class="plain-syntax"> *</span><span class="function-syntax">Macros::create</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Macros::create</b>:<br>The Parser - <a href="2-tp.html#SP1_1_7_4">&#167;1.1.7.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">para_macro</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pmac</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">para_macro</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">pmac</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">macro_name</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">pmac</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">defining_paragraph</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">defines_macro</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pmac</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">pmac</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">defn_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_line</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">pmac</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">macro_usages</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">macro_usage</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">pmac</span><span class="plain-syntax">, </span><span class="reserved-syntax">para_macro</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">macros</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pmac</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Paragraph macro search. </b>The scope for looking up paragraph macro names is a single section, not the
 entire web. So you can't expand a macro from another section, but then again,
 you can use the same macro name twice in different sections; and lookup is
@@ -79,28 +89,17 @@ much faster.
 </p>
 
 <pre class="display">
-    <span class="reserved">para_macro</span><span class="plain"> *</span><span class="functiontext">Macros::find_by_name<button class="popup" onclick="togglePopup('usagePopup42')">...<span class="popuptext" id="usagePopup42">Usage of <b>Macros::find_by_name</b>:<br>Paragraph Numbering - <a href="2-pn.html#SP1_1">&#167;1.1</a><br>The Weaver - <a href="3-tw.html#SP1_3_4_1_9_6">&#167;1.3.4.1.9.6</a><br>The Tangler - <a href="3-tt.html#SP3_1">&#167;3.1</a></span></button></span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">, </span><span class="reserved">section</span><span class="plain"> *</span><span class="identifier">scope</span><span class="plain">) {</span>
-        <span class="reserved">para_macro</span><span class="plain"> *</span><span class="identifier">pmac</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">pmac</span><span class="plain">, </span><span class="reserved">para_macro</span><span class="plain">, </span><span class="identifier">scope</span><span class="plain">-&gt;</span><span class="element">macros</span><span class="plain">)</span>
-            <span class="reserved">if</span><span class="plain"> (</span><span class="functiontext"><a href="../foundation-module/4-sm.html#SP18">Str::eq</a></span><span class="plain">(</span><span class="identifier">name</span><span class="plain">, </span><span class="identifier">pmac</span><span class="plain">-&gt;</span><span class="element">macro_name</span><span class="plain">))</span>
-                <span class="reserved">return</span><span class="plain"> </span><span class="identifier">pmac</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="identifier">NULL</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">para_macro</span><span class="plain-syntax"> *</span><span class="function-syntax">Macros::find_by_name</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Macros::find_by_name</b>:<br>Paragraph Numbering - <a href="2-pn.html#SP1_1">&#167;1.1</a>&lt;br&gt;The Weaver - <a href="3-tw.html#SP2_7_2_3_2_6">&#167;2.7.2.3.2.6</a>&lt;br&gt;The Tangler - <a href="3-tt.html#SP3_1">&#167;3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">scope</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">para_macro</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pmac</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">pmac</span><span class="plain-syntax">, </span><span class="reserved-syntax">para_macro</span><span class="plain-syntax">, </span><span class="identifier-syntax">scope</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">macros</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="internal">Str::eq</a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">pmac</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">macro_name</span><span class="plain-syntax">))</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pmac</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <hr class="tocbar">
 <ul class="toc"><li><a href="2-tp.html">Back to 'The Parser'</a></li><li><a href="2-tgs.html">Continue with 'Tags'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
-<script>
-function togglePopup(material_id) {
-  var popup = document.getElementById(material_id);
-  popup.classList.toggle("show");
-}
-</script>
-
-<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

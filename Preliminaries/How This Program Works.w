@@ -247,8 +247,7 @@ or //weave_format// in question: in effect, these are APIs. See the sections
 example, to weave a line of C into HTML format, the weaver first calls
 //LanguageMethods::syntax_colour//, which in turn calls the method
 |SYNTAX_COLOUR_WEA_MTID| to the //programming_language// object for C;
-and then calls //Formats::source_code//, which in turn calls |SOURCE_CODE_FOR_MTID|
-on the //weave_format// object representing HTML.
+and then....
 
 [1] "Weaver, weave" really ought to be a folk song, but if so, I can't find
 it on Spotify.

@@ -2,16 +2,40 @@
 <html>
 	<head>
 		<title>A Brief Guide to Foundation</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+MathJax = {
+  tex: {
+    inlineMath: '$', '$'], ['\\(', '\\)'
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="../inweb/index.html">inweb</a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -49,52 +73,52 @@ few provisos, the code is thread-safe, sturdy and well tested, since it forms
 the support code for the Inform programming language's compiler and outlying
 tools, including Inweb itself. If you need to write a command-line utility in
 ANSI C with no dependencies on other tools or libraries to speak of, you could
-do worse. But you certainly don't need it to use <a href="../inweb/index.html" class="internal">inweb</a>, even if you're
+do worse. But you certainly don't need it to use <a href="../inweb/index.html" class="internal">../inweb/index.html</a>, even if you're
 writing in C.
 </p>
 
 <p class="inwebparagraph">For a brief example of a command-line utility using some of the commoner
-features of Foundation in a simple way, see <a href="../eastertide/index.html" class="internal">eastertide</a>. Further exercises
-can be found in <a href="../foundation-test/index.html" class="internal">foundation-test</a>.
+features of Foundation in a simple way, see <a href="../eastertide/index.html" class="internal">../eastertide/index.html</a>. Further exercises
+can be found in <a href="../foundation-test/index.html" class="internal">../foundation-test/index.html</a>.
 </p>
 
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>To use <a href="index.html" class="internal">foundation</a>, a program must at minimum do three things.
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>To use <a href="index.html" class="internal">index.html</a>, a program must at minimum do three things.
 </p>
 
 <p class="inwebparagraph">1. The Contents section of its web must import Foundation as a module, thus:
 </p>
 
 <pre class="display">
-        <span class="element">Import</span><span class="plain">:</span><span class="string"> foundation</span>
+    <span class="plain-syntax">    Import: foundation</span>
 </pre>
 
 <p class="inwebparagraph">Import lines appear after the metadata, but before the roster of sections
 and chapters.
 </p>
 
-<p class="inwebparagraph">2. The constant <code class="display"><span class="extract">PROGRAM_NAME</span></code> must be defined equal to a C string with a
+<p class="inwebparagraph">2. The constant <code class="display"><span class="extract-syntax">PROGRAM_NAME</span></code> must be defined equal to a C string with a
 brief version of the program's name. For example,
 </p>
 
 <pre class="display">
-        <span class="functiontext">@d</span><span class="plain"> PROGRAM_NAME "declutter"</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">@d</span><span class="plain-syntax"> PROGRAM_NAME "declutter"</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph">3. The <code class="display"><span class="extract">main</span></code> function for the client should, as one of its very first acts,
-call <code class="display"><span class="extract">Foundation::start()</span></code>, and should similarly, just before it exits, call
-<code class="display"><span class="extract">Foundation::end()</span></code>. Any other module used should be started after Foundation
+<p class="inwebparagraph">3. The <code class="display"><span class="extract-syntax">main</span></code> function for the client should, as one of its very first acts,
+call <code class="display"><span class="extract-syntax">Foundation::start()</span></code>, and should similarly, just before it exits, call
+<code class="display"><span class="extract-syntax">Foundation::end()</span></code>. Any other module used should be started after Foundation
 starts, and ended before Foundation ends.
 </p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Truth. </b>Every large C program starts by defining constants for truth and falsity. So
-does Foundation: <code class="display"><span class="extract">TRUE</span></code>, <code class="display"><span class="extract">FALSE</span></code>, and a third state <code class="display"><span class="extract">NOT_APPLICABLE</span></code>.
+does Foundation: <code class="display"><span class="extract-syntax">TRUE</span></code>, <code class="display"><span class="extract-syntax">FALSE</span></code>, and a third state <code class="display"><span class="extract-syntax">NOT_APPLICABLE</span></code>.
 </p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Text streams and formatted output. </b>Perhaps the most useful feature of Foundation is that it provides for
 memory-managed strings of Unicode text. These are unified with text files
-which are open for output, in a type called <a href="2-str.html#SP15" class="internal">text_stream</a>. It's expected
+which are open for output, in a type called <a href="2-str.html#SP15" class="internal">2-str.html#SP15</a>. It's expected
 that they may be very large indeed, and appending text to or finding the
 length of a text in memory runs in \(O(1)\) time.
 </p>
@@ -103,101 +127,101 @@ length of a text in memory runs in \(O(1)\) time.
 </p>
 
 <pre class="display">
-        <span class="reserved">void</span><span class="plain"> </span><span class="identifier">Hypothetical::writer</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">authority</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"According to %S, the square of %d is %d.\n"</span><span class="plain">, </span><span class="identifier">authority</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">*</span><span class="identifier">N</span><span class="plain">);</span>
-        <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">Hypothetical::writer</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">authority</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"According to %S, the square of %d is %d.\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">authority</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">*</span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
 </pre>
 
-<p class="inwebparagraph">Here <code class="display"><span class="extract">WRITE</span></code> is a variadic macro rather like <code class="display"><span class="extract">printf</span></code>, and note the use of
-the escape <code class="display"><span class="extract">%S</span></code> to write a text stream. It writes formatted output into the
-stream <code class="display"><span class="extract">OUT</span></code>, and is actually an abbreviation for this:
+<p class="inwebparagraph">Here <code class="display"><span class="extract-syntax">WRITE</span></code> is a variadic macro rather like <code class="display"><span class="extract-syntax">printf</span></code>, and note the use of
+the escape <code class="display"><span class="extract-syntax">%S</span></code> to write a text stream. It writes formatted output into the
+stream <code class="display"><span class="extract-syntax">OUT</span></code>, and is actually an abbreviation for this:
 </p>
 
 <pre class="display">
-        <span class="reserved">void</span><span class="plain"> </span><span class="identifier">Hypothetical::writer</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">authority</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">N</span><span class="plain">) {</span>
-            <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">OUT</span><span class="plain">, </span><span class="string">"According to %S, the square of %d is %d.\n"</span><span class="plain">, </span><span class="identifier">authority</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">, </span><span class="identifier">N</span><span class="plain">*</span><span class="identifier">N</span><span class="plain">);</span>
-        <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">Hypothetical::writer</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">authority</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"According to %S, the square of %d is %d.\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">authority</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">*</span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
 </pre>
 
-<p class="inwebparagraph">The function <code class="display"><span class="extract">Hypothetical::writer</span></code> can write equally to a text file or to a
+<p class="inwebparagraph">The function <code class="display"><span class="extract-syntax">Hypothetical::writer</span></code> can write equally to a text file or to a
 string, whichever it's given, and doesn't need to worry about memory management
 or text encodings.
 </p>
 
 <p class="inwebparagraph">The standard output and standard error "files" on Unix-based systems are
-referred to as <code class="display"><span class="extract">STDOUT</span></code> and <code class="display"><span class="extract">STDERR</span></code>, both constants of type <code class="display"><span class="extract">text_stream *</span></code>
-defined by Foundation. The value <code class="display"><span class="extract">NULL</span></code>, used as a text stream, is valid and
+referred to as <code class="display"><span class="extract-syntax">STDOUT</span></code> and <code class="display"><span class="extract-syntax">STDERR</span></code>, both constants of type <code class="display"><span class="extract-syntax">text_stream *</span></code>
+defined by Foundation. The value <code class="display"><span class="extract-syntax">NULL</span></code>, used as a text stream, is valid and
 prints as the empty string, while ignoring any content written to it.
-All of these capitalised macros are defined in <a href="2-str.html" class="internal">Streams</a>.
+All of these capitalised macros are defined in <a href="2-str.html" class="internal">2-str.html</a>.
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract">PRINT("...")</span></code> is an abbreviation for <code class="display"><span class="extract">WRITE_TO(STDOUT, "...")</span></code>, and
-<code class="display"><span class="extract">LOG("...")</span></code> similarly writes to the log file. (See <a href="2-dl.html" class="internal">Debugging Log</a>.)
+<p class="inwebparagraph"><code class="display"><span class="extract-syntax">PRINT("...")</span></code> is an abbreviation for <code class="display"><span class="extract-syntax">WRITE_TO(STDOUT, "...")</span></code>, and
+<code class="display"><span class="extract-syntax">LOG("...")</span></code> similarly writes to the log file. (See <a href="2-dl.html" class="internal">2-dl.html</a>.)
 </p>
 
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>If you're using <a href="../inweb/M-tid.html" class="internal">The InC Dialect (in inweb)</a>, the slight extension to C made
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>If you're using <a href="../inweb/M-tid.html" class="internal">../inweb/M-tid.html</a>, the slight extension to C made
 by Inweb, there's a simple notation for constants of this type:
 </p>
 
 <pre class="display">
-        <span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">error_message</span><span class="plain"> = </span><span class="identifier">I</span><span class="string">"quadro-triticale stocks depleted"</span><span class="plain">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">error_message</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"quadro-triticale stocks depleted"</span><span class="plain-syntax">;</span>
 </pre>
 
-<p class="inwebparagraph">The <code class="display"><span class="extract">I</span></code> prefix is meant to imitate the <code class="display"><span class="extract">L</span></code> used in standard C99 for long string
-constants. But this is a feature of <a href="../inweb/index.html" class="internal">inweb</a> rather than of Foundation.
+<p class="inwebparagraph">The <code class="display"><span class="extract-syntax">I</span></code> prefix is meant to imitate the <code class="display"><span class="extract-syntax">L</span></code> used in standard C99 for long string
+constants. But this is a feature of <a href="../inweb/index.html" class="internal">../inweb/index.html</a> rather than of Foundation.
 </p>
 
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Programs doing a lot of parsing need to create and throw away strings all
 of the time, so we shouldn't be too casual about memory management for them.
-<a href="4-sm.html#SP2" class="internal">Str::new</a> creates a new empty string; <a href="4-sm.html#SP3" class="internal">Str::duplicate</a> duplicates an
+<a href="4-sm.html#SP2" class="internal">4-sm.html#SP2</a> creates a new empty string; <a href="4-sm.html#SP3" class="internal">4-sm.html#SP3</a> duplicates an
 existing one. But these are permanent creations, and not easy to deallocate
-(though calling <a href="4-sm.html#SP15" class="internal">Str::clear</a> to empty out their text will free any large
+(though calling <a href="4-sm.html#SP15" class="internal">4-sm.html#SP15</a> to empty out their text will free any large
 amount of memory they might be using). If you want a string just for a
 momentary period, do this:
 </p>
 
 <pre class="display">
-        <span class="identifier">TEMPORARY_TEXT</span><span class="plain">(</span><span class="identifier">alpha</span><span class="plain">);</span>
-        <span class="identifier">WRITE_TO</span><span class="plain">(</span><span class="identifier">alpha</span><span class="plain">, </span><span class="string">"This is temporary"</span><span class="plain">);</span>
-        <span class="plain">...</span>
-        <span class="identifier">DISCARD_TEXT</span><span class="plain">(</span><span class="identifier">alpha</span><span class="plain">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">alpha</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">alpha</span><span class="plain-syntax">, </span><span class="string-syntax">"This is temporary"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    ...</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">alpha</span><span class="plain-syntax">);</span>
 </pre>
 
-<p class="inwebparagraph">Between the use of these two macros, <code class="display"><span class="extract">alpha</span></code> is a valid <code class="display"><span class="extract">text_stream *</span></code>,
+<p class="inwebparagraph">Between the use of these two macros, <code class="display"><span class="extract-syntax">alpha</span></code> is a valid <code class="display"><span class="extract-syntax">text_stream *</span></code>,
 and is a string capable of growing to arbitrary size.
 </p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Foundation provides an elaborate system for providing new string escapes
-like <code class="display"><span class="extract">%S</span></code>: see <a href="2-wal.html" class="internal">Writers and Loggers</a>. A similar system manages a debugging
+like <code class="display"><span class="extract-syntax">%S</span></code>: see <a href="2-wal.html" class="internal">2-wal.html</a>. A similar system manages a debugging
 log, to which it's easy to make "dollar escapes" for pretty-printing internal
-data structures: for example, if you've made a structure called <code class="display"><span class="extract">recipe</span></code>, you
-could make <code class="display"><span class="extract">$R</span></code> pretty-print one.
+data structures: for example, if you've made a structure called <code class="display"><span class="extract-syntax">recipe</span></code>, you
+could make <code class="display"><span class="extract-syntax">$R</span></code> pretty-print one.
 </p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Foundation also has an extensive library of string-handling routines,
 providing the sort of facilities you would expect in a typical scripting
-language. See <a href="4-sm.html" class="internal">String Manipulation</a> and <a href="4-pm.html" class="internal">Pattern Matching</a>, which can
+language. See <a href="4-sm.html" class="internal">4-sm.html</a> and <a href="4-pm.html" class="internal">4-pm.html</a>, which can
 match text streams against regular expressions, though note that the latter
 use an idiosyncratic notation.
 </p>
 
-<p class="inwebparagraph">There's also <a href="4-taa.html" class="internal">Tries and Avinues</a> for rapid character sequence parsing.
+<p class="inwebparagraph">There's also <a href="4-taa.html" class="internal">4-taa.html</a> for rapid character sequence parsing.
 </p>
 
-<p class="inwebparagraph">For slicing, see the <a href="4-sm.html#SP9" class="internal">string_position</a> type, representing positions for the
-benefit of functions like <a href="4-sm.html#SP25" class="internal">Str::substr</a>.
+<p class="inwebparagraph">For slicing, see the <a href="4-sm.html#SP9" class="internal">4-sm.html#SP9</a> type, representing positions for the
+benefit of functions like <a href="4-sm.html#SP26" class="internal">4-sm.html#SP26</a>.
 </p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Individual characters are represented in Foundation using the standard
-POSIX type <code class="display"><span class="extract">wchar_t</span></code>, which on all modern systems is a very wide integer,
+POSIX type <code class="display"><span class="extract-syntax">wchar_t</span></code>, which on all modern systems is a very wide integer,
 whether or not signed. It's safe to assume it can hold all normal Unicode
-code points. See <a href="4-chr.html" class="internal">Characters</a> for class functions like <a href="4-chr.html#SP1" class="internal">Characters::isdigit</a>,
+code points. See <a href="4-chr.html" class="internal">4-chr.html</a> for class functions like <a href="4-chr.html#SP1" class="internal">4-chr.html#SP1</a>,
 which have been carefully written to work equivalently on either Windows or
 Unix-based systems.
 </p>
 
-<p class="inwebparagraph"><a href="4-cst.html" class="internal">C Strings</a> and <a href="4-ws.html" class="internal">Wide Strings</a> provide bare-minimum facilities for handling
-traditional null-terminated <code class="display"><span class="extract">char</span></code> and <code class="display"><span class="extract">wchar_t</span></code> arrays, but don't use these.
+<p class="inwebparagraph"><a href="4-cst.html" class="internal">4-cst.html</a> and <a href="4-ws.html" class="internal">4-ws.html</a> provide bare-minimum facilities for handling
+traditional null-terminated <code class="display"><span class="extract-syntax">char</span></code> and <code class="display"><span class="extract-syntax">wchar_t</span></code> arrays, but don't use these.
 Texts are just better.
 </p>
 
@@ -208,19 +232,18 @@ in C which corresponds to objects of the class "recipe". We need to do three
 things:
 </p>
 
-<p class="inwebparagraph"></p>
-
-<ul class="items"><li>(1) Declare an enumerated constant ending <code class="display"><span class="extract">_MT</span></code> to represent this type in the
+<ul class="items"><li>(1) Declare an enumerated constant ending <code class="display"><span class="extract-syntax">_MT</span></code> to represent this type in the
 memory manager, and then make a matching use of a macro to define some associated
 functions, which we never see or think about. For example:
-</li></ul>
+</p>
+
 <pre class="display">
-        <span class="functiontext">@</span><span class="plain"> Here are my classes...</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Here are my classes...</span>
 
-        <span class="functiontext">@e</span><span class="plain"> recipe_MT</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">@e</span><span class="plain-syntax"> recipe_MT</span>
 
-        <span class="functiontext">=</span>
-        <span class="plain">ALLOCATE_INDIVIDUALLY(recipe)</span>
+    <span class="plain-syntax">    =</span>
+    <span class="plain-syntax">    ALLOCATE_INDIVIDUALLY(recipe)</span>
 </pre>
 
 <p class="inwebparagraph">The mention of "individually" is because this is for data structures where
@@ -229,144 +252,141 @@ of throwaway instances, we would instead write:
 </p>
 
 <pre class="display">
-        <span class="functiontext">@</span><span class="plain"> Here are my classes...</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Here are my classes...</span>
 
-        <span class="functiontext">@e</span><span class="plain"> salt_grain_array_MT</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">@e</span><span class="plain-syntax"> salt_grain_array_MT</span>
 
-        <span class="functiontext">=</span>
-        <span class="plain">ALLOCATE_IN_ARRAYS(salt_grain, 1000)</span>
+    <span class="plain-syntax">    =</span>
+    <span class="plain-syntax">    ALLOCATE_IN_ARRAYS(salt_grain, 1000)</span>
 </pre>
 
 <p class="inwebparagraph">The memory manager then claims these in blocks of 1000. Use this only if it's
 actually needed.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<ul class="items"><li>(2) We have to declare the actual structure, and <code class="display"><span class="extract">typedef</span></code> the name to it. For
+</li><li>(2) We have to declare the actual structure, and <code class="display"><span class="extract-syntax">typedef</span></code> the name to it. For
 example:
-</li></ul>
+</p>
+
 <pre class="display">
-        <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="identifier">recipe</span><span class="plain"> {</span>
-            <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name_of_dish</span><span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">oven_temperature</span><span class="plain">;</span>
-            <span class="constant">MEMORY_MANAGEMENT</span>
-        <span class="plain">} </span><span class="identifier">recipe</span><span class="plain">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_of_dish</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">oven_temperature</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+    <span class="plain-syntax">    } </span><span class="identifier-syntax">recipe</span><span class="plain-syntax">;</span>
 </pre>
 
-<p class="inwebparagraph">Here <code class="display"><span class="extract">MEMORY_MANAGEMENT</span></code> is a macro defined in <a href="2-mmr.html" class="internal">Memory</a> which expands to the
+<p class="inwebparagraph">Here <code class="display"><span class="extract-syntax">MEMORY_MANAGEMENT</span></code> is a macro defined in <a href="2-mmr.html" class="internal">2-mmr.html</a> which expands to the
 necessary field(s) to keep track of this. We won't use those fields, or ever
 think about them.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<ul class="items"><li>(3) In fact we've now finished. The macro <code class="display"><span class="extract">CREATE(recipe)</span></code> returns a new
-instance, and <code class="display"><span class="extract">DESTROY(R)</span></code> would destroy an existing one, <code class="display"><span class="extract">R</span></code>. Unless manually
+</li><li>(3) In fact we've now finished. The macro <code class="display"><span class="extract-syntax">CREATE(recipe)</span></code> returns a new
+instance, and <code class="display"><span class="extract-syntax">DESTROY(R)</span></code> would destroy an existing one, <code class="display"><span class="extract-syntax">R</span></code>. Unless manually
 destroyed, objects last forever; there is no garbage collection. In practice
 the Inform tools suite, for which Foundation was written, almost never destroy
 objects.
 </li></ul>
-<p class="inwebparagraph">Customarily, though, we wrap the use of <code class="display"><span class="extract">CREATE</span></code> in a constructor function:
+<p class="inwebparagraph">Customarily, though, we wrap the use of <code class="display"><span class="extract-syntax">CREATE</span></code> in a constructor function:
 </p>
 
 <pre class="display">
-        <span class="identifier">recipe</span><span class="plain"> *</span><span class="identifier">Recipes::new</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
-            <span class="identifier">recipe</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="identifier">recipe</span><span class="plain">);</span>
-            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">name_of_dish</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">oven_temperature</span><span class="plain"> = </span><span class="constant">200</span><span class="plain">;</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">;</span>
-        <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Recipes::new</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="identifier-syntax">recipe</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">name_of_dish</span><span class="plain-syntax"> = </span><span class="function-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">oven_temperature</span><span class="plain-syntax"> = </span><span class="constant-syntax">200</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
 </pre>
 
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph">We also often use the convenient <code class="display"><span class="extract">LOOP_OVER</span></code> macro:
+<p class="inwebparagraph">We also often use the convenient <code class="display"><span class="extract-syntax">LOOP_OVER</span></code> macro:
 </p>
 
 <pre class="display">
-        <span class="reserved">void</span><span class="plain"> </span><span class="identifier">Recipes::list_all</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">OUT</span><span class="plain">) {</span>
-            <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"I know about the following recipes:\n"</span><span class="plain">);</span>
-            <span class="identifier">recipe</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">;</span>
-            <span class="identifier">LOOP_OVER</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">recipe</span><span class="plain">)</span>
-                <span class="identifier">WRITE</span><span class="plain">(</span><span class="string">"- %S\n"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">name_of_dish</span><span class="plain">);</span>
-        <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">Recipes::list_all</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"I know about the following recipes:\n"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">recipe</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"- %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">name_of_dish</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
 </pre>
 
-<p class="inwebparagraph"><code class="display"><span class="extract">LOOP_OVER</span></code> loops through all created recipe instances (which have not been
+<p class="inwebparagraph"><code class="display"><span class="extract-syntax">LOOP_OVER</span></code> loops through all created recipe instances (which have not been
 destroyed).
 </p>
 
-<p class="inwebparagraph">There are a few other facilities, for which see <a href="2-mmr.html" class="internal">Memory</a>, and also ways to
-allocate memory for arrays &mdash; see <a href="2-mmr.html#SP25" class="internal">Memory::calloc</a> and <a href="2-mmr.html#SP25" class="internal">Memory::malloc</a>.
+<p class="inwebparagraph">There are a few other facilities, for which see <a href="2-mmr.html" class="internal">2-mmr.html</a>, and also ways to
+allocate memory for arrays &mdash; see <a href="2-mmr.html#SP25" class="internal">2-mmr.html#SP25</a> and <a href="2-mmr.html#SP25" class="internal">2-mmr.html#SP25</a>.
 </p>
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Methods. </b>It's also possible to have method calls on object instances, though the
 syntax is not as tidy as it would be in an object-oriented language. To allow
-this for <code class="display"><span class="extract">recipe</span></code>, we would have to add another line to the structure:
+this for <code class="display"><span class="extract-syntax">recipe</span></code>, we would have to add another line to the structure:
 </p>
 
 <pre class="display">
-        <span class="reserved">typedef</span><span class="plain"> </span><span class="reserved">struct</span><span class="plain"> </span><span class="identifier">recipe</span><span class="plain"> {</span>
-            <span class="reserved">struct</span><span class="plain"> </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name_of_dish</span><span class="plain">;</span>
-            <span class="reserved">int</span><span class="plain"> </span><span class="identifier">oven_temperature</span><span class="plain">;</span>
-            <span class="constant">METHOD_CALLS</span>
-            <span class="constant">MEMORY_MANAGEMENT</span>
-        <span class="plain">} </span><span class="identifier">recipe</span><span class="plain">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_of_dish</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">oven_temperature</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="constant-syntax">METHOD_CALLS</span>
+    <span class="plain-syntax">        </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+    <span class="plain-syntax">    } </span><span class="identifier-syntax">recipe</span><span class="plain-syntax">;</span>
 </pre>
 
 <p class="inwebparagraph">and another line to the constructor function:
 </p>
 
 <pre class="display">
-            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">methods</span><span class="plain"> = </span><span class="functiontext">Methods::new_set</span><span class="plain">();</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">methods</span><span class="plain-syntax"> = </span><span class="function-syntax">Methods::new_set</span><span class="plain-syntax">();</span>
 </pre>
 
-<p class="inwebparagraph">The object <code class="display"><span class="extract">R</span></code> is then ready to receive method calls. Each different call needs
-an enumerated constant ending <code class="display"><span class="extract">_MTID</span></code> to identify it, and an indication of the
+<p class="inwebparagraph">The object <code class="display"><span class="extract-syntax">R</span></code> is then ready to receive method calls. Each different call needs
+an enumerated constant ending <code class="display"><span class="extract-syntax">_MTID</span></code> to identify it, and an indication of the
 type of the function call involved:
 </p>
 
 <pre class="display">
-        <span class="functiontext">@</span><span class="plain"> Here is my "cook the recipe" method call:</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Here is my "cook the recipe" method call:</span>
 
-        <span class="functiontext">@e</span><span class="plain"> COOK_MTID</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">@e</span><span class="plain-syntax"> COOK_MTID</span>
 
-        <span class="functiontext">=</span>
-        <span class="plain">VMETHOD_TYPE(COOK_MTID, recipe *R, int time_in_oven)</span>
+    <span class="plain-syntax">    =</span>
+    <span class="plain-syntax">    VMETHOD_TYPE(COOK_MTID, recipe *R, int time_in_oven)</span>
 </pre>
 
-<p class="inwebparagraph">The <code class="display"><span class="extract">V</span></code> here means that this will be a void function, that is, returning no
+<p class="inwebparagraph">The <code class="display"><span class="extract-syntax">V</span></code> here means that this will be a void function, that is, returning no
 value. It's now possible to call this on any recipe:
 </p>
 
 <pre class="display">
-        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">duck_a_l_orange</span><span class="plain">, </span><span class="identifier">COOK_MTID</span><span class="plain">, </span><span class="constant">45</span><span class="plain">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">VMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">duck_a_l_orange</span><span class="plain-syntax">, </span><span class="identifier-syntax">COOK_MTID</span><span class="plain-syntax">, </span><span class="constant-syntax">45</span><span class="plain-syntax">);</span>
 </pre>
 
 <p class="inwebparagraph">What then happens? Nothing at all, unless the recipe instance in question &mdash;
-here, <code class="display"><span class="extract">duck_a_l_orange</span></code> &mdash; has been given a receiver function. Let's revisit
+here, <code class="display"><span class="extract-syntax">duck_a_l_orange</span></code> &mdash; has been given a receiver function. Let's revisit
 the constructor function for recipes:
 </p>
 
 <pre class="display">
-        <span class="identifier">recipe</span><span class="plain"> *</span><span class="identifier">Recipes::new</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">name</span><span class="plain">) {</span>
-            <span class="identifier">recipe</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain"> = </span><span class="identifier">CREATE</span><span class="plain">(</span><span class="identifier">recipe</span><span class="plain">);</span>
-            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">name_of_dish</span><span class="plain"> = </span><span class="functiontext">Str::duplicate</span><span class="plain">(</span><span class="identifier">name</span><span class="plain">);</span>
-            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">oven_temperature</span><span class="plain"> = </span><span class="constant">200</span><span class="plain">;</span>
-            <span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">methods</span><span class="plain"> = </span><span class="functiontext">Methods::new_set</span><span class="plain">();</span>
-            <span class="identifier">METHOD_ADD</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">COOK_MTID</span><span class="plain">, </span><span class="identifier">Recipes::cook</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">R</span><span class="plain">;</span>
-        <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Recipes::new</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="identifier-syntax">recipe</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">name_of_dish</span><span class="plain-syntax"> = </span><span class="function-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">oven_temperature</span><span class="plain-syntax"> = </span><span class="constant-syntax">200</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">methods</span><span class="plain-syntax"> = </span><span class="function-syntax">Methods::new_set</span><span class="plain-syntax">();</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">COOK_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">Recipes::cook</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
 </pre>
 
 <p class="inwebparagraph">and now add:
 </p>
 
 <pre class="display">
-        <span class="reserved">void</span><span class="plain"> </span><span class="identifier">Recipes::cook</span><span class="plain">(</span><span class="identifier">recipe</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">time_in_oven</span><span class="plain">) {</span>
-            <span class="plain">...</span>
-        <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">Recipes::cook</span><span class="plain-syntax">(</span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">time_in_oven</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        ...</span>
+    <span class="plain-syntax">    }</span>
 </pre>
 
 <p class="inwebparagraph">using the arguments promised in the declaration above. With all this done,
@@ -374,53 +394,50 @@ the effect of
 </p>
 
 <pre class="display">
-        <span class="identifier">VMETHOD_CALL</span><span class="plain">(</span><span class="identifier">duck_a_l_orange</span><span class="plain">, </span><span class="identifier">COOK_MTID</span><span class="plain">, </span><span class="constant">45</span><span class="plain">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">VMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">duck_a_l_orange</span><span class="plain-syntax">, </span><span class="identifier-syntax">COOK_MTID</span><span class="plain-syntax">, </span><span class="constant-syntax">45</span><span class="plain-syntax">);</span>
 </pre>
 
 <p class="inwebparagraph">is to call:
 </p>
 
 <pre class="display">
-        <span class="identifier">Recipes::cook</span><span class="plain">(</span><span class="identifier">duck_a_l_orange</span><span class="plain">, </span><span class="constant">45</span><span class="plain">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">Recipes::cook</span><span class="plain-syntax">(</span><span class="identifier-syntax">duck_a_l_orange</span><span class="plain-syntax">, </span><span class="constant-syntax">45</span><span class="plain-syntax">);</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>In fact it's possible to attach multiple receivers to the same object, in
 which case they each run in turn. As a variant on this, methods can also return
-their "success". If multiple receivers run, the first to return <code class="display"><span class="extract">TRUE</span></code> has
+their "success". If multiple receivers run, the first to return <code class="display"><span class="extract-syntax">TRUE</span></code> has
 claimed the right to act, and subsequent receivers aren't consulted.
 </p>
 
-<p class="inwebparagraph">Such methods must be defined with <code class="display"><span class="extract">IMETHOD_CALL</span></code> and are rarely needed. See
-<a href="2-mth.html" class="internal">Methods</a> for more.
+<p class="inwebparagraph">Such methods must be defined with <code class="display"><span class="extract-syntax">IMETHOD_CALL</span></code> and are rarely needed. See
+<a href="2-mth.html" class="internal">2-mth.html</a> for more.
 </p>
 
-<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Collections. </b>Foundation provides three sorts of "collection": see <a href="2-llas.html" class="internal">Linked Lists and Stacks</a>,
-and also <a href="2-dct.html" class="internal">Dictionaries</a>. These all collect values which are expected to be
-pointers: for example, text streams (of type <code class="display"><span class="extract">text_stream *</span></code>) or objects like
+<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Collections. </b>Foundation provides three sorts of "collection": see <a href="2-llas.html" class="internal">2-llas.html</a>,
+and also <a href="2-dct.html" class="internal">2-dct.html</a>. These all collect values which are expected to be
+pointers: for example, text streams (of type <code class="display"><span class="extract-syntax">text_stream *</span></code>) or objects like
 the ones created above. For example,
 </p>
 
 <pre class="display">
-        <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">cookbook</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="identifier">recipe</span><span class="plain">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cookbook</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">recipe</span><span class="plain-syntax">);</span>
 </pre>
 
 <p class="inwebparagraph">initialises a list as ready to use. It's then accessed by macros:
 </p>
 
 <pre class="display">
-        <span class="identifier">recipe</span><span class="plain"> *</span><span class="identifier">lobster_thermidor</span><span class="plain"> = </span><span class="identifier">Recipes::new</span><span class="plain">(</span><span class="identifier">I</span><span class="string">"lobster thermidor"</span><span class="plain">, </span><span class="constant">200</span><span class="plain">);</span>
-        <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">lobster_thermidor</span><span class="plain">, </span><span class="identifier">recipe</span><span class="plain">, </span><span class="identifier">cookbook</span><span class="plain">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lobster_thermidor</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Recipes::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"lobster thermidor"</span><span class="plain-syntax">, </span><span class="constant-syntax">200</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">lobster_thermidor</span><span class="plain-syntax">, </span><span class="identifier-syntax">recipe</span><span class="plain-syntax">, </span><span class="identifier-syntax">cookbook</span><span class="plain-syntax">);</span>
 </pre>
 
 <p class="inwebparagraph">Similarly:
 </p>
 
 <pre class="display">
-        <span class="identifier">recipe</span><span class="plain"> *</span><span class="identifier">R</span><span class="plain">;</span>
-        <span class="identifier">LOOP_OVER_LINKED_LIST</span><span class="plain">(</span><span class="identifier">R</span><span class="plain">, </span><span class="identifier">recipe</span><span class="plain">, </span><span class="identifier">cookbook</span><span class="plain">)</span>
-            <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"I can make %S.\n"</span><span class="plain">, </span><span class="identifier">R</span><span class="plain">-&gt;</span><span class="identifier">name_of_dish</span><span class="plain">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="identifier-syntax">recipe</span><span class="plain-syntax">, </span><span class="identifier-syntax">cookbook</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"I can make %S.\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">name_of_dish</span><span class="plain-syntax">);</span>
 </pre>
 
 <p class="inwebparagraph">That's about all you can do with linked lists: they are not nearly so well
@@ -430,17 +447,17 @@ worked-through as texts.
 <p class="inwebparagraph">A dictionary is an associative hash which relates key names (which are text
 streams) to values (which are usually, but not always, also text streams).
 They behave very like hashes in Perl and, as the name suggests, use hashing
-to make access rapid. See <a href="2-dct.html" class="internal">Dictionaries</a>.
+to make access rapid. See <a href="2-dct.html" class="internal">2-dct.html</a>.
 </p>
 
-<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>Foundation also provides for <a href="2-trs.html#SP1" class="internal">heterogeneous_tree</a>, which is a structure
+<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>Foundation also provides for <a href="2-trs.html#SP1" class="internal">2-trs.html#SP1</a>, which is a structure
 able to hold a rooted tree in which nodes can be a variety of different
 objects, rather than having to be uniform. Functions are provided to
 build and verify such trees.
 </p>
 
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Files and paths. </b>Filenames and pathnames are, perhaps controversially, represented by two
-different types: <a href="3-fln.html#SP1" class="internal">filename</a> and <a href="3-pth.html#SP1" class="internal">pathname</a>. The latter should perhaps
+different types: <a href="3-fln.html#SP1" class="internal">3-fln.html#SP1</a> and <a href="3-pth.html#SP1" class="internal">3-pth.html#SP1</a>. The latter should perhaps
 have been called "directoryname", but that ship has sailed.
 </p>
 
@@ -455,111 +472,95 @@ directories might be.
 </p>
 
 <p class="inwebparagraph">Both tend to refer relative to the current working directory, represented by
-the null <code class="display"><span class="extract">pathname</span></code> pointer. <a href="3-pth.html#SP7" class="internal">Pathnames::up</a> and <a href="3-pth.html#SP4" class="internal">Pathnames::down</a> go
+the null <code class="display"><span class="extract-syntax">pathname</span></code> pointer. <a href="3-pth.html#SP7" class="internal">3-pth.html#SP7</a> and <a href="3-pth.html#SP4" class="internal">3-pth.html#SP4</a> go
 to parent or subdirectories, respectively. A filename cannot exist without
 a pathname; for example,
 </p>
 
 <pre class="display">
-        <span class="reserved">pathname</span><span class="plain"> *</span><span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Pathnames::down</span><span class="plain">(</span><span class="identifier">NULL</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"App"</span><span class="plain">)</span>
-        <span class="identifier">P</span><span class="plain"> = </span><span class="functiontext">Pathnames::down</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"Config"</span><span class="plain">)</span>
-        <span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain"> = </span><span class="functiontext">Filenames::in</span><span class="plain">(</span><span class="identifier">P</span><span class="plain">, </span><span class="identifier">I</span><span class="string">"options.txt"</span><span class="plain">);</span>
-        <span class="identifier">PRINT</span><span class="plain">(</span><span class="string">"I have arrived at %f.\n"</span><span class="plain">, </span><span class="identifier">F</span><span class="plain">);</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="function-syntax">Pathnames::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"App"</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="function-syntax">Pathnames::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Config"</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="function-syntax">Filenames::in</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"options.txt"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"I have arrived at %f.\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 </pre>
 
-<p class="inwebparagraph">produces, on platforms where <code class="display"><span class="extract">/</span></code> is used as the file system dividing character,
+<p class="inwebparagraph">produces, on platforms where <code class="display"><span class="extract-syntax">/</span></code> is used as the file system dividing character,
 </p>
 
 <pre class="display">
-        <span class="plain">I have arrived at App/Config/options.txt.</span>
+    <span class="plain-syntax">    I have arrived at App/Config/options.txt.</span>
 </pre>
 
-<p class="inwebparagraph">Note the use of the escape <code class="display"><span class="extract">%f</span></code> for printing filenames; there's also <code class="display"><span class="extract">%p</span></code> for
+<p class="inwebparagraph">Note the use of the escape <code class="display"><span class="extract-syntax">%f</span></code> for printing filenames; there's also <code class="display"><span class="extract-syntax">%p</span></code> for
 pathnames.
 </p>
 
-<p class="inwebparagraph">See <a href="3-fln.html" class="internal">Filenames</a> and <a href="3-pth.html" class="internal">Pathnames</a> for more.
+<p class="inwebparagraph">See <a href="3-fln.html" class="internal">3-fln.html</a> and <a href="3-pth.html" class="internal">3-pth.html</a> for more.
 </p>
 
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>If you need to iterate over the contents of a directory in the file system,
-see <a href="3-drc.html" class="internal">Directories</a>. But to create a directory, call <a href="3-pth.html#SP9" class="internal">Pathnames::create_in_file_system</a>.
-For synchronisation, try <a href="3-pth.html#SP10" class="internal">Pathnames::rsync</a>, but don't expect too much.
+see <a href="3-drc.html" class="internal">3-drc.html</a>. But to create a directory, call <a href="3-pth.html#SP9" class="internal">3-pth.html#SP9</a>.
+For synchronisation, try <a href="3-pth.html#SP10" class="internal">3-pth.html#SP10</a>, but don't expect too much.
 </p>
 
-<p class="inwebparagraph">See <a href="3-pth.html" class="internal">Pathnames</a> for how to access the user's home directory, the current
+<p class="inwebparagraph">See <a href="3-pth.html" class="internal">3-pth.html</a> for how to access the user's home directory, the current
 working directory, and the installation directory for a program.
 </p>
 
-<p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b><a href="6-bf.html" class="internal">Binary Files</a> does the tedious work of writing binary data while allowing
+<p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b><a href="6-bf.html" class="internal">6-bf.html</a> does the tedious work of writing binary data while allowing
 for endian-ness.
 </p>
 
-<p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b><a href="4-tf.html" class="internal">Text Files</a> allows us to read text files. Its most useful function is
-<a href="4-tf.html#SP5" class="internal">TextFiles::read</a>, which opens a file, can print an error if it doesn't
+<p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b><a href="4-tf.html" class="internal">4-tf.html</a> allows us to read text files. Its most useful function is
+<a href="4-tf.html#SP5" class="internal">4-tf.html#SP5</a>, which opens a file, can print an error if it doesn't
 exist, and if it does, then feeds the lines one at a time to an iterator.
-For example, if <code class="display"><span class="extract">F</span></code> is a filename, the following reads the file into a
+For example, if <code class="display"><span class="extract-syntax">F</span></code> is a filename, the following reads the file into a
 linked list of texts:
 </p>
 
 <pre class="display">
-        <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">Hypothetical::list_from_file</span><span class="plain">(</span><span class="reserved">filename</span><span class="plain"> *</span><span class="identifier">F</span><span class="plain">) {</span>
-            <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = </span><span class="identifier">NEW_LINKED_LIST</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain">);</span>
-            <span class="functiontext">TextFiles::read</span><span class="plain">(</span><span class="identifier">F</span><span class="plain">, </span><span class="constant">FALSE</span><span class="plain">, </span><span class="string">"can't open colony file"</span><span class="plain">,</span>
-                <span class="constant">TRUE</span><span class="plain">, </span><span class="identifier">Hypothetical::helper</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, (</span><span class="reserved">void</span><span class="plain"> *) </span><span class="identifier">L</span><span class="plain">);</span>
-            <span class="reserved">return</span><span class="plain"> </span><span class="identifier">L</span><span class="plain">;</span>
-        <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Hypothetical::list_from_file</span><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="function-syntax">TextFiles::read</span><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="string-syntax">"can't open colony file"</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">            </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">Hypothetical::helper</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
 
-        <span class="reserved">void</span><span class="plain"> </span><span class="identifier">Hypothetical::helper</span><span class="plain">(</span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">line</span><span class="plain">, </span><span class="reserved">text_file_position</span><span class="plain"> *</span><span class="identifier">tfp</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">v_L</span><span class="plain">) {</span>
-            <span class="reserved">linked_list</span><span class="plain"> *</span><span class="identifier">L</span><span class="plain"> = (</span><span class="reserved">linked_list</span><span class="plain"> *) </span><span class="identifier">v_L</span><span class="plain">;</span>
-            <span class="identifier">ADD_TO_LINKED_LIST</span><span class="plain">(</span><span class="identifier">text</span><span class="plain">, </span><span class="identifier">line</span><span class="plain">, </span><span class="identifier">L</span><span class="plain">);</span>
-        <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">Hypothetical::helper</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">v_L</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">v_L</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    }</span>
 </pre>
 
-<p class="inwebparagraph">The <a href="4-tf.html#SP2" class="internal">text_file_position</a> here keeps track of where we are, and in particular,
-functions from <a href="3-em.html" class="internal">Error Messages</a> can then report errors where they occur:
+<p class="inwebparagraph">The <a href="4-tf.html#SP2" class="internal">4-tf.html#SP2</a> here keeps track of where we are, and in particular,
+functions from <a href="3-em.html" class="internal">3-em.html</a> can then report errors where they occur:
 </p>
 
 <pre class="display">
-        <span class="functiontext">Errors::in_text_file</span><span class="plain">(</span><span class="string">"bad syntax here"</span><span class="plain">, </span><span class="identifier">tfp</span><span class="plain">);</span>
+    <span class="plain-syntax">    </span><span class="function-syntax">Errors::in_text_file</span><span class="plain-syntax">(</span><span class="string-syntax">"bad syntax here"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Handling webs. </b>Foundation provides routines which can read the metadata of a web, i.e., a
-literate program in the <a href="../inweb/index.html" class="internal">inweb</a> format, from a copy in the file system.
-The main function here is <a href="8-ws.html#SP5" class="internal">WebMetadata::get</a>, which returns a <a href="8-ws.html#SP2" class="internal">web_md</a>
+literate program in the <a href="../inweb/index.html" class="internal">../inweb/index.html</a> format, from a copy in the file system.
+The main function here is <a href="8-ws.html#SP5" class="internal">8-ws.html#SP5</a>, which returns a <a href="8-ws.html#SP2" class="internal">8-ws.html#SP2</a>
 object. You can then access its bibliographic data using
-<a href="8-bdfw.html#SP6" class="internal">Bibliographic::get_datum</a>, or look at the web MD object directly to see
-its modules (instances of <a href="8-wm.html#SP1" class="internal">module</a>), chapters (of <a href="8-ws.html#SP3" class="internal">chapter_md</a>) and
-sections (of <a href="8-ws.html#SP4" class="internal">section_md</a>).
+<a href="8-bdfw.html#SP6" class="internal">8-bdfw.html#SP6</a>, or look at the web MD object directly to see
+its modules (instances of <a href="8-wm.html#SP1" class="internal">8-wm.html#SP1</a>), chapters (of <a href="8-ws.html#SP3" class="internal">8-ws.html#SP3</a>) and
+sections (of <a href="8-ws.html#SP4" class="internal">8-ws.html#SP4</a>).
 </p>
 
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Miscellaneous other features. </b>What else? Well:
 </p>
 
-<ul class="items"><li>(a) <a href="3-tm.html" class="internal">Time</a> for the time of day and the date of Easter (no, really);
-</li><li>(b) <a href="3-shl.html" class="internal">Shell</a> for issuing shell commands via the C library's <code class="display"><span class="extract">system</span></code> function,
+<ul class="items"><li>(a) <a href="3-tm.html" class="internal">3-tm.html</a> for the time of day and the date of Easter (no, really);
+</li><li>(b) <a href="3-shl.html" class="internal">3-shl.html</a> for issuing shell commands via the C library's <code class="display"><span class="extract-syntax">system</span></code> function,
 or its equivalent;
-</li><li>(c) <a href="5-htm.html" class="internal">HTML</a> and <a href="5-ee.html" class="internal">Epub Ebooks</a> for generating web pages and ebooks;
-</li><li>(d) <a href="6-id.html" class="internal">Image Dimensions</a> and <a href="6-sd.html" class="internal">Sound Durations</a> for handling videos and music;
-</li><li>(e) <a href="7-vn.html" class="internal">Version Numbers</a> and <a href="7-vnr.html" class="internal">Version Number Ranges</a> for managing version
+</li><li>(c) <a href="5-htm.html" class="internal">5-htm.html</a> and <a href="5-ee.html" class="internal">5-ee.html</a> for generating web pages and ebooks;
+</li><li>(d) <a href="6-id.html" class="internal">6-id.html</a> and <a href="6-sd.html" class="internal">6-sd.html</a> for handling videos and music;
+</li><li>(e) <a href="7-vn.html" class="internal">7-vn.html</a> and <a href="7-vnr.html" class="internal">7-vnr.html</a> for managing version
 numbers of software according to the Semantic Versioning standard.
-</li></ul>
-<!--End of weave-->
-<script>
-MathJax = {
-  tex: {
-    inlineMath: '$', '$'], ['\\(', '\\)'
-  },
-  svg: {
-    fontCache: 'global'
-  }
-};
-</script>
-<script type="text/javascript" id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-</script>
+</p>
 
+<!--End of weave-->
 		</main>
 	</body>
 </html>

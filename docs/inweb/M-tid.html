@@ -2,16 +2,26 @@
 <html>
 	<head>
 		<title>The InC Dialect</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">inweb</span></a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -37,9 +47,9 @@
 <ul class="toc"><li><a href="M-tid.html#SP1">&#167;1. The InC language</a></li></ul><hr class="tocbar">
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. The InC language. </b>InC is only a little extended from regular C. All of the Inform tools are
-written in InC, as is the <code class="display"><span class="extract">foundation</span></code> module of utility routines built in
+written in InC, as is the <code class="display"><span class="extract-syntax">foundation</span></code> module of utility routines built in
 to Inweb. It's probably not sensible to use InC in a web which does not
-import <code class="display"><span class="extract">foundation</span></code>, and it's certainly not possible to import <code class="display"><span class="extract">foundation</span></code>
+import <code class="display"><span class="extract-syntax">foundation</span></code>, and it's certainly not possible to import <code class="display"><span class="extract-syntax">foundation</span></code>
 on a web not written in InC. So the two go together.
 </p>
 
@@ -53,24 +63,24 @@ avoided altogether.
 </p>
 
 <pre class="display">
-        <span class="identifier">[Namespace::]</span><span class="plain"> The Title of This Section.</span>
+    <span class="plain-syntax">    [Namespace::] The Title of This Section.</span>
 </pre>
 
 <p class="inwebparagraph">rather than, as normal,
 </p>
 
 <pre class="display">
-        <span class="plain">The Title of This Section.</span>
+    <span class="plain-syntax">    The Title of This Section.</span>
 </pre>
 
 <p class="inwebparagraph">That declares that all functions in this section must be have a name which
-begins with <code class="display"><span class="extract">Namespace::</span></code>. For example,
+begins with <code class="display"><span class="extract-syntax">Namespace::</span></code>. For example,
 </p>
 
 <pre class="display">
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">Namespace::initialise</span><span class="plain">(</span><span class="reserved">void</span><span class="plain">) {</span>
-            <span class="plain">....</span>
-        <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">Namespace::initialise</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        ....</span>
+    <span class="plain-syntax">    }</span>
 </pre>
 
 <p class="inwebparagraph">Inweb will not allow a function with the wrong namespace (or with none) to
@@ -80,53 +90,47 @@ support rather more compartmentalisation than standard C.
 </p>
 
 <p class="inwebparagraph">The tangler converts these identifiers to regular C identifiers by converting
-the <code class="display"><span class="extract">::</span></code> to <code class="display"><span class="extract">__</span></code>, so in a debugger, the above function would look like
-<code class="display"><span class="extract">Namespace__initialise</span></code>.
+the <code class="display"><span class="extract-syntax">::</span></code> to <code class="display"><span class="extract-syntax">__</span></code>, so in a debugger, the above function would look like
+<code class="display"><span class="extract-syntax">Namespace__initialise</span></code>.
 </p>
 
 <p class="inwebparagraph">Namespaces can be "nested", in the sense that, for example, we could have:
 </p>
 
 <pre class="display">
-        <span class="identifier">[Errors::Fatal::]</span><span class="plain"> Handling fatal errors.</span>
+    <span class="plain-syntax">    [Errors::Fatal::] Handling fatal errors.</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The <code class="display"><span class="extract">foundation</span></code> module contains a suite of utility functions for handling
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The <code class="display"><span class="extract-syntax">foundation</span></code> module contains a suite of utility functions for handling
 strings and streams of text. These are unified in a structure called
-<code class="display"><span class="extract">text_stream</span></code>, so that strings in InC webs are almost all values of type
-<code class="display"><span class="extract">text_stream *</span></code>. InC provides one convenient feature for this: the notation
+<code class="display"><span class="extract-syntax">text_stream</span></code>, so that strings in InC webs are almost all values of type
+<code class="display"><span class="extract-syntax">text_stream *</span></code>. InC provides one convenient feature for this: the notation
 </p>
 
 <pre class="display">
-        <span class="plain">text_stream *excuse = I"The compiler is not feeling well today.";</span>
+    <span class="plain-syntax">    text_stream *excuse = I"The compiler is not feeling well today.";</span>
 </pre>
 
 <p class="inwebparagraph">creates a string literal of this type. (This is analogous to ANSI C's little
-used syntax for "long strings", which is <code class="display"><span class="extract">L"like so"</span></code>.)
+used syntax for "long strings", which is <code class="display"><span class="extract-syntax">L"like so"</span></code>.)
 </p>
 
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The <code class="display"><span class="extract">words</span></code> module, a component of the Inform compiler which is not
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The <code class="display"><span class="extract-syntax">words</span></code> module, a component of the Inform compiler which is not
 included in Inweb, defines natural-language grammars in a notation called
 Preform. Inweb contains support for writing these directly into code; any
 paragraph whose code section makes use of this feature is automatically
-tagged <code class="display"><span class="extract">^"Preform"</span></code>. This is not the place to document what Preform
+tagged <code class="display"><span class="extract-syntax">^"Preform"</span></code>. This is not the place to document what Preform
 notation means, but for example:
 </p>
 
 <pre class="display">
-        <span class="plain">&lt;declaration&gt; ::=</span>
-            <span class="plain">declare &lt;dominion&gt; independent	==&gt;	R[1]</span>
+    <span class="plain-syntax">    &lt;declaration&gt; ::=</span>
+    <span class="plain-syntax">        declare &lt;dominion&gt; independent	==&gt;	R[1]</span>
 
-        <span class="plain">&lt;dominion&gt; ::=</span>
-            <span class="plain">canada |</span>
-            <span class="plain">india |</span>
-            <span class="plain">malaya</span>
+    <span class="plain-syntax">    &lt;dominion&gt; ::=</span>
+    <span class="plain-syntax">        canada |</span>
+    <span class="plain-syntax">        india |</span>
+    <span class="plain-syntax">        malaya</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <hr class="tocbar">
 <ul class="toc"><li><a href="M-spl.html">Back to 'Supporting Programming Languages'</a></li><li><a href="M-rc.html">Continue with 'Reference Card'</a></li></ul><hr class="tocbar">
 <!--End of weave-->

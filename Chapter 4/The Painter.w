@@ -77,17 +77,17 @@ void Painter::syntax_colour_inner(programming_language *pl,
 					break;
 				}
 				if (c == squote) {
-					colouring_state = CHAR_LITERAL_COLOUR;
+					colouring_state = CHARACTER_COLOUR;
 					break;
 				}
 				if (Painter::identifier_at(pl, matter, colouring, i))
 					one_off = IDENTIFIER_COLOUR;
 				break;
 			}
-			case CHAR_LITERAL_COLOUR: {
+			case CHARACTER_COLOUR: {
 				wchar_t c = Str::get_at(matter, i);
 				if (c == squote) will_be = PLAIN_COLOUR;
-				if (c == squote_escape) skip = CHAR_LITERAL_COLOUR;
+				if (c == squote_escape) skip = CHARACTER_COLOUR;
 				break;
 			}
 			case STRING_COLOUR: {
@@ -261,7 +261,7 @@ void Painter::execute(hash_table *HT, colouring_language_block *block, text_stre
 					int col = Str::get_at(colouring_at_start, i);
 					if ((col == block->run) ||
 						((block->run == UNQUOTED_COLOUR) &&
-							((col != STRING_COLOUR) && (col != CHAR_LITERAL_COLOUR)))) {
+							((col != STRING_COLOUR) && (col != CHARACTER_COLOUR)))) {
 						if (ident_from == -1) ident_from = i;
 					} else {
 						if (ident_from >= 0)

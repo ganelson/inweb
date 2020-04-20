@@ -2,16 +2,34 @@
 <html>
 	<head>
 		<title>Image Dimensions</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="../inweb/index.html">inweb</a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -37,8 +55,8 @@
 <ul class="toc"><li><a href="6-id.html#SP1">&#167;1. JPEG files</a></li><li><a href="6-id.html#SP2">&#167;2. PNG files</a></li></ul><hr class="tocbar">
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. JPEG files. </b>The following code, contributed by Toby Nelson, either finds the pixel width
-and height of a given JPEG file and returns <code class="display"><span class="extract">TRUE</span></code> or, if it can't read the
-file or doesn't recognise the header as having JPEG format, returns <code class="display"><span class="extract">FALSE</span></code>.
+and height of a given JPEG file and returns <code class="display"><span class="extract-syntax">TRUE</span></code> or, if it can't read the
+file or doesn't recognise the header as having JPEG format, returns <code class="display"><span class="extract-syntax">FALSE</span></code>.
 </p>
 
 <p class="inwebparagraph">JPEG is properly speaking not a file format but a compression technique:
@@ -47,8 +65,8 @@ simpler cousin JFIF (JPEG File Interchange Format).
 </p>
 
 <p class="inwebparagraph">We scan the file looking for "markers", each of which begins with an
-<code class="display"><span class="extract">0xFF</span></code> byte and is followed by a marker-type byte which is neither <code class="display"><span class="extract">0x00</span></code>
-nor <code class="display"><span class="extract">0xFF</span></code>. The compulsory marker SOI must appear at the start of the file,
+<code class="display"><span class="extract-syntax">0xFF</span></code> byte and is followed by a marker-type byte which is neither <code class="display"><span class="extract-syntax">0x00</span></code>
+nor <code class="display"><span class="extract-syntax">0xFF</span></code>. The compulsory marker SOI must appear at the start of the file,
 providing one way to detect probable JPEGs by looking at the first two
 bytes. There must also eventually be a start of frame marker, for the
 actual image: this can have many forms, but in all cases tells us the
@@ -56,53 +74,50 @@ height and width.
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">ImageFiles::get_JPEG_dimensions<button class="popup" onclick="togglePopup('usagePopup478')">...<span class="popuptext" id="usagePopup478">Usage of <b>ImageFiles::get_JPEG_dimensions</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">JPEG_file</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">width</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">height</span><span class="plain">) {</span>
-        <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sig</span><span class="plain">, </span><span class="identifier">length</span><span class="plain">;</span>
-        <span class="reserved">int</span><span class="plain"> </span><span class="identifier">marker</span><span class="plain">;</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">ImageFiles::get_JPEG_dimensions</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>ImageFiles::get_JPEG_dimensions</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">JPEG_file</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">width</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">height</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sig</span><span class="plain-syntax">, </span><span class="identifier-syntax">length</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">marker</span><span class="plain-syntax">;</span>
 
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int16</a></span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">, &amp;</span><span class="identifier">sig</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">sig</span><span class="plain"> != </span><span class="constant">0xFFD8</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">; </span><span class="comment"> <code class="display"><span class="extract">0xFF</span></code> (marker) then <code class="display"><span class="extract">0xD8</span></code> (SOI)</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!</span><a href="6-bf.html#SP1" class="internal">BinaryFiles::read_int16</a><span class="plain-syntax">(</span><span class="identifier-syntax">JPEG_file</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">sig</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sig</span><span class="plain-syntax"> != </span><span class="constant-syntax">0xFFD8</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment"> </span><code class="display"><span class="extract-syntax">0xFF</span></code><span class="comment"> (marker) then </span><code class="display"><span class="extract-syntax">0xD8</span></code><span class="comment"> (SOI)</span>
 
-        <span class="reserved">do</span><span class="plain"> {</span>
-            <span class="reserved">do</span><span class="plain"> {</span>
-                <span class="identifier">marker</span><span class="plain"> = </span><span class="identifier">getc</span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">);</span>
-                <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">marker</span><span class="plain"> == </span><span class="identifier">EOF</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-            <span class="plain">} </span><span class="reserved">while</span><span class="plain"> (</span><span class="identifier">marker</span><span class="plain"> != </span><span class="constant">0xff</span><span class="plain">); </span><span class="comment"> skip to next <code class="display"><span class="extract">0xFF</span></code> byte</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">do</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">do</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">marker</span><span class="plain-syntax"> = </span><span class="identifier-syntax">getc</span><span class="plain-syntax">(</span><span class="identifier-syntax">JPEG_file</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">marker</span><span class="plain-syntax"> == </span><span class="identifier-syntax">EOF</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        } </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">marker</span><span class="plain-syntax"> != </span><span class="constant-syntax">0xff</span><span class="plain-syntax">); </span><span class="comment"> skip to next </span><code class="display"><span class="extract-syntax">0xFF</span></code><span class="comment"> byte</span>
 
-            <span class="reserved">do</span><span class="plain"> {</span>
-                <span class="identifier">marker</span><span class="plain"> = </span><span class="identifier">getc</span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">);</span>
-            <span class="plain">} </span><span class="reserved">while</span><span class="plain"> (</span><span class="identifier">marker</span><span class="plain"> == </span><span class="constant">0xff</span><span class="plain">); </span><span class="comment"> skip to next non <code class="display"><span class="extract">FF</span></code> byte</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">do</span><span class="plain-syntax"> {</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">marker</span><span class="plain-syntax"> = </span><span class="identifier-syntax">getc</span><span class="plain-syntax">(</span><span class="identifier-syntax">JPEG_file</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">        } </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">marker</span><span class="plain-syntax"> == </span><span class="constant-syntax">0xff</span><span class="plain-syntax">); </span><span class="comment"> skip to next non </span><code class="display"><span class="extract-syntax">FF</span></code><span class="comment"> byte</span>
 
-            <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int16</a></span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">, &amp;</span><span class="identifier">length</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">; </span><span class="comment"> length of marker</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!</span><a href="6-bf.html#SP1" class="internal">BinaryFiles::read_int16</a><span class="plain-syntax">(</span><span class="identifier-syntax">JPEG_file</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">length</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment"> length of marker</span>
 
-            <span class="reserved">switch</span><span class="plain">(</span><span class="identifier">marker</span><span class="plain">) {</span>
-                <span class="comment"> all variant forms of "start of frame": e.g., <code class="display"><span class="extract">0xC0</span></code> is a baseline DCT image</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0xc0</span><span class="identifier">:</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0xc1</span><span class="identifier">:</span><span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="constant">0xc2</span><span class="identifier">:</span><span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="constant">0xc3</span><span class="identifier">:</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0xc5</span><span class="identifier">:</span><span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="constant">0xc6</span><span class="identifier">:</span><span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="constant">0xc7</span><span class="identifier">:</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0xc9</span><span class="identifier">:</span><span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="constant">0xca</span><span class="identifier">:</span><span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="constant">0xcb</span><span class="identifier">:</span>
-                <span class="reserved">case</span><span class="plain"> </span><span class="constant">0xcd</span><span class="identifier">:</span><span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="constant">0xce</span><span class="identifier">:</span><span class="plain"> </span><span class="reserved">case</span><span class="plain"> </span><span class="constant">0xcf</span><span class="identifier">:</span><span class="plain"> {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax">(</span><span class="identifier-syntax">marker</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">            </span><span class="comment"> all variant forms of "start of frame": e.g., </span><code class="display"><span class="extract-syntax">0xC0</span></code><span class="comment"> is a baseline DCT image</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0xc0</span><span class="identifier-syntax">:</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0xc1</span><span class="identifier-syntax">:</span><span class="plain-syntax"> </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0xc2</span><span class="identifier-syntax">:</span><span class="plain-syntax"> </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0xc3</span><span class="identifier-syntax">:</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0xc5</span><span class="identifier-syntax">:</span><span class="plain-syntax"> </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0xc6</span><span class="identifier-syntax">:</span><span class="plain-syntax"> </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0xc7</span><span class="identifier-syntax">:</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0xc9</span><span class="identifier-syntax">:</span><span class="plain-syntax"> </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0xca</span><span class="identifier-syntax">:</span><span class="plain-syntax"> </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0xcb</span><span class="identifier-syntax">:</span>
+    <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0xcd</span><span class="identifier-syntax">:</span><span class="plain-syntax"> </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0xce</span><span class="identifier-syntax">:</span><span class="plain-syntax"> </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0xcf</span><span class="identifier-syntax">:</span><span class="plain-syntax"> {</span>
 
-                    <span class="comment"> fortunately these markers all then open with the same format</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">getc</span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">) == </span><span class="identifier">EOF</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">; </span><span class="comment"> skip 1 byte of data precision</span>
+    <span class="plain-syntax">                </span><span class="comment"> fortunately these markers all then open with the same format</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">getc</span><span class="plain-syntax">(</span><span class="identifier-syntax">JPEG_file</span><span class="plain-syntax">) == </span><span class="identifier-syntax">EOF</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment"> skip 1 byte of data precision</span>
 
-                    <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int16</a></span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">, </span><span class="identifier">height</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-                    <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int16</a></span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">, </span><span class="identifier">width</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!</span><a href="6-bf.html#SP1" class="internal">BinaryFiles::read_int16</a><span class="plain-syntax">(</span><span class="identifier-syntax">JPEG_file</span><span class="plain-syntax">, </span><span class="identifier-syntax">height</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!</span><a href="6-bf.html#SP1" class="internal">BinaryFiles::read_int16</a><span class="plain-syntax">(</span><span class="identifier-syntax">JPEG_file</span><span class="plain-syntax">, </span><span class="identifier-syntax">width</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 
-                    <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-                <span class="plain">}</span>
-                <span class="identifier">default:</span>
-                    <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">fseek</span><span class="plain">(</span><span class="identifier">JPEG_file</span><span class="plain">, (</span><span class="reserved">long</span><span class="plain">) (</span><span class="identifier">length</span><span class="plain"> - </span><span class="constant">2</span><span class="plain">), </span><span class="identifier">SEEK_CUR</span><span class="plain">) != </span><span class="constant">0</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">; </span><span class="comment"> skip rest of marker</span>
-            <span class="plain">}</span>
-        <span class="plain">}</span>
-        <span class="reserved">while</span><span class="plain"> (</span><span class="identifier">marker</span><span class="plain"> != </span><span class="identifier">EOF</span><span class="plain">);</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">            }</span>
+    <span class="plain-syntax">            </span><span class="identifier-syntax">default:</span>
+    <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">fseek</span><span class="plain-syntax">(</span><span class="identifier-syntax">JPEG_file</span><span class="plain-syntax">, (</span><span class="reserved-syntax">long</span><span class="plain-syntax">) (</span><span class="identifier-syntax">length</span><span class="plain-syntax"> - </span><span class="constant-syntax">2</span><span class="plain-syntax">), </span><span class="identifier-syntax">SEEK_CUR</span><span class="plain-syntax">) != </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment"> skip rest of marker</span>
+    <span class="plain-syntax">        }</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">marker</span><span class="plain-syntax"> != </span><span class="identifier-syntax">EOF</span><span class="plain-syntax">);</span>
 
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. PNG files. </b>The PNG file must start with a signature which indicates that the
 remainder contains a single PNG image, consisting of a series of chunks
 beginning with an IHDR chunk and ending with an IEND chunk ("Portable
@@ -112,41 +127,30 @@ first two words (section 11.2.2).
 </p>
 
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">ImageFiles::get_PNG_dimensions<button class="popup" onclick="togglePopup('usagePopup479')">...<span class="popuptext" id="usagePopup479">Usage of <b>ImageFiles::get_PNG_dimensions</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">FILE</span><span class="plain"> *</span><span class="identifier">PNG_file</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">width</span><span class="plain">, </span><span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> *</span><span class="identifier">height</span><span class="plain">) {</span>
-        <span class="reserved">unsigned</span><span class="plain"> </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">sig1</span><span class="plain">, </span><span class="identifier">sig2</span><span class="plain">, </span><span class="identifier">length</span><span class="plain">, </span><span class="identifier">type</span><span class="plain">;</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">ImageFiles::get_PNG_dimensions</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>ImageFiles::get_PNG_dimensions</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">PNG_file</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">width</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">height</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sig1</span><span class="plain-syntax">, </span><span class="identifier-syntax">sig2</span><span class="plain-syntax">, </span><span class="identifier-syntax">length</span><span class="plain-syntax">, </span><span class="identifier-syntax">type</span><span class="plain-syntax">;</span>
 
-        <span class="comment"> Check PNG signature</span>
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int32</a></span><span class="plain">(</span><span class="identifier">PNG_file</span><span class="plain">, &amp;</span><span class="identifier">sig1</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int32</a></span><span class="plain">(</span><span class="identifier">PNG_file</span><span class="plain">, &amp;</span><span class="identifier">sig2</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> ((</span><span class="identifier">sig1</span><span class="plain"> != </span><span class="constant">0x89504e47</span><span class="plain">) || (</span><span class="identifier">sig2</span><span class="plain"> != </span><span class="constant">0x0d0a1a0a</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+    <span class="plain-syntax">    </span><span class="comment"> Check PNG signature</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!</span><a href="6-bf.html#SP1" class="internal">BinaryFiles::read_int32</a><span class="plain-syntax">(</span><span class="identifier-syntax">PNG_file</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">sig1</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!</span><a href="6-bf.html#SP1" class="internal">BinaryFiles::read_int32</a><span class="plain-syntax">(</span><span class="identifier-syntax">PNG_file</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">sig2</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">sig1</span><span class="plain-syntax"> != </span><span class="constant-syntax">0x89504e47</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">sig2</span><span class="plain-syntax"> != </span><span class="constant-syntax">0x0d0a1a0a</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 
-        <span class="comment"> Read first chunk</span>
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int32</a></span><span class="plain">(</span><span class="identifier">PNG_file</span><span class="plain">, &amp;</span><span class="identifier">length</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int32</a></span><span class="plain">(</span><span class="identifier">PNG_file</span><span class="plain">, &amp;</span><span class="identifier">type</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+    <span class="plain-syntax">    </span><span class="comment"> Read first chunk</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!</span><a href="6-bf.html#SP1" class="internal">BinaryFiles::read_int32</a><span class="plain-syntax">(</span><span class="identifier-syntax">PNG_file</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">length</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!</span><a href="6-bf.html#SP1" class="internal">BinaryFiles::read_int32</a><span class="plain-syntax">(</span><span class="identifier-syntax">PNG_file</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">type</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 
-        <span class="comment"> First chunk must be IHDR</span>
-        <span class="reserved">if</span><span class="plain"> (</span><span class="identifier">type</span><span class="plain"> != </span><span class="constant">0x49484452</span><span class="plain">) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
+    <span class="plain-syntax">    </span><span class="comment"> First chunk must be IHDR</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">type</span><span class="plain-syntax"> != </span><span class="constant-syntax">0x49484452</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 
-        <span class="comment"> Width and height follow</span>
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int32</a></span><span class="plain">(</span><span class="identifier">PNG_file</span><span class="plain">, </span><span class="identifier">width</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="reserved">if</span><span class="plain"> (!</span><span class="functiontext"><a href="6-bf.html#SP1">BinaryFiles::read_int32</a></span><span class="plain">(</span><span class="identifier">PNG_file</span><span class="plain">, </span><span class="identifier">height</span><span class="plain">)) </span><span class="reserved">return</span><span class="plain"> </span><span class="constant">FALSE</span><span class="plain">;</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">TRUE</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="plain-syntax">    </span><span class="comment"> Width and height follow</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!</span><a href="6-bf.html#SP1" class="internal">BinaryFiles::read_int32</a><span class="plain-syntax">(</span><span class="identifier-syntax">PNG_file</span><span class="plain-syntax">, </span><span class="identifier-syntax">width</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!</span><a href="6-bf.html#SP1" class="internal">BinaryFiles::read_int32</a><span class="plain-syntax">(</span><span class="identifier-syntax">PNG_file</span><span class="plain-syntax">, </span><span class="identifier-syntax">height</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <hr class="tocbar">
 <ul class="toc"><li><a href="6-bf.html">Back to 'Binary Files'</a></li><li><a href="6-sd.html">Continue with 'Sound Durations'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
-<script>
-function togglePopup(material_id) {
-  var popup = document.getElementById(material_id);
-  popup.classList.toggle("show");
-}
-</script>
-
-<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

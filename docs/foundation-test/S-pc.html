@@ -2,16 +2,34 @@
 <html>
 	<head>
 		<title>Program Control</title>
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
-		<link href="../inweb.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Language" content="en-gb">
+
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script>
+function togglePopup(material_id) {
+  var popup = document.getElementById(material_id);
+  popup.classList.toggle("show");
+}
+</script>
+
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body>
 		<nav role="navigation">
 		<h1><a href="../index.html">
-<img src="../docs-src/Figures/Octagram184x184.png" width=72 height=72">
+<img src="../docs-assets/Octagram.png" width=72 height=72">
 </a></h1>
 <ul><li><a href="../inweb/index.html">inweb</a></li>
 </ul><h2>Foundation Module</h2><ul>
@@ -40,79 +58,67 @@
 
 
 <pre class="definitions">
-    <span class="definitionkeyword">define</span> <span class="constant">PROGRAM_NAME</span><span class="plain"> </span><span class="string">"foundation-test"</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TEST_STRINGS_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TEST_RE_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TEST_DICT_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TEST_LITERALS_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TEST_REPLACEMENT_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TEST_LISTS_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TEST_STACKS_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TEST_SEMVER_CLSW</span>
-    <span class="definitionkeyword">enum</span> <span class="constant">TEST_TREES_CLSW</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">PROGRAM_NAME</span><span class="plain-syntax"> </span><span class="string-syntax">"foundation-test"</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_STRINGS_CLSW</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_RE_CLSW</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_DICT_CLSW</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_LITERALS_CLSW</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_REPLACEMENT_CLSW</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_LISTS_CLSW</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_STACKS_CLSW</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_SEMVER_CLSW</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_TREES_CLSW</span>
 </pre>
-
 <pre class="display">
-    <span class="reserved">int</span><span class="plain"> </span><span class="functiontext">main</span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">argc</span><span class="plain">, </span><span class="reserved">char</span><span class="plain"> **</span><span class="identifier">argv</span><span class="plain">) {</span>
-        <span class="functiontext"><a href="../foundation-module/1-fm.html#SP8">Foundation::start</a></span><span class="plain">();</span>
-        <span class="functiontext"><a href="../foundation-module/3-cla.html#SP14">CommandLine::declare_heading</a></span><span class="plain">(</span><span class="identifier">L</span><span class="string">"inexample: a tool for testing foundation facilities\n"</span><span class="plain">);</span>
+    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">main</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/1-fm.html#SP8" class="internal">Foundation::start</a><span class="plain-syntax">();</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP14" class="internal">CommandLine::declare_heading</a><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="string-syntax">"inexample: a tool for testing foundation facilities\n"</span><span class="plain-syntax">);</span>
 
-        <span class="functiontext"><a href="../foundation-module/3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">TEST_STRINGS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-strings"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
-            <span class="identifier">L</span><span class="string">"test string manipulation (X is ignored)"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="../foundation-module/3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">TEST_RE_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-regexp"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
-            <span class="identifier">L</span><span class="string">"test regular expression matches on a list of cases in file X"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="../foundation-module/3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">TEST_DICT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-dictionaries"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
-            <span class="identifier">L</span><span class="string">"test dictionary building on a list of keys and values in file X"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="../foundation-module/3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">TEST_LITERALS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-literals"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
-            <span class="identifier">L</span><span class="string">"test string literals (X is ignored)"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="../foundation-module/3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">TEST_REPLACEMENT_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-replacement"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
-            <span class="identifier">L</span><span class="string">"test regular expression replacements on a list of cases in file X"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="../foundation-module/3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">TEST_LISTS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-lists"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
-            <span class="identifier">L</span><span class="string">"test linked lists (X is ignored)"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="../foundation-module/3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">TEST_STACKS_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-stacks"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
-            <span class="identifier">L</span><span class="string">"test LIFO stacks (X is ignored)"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="../foundation-module/3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">TEST_SEMVER_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-semver"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
-            <span class="identifier">L</span><span class="string">"test semantic version numbers (X is ignored)"</span><span class="plain">);</span>
-        <span class="functiontext"><a href="../foundation-module/3-cla.html#SP5">CommandLine::declare_switch</a></span><span class="plain">(</span><span class="constant">TEST_TREES_CLSW</span><span class="plain">, </span><span class="identifier">L</span><span class="string">"test-trees"</span><span class="plain">, </span><span class="constant">2</span><span class="plain">,</span>
-            <span class="identifier">L</span><span class="string">"test heterogeneous trees (X is ignored)"</span><span class="plain">);</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">TEST_STRINGS_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"test-strings"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"test string manipulation (X is ignored)"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">TEST_RE_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"test-regexp"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"test regular expression matches on a list of cases in file X"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">TEST_DICT_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"test-dictionaries"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"test dictionary building on a list of keys and values in file X"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">TEST_LITERALS_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"test-literals"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"test string literals (X is ignored)"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">TEST_REPLACEMENT_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"test-replacement"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"test regular expression replacements on a list of cases in file X"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">TEST_LISTS_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"test-lists"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"test linked lists (X is ignored)"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">TEST_STACKS_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"test-stacks"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"test LIFO stacks (X is ignored)"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">TEST_SEMVER_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"test-semver"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"test semantic version numbers (X is ignored)"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">TEST_TREES_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"test-trees"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"test heterogeneous trees (X is ignored)"</span><span class="plain-syntax">);</span>
 
-        <span class="functiontext"><a href="../foundation-module/3-cla.html#SP8">CommandLine::read</a></span><span class="plain">(</span><span class="identifier">argc</span><span class="plain">, </span><span class="identifier">argv</span><span class="plain">, </span><span class="identifier">NULL</span><span class="plain">, &amp;</span><span class="functiontext"><a href="S-pc.html#SP1">Main::respond</a></span><span class="plain">, &amp;</span><span class="functiontext"><a href="S-pc.html#SP1">Main::ignore</a></span><span class="plain">);</span>
-        <span class="functiontext"><a href="../foundation-module/1-fm.html#SP9">Foundation::end</a></span><span class="plain">();</span>
-        <span class="reserved">return</span><span class="plain"> </span><span class="constant">0</span><span class="plain">;</span>
-    <span class="plain">}</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP8" class="internal">CommandLine::read</a><span class="plain-syntax">(</span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">argv</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, &amp;</span><a href="S-pc.html#SP1" class="internal">Main::respond</a><span class="plain-syntax">, &amp;</span><a href="S-pc.html#SP1" class="internal">Main::ignore</a><span class="plain-syntax">);</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/1-fm.html#SP9" class="internal">Foundation::end</a><span class="plain-syntax">();</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Main::respond<button class="popup" onclick="togglePopup('usagePopup0')">...<span class="popuptext" id="usagePopup0">Usage of <b>Main::respond</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">val</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="reserved">switch</span><span class="plain"> (</span><span class="identifier">id</span><span class="plain">) {</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_STRINGS_CLSW:</span><span class="plain"> </span><span class="functiontext"><a href="S-ut.html#SP1">Unit::test_strings</a></span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_RE_CLSW:</span><span class="plain"> </span><span class="functiontext"><a href="S-ut.html#SP4">Unit::test_regexp</a></span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_REPLACEMENT_CLSW:</span><span class="plain"> </span><span class="functiontext"><a href="S-ut.html#SP5">Unit::test_replacement</a></span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_DICT_CLSW:</span><span class="plain"> </span><span class="functiontext"><a href="S-ut.html#SP3">Unit::test_dictionaries</a></span><span class="plain">(</span><span class="identifier">arg</span><span class="plain">); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_LITERALS_CLSW:</span><span class="plain"> </span><span class="functiontext"><a href="S-ut.html#SP2">Unit::test_literals</a></span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_LISTS_CLSW:</span><span class="plain"> </span><span class="functiontext"><a href="S-ut.html#SP6">Unit::test_linked_lists</a></span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_STACKS_CLSW:</span><span class="plain"> </span><span class="functiontext"><a href="S-ut.html#SP7">Unit::test_stacks</a></span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_SEMVER_CLSW:</span><span class="plain"> </span><span class="functiontext"><a href="S-ut.html#SP8">Unit::test_semver</a></span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-            <span class="reserved">case</span><span class="plain"> </span><span class="identifier">TEST_TREES_CLSW:</span><span class="plain"> </span><span class="functiontext"><a href="S-ut.html#SP11">Unit::test_trees</a></span><span class="plain">(); </span><span class="reserved">break</span><span class="plain">;</span>
-        <span class="plain">}</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::respond</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Main::respond</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_STRINGS_CLSW:</span><span class="plain-syntax"> </span><a href="S-ut.html#SP1" class="internal">Unit::test_strings</a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_RE_CLSW:</span><span class="plain-syntax"> </span><a href="S-ut.html#SP4" class="internal">Unit::test_regexp</a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_REPLACEMENT_CLSW:</span><span class="plain-syntax"> </span><a href="S-ut.html#SP5" class="internal">Unit::test_replacement</a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_DICT_CLSW:</span><span class="plain-syntax"> </span><a href="S-ut.html#SP3" class="internal">Unit::test_dictionaries</a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_LITERALS_CLSW:</span><span class="plain-syntax"> </span><a href="S-ut.html#SP2" class="internal">Unit::test_literals</a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_LISTS_CLSW:</span><span class="plain-syntax"> </span><a href="S-ut.html#SP6" class="internal">Unit::test_linked_lists</a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_STACKS_CLSW:</span><span class="plain-syntax"> </span><a href="S-ut.html#SP7" class="internal">Unit::test_stacks</a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_SEMVER_CLSW:</span><span class="plain-syntax"> </span><a href="S-ut.html#SP8" class="internal">Unit::test_semver</a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TEST_TREES_CLSW:</span><span class="plain-syntax"> </span><a href="S-ut.html#SP11" class="internal">Unit::test_trees</a><span class="plain-syntax">(); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+    <span class="plain-syntax">    }</span>
+    <span class="plain-syntax">}</span>
 
-    <span class="reserved">void</span><span class="plain"> </span><span class="functiontext">Main::ignore<button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Main::ignore</b>:<br>none</span></button></span><span class="plain">(</span><span class="reserved">int</span><span class="plain"> </span><span class="identifier">id</span><span class="plain">, </span><span class="reserved">text_stream</span><span class="plain"> *</span><span class="identifier">arg</span><span class="plain">, </span><span class="reserved">void</span><span class="plain"> *</span><span class="identifier">state</span><span class="plain">) {</span>
-        <span class="functiontext"><a href="../foundation-module/3-em.html#SP2">Errors::fatal</a></span><span class="plain">(</span><span class="string">"only switches may be used at the command line"</span><span class="plain">);</span>
-    <span class="plain">}</span>
+    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::ignore</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Main::ignore</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+    <span class="plain-syntax">    </span><a href="../foundation-module/3-em.html#SP2" class="internal">Errors::fatal</a><span class="plain-syntax">(</span><span class="string-syntax">"only switches may be used at the command line"</span><span class="plain-syntax">);</span>
+    <span class="plain-syntax">}</span>
 </pre>
-
-<p class="inwebparagraph"></p>
-
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Sections.)</i></li><li><a href="S-ut.html">Continue with 'Unit Tests'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
-<script>
-function togglePopup(material_id) {
-  var popup = document.getElementById(material_id);
-  popup.classList.toggle("show");
-}
-</script>
-
-<link href="Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		</main>
 	</body>
 </html>

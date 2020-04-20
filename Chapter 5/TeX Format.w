@@ -24,31 +24,19 @@ void TeX::create(void) {
 	METHOD_ADD(wf, POST_PROCESS_POS_MTID, TeX::post_process_DVI);
 	METHOD_ADD(wf, POST_PROCESS_POS_MTID, TeX::post_process_report);
 	METHOD_ADD(wf, POST_PROCESS_SUBSTITUTE_POS_MTID, TeX::post_process_substitute);
-	METHOD_ADD(wf, PRESERVE_MATH_MODE_FOR_MTID, TeX::preserve_math_mode);
 
 @<Create PDF format@> =
 	weave_format *wf = Formats::create_weave_format(I"PDF", I".tex");
 	METHOD_ADD(wf, RENDER_FOR_MTID, TeX::render_PDF);
-	METHOD_ADD(wf, PARA_MACRO_FOR_MTID, TeX::para_macro_PDF_1);
 	@<Make this format basically TeX@>;
-	METHOD_ADD(wf, PARA_MACRO_FOR_MTID, TeX::para_macro_PDF_2);
-	METHOD_ADD(wf, CHANGE_COLOUR_FOR_MTID, TeX::change_colour_PDF);
 	METHOD_ADD(wf, POST_PROCESS_POS_MTID, TeX::post_process_PDF);
 	METHOD_ADD(wf, POST_PROCESS_SUBSTITUTE_POS_MTID, TeX::post_process_substitute);
 	METHOD_ADD(wf, INDEX_PDFS_POS_MTID, TeX::yes);
-	METHOD_ADD(wf, PRESERVE_MATH_MODE_FOR_MTID, TeX::preserve_math_mode);
 
 @<Make this format basically TeX@> =
 	METHOD_ADD(wf, CHAPTER_TP_FOR_MTID, TeX::chapter_title_page);
-	METHOD_ADD(wf, SOURCE_CODE_FOR_MTID, TeX::source_code);
-	METHOD_ADD(wf, INLINE_CODE_FOR_MTID, TeX::inline_code);
-	METHOD_ADD(wf, PARA_MACRO_FOR_MTID, TeX::para_macro);
-	METHOD_ADD(wf, AFTER_DEFINITIONS_FOR_MTID, TeX::after_definitions);
-	METHOD_ADD(wf, COMMENTARY_TEXT_FOR_MTID, TeX::commentary_text);
-	METHOD_ADD(wf, LOCALE_FOR_MTID, TeX::locale);
 	METHOD_ADD(wf, PREFORM_DOCUMENT_FOR_MTID, TeX::preform_document);
 	METHOD_ADD(wf, POST_PROCESS_SUBSTITUTE_POS_MTID, TeX::post_process_substitute);
-	METHOD_ADD(wf, PRESERVE_MATH_MODE_FOR_MTID, TeX::preserve_math_mode);
 
 @h Methods.
 For documentation, see "Weave Fornats".
@@ -100,29 +88,32 @@ int TeX::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraph heading@>
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
 	else if (N->type == weave_figure_node_type) @<Render figure@>
-	else if (N->type == weave_chm_node_type) @<Render chm@>
+	else if (N->type == weave_material_node_type) @<Render material@>
 	else if (N->type == weave_embed_node_type) @<Render weave_embed_node@>
-	else if (N->type == weave_pmac_node_type) @<Render weave_pmac_node@>
+	else if (N->type == weave_pmac_node_type) @<Render pmac@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
-	else if (N->type == weave_apres_defn_node_type) @<Render weave_apres_defn_node@>
-	else if (N->type == weave_change_colour_node_type) @<Render weave_change_colour_node@>
-	else if (N->type == weave_text_node_type) @<Render weave_text_node@>
-	else if (N->type == weave_comment_node_type) @<Render weave_comment_node@>
-	else if (N->type == weave_link_node_type) @<Render weave_link_node@>
-	else if (N->type == weave_commentary_node_type) @<Render weave_commentary_node@>
+	else if (N->type == weave_apres_defn_node_type) @<Render apres-defn@>
+	else if (N->type == weave_chapter_node_type) @<Render nothing@>
+	else if (N->type == weave_section_node_type) @<Render section@>
+	else if (N->type == weave_code_line_node_type) @<Render code line@>
+	else if (N->type == weave_function_usage_node_type) @<Render function usage@>
+	else if (N->type == weave_commentary_node_type) @<Render commentary@>
 	else if (N->type == weave_preform_document_node_type) @<Render weave_preform_document_node@>
 	else if (N->type == weave_toc_node_type) @<Render toc@>
 	else if (N->type == weave_toc_line_node_type) @<Render toc line@>
 	else if (N->type == weave_chapter_title_page_node_type) @<Render weave_chapter_title_page_node@>
-	else if (N->type == weave_source_fragment_node_type) @<Render weave_source_fragment_node@>
-	else if (N->type == weave_source_code_node_type) @<Render weave_source_code_node@>
-	else if (N->type == weave_url_node_type) @<Render weave_url_node@>
-	else if (N->type == weave_footnote_cue_node_type) @<Render weave_footnote_cue_node@>
-	else if (N->type == weave_begin_footnote_text_node_type) @<Render weave_begin_footnote_text_node@>
-	else if (N->type == weave_end_footnote_text_node_type) @<Render weave_end_footnote_text_node@>
+	else if (N->type == weave_defn_node_type) @<Render defn@>
+	else if (N->type == weave_source_code_node_type) @<Render source code@>
+	else if (N->type == weave_url_node_type) @<Render URL@>
+	else if (N->type == weave_footnote_cue_node_type) @<Render footnote cue@>
+	else if (N->type == weave_begin_footnote_text_node_type) @<Render footnote text@>
 	else if (N->type == weave_display_line_node_type) @<Render display line@>
+	else if (N->type == weave_function_defn_node_type) @<Render function defn@>
 	else if (N->type == weave_item_node_type) @<Render item@>
 	else if (N->type == weave_grammar_index_node_type) @<Render grammar index@>
+	else if (N->type == weave_inline_node_type) @<Render inline@>
+	else if (N->type == weave_locale_node_type) @<Render locale@>
+	else if (N->type == weave_maths_node_type) @<Render maths@>
 	else internal_error("unable to render unknown node");
 	return TRUE;
 }
@@ -164,11 +155,12 @@ int TeX::render_visit(tree_node *N, void *state, int L) {
 	TeX::paragraph_heading(trs->wv->format, OUT, trs->wv, C->para->under_section, C->para, I"Dunno", 0, FALSE);
 
 @<Render endnote@> =
-	weave_endnote_node *C = RETRIEVE_POINTER_weave_endnote_node(N->content);
 	WRITE("\\par\\noindent\\penalty10000\n");
 	WRITE("{\\usagefont ");
-	WRITE("%S", C->text);
+	for (tree_node *M = N->child; M; M = M->next)
+		Trees::traverse_from(M, &TeX::render_visit, (void *) trs, L+1);
 	WRITE("}\\smallskip\n");
+	return FALSE;
 
 @ TeX itself has an almost defiant lack of support for anything pictorial,
 which is one reason it didn't live up to its hope of being the definitive basis
@@ -192,11 +184,18 @@ to a given width, into the text at the current position.
 			"\\smallskip\n");
 	}
 
-@<Render chm@> =
-	weave_chm_node *C = RETRIEVE_POINTER_weave_chm_node(N->content);
-	TeX::change_material(trs->wv->format, OUT, trs->wv, C->old_material, C->new_material,
-		C->content, C->plainly);
-
+@<Render material@> =
+	if (N->child) {
+		weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
+		if ((C->new_material != REGULAR_MATERIAL) && (C->new_material != ENDNOTES_MATERIAL))
+			WRITE("\\beginlines\n");
+		for (tree_node *M = N->child; M; M = M->next)
+			Trees::traverse_from(M, &TeX::render_visit, (void *) trs, L+1);
+		if ((C->new_material != REGULAR_MATERIAL) && (C->new_material != ENDNOTES_MATERIAL))
+			WRITE("\\endlines\n");
+	}
+	return FALSE;
+	
 @<Render verbatim@> =
 	weave_verbatim_node *C = RETRIEVE_POINTER_weave_verbatim_node(N->content);
 	WRITE("%S", C->content);
@@ -208,38 +207,42 @@ to a given width, into the text at the current position.
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
 	LOG("It was %d\n", C->allocation_id);
 
-@<Render weave_pmac_node@> =
+@<Render pmac@> =
 	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
+	if (trs->as_PDF)
+		TeX::para_macro_PDF_1(trs->wv->format, OUT, trs->wv, C->pmac, C->defn);
+	TeX::para_macro(trs->wv->format, OUT, trs->wv, C->pmac, C->defn);
+	if (trs->as_PDF)
+		TeX::para_macro_PDF_2(trs->wv->format, OUT, trs->wv, C->pmac, C->defn);
 
 @<Render vskip@> =
 	weave_vskip_node *C = RETRIEVE_POINTER_weave_vskip_node(N->content);
 	if (C->in_comment) WRITE("\\smallskip\\par\\noindent%%\n");
 	else WRITE("\\smallskip\n");
 
-@<Render weave_apres_defn_node@> =
-	weave_apres_defn_node *C = RETRIEVE_POINTER_weave_apres_defn_node(N->content);
+@<Render apres-defn@> =
+	WRITE("\\smallskip\n");
+
+@<Render section@> =
+	weave_section_node *C = RETRIEVE_POINTER_weave_section_node(N->content);
 	LOG("It was %d\n", C->allocation_id);
 
-@<Render weave_change_colour_node@> =
-	weave_change_colour_node *C = RETRIEVE_POINTER_weave_change_colour_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
+@<Render code line@> =
+	for (tree_node *M = N->child; M; M = M->next)
+		Trees::traverse_from(M, &TeX::render_visit, (void *) trs, L+1);
+	WRITE("|");
+	WRITE("\n");
+	return FALSE;
 
-@<Render weave_text_node@> =
-	weave_text_node *C = RETRIEVE_POINTER_weave_text_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
+@<Render function usage@> =
+	weave_function_usage_node *C = RETRIEVE_POINTER_weave_function_usage_node(N->content);
+	WRITE("%S", C->fn->function_name);
 
-@<Render weave_comment_node@> =
-	weave_comment_node *C = RETRIEVE_POINTER_weave_comment_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
-
-@<Render weave_link_node@> =
-	weave_link_node *C = RETRIEVE_POINTER_weave_link_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
-
-@<Render weave_commentary_node@> =
+@<Render commentary@> =
 	weave_commentary_node *C = RETRIEVE_POINTER_weave_commentary_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
+	if (C->in_code) WRITE(" \\hfill{\\ttninepoint\\it ");
+	TeX::commentary_text(NULL, OUT, trs->wv, C->text);
+	if (C->in_code) WRITE("}");
 
 @<Render weave_preform_document_node@> =
 	weave_preform_document_node *C = RETRIEVE_POINTER_weave_preform_document_node(N->content);
@@ -266,33 +269,37 @@ to a given width, into the text at the current position.
 	weave_chapter_title_page_node *C = RETRIEVE_POINTER_weave_chapter_title_page_node(N->content);
 	LOG("It was %d\n", C->allocation_id);
 
-@<Render weave_source_fragment_node@> =
-	weave_source_fragment_node *C = RETRIEVE_POINTER_weave_source_fragment_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
+@<Render defn@> =
+	weave_defn_node *C = RETRIEVE_POINTER_weave_defn_node(N->content);
+	WRITE("{\\ninebf %S} ", C->keyword);
 
-@<Render weave_source_code_node@> =
+@<Render source code@> =
 	weave_source_code_node *C = RETRIEVE_POINTER_weave_source_code_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
+	int starts = FALSE;
+	if (N == N->parent->child) starts = TRUE;
+	TeX::source_code(trs->wv->format, OUT, trs->wv,
+		C->matter, C->colouring, starts);
 
-@<Render weave_url_node@> =
+@<Render URL@> =
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
+	WRITE("%S", C->url);
 
-@<Render weave_footnote_cue_node@> =
+@<Render footnote cue@> =
 	weave_footnote_cue_node *C = RETRIEVE_POINTER_weave_footnote_cue_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
+	WRITE("[%S]", C->cue_text);
 
-@<Render weave_begin_footnote_text_node@> =
+@<Render footnote text@> =
 	weave_begin_footnote_text_node *C = RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
-
-@<Render weave_end_footnote_text_node@> =
-	weave_end_footnote_text_node *C = RETRIEVE_POINTER_weave_end_footnote_text_node(N->content);
 	LOG("It was %d\n", C->allocation_id);
 
 @<Render display line@> =
 	weave_display_line_node *C = RETRIEVE_POINTER_weave_display_line_node(N->content);
 	WRITE("\\quotesource{%S}\n", C->text);
+
+@<Render function defn@> =
+	weave_function_defn_node *C = RETRIEVE_POINTER_weave_function_defn_node(N->content);
+	WRITE("%S", C->fn->function_name);
+	return TRUE;
 
 @<Render item@> =
 	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
@@ -306,6 +313,24 @@ to a given width, into the text at the current position.
 
 @<Render grammar index@> =
 	InCSupport::weave_grammar_index(OUT);
+
+@<Render inline@> =
+	WRITE("|");
+	for (tree_node *M = N->child; M; M = M->next)
+		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) trs, L+1);
+	WRITE("|");
+	return FALSE;
+
+@<Render locale@> =
+	weave_locale_node *C = RETRIEVE_POINTER_weave_locale_node(N->content);
+	WRITE("$\\%S$%S", C->par1->ornament, C->par1->paragraph_number);
+	if (C->par2) WRITE("-%S", C->par2->paragraph_number);
+
+@<Render maths@> =
+	weave_maths_node *C = RETRIEVE_POINTER_weave_maths_node(N->content);
+	if (C->displayed) WRITE("$$"); else WRITE("$");
+	WRITE("%S", C->content);
+	if (C->displayed) WRITE("$$"); else WRITE("$");
 
 @ We don't use TeX's |\input| mechanism for macros because it is so prone to
 failures when searching directories (especially those with spaces in the
@@ -346,7 +371,7 @@ void TeX::subheading(weave_format *self, text_stream *OUT, weave_order *wv,
 		case 2:
 			WRITE("\\smallskip\\par\\noindent{\\it %S}\\smallskip\\noindent\n",
 				comment);
-			if (head) Formats::text(OUT, wv, head);
+			if (head) TeX::commentary_text(self, OUT, wv, head);
 			break;
 	}
 }
@@ -487,13 +512,10 @@ mode once again:
 
 =
 void TeX::source_code(weave_format *self, text_stream *OUT, weave_order *wv,
-	int tab_stops_of_indentation, text_stream *prefatory, text_stream *matter,
-	text_stream *colouring, text_stream *concluding_comment,
-	int starts, int finishes, int code_mode, int linked) {
-	if (code_mode == FALSE) WRITE("\\smallskip\\par\\noindent");
+	text_stream *matter, text_stream *colouring, int starts) {
+	WRITE("\\smallskip\\par\\noindent");
 	if (starts) {
 		@<Weave a suitable horizontal advance for that many tab stops@>;
-		if (Str::len(prefatory) > 0) WRITE("{\\ninebf %S} ", prefatory);
 		WRITE("|");
 	}
 	int current_colour = PLAIN_COLOUR, colour_wanted = PLAIN_COLOUR;
@@ -503,27 +525,18 @@ void TeX::source_code(weave_format *self, text_stream *OUT, weave_order *wv,
 		else WRITE("%c", Str::get_at(matter, i));
 	}
 	colour_wanted = PLAIN_COLOUR; @<Adjust code colour as necessary@>;
-	if (finishes) {
-		WRITE("|");
-		if (Str::len(concluding_comment) > 0) {
-			if ((Str::len(matter) > 0) || (!starts))
-				WRITE("\\hfill\\quad ");
-			WRITE("{\\ttninepoint\\it %S}", concluding_comment);
-		}
-		WRITE("\n");
-	}
 }
 
 @ We actually use |\qquad| horizontal spaces rather than risk using TeX's
 messy alignment system:
 
 @<Weave a suitable horizontal advance for that many tab stops@> =
-	for (int i=0; i<tab_stops_of_indentation; i++)
-		WRITE("\\qquad");
+	int tab_stops_of_indentation = Str::remove_indentation(matter, 4);
+	for (int i=0; i<tab_stops_of_indentation; i++) WRITE("\\qquad");
 
 @<Adjust code colour as necessary@> =
 	if (colour_wanted != current_colour) {
-		Formats::change_colour(OUT, wv, colour_wanted, TRUE);
+		TeX::change_colour_PDF(NULL, OUT, wv, colour_wanted, TRUE);
 		current_colour = colour_wanted;
 	}
 
@@ -570,10 +583,10 @@ void TeX::para_macro_PDF_1(weave_format *self, text_stream *OUT, weave_order *wv
 void TeX::para_macro(weave_format *self, text_stream *OUT, weave_order *wv,
 	para_macro *pmac, int defn) {
 	WRITE("$\\langle${\\xreffont");
-	Formats::change_colour(OUT, wv, DEFINITION_COLOUR, FALSE);
+	TeX::change_colour_PDF(NULL, OUT, wv, DEFINITION_COLOUR, FALSE);
 	WRITE("%S ", pmac->macro_name);
 	WRITE("{\\sevenss %S}}", pmac->defining_paragraph->paragraph_number);
-	Formats::change_colour(OUT, wv, PLAIN_COLOUR, FALSE);
+	TeX::change_colour_PDF(NULL, OUT, wv, PLAIN_COLOUR, FALSE);
 	WRITE("$\\rangle$ ");
 }
 void TeX::para_macro_PDF_2(weave_format *self, text_stream *OUT, weave_order *wv,
@@ -617,32 +630,6 @@ void TeX::locale(weave_format *self, text_stream *OUT, weave_order *wv,
 	paragraph *par1, paragraph *par2) {
 	WRITE("$\\%S$%S", par1->ornament, par1->paragraph_number);
 	if (par2) WRITE("-%S", par2->paragraph_number);
-}
-
-@ =
-void TeX::change_material(weave_format *self, text_stream *OUT, weave_order *wv,
-	int old_material, int new_material, int content, int change_material) {
-	if (old_material != new_material) {
-		switch (old_material) {
-			case REGULAR_MATERIAL:
-				switch (new_material) {
-					case CODE_MATERIAL:
-						WRITE("\\beginlines\n");
-						break;
-					case DEFINITION_MATERIAL:
-						WRITE("\\beginlines\n");
-						break;
-					case MACRO_MATERIAL:
-						WRITE("\\beginlines\n");
-						break;
-				}
-				break;
-			default:
-				if (new_material == REGULAR_MATERIAL)
-					WRITE("\\endlines\n");
-				break;
-		}
-	}
 }
 
 @ =
@@ -725,7 +712,8 @@ int TeX::preform_document(weave_format *self, text_stream *OUT, web *W, weave_or
 	else if (Str::len(concluding_comment) > 0) {
 		WRITE(" \\hfill{\\ttninepoint\\it ");
 		if (Str::len(concluding_comment) > 0)
-			Formats::text_comment(OUT, wv, concluding_comment);
+			TeX::commentary_text(NULL, OUT, wv, concluding_comment);
+//			Formats::text_comment(OUT, wv, concluding_comment);
 		WRITE("}");
 	}
 	WRITE("\n");

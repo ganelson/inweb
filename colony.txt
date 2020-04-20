@@ -1,10 +1,11 @@
 home: inweb/docs
+assets: inweb/docs/docs-assets
 
-navigation: inweb/docs/docs-src/nav.html
+navigation: inweb/docs-src/nav.html
 pattern: GitHubPages
 
 breadcrumbs: none
-web: "overview" at "inweb/docs/docs-src/index.inweb" in "inweb/docs"
+web: "overview" at "inweb/docs-src/index.inweb" in "inweb/docs"
 
 breadcrumbs: "Home: //overview//"
 web: "inweb" at "inweb" in "inweb/docs/inweb"

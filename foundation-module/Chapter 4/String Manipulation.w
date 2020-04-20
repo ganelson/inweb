@@ -268,6 +268,45 @@ void Str::truncate(text_stream *S, int len) {
 	if (len < Str::len(S)) Str::put(Str::at(S, len), 0);
 }
 
+@h Indentation.
+
+=
+int Str::remove_indentation(text_stream *S, int spaces_per_tab) {
+	int spaces_in = 0, tab_stops_of_indentation = 0;
+	while (Characters::is_space_or_tab(Str::get_first_char(S))) {
+		if (Str::get_first_char(S) == '\t') {
+			spaces_in = 0;
+			tab_stops_of_indentation++;
+		} else {
+			spaces_in++;
+			if (spaces_in == spaces_per_tab) {
+				tab_stops_of_indentation++;
+				spaces_in = 0;
+			}
+		}
+		Str::delete_first_character(S);
+	}
+	if (spaces_in > 0) {
+		TEMPORARY_TEXT(respaced);
+		while (spaces_in > 0) { PUT_TO(respaced, ' '); spaces_in--; }
+		WRITE_TO(respaced, "%S", S);
+		Str::clear(S);
+		Str::copy(S, respaced);
+		DISCARD_TEXT(respaced);
+	}
+	return tab_stops_of_indentation;
+}
+
+void Str::rectify_indentation(text_stream *S, int spaces_per_tab) {
+	TEMPORARY_TEXT(tail);
+	WRITE_TO(tail, "%S", S);
+	int N = Str::remove_indentation(tail, spaces_per_tab);
+	Str::clear(S);
+	for (int i=0; i<N; i++) for (int j=0; j<spaces_per_tab; j++) PUT_TO(S, ' ');
+	WRITE_TO(S, "%S", tail);
+	DISCARD_TEXT(tail);
+}
+
 @h Copying.
 
 =

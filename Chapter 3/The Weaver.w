@@ -37,7 +37,7 @@ int Weaver::weave(weave_order *wv) {
 	int lines = Weaver::weave_inner(wv, tree, B);
 	if (cover_sheet) @<Weave bottom half of cover sheet@>;
 
-	WeaveTree::show(STDOUT, tree);
+	WeaveTree::prune(tree);
 
 	text_stream TO_struct;
 	text_stream *OUT = &TO_struct;
@@ -79,7 +79,6 @@ int Weaver::weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 				if (Reader::range_within(S->md->sect_range, wv->weave_range)) {
 					@<Weave any necessary chapter header@>;
 					@<Weave any necessary section header@>;
-					wv->current_footnote = NULL;
 					LanguageMethods::begin_weave(S, wv);
 					@<Weave this section@>;
 					@<Weave any necessary section footer@>;
@@ -90,12 +89,16 @@ int Weaver::weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 }
 
 @<Weave any necessary chapter header@> =
-	if (wv->theme_match == NULL) {
-		if (last_heading != C) {
-			@<Weave any necessary chapter footer@>;
-			last_heading = C;
+	if (last_heading != C) {
+		@<Weave any necessary chapter footer@>;
+		tree_node *CH = WeaveTree::chapter(tree, C);
+		Trees::make_child(CH, state->body_node);
+		state->chapter_node = CH;
+		state->ap = CH;
+		last_heading = C;
+		if (wv->theme_match == NULL) {
 			tree_node *H = WeaveTree::chapter_header(tree, C);
-			Trees::make_child(H, body);
+			Trees::make_child(H, state->chapter_node);
 		}
 	}
 
@@ -103,20 +106,24 @@ int Weaver::weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 	if (wv->theme_match == NULL) {
 		if (last_heading != NULL) {
 			tree_node *F = WeaveTree::chapter_footer(tree, last_heading);
-			Trees::make_child(F, body);
+			Trees::make_child(F, state->chapter_node);
 		}
 	}
 
 @<Weave any necessary section header@> =
+	tree_node *SH = WeaveTree::section(tree, S);
+	Trees::make_child(SH, state->chapter_node);
+	state->section_node = SH;
+	state->ap = SH;
 	if (wv->theme_match == NULL) {
 		tree_node *H = WeaveTree::section_header(tree, S);
-		Trees::make_child(H, body);
+		Trees::make_child(H, state->section_node);
 	}
 
 @<Weave any necessary section footer@> =
 	if (wv->theme_match == NULL) {
 		tree_node *F = WeaveTree::section_footer(tree, S);
-		Trees::make_child(F, body);
+		Trees::make_child(F, state->section_node);
 	}
 
 @h The state.
@@ -126,6 +133,8 @@ We can now begin on a clean page, by initialising the state of the weaver:
 @e MACRO_MATERIAL          /* when a macro is being defined... */
 @e DEFINITION_MATERIAL     /* ...versus when an |@d| definition is being made */
 @e CODE_MATERIAL           /* verbatim code */
+@e ENDNOTES_MATERIAL       /* endnotes at the foot of a paragraph */
+@e FOOTNOTES_MATERIAL	   /* footnote texts for a paragraph */
 
 =
 typedef struct weaver_state {
@@ -135,7 +144,12 @@ typedef struct weaver_state {
 	int horizontal_rule_just_drawn;
 	int in_run_of_definitions;
 	struct section *last_extract_from;
-	int substantive_comment;
+	struct tree_node *body_node;
+	struct tree_node *chapter_node;
+	struct tree_node *section_node;
+	struct tree_node *para_node;
+	struct tree_node *material_node;
+	struct tree_node *ap;
 } weaver_state;
 
 @<Start the weaver with a clean slate@> =
@@ -145,7 +159,12 @@ typedef struct weaver_state {
 	state->horizontal_rule_just_drawn = FALSE;
 	state->in_run_of_definitions = FALSE;
 	state->last_extract_from = NULL;
-	state->substantive_comment = FALSE;
+	state->body_node = body;
+	state->chapter_node = NULL;
+	state->section_node = NULL;
+	state->para_node = NULL;
+	state->material_node = NULL;
+	state->ap = body;
 
 @h Weaving a section.
 
@@ -160,9 +179,9 @@ typedef struct weaver_state {
 			if (toc_made == FALSE) {
 				if (Str::len(S->sect_purpose) > 0) {
 					tree_node *F = WeaveTree::purpose(tree, S->sect_purpose);
-					Trees::make_child(F, body);
+					Trees::make_child(F, state->ap);
 				}
-				Weaver::weave_table_of_contents(tree, body, S);
+				Weaver::weave_table_of_contents(tree, state->ap, S);
 				toc_made = TRUE;
 			}
 			current_P = LLL->owning_paragraph;
@@ -180,7 +199,7 @@ typedef struct weaver_state {
 		continue;
 	}
 	if (LLL->category == DEFINITIONS_LCAT) {
-		Weaver::weave_subheading(tree, wv, body, I"Definitions");
+		Weaver::weave_subheading(tree, wv, state->ap, I"Definitions");
 		state->next_heading_without_vertical_skip = TRUE;
 		state->horizontal_rule_just_drawn = FALSE;
 		continue;
@@ -190,7 +209,7 @@ typedef struct weaver_state {
 		state->next_heading_without_vertical_skip = TRUE;
 		if (state->horizontal_rule_just_drawn == FALSE) {
 			tree_node *B = WeaveTree::bar(tree);
-			Trees::make_child(B, body);
+			Trees::make_child(B, state->ap);
 		}
 		continue;
 	}
@@ -199,7 +218,8 @@ typedef struct weaver_state {
 		continue;
 
 @<Weave this paragraph@> =
-	if (current_P->starts_on_new_page) Trees::make_child(WeaveTree::pagebreak(tree), body);
+	if (current_P->starts_on_new_page)
+		Trees::make_child(WeaveTree::pagebreak(tree), state->ap);
 	source_line *L = LLL;
 	if ((L->category != HEADING_START_LCAT) &&
 		(L->category != PARAGRAPH_START_LCAT))
@@ -218,27 +238,21 @@ typedef struct weaver_state {
 		}
 	}
 	L = NULL;
-	@<End any currently weaving footnote text@>;
-	int mode_now = state->kind_of_material;
-	if (state->kind_of_material != REGULAR_MATERIAL) {
-		state->kind_of_material = REGULAR_MATERIAL;
-		Weaver::change_material(tree, wv, body, mode_now, state->kind_of_material,
-			TRUE, L?(L->plainer):FALSE);
-	}
-	Weaver::show_endnotes_on_previous_paragraph(tree, wv, body, current_P);
+	Weaver::change_material(tree, state, ENDNOTES_MATERIAL, FALSE);
+	Weaver::show_endnotes_on_previous_paragraph(tree, wv, state->ap, current_P);
 
 @h How paragraphs begin.
 
 @<Deal with the marker for the start of a new paragraph, section or chapter@> =
 	state->in_run_of_definitions = FALSE;
 	LanguageMethods::reset_syntax_colouring(S->sect_language);
-	if (wv->theme_match) @<Apply special rules for thematic extracts@>
-	tree_node *H = WeaveTree::paragraph_heading(tree, current_P,
+	if (wv->theme_match) @<Apply special rules for thematic extracts@>;
+	state->para_node = WeaveTree::paragraph_heading(tree, current_P,
 		state->next_heading_without_vertical_skip);
-	Trees::make_child(H, body);
+	Trees::make_child(state->para_node, state->section_node);
+	Weaver::change_material_for_para(tree, state);
+	state->kind_of_material = REGULAR_MATERIAL;
 	state->next_heading_without_vertical_skip = FALSE;
-	if (L->category == HEADING_START_LCAT) state->substantive_comment = TRUE;
-	else state->substantive_comment = FALSE; 
 
 @ If we are weaving a selection of extracted paragraphs, normal conventions
 about breaking pages at chapters and sections fail to work. So:
@@ -246,27 +260,24 @@ about breaking pages at chapters and sections fail to work. So:
 @<Apply special rules for thematic extracts@> =
 	text_stream *cap = Tags::retrieve_caption(L->owning_paragraph, wv->theme_match);
 	if (Str::len(cap) > 0) {
-		Weaver::weave_subheading(tree, wv, body, C->md->ch_title);
+		Weaver::weave_subheading(tree, wv, state->ap, C->md->ch_title);
 	} else if (state->last_extract_from != S) {
 		TEMPORARY_TEXT(extr);
 		WRITE_TO(extr, "From %S: %S", C->md->ch_title, S->md->sect_title);
-		Weaver::weave_subheading(tree, wv, body, extr);
+		Weaver::weave_subheading(tree, wv, state->ap, extr);
 		DISCARD_TEXT(extr);
 	}
 	state->last_extract_from = S;
-	state->substantive_comment = FALSE;
 
 @ There's quite likely ordinary text on the line following the paragraph
  start indication, too, so we need to weave this out:
 
 @<Weave any regular commentary text after the heading on the same line@> =
 	if (Str::len(L->text_operand2) > 0) {
-		TEMPORARY_TEXT(OUT);
 		TEMPORARY_TEXT(matter);
 		WRITE_TO(matter, "%S\n", L->text_operand2);
-		Weaver::commentary_text(tree, wv, body, matter);
+		Weaver::commentary_text(tree, wv, state->ap, matter);
 		DISCARD_TEXT(matter);
-		state->substantive_comment = TRUE;
 	}
 
 @<Weave this line@> =
@@ -277,21 +288,13 @@ about breaking pages at chapters and sections fail to work. So:
 	}
 
 	if (L->category == END_EXTRACT_LCAT) {
-		Weaver::change_material(tree, wv, body, state->kind_of_material, REGULAR_MATERIAL,
-			TRUE, FALSE);
-		state->kind_of_material = REGULAR_MATERIAL;
+		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE);
 		continue;
 	}
 
 	TEMPORARY_TEXT(matter); Str::copy(matter, L->text);
 	if (L->is_commentary) @<Weave verbatim matter in commentary style@>
-	else {
-		TEMPORARY_TEXT(OUT);
-		@<Weave verbatim matter in code style@>;
-		tree_node *V = WeaveTree::verbatim(tree, OUT);
-		Trees::make_child(V, body);
-		DISCARD_TEXT(OUT);
-	}
+	else @<Weave verbatim matter in code style@>;
 	DISCARD_TEXT(matter);
 
 @ And lastly we ignore commands, or act on them if they happen to be aimed
@@ -300,12 +303,12 @@ at us; but we don't weave them into the output, that's for sure.
 @<Respond to any commands aimed at the weaver, and otherwise skip commands@> =
 	if (L->category == COMMAND_LCAT) {
 		if (L->command_code == PAGEBREAK_CMD)
-			Trees::make_child(WeaveTree::pagebreak(tree), body);
+			Trees::make_child(WeaveTree::pagebreak(tree), state->ap);
 		if (L->command_code == GRAMMAR_INDEX_CMD)
-			Trees::make_child(WeaveTree::grammar_index(tree), body);
+			Trees::make_child(WeaveTree::grammar_index(tree), state->ap);
 		if (L->command_code == FIGURE_CMD) @<Weave a figure@>;
 		if (L->command_code == EMBED_CMD)
-			Weaver::embed(tree, wv, body, L->text_operand, L->text_operand2);
+			Weaver::embed(tree, wv, state->ap, L->text_operand, L->text_operand2);
 		/* Otherwise assume it was a tangler command, and ignore it here */
 		continue;
 	}
@@ -316,17 +319,17 @@ at us; but we don't weave them into the output, that's for sure.
 	if (Regexp::match(&mr, figname, L"(%d+)cm: (%c+)")) {
 		if (S->md->using_syntax > V1_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "Figure: Xcm:...", V1_SYNTAX);
-		Weaver::figure(tree, wv, body, mr.exp[1], Str::atoi(mr.exp[0], 0), -1);
+		Weaver::figure(tree, wv, state->ap, mr.exp[1], Str::atoi(mr.exp[0], 0), -1);
 	} else if (Regexp::match(&mr, figname, L"(%c+) width (%d+)cm")) {
 		if (S->md->using_syntax < V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "F width Xcm", V2_SYNTAX);
-		Weaver::figure(tree, wv, body, mr.exp[0], Str::atoi(mr.exp[1], 0), -1);
+		Weaver::figure(tree, wv, state->ap, mr.exp[0], Str::atoi(mr.exp[1], 0), -1);
 	} else if (Regexp::match(&mr, figname, L"(%c+) height (%d+)cm")) {
 		if (S->md->using_syntax < V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "F height Xcm", V2_SYNTAX);
-		Weaver::figure(tree, wv, body, mr.exp[0], -1, Str::atoi(mr.exp[1], 0));
+		Weaver::figure(tree, wv, state->ap, mr.exp[0], -1, Str::atoi(mr.exp[1], 0));
 	} else {
-		Weaver::figure(tree, wv, body, figname, -1, -1);
+		Weaver::figure(tree, wv, state->ap, figname, -1, -1);
 	}
 	Regexp::dispose_of(&mr);	
 
@@ -337,19 +340,18 @@ we only have to transcribe it. But not quite!
 @<Weave verbatim matter in commentary style@> =
 	@<Weave displayed source in its own special style@>;
 	@<Weave a blank line as a thin vertical skip and paragraph break@>;
-	@<Weave bracketed list indications at start of line into indentation@>;
+	@<Weave bracketed list indications at start of line into items@>;
 	@<Weave tabbed code material as a new indented paragraph@>;
 	@<Weave footnotes@>;
-	state->substantive_comment = TRUE;
 	WRITE_TO(matter, "\n");
-	Weaver::commentary_text(tree, wv, body, matter);
+	Weaver::commentary_text(tree, wv, state->ap, matter);
 	continue;
 
 @ Displayed source is the material marked with |>>| arrows in column 1.
 
 @<Weave displayed source in its own special style@> =
 	if (L->category == SOURCE_DISPLAY_LCAT) {
-		Trees::make_child(WeaveTree::display_line(tree, L->text_operand), body);
+		Trees::make_child(WeaveTree::display_line(tree, L->text_operand), state->ap);
 		continue;
 	}
 
@@ -358,14 +360,11 @@ add a vertical skip between them to show the division more clearly.
 
 @<Weave a blank line as a thin vertical skip and paragraph break@> =
 	if (Regexp::string_is_white_space(matter)) {
-		if ((L->next_line) && (L->next_line->category == COMMENT_BODY_LCAT) &&
-			(state->substantive_comment)) {
+		if ((L->next_line) && (L->next_line->category == COMMENT_BODY_LCAT)) {
 			match_results mr = Regexp::create_mr();
 			if ((state->kind_of_material != CODE_MATERIAL) ||
-				(Regexp::match(&mr, matter, L"\t|(%c*)|(%c*?)"))) {
-				@<End any currently weaving footnote text@>;
-				Trees::make_child(WeaveTree::vskip(tree, TRUE), body);
-			}
+				(Regexp::match(&mr, matter, L"\t|(%c*)|(%c*?)")))
+				Trees::make_child(WeaveTree::vskip(tree, TRUE), state->ap);
 			Regexp::dispose_of(&mr);	
 		}
 		continue;
@@ -374,31 +373,23 @@ add a vertical skip between them to show the division more clearly.
 @ Here our extension is simply to provide a tidier way to use TeX's standard
 |\item| and |\itemitem| macros for indented list items.
 
-@<Weave bracketed list indications at start of line into indentation@> =
+@<Weave bracketed list indications at start of line into items@> =
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, matter, L"%(...%) (%c*)")) { /* continue single */
-		Weaver::change_material(tree, wv, body, state->kind_of_material, REGULAR_MATERIAL,
-			state->substantive_comment, FALSE);
-		state->kind_of_material = REGULAR_MATERIAL;
-		Trees::make_child(WeaveTree::weave_item_node(tree, 1, I""), body);
+		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE);
+		Trees::make_child(WeaveTree::weave_item_node(tree, 1, I""), state->ap);
 		Str::copy(matter, mr.exp[0]);
 	} else if (Regexp::match(&mr, matter, L"%(-...%) (%c*)")) { /* continue double */
-		Weaver::change_material(tree, wv, body, state->kind_of_material, REGULAR_MATERIAL,
-			state->substantive_comment, FALSE);
-		state->kind_of_material = REGULAR_MATERIAL;
-		Trees::make_child(WeaveTree::weave_item_node(tree, 2, I""), body);
+		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE);
+		Trees::make_child(WeaveTree::weave_item_node(tree, 2, I""), state->ap);
 		Str::copy(matter, mr.exp[0]);
 	} else if (Regexp::match(&mr, matter, L"%((%i+)%) (%c*)")) { /* begin single */
-		Weaver::change_material(tree, wv, body, state->kind_of_material, REGULAR_MATERIAL,
-			state->substantive_comment, FALSE);
-		state->kind_of_material = REGULAR_MATERIAL;
-		Trees::make_child(WeaveTree::weave_item_node(tree, 1, mr.exp[0]), body);
+		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE);
+		Trees::make_child(WeaveTree::weave_item_node(tree, 1, mr.exp[0]), state->ap);
 		Str::copy(matter, mr.exp[1]);
 	} else if (Regexp::match(&mr, matter, L"%(-(%i+)%) (%c*)")) { /* begin double */
-		Weaver::change_material(tree, wv, body, state->kind_of_material, REGULAR_MATERIAL,
-			state->substantive_comment, FALSE);
-		state->kind_of_material = REGULAR_MATERIAL;
-		Trees::make_child(WeaveTree::weave_item_node(tree, 2, mr.exp[0]), body);
+		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE);
+		Trees::make_child(WeaveTree::weave_item_node(tree, 2, mr.exp[0]), state->ap);
 		Str::copy(matter, mr.exp[1]);
 	}
 	Regexp::dispose_of(&mr);
@@ -409,58 +400,32 @@ in the source is set indented in code style.
 @<Weave tabbed code material as a new indented paragraph@> =
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, matter, L"\t|(%c*)|(%c*?)")) {
-		TEMPORARY_TEXT(OUT);
-		if (state->kind_of_material != CODE_MATERIAL) {
-			Weaver::change_material(tree, wv, body, state->kind_of_material, CODE_MATERIAL,
-				TRUE, L->plainer);
-			state->kind_of_material = CODE_MATERIAL;
-		}
 		TEMPORARY_TEXT(original);
+		Weaver::change_material(tree, state, CODE_MATERIAL, FALSE);
  		Str::copy(original, mr.exp[0]);
 		Str::copy(matter, mr.exp[1]);
 		TEMPORARY_TEXT(colouring);
 		for (int i=0; i<Str::len(original); i++) PUT_TO(colouring, PLAIN_COLOUR);
-		Formats::source_code(OUT, wv, 1, I"", original, colouring, I"", TRUE, TRUE,
-			FALSE, L->enable_hyperlinks);
-		Formats::text(OUT, wv, matter);
+		tree_node *CL = WeaveTree::code_line(tree);
+		Trees::make_child(CL, state->ap);
+		TextWeaver::source_code(tree, CL, original, colouring, L->enable_hyperlinks);
 		DISCARD_TEXT(colouring);
 		DISCARD_TEXT(original);
-		tree_node *V = WeaveTree::verbatim(tree, OUT);
-		Trees::make_child(V, body);
-		DISCARD_TEXT(OUT);
+		Weaver::commentary_text(tree, wv, state->ap, matter);
+		Regexp::dispose_of(&mr);
 		continue;
-	} else if (state->kind_of_material != REGULAR_MATERIAL) {
-		Weaver::change_material(tree, wv, body, state->kind_of_material, REGULAR_MATERIAL,
-			TRUE, FALSE);
-		state->kind_of_material = REGULAR_MATERIAL;
 	}
 	Regexp::dispose_of(&mr);
 
 @<Weave footnotes@> =
 	if (L->category == FOOTNOTE_TEXT_LCAT) {
-		@<End any currently weaving footnote text@>;
+		Weaver::change_material(tree, state, FOOTNOTES_MATERIAL, FALSE);
 		footnote *F = L->footnote_text;
-		wv->current_footnote = F;
-		TEMPORARY_TEXT(OUT);
-		Formats::begin_footnote_text(OUT, wv, F->cue_text);
-		tree_node *V = WeaveTree::verbatim(tree, OUT);
-		Trees::make_child(V, body);
-		DISCARD_TEXT(OUT);
+		tree_node *FN = WeaveTree::footnote(tree, F->cue_text);
+		Trees::make_child(FN, state->material_node);
 		if (F->cued_already == FALSE) Main::error_in_web(I"footnote never cued", L);
+		state->ap = FN;
 	}
-
-@<End any currently weaving footnote text@> =
-	if (wv->current_footnote) {
-		TEMPORARY_TEXT(cue);
-		WRITE_TO(cue, "%d", wv->current_footnote->footnote_text_number);
-		TEMPORARY_TEXT(OUT);
-		Formats::end_footnote_text(OUT, wv, cue);
-		tree_node *V = WeaveTree::verbatim(tree, OUT);
-		Trees::make_child(V, body);
-		DISCARD_TEXT(OUT);
-		DISCARD_TEXT(cue);
-		wv->current_footnote = NULL;
-	}	
 
 @h Code-like matter.
 Even though Inweb's approach, unlike |CWEB|'s, is to respect the layout
@@ -471,32 +436,37 @@ and macro usage is rendered differently.
 	@<Enter beginlines/endlines mode if necessary@>;
 	@<Weave a blank line as a thin vertical skip@>;
 
-	int tab_stops_of_indentation = 0;
-	@<Convert leading space in line matter to a number of tab stops@>;
+	Str::rectify_indentation(matter, 4);
 
 	TEMPORARY_TEXT(prefatory);
 	TEMPORARY_TEXT(concluding_comment);
 	@<Extract any comment matter ending the line to be set in italic@>;
 	@<Give constant definition lines slightly fancier openings@>;
 
-	if (LanguageMethods::weave_code_line(OUT, S->sect_language, wv,
-		W, C, S, L, matter, concluding_comment)) goto ClumsyLabel;
+	tree_node *CL = WeaveTree::code_line(tree);
+	Trees::make_child(CL, state->ap);
+	if (Str::len(prefatory) > 0)
+		Trees::make_child(WeaveTree::weave_defn_node(tree, prefatory), CL);
+	Str::clear(prefatory);
+
+	@<Offer the line to the language to weave@>;
 
 	TEMPORARY_TEXT(colouring);
-	LanguageMethods::syntax_colour(OUT, S->sect_language, wv, L, matter, colouring);
+	LanguageMethods::syntax_colour(S->sect_language, wv, L, matter, colouring);
 
-	int found = 0;
 	@<Find macro usages and adjust syntax colouring accordingly@>;
 	if (Str::len(prefatory) > 0) {
 		state->in_run_of_definitions = TRUE;
 	} else {
-		if (state->in_run_of_definitions) Formats::after_definitions(OUT, wv);
+		if (state->in_run_of_definitions)
+			Trees::make_child(WeaveTree::apres_defn(tree), state->ap);
 		state->in_run_of_definitions = FALSE;
 	}
 
-	Formats::source_code(OUT, wv, tab_stops_of_indentation, prefatory,
-		matter, colouring, concluding_comment, (found == 0)?TRUE:FALSE, TRUE,
-		TRUE, L->enable_hyperlinks);
+	TextWeaver::source_code(tree, CL, matter, colouring, L->enable_hyperlinks);
+	if (Str::len(concluding_comment) > 0)
+		TextWeaver::comment_text_in_code(tree, CL, concluding_comment);
+
 	DISCARD_TEXT(colouring);
 	DISCARD_TEXT(concluding_comment);
 	DISCARD_TEXT(prefatory);
@@ -507,21 +477,18 @@ and macro usage is rendered differently.
 hence the name of the following paragraph:
 
 @<Enter beginlines/endlines mode if necessary@> =
-	int mode_now = state->kind_of_material;
 	if (state->kind_of_material != CODE_MATERIAL) {
+		int will_be = CODE_MATERIAL;
 		if (L->category == MACRO_DEFINITION_LCAT)
-			state->kind_of_material = MACRO_MATERIAL;
+			will_be = MACRO_MATERIAL;
 		else if ((L->category == BEGIN_DEFINITION_LCAT) ||
 				(L->category == CONT_DEFINITION_LCAT))
-			state->kind_of_material = DEFINITION_MATERIAL;
+			will_be = DEFINITION_MATERIAL;
 		else if ((state->kind_of_material == DEFINITION_MATERIAL) &&
 			((L->category == CODE_BODY_LCAT) || (L->category == COMMENT_BODY_LCAT)) &&
 			(Str::len(L->text) == 0))
-			state->kind_of_material = DEFINITION_MATERIAL;
-		else
-			state->kind_of_material = CODE_MATERIAL;
-		Weaver::change_material(tree, wv, body, mode_now, state->kind_of_material,
-			state->substantive_comment, L->plainer);
+			will_be = DEFINITION_MATERIAL;
+		Weaver::change_material(tree, state, will_be, L->plainer);
 		state->line_break_pending = FALSE;
 	}
 
@@ -530,39 +497,12 @@ is needed):
 
 @<Weave a blank line as a thin vertical skip@> =
 	if (state->line_break_pending) {
-		Trees::make_child(WeaveTree::vskip(tree, FALSE), body);
+		Trees::make_child(WeaveTree::vskip(tree, FALSE), state->ap);
 		state->line_break_pending = FALSE;
 	}
 	if (Regexp::string_is_white_space(matter)) {
 		state->line_break_pending = TRUE;
 		goto ClumsyLabel;
-	}
-
-@ Examine the white space at the start of the code line, and count the
-number of tab steps of indentation, rating 1 tab = 4 spaces:
-
-@<Convert leading space in line matter to a number of tab stops@> =
-	int spaces_in = 0;
-	while (Characters::is_space_or_tab(Str::get_first_char(matter))) {
-		if (Str::get_first_char(matter) == '\t') {
-			spaces_in = 0;
-			tab_stops_of_indentation++;
-		} else {
-			spaces_in++;
-			if (spaces_in == 4) {
-				tab_stops_of_indentation++;
-				spaces_in = 0;
-			}
-		}
-		Str::delete_first_character(matter);
-	}
-	if (spaces_in > 0) {
-		TEMPORARY_TEXT(respaced);
-		while (spaces_in > 0) { PUT_TO(respaced, ' '); spaces_in--; }
-		WRITE_TO(respaced, "%S", matter);
-		Str::clear(matter);
-		Str::copy(matter, respaced);
-		DISCARD_TEXT(respaced);
 	}
 
 @ Comments which run to the end of a line are set in italic type. If the
@@ -599,28 +539,43 @@ otherwise, they are set flush right.
 		Regexp::dispose_of(&mr);
 	}
 
+@<Offer the line to the language to weave@> =
+	TEMPORARY_TEXT(OUT);
+	int taken = LanguageMethods::weave_code_line(OUT, S->sect_language, wv,
+		W, C, S, L, matter, concluding_comment);
+	if (taken) {
+		tree_node *V = WeaveTree::verbatim(tree, OUT);
+		Trees::make_child(V, CL);
+	}
+	DISCARD_TEXT(OUT);
+	if (taken) goto ClumsyLabel;
+
 @<Find macro usages and adjust syntax colouring accordingly@> =
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, matter, L"(%c*?)%@%<(%c*?)%@%>(%c*)")) {
 		para_macro *pmac = Macros::find_by_name(mr.exp[1], S);
 		if (pmac) {
+			TEMPORARY_TEXT(front_colouring);
+			Str::substr(front_colouring, Str::at(colouring, 0), Str::at(colouring, Str::len(mr.exp[0])));
+			TextWeaver::source_code(tree, CL, mr.exp[0], front_colouring, L->enable_hyperlinks);
+			DISCARD_TEXT(front_colouring);
 			Str::copy(matter, mr.exp[2]);
-			Formats::source_code(OUT, wv, tab_stops_of_indentation, prefatory,
-				mr.exp[0], colouring, concluding_comment, (found == 0)?TRUE:FALSE,
-				FALSE, TRUE, L->enable_hyperlinks);
-			LanguageMethods::reset_syntax_colouring(S->sect_language);
-			found++;
-			int defn = FALSE;
-			if (pmac) defn = (L->owning_paragraph == pmac->defining_paragraph)?TRUE:FALSE;
+			int N = Str::len(matter);
+			TEMPORARY_TEXT(back_colouring);
+			Str::substr(back_colouring,
+				Str::at(colouring, Str::len(colouring) - N), Str::at(colouring, Str::len(colouring)));
+			Str::clear(colouring);
+			Str::copy(colouring, back_colouring);
+			DISCARD_TEXT(back_colouring);
+			if (Str::len(concluding_comment) > 0)
+				TextWeaver::comment_text_in_code(tree, CL, concluding_comment);
+			int defn = (L->owning_paragraph == pmac->defining_paragraph)?TRUE:FALSE;
 			if (defn) state->in_run_of_definitions = FALSE;
-			if (pmac) Formats::para_macro(OUT, wv, pmac, defn);
-			if (defn) Str::clear(matter);
-			TEMPORARY_TEXT(temp);
-			int L = Str::len(colouring);
-			for (int i = L - Str::len(matter); i < L; i++)
-				PUT_TO(temp, Str::get_at(colouring, i));
-			Str::copy(colouring, temp);
-			DISCARD_TEXT(temp);
+			if (defn) {
+				Str::clear(matter);
+				Str::clear(colouring);
+			}
+			Trees::make_child(WeaveTree::pmac(tree, pmac, defn), CL);
 		} else break;
 	}
 	Regexp::dispose_of(&mr);
@@ -632,8 +587,9 @@ structure usage, or how |CWEB|-style code substitutions were made.
 
 =
 void Weaver::show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
-	weave_order *wv, tree_node *body, paragraph *P) {
-	Tags::show_endnote_on_ifdefs(tree, wv, body, P);
+	weave_order *wv, tree_node *ap, paragraph *P) {
+	tree_node *body = ap;
+	Tags::show_endnote_on_ifdefs(tree, ap, P);
 	if (P->defines_macro)
 		@<Show endnote on where paragraph macro is used@>;
 	language_function *fn;
@@ -645,57 +601,53 @@ void Weaver::show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 }
 
 @<Show endnote on where paragraph macro is used@> =
-	TEMPORARY_TEXT(OUT);
-	Formats::text(OUT, wv, I"This code is ");
+	tree_node *E = WeaveTree::endnote(tree);
+	Trees::make_child(E, body); ap = E;
+	TextWeaver::commentary_text(tree, ap, I"This code is ");
 	int ct = 0;
 	macro_usage *mu;
 	LOOP_OVER_LINKED_LIST(mu, macro_usage, P->defines_macro->macro_usages)
 		ct++;
-	if (ct == 1) Formats::text(OUT, wv, I"never used");
+	if (ct == 1) TextWeaver::commentary_text(tree, ap, I"never used");
 	else {
 		int k = 0, used_flag = FALSE;
 		LOOP_OVER_LINKED_LIST(mu, macro_usage, P->defines_macro->macro_usages)
 			if (P != mu->used_in_paragraph) {
 				if (used_flag) {
-					if (k < ct-1) Formats::text(OUT, wv, I", ");
-					else Formats::text(OUT, wv, I" and ");
+					if (k < ct-1) TextWeaver::commentary_text(tree, ap, I", ");
+					else TextWeaver::commentary_text(tree, ap, I" and ");
 				} else {
-					Formats::text(OUT, wv, I"used in ");
+					TextWeaver::commentary_text(tree, ap, I"used in ");
 				}
-				Formats::locale(OUT, wv, mu->used_in_paragraph, NULL);
+				Trees::make_child(WeaveTree::locale(tree, mu->used_in_paragraph, NULL), ap);
 				used_flag = TRUE; k++;
 				switch (mu->multiplicity) {
 					case 1: break;
-					case 2: Formats::text(OUT, wv, I" (twice)"); break;
-					case 3: Formats::text(OUT, wv, I" (three times)"); break;
-					case 4: Formats::text(OUT, wv, I" (four times)"); break;
-					case 5: Formats::text(OUT, wv, I" (five times)"); break;
+					case 2: TextWeaver::commentary_text(tree, ap, I" (twice)"); break;
+					case 3: TextWeaver::commentary_text(tree, ap, I" (three times)"); break;
+					case 4: TextWeaver::commentary_text(tree, ap, I" (four times)"); break;
+					case 5: TextWeaver::commentary_text(tree, ap, I" (five times)"); break;
 					default: {
 						TEMPORARY_TEXT(mt);
 						WRITE_TO(mt, " (%d times)", mu->multiplicity);
-						Formats::text(OUT, wv, mt);
+						TextWeaver::commentary_text(tree, ap, mt);
 						DISCARD_TEXT(mt);
 						break;
 					}
 				}
 			}
 	}
-	Formats::text(OUT, wv, I".");
-	Weaver::show_endnote(tree, wv, body, OUT);
-	DISCARD_TEXT(OUT);
+	TextWeaver::commentary_text(tree, ap, I".");
 
 @<Show endnote on where this function is used@> =
-	if (fn->usage_described == FALSE) {
-		TEMPORARY_TEXT(OUT);
-		Weaver::show_function_usage(OUT, wv, P, fn, FALSE);
-		Weaver::show_endnote(tree, wv, body, OUT);
-		DISCARD_TEXT(OUT);
-	}
+	if (fn->usage_described == FALSE)
+		Weaver::show_function_usage(tree, wv, ap, P, fn, FALSE);
 
 @<Show endnote on where this language type is accessed@> =
-	TEMPORARY_TEXT(OUT);
-	Formats::text(OUT, wv, I"The structure ");
-	Formats::text(OUT, wv, st->structure_name);
+	tree_node *E = WeaveTree::endnote(tree);
+	Trees::make_child(E, body); ap = E;
+	TextWeaver::commentary_text(tree, ap, I"The structure ");
+	TextWeaver::commentary_text(tree, ap, st->structure_name);
 
 	section *S;
 	LOOP_OVER(S, section) S->scratch_flag = FALSE;
@@ -718,38 +670,32 @@ void Weaver::show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 			usage_count++;
 			if (S != P->under_section) external++;
 		}
-	if (external == 0) Formats::text(OUT, wv, I" is private to this section");
+	if (external == 0) TextWeaver::commentary_text(tree, ap, I" is private to this section");
 	else {
-		Formats::text(OUT, wv, I" is accessed in ");
+		TextWeaver::commentary_text(tree, ap, I" is accessed in ");
 		int c = 0;
 		LOOP_OVER(S, section)
 			if ((S->scratch_flag) && (S != P->under_section)) {
-				if (c++ > 0) Formats::text(OUT, wv, I", ");
-				Formats::text(OUT, wv, S->md->sect_range);
+				if (c++ > 0) TextWeaver::commentary_text(tree, ap, I", ");
+				TextWeaver::commentary_text(tree, ap, S->md->sect_range);
 			}
-		if (P->under_section->scratch_flag) Formats::text(OUT, wv, I" and here");
+		if (P->under_section->scratch_flag) TextWeaver::commentary_text(tree, ap, I" and here");
 	}
-	Formats::text(OUT, wv, I".");
-	Weaver::show_endnote(tree, wv, body, OUT);
-	DISCARD_TEXT(OUT);
+	TextWeaver::commentary_text(tree, ap, I".");
 
 @ =
-void Weaver::show_endnote(heterogeneous_tree *tree,
-	weave_order *wv, tree_node *body, text_stream *text) {
-	tree_node *E = WeaveTree::endnote(tree, text);
-	Trees::make_child(E, body);
-}
-
-@ =
-void Weaver::show_function_usage(OUTPUT_STREAM, weave_order *wv, paragraph *P,
-	language_function *fn, int as_list) {
+void Weaver::show_function_usage(heterogeneous_tree *tree, weave_order *wv,
+	tree_node *ap, paragraph *P, language_function *fn, int as_list) {
+	tree_node *body = ap;
 	fn->usage_described = TRUE;
 	hash_table_entry *hte =
 		Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,
 			fn->function_name, FALSE);
 	if (as_list == FALSE) {
-		Formats::text(OUT, wv, I"The function ");
-		Formats::text(OUT, wv, fn->function_name);
+		tree_node *E = WeaveTree::endnote(tree);
+		Trees::make_child(E, body); ap = E;
+		TextWeaver::commentary_text(tree, ap, I"The function ");
+		TextWeaver::commentary_text(tree, ap, fn->function_name);
 	}
 	int used_flag = FALSE;
 	hash_table_entry_usage *hteu = NULL;
@@ -764,21 +710,21 @@ void Weaver::show_function_usage(OUTPUT_STREAM, weave_order *wv, paragraph *P,
 			@<Cite usage of function here@>;
 	if (used_flag == FALSE) {
 		if (as_list == FALSE) {
-			Formats::text(OUT, wv, I" appears nowhere else");
+			TextWeaver::commentary_text(tree, ap, I" appears nowhere else");
 		} else {
-			Formats::text(OUT, wv, I"none");
+			TextWeaver::commentary_text(tree, ap, I"none");
 		}
 	}
 	if (as_list == FALSE) {
 		if ((last_cited_in != P->under_section) && (last_cited_in))
-			Formats::text(OUT, wv, I")");
-		Formats::text(OUT, wv, I".");
+			TextWeaver::commentary_text(tree, ap, I")");
+		TextWeaver::commentary_text(tree, ap, I".");
 	}
 }
 
 @<Cite usage of function here@> =
 	if (as_list == FALSE) {
-		if (used_flag == FALSE) Formats::text(OUT, wv, I" is used in ");
+		if (used_flag == FALSE) TextWeaver::commentary_text(tree, ap, I" is used in ");
 	}
 	used_flag = TRUE;
 	section *S = hteu->usage_recorded_at->under_section;
@@ -786,55 +732,64 @@ void Weaver::show_function_usage(OUTPUT_STREAM, weave_order *wv, paragraph *P,
 		count_under = 0;
 		if (last_cited_in) {
 			if (as_list == FALSE) {
-				if (last_cited_in != P->under_section) Formats::text(OUT, wv, I"), ");
-				else Formats::text(OUT, wv, I", ");
+				if (last_cited_in != P->under_section) TextWeaver::commentary_text(tree, ap, I"), ");
+				else TextWeaver::commentary_text(tree, ap, I", ");
 			} else {
-				if (last_cited_in != P->under_section) WRITE("<br>");
-				else Formats::text(OUT, wv, I", ");
+				if (last_cited_in != P->under_section) TextWeaver::commentary_text(tree, ap, I"<br>");
+				else TextWeaver::commentary_text(tree, ap, I", ");
 			}
 		}
-		Formats::text(OUT, wv, hteu->usage_recorded_at->under_section->md->sect_title);
-		if (as_list == FALSE) Formats::text(OUT, wv, I" (");
-		else WRITE(" - ");
+		TextWeaver::commentary_text(tree, ap, hteu->usage_recorded_at->under_section->md->sect_title);
+		if (as_list == FALSE) TextWeaver::commentary_text(tree, ap, I" (");
+		else TextWeaver::commentary_text(tree, ap, I" - ");
 	}
-	if (count_under++ > 0) Formats::text(OUT, wv, I", ");
-	Formats::locale(OUT, wv, hteu->usage_recorded_at, NULL);
+	if (count_under++ > 0) TextWeaver::commentary_text(tree, ap, I", ");
+	Trees::make_child(WeaveTree::locale(tree, hteu->usage_recorded_at, NULL), ap);
 	last_cited_in = hteu->usage_recorded_at->under_section;
 
 @h Non-paragraph subheadings.
 
 =
 void Weaver::weave_subheading(heterogeneous_tree *tree, weave_order *wv,
-	tree_node *body, text_stream *text) {
+	tree_node *ap, text_stream *text) {
 	tree_node *D = WeaveTree::subheading(tree, text);
-	Trees::make_child(D, body);
+	Trees::make_child(D, ap);
 }
 
-void Weaver::change_material(heterogeneous_tree *tree, weave_order *wv,
-	tree_node *body, int old_material, int new_material, int content, int plainly) {
-	tree_node *D = WeaveTree::chm(tree, old_material, new_material, content, plainly);
-	Trees::make_child(D, body);
+void Weaver::change_material(heterogeneous_tree *tree,
+	weaver_state *state, int new_material, int plainly) {
+	if (state->kind_of_material != new_material) {
+		tree_node *D = WeaveTree::material(tree, new_material, plainly);
+		Trees::make_child(D, state->para_node);
+		state->material_node = D;
+		state->ap = D;
+		state->kind_of_material = new_material;
+	}
+}
+
+void Weaver::change_material_for_para(heterogeneous_tree *tree, weaver_state *state) {
+	tree_node *D = WeaveTree::material(tree, REGULAR_MATERIAL, FALSE);
+	Trees::make_child(D, state->para_node);
+	state->material_node = D;
+	state->ap = D;
+	state->kind_of_material = REGULAR_MATERIAL;
 }
 
 void Weaver::figure(heterogeneous_tree *tree, weave_order *wv,
-	tree_node *body, text_stream *figname, int w, int h) {
+	tree_node *ap, text_stream *figname, int w, int h) {
 	tree_node *F = WeaveTree::figure(tree, figname, w, h);
-	Trees::make_child(F, body);
+	Trees::make_child(F, ap);
 }
 
 void Weaver::embed(heterogeneous_tree *tree, weave_order *wv,
-	tree_node *body, text_stream *service, text_stream *ID) {
+	tree_node *ap, text_stream *service, text_stream *ID) {
 	tree_node *F = WeaveTree::embed(tree, service, ID);
-	Trees::make_child(F, body);
+	Trees::make_child(F, ap);
 }
 
 void Weaver::commentary_text(heterogeneous_tree *tree, weave_order *wv,
-	tree_node *body, text_stream *matter) {
-	TEMPORARY_TEXT(OUT);
-	Formats::text(OUT, wv, matter);
-	tree_node *V = WeaveTree::verbatim(tree, OUT);
-	Trees::make_child(V, body);
-	DISCARD_TEXT(OUT);
+	tree_node *ap, text_stream *matter) {
+	TextWeaver::commentary_text(tree, ap, matter);
 }
 
 @h Section tables of contents.
@@ -843,7 +798,7 @@ marked as |@h| headings.
 
 =
 int Weaver::weave_table_of_contents(heterogeneous_tree *tree,
-	tree_node *body, section *S) {
+	tree_node *ap, section *S) {
 	int noteworthy = 0;
 	paragraph *P;
 	LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
@@ -852,7 +807,7 @@ int Weaver::weave_table_of_contents(heterogeneous_tree *tree,
 	if (noteworthy == 0) return FALSE;
 
 	tree_node *TOC = WeaveTree::table_of_contents(tree, S->md->sect_range);
-	Trees::make_child(TOC, body);
+	Trees::make_child(TOC, ap);
 	LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
 		if ((P->weight > 0) && ((S->barred == FALSE) || (P->above_bar == FALSE))) {
 			TEMPORARY_TEXT(loc);
