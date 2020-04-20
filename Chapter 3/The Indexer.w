@@ -693,9 +693,10 @@ navigation purposes.
 @<Substitute icon and name@> =
 	if (Str::len(icon_text) > 0) {
 		WRITE_TO(substituted, "<img src=\"");
+		pathname *I = Colonies::assets_path();
+		if (I == NULL) I = Pathnames::from_text(Colonies::home());
 		Pathnames::relative_URL(substituted,
-			Filenames::up(Indexer::current_file()),
-			Pathnames::from_text(Colonies::home()));
+			Filenames::up(Indexer::current_file()), I);
 		WRITE_TO(substituted, "%S\" height=18> ", icon_text);
 	}
 	WRITE_TO(substituted, "%S", item_name);

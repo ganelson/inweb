@@ -3622,15 +3622,15 @@ linked_list_item * Indexer__heading_topmost_on_stack(index_engine_state *ies, in
 void  Indexer__start_CI_loop(index_engine_state *ies, int level, 	linked_list_item *from, linked_list_item *to, int pos) ;
 #line 432 "inweb/Chapter 3/The Indexer.w"
 void  Indexer__end_CI_loop(index_engine_state *ies) ;
-#line 704 "inweb/Chapter 3/The Indexer.w"
+#line 705 "inweb/Chapter 3/The Indexer.w"
 void  Indexer__list_module(OUTPUT_STREAM, module *M, int list_this) ;
-#line 721 "inweb/Chapter 3/The Indexer.w"
+#line 722 "inweb/Chapter 3/The Indexer.w"
 void  Indexer__transcribe_CSS(OUTPUT_STREAM, filename *CSS_file) ;
-#line 728 "inweb/Chapter 3/The Indexer.w"
+#line 729 "inweb/Chapter 3/The Indexer.w"
 void  Indexer__copy_CSS(text_stream *line, text_file_position *tfp, void *X) ;
-#line 737 "inweb/Chapter 3/The Indexer.w"
+#line 738 "inweb/Chapter 3/The Indexer.w"
 filename * Indexer__current_file(void) ;
-#line 740 "inweb/Chapter 3/The Indexer.w"
+#line 741 "inweb/Chapter 3/The Indexer.w"
 void  Indexer__set_current_file(filename *F) ;
 #line 16 "inweb/Chapter 3/The Weaver.w"
 int  Weaver__weave(weave_order *wv) ;
@@ -18374,9 +18374,10 @@ void Indexer__run_engine(text_stream *OUT, index_engine_state *ies) {
 #line 694 "inweb/Chapter 3/The Indexer.w"
 	if (Str__len(icon_text) > 0) {
 		WRITE_TO(substituted, "<img src=\"");
+		pathname *I = Colonies__assets_path();
+		if (I == NULL) I = Pathnames__from_text(Colonies__home());
 		Pathnames__relative_URL(substituted,
-			Filenames__up(Indexer__current_file()),
-			Pathnames__from_text(Colonies__home()));
+			Filenames__up(Indexer__current_file()), I);
 		WRITE_TO(substituted, "%S\" height=18> ", icon_text);
 	}
 	WRITE_TO(substituted, "%S", item_name);
@@ -18393,9 +18394,10 @@ void Indexer__run_engine(text_stream *OUT, index_engine_state *ies) {
 #line 694 "inweb/Chapter 3/The Indexer.w"
 	if (Str__len(icon_text) > 0) {
 		WRITE_TO(substituted, "<img src=\"");
+		pathname *I = Colonies__assets_path();
+		if (I == NULL) I = Pathnames__from_text(Colonies__home());
 		Pathnames__relative_URL(substituted,
-			Filenames__up(Indexer__current_file()),
-			Pathnames__from_text(Colonies__home()));
+			Filenames__up(Indexer__current_file()), I);
 		WRITE_TO(substituted, "%S\" height=18> ", icon_text);
 	}
 	WRITE_TO(substituted, "%S", item_name);
@@ -18412,9 +18414,10 @@ void Indexer__run_engine(text_stream *OUT, index_engine_state *ies) {
 #line 694 "inweb/Chapter 3/The Indexer.w"
 	if (Str__len(icon_text) > 0) {
 		WRITE_TO(substituted, "<img src=\"");
+		pathname *I = Colonies__assets_path();
+		if (I == NULL) I = Pathnames__from_text(Colonies__home());
 		Pathnames__relative_URL(substituted,
-			Filenames__up(Indexer__current_file()),
-			Pathnames__from_text(Colonies__home()));
+			Filenames__up(Indexer__current_file()), I);
 		WRITE_TO(substituted, "%S\" height=18> ", icon_text);
 	}
 	WRITE_TO(substituted, "%S", item_name);
@@ -18472,9 +18475,10 @@ void Indexer__run_engine(text_stream *OUT, index_engine_state *ies) {
 #line 694 "inweb/Chapter 3/The Indexer.w"
 	if (Str__len(icon_text) > 0) {
 		WRITE_TO(substituted, "<img src=\"");
+		pathname *I = Colonies__assets_path();
+		if (I == NULL) I = Pathnames__from_text(Colonies__home());
 		Pathnames__relative_URL(substituted,
-			Filenames__up(Indexer__current_file()),
-			Pathnames__from_text(Colonies__home()));
+			Filenames__up(Indexer__current_file()), I);
 		WRITE_TO(substituted, "%S\" height=18> ", icon_text);
 	}
 	WRITE_TO(substituted, "%S", item_name);
@@ -18491,9 +18495,10 @@ void Indexer__run_engine(text_stream *OUT, index_engine_state *ies) {
 #line 694 "inweb/Chapter 3/The Indexer.w"
 	if (Str__len(icon_text) > 0) {
 		WRITE_TO(substituted, "<img src=\"");
+		pathname *I = Colonies__assets_path();
+		if (I == NULL) I = Pathnames__from_text(Colonies__home());
 		Pathnames__relative_URL(substituted,
-			Filenames__up(Indexer__current_file()),
-			Pathnames__from_text(Colonies__home()));
+			Filenames__up(Indexer__current_file()), I);
 		WRITE_TO(substituted, "%S\" height=18> ", icon_text);
 	}
 	WRITE_TO(substituted, "%S", item_name);
@@ -18510,9 +18515,10 @@ void Indexer__run_engine(text_stream *OUT, index_engine_state *ies) {
 #line 694 "inweb/Chapter 3/The Indexer.w"
 	if (Str__len(icon_text) > 0) {
 		WRITE_TO(substituted, "<img src=\"");
+		pathname *I = Colonies__assets_path();
+		if (I == NULL) I = Pathnames__from_text(Colonies__home());
 		Pathnames__relative_URL(substituted,
-			Filenames__up(Indexer__current_file()),
-			Pathnames__from_text(Colonies__home()));
+			Filenames__up(Indexer__current_file()), I);
 		WRITE_TO(substituted, "%S\" height=18> ", icon_text);
 	}
 	WRITE_TO(substituted, "%S", item_name);
@@ -18586,7 +18592,7 @@ void Indexer__end_CI_loop(index_engine_state *ies) {
 	ies->stack_pointer--;
 }
 
-#line 704 "inweb/Chapter 3/The Indexer.w"
+#line 705 "inweb/Chapter 3/The Indexer.w"
 void Indexer__list_module(OUTPUT_STREAM, module *M, int list_this) {
 	if (list_this) {
 		WRITE("<li><p>%S - ", M->module_name);
@@ -18601,7 +18607,7 @@ void Indexer__list_module(OUTPUT_STREAM, module *M, int list_this) {
 		Indexer__list_module(OUT, N, TRUE);
 }
 
-#line 721 "inweb/Chapter 3/The Indexer.w"
+#line 722 "inweb/Chapter 3/The Indexer.w"
 void Indexer__transcribe_CSS(OUTPUT_STREAM, filename *CSS_file) {
 	WRITE("<style type=\"text/css\">\n");
 	TextFiles__read(CSS_file, FALSE, "can't open CSS file",
@@ -18614,7 +18620,7 @@ void Indexer__copy_CSS(text_stream *line, text_file_position *tfp, void *X) {
 	WRITE("%S\n", line);
 }
 
-#line 736 "inweb/Chapter 3/The Indexer.w"
+#line 737 "inweb/Chapter 3/The Indexer.w"
 filename *file_being_woven = NULL;
 filename *Indexer__current_file(void) {
 	return file_being_woven;
