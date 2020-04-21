@@ -8,652 +8,10 @@
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script src="http://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-<script type="text/javascript">
-		(function() {
-  (function($) {
-    return $.bigfoot = function(options) {
-      var addBreakpoint, baseFontSize, bigfoot, buttonHover, calculatePixelDimension, cleanFootnoteLinks, clickButton, createPopover, defaults, deleteEmptyOrHR, escapeKeypress, footnoteInit, getSetting, makeDefaultCallbacks, popoverStates, positionTooltip, removeBackLinks, removeBreakpoint, removePopovers, replaceWithReferenceAttributes, repositionFeet, roomCalc, settings, touchClick, unhoverFeet, updateSetting, viewportDetails;
-      bigfoot = void 0;
-      defaults = {
-        actionOriginalFN: "hide",
-        activateCallback: function() {},
-        activateOnHover: false,
-        allowMultipleFN: false,
-        anchorPattern: /(fn|footnote|note)[:\-_\d]/gi,
-        anchorParentTagname: 'sup',
-        breakpoints: {},
-        deleteOnUnhover: false,
-        footnoteParentClass: 'footnote',
-        footnoteTagname: 'li',
-        hoverDelay: 250,
-        numberResetSelector: void 0,
-        popoverDeleteDelay: 300,
-        popoverCreateDelay: 100,
-        positionContent: true,
-        preventPageScroll: true,
-        scope: false,
-        useFootnoteOnlyOnce: true,
-        contentMarkup: "<aside class=\"bigfoot-footnote is-positioned-bottom\" data-footnote-number=\"{{FOOTNOTENUM}}\" data-footnote-identifier=\"{{FOOTNOTEID}}\" alt=\"Footnote {{FOOTNOTENUM}}\"> <div class=\"bigfoot-footnote__wrapper\"> <div class=\"bigfoot-footnote__content\"> {{FOOTNOTECONTENT}} </div></div> <div class=\"bigfoot-footnote__tooltip\"></div> </aside>",
-        buttonMarkup: "<div class='bigfoot-footnote__container'> <button class=\"bigfoot-footnote__button\" id=\"{{SUP:data-footnote-backlink-ref}}\" data-footnote-number=\"{{FOOTNOTENUM}}\" data-footnote-identifier=\"{{FOOTNOTEID}}\" alt=\"See Footnote {{FOOTNOTENUM}}\" rel=\"footnote\" data-bigfoot-footnote=\"{{FOOTNOTECONTENT}}\"> <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg> <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg> <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg> </button></div>"
-      };
-      settings = $.extend(defaults, options);
-      popoverStates = {};
-      footnoteInit = function() {
-        var $curResetElement, $currentLastFootnoteLink, $footnoteAnchors, $footnoteButton, $lastResetElement, $parent, $relevantFNLink, $relevantFootnote, finalFNLinks, footnoteButton, footnoteButtonSearchQuery, footnoteContent, footnoteIDNum, footnoteLinks, footnoteNum, footnotes, i, _i, _ref, _results;
-        footnoteButtonSearchQuery = settings.scope ? "" + settings.scope + " a[href*=\"#\"]" : "a[href*=\"#\"]";
-        $footnoteAnchors = $(footnoteButtonSearchQuery).filter(function() {
-          var $this, relAttr;
-          $this = $(this);
-          relAttr = $this.attr("rel");
-          if (relAttr === "null" || (relAttr == null)) {
-            relAttr = "";
-          }
-          return ("" + ($this.attr("href")) + relAttr).match(settings.anchorPattern) && $this.closest("[class*=" + settings.footnoteParentClass + "]:not(a):not(" + settings.anchorParentTagname + ")").length < 1;
-        });
-        footnotes = [];
-        footnoteLinks = [];
-        finalFNLinks = [];
-        cleanFootnoteLinks($footnoteAnchors, footnoteLinks);
-        $(footnoteLinks).each(function() {
-          var $closestFootnoteEl, relatedFN;
-          relatedFN = $(this).data("footnote-ref").replace(/[:.+~*\]\[]/g, "\\$&");
-          if (settings.useFootnoteOnlyOnce) {
-            relatedFN = "" + relatedFN + ":not(.footnote-processed)";
-          }
-          $closestFootnoteEl = $(relatedFN).closest(settings.footnoteTagname);
-          if ($closestFootnoteEl.length > 0) {
-            footnotes.push($closestFootnoteEl.first().addClass("footnote-processed"));
-            return finalFNLinks.push(this);
-          }
-        });
-        $currentLastFootnoteLink = $("[data-footnote-identifier]:last");
-        footnoteIDNum = $currentLastFootnoteLink.length < 1 ? 0 : +$currentLastFootnoteLink.data("footnote-identifier");
-        _results = [];
-        for (i = _i = 0, _ref = footnotes.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-          footnoteContent = removeBackLinks($(footnotes[i]).html().trim(), $(finalFNLinks[i]).data("footnote-backlink-ref"));
-          footnoteContent = footnoteContent.replace(/"/g, "&quot;").replace(/&lt;/g, "&ltsym;").replace(/&gt;/g, "&gtsym;");
-          footnoteIDNum += 1;
-          footnoteButton = "";
-          $relevantFNLink = $(finalFNLinks[i]);
-          $relevantFootnote = $(footnotes[i]);
-          if (settings.numberResetSelector != null) {
-            $curResetElement = $relevantFNLink.closest(settings.numberResetSelector);
-            if ($curResetElement.is($lastResetElement)) {
-              footnoteNum += 1;
-            } else {
-              footnoteNum = 1;
-            }
-            $lastResetElement = $curResetElement;
-          } else {
-            footnoteNum = footnoteIDNum;
-          }
-          if (footnoteContent.indexOf("<") !== 0) {
-            footnoteContent = "<p>" + footnoteContent + "</p>";
-          }
-          footnoteButton = settings.buttonMarkup.replace(/\{\{FOOTNOTENUM\}\}/g, footnoteNum).replace(/\{\{FOOTNOTEID\}\}/g, footnoteIDNum).replace(/\{\{FOOTNOTECONTENT\}\}/g, footnoteContent);
-          footnoteButton = replaceWithReferenceAttributes(footnoteButton, "SUP", $relevantFNLink);
-          footnoteButton = replaceWithReferenceAttributes(footnoteButton, "FN", $relevantFootnote);
-          $footnoteButton = $(footnoteButton).insertBefore($relevantFNLink);
-          $parent = $relevantFootnote.parent();
-          switch (settings.actionOriginalFN.toLowerCase()) {
-            case "hide":
-              $relevantFNLink.addClass("footnote-print-only");
-              $relevantFootnote.addClass("footnote-print-only");
-              _results.push(deleteEmptyOrHR($parent));
-              break;
-            case "delete":
-              $relevantFNLink.remove();
-              $relevantFootnote.remove();
-              _results.push(deleteEmptyOrHR($parent));
-              break;
-            default:
-              _results.push($relevantFNLink.addClass("footnote-print-only"));
-          }
-        }
-        return _results;
-      };
-      cleanFootnoteLinks = function($footnoteAnchors, footnoteLinks) {
-        var $parent, $supChild, linkHREF, linkID;
-        if (footnoteLinks == null) {
-          footnoteLinks = [];
-        }
-        $parent = void 0;
-        $supChild = void 0;
-        linkHREF = void 0;
-        linkID = void 0;
-        $footnoteAnchors.each(function() {
-          var $child, $this;
-          $this = $(this);
-          linkHREF = "#" + ($this.attr("href")).split("#")[1];
-          $parent = $this.closest(settings.anchorParentTagname);
-          $child = $this.find(settings.anchorParentTagname);
-          if ($parent.length > 0) {
-            linkID = ($parent.attr("id") || "") + ($this.attr("id") || "");
-            return footnoteLinks.push($parent.attr({
-              "data-footnote-backlink-ref": linkID,
-              "data-footnote-ref": linkHREF
-            }));
-          } else if ($child.length > 0) {
-            linkID = ($child.attr("id") || "") + ($this.attr("id") || "");
-            return footnoteLinks.push($this.attr({
-              "data-footnote-backlink-ref": linkID,
-              "data-footnote-ref": linkHREF
-            }));
-          } else {
-            linkID = $this.attr("id") || "";
-            return footnoteLinks.push($this.attr({
-              "data-footnote-backlink-ref": linkID,
-              "data-footnote-ref": linkHREF
-            }));
-          }
-        });
-      };
-      deleteEmptyOrHR = function($el) {
-        var $parent;
-        $parent = void 0;
-        if ($el.is(":empty") || $el.children(":not(.footnote-print-only)").length === 0) {
-          $parent = $el.parent();
-          if (settings.actionOriginalFN.toLowerCase() === "delete") {
-            $el.remove();
-          } else {
-            $el.addClass("footnote-print-only");
-          }
-          return deleteEmptyOrHR($parent);
-        } else if ($el.children(":not(.footnote-print-only)").length === $el.children("hr:not(.footnote-print-only)").length) {
-          $parent = $el.parent();
-          if (settings.actionOriginalFN.toLowerCase() === "delete") {
-            $el.remove();
-          } else {
-            $el.children("hr").addClass("footnote-print-only");
-            $el.addClass("footnote-print-only");
-          }
-          return deleteEmptyOrHR($parent);
-        }
-      };
-      removeBackLinks = function(footnoteHTML, backlinkID) {
-        var regex;
-        if (backlinkID.indexOf(' ') >= 0) {
-          backlinkID = backlinkID.trim().replace(/\s+/g, "|").replace(/(.*)/g, "($1)");
-        }
-        regex = new RegExp("(\\s|&nbsp;)*<\\s*a[^#<]*#" + backlinkID + "[^>]*>(.*?)<\\s*/\\s*a>", "g");
-        return footnoteHTML.replace(regex, "").replace("[]", "");
-      };
-      replaceWithReferenceAttributes = function(string, referenceKeyword, $referenceElement) {
-        var refMatches, refRegex, refReplaceRegex, refReplaceText;
-        refRegex = new RegExp("\\{\\{" + referenceKeyword + ":([^\\}]*)\\}\\}", "g");
-        refMatches = void 0;
-        refReplaceText = void 0;
-        refReplaceRegex = void 0;
-        refMatches = refRegex.exec(string);
-        while (refMatches) {
-          if (refMatches[1]) {
-            refReplaceText = $referenceElement.attr(refMatches[1]) || "";
-            string = string.replace("{{" + referenceKeyword + ":" + refMatches[1] + "}}", refReplaceText);
-          }
-          refMatches = refRegex.exec(string);
-        }
-        return string;
-      };
-      buttonHover = function(event) {
-        var $buttonHovered, dataIdentifier, otherPopoverSelector;
-        if (settings.activateOnHover) {
-          $buttonHovered = $(event.target).closest(".bigfoot-footnote__button");
-          dataIdentifier = "[data-footnote-identifier=\"" + ($buttonHovered.attr("data-footnote-identifier")) + "\"]";
-          if ($buttonHovered.hasClass("is-active")) {
-            return;
-          }
-          $buttonHovered.addClass("is-hover-instantiated");
-          if (!settings.allowMultipleFN) {
-            otherPopoverSelector = ".bigfoot-footnote:not(" + dataIdentifier + ")";
-            removePopovers(otherPopoverSelector);
-          }
-          createPopover(".bigfoot-footnote__button" + dataIdentifier).addClass("is-hover-instantiated");
-        }
-      };
-      touchClick = function(event) {
-        var $nearButton, $nearFootnote, $target;
-        $target = $(event.target);
-        $nearButton = $target.closest(".bigfoot-footnote__button");
-        $nearFootnote = $target.closest(".bigfoot-footnote");
-        if ($nearButton.length > 0) {
-          event.preventDefault();
-          clickButton($nearButton);
-        } else if ($nearFootnote.length < 1) {
-          if ($(".bigfoot-footnote").length > 0) {
-            removePopovers();
-          }
-        }
-      };
-      clickButton = function($button) {
-        var dataIdentifier;
-        $button.blur();
-        dataIdentifier = "data-footnote-identifier=\"" + ($button.attr("data-footnote-identifier")) + "\"";
-        if ($button.hasClass("changing")) {
-          return;
-        } else if (!$button.hasClass("is-active")) {
-          $button.addClass("changing");
-          setTimeout((function() {
-            return $button.removeClass("changing");
-          }), settings.popoverCreateDelay);
-          createPopover(".bigfoot-footnote__button[" + dataIdentifier + "]");
-          $button.addClass("is-click-instantiated");
-          if (!settings.allowMultipleFN) {
-            removePopovers(".bigfoot-footnote:not([" + dataIdentifier + "])");
-          }
-        } else {
-          if (!settings.allowMultipleFN) {
-            removePopovers();
-          } else {
-            removePopovers(".bigfoot-footnote[" + dataIdentifier + "]");
-          }
-        }
-      };
-      createPopover = function(selector) {
-        var $buttons, $popoversCreated;
-        $buttons = void 0;
-        if (typeof selector !== "string" && settings.allowMultipleFN) {
-          $buttons = selector;
-        } else if (typeof selector !== "string") {
-          $buttons = selector.first();
-        } else if (settings.allowMultipleFN) {
-          $buttons = $(selector).closest(".bigfoot-footnote__button");
-        } else {
-          $buttons = $(selector + ":first").closest(".bigfoot-footnote__button");
-        }
-        $popoversCreated = $();
-        $buttons.each(function() {
-          var $content, $contentContainer, $this, content;
-          $this = $(this);
-          content = void 0;
-          try {
-            content = settings.contentMarkup.replace(/\{\{FOOTNOTENUM\}\}/g, $this.attr("data-footnote-number")).replace(/\{\{FOOTNOTEID\}\}/g, $this.attr("data-footnote-identifier")).replace(/\{\{FOOTNOTECONTENT\}\}/g, $this.attr("data-bigfoot-footnote")).replace(/\&gtsym\;/g, "&gt;").replace(/\&ltsym\;/g, "&lt;");
-            return content = replaceWithReferenceAttributes(content, "BUTTON", $this);
-          } finally {
-            $content = $(content);
-            try {
-              settings.activateCallback($content, $this);
-            } catch (_error) {}
-            $content.insertAfter($buttons);
-            popoverStates[$this.attr("data-footnote-identifier")] = "init";
-            $content.attr("bigfoot-max-width", calculatePixelDimension($content.css("max-width"), $content));
-            $content.css("max-width", 10000);
-            $contentContainer = $content.find(".bigfoot-footnote__content");
-            $content.attr("data-bigfoot-max-height", calculatePixelDimension($contentContainer.css("max-height"), $contentContainer));
-            repositionFeet();
-            $this.addClass("is-active");
-            $content.find(".bigfoot-footnote__content").bindScrollHandler();
-            $popoversCreated = $popoversCreated.add($content);
-          }
-        });
-        setTimeout((function() {
-          return $popoversCreated.addClass("is-active");
-        }), settings.popoverCreateDelay);
-        return $popoversCreated;
-      };
-      baseFontSize = function() {
-        var el, size;
-        el = document.createElement("div");
-        el.style.cssText = "display:inline-block;padding:0;line-height:1;position:absolute;visibility:hidden;font-size:1em;";
-        el.appendChild(document.createElement("M"));
-        document.body.appendChild(el);
-        size = el.offsetHeight;
-        document.body.removeChild(el);
-        return size;
-      };
-      calculatePixelDimension = function(dim, $el) {
-        if (dim === "none") {
-          dim = 10000;
-        } else if (dim.indexOf("rem") >= 0) {
-          dim = parseFloat(dim) * baseFontSize();
-        } else if (dim.indexOf("em") >= 0) {
-          dim = parseFloat(dim) * parseFloat($el.css("font-size"));
-        } else if (dim.indexOf("px") >= 0) {
-          dim = parseFloat(dim);
-          if (dim <= 60) {
-            dim = dim / parseFloat($el.parent().css("width"));
-          }
-        } else if (dim.indexOf("%") >= 0) {
-          dim = parseFloat(dim) / 100;
-        }
-        return dim;
-      };
-      $.fn.bindScrollHandler = function() {
-        if (!settings.preventPageScroll) {
-          return $(this);
-        }
-        $(this).on("DOMMouseScroll mousewheel", function(event) {
-          var $popover, $this, delta, height, prevent, scrollHeight, scrollTop, up;
-          $this = $(this);
-          scrollTop = $this.scrollTop();
-          scrollHeight = $this[0].scrollHeight;
-          height = parseInt($this.css("height"));
-          $popover = $this.closest(".bigfoot-footnote");
-          if ($this.scrollTop() > 0 && $this.scrollTop() < 10) {
-            $popover.addClass("is-scrollable");
-          }
-          if (!$popover.hasClass("is-scrollable")) {
-            return;
-          }
-          delta = event.type === "DOMMouseScroll" ? event.originalEvent.detail * -40 : event.originalEvent.wheelDelta;
-          up = delta > 0;
-          prevent = function() {
-            event.stopPropagation();
-            event.preventDefault();
-            event.returnValue = false;
-            return false;
-          };
-          if (!up && -delta > scrollHeight - height - scrollTop) {
-            $this.scrollTop(scrollHeight);
-            $popover.addClass("is-fully-scrolled");
-            return prevent();
-          } else if (up && delta > scrollTop) {
-            $this.scrollTop(0);
-            $popover.removeClass("is-fully-scrolled");
-            return prevent();
-          } else {
-            return $popover.removeClass("is-fully-scrolled");
-          }
-        });
-        return $(this);
-      };
-      unhoverFeet = function(e) {
-        if (settings.deleteOnUnhover && settings.activateOnHover) {
-          return setTimeout((function() {
-            var $target;
-            $target = $(e.target).closest(".bigfoot-footnote, .bigfoot-footnote__button");
-            if ($(".bigfoot-footnote__button:hover, .bigfoot-footnote:hover").length < 1) {
-              return removePopovers();
-            }
-          }), settings.hoverDelay);
-        }
-      };
-      escapeKeypress = function(event) {
-        if (event.keyCode === 27) {
-          return removePopovers();
-        }
-      };
-      removePopovers = function(footnotes, timeout) {
-        var $buttonsClosed, $linkedButton, $this, footnoteID;
-        if (footnotes == null) {
-          footnotes = ".bigfoot-footnote";
-        }
-        if (timeout == null) {
-          timeout = settings.popoverDeleteDelay;
-        }
-        $buttonsClosed = $();
-        footnoteID = void 0;
-        $linkedButton = void 0;
-        $this = void 0;
-        $(footnotes).each(function() {
-          $this = $(this);
-          footnoteID = $this.attr("data-footnote-identifier");
-          $linkedButton = $(".bigfoot-footnote__button[data-footnote-identifier=\"" + footnoteID + "\"]");
-          if (!$linkedButton.hasClass("changing")) {
-            $buttonsClosed = $buttonsClosed.add($linkedButton);
-            $linkedButton.removeClass("is-active is-hover-instantiated is-click-instantiated").addClass("changing");
-            $this.removeClass("is-active").addClass("disapearing");
-            return setTimeout((function() {
-              $this.remove();
-              delete popoverStates[footnoteID];
-              return $linkedButton.removeClass("changing");
-            }), timeout);
-          }
-        });
-        return $buttonsClosed;
-      };
-      repositionFeet = function(e) {
-        var type;
-        if (settings.positionContent) {
-          type = e ? e.type : "resize";
-          $(".bigfoot-footnote").each(function() {
-            var $button, $contentWrapper, $mainWrap, $this, dataIdentifier, identifier, lastState, marginSize, maxHeightInCSS, maxHeightOnScreen, maxWidth, maxWidthInCSS, positionOnTop, relativeToWidth, roomLeft, totalHeight;
-            $this = $(this);
-            identifier = $this.attr("data-footnote-identifier");
-            dataIdentifier = "data-footnote-identifier=\"" + identifier + "\"";
-            $contentWrapper = $this.find(".bigfoot-footnote__content");
-            $button = $this.siblings(".bigfoot-footnote__button");
-            roomLeft = roomCalc($button);
-            marginSize = parseFloat($this.css("margin-top"));
-            maxHeightInCSS = +($this.attr("data-bigfoot-max-height"));
-            totalHeight = 2 * marginSize + $this.outerHeight();
-            maxHeightOnScreen = 10000;
-            positionOnTop = roomLeft.bottomRoom < totalHeight && roomLeft.topRoom > roomLeft.bottomRoom;
-            lastState = popoverStates[identifier];
-            if (positionOnTop) {
-              if (lastState !== "top") {
-                popoverStates[identifier] = "top";
-                $this.addClass("is-positioned-top").removeClass("is-positioned-bottom");
-                $this.css("transform-origin", (roomLeft.leftRelative * 100) + "% 100%");
-              }
-              maxHeightOnScreen = roomLeft.topRoom - marginSize - 15;
-            } else {
-              if (lastState !== "bottom" || lastState === "init") {
-                popoverStates[identifier] = "bottom";
-                $this.removeClass("is-positioned-top").addClass("is-positioned-bottom");
-                $this.css("transform-origin", (roomLeft.leftRelative * 100) + "% 0%");
-              }
-              maxHeightOnScreen = roomLeft.bottomRoom - marginSize - 15;
-            }
-            $this.find(".bigfoot-footnote__content").css({
-              "max-height": Math.min(maxHeightOnScreen, maxHeightInCSS) + "px"
-            });
-            if (type === "resize") {
-              maxWidthInCSS = parseFloat($this.attr("bigfoot-max-width"));
-              $mainWrap = $this.find(".bigfoot-footnote__wrapper");
-              maxWidth = maxWidthInCSS;
-              if (maxWidthInCSS <= 1) {
-                relativeToWidth = (function() {
-                  var jq, userSpecifiedRelativeElWidth;
-                  userSpecifiedRelativeElWidth = 10000;
-                  if (settings.maxWidthRelativeTo) {
-                    jq = $(settings.maxWidthRelativeTo);
-                    if (jq.length > 0) {
-                      userSpecifiedRelativeElWidth = jq.outerWidth();
-                    }
-                  }
-                  return Math.min(window.innerWidth, userSpecifiedRelativeElWidth);
-                })();
-                maxWidth = relativeToWidth * maxWidthInCSS;
-              }
-              maxWidth = Math.min(maxWidth, $this.find(".bigfoot-footnote__content").outerWidth() + 1);
-              $mainWrap.css("max-width", maxWidth + "px");
-              $this.css({
-                left: (-roomLeft.leftRelative * maxWidth + parseFloat($button.css("margin-left")) + $button.outerWidth() / 2) + "px"
-              });
-              positionTooltip($this, roomLeft.leftRelative);
-            }
-            if (parseInt($this.outerHeight()) < $this.find(".bigfoot-footnote__content")[0].scrollHeight) {
-              return $this.addClass("is-scrollable");
-            }
-          });
-        }
-      };
-      positionTooltip = function($popover, leftRelative) {
-        var $tooltip;
-        if (leftRelative == null) {
-          leftRelative = 0.5;
-        }
-        $tooltip = $popover.find(".bigfoot-footnote__tooltip");
-        if ($tooltip.length > 0) {
-          $tooltip.css("left", "" + (leftRelative * 100) + "%");
-        }
-      };
-      roomCalc = function($el) {
-        var elHeight, elLeftMargin, elWidth, leftRoom, topRoom, w;
-        elLeftMargin = parseFloat($el.css("margin-left"));
-        elWidth = parseFloat($el.outerWidth()) - elLeftMargin;
-        elHeight = parseFloat($el.outerHeight());
-        w = viewportDetails();
-        topRoom = $el.offset().top - w.scrollY + elHeight / 2;
-        leftRoom = $el.offset().left - w.scrollX + elWidth / 2;
-        return {
-          topRoom: topRoom,
-          bottomRoom: w.height - topRoom,
-          leftRoom: leftRoom,
-          rightRoom: w.width - leftRoom,
-          leftRelative: leftRoom / w.width,
-          topRelative: topRoom / w.height
-        };
-      };
-      viewportDetails = function() {
-        var $window;
-        $window = $(window);
-        return {
-          width: window.innerWidth,
-          height: window.innerHeight,
-          scrollX: $window.scrollLeft(),
-          scrollY: $window.scrollTop()
-        };
-      };
-      addBreakpoint = function(size, trueCallback, falseCallback, deleteDelay, removeOpen) {
-        var falseDefaultPositionSetting, minMax, mqListener, mql, query, s, trueDefaultPositionSetting;
-        if (deleteDelay == null) {
-          deleteDelay = settings.popoverDeleteDelay;
-        }
-        if (removeOpen == null) {
-          removeOpen = true;
-        }
-        mql = void 0;
-        minMax = void 0;
-        s = void 0;
-        if (typeof size === "string") {
-          s = size.toLowerCase() === "iphone" ? "<320px" : size.toLowerCase() === "ipad" ? "<768px" : size;
-          minMax = s.charAt(0) === ">" ? "min" : s.charAt(0) === "<" ? "max" : null;
-          query = minMax ? "(" + minMax + "-width: " + (s.substring(1)) + ")" : s;
-          mql = window.matchMedia(query);
-        } else {
-          mql = size;
-        }
-        if (mql.media && mql.media === "invalid") {
-          return {
-            added: false,
-            mq: mql,
-            listener: null
-          };
-        }
-        trueDefaultPositionSetting = minMax === "min";
-        falseDefaultPositionSetting = minMax === "max";
-        trueCallback = trueCallback || makeDefaultCallbacks(removeOpen, deleteDelay, trueDefaultPositionSetting, function($popover) {
-          return $popover.addClass("is-bottom-fixed");
-        });
-        falseCallback = falseCallback || makeDefaultCallbacks(removeOpen, deleteDelay, falseDefaultPositionSetting, function() {});
-        mqListener = function(mq) {
-          if (mq.matches) {
-            trueCallback(removeOpen, bigfoot);
-          } else {
-            falseCallback(removeOpen, bigfoot);
-          }
-        };
-        mql.addListener(mqListener);
-        mqListener(mql);
-        settings.breakpoints[size] = {
-          added: true,
-          mq: mql,
-          listener: mqListener
-        };
-        return settings.breakpoints[size];
-      };
-      makeDefaultCallbacks = function(removeOpen, deleteDelay, position, callback) {
-        return function(removeOpen, bigfoot) {
-          var $closedPopovers;
-          $closedPopovers = void 0;
-          if (removeOpen) {
-            $closedPopovers = bigfoot.close();
-            bigfoot.updateSetting("activateCallback", callback);
-          }
-          return setTimeout((function() {
-            bigfoot.updateSetting("positionContent", position);
-            if (removeOpen) {
-              return bigfoot.activate($closedPopovers);
-            }
-          }), deleteDelay);
-        };
-      };
-      removeBreakpoint = function(target, callback) {
-        var b, breakpoint, mq, mqFound;
-        mq = null;
-        b = void 0;
-        mqFound = false;
-        if (typeof target === "string") {
-          mqFound = settings.breakpoints[target] !== undefined;
-        } else {
-          for (b in settings.breakpoints) {
-            if (settings.breakpoints.hasOwnProperty(b) && settings.breakpoints[b].mq === target) {
-              mqFound = true;
-            }
-          }
-        }
-        if (mqFound) {
-          breakpoint = settings.breakpoints[b || target];
-          if (callback) {
-            callback({
-              matches: false
-            });
-          } else {
-            breakpoint.listener({
-              matches: false
-            });
-          }
-          breakpoint.mq.removeListener(breakpoint.listener);
-          delete settings.breakpoints[b || target];
-        }
-        return mqFound;
-      };
-      updateSetting = function(newSettings, value) {
-        var oldValue, prop;
-        oldValue = void 0;
-        if (typeof newSettings === "string") {
-          oldValue = settings[newSettings];
-          settings[newSettings] = value;
-        } else {
-          oldValue = {};
-          for (prop in newSettings) {
-            if (newSettings.hasOwnProperty(prop)) {
-              oldValue[prop] = settings[prop];
-              settings[prop] = newSettings[prop];
-            }
-          }
-        }
-        return oldValue;
-      };
-      getSetting = function(setting) {
-        return settings[setting];
-      };
-      $(document).ready(function() {
-        footnoteInit();
-        $(document).on("mouseenter", ".bigfoot-footnote__button", buttonHover);
-        $(document).on("touchend click", touchClick);
-        $(document).on("mouseout", ".is-hover-instantiated", unhoverFeet);
-        $(document).on("keyup", escapeKeypress);
-        $(window).on("scroll resize", repositionFeet);
-        return $(document).on("gestureend", function() {
-          return repositionFeet();
-        });
-      });
-      bigfoot = {
-        removePopovers: removePopovers,
-        close: removePopovers,
-        createPopover: createPopover,
-        activate: createPopover,
-        repositionFeet: repositionFeet,
-        reposition: repositionFeet,
-        addBreakpoint: addBreakpoint,
-        removeBreakpoint: removeBreakpoint,
-        getSetting: getSetting,
-        updateSetting: updateSetting
-      };
-      return bigfoot;
-    };
-  })(jQuery);
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
-}).call(this);
-
-		</script>
-		<script type="text/javascript">
-    $.bigfoot();
-</script>
-
+<script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 
@@ -691,124 +49,124 @@ Inweb, which is a literate program or "web". Before diving in:
 </p>
 
 </li><li>(a) It helps to have some experience of reading webs. The short examples
-<a href="../goldbach/index.html" class="internal">../goldbach/index.html</a> and <a href="../twinprimes/twinprimes.html" class="internal">../twinprimes/twinprimes.html</a> are enough to give the idea.
+<a href="../goldbach/index.html" class="internal">goldbach</a> and <a href="../twinprimes/twinprimes.html" class="internal">twinprimes</a> are enough to give the idea.
 </li><li>(b) Inweb is written in C, in fact ANSI C99, but this is disguised by the
-fact that it uses some extension syntaxes provided by <a href="index.html" class="internal">index.html</a> itself.
-Turn to <a href="M-tid.html" class="internal">M-tid.html</a> for full details, but essentially: it's plain
+fact that it uses some extension syntaxes provided by <a href="index.html" class="internal">inweb</a> itself.
+Turn to <a href="M-tid.html" class="internal">The InC Dialect</a> for full details, but essentially: it's plain
 old C without predeclarations or header files, and where functions have names
 like <code class="display"><span class="extract-syntax">Tags::add_by_name</span></code> rather than just <code class="display"><span class="extract-syntax">add_by_name</span></code>.
-</li><li>(c) Inweb makes use of a "module" of utility functions called <a href="../foundation-module/index.html" class="internal">../foundation-module/index.html</a>.
+</li><li>(c) Inweb makes use of a "module" of utility functions called <a href="../foundation-module/index.html" class="internal">foundation</a>.
 This is a web in its own right. There's no need to read it, but you may want
-to take a quick look at <a href="../foundation-module/P-abgtf.html" class="internal">../foundation-module/P-abgtf.html</a> or the
-example <a href="../eastertide/index.html" class="internal">../eastertide/index.html</a>.
+to take a quick look at <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a> or the
+example <a href="../eastertide/index.html" class="internal">eastertide</a>.
 </p>
 
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Working out what to do, and what to do it to. </b>Inweb is a C program, so it begins at <a href="1-pc.html#SP6" class="internal">1-pc.html#SP6</a>, in <a href="1-pc.html" class="internal">1-pc.html</a>. PC
-works out where Inweb is installed, then calls <a href="1-cnf.html" class="internal">1-cnf.html</a>, which
-<a href="1-cnf.html#SP2" class="internal">1-cnf.html#SP2</a>.
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Working out what to do, and what to do it to. </b>Inweb is a C program, so it begins at <a href="1-pc.html#SP6" class="internal">main</a>, in <a href="1-pc.html" class="internal">Program Control</a>. PC
+works out where Inweb is installed, then calls <a href="1-cnf.html" class="internal">Configuration</a>, which
+<a href="1-cnf.html#SP2" class="internal">reads the command line options</a>.
 </p>
 
-<p class="inwebparagraph">The user's choices are stored in an <a href="1-cnf.html#SP1" class="internal">1-cnf.html#SP1</a> object, and Inweb
+<p class="inwebparagraph">The user's choices are stored in an <a href="1-cnf.html#SP1" class="internal">inweb_instructions</a> object, and Inweb
 is put into one of four modes: <code class="display"><span class="extract-syntax">TANGLE_MODE</span></code>, <code class="display"><span class="extract-syntax">WEAVE_MODE</span></code>, <code class="display"><span class="extract-syntax">ANALYSE_MODE</span></code>, or
 <code class="display"><span class="extract-syntax">TRANSLATE_MODE</span></code>.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Inweb never changes mode: once set, it remains
 for the rest of the run. Inweb also acts on only one main web in any run,
 unless in <code class="display"><span class="extract-syntax">TRANSLATE_MODE</span></code>, in which case none.
 </p>
 
-<p class="inwebparagraph">Once it has worked through the command line, <a href="1-cnf.html" class="internal">1-cnf.html</a> also calls
-<a href="6-cln.html#SP4" class="internal">6-cln.html#SP4</a> to read the colony file, if one was given (see
-<a href="M-mwiw.html" class="internal">M-mwiw.html</a>), and uses this to preset some settings:
-see <a href="1-cnf.html#SP4" class="internal">1-cnf.html#SP4</a>.
+<p class="inwebparagraph">Once it has worked through the command line, <a href="1-cnf.html" class="internal">Configuration</a> also calls
+<a href="6-cln.html#SP4" class="internal">Colonies::load</a> to read the colony file, if one was given (see
+<a href="M-mwiw.html" class="internal">Making Weaves into Websites</a>), and uses this to preset some settings:
+see <a href="1-cnf.html#SP4" class="internal">Configuration::member_and_colony</a>.
 </p>
 
-<p class="inwebparagraph">All errors in configuration are sent to <a href="../foundation-module/3-em.html#SP2" class="internal">../foundation-module/3-em.html#SP2</a>, from whose bourne
+<p class="inwebparagraph">All errors in configuration are sent to <a href="../foundation-module/3-em.html#SP2" class="internal">Errors::fatal</a>, from whose bourne
 no traveller returns.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Tangling and weaving are fundamental to all LP tools. Analysis means, say,
 reading a web and listing functions in it. Translation is for side-activities
-like <a href="6-mkf.html" class="internal">6-mkf.html</a> or <a href="6-gs.html" class="internal">6-gs.html</a>.
+like <a href="6-mkf.html" class="internal">making makefiles</a> or <a href="6-gs.html" class="internal">gitignores</a>.
 Strictly speaking there is also <code class="display"><span class="extract-syntax">NO_MODE</span></code> for runs where the user simply
 asked for <code class="display"><span class="extract-syntax">-help</span></code> at the command line.
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b><a href="1-pc.html" class="internal">1-pc.html</a> then resumes, calling <a href="1-pc.html#SP7" class="internal">1-pc.html#SP7</a> to
-act on the <a href="1-cnf.html#SP1" class="internal">1-cnf.html#SP1</a> object. If the user did specify a web to
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b><a href="1-pc.html" class="internal">Program Control</a> then resumes, calling <a href="1-pc.html#SP7" class="internal">Main::follow_instructions</a> to
+act on the <a href="1-cnf.html#SP1" class="internal">inweb_instructions</a> object. If the user did specify a web to
 work on, PC then goes through three stages to understand it.
 </p>
 
-<p class="inwebparagraph">First, PC calls <a href="2-tr.html#SP4" class="internal">2-tr.html#SP4</a> to read the metadata of the web &mdash; that is,
+<p class="inwebparagraph">First, PC calls <a href="2-tr.html#SP4" class="internal">Reader::load_web</a> to read the metadata of the web &mdash; that is,
 its title and author, how it breaks down into chapters and sections, and what
 modules it imports. The real work is done by the Foundation library function
-<a href="../foundation-module/8-ws.html#SP5" class="internal">../foundation-module/8-ws.html#SP5</a>, which returns a <a href="../foundation-module/8-ws.html#SP2" class="internal">../foundation-module/8-ws.html#SP2</a> object, providing details
-such as its declared author and title (see <a href="../foundation-module/8-bdfw.html" class="internal">../foundation-module/8-bdfw.html</a>),
-and also references to a <a href="../foundation-module/8-ws.html#SP3" class="internal">../foundation-module/8-ws.html#SP3</a> for each chapter, and a <a href="../foundation-module/8-ws.html#SP4" class="internal">../foundation-module/8-ws.html#SP4</a>
-for each section. There is always at least one <a href="../foundation-module/8-ws.html#SP3" class="internal">../foundation-module/8-ws.html#SP3</a>, each of which
-has at least one <a href="../foundation-module/8-ws.html#SP4" class="internal">../foundation-module/8-ws.html#SP4</a>.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> The "range text" for each chapter and
+<a href="../foundation-module/8-ws.html#SP5" class="internal">WebMetadata::get</a>, which returns a <a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a> object, providing details
+such as its declared author and title (see <a href="../foundation-module/8-bdfw.html" class="internal">Bibliographic Data for Webs (in foundation)</a>),
+and also references to a <a href="../foundation-module/8-ws.html#SP3" class="internal">chapter_md</a> for each chapter, and a <a href="../foundation-module/8-ws.html#SP4" class="internal">section_md</a>
+for each section. There is always at least one <a href="../foundation-module/8-ws.html#SP3" class="internal">chapter_md</a>, each of which
+has at least one <a href="../foundation-module/8-ws.html#SP4" class="internal">section_md</a>.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> The "range text" for each chapter and
 section is set here, which affects leafnames used in woven websites.<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> The
-optional <code class="display"><span class="extract-syntax">build.txt</span></code> file for a web is read by <a href="../foundation-module/8-bf.html#SP3" class="internal">../foundation-module/8-bf.html#SP3</a>, and the
-semantic version number determined at <a href="../foundation-module/8-bf.html#SP6" class="internal">../foundation-module/8-bf.html#SP6</a>.
+optional <code class="display"><span class="extract-syntax">build.txt</span></code> file for a web is read by <a href="../foundation-module/8-bf.html#SP3" class="internal">BuildFiles::read</a>, and the
+semantic version number determined at <a href="../foundation-module/8-bf.html#SP6" class="internal">BuildFiles::deduce_semver</a>.
 </p>
 
-<p class="inwebparagraph">Where a web imports a module, as for instance the <a href="../eastertide/index.html" class="internal">../eastertide/index.html</a> example does,
-<a href="../foundation-module/8-ws.html#SP5" class="internal">../foundation-module/8-ws.html#SP5</a> creates a <a href="../foundation-module/8-wm.html#SP1" class="internal">../foundation-module/8-wm.html#SP1</a> object for each import. In any event,
+<p class="inwebparagraph">Where a web imports a module, as for instance the <a href="../eastertide/index.html" class="internal">eastertide</a> example does,
+<a href="../foundation-module/8-ws.html#SP5" class="internal">WebMetadata::get</a> creates a <a href="../foundation-module/8-wm.html#SP1" class="internal">module</a> object for each import. In any event,
 it also creates a module called <code class="display"><span class="extract-syntax">"(main)"</span></code> to represent the main, non-imported,
-part of the overall program. Each module object also refers to the <a href="../foundation-module/8-ws.html#SP3" class="internal">../foundation-module/8-ws.html#SP3</a>
-and <a href="../foundation-module/8-ws.html#SP4" class="internal">../foundation-module/8-ws.html#SP4</a> objects.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup>
+part of the overall program. Each module object also refers to the <a href="../foundation-module/8-ws.html#SP3" class="internal">chapter_md</a>
+and <a href="../foundation-module/8-ws.html#SP4" class="internal">section_md</a> objects.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup>
 </p>
 
-<p class="inwebparagraph">The result of <a href="2-tr.html#SP4" class="internal">2-tr.html#SP4</a> is an object called a <a href="2-tr.html#SP1" class="internal">2-tr.html#SP1</a>, which expands
-on the metadata considerably. If <code class="display"><span class="extract-syntax">W</span></code> is a web, <code class="display"><span class="extract-syntax">W-&gt;md</span></code> produces its <a href="../foundation-module/8-ws.html#SP2" class="internal">../foundation-module/8-ws.html#SP2</a>
+<p class="inwebparagraph">The result of <a href="2-tr.html#SP4" class="internal">Reader::load_web</a> is an object called a <a href="2-tr.html#SP1" class="internal">web</a>, which expands
+on the metadata considerably. If <code class="display"><span class="extract-syntax">W</span></code> is a web, <code class="display"><span class="extract-syntax">W-&gt;md</span></code> produces its <a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a>
 metadata, but <code class="display"><span class="extract-syntax">W</span></code> also has numerous other fields.
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> For single-file webs like <a href="../twinprimes/twinprimes.html" class="internal">../twinprimes/twinprimes.html</a>, with no contents pages, Inweb
+<ul class="footnotetexts"><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> For single-file webs like <a href="../twinprimes/twinprimes.html" class="internal">twinprimes</a>, with no contents pages, Inweb
 makes what it calls an "implied" chapter and section heading.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> Range texts are used at the command line, and in <code class="display"><span class="extract-syntax">-catalogue</span></code> output, for
 example; and also to determine leafnames of pages in a website being woven.
 A range is really just an abbreviation. For example, <code class="display"><span class="extract-syntax">M</span></code> is the range for the
 Manual chapter, <code class="display"><span class="extract-syntax">2/tp</span></code> for the section "The Parser" in Chapter 2.
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> The difference is that the <a href="../foundation-module/8-ws.html#SP2" class="internal">../foundation-module/8-ws.html#SP2</a> lists every chapter and section,
-imported or not, whereas the <a href="../foundation-module/8-wm.html#SP1" class="internal">../foundation-module/8-wm.html#SP1</a> lists only those falling under its
+<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> The difference is that the <a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a> lists every chapter and section,
+imported or not, whereas the <a href="../foundation-module/8-wm.html#SP1" class="internal">module</a> lists only those falling under its
 own aegis.
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>After loading, the second stage is to call <a href="2-tr.html#SP5" class="internal">2-tr.html#SP5</a>. Whereas
+<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>After loading, the second stage is to call <a href="2-tr.html#SP5" class="internal">Reader::read_web</a>. Whereas
 loading was rapid and involved looking only at the contents page, reading
 takes longer and means extracting every line of commentary or code. Just
-as the loader wrapped the <a href="../foundation-module/8-ws.html#SP2" class="internal">../foundation-module/8-ws.html#SP2</a> in a larger <a href="2-tr.html#SP1" class="internal">2-tr.html#SP1</a> object, so too
-the reader wraps each <a href="../foundation-module/8-ws.html#SP3" class="internal">../foundation-module/8-ws.html#SP3</a> in a <a href="2-tr.html#SP2" class="internal">2-tr.html#SP2</a>, and each <a href="../foundation-module/8-ws.html#SP4" class="internal">../foundation-module/8-ws.html#SP4</a>
-in a <a href="2-tr.html#SP3" class="internal">2-tr.html#SP3</a>.
+as the loader wrapped the <a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a> in a larger <a href="2-tr.html#SP1" class="internal">web</a> object, so too
+the reader wraps each <a href="../foundation-module/8-ws.html#SP3" class="internal">chapter_md</a> in a <a href="2-tr.html#SP2" class="internal">chapter</a>, and each <a href="../foundation-module/8-ws.html#SP4" class="internal">section_md</a>
+in a <a href="2-tr.html#SP3" class="internal">section</a>.
 </p>
 
 <p class="inwebparagraph">Inweb syntax is heavily line-based, and every line of every section file (except
-the Contents page) becomes a <a href="2-lc.html#SP1" class="internal">2-lc.html#SP1</a>. In the end, then, Inweb has built
+the Contents page) becomes a <a href="2-lc.html#SP1" class="internal">source_line</a>. In the end, then, Inweb has built
 a four-level hierarchy on top of the more basic three-level hierarchy produced
-by <a href="../foundation-module/index.html" class="internal">../foundation-module/index.html</a>:
+by <a href="../foundation-module/index.html" class="internal">foundation</a>:
 </p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="function-syntax">INWEB</span><span class="plain-syntax">        </span><a href="2-tr.html#SP1" class="internal">2-tr.html#SP1</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP2" class="internal">2-tr.html#SP2</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP3" class="internal">2-tr.html#SP3</a><span class="plain-syntax">     ----&gt;   </span><a href="2-lc.html#SP1" class="internal">2-lc.html#SP1</a>
+<span class="function-syntax">INWEB</span><span class="plain-syntax">        </span><a href="2-tr.html#SP1" class="internal">web</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP2" class="internal">chapter</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP3" class="internal">section</a><span class="plain-syntax">     ----&gt;   </span><a href="2-lc.html#SP1" class="internal">source_line</a>
 <span class="plain-syntax">              |                |                  |</span>
-<span class="function-syntax">FOUNDATION</span><span class="plain-syntax">   </span><a href="../foundation-module/8-ws.html#SP2" class="internal">../foundation-module/8-ws.html#SP2</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP3" class="internal">../foundation-module/8-ws.html#SP3</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP4" class="internal">../foundation-module/8-ws.html#SP4</a>
-<span class="plain-syntax">             </span><a href="../foundation-module/8-wm.html#SP1" class="internal">../foundation-module/8-wm.html#SP1</a>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The third stage is to call <a href="2-tp.html#SP1" class="internal">2-tp.html#SP1</a>. This is where we check that
+<span class="function-syntax">FOUNDATION</span><span class="plain-syntax">   </span><a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP3" class="internal">chapter_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP4" class="internal">section_md</a>
+<span class="plain-syntax">             </span><a href="../foundation-module/8-wm.html#SP1" class="internal">module</a>
+</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The third stage is to call <a href="2-tp.html#SP1" class="internal">Parser::parse_web</a>. This is where we check that
 the web is syntactically valid line-by-line, reporting errors if any using
-by calling <a href="1-pc.html#SP8" class="internal">1-pc.html#SP8</a>. Each line is assigned a "category": for
+by calling <a href="1-pc.html#SP8" class="internal">Main::error_in_web</a>. Each line is assigned a "category": for
 example, the category <code class="display"><span class="extract-syntax">DEFINITIONS_LCAT</span></code> is given to lines holding definitions
-made with <code class="display"><span class="extract-syntax">@d</span></code> or <code class="display"><span class="extract-syntax">@e</span></code>. See <a href="2-lc.html" class="internal">2-lc.html</a> for the complete roster.<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup>
+made with <code class="display"><span class="extract-syntax">@d</span></code> or <code class="display"><span class="extract-syntax">@e</span></code>. See <a href="2-lc.html" class="internal">Line Categories</a> for the complete roster.<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup>
 </p>
 
 <p class="inwebparagraph">The parser also recognises headings and footnotes, but most importantly, it
-introduces an additional concept: the <a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">2-tp.html#SP1_1_7_5_1_8_1</a>. Each nunbered passage
-corresponds to one <a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">2-tp.html#SP1_1_7_5_1_8_1</a> object; it may actually contain several
+introduces an additional concept: the <a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">paragraph</a>. Each nunbered passage
+corresponds to one <a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">paragraph</a> object; it may actually contain several
 paragraphs of prose in the everyday English sense, but has just one heading,
 usually a number like "2.3.1". Those numbers are assigned hierarchically,<sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup>
-which is not a trivial algorithm: see <a href="2-pn.html#SP1" class="internal">2-pn.html#SP1</a>.
+which is not a trivial algorithm: see <a href="2-pn.html#SP1" class="internal">Numbering::number_web</a>.
 </p>
 
 <p class="inwebparagraph">It is the parser which finds all of the "paragraph macros", the term used
 in the source code for named stretches of code in <code class="display"><span class="extract-syntax">@&lt;...@&gt;</span></code> notation. A
-<a href="2-pm.html#SP1" class="internal">2-pm.html#SP1</a> object is created for each one, and every section has its own
+<a href="2-pm.html#SP1" class="internal">para_macro</a> object is created for each one, and every section has its own
 collection, stored in a <code class="display"><span class="extract-syntax">linked_list</span></code>.<sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> Similarly, the parser finds all of
 the footnote texts, and works out their proper numbering; each becomes a
-<a href="2-tp.html#SP1_1_4_2" class="internal">2-tp.html#SP1_1_4_2</a> object.<sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup>
+<a href="2-tp.html#SP1_1_4_2" class="internal">footnote</a> object.<sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup>
 </p>
 
 <p class="inwebparagraph">At the end of the third stage, then, everything's ready to go, and in memory
@@ -816,13 +174,13 @@ we now have something like this:
 </p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="function-syntax">INWEB</span><span class="plain-syntax">        </span><a href="2-tr.html#SP1" class="internal">2-tr.html#SP1</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP2" class="internal">2-tr.html#SP2</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP3" class="internal">2-tr.html#SP3</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">2-tp.html#SP1_1_7_5_1_8_1</a><span class="plain-syntax">  ----&gt; </span><a href="2-lc.html#SP1" class="internal">2-lc.html#SP1</a>
-<span class="plain-syntax">              |                |                  |               </span><a href="2-pm.html#SP1" class="internal">2-pm.html#SP1</a>
-<span class="function-syntax">FOUNDATION</span><span class="plain-syntax">   </span><a href="../foundation-module/8-ws.html#SP2" class="internal">../foundation-module/8-ws.html#SP2</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP3" class="internal">../foundation-module/8-ws.html#SP3</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP4" class="internal">../foundation-module/8-ws.html#SP4</a>
-<span class="plain-syntax">             </span><a href="../foundation-module/8-wm.html#SP1" class="internal">../foundation-module/8-wm.html#SP1</a>
+<span class="function-syntax">INWEB</span><span class="plain-syntax">        </span><a href="2-tr.html#SP1" class="internal">web</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP2" class="internal">chapter</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP3" class="internal">section</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">paragraph</a><span class="plain-syntax">  ----&gt; </span><a href="2-lc.html#SP1" class="internal">source_line</a>
+<span class="plain-syntax">              |                |                  |               </span><a href="2-pm.html#SP1" class="internal">para_macro</a>
+<span class="function-syntax">FOUNDATION</span><span class="plain-syntax">   </span><a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP3" class="internal">chapter_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP4" class="internal">section_md</a>
+<span class="plain-syntax">             </span><a href="../foundation-module/8-wm.html#SP1" class="internal">module</a>
 </pre><ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> There are more than 20, but many are no longer needed in "version 2" of
 the Inweb syntax, which is the only one anyone should still use. Continuing
-to support version 1 makes <a href="2-tp.html" class="internal">2-tp.html</a> much fiddlier, and at some point we
+to support version 1 makes <a href="2-tp.html" class="internal">The Parser</a> much fiddlier, and at some point we
 will probably drop this quixotic goal.
 <a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> Unlike in CWEB and other past literate programming tools, in which
 paragraphs &mdash; sometimes called "sections" by those programs, a different use
@@ -842,12 +200,12 @@ A line at the top like
 </pre>
 <p class="inwebparagraph">results in the text "C" being stored in the bibliographic datum <code class="display"><span class="extract-syntax">"Language"</span></code>,
 and if contents lines for chapters or sections specify other languages,<sup id="fnref:9"><a href="#fn:9" rel="footnote">9</a></sup>
-the loader stores those in the relevant <a href="../foundation-module/8-ws.html#SP3" class="internal">../foundation-module/8-ws.html#SP3</a> or <a href="../foundation-module/8-ws.html#SP4" class="internal">../foundation-module/8-ws.html#SP4</a>
+the loader stores those in the relevant <a href="../foundation-module/8-ws.html#SP3" class="internal">chapter_md</a> or <a href="../foundation-module/8-ws.html#SP4" class="internal">section_md</a>
 objects. But to the loader, these are all just names.
 </p>
 
 <p class="inwebparagraph">The reader then loads in definitions of these programming languages by
-calling <a href="4-pl.html#SP2" class="internal">4-pl.html#SP2</a>, and the parser does the same when it
+calling <a href="4-pl.html#SP2" class="internal">Languages::find_by_name</a>, and the parser does the same when it
 finds extract lines like
 </p>
 
@@ -857,23 +215,23 @@ finds extract lines like
 <p class="inwebparagraph">to say that a passage of text must be syntax-coloured like the ACME language.
 </p>
 
-<p class="inwebparagraph"><a href="4-pl.html#SP2" class="internal">4-pl.html#SP2</a> is thus called at any time when Inweb finds need
+<p class="inwebparagraph"><a href="4-pl.html#SP2" class="internal">Languages::find_by_name</a> is thus called at any time when Inweb finds need
 of a language; it looks for a language definition file (see documentation
-at <a href="M-spl.html" class="internal">M-spl.html</a>), parses it one line at a time using
-<a href="4-pl.html#SP8" class="internal">4-pl.html#SP8</a>, and returns a <a href="4-pl.html#SP6" class="internal">4-pl.html#SP6</a>
+at <a href="M-spl.html" class="internal">Supporting Programming Languages</a>), parses it one line at a time using
+<a href="4-pl.html#SP8" class="internal">Languages::read_definition_line</a>, and returns a <a href="4-pl.html#SP6" class="internal">programming_language</a>
 object. These correspond to their names: you cannot have two different PL
 objects with languages both called "Python", say.
 </p>
 
 <p class="inwebparagraph">The practical effect is that a web can involve many languages, even though
-the main use case is to have just one throughout. <a href="2-tr.html#SP1" class="internal">2-tr.html#SP1</a>, <a href="2-tr.html#SP2" class="internal">2-tr.html#SP2</a>,
-<a href="2-tr.html#SP3" class="internal">2-tr.html#SP3</a> and even individual <a href="2-lc.html#SP1" class="internal">2-lc.html#SP1</a> objects all contain pointers
-to a <a href="4-pl.html#SP6" class="internal">4-pl.html#SP6</a>.
+the main use case is to have just one throughout. <a href="2-tr.html#SP1" class="internal">web</a>, <a href="2-tr.html#SP2" class="internal">chapter</a>,
+<a href="2-tr.html#SP3" class="internal">section</a> and even individual <a href="2-lc.html#SP1" class="internal">source_line</a> objects all contain pointers
+to a <a href="4-pl.html#SP6" class="internal">programming_language</a>.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:9"><p class="inwebfootnote"><sup id="fnref:9"><a href="#fn:9" rel="footnote">9</a></sup> A little-used feature of Inweb, which should arguably be taken out as
 unnecessary now that colonies allow for multiple webs to coexist happily.
-<a href="#fnref:9" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Weaving mode. </b>Let's get back to <a href="1-pc.html" class="internal">1-pc.html</a>, which has now set everything up and is
+<a href="#fnref:9" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Weaving mode. </b>Let's get back to <a href="1-pc.html" class="internal">Program Control</a>, which has now set everything up and is
 about to take action. What it does depends on which of the four modes Inweb
 is in; we'll start with <code class="display"><span class="extract-syntax">WEAVE_MODE</span></code>.
 </p>
@@ -881,108 +239,108 @@ is in; we'll start with <code class="display"><span class="extract-syntax">WEAVE
 <p class="inwebparagraph">Weaves are highly comfigurable, so they depend on several factors:
 </p>
 
-</li><li>(a) Which format is used, as represented by a <a href="5-fm.html#SP1" class="internal">5-fm.html#SP1</a> object. For
+</li><li>(a) Which format is used, as represented by a <a href="5-fm.html#SP1" class="internal">weave_format</a> object. For
 example, HTML, ePub and PDF are all formats.
-</li><li>(b) Which pattern is used, as represented by a <a href="1-ptt.html#SP1" class="internal">1-ptt.html#SP1</a> object. A
+</li><li>(b) Which pattern is used, as represented by a <a href="1-ptt.html#SP1" class="internal">weave_pattern</a> object. A
 pattern is a choice of format together with some naming conventions and
 auxiliary files. For example, GitHubPages is a pattern which imposes HTML
 format but also throws in, for example, the GitHub logo icon.
 </li><li>(c) Whether a filter to particular tags is used, as represented by a
-<a href="2-tgs.html#SP1" class="internal">2-tgs.html#SP1</a>.<sup id="fnref:10"><a href="#fn:10" rel="footnote">10</a></sup>
+<a href="2-tgs.html#SP1" class="internal">theme_tag</a>.<sup id="fnref:10"><a href="#fn:10" rel="footnote">10</a></sup>
 </li><li>(d) What subset of the web the user wants to weave &mdash; by default the whole
 thing, but sometimes just one chapter, or just one section, and sometimes
 a special setting for "do all chapters one at a time" or "do all sections
-one at a time", a procedure called <a href="1-ts.html" class="internal">1-ts.html</a>.
+one at a time", a procedure called <a href="1-ts.html" class="internal">The Swarm</a>.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:10"><p class="inwebfootnote"><sup id="fnref:10"><a href="#fn:10" rel="footnote">10</a></sup> For example, Inweb automatically applies the <code class="display"><span class="extract-syntax">"Functions"</span></code> tag to any
-paragraph defining one (see <a href="4-taf.html" class="internal">4-taf.html</a>), and using <code class="display"><span class="extract-syntax">-weave-tag</span></code>
+paragraph defining one (see <a href="4-taf.html" class="internal">Types and Functions</a>), and using <code class="display"><span class="extract-syntax">-weave-tag</span></code>
 at the command line filters the weave down to just these. Sing to the tune
 of Suzanne Vega's "Freeze Tag".
-<a href="#fnref:10" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b><a href="1-pc.html" class="internal">1-pc.html</a> begins by attempting to load the weave pattern, with
-<a href="1-ptt.html#SP2" class="internal">1-ptt.html#SP2</a>; the syntax of weave pattern files can be found in
-<a href="1-ptt.html#SP3" class="internal">1-ptt.html#SP3</a>.
+<a href="#fnref:10" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b><a href="1-pc.html" class="internal">Program Control</a> begins by attempting to load the weave pattern, with
+<a href="1-ptt.html#SP2" class="internal">Patterns::find</a>; the syntax of weave pattern files can be found in
+<a href="1-ptt.html#SP3" class="internal">Patterns::scan_pattern_line</a>.
 </p>
 
-<p class="inwebparagraph">It then either calls <a href="1-ts.html#SP2" class="internal">1-ts.html#SP2</a> &mdash; meaning, a subset of the
-web, going into a single output file &mdash; or <a href="1-ts.html#SP1" class="internal">1-ts.html#SP1</a>, which it turn
-splits the web into subsets and sends each of those to <a href="1-ts.html#SP2" class="internal">1-ts.html#SP2</a>;
-and it ensures that <a href="1-ptt.html#SP7" class="internal">1-ptt.html#SP7</a> is called at the
+<p class="inwebparagraph">It then either calls <a href="1-ts.html#SP2" class="internal">Swarm::weave_subset</a> &mdash; meaning, a subset of the
+web, going into a single output file &mdash; or <a href="1-ts.html#SP1" class="internal">Swarm::weave</a>, which it turn
+splits the web into subsets and sends each of those to <a href="1-ts.html#SP2" class="internal">Swarm::weave_subset</a>;
+and it ensures that <a href="1-ptt.html#SP7" class="internal">Patterns::copy_payloads_into_weave</a> is called at the
 end of the process. "Payloads" are files copied into the weave: for example,
 an icon or a CSS file used in the website being constructed is a "payload".
 </p>
 
-<p class="inwebparagraph"><a href="1-ts.html#SP1" class="internal">1-ts.html#SP1</a> also causes an "index" to be made, though "index" here is
+<p class="inwebparagraph"><a href="1-ts.html#SP1" class="internal">Swarm::weave</a> also causes an "index" to be made, though "index" here is
 Inweb jargon for something which is more likely a contents page listing the
 sections and linking to them.<sup id="fnref:11"><a href="#fn:11" rel="footnote">11</a></sup>
 </p>
 
-<p class="inwebparagraph">Either way, each single weaving operation arrives at <a href="1-ts.html#SP2" class="internal">1-ts.html#SP2</a>,
-which consolidates all the settings needed into a <a href="1-ts.html#SP2_1" class="internal">1-ts.html#SP2_1</a> object:
+<p class="inwebparagraph">Either way, each single weaving operation arrives at <a href="1-ts.html#SP2" class="internal">Swarm::weave_subset</a>,
+which consolidates all the settings needed into a <a href="1-ts.html#SP2_1" class="internal">weave_order</a> object:
 it says, in effect, "weave content X into file Y using pattern Z".<sup id="fnref:12"><a href="#fn:12" rel="footnote">12</a></sup>
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:11"><p class="inwebfootnote"><sup id="fnref:11"><a href="#fn:11" rel="footnote">11</a></sup> No index is made if the user asked for only a single section or chapter
 to be woven; only if there was a swarm.
 <a href="#fnref:11" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:12"><p class="inwebfootnote"><sup id="fnref:12"><a href="#fn:12" rel="footnote">12</a></sup> So when Inweb is used to construct the website you are, perhaps, reading
-this text on, around 80 <a href="1-ts.html#SP2_1" class="internal">1-ts.html#SP2_1</a> objects will be made, one for each
-call to <a href="1-ts.html#SP2" class="internal">1-ts.html#SP2</a>, which in turn is one for each section of the
+this text on, around 80 <a href="1-ts.html#SP2_1" class="internal">weave_order</a> objects will be made, one for each
+call to <a href="1-ts.html#SP2" class="internal">Swarm::weave_subset</a>, which in turn is one for each section of the
 source-code web of Inweb itself.
-<a href="#fnref:12" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>And so we descend into <a href="3-tw.html" class="internal">3-tw.html</a>, where the function <a href="3-tw.html#SP1" class="internal">3-tw.html#SP1</a>
-is given the <a href="1-ts.html#SP2_1" class="internal">1-ts.html#SP2_1</a> and told to get on with it.<sup id="fnref:13"><a href="#fn:13" rel="footnote">13</a></sup>
+<a href="#fnref:12" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>And so we descend into <a href="3-tw.html" class="internal">The Weaver</a>, where the function <a href="3-tw.html#SP1" class="internal">Weaver::weave</a>
+is given the <a href="1-ts.html#SP2_1" class="internal">weave_order</a> and told to get on with it.<sup id="fnref:13"><a href="#fn:13" rel="footnote">13</a></sup>
 </p>
 
 <p class="inwebparagraph">The method is actually very simple, and is just a depth-first traverse of the
 above tree structure for the web, weaving the lines one at a time and keeping
 track of the "state" as we go &mdash; the state being, for example, are we currently
 in some code, or currently in commentary. For convenience, these running
-details are stored in a <a href="3-tw.html#SP2_5" class="internal">3-tw.html#SP2_5</a> object, but it's thrown away as soon
+details are stored in a <a href="3-tw.html#SP2_5" class="internal">weaver_state</a> object, but it's thrown away as soon
 as the weaver finishes.
 </p>
 
 <p class="inwebparagraph">The actual output produced depends throughout on the format, and for individual
 lines it also depends on the programming language they are written in. So the
-weaver does its work by making method calls to the <a href="4-pl.html#SP6" class="internal">4-pl.html#SP6</a>
-or <a href="5-fm.html#SP1" class="internal">5-fm.html#SP1</a> in question: in effect, these are APIs. See the sections
-<a href="4-lm.html" class="internal">4-lm.html</a> and <a href="5-fm.html" class="internal">5-fm.html</a> for itemised lists, but for
+weaver does its work by making method calls to the <a href="4-pl.html#SP6" class="internal">programming_language</a>
+or <a href="5-fm.html#SP1" class="internal">weave_format</a> in question: in effect, these are APIs. See the sections
+<a href="4-lm.html" class="internal">Language Methods</a> and <a href="5-fm.html" class="internal">Format Methods</a> for itemised lists, but for
 example, to weave a line of C into HTML format, the weaver first calls
-<a href="4-lm.html#SP25" class="internal">4-lm.html#SP25</a>, which in turn calls the method
-<code class="display"><span class="extract-syntax">SYNTAX_COLOUR_WEA_MTID</span></code> to the <a href="4-pl.html#SP6" class="internal">4-pl.html#SP6</a> object for C;
+<a href="4-lm.html#SP25" class="internal">LanguageMethods::syntax_colour</a>, which in turn calls the method
+<code class="display"><span class="extract-syntax">SYNTAX_COLOUR_WEA_MTID</span></code> to the <a href="4-pl.html#SP6" class="internal">programming_language</a> object for C;
 and then....
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:13"><p class="inwebfootnote"><sup id="fnref:13"><a href="#fn:13" rel="footnote">13</a></sup> "Weaver, weave" really ought to be a folk song, but if so, I can't find
 it on Spotify.
 <a href="#fnref:13" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>Syntax-colouring is worth further mention, since it demonstrates how
-language support works. In principle, any <a href="4-pl.html#SP6" class="internal">4-pl.html#SP6</a> object
+language support works. In principle, any <a href="4-pl.html#SP6" class="internal">programming_language</a> object
 can do whatever it likes in response to <code class="display"><span class="extract-syntax">SYNTAX_COLOUR_WEA_MTID</span></code>. But if Inweb
 assigns no particular code to this, what instead happens is that the generic
-handler function in <a href="4-as.html" class="internal">4-as.html</a> takes on the task.<sup id="fnref:14"><a href="#fn:14" rel="footnote">14</a></sup> This runs the
+handler function in <a href="4-as.html" class="internal">ACME Support</a> takes on the task.<sup id="fnref:14"><a href="#fn:14" rel="footnote">14</a></sup> This runs the
 colouring program in the language's definition file, by calling an algorithm
-called <a href="4-tp.html" class="internal">4-tp.html</a>. Colouring programs are, in effect, a mini-language
-of their own, which is compiled by <a href="4-pl.html" class="internal">4-pl.html</a> and then run
-in a low-level interpreter by <a href="4-tp.html" class="internal">4-tp.html</a>.
+called <a href="4-tp.html" class="internal">The Painter</a>. Colouring programs are, in effect, a mini-language
+of their own, which is compiled by <a href="4-pl.html" class="internal">Programming Languages</a> and then run
+in a low-level interpreter by <a href="4-tp.html" class="internal">The Painter</a>.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:14"><p class="inwebfootnote"><sup id="fnref:14"><a href="#fn:14" rel="footnote">14</a></sup> "ACME" is used here in the sense of "generic".
-<a href="#fnref:14" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>As for the formats, see <a href="5-tf.html" class="internal">5-tf.html</a> for how TeX output is done, and see
-<a href="5-rtt.html" class="internal">5-rtt.html</a> for issuing shell commands to turn that into PDFs.<sup id="fnref:15"><a href="#fn:15" rel="footnote">15</a></sup>
+<a href="#fnref:14" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>As for the formats, see <a href="5-tf.html" class="internal">TeX Format</a> for how TeX output is done, and see
+<a href="5-rtt.html" class="internal">Running Through TeX</a> for issuing shell commands to turn that into PDFs.<sup id="fnref:15"><a href="#fn:15" rel="footnote">15</a></sup>
 </p>
 
-<p class="inwebparagraph">See <a href="5-hf.html" class="internal">5-hf.html</a> for HTML and ebook weaving, but see also a suite of
-useful functions in <a href="6-cln.html" class="internal">6-cln.html</a> which coordinate URLs across websites so
+<p class="inwebparagraph">See <a href="5-hf.html" class="internal">HTML Formats</a> for HTML and ebook weaving, but see also a suite of
+useful functions in <a href="6-cln.html" class="internal">Colonies</a> which coordinate URLs across websites so
 that one web's weave can safely link to another's. In particular, cross-references
-written in <code class="display"><span class="extract-syntax">//this notation//</span></code> are "resolved" by <a href="6-cln.html#SP10" class="internal">6-cln.html#SP10</a>,
-and the function <a href="6-cln.html#SP11" class="internal">6-cln.html#SP11</a> turns them into relative URLs
-from any given file. Within the main web being woven, <a href="6-cln.html#SP11" class="internal">6-cln.html#SP11</a>
+written in <code class="display"><span class="extract-syntax">//this notation//</span></code> are "resolved" by <a href="6-cln.html#SP10" class="internal">Colonies::resolve_reference_in_weave</a>,
+and the function <a href="6-cln.html#SP11" class="internal">Colonies::reference_URL</a> turns them into relative URLs
+from any given file. Within the main web being woven, <a href="6-cln.html#SP11" class="internal">Colonies::paragraph_URL</a>
 can make a link to any paragraph of your choice.<sup id="fnref:16"><a href="#fn:16" rel="footnote">16</a></sup>
 </p>
 
-<p class="inwebparagraph">The HTML format also has the ability to request a <a href="5-wp.html#SP1" class="internal">5-wp.html#SP1</a>, which is
+<p class="inwebparagraph">The HTML format also has the ability to request a <a href="5-wp.html#SP1" class="internal">weave_plugin</a>, which is
 a bundle of JavaScriot and CSS to implement some unusual feature. Inweb uses
 two already, one for footnotes, one for mathematics. Plugins are only woven
 into web pages actually using them, to save loading unnecessary JavaScript
-in the browser. See <a href="5-wp.html" class="internal">5-wp.html</a>.
+in the browser. See <a href="5-wp.html" class="internal">Weave Plugins</a>.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:15"><p class="inwebfootnote"><sup id="fnref:15"><a href="#fn:15" rel="footnote">15</a></sup> When Inweb was begun, this seemed the main use case, the most important
@@ -991,7 +349,7 @@ TeX/PDF is much less important than HTML/ePub.
 <a href="#fnref:15" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:16"><p class="inwebfootnote"><sup id="fnref:16"><a href="#fn:16" rel="footnote">16</a></sup> Inweb anchors at paragraphs; it does not anchor at individual lines.
 This is intentional, as it's intended to take the reader to just enough
 context and explanation to understand what is being linked to.
-<a href="#fnref:16" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>Finally on weaving, special mention should go to <a href="3-ti.html" class="internal">3-ti.html</a>, a
+<a href="#fnref:16" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>Finally on weaving, special mention should go to <a href="3-ti.html" class="internal">The Indexer</a>, a
 subsystem of code which works through a template (often, but not necessarily,
 of HTML code), and substitutes special material in at given points. This
 is used in two ways:
@@ -999,41 +357,41 @@ is used in two ways:
 
 </li><li>(a) A simple version tops and tails a weave, providing, for example, the
 HTML header for an HTML page, and closing off its <code class="display"><span class="extract-syntax">&lt;body&gt;</span></code>. For historical
-reasons, these are referred to as "cover sheets". See <a href="3-ti.html#SP1" class="internal">3-ti.html#SP1</a>.
+reasons, these are referred to as "cover sheets". See <a href="3-ti.html#SP1" class="internal">Indexer::cover_sheet_maker</a>.
 </li><li>(b) A more elaborate version with a much richer set of features can make
 arbitrary constructions, and is used for "index pages" (i.e., contents
-pages) in <a href="1-ts.html" class="internal">1-ts.html</a>, and also for recursively dropping in navigation
-matter to the sidebar of a web page. See <a href="3-ti.html#SP6" class="internal">3-ti.html#SP6</a>. This
+pages) in <a href="1-ts.html" class="internal">The Swarm</a>, and also for recursively dropping in navigation
+matter to the sidebar of a web page. See <a href="3-ti.html#SP6" class="internal">Indexer::run_engine</a>. This
 is where template/navigation syntax such as <code class="display"><span class="extract-syntax">[[Link ...]]</span></code> is handled.
 </p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Tangling mode. </b>Alternatively, we're in <code class="display"><span class="extract-syntax">TANGLE_MODE</span></code>, which is more straightforward.
-<a href="1-pc.html" class="internal">1-pc.html</a> simply works out what we want to tangle, selecting the
-appropriate <a href="2-tr.html#SP11" class="internal">2-tr.html#SP11</a> object, and calls <a href="3-tt.html#SP1" class="internal">3-tt.html#SP1</a>.
+<a href="1-pc.html" class="internal">Program Control</a> simply works out what we want to tangle, selecting the
+appropriate <a href="2-tr.html#SP11" class="internal">tangle_target</a> object, and calls <a href="3-tt.html#SP1" class="internal">Tangler::tangle</a>.
 Most webs have just one "tangle target", meaning that the whole web makes
 a single program &mdash; in that case, the choice is obvious. However, the
 contents section can mark certain chapters or sections as being independent
 targets.<sup id="fnref:17"><a href="#fn:17" rel="footnote">17</a></sup>
 </p>
 
-<p class="inwebparagraph"><a href="3-tt.html#SP1" class="internal">3-tt.html#SP1</a> works hierarchically, calling down to <a href="3-tt.html#SP2" class="internal">3-tt.html#SP2</a>
-and finally <a href="3-tt.html#SP3" class="internal">3-tt.html#SP3</a> on individual lines of code. Throughout
+<p class="inwebparagraph"><a href="3-tt.html#SP1" class="internal">Tangler::tangle</a> works hierarchically, calling down to <a href="3-tt.html#SP2" class="internal">Tangler::tangle_paragraph</a>
+and finally <a href="3-tt.html#SP3" class="internal">Tangler::tangle_line</a> on individual lines of code. Throughout
 the process, the Tangler makes method calls to the current programming
-language; see <a href="4-lm.html" class="internal">4-lm.html</a>. As with syntax-colouring, the default
+language; see <a href="4-lm.html" class="internal">Language Methods</a>. As with syntax-colouring, the default
 arrangement is that these methods are handled by the generic "ACME" language,
 following instructions from the language definition file.
 </p>
 
 <p class="inwebparagraph">Languages declaring themselves "C-like" have access to special tangling
-facilities, all implemented with non-ACME method calls: see <a href="4-cl.html" class="internal">4-cl.html</a>.
+facilities, all implemented with non-ACME method calls: see <a href="4-cl.html" class="internal">C-Like Languages</a>.
 In particular, for coping with how <code class="display"><span class="extract-syntax">#ifdef</span></code> affects <code class="display"><span class="extract-syntax">#include</span></code> see
-<a href="4-cl.html#SP5" class="internal">4-cl.html#SP5</a>; for predeclaration of functions and
-structs and <code class="display"><span class="extract-syntax">typedef</span></code>s, see <a href="4-cl.html#SP6" class="internal">4-cl.html#SP6</a>.
+<a href="4-cl.html#SP5" class="internal">CLike::additional_early_matter</a>; for predeclaration of functions and
+structs and <code class="display"><span class="extract-syntax">typedef</span></code>s, see <a href="4-cl.html#SP6" class="internal">CLike::additional_predeclarations</a>.
 </p>
 
-<p class="inwebparagraph">The language calling itself "InC" gets even more: see <a href="4-is.html" class="internal">4-is.html</a>, and
-in particular <a href="4-is.html#SP3_2_1_1" class="internal">4-is.html#SP3_2_1_1</a> for text constants like <code class="display"><span class="extract-syntax">I"banana"</span></code>
-and <a href="4-is.html#SP3_1_2" class="internal">4-is.html#SP3_1_2</a> for Preform grammar notation like
+<p class="inwebparagraph">The language calling itself "InC" gets even more: see <a href="4-is.html" class="internal">InC Support</a>, and
+in particular <a href="4-is.html#SP3_2_1_1" class="internal">text_literal</a> for text constants like <code class="display"><span class="extract-syntax">I"banana"</span></code>
+and <a href="4-is.html#SP3_1_2" class="internal">preform_nonterminal</a> for Preform grammar notation like
 <code class="display"><span class="extract-syntax">&lt;sentence-ending&gt;</span></code>.
 </p>
 
@@ -1045,8 +403,8 @@ to understand without also reading its format files quite carefully. However,
 it now seems better practice to make such a sidekick file its own web, and
 use a colony file to make everything tidy on a woven website. So maybe this
 feature can go.
-<a href="#fnref:17" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Analysis mode. </b>Alternatively, we're in <code class="display"><span class="extract-syntax">ANALYSE_MODE</span></code>. There's not much to this: <a href="1-pc.html" class="internal">1-pc.html</a>
-simply calls <a href="3-ta.html#SP2" class="internal">3-ta.html#SP2</a>, or else makes use of the same
+<a href="#fnref:17" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Analysis mode. </b>Alternatively, we're in <code class="display"><span class="extract-syntax">ANALYSE_MODE</span></code>. There's not much to this: <a href="1-pc.html" class="internal">Program Control</a>
+simply calls <a href="3-ta.html#SP2" class="internal">Analyser::catalogue_the_sections</a>, or else makes use of the same
 functions as <code class="display"><span class="extract-syntax">TRANSLATE_MODE</span></code> would &mdash; but in the context of having read in a
 web. If it makes a <code class="display"><span class="extract-syntax">.gitignore</span></code> file, for example, it does so for that specific
 web, whereas if the same feature is used in <code class="display"><span class="extract-syntax">TRANSLATE_MODE</span></code>, it does so in
@@ -1056,12 +414,12 @@ the abstract and for no particular web.
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Translation mode. </b>Or, finally, we're in <code class="display"><span class="extract-syntax">TRANSLATE_MODE</span></code>. We can:
 </p>
 
-</li><li>(a) make a makefile by calling <a href="6-mkf.html#SP1" class="internal">6-mkf.html#SP1</a>;
-</li><li>(b) make a <code class="display"><span class="extract-syntax">.gitignore</span></code> file by calling <a href="6-gs.html#SP1" class="internal">6-gs.html#SP1</a>;
+</li><li>(a) make a makefile by calling <a href="6-mkf.html#SP1" class="internal">Makefiles::write</a>;
+</li><li>(b) make a <code class="display"><span class="extract-syntax">.gitignore</span></code> file by calling <a href="6-gs.html#SP1" class="internal">Git::write_gitignore</a>;
 </li><li>(c) advance the build number in a build file, by calling out to the
-Foundation code at <a href="../foundation-module/8-bf.html#SP7" class="internal">../foundation-module/8-bf.html#SP7</a>;
+Foundation code at <a href="../foundation-module/8-bf.html#SP7" class="internal">BuildFiles::advance</a>;
 </li><li>(d) run a syntax-colouring test to help debug a programming language definition &mdash;
-see <a href="1-pc.html" class="internal">1-pc.html</a> itself for details.
+see <a href="1-pc.html" class="internal">Program Control</a> itself for details.
 </li></ul>
 <p class="inwebparagraph">And that is essentially it. Inweb winds up by returning exit code 1 if there
 were errors, or 0 if not, like a good Unix citizen.
@@ -1070,28 +428,28 @@ were errors, or 0 if not, like a good Unix citizen.
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Adding to Inweb. </b>Here's some miscellaneous advice for those tempted to do so:
 </p>
 
-<p class="inwebparagraph">1. To add a new command-line switch, declare at <a href="1-cnf.html#SP2" class="internal">1-cnf.html#SP2</a> and
-add a field to <a href="1-cnf.html#SP1" class="internal">1-cnf.html#SP1</a> which holds the setting; don't act on it
-then and there, only in <a href="1-pc.html" class="internal">1-pc.html</a> later. But we don't want these
-settings to proliferate: ask first if adding a feature to, say, <a href="6-cln.html" class="internal">6-cln.html</a>
-or <a href="1-ptt.html#SP1" class="internal">1-ptt.html#SP1</a> files would meet the same need.
+<p class="inwebparagraph">1. To add a new command-line switch, declare at <a href="1-cnf.html#SP2" class="internal">Configuration::read</a> and
+add a field to <a href="1-cnf.html#SP1" class="internal">inweb_instructions</a> which holds the setting; don't act on it
+then and there, only in <a href="1-pc.html" class="internal">Program Control</a> later. But we don't want these
+settings to proliferate: ask first if adding a feature to, say, <a href="6-cln.html" class="internal">Colonies</a>
+or <a href="1-ptt.html#SP1" class="internal">weave_pattern</a> files would meet the same need.
 </p>
 
 <p class="inwebparagraph">2. To add new programming languages, try if possible to do everything you
-need with a new definition file alone: see <a href="M-spl.html" class="internal">M-spl.html</a>.
+need with a new definition file alone: see <a href="M-spl.html" class="internal">Supporting Programming Languages</a>.
 Failing that, see if making definition files more powerful would do it (for
 example, by making the ACME support more general-purpose). Failing even that,
-follow the model of <a href="4-cl.html" class="internal">4-cl.html</a>: that is, add logic to
-<a href="4-pl.html#SP7" class="internal">4-pl.html#SP7</a> which adds method receiver functions
+follow the model of <a href="4-cl.html" class="internal">C-Like Languages</a>: that is, add logic to
+<a href="4-pl.html#SP7" class="internal">Languages::read_definition</a> which adds method receiver functions
 to a language with a given name, or, preferably, some given declaration in
 the language definition file. On no account insert any language bias into
-<a href="3-tw.html" class="internal">3-tw.html</a> or <a href="3-tt.html" class="internal">3-tt.html</a>.
+<a href="3-tw.html" class="internal">The Weaver</a> or <a href="3-tt.html" class="internal">The Tangler</a>.
 </p>
 
-<p class="inwebparagraph">3. To add new formats, make a new section in <a href="5-wt.html" class="internal">5-wt.html</a> following the
-model of, say, <a href="5-ptf.html" class="internal">5-ptf.html</a> and then adding methods gradually.
+<p class="inwebparagraph">3. To add new formats, make a new section in <a href="5-wt.html" class="internal">Chapter 5: Formats</a> following the
+model of, say, <a href="5-ptf.html" class="internal">Plain Text Format</a> and then adding methods gradually.
 But don't forget to call your new format's creator function from
-<a href="5-fm.html#SP3" class="internal">5-fm.html#SP3</a>. Also, don't create a new format if what
+<a href="5-fm.html#SP3" class="internal">Formats::create_weave_formats</a>. Also, don't create a new format if what
 you really want is a new pattern: for example, "an HTML website but done
 differently" should be a pattern based on HTML; but Markdown would be a
 genuinely new format. (And in any case, if you do create a new format, you
@@ -1099,7 +457,7 @@ must also create a new pattern in order to use it.)
 </p>
 
 <p class="inwebparagraph">4. If you are creating a new class of object, don't forget to declare it
-in <a href="1-bsc.html" class="internal">1-bsc.html</a>.
+in <a href="1-bsc.html" class="internal">Basics</a>.
 </p>
 
 <!--End of weave-->

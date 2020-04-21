@@ -73,7 +73,7 @@ see //foundation: A Brief Guide to Foundation//.
 @e weave_code_line_node_MT
 @e weave_function_usage_node_MT
 @e weave_commentary_node_MT
-@e weave_preform_document_node_MT
+@e weave_carousel_slide_node_MT
 @e weave_toc_node_MT
 @e weave_toc_line_node_MT
 @e weave_chapter_title_page_node_MT
@@ -156,7 +156,7 @@ ALLOCATE_INDIVIDUALLY(weave_section_node)
 ALLOCATE_INDIVIDUALLY(weave_code_line_node)
 ALLOCATE_INDIVIDUALLY(weave_function_usage_node)
 ALLOCATE_INDIVIDUALLY(weave_commentary_node)
-ALLOCATE_INDIVIDUALLY(weave_preform_document_node)
+ALLOCATE_INDIVIDUALLY(weave_carousel_slide_node)
 ALLOCATE_INDIVIDUALLY(weave_toc_node)
 ALLOCATE_INDIVIDUALLY(weave_toc_line_node)
 ALLOCATE_INDIVIDUALLY(weave_chapter_title_page_node)

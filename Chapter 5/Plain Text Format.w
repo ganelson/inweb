@@ -49,7 +49,7 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
 	else if (N->type == weave_figure_node_type) @<Render nothing@>
 	else if (N->type == weave_material_node_type) @<Render nothing@>
-	else if (N->type == weave_embed_node_type) @<Render weave_embed_node@>
+	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
 	else if (N->type == weave_apres_defn_node_type) @<Render nothing@>
@@ -58,7 +58,7 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_code_line_node_type) @<Render code line@>
 	else if (N->type == weave_function_usage_node_type) @<Render function usage@>
 	else if (N->type == weave_commentary_node_type) @<Render commentary@>
-	else if (N->type == weave_preform_document_node_type) @<Render weave_preform_document_node@>
+	else if (N->type == weave_carousel_slide_node_type) @<Render nothing@>
 	else if (N->type == weave_toc_node_type) @<Render toc@>
 	else if (N->type == weave_toc_line_node_type) @<Render toc line@>
 	else if (N->type == weave_chapter_title_page_node_type) @<Render weave_chapter_title_page_node@>
@@ -124,7 +124,7 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 @<Render nothing@> =
 	;
 
-@<Render weave_embed_node@> =
+@<Render embed@> =
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
 	WRITE("[See %S video with ID %S.]\n", C->service, C->ID);
 
@@ -154,10 +154,6 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 	if (C->in_code) WRITE(" /* ");
 	PlainText::commentary_text(prs->wv->format, OUT, prs->wv, C->text);
 	if (C->in_code) WRITE(" */ ");
-
-@<Render weave_preform_document_node@> =
-	weave_preform_document_node *C = RETRIEVE_POINTER_weave_preform_document_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
 
 @<Render toc@> =
 	weave_toc_node *C = RETRIEVE_POINTER_weave_toc_node(N->content);

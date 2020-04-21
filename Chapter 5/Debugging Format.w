@@ -50,7 +50,7 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
 	else if (N->type == weave_figure_node_type) @<Render figure@>
 	else if (N->type == weave_material_node_type) @<Render material@>
-	else if (N->type == weave_embed_node_type) @<Render weave_embed_node@>
+	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
 	else if (N->type == weave_apres_defn_node_type) @<Render apres-defn@>
@@ -59,7 +59,7 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_code_line_node_type) @<Render code line@>
 	else if (N->type == weave_function_usage_node_type) @<Render function usage@>
 	else if (N->type == weave_commentary_node_type) @<Render commentary@>
-	else if (N->type == weave_preform_document_node_type) @<Render weave_preform_document_node@>
+	else if (N->type == weave_carousel_slide_node_type) @<Render carousel slide@>
 	else if (N->type == weave_toc_node_type) @<Render toc@>
 	else if (N->type == weave_toc_line_node_type) @<Render toc line@>
 	else if (N->type == weave_chapter_title_page_node_type) @<Render weave_chapter_title_page_node@>
@@ -148,9 +148,9 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 	if (C->material_type == CODE_MATERIAL) WRITE(": %S", C->styling->language_name);
 	if (C->plainly) WRITE(" (plainly)");
 
-@<Render weave_embed_node@> =
+@<Render embed@> =
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+	WRITE(" service <%S> ID <%S>", C->service, C->ID);
 
 @<Render pmac@> =
 	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
@@ -184,9 +184,9 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 	Debugging::show_text(OUT, C->text, 80);
 	if (C->in_code) WRITE(" (code)");
 
-@<Render weave_preform_document_node@> =
-	weave_preform_document_node *C = RETRIEVE_POINTER_weave_preform_document_node(N->content);
-	WRITE(" - something %d", C->allocation_id);
+@<Render carousel slide@> =
+	weave_carousel_slide_node *C = RETRIEVE_POINTER_weave_carousel_slide_node(N->content);
+	WRITE(" caption <%S>", C->caption);
 
 @<Render toc@> =
 	weave_toc_node *C = RETRIEVE_POINTER_weave_toc_node(N->content);
@@ -214,7 +214,7 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 
 @<Render URL@> =
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
-	WRITE(" <%S>", C->url);
+	WRITE(" content <%S> url <%S>", C->content, C->url);
 
 @<Render footnote cue@> =
 	weave_footnote_cue_node *C = RETRIEVE_POINTER_weave_footnote_cue_node(N->content);

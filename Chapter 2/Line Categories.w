@@ -154,5 +154,7 @@ some of these fell into disuse in version 2 syntax.
 @e PAGEBREAK_CMD
 @e GRAMMAR_INDEX_CMD
 @e FIGURE_CMD
+@e CAROUSEL_CMD
+@e CAROUSEL_END_CMD
 @e EMBED_CMD
 @e TAG_CMD

@@ -23,6 +23,28 @@ Which is really the point.
 
 [2] Really!
 
+@ And now...
+
+= (carousel "This is numero 1")
+= (figure img1.jpg)
+= (carousel "Deuxieme")
+I wonder if I can type text here?
+
+Perhaps lots of text.
+
+Even $x \leq \log y$?
+= (carousel "Bliney")
+= (figure img3.jpg)
+= (carousel "Codey")
+= (text as C)
+	int k = j++;
+	printf("Splodhge!\n");
+=
+Which is reasonable.
+= (carousel end)
+
+So there, really!
+
 @
 
 @d RANGE 100

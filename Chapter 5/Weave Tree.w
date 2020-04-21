@@ -131,9 +131,10 @@ typedef struct weave_commentary_node {
 	MEMORY_MANAGEMENT
 } weave_commentary_node;
 
-typedef struct weave_preform_document_node {
+typedef struct weave_carousel_slide_node {
+	struct text_stream *caption;
 	MEMORY_MANAGEMENT
-} weave_preform_document_node;
+} weave_carousel_slide_node;
 
 typedef struct weave_toc_node {
 	struct text_stream *text1;
@@ -248,7 +249,7 @@ tree_node_type *weave_section_node_type = NULL;
 tree_node_type *weave_code_line_node_type = NULL;
 tree_node_type *weave_function_usage_node_type = NULL;
 tree_node_type *weave_commentary_node_type = NULL;
-tree_node_type *weave_preform_document_node_type = NULL;
+tree_node_type *weave_carousel_slide_node_type = NULL;
 tree_node_type *weave_toc_node_type = NULL;
 tree_node_type *weave_toc_line_node_type = NULL;
 tree_node_type *weave_chapter_title_page_node_type = NULL;
@@ -319,8 +320,8 @@ heterogeneous_tree *WeaveTree::new_tree(weave_order *wv) {
 			Trees::new_node_type(I"function usage", weave_function_usage_node_MT, NULL);
 		weave_commentary_node_type =
 			Trees::new_node_type(I"commentary", weave_commentary_node_MT, NULL);
-		weave_preform_document_node_type =
-			Trees::new_node_type(I"preform_document", weave_preform_document_node_MT, NULL);
+		weave_carousel_slide_node_type =
+			Trees::new_node_type(I"carousel slide", weave_carousel_slide_node_MT, NULL);
 		weave_toc_node_type =
 			Trees::new_node_type(I"toc", weave_toc_node_MT, NULL);
 		weave_toc_line_node_type =
@@ -555,9 +556,10 @@ tree_node *WeaveTree::commentary(heterogeneous_tree *tree, text_stream *text, in
 	return Trees::new_node(tree, weave_commentary_node_type, STORE_POINTER_weave_commentary_node(C));
 }
 
-tree_node *WeaveTree::weave_preform_document_node(heterogeneous_tree *tree) {
-	weave_preform_document_node *C = CREATE(weave_preform_document_node);
-	return Trees::new_node(tree, weave_preform_document_node_type, STORE_POINTER_weave_preform_document_node(C));
+tree_node *WeaveTree::carousel_slide(heterogeneous_tree *tree, text_stream *caption) {
+	weave_carousel_slide_node *C = CREATE(weave_carousel_slide_node);
+	C->caption = Str::duplicate(caption);
+	return Trees::new_node(tree, weave_carousel_slide_node_type, STORE_POINTER_weave_carousel_slide_node(C));
 }
 
 tree_node *WeaveTree::table_of_contents(heterogeneous_tree *tree, text_stream *text1) {

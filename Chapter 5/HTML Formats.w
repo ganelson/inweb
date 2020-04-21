@@ -112,6 +112,8 @@ typedef struct HTML_render_state {
 	int EPUB_flag;
 	int popup_counter;
 	int last_material_seen;
+	int slide_number;
+	int slide_of;
 } HTML_render_state;
 
 void HTMLFormat::render_inner(weave_format *self, text_stream *OUT, heterogeneous_tree *tree, int EPUB_mode) {
@@ -123,11 +125,12 @@ void HTMLFormat::render_inner(weave_format *self, text_stream *OUT, heterogeneou
 	hrs.EPUB_flag = EPUB_mode;
 	hrs.popup_counter = 1;
 	hrs.last_material_seen = -1;
+	hrs.slide_number = -1;
+	hrs.slide_of = -1;
 	Swarm::ensure_plugin(C->wv, I"Base");
 	hrs.colours = Swarm::ensure_colour_scheme(C->wv, I"Colours", I"");
 
 	Trees::traverse_from(tree->root, &HTMLFormat::render_visit, (void *) &hrs, 0);
-	
 	HTML::declare_as_HTML(OUT, EPUB_mode);
 	if (EPUB_mode)
 		Epub::note_page(C->wv->weave_web->as_ebook, C->wv->weave_to, C->wv->booklet_title, I"");
@@ -160,7 +163,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
 	else if (N->type == weave_figure_node_type) @<Render figure@>
 	else if (N->type == weave_material_node_type) @<Render material@>
-	else if (N->type == weave_embed_node_type) @<Render weave_embed_node@>
+	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
 	else if (N->type == weave_apres_defn_node_type) @<Render nothing@>
@@ -169,7 +172,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_code_line_node_type) @<Render code line@>
 	else if (N->type == weave_function_usage_node_type) @<Render function usage@>
 	else if (N->type == weave_commentary_node_type) @<Render commentary@>
-	else if (N->type == weave_preform_document_node_type) @<Render weave_preform_document_node@>
+	else if (N->type == weave_carousel_slide_node_type) @<Render carousel slide@>
 	else if (N->type == weave_toc_node_type) @<Render toc@>
 	else if (N->type == weave_toc_line_node_type) @<Render toc line@>
 	else if (N->type == weave_chapter_title_page_node_type) @<Render weave_chapter_title_page_node@>
@@ -350,7 +353,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 here is something like |YouTube| or |Soundcloud|, and |ID| is whatever code
 that service uses to identify the video/audio in question.
 
-@<Render weave_embed_node@> =
+@<Render embed@> =
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
 	HTMLFormat::embed(hrs->wv->format, OUT, hrs->wv, C->service, C->ID);
 
@@ -391,9 +394,42 @@ that service uses to identify the video/audio in question.
 	HTMLFormat::commentary_text(hrs->wv->format, OUT, hrs->wv, C->text);
 	if (C->in_code) HTML_CLOSE("span");
 
-@<Render weave_preform_document_node@> =
-	weave_preform_document_node *C = RETRIEVE_POINTER_weave_preform_document_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
+@<Render carousel slide@> =
+	weave_carousel_slide_node *C = RETRIEVE_POINTER_weave_carousel_slide_node(N->content);
+	Swarm::ensure_plugin(hrs->wv, I"Carousel");
+	if (hrs->slide_number == -1) {
+		hrs->slide_number = 1;
+		hrs->slide_of = 0;
+		for (tree_node *X = N; (X) && (X->type == N->type); X = X->next) hrs->slide_of++;
+	} else {
+		hrs->slide_number++;
+		if (hrs->slide_number > hrs->slide_of) internal_error("miscounted slides");
+	}
+	if (hrs->slide_number == 1) {
+		WRITE("<div class=\"slideshow-container\">\n");
+	}
+	WRITE("<div class=\"mySlides fade\"");
+	if (hrs->slide_number == 1) WRITE(" style=\"display: block;\"");
+	WRITE(">\n");
+	WRITE("<div class=\"numbertext\">%d / %d</div>\n", hrs->slide_number, hrs->slide_of);
+	for (tree_node *M = N->child; M; M = M->next)
+		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
+	WRITE("<div class=\"text\">%S</div>\n", C->caption);
+	WRITE("</div>\n");
+	if (hrs->slide_number == hrs->slide_of) {
+		WRITE("</div>\n");
+		WRITE("<div style=\"text-align:center\">\n");
+		for (int i=1; i<=hrs->slide_of; i++) {
+			if (i == 1)
+				WRITE("<span class=\"dot active\" onclick=\"currentSlide(1)\"></span>\n");
+			else
+				WRITE("<span class=\"dot\" onclick=\"currentSlide(%d)\"></span>\n", i);
+		}
+		WRITE("</div>\n");
+		hrs->slide_number = -1;
+		hrs->slide_of = -1;
+	}
+	return FALSE;
 
 @<Render toc@> =
 	HTMLFormat::exit_current_paragraph(OUT);
@@ -440,7 +476,7 @@ that service uses to identify the video/audio in question.
 @<Render URL@> =
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
 	HTML::begin_link_with_class(OUT, (C->external)?I"external":I"internal", C->url);
-	WRITE("%S", C->url);
+	WRITE("%S", C->content);
 	HTML::end_link(OUT);
 
 @<Render footnote cue@> =

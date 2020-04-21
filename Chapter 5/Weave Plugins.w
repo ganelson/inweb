@@ -115,6 +115,13 @@ void WeavePlugins::include_plugin(OUTPUT_STREAM, web *W, weave_plugin *wp,
 									WRITE("<link href=\"%S\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\">\n", url);
 									DISCARD_TEXT(url);
 								}
+								if (Str::eq_insensitive(ext, I".js")) {
+									TEMPORARY_TEXT(url);
+									if (AP) Pathnames::relative_URL(url, Filenames::up(from), AP);
+									WRITE_TO(url, "%S", leafname);
+									WRITE("<script src=\"%S\"></script>\n", url);
+									DISCARD_TEXT(url);
+								}
 							}
 							Patterns::copy_file_into_weave(W, F, AP, NULL);
 						}

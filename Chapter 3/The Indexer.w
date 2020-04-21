@@ -100,7 +100,7 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 	} else if (Bibliographic::data_exists(state->target->weave_web->md, command)) {
 		if (include) @<Weave in the value of this variable name@>;
 	} else {
-		if (include) WRITE("%S", command);
+		if (include) WRITE("[[%S]]", command);
 	}
 	Regexp::dispose_of(&mr2);
 

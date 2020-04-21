@@ -8,652 +8,10 @@
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script src="http://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-<script type="text/javascript">
-		(function() {
-  (function($) {
-    return $.bigfoot = function(options) {
-      var addBreakpoint, baseFontSize, bigfoot, buttonHover, calculatePixelDimension, cleanFootnoteLinks, clickButton, createPopover, defaults, deleteEmptyOrHR, escapeKeypress, footnoteInit, getSetting, makeDefaultCallbacks, popoverStates, positionTooltip, removeBackLinks, removeBreakpoint, removePopovers, replaceWithReferenceAttributes, repositionFeet, roomCalc, settings, touchClick, unhoverFeet, updateSetting, viewportDetails;
-      bigfoot = void 0;
-      defaults = {
-        actionOriginalFN: "hide",
-        activateCallback: function() {},
-        activateOnHover: false,
-        allowMultipleFN: false,
-        anchorPattern: /(fn|footnote|note)[:\-_\d]/gi,
-        anchorParentTagname: 'sup',
-        breakpoints: {},
-        deleteOnUnhover: false,
-        footnoteParentClass: 'footnote',
-        footnoteTagname: 'li',
-        hoverDelay: 250,
-        numberResetSelector: void 0,
-        popoverDeleteDelay: 300,
-        popoverCreateDelay: 100,
-        positionContent: true,
-        preventPageScroll: true,
-        scope: false,
-        useFootnoteOnlyOnce: true,
-        contentMarkup: "<aside class=\"bigfoot-footnote is-positioned-bottom\" data-footnote-number=\"{{FOOTNOTENUM}}\" data-footnote-identifier=\"{{FOOTNOTEID}}\" alt=\"Footnote {{FOOTNOTENUM}}\"> <div class=\"bigfoot-footnote__wrapper\"> <div class=\"bigfoot-footnote__content\"> {{FOOTNOTECONTENT}} </div></div> <div class=\"bigfoot-footnote__tooltip\"></div> </aside>",
-        buttonMarkup: "<div class='bigfoot-footnote__container'> <button class=\"bigfoot-footnote__button\" id=\"{{SUP:data-footnote-backlink-ref}}\" data-footnote-number=\"{{FOOTNOTENUM}}\" data-footnote-identifier=\"{{FOOTNOTEID}}\" alt=\"See Footnote {{FOOTNOTENUM}}\" rel=\"footnote\" data-bigfoot-footnote=\"{{FOOTNOTECONTENT}}\"> <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg> <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg> <svg class=\"bigfoot-footnote__button__circle\" viewbox=\"0 0 6 6\" preserveAspectRatio=\"xMinYMin\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"white\"></circle></svg> </button></div>"
-      };
-      settings = $.extend(defaults, options);
-      popoverStates = {};
-      footnoteInit = function() {
-        var $curResetElement, $currentLastFootnoteLink, $footnoteAnchors, $footnoteButton, $lastResetElement, $parent, $relevantFNLink, $relevantFootnote, finalFNLinks, footnoteButton, footnoteButtonSearchQuery, footnoteContent, footnoteIDNum, footnoteLinks, footnoteNum, footnotes, i, _i, _ref, _results;
-        footnoteButtonSearchQuery = settings.scope ? "" + settings.scope + " a[href*=\"#\"]" : "a[href*=\"#\"]";
-        $footnoteAnchors = $(footnoteButtonSearchQuery).filter(function() {
-          var $this, relAttr;
-          $this = $(this);
-          relAttr = $this.attr("rel");
-          if (relAttr === "null" || (relAttr == null)) {
-            relAttr = "";
-          }
-          return ("" + ($this.attr("href")) + relAttr).match(settings.anchorPattern) && $this.closest("[class*=" + settings.footnoteParentClass + "]:not(a):not(" + settings.anchorParentTagname + ")").length < 1;
-        });
-        footnotes = [];
-        footnoteLinks = [];
-        finalFNLinks = [];
-        cleanFootnoteLinks($footnoteAnchors, footnoteLinks);
-        $(footnoteLinks).each(function() {
-          var $closestFootnoteEl, relatedFN;
-          relatedFN = $(this).data("footnote-ref").replace(/[:.+~*\]\[]/g, "\\$&");
-          if (settings.useFootnoteOnlyOnce) {
-            relatedFN = "" + relatedFN + ":not(.footnote-processed)";
-          }
-          $closestFootnoteEl = $(relatedFN).closest(settings.footnoteTagname);
-          if ($closestFootnoteEl.length > 0) {
-            footnotes.push($closestFootnoteEl.first().addClass("footnote-processed"));
-            return finalFNLinks.push(this);
-          }
-        });
-        $currentLastFootnoteLink = $("[data-footnote-identifier]:last");
-        footnoteIDNum = $currentLastFootnoteLink.length < 1 ? 0 : +$currentLastFootnoteLink.data("footnote-identifier");
-        _results = [];
-        for (i = _i = 0, _ref = footnotes.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-          footnoteContent = removeBackLinks($(footnotes[i]).html().trim(), $(finalFNLinks[i]).data("footnote-backlink-ref"));
-          footnoteContent = footnoteContent.replace(/"/g, "&quot;").replace(/&lt;/g, "&ltsym;").replace(/&gt;/g, "&gtsym;");
-          footnoteIDNum += 1;
-          footnoteButton = "";
-          $relevantFNLink = $(finalFNLinks[i]);
-          $relevantFootnote = $(footnotes[i]);
-          if (settings.numberResetSelector != null) {
-            $curResetElement = $relevantFNLink.closest(settings.numberResetSelector);
-            if ($curResetElement.is($lastResetElement)) {
-              footnoteNum += 1;
-            } else {
-              footnoteNum = 1;
-            }
-            $lastResetElement = $curResetElement;
-          } else {
-            footnoteNum = footnoteIDNum;
-          }
-          if (footnoteContent.indexOf("<") !== 0) {
-            footnoteContent = "<p>" + footnoteContent + "</p>";
-          }
-          footnoteButton = settings.buttonMarkup.replace(/\{\{FOOTNOTENUM\}\}/g, footnoteNum).replace(/\{\{FOOTNOTEID\}\}/g, footnoteIDNum).replace(/\{\{FOOTNOTECONTENT\}\}/g, footnoteContent);
-          footnoteButton = replaceWithReferenceAttributes(footnoteButton, "SUP", $relevantFNLink);
-          footnoteButton = replaceWithReferenceAttributes(footnoteButton, "FN", $relevantFootnote);
-          $footnoteButton = $(footnoteButton).insertBefore($relevantFNLink);
-          $parent = $relevantFootnote.parent();
-          switch (settings.actionOriginalFN.toLowerCase()) {
-            case "hide":
-              $relevantFNLink.addClass("footnote-print-only");
-              $relevantFootnote.addClass("footnote-print-only");
-              _results.push(deleteEmptyOrHR($parent));
-              break;
-            case "delete":
-              $relevantFNLink.remove();
-              $relevantFootnote.remove();
-              _results.push(deleteEmptyOrHR($parent));
-              break;
-            default:
-              _results.push($relevantFNLink.addClass("footnote-print-only"));
-          }
-        }
-        return _results;
-      };
-      cleanFootnoteLinks = function($footnoteAnchors, footnoteLinks) {
-        var $parent, $supChild, linkHREF, linkID;
-        if (footnoteLinks == null) {
-          footnoteLinks = [];
-        }
-        $parent = void 0;
-        $supChild = void 0;
-        linkHREF = void 0;
-        linkID = void 0;
-        $footnoteAnchors.each(function() {
-          var $child, $this;
-          $this = $(this);
-          linkHREF = "#" + ($this.attr("href")).split("#")[1];
-          $parent = $this.closest(settings.anchorParentTagname);
-          $child = $this.find(settings.anchorParentTagname);
-          if ($parent.length > 0) {
-            linkID = ($parent.attr("id") || "") + ($this.attr("id") || "");
-            return footnoteLinks.push($parent.attr({
-              "data-footnote-backlink-ref": linkID,
-              "data-footnote-ref": linkHREF
-            }));
-          } else if ($child.length > 0) {
-            linkID = ($child.attr("id") || "") + ($this.attr("id") || "");
-            return footnoteLinks.push($this.attr({
-              "data-footnote-backlink-ref": linkID,
-              "data-footnote-ref": linkHREF
-            }));
-          } else {
-            linkID = $this.attr("id") || "";
-            return footnoteLinks.push($this.attr({
-              "data-footnote-backlink-ref": linkID,
-              "data-footnote-ref": linkHREF
-            }));
-          }
-        });
-      };
-      deleteEmptyOrHR = function($el) {
-        var $parent;
-        $parent = void 0;
-        if ($el.is(":empty") || $el.children(":not(.footnote-print-only)").length === 0) {
-          $parent = $el.parent();
-          if (settings.actionOriginalFN.toLowerCase() === "delete") {
-            $el.remove();
-          } else {
-            $el.addClass("footnote-print-only");
-          }
-          return deleteEmptyOrHR($parent);
-        } else if ($el.children(":not(.footnote-print-only)").length === $el.children("hr:not(.footnote-print-only)").length) {
-          $parent = $el.parent();
-          if (settings.actionOriginalFN.toLowerCase() === "delete") {
-            $el.remove();
-          } else {
-            $el.children("hr").addClass("footnote-print-only");
-            $el.addClass("footnote-print-only");
-          }
-          return deleteEmptyOrHR($parent);
-        }
-      };
-      removeBackLinks = function(footnoteHTML, backlinkID) {
-        var regex;
-        if (backlinkID.indexOf(' ') >= 0) {
-          backlinkID = backlinkID.trim().replace(/\s+/g, "|").replace(/(.*)/g, "($1)");
-        }
-        regex = new RegExp("(\\s|&nbsp;)*<\\s*a[^#<]*#" + backlinkID + "[^>]*>(.*?)<\\s*/\\s*a>", "g");
-        return footnoteHTML.replace(regex, "").replace("[]", "");
-      };
-      replaceWithReferenceAttributes = function(string, referenceKeyword, $referenceElement) {
-        var refMatches, refRegex, refReplaceRegex, refReplaceText;
-        refRegex = new RegExp("\\{\\{" + referenceKeyword + ":([^\\}]*)\\}\\}", "g");
-        refMatches = void 0;
-        refReplaceText = void 0;
-        refReplaceRegex = void 0;
-        refMatches = refRegex.exec(string);
-        while (refMatches) {
-          if (refMatches[1]) {
-            refReplaceText = $referenceElement.attr(refMatches[1]) || "";
-            string = string.replace("{{" + referenceKeyword + ":" + refMatches[1] + "}}", refReplaceText);
-          }
-          refMatches = refRegex.exec(string);
-        }
-        return string;
-      };
-      buttonHover = function(event) {
-        var $buttonHovered, dataIdentifier, otherPopoverSelector;
-        if (settings.activateOnHover) {
-          $buttonHovered = $(event.target).closest(".bigfoot-footnote__button");
-          dataIdentifier = "[data-footnote-identifier=\"" + ($buttonHovered.attr("data-footnote-identifier")) + "\"]";
-          if ($buttonHovered.hasClass("is-active")) {
-            return;
-          }
-          $buttonHovered.addClass("is-hover-instantiated");
-          if (!settings.allowMultipleFN) {
-            otherPopoverSelector = ".bigfoot-footnote:not(" + dataIdentifier + ")";
-            removePopovers(otherPopoverSelector);
-          }
-          createPopover(".bigfoot-footnote__button" + dataIdentifier).addClass("is-hover-instantiated");
-        }
-      };
-      touchClick = function(event) {
-        var $nearButton, $nearFootnote, $target;
-        $target = $(event.target);
-        $nearButton = $target.closest(".bigfoot-footnote__button");
-        $nearFootnote = $target.closest(".bigfoot-footnote");
-        if ($nearButton.length > 0) {
-          event.preventDefault();
-          clickButton($nearButton);
-        } else if ($nearFootnote.length < 1) {
-          if ($(".bigfoot-footnote").length > 0) {
-            removePopovers();
-          }
-        }
-      };
-      clickButton = function($button) {
-        var dataIdentifier;
-        $button.blur();
-        dataIdentifier = "data-footnote-identifier=\"" + ($button.attr("data-footnote-identifier")) + "\"";
-        if ($button.hasClass("changing")) {
-          return;
-        } else if (!$button.hasClass("is-active")) {
-          $button.addClass("changing");
-          setTimeout((function() {
-            return $button.removeClass("changing");
-          }), settings.popoverCreateDelay);
-          createPopover(".bigfoot-footnote__button[" + dataIdentifier + "]");
-          $button.addClass("is-click-instantiated");
-          if (!settings.allowMultipleFN) {
-            removePopovers(".bigfoot-footnote:not([" + dataIdentifier + "])");
-          }
-        } else {
-          if (!settings.allowMultipleFN) {
-            removePopovers();
-          } else {
-            removePopovers(".bigfoot-footnote[" + dataIdentifier + "]");
-          }
-        }
-      };
-      createPopover = function(selector) {
-        var $buttons, $popoversCreated;
-        $buttons = void 0;
-        if (typeof selector !== "string" && settings.allowMultipleFN) {
-          $buttons = selector;
-        } else if (typeof selector !== "string") {
-          $buttons = selector.first();
-        } else if (settings.allowMultipleFN) {
-          $buttons = $(selector).closest(".bigfoot-footnote__button");
-        } else {
-          $buttons = $(selector + ":first").closest(".bigfoot-footnote__button");
-        }
-        $popoversCreated = $();
-        $buttons.each(function() {
-          var $content, $contentContainer, $this, content;
-          $this = $(this);
-          content = void 0;
-          try {
-            content = settings.contentMarkup.replace(/\{\{FOOTNOTENUM\}\}/g, $this.attr("data-footnote-number")).replace(/\{\{FOOTNOTEID\}\}/g, $this.attr("data-footnote-identifier")).replace(/\{\{FOOTNOTECONTENT\}\}/g, $this.attr("data-bigfoot-footnote")).replace(/\&gtsym\;/g, "&gt;").replace(/\&ltsym\;/g, "&lt;");
-            return content = replaceWithReferenceAttributes(content, "BUTTON", $this);
-          } finally {
-            $content = $(content);
-            try {
-              settings.activateCallback($content, $this);
-            } catch (_error) {}
-            $content.insertAfter($buttons);
-            popoverStates[$this.attr("data-footnote-identifier")] = "init";
-            $content.attr("bigfoot-max-width", calculatePixelDimension($content.css("max-width"), $content));
-            $content.css("max-width", 10000);
-            $contentContainer = $content.find(".bigfoot-footnote__content");
-            $content.attr("data-bigfoot-max-height", calculatePixelDimension($contentContainer.css("max-height"), $contentContainer));
-            repositionFeet();
-            $this.addClass("is-active");
-            $content.find(".bigfoot-footnote__content").bindScrollHandler();
-            $popoversCreated = $popoversCreated.add($content);
-          }
-        });
-        setTimeout((function() {
-          return $popoversCreated.addClass("is-active");
-        }), settings.popoverCreateDelay);
-        return $popoversCreated;
-      };
-      baseFontSize = function() {
-        var el, size;
-        el = document.createElement("div");
-        el.style.cssText = "display:inline-block;padding:0;line-height:1;position:absolute;visibility:hidden;font-size:1em;";
-        el.appendChild(document.createElement("M"));
-        document.body.appendChild(el);
-        size = el.offsetHeight;
-        document.body.removeChild(el);
-        return size;
-      };
-      calculatePixelDimension = function(dim, $el) {
-        if (dim === "none") {
-          dim = 10000;
-        } else if (dim.indexOf("rem") >= 0) {
-          dim = parseFloat(dim) * baseFontSize();
-        } else if (dim.indexOf("em") >= 0) {
-          dim = parseFloat(dim) * parseFloat($el.css("font-size"));
-        } else if (dim.indexOf("px") >= 0) {
-          dim = parseFloat(dim);
-          if (dim <= 60) {
-            dim = dim / parseFloat($el.parent().css("width"));
-          }
-        } else if (dim.indexOf("%") >= 0) {
-          dim = parseFloat(dim) / 100;
-        }
-        return dim;
-      };
-      $.fn.bindScrollHandler = function() {
-        if (!settings.preventPageScroll) {
-          return $(this);
-        }
-        $(this).on("DOMMouseScroll mousewheel", function(event) {
-          var $popover, $this, delta, height, prevent, scrollHeight, scrollTop, up;
-          $this = $(this);
-          scrollTop = $this.scrollTop();
-          scrollHeight = $this[0].scrollHeight;
-          height = parseInt($this.css("height"));
-          $popover = $this.closest(".bigfoot-footnote");
-          if ($this.scrollTop() > 0 && $this.scrollTop() < 10) {
-            $popover.addClass("is-scrollable");
-          }
-          if (!$popover.hasClass("is-scrollable")) {
-            return;
-          }
-          delta = event.type === "DOMMouseScroll" ? event.originalEvent.detail * -40 : event.originalEvent.wheelDelta;
-          up = delta > 0;
-          prevent = function() {
-            event.stopPropagation();
-            event.preventDefault();
-            event.returnValue = false;
-            return false;
-          };
-          if (!up && -delta > scrollHeight - height - scrollTop) {
-            $this.scrollTop(scrollHeight);
-            $popover.addClass("is-fully-scrolled");
-            return prevent();
-          } else if (up && delta > scrollTop) {
-            $this.scrollTop(0);
-            $popover.removeClass("is-fully-scrolled");
-            return prevent();
-          } else {
-            return $popover.removeClass("is-fully-scrolled");
-          }
-        });
-        return $(this);
-      };
-      unhoverFeet = function(e) {
-        if (settings.deleteOnUnhover && settings.activateOnHover) {
-          return setTimeout((function() {
-            var $target;
-            $target = $(e.target).closest(".bigfoot-footnote, .bigfoot-footnote__button");
-            if ($(".bigfoot-footnote__button:hover, .bigfoot-footnote:hover").length < 1) {
-              return removePopovers();
-            }
-          }), settings.hoverDelay);
-        }
-      };
-      escapeKeypress = function(event) {
-        if (event.keyCode === 27) {
-          return removePopovers();
-        }
-      };
-      removePopovers = function(footnotes, timeout) {
-        var $buttonsClosed, $linkedButton, $this, footnoteID;
-        if (footnotes == null) {
-          footnotes = ".bigfoot-footnote";
-        }
-        if (timeout == null) {
-          timeout = settings.popoverDeleteDelay;
-        }
-        $buttonsClosed = $();
-        footnoteID = void 0;
-        $linkedButton = void 0;
-        $this = void 0;
-        $(footnotes).each(function() {
-          $this = $(this);
-          footnoteID = $this.attr("data-footnote-identifier");
-          $linkedButton = $(".bigfoot-footnote__button[data-footnote-identifier=\"" + footnoteID + "\"]");
-          if (!$linkedButton.hasClass("changing")) {
-            $buttonsClosed = $buttonsClosed.add($linkedButton);
-            $linkedButton.removeClass("is-active is-hover-instantiated is-click-instantiated").addClass("changing");
-            $this.removeClass("is-active").addClass("disapearing");
-            return setTimeout((function() {
-              $this.remove();
-              delete popoverStates[footnoteID];
-              return $linkedButton.removeClass("changing");
-            }), timeout);
-          }
-        });
-        return $buttonsClosed;
-      };
-      repositionFeet = function(e) {
-        var type;
-        if (settings.positionContent) {
-          type = e ? e.type : "resize";
-          $(".bigfoot-footnote").each(function() {
-            var $button, $contentWrapper, $mainWrap, $this, dataIdentifier, identifier, lastState, marginSize, maxHeightInCSS, maxHeightOnScreen, maxWidth, maxWidthInCSS, positionOnTop, relativeToWidth, roomLeft, totalHeight;
-            $this = $(this);
-            identifier = $this.attr("data-footnote-identifier");
-            dataIdentifier = "data-footnote-identifier=\"" + identifier + "\"";
-            $contentWrapper = $this.find(".bigfoot-footnote__content");
-            $button = $this.siblings(".bigfoot-footnote__button");
-            roomLeft = roomCalc($button);
-            marginSize = parseFloat($this.css("margin-top"));
-            maxHeightInCSS = +($this.attr("data-bigfoot-max-height"));
-            totalHeight = 2 * marginSize + $this.outerHeight();
-            maxHeightOnScreen = 10000;
-            positionOnTop = roomLeft.bottomRoom < totalHeight && roomLeft.topRoom > roomLeft.bottomRoom;
-            lastState = popoverStates[identifier];
-            if (positionOnTop) {
-              if (lastState !== "top") {
-                popoverStates[identifier] = "top";
-                $this.addClass("is-positioned-top").removeClass("is-positioned-bottom");
-                $this.css("transform-origin", (roomLeft.leftRelative * 100) + "% 100%");
-              }
-              maxHeightOnScreen = roomLeft.topRoom - marginSize - 15;
-            } else {
-              if (lastState !== "bottom" || lastState === "init") {
-                popoverStates[identifier] = "bottom";
-                $this.removeClass("is-positioned-top").addClass("is-positioned-bottom");
-                $this.css("transform-origin", (roomLeft.leftRelative * 100) + "% 0%");
-              }
-              maxHeightOnScreen = roomLeft.bottomRoom - marginSize - 15;
-            }
-            $this.find(".bigfoot-footnote__content").css({
-              "max-height": Math.min(maxHeightOnScreen, maxHeightInCSS) + "px"
-            });
-            if (type === "resize") {
-              maxWidthInCSS = parseFloat($this.attr("bigfoot-max-width"));
-              $mainWrap = $this.find(".bigfoot-footnote__wrapper");
-              maxWidth = maxWidthInCSS;
-              if (maxWidthInCSS <= 1) {
-                relativeToWidth = (function() {
-                  var jq, userSpecifiedRelativeElWidth;
-                  userSpecifiedRelativeElWidth = 10000;
-                  if (settings.maxWidthRelativeTo) {
-                    jq = $(settings.maxWidthRelativeTo);
-                    if (jq.length > 0) {
-                      userSpecifiedRelativeElWidth = jq.outerWidth();
-                    }
-                  }
-                  return Math.min(window.innerWidth, userSpecifiedRelativeElWidth);
-                })();
-                maxWidth = relativeToWidth * maxWidthInCSS;
-              }
-              maxWidth = Math.min(maxWidth, $this.find(".bigfoot-footnote__content").outerWidth() + 1);
-              $mainWrap.css("max-width", maxWidth + "px");
-              $this.css({
-                left: (-roomLeft.leftRelative * maxWidth + parseFloat($button.css("margin-left")) + $button.outerWidth() / 2) + "px"
-              });
-              positionTooltip($this, roomLeft.leftRelative);
-            }
-            if (parseInt($this.outerHeight()) < $this.find(".bigfoot-footnote__content")[0].scrollHeight) {
-              return $this.addClass("is-scrollable");
-            }
-          });
-        }
-      };
-      positionTooltip = function($popover, leftRelative) {
-        var $tooltip;
-        if (leftRelative == null) {
-          leftRelative = 0.5;
-        }
-        $tooltip = $popover.find(".bigfoot-footnote__tooltip");
-        if ($tooltip.length > 0) {
-          $tooltip.css("left", "" + (leftRelative * 100) + "%");
-        }
-      };
-      roomCalc = function($el) {
-        var elHeight, elLeftMargin, elWidth, leftRoom, topRoom, w;
-        elLeftMargin = parseFloat($el.css("margin-left"));
-        elWidth = parseFloat($el.outerWidth()) - elLeftMargin;
-        elHeight = parseFloat($el.outerHeight());
-        w = viewportDetails();
-        topRoom = $el.offset().top - w.scrollY + elHeight / 2;
-        leftRoom = $el.offset().left - w.scrollX + elWidth / 2;
-        return {
-          topRoom: topRoom,
-          bottomRoom: w.height - topRoom,
-          leftRoom: leftRoom,
-          rightRoom: w.width - leftRoom,
-          leftRelative: leftRoom / w.width,
-          topRelative: topRoom / w.height
-        };
-      };
-      viewportDetails = function() {
-        var $window;
-        $window = $(window);
-        return {
-          width: window.innerWidth,
-          height: window.innerHeight,
-          scrollX: $window.scrollLeft(),
-          scrollY: $window.scrollTop()
-        };
-      };
-      addBreakpoint = function(size, trueCallback, falseCallback, deleteDelay, removeOpen) {
-        var falseDefaultPositionSetting, minMax, mqListener, mql, query, s, trueDefaultPositionSetting;
-        if (deleteDelay == null) {
-          deleteDelay = settings.popoverDeleteDelay;
-        }
-        if (removeOpen == null) {
-          removeOpen = true;
-        }
-        mql = void 0;
-        minMax = void 0;
-        s = void 0;
-        if (typeof size === "string") {
-          s = size.toLowerCase() === "iphone" ? "<320px" : size.toLowerCase() === "ipad" ? "<768px" : size;
-          minMax = s.charAt(0) === ">" ? "min" : s.charAt(0) === "<" ? "max" : null;
-          query = minMax ? "(" + minMax + "-width: " + (s.substring(1)) + ")" : s;
-          mql = window.matchMedia(query);
-        } else {
-          mql = size;
-        }
-        if (mql.media && mql.media === "invalid") {
-          return {
-            added: false,
-            mq: mql,
-            listener: null
-          };
-        }
-        trueDefaultPositionSetting = minMax === "min";
-        falseDefaultPositionSetting = minMax === "max";
-        trueCallback = trueCallback || makeDefaultCallbacks(removeOpen, deleteDelay, trueDefaultPositionSetting, function($popover) {
-          return $popover.addClass("is-bottom-fixed");
-        });
-        falseCallback = falseCallback || makeDefaultCallbacks(removeOpen, deleteDelay, falseDefaultPositionSetting, function() {});
-        mqListener = function(mq) {
-          if (mq.matches) {
-            trueCallback(removeOpen, bigfoot);
-          } else {
-            falseCallback(removeOpen, bigfoot);
-          }
-        };
-        mql.addListener(mqListener);
-        mqListener(mql);
-        settings.breakpoints[size] = {
-          added: true,
-          mq: mql,
-          listener: mqListener
-        };
-        return settings.breakpoints[size];
-      };
-      makeDefaultCallbacks = function(removeOpen, deleteDelay, position, callback) {
-        return function(removeOpen, bigfoot) {
-          var $closedPopovers;
-          $closedPopovers = void 0;
-          if (removeOpen) {
-            $closedPopovers = bigfoot.close();
-            bigfoot.updateSetting("activateCallback", callback);
-          }
-          return setTimeout((function() {
-            bigfoot.updateSetting("positionContent", position);
-            if (removeOpen) {
-              return bigfoot.activate($closedPopovers);
-            }
-          }), deleteDelay);
-        };
-      };
-      removeBreakpoint = function(target, callback) {
-        var b, breakpoint, mq, mqFound;
-        mq = null;
-        b = void 0;
-        mqFound = false;
-        if (typeof target === "string") {
-          mqFound = settings.breakpoints[target] !== undefined;
-        } else {
-          for (b in settings.breakpoints) {
-            if (settings.breakpoints.hasOwnProperty(b) && settings.breakpoints[b].mq === target) {
-              mqFound = true;
-            }
-          }
-        }
-        if (mqFound) {
-          breakpoint = settings.breakpoints[b || target];
-          if (callback) {
-            callback({
-              matches: false
-            });
-          } else {
-            breakpoint.listener({
-              matches: false
-            });
-          }
-          breakpoint.mq.removeListener(breakpoint.listener);
-          delete settings.breakpoints[b || target];
-        }
-        return mqFound;
-      };
-      updateSetting = function(newSettings, value) {
-        var oldValue, prop;
-        oldValue = void 0;
-        if (typeof newSettings === "string") {
-          oldValue = settings[newSettings];
-          settings[newSettings] = value;
-        } else {
-          oldValue = {};
-          for (prop in newSettings) {
-            if (newSettings.hasOwnProperty(prop)) {
-              oldValue[prop] = settings[prop];
-              settings[prop] = newSettings[prop];
-            }
-          }
-        }
-        return oldValue;
-      };
-      getSetting = function(setting) {
-        return settings[setting];
-      };
-      $(document).ready(function() {
-        footnoteInit();
-        $(document).on("mouseenter", ".bigfoot-footnote__button", buttonHover);
-        $(document).on("touchend click", touchClick);
-        $(document).on("mouseout", ".is-hover-instantiated", unhoverFeet);
-        $(document).on("keyup", escapeKeypress);
-        $(window).on("scroll resize", repositionFeet);
-        return $(document).on("gestureend", function() {
-          return repositionFeet();
-        });
-      });
-      bigfoot = {
-        removePopovers: removePopovers,
-        close: removePopovers,
-        createPopover: createPopover,
-        activate: createPopover,
-        repositionFeet: repositionFeet,
-        reposition: repositionFeet,
-        addBreakpoint: addBreakpoint,
-        removeBreakpoint: removeBreakpoint,
-        getSetting: getSetting,
-        updateSetting: updateSetting
-      };
-      return bigfoot;
-    };
-  })(jQuery);
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
-}).call(this);
-
-		</script>
-		<script type="text/javascript">
-    $.bigfoot();
-</script>
-
+<script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
@@ -714,6 +72,7 @@ Orb-Weaving Spiders With Communal Webbing in a Man-Made Structural Habitat
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">members</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">colony_member</span></code>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">home</span><span class="plain-syntax">; </span><span class="comment"> path of home repository</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">assets_path</span><span class="plain-syntax">; </span><span class="comment"> where assets shared between weaves live</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">patterns_path</span><span class="plain-syntax">; </span><span class="comment"> where additional patterns live</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">colony</span><span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>The structure colony is private to this section.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Each member is represented by an instance of the following. Note the <code class="display"><span class="extract-syntax">loaded</span></code>
@@ -779,13 +138,14 @@ at GitHub:
 <span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">members</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">colony_member</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">home</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"docs"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">assets_path</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">patterns_path</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">colony_reader_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">crs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">crs</span><span class="plain-syntax">.</span><span class="element-syntax">province</span><span class="plain-syntax"> = </span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">crs</span><span class="plain-syntax">.</span><span class="element-syntax">nav</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">crs</span><span class="plain-syntax">.</span><span class="element-syntax">crumbs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">crs</span><span class="plain-syntax">.</span><span class="element-syntax">pattern</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><a href="../foundation-module/4-tf.html#SP5" class="internal">TextFiles::read</a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="string-syntax">"can't open colony file"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">, </span><a href="6-cln.html#SP5" class="internal">Colonies::read_line</a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) &amp;</span><span class="identifier-syntax">crs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation-module/4-tf.html#SP5" class="function-link"><span class="function-syntax">TextFiles::read</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="string-syntax">"can't open colony file"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">, </span><a href="6-cln.html#SP5" class="function-link"><span class="function-syntax">Colonies::read_line</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) &amp;</span><span class="identifier-syntax">crs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre><ul class="endnotetexts"><li>The structure colony_reader_state is accessed in 1/ts, 3/ti, 5/tf, 5/hf, 5/rtt and here.</li></ul><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Lines from the colony file are fed, one by one, into:
 </p>
@@ -795,61 +155,63 @@ at GitHub:
 <span class="plain-syntax">    </span><span class="reserved-syntax">colony_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crs</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">colony_reader_state</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">v_crs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax"> = </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">province</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><a href="../foundation-module/4-sm.html#SP24" class="internal">Str::trim_white_space</a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">); </span><span class="comment"> ignore trailing space</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="internal">Str::len</a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">; </span><span class="comment"> ignore blank lines</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP13" class="internal">Str::get_first_char</a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">) == </span><span class="character-syntax">'#'</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">; /* </span><span class="identifier-syntax">lines</span><span class="plain-syntax"> </span><span class="identifier-syntax">opening</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> |#| </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">comments</span><span class="plain-syntax"> */</span>
+<span class="plain-syntax">    </span><a href="../foundation-module/4-sm.html#SP24" class="function-link"><span class="function-syntax">Str::trim_white_space</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">); </span><span class="comment"> ignore trailing space</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">; </span><span class="comment"> ignore blank lines</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_first_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">) == </span><span class="character-syntax">'#'</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">; /* </span><span class="identifier-syntax">lines</span><span class="plain-syntax"> </span><span class="identifier-syntax">opening</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> |#| </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">comments</span><span class="plain-syntax"> */</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::create_mr</a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%c*?): \"*(%C+)\" at \"(%c*)\" in \"(%c*)\""</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%c*?): \"*(%C+)\" at \"(%c*)\" in \"(%c*)\""</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">colony_member</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CM</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">colony_member</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="internal">Str::eq</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">I</span><span class="string-syntax">"web"</span><span class="plain-syntax">)) </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">web_rather_than_module</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="internal">Str::eq</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">I</span><span class="string-syntax">"module"</span><span class="plain-syntax">)) </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">web_rather_than_module</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">I</span><span class="string-syntax">"web"</span><span class="plain-syntax">)) </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">web_rather_than_module</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">I</span><span class="string-syntax">"module"</span><span class="plain-syntax">)) </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">web_rather_than_module</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">web_rather_than_module</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><a href="../foundation-module/3-em.html#SP5" class="internal">Errors::in_text_file</a><span class="plain-syntax">(</span><span class="string-syntax">"text before ':' must be 'web' or 'module'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="../foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::in_text_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"text before ':' must be 'web' or 'module'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1]);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[2]);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">home_leaf</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP2" class="internal">Str::new</a><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP21" class="internal">Str::suffix_eq</a><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">".inweb"</span><span class="plain-syntax">, </span><span class="constant-syntax">6</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP3" class="internal">Filenames::from_text</a><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="../foundation-module/3-fln.html#SP7" class="internal">Filenames::write_unextended_leafname</a><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">home_leaf</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1]);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[2]);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">home_leaf</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP2" class="function-link"><span class="function-syntax">Str::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP21" class="function-link"><span class="function-syntax">Str::suffix_eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">".inweb"</span><span class="plain-syntax">, </span><span class="constant-syntax">6</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="../foundation-module/3-fln.html#SP7" class="function-link"><span class="function-syntax">Filenames::write_unextended_leafname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">home_leaf</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">home_leaf</span><span class="plain-syntax">, </span><span class="string-syntax">".html"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">home_leaf</span><span class="plain-syntax">, </span><span class="string-syntax">"index.html"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_path</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-pth.html#SP5" class="internal">Pathnames::from_text</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[3]);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_path</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[3]);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">navigation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nav</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_tail</span><span class="plain-syntax"> = </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">crumbs</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">default_weave_pattern</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">default_weave_pattern</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">, </span><span class="reserved-syntax">colony_member</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">members</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"home: *(%c*)"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">home</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"assets: *(%c*)"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">assets_path</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-pth.html#SP5" class="internal">Pathnames::from_text</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"pattern: none"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"home: *(%c*)"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">home</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"assets: *(%c*)"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">assets_path</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"patterns: *(%c*)"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">patterns_path</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"pattern: none"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"pattern: *(%c*)"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"navigation: none"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"pattern: *(%c*)"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"navigation: none"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nav</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"navigation: *(%c*)"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nav</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP3" class="internal">Filenames::from_text</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"breadcrumbs: none"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"navigation: *(%c*)"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nav</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"breadcrumbs: none"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">crumbs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"breadcrumbs: *(%c*)"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"breadcrumbs: *(%c*)"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">crumbs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr2</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::create_mr</a><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr2</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">L</span><span class="string-syntax">"(\"%c*?\") &gt; (%c*)"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><a href="6-cln.html#SP6" class="internal">Colonies::add_crumb</a><span class="plain-syntax">(</span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">crumbs</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr2</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP15" class="internal">Str::clear</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]); </span><a href="../foundation-module/4-sm.html#SP17" class="internal">Str::copy</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">mr2</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1]);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr2</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr2</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">L</span><span class="string-syntax">"(\"%c*?\") &gt; (%c*)"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><a href="6-cln.html#SP6" class="function-link"><span class="function-syntax">Colonies::add_crumb</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">crumbs</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr2</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]); </span><a href="../foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">mr2</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1]);</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><a href="6-cln.html#SP6" class="internal">Colonies::add_crumb</a><span class="plain-syntax">(</span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">crumbs</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="6-cln.html#SP6" class="function-link"><span class="function-syntax">Colonies::add_crumb</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">crumbs</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP5" class="internal">Errors::in_text_file</a><span class="plain-syntax">(</span><span class="string-syntax">"unable to read colony member"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::in_text_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"unable to read colony member"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::dispose_of</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>"Breadcrumbs" are the chain of links in a horizontal list at the top of
 the page, and this requests one.
@@ -857,15 +219,15 @@ the page, and this requests one.
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::add_crumb</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Colonies::add_crumb</b>:<br><a href="6-cln.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::create_mr</a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"\"(%c*?)\""</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP5" class="internal">Errors::in_text_file</a><span class="plain-syntax">(</span><span class="string-syntax">"each crumb must be in double-quotes"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"\"(%c*?)\""</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::in_text_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"each crumb must be in double-quotes"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0];</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">br</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP6" class="internal">Colonies::request_breadcrumb</a><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">br</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP6" class="function-link"><span class="function-syntax">Colonies::request_breadcrumb</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">br</span><span class="plain-syntax">, </span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::dispose_of</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax"> {</span>
@@ -876,16 +238,16 @@ the page, and this requests one.
 
 <span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::request_breadcrumb</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Colonies::request_breadcrumb</b>:<br>Configuration - <a href="1-cnf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">BR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::create_mr</a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%c*?): *(%c*)"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">BR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_text</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">BR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_link</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1]);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%c*?): *(%c*)"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">BR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_text</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">BR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_link</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1]);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">BR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_text</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">BR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_link</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">BR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_text</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">BR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_link</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">BR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_link</span><span class="plain-syntax">, </span><span class="string-syntax">".html"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::dispose_of</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">BR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -893,8 +255,8 @@ the page, and this requests one.
 <span class="plain-syntax">    </span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">BR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">BR</span><span class="plain-syntax">, </span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">, </span><span class="identifier-syntax">crumbs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="6-cln.html#SP11" class="internal">Colonies::link_URL</a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">BR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_link</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="6-cln.html#SP6" class="internal">Colonies::write_breadcrumb</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">BR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::link_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">BR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_link</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="6-cln.html#SP6" class="function-link"><span class="function-syntax">Colonies::write_breadcrumb</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">BR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
@@ -902,9 +264,9 @@ the page, and this requests one.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::write_breadcrumb</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Colonies::write_breadcrumb</b>:<br>HTML Formats - <a href="5-hf.html#SP5_2">&#167;5.2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">link</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"li"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="../foundation-module/5-htm.html#SP15" class="internal">HTML::begin_link</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">link</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="../foundation-module/5-htm.html#SP15" class="function-link"><span class="function-syntax">HTML::begin_link</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">link</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="../foundation-module/5-htm.html#SP15" class="internal">HTML::end_link</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="../foundation-module/5-htm.html#SP15" class="function-link"><span class="function-syntax">HTML::end_link</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"li"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"li"</span><span class="plain-syntax">);</span>
@@ -924,7 +286,7 @@ first we find.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">colony</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">colony_member</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CM</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">, </span><span class="reserved-syntax">colony_member</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">members</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="internal">Str::eq_insensitive</a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">CM</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -949,7 +311,7 @@ the data we already have; but if not, we read it in.
 </code></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">) &amp;&amp; (</span><a href="../foundation-module/4-sm.html#SP19" class="internal">Str::eq_insensitive</a><span class="plain-syntax">(</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_module</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">)))</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">) &amp;&amp; (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_module</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">)))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_2"></a><b>&#167;8.2.  </b><code class="display">
 &lt;<span class="named-paragraph-defn">Perhaps a module imported by the web being woven</span> <span class="named-paragraph-number">8.2</span>&gt; =
@@ -959,7 +321,7 @@ the data we already have; but if not, we read it in.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">M</span><span class="plain-syntax">, </span><span class="reserved-syntax">module</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_module</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dependencies</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="internal">Str::eq_insensitive</a><span class="plain-syntax">(</span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_3"></a><b>&#167;8.3.  </b><code class="display">
@@ -969,11 +331,11 @@ the data we already have; but if not, we read it in.
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP21" class="internal">Str::suffix_eq</a><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">".inweb"</span><span class="plain-syntax">, </span><span class="constant-syntax">6</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP3" class="internal">Filenames::from_text</a><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP21" class="function-link"><span class="function-syntax">Str::suffix_eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">".inweb"</span><span class="plain-syntax">, </span><span class="constant-syntax">6</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-pth.html#SP5" class="internal">Pathnames::from_text</a><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> = </span><a href="../foundation-module/8-ws.html#SP5" class="internal">WebMetadata::get_without_modules</a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> = </span><a href="../foundation-module/8-ws.html#SP5" class="function-link"><span class="function-syntax">WebMetadata::get_without_modules</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_4"></a><b>&#167;8.4.  </b><code class="display">
 &lt;<span class="named-paragraph-defn">Failing that, throw an error</span> <span class="named-paragraph-number">8.4</span>&gt; =
 </code></p>
@@ -981,7 +343,7 @@ the data we already have; but if not, we read it in.
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">, </span><span class="string-syntax">"unable to load '%S'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="1-pc.html#SP8" class="internal">Main::error_in_web</a><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="1-pc.html#SP8" class="function-link"><span class="function-syntax">Main::error_in_web</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Finally:
 </p>
 
@@ -997,6 +359,13 @@ the data we already have; but if not, we read it in.
 <span class="plain-syntax">    </span><span class="reserved-syntax">colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">colony</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">assets_path</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::patterns_path</span><button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>Colonies::patterns_path</b>:<br>Patterns - <a href="1-ptt.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">colony</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">patterns_path</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Cross-references. </b>The following must decide what references like the following should refer to:
@@ -1021,22 +390,22 @@ is where the reference is made from.
 </p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::resolve_reference_in_weave</span><button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>Colonies::resolve_reference_in_weave</b>:<br><a href="6-cln.html#SP11">&#167;11</a>, The Weaver of Text - <a href="3-twot.html#SP1_5_1">&#167;1.5.1</a>, <a href="3-twot.html#SP3_2_1">&#167;3.2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::resolve_reference_in_weave</span><button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>Colonies::resolve_reference_in_weave</b>:<br><a href="6-cln.html#SP11">&#167;11</a>, The Weaver of Text - <a href="3-twot.html#SP1_5_1">&#167;1.5.1</a>, <a href="3-twot.html#SP3_2_1">&#167;3.2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">for_HTML_file</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">web_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">r</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::create_mr</a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%c+?) -&gt; (%c+)"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">r</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP10" class="internal">Colonies::resolve_reference_in_weave_inner</a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%c+?) -&gt; (%c+)"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">r</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP10" class="function-link"><span class="function-syntax">Colonies::resolve_reference_in_weave_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">for_HTML_file</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1], </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="identifier-syntax">exp</span><span class="plain-syntax">[0]);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">r</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP10" class="internal">Colonies::resolve_reference_in_weave_inner</a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">title</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">r</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP10" class="function-link"><span class="function-syntax">Colonies::resolve_reference_in_weave_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">title</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">for_HTML_file</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::dispose_of</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">r</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::resolve_reference_in_weave_inner</span><button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>Colonies::resolve_reference_in_weave_inner</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::resolve_reference_in_weave_inner</span><button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>Colonies::resolve_reference_in_weave_inner</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">for_HTML_file</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">web_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from_M</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_module</span><span class="plain-syntax">):</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">search_M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">from_M</span><span class="plain-syntax">;</span>
@@ -1049,7 +418,7 @@ is where the reference is made from.
 <span class="plain-syntax">    </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">found_M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">section_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">bare_module_name</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><a href="../foundation-module/8-wm.html#SP9" class="internal">WebModules::named_reference</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">found_M</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">bare_module_name</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><a href="../foundation-module/8-wm.html#SP9" class="function-link"><span class="function-syntax">WebModules::named_reference</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">found_M</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">bare_module_name</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="identifier-syntax">search_M</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">L</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">external</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)) {</span>
@@ -1058,12 +427,12 @@ is where the reference is made from.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">, </span><span class="string-syntax">"Can't find the cross-reference '%S'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="1-pc.html#SP8" class="internal">Main::error_in_web</a><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="1-pc.html#SP8" class="function-link"><span class="function-syntax">Main::error_in_web</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><a href="1-pc.html#SP8" class="internal">Main::error_in_web</a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"Multiple cross-references might be meant here"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="../foundation-module/8-wm.html#SP9" class="internal">WebModules::named_reference</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">found_M</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">bare_module_name</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><a href="1-pc.html#SP8" class="function-link"><span class="function-syntax">Main::error_in_web</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"Multiple cross-references might be meant here"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="../foundation-module/8-wm.html#SP9" class="function-link"><span class="function-syntax">WebModules::named_reference</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">found_M</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">bare_module_name</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="identifier-syntax">search_M</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
@@ -1076,9 +445,9 @@ is where the reference is made from.
 </code></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="plain-syntax">    </span><span class="identifier-syntax">search_CM</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP7" class="internal">Colonies::find</a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">search_CM</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP7" class="function-link"><span class="function-syntax">Colonies::find</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">found_M</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP8" class="internal">Colonies::as_module</a><span class="plain-syntax">(</span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">found_M</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP8" class="function-link"><span class="function-syntax">Colonies::as_module</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">section_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FIRST_IN_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">section_md</span><span class="plain-syntax">, </span><span class="identifier-syntax">found_M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sections_md</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">bare_module_name</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">);</span>
@@ -1089,19 +458,19 @@ is where the reference is made from.
 </code></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::create_mr</a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%c*?): (%c*)"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">search_CM</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP7" class="internal">Colonies::find</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%c*?): (%c*)"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">search_CM</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP7" class="function-link"><span class="function-syntax">Colonies::find</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">found_M</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP8" class="internal">Colonies::as_module</a><span class="plain-syntax">(</span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">found_M</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP8" class="function-link"><span class="function-syntax">Colonies::as_module</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">found_M</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">search_M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">found_M</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">text</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="internal">Str::duplicate</a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1]);</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">text</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1]);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">external</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::dispose_of</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul><p class="inwebparagraph"><a id="SP10_3"></a><b>&#167;10.3.  </b><code class="display">
 &lt;<span class="named-paragraph-defn">Is it the name of a function in the current web?</span> <span class="named-paragraph-number">10.3</span>&gt; =
 </code></p>
@@ -1109,8 +478,8 @@ is where the reference is made from.
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">language_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">fn</span><span class="plain-syntax">, </span><span class="reserved-syntax">language_function</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="internal">Str::eq_insensitive</a><span class="plain-syntax">(</span><span class="identifier-syntax">fn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">function_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><a href="6-cln.html#SP11" class="internal">Colonies::paragraph_URL</a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">fn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">function_header_at</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_paragraph</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">fn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">function_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::paragraph_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">fn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">function_header_at</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_paragraph</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">for_HTML_file</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">fn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">function_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -1123,8 +492,8 @@ is where the reference is made from.
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">language_type</span><span class="plain-syntax"> *</span><span class="identifier-syntax">str</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">str</span><span class="plain-syntax">, </span><span class="reserved-syntax">language_type</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="internal">Str::eq_insensitive</a><span class="plain-syntax">(</span><span class="identifier-syntax">str</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">structure_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><a href="6-cln.html#SP11" class="internal">Colonies::paragraph_URL</a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">str</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">structure_header_at</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_paragraph</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">str</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">structure_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::paragraph_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">str</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">structure_header_at</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_paragraph</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">for_HTML_file</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">str</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">structure_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -1144,11 +513,11 @@ is where the reference is made from.
 </code></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP6" class="internal">Filenames::up</a><span class="plain-syntax">(</span><span class="identifier-syntax">for_HTML_file</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP6" class="function-link"><span class="function-syntax">Filenames::up</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">for_HTML_file</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_path</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><a href="../foundation-module/3-pth.html#SP8" class="internal">Pathnames::relative_URL</a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation-module/3-pth.html#SP8" class="function-link"><span class="function-syntax">Pathnames::relative_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bare_module_name</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">home_leaf</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">) </span><a href="6-cln.html#SP11" class="internal">Colonies::section_URL</a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">) </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::section_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bare_module_name</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="string-syntax">" (in %S)"</span><span class="plain-syntax">, </span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10_5">&#167;10.5</a>.</li></ul><p class="inwebparagraph"><a id="SP10_5_2"></a><b>&#167;10.5.2.  </b>In the absence of a colony file, Inweb can really only guess, and the
@@ -1163,29 +532,29 @@ the main one, and suffixed by <code class="display"><span class="extract-syntax"
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">found_M</span><span class="plain-syntax"> == </span><span class="identifier-syntax">from_M</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><a href="6-cln.html#SP11" class="internal">Colonies::section_URL</a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::section_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="string-syntax">"../%S-module/"</span><span class="plain-syntax">, </span><span class="identifier-syntax">found_M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="6-cln.html#SP11" class="internal">Colonies::section_URL</a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::section_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bare_module_name</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="string-syntax">" (in %S)"</span><span class="plain-syntax">, </span><span class="identifier-syntax">found_M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10_5">&#167;10.5</a>.</li></ul><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. URL management. </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::link_URL</span><button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>Colonies::link_URL</b>:<br><a href="6-cln.html#SP6">&#167;6</a>, The Indexer - <a href="3-ti.html#SP6_1_8_15">&#167;6.1.8.15</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::create_mr</a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="internal">Regexp::match</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">" *//(%c+)// *"</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><a href="6-cln.html#SP11" class="internal">Colonies::reference_URL</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::link_URL</span><button class="popup" onclick="togglePopup('usagePopup14')">...<span class="popuptext" id="usagePopup14">Usage of <b>Colonies::link_URL</b>:<br><a href="6-cln.html#SP6">&#167;6</a>, The Indexer - <a href="3-ti.html#SP6_1_8_15">&#167;6.1.8.15</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">" *//(%c+)// *"</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::reference_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_text</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="internal">Regexp::dispose_of</a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::reference_URL</span><button class="popup" onclick="togglePopup('usagePopup14')">...<span class="popuptext" id="usagePopup14">Usage of <b>Colonies::reference_URL</b>:<br>The Indexer - <a href="3-ti.html#SP6_1_8_11">&#167;6.1.8.11</a>, <a href="3-ti.html#SP6_1_8_14">&#167;6.1.8.14</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::reference_URL</span><button class="popup" onclick="togglePopup('usagePopup15')">...<span class="popuptext" id="usagePopup15">Usage of <b>Colonies::reference_URL</b>:<br>The Indexer - <a href="3-ti.html#SP6_1_8_11">&#167;6.1.8.11</a>, <a href="3-ti.html#SP6_1_8_14">&#167;6.1.8.14</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="6-cln.html#SP10" class="internal">Colonies::resolve_reference_in_weave</a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="6-cln.html#SP10" class="function-link"><span class="function-syntax">Colonies::resolve_reference_in_weave</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Warning: unable to resolve reference '%S' in navigation\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_text</span><span class="plain-syntax">);</span>
@@ -1193,45 +562,45 @@ the main one, and suffixed by <code class="display"><span class="extract-syntax"
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::section_URL</span><button class="popup" onclick="togglePopup('usagePopup15')">...<span class="popuptext" id="usagePopup15">Usage of <b>Colonies::section_URL</b>:<br><a href="6-cln.html#SP10_5_1">&#167;10.5.1</a>, <a href="6-cln.html#SP10_5_2">&#167;10.5.2</a>, The Indexer - <a href="3-ti.html#SP6_1_8_8_1">&#167;6.1.8.8.1</a>&lt;br&gt;HTML Formats - <a href="5-hf.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">section_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Sm</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::section_URL</span><button class="popup" onclick="togglePopup('usagePopup16')">...<span class="popuptext" id="usagePopup16">Usage of <b>Colonies::section_URL</b>:<br><a href="6-cln.html#SP10_5_1">&#167;10.5.1</a>, <a href="6-cln.html#SP10_5_2">&#167;10.5.2</a>, The Indexer - <a href="3-ti.html#SP6_1_8_8_1">&#167;6.1.8.8.1</a>&lt;br&gt;HTML Formats - <a href="5-hf.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">section_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Sm</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Sm</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"unwoven section"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">Sm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_range</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="../foundation-module/4-sm.html#SP13" class="internal">Str::get</a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">'/'</span><span class="plain-syntax">) || (</span><a href="../foundation-module/4-sm.html#SP13" class="internal">Str::get</a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">' '</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">'/'</span><span class="plain-syntax">) || (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">' '</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><span class="character-syntax">'-'</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><a href="../foundation-module/4-sm.html#SP13" class="internal">Str::get</a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".html"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::paragraph_URL</span><button class="popup" onclick="togglePopup('usagePopup16')">...<span class="popuptext" id="usagePopup16">Usage of <b>Colonies::paragraph_URL</b>:<br><a href="6-cln.html#SP10_3">&#167;10.3</a>, <a href="6-cln.html#SP10_4">&#167;10.4</a>, The Weaver of Text - <a href="3-twot.html#SP3_3">&#167;3.3</a>&lt;br&gt;HTML Formats - <a href="5-hf.html#SP5_22">&#167;5.22</a>, <a href="5-hf.html#SP5_34">&#167;5.34</a>, <a href="5-hf.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::paragraph_URL</span><button class="popup" onclick="togglePopup('usagePopup17')">...<span class="popuptext" id="usagePopup17">Usage of <b>Colonies::paragraph_URL</b>:<br><a href="6-cln.html#SP10_3">&#167;10.3</a>, <a href="6-cln.html#SP10_4">&#167;10.4</a>, The Weaver of Text - <a href="3-twot.html#SP3_3">&#167;3.3</a>&lt;br&gt;HTML Formats - <a href="5-hf.html#SP5_22">&#167;5.22</a>, <a href="5-hf.html#SP5_34">&#167;5.34</a>, <a href="5-hf.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no from file"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no para"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">under_section</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">to_S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_module</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="internal">Str::ne</a><span class="plain-syntax">(</span><span class="identifier-syntax">to_M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"(main)"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">colony_member</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_C</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP7" class="internal">Colonies::find</a><span class="plain-syntax">(</span><span class="identifier-syntax">to_M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::ne</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">to_M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"(main)"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">colony_member</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_C</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP7" class="function-link"><span class="function-syntax">Colonies::find</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">to_M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">to_C</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from_path</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP6" class="internal">Filenames::up</a><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from_path</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP6" class="function-link"><span class="function-syntax">Filenames::up</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_path</span><span class="plain-syntax"> = </span><span class="identifier-syntax">to_C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_path</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><a href="../foundation-module/3-pth.html#SP8" class="internal">Pathnames::relative_URL</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">from_path</span><span class="plain-syntax">, </span><span class="identifier-syntax">to_path</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="../foundation-module/3-pth.html#SP8" class="function-link"><span class="function-syntax">Pathnames::relative_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">from_path</span><span class="plain-syntax">, </span><span class="identifier-syntax">to_path</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Warning: a link in the weave will work only if '%S' appears in the colony file\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">to_M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><a href="6-cln.html#SP11" class="internal">Colonies::section_URL</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">to_S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::section_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">to_S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="6-cln.html#SP11" class="internal">Colonies::paragraph_anchor</a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::paragraph_anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::paragraph_anchor</span><button class="popup" onclick="togglePopup('usagePopup17')">...<span class="popuptext" id="usagePopup17">Usage of <b>Colonies::paragraph_anchor</b>:<br>HTML Formats - <a href="5-hf.html#SP5_9">&#167;5.9</a>, <a href="5-hf.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::paragraph_anchor</span><button class="popup" onclick="togglePopup('usagePopup18')">...<span class="popuptext" id="usagePopup18">Usage of <b>Colonies::paragraph_anchor</b>:<br>HTML Formats - <a href="5-hf.html#SP5_9">&#167;5.9</a>, <a href="5-hf.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no para"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ornament</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"P"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">paragraph_number</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP13" class="internal">Str::get</a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">'.'</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"_"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><a href="../foundation-module/4-sm.html#SP13" class="internal">Str::get</a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">'.'</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"_"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre><hr class="tocbar">
 <ul class="toc"><li><a href="6-rw.html">Back to 'Readme Writeme'</a></li><li><i>(This section ends Chapter 6: Extras.)</i></li></ul><hr class="tocbar">

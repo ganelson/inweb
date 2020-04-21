@@ -19,7 +19,11 @@ body {
 }
 
 a.function-link:link, a.function-link:visited {
-	text-decoration-line: underline; text-decoration-style: dotted;
+	text-decoration: black solid underline;
+/*	text-decoration-line: underline;
+	text-decoration-style: dotted;
+	text-decoration-color: #000;
+*/
 }
 a.function-link:active, a.function-link:hover {
 	font-weight: 700

@@ -148,6 +148,7 @@ typedef struct weaver_state {
 	struct tree_node *chapter_node;
 	struct tree_node *section_node;
 	struct tree_node *para_node;
+	struct tree_node *carousel_node;
 	struct tree_node *material_node;
 	struct tree_node *ap;
 } weaver_state;
@@ -163,6 +164,7 @@ typedef struct weaver_state {
 	state->chapter_node = NULL;
 	state->section_node = NULL;
 	state->para_node = NULL;
+	state->carousel_node = NULL;
 	state->material_node = NULL;
 	state->ap = body;
 
@@ -307,6 +309,8 @@ at us; but we don't weave them into the output, that's for sure.
 		if (L->command_code == GRAMMAR_INDEX_CMD)
 			Trees::make_child(WeaveTree::grammar_index(tree), state->ap);
 		if (L->command_code == FIGURE_CMD) @<Weave a figure@>;
+		if (L->command_code == CAROUSEL_CMD) @<Weave a carousel@>;
+		if (L->command_code == CAROUSEL_END_CMD) @<Weave a carousel end@>;
 		if (L->command_code == EMBED_CMD)
 			Weaver::embed(tree, wv, state->ap, L->text_operand, L->text_operand2);
 		/* Otherwise assume it was a tangler command, and ignore it here */
@@ -332,6 +336,16 @@ at us; but we don't weave them into the output, that's for sure.
 		Weaver::figure(tree, wv, state->ap, figname, -1, -1);
 	}
 	Regexp::dispose_of(&mr);	
+
+@<Weave a carousel@> =
+	tree_node *C = WeaveTree::carousel_slide(tree, L->text_operand);
+	Trees::make_child(C, state->para_node);
+	state->ap = C;
+	state->carousel_node = C;
+
+@<Weave a carousel end@> =
+	state->ap = state->para_node;
+	state->carousel_node = NULL;
 
 @h Commentary matter.
 Typographically this is a fairly simple business: it's almost the case that
@@ -764,7 +778,8 @@ void Weaver::change_material(heterogeneous_tree *tree,
 	weaver_state *state, int new_material, int plainly, programming_language *pl) {
 	if (state->kind_of_material != new_material) {
 		tree_node *D = WeaveTree::material(tree, new_material, plainly, pl);
-		Trees::make_child(D, state->para_node);
+		if (state->carousel_node) Trees::make_child(D, state->carousel_node);
+		else Trees::make_child(D, state->para_node);
 		state->material_node = D;
 		state->ap = D;
 		state->kind_of_material = new_material;

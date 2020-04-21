@@ -1,28 +1,32 @@
-/* We'll start with syntax colouring, since everyone likes to toy with this: */
+/* The following correspond to the Inweb colours !definition, ..., !comment: */
 
 
 
-span.ConsoleText-definition-syntax { color: #444444; }
+span.ConsoleText-definition-syntax  { color: #444444; }
 
-span.ConsoleText-function-syntax { color: #80FF80; }
+span.ConsoleText-function-syntax    { color: #80FF80; }
 
-span.ConsoleText-identifier-syntax { color: #8080FF; }
+span.ConsoleText-identifier-syntax  { color: #8080FF; }
 
-span.ConsoleText-element-syntax { color: #ADFF2F; }
+span.ConsoleText-element-syntax     { color: #ADFF2F; }
 
-span.ConsoleText-reserved-syntax { color: #600000; }
+span.ConsoleText-reserved-syntax    { color: #600000; }
 
-span.ConsoleText-string-syntax { color: #408040; }
+span.ConsoleText-string-syntax      { color: #408040; }
 
-span.ConsoleText-character-syntax { color: #204020; }
+span.ConsoleText-character-syntax   { color: #204020; }
 
-span.ConsoleText-constant-syntax { color: #204020; }
+span.ConsoleText-constant-syntax    { color: #204020; }
 
-span.ConsoleText-plain-syntax { color: #ffffff; }
+span.ConsoleText-plain-syntax       { color: #ffffff; }
 
-span.ConsoleText-extract-syntax { color: #444444; }
+span.ConsoleText-extract-syntax     { color: #444444; }
 
-span.ConsoleText-comment-syntax { color: #404040; font-style:italic; }
+span.ConsoleText-comment-syntax     { color: #404040; font-style:italic; }
+
+
+
+/* This is used for the "define" or "enum" keyword on Inweb-defined constants: */
 
 
 
@@ -30,9 +34,17 @@ span.ConsoleText-definition-keyword { color:#801010; font-weight:bold; }
 
 
 
+/* These are for the angle-bracketed paragraph names: */
+
+
+
 span.ConsoleText-named-paragraph, span.ConsoleText-named-paragraph-defn { color: #000000; font-weight: bold; }
 
 span.ConsoleText-named-paragraph-number { color: #000000; font-size: 80%; }
+
+
+
+/* This is the box into which multi-line stretches of code are put: */
 
 
 
