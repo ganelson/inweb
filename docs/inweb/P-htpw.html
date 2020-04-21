@@ -8,14 +8,6 @@
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		<meta name="viewport" content="width=device-width initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta http-equiv="Content-Language" content="en-gb">
-
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 		(function() {
@@ -663,6 +655,7 @@
 </script>
 
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 
 	</head>
 	<body>
@@ -790,13 +783,12 @@ a four-level hierarchy on top of the more basic three-level hierarchy produced
 by <a href="../foundation-module/index.html" class="internal">../foundation-module/index.html</a>:
 </p>
 
-<pre class="display">
-    <span class="function-syntax">INWEB</span><span class="plain-syntax">        </span><a href="2-tr.html#SP1" class="internal">2-tr.html#SP1</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP2" class="internal">2-tr.html#SP2</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP3" class="internal">2-tr.html#SP3</a><span class="plain-syntax">     ----&gt;   </span><a href="2-lc.html#SP1" class="internal">2-lc.html#SP1</a>
-    <span class="plain-syntax">              |                |                  |</span>
-    <span class="function-syntax">FOUNDATION</span><span class="plain-syntax">   </span><a href="../foundation-module/8-ws.html#SP2" class="internal">../foundation-module/8-ws.html#SP2</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP3" class="internal">../foundation-module/8-ws.html#SP3</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP4" class="internal">../foundation-module/8-ws.html#SP4</a>
-    <span class="plain-syntax">             </span><a href="../foundation-module/8-wm.html#SP1" class="internal">../foundation-module/8-wm.html#SP1</a>
-</pre>
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The third stage is to call <a href="2-tp.html#SP1" class="internal">2-tp.html#SP1</a>. This is where we check that
+<pre class="displayed-code all-displayed-code">
+<span class="function-syntax">INWEB</span><span class="plain-syntax">        </span><a href="2-tr.html#SP1" class="internal">2-tr.html#SP1</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP2" class="internal">2-tr.html#SP2</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP3" class="internal">2-tr.html#SP3</a><span class="plain-syntax">     ----&gt;   </span><a href="2-lc.html#SP1" class="internal">2-lc.html#SP1</a>
+<span class="plain-syntax">              |                |                  |</span>
+<span class="function-syntax">FOUNDATION</span><span class="plain-syntax">   </span><a href="../foundation-module/8-ws.html#SP2" class="internal">../foundation-module/8-ws.html#SP2</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP3" class="internal">../foundation-module/8-ws.html#SP3</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP4" class="internal">../foundation-module/8-ws.html#SP4</a>
+<span class="plain-syntax">             </span><a href="../foundation-module/8-wm.html#SP1" class="internal">../foundation-module/8-wm.html#SP1</a>
+</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The third stage is to call <a href="2-tp.html#SP1" class="internal">2-tp.html#SP1</a>. This is where we check that
 the web is syntactically valid line-by-line, reporting errors if any using
 by calling <a href="1-pc.html#SP8" class="internal">1-pc.html#SP8</a>. Each line is assigned a "category": for
 example, the category <code class="display"><span class="extract-syntax">DEFINITIONS_LCAT</span></code> is given to lines holding definitions
@@ -823,13 +815,12 @@ the footnote texts, and works out their proper numbering; each becomes a
 we now have something like this:
 </p>
 
-<pre class="display">
-    <span class="function-syntax">INWEB</span><span class="plain-syntax">        </span><a href="2-tr.html#SP1" class="internal">2-tr.html#SP1</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP2" class="internal">2-tr.html#SP2</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP3" class="internal">2-tr.html#SP3</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">2-tp.html#SP1_1_7_5_1_8_1</a><span class="plain-syntax">  ----&gt; </span><a href="2-lc.html#SP1" class="internal">2-lc.html#SP1</a>
-    <span class="plain-syntax">              |                |                  |               </span><a href="2-pm.html#SP1" class="internal">2-pm.html#SP1</a>
-    <span class="function-syntax">FOUNDATION</span><span class="plain-syntax">   </span><a href="../foundation-module/8-ws.html#SP2" class="internal">../foundation-module/8-ws.html#SP2</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP3" class="internal">../foundation-module/8-ws.html#SP3</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP4" class="internal">../foundation-module/8-ws.html#SP4</a>
-    <span class="plain-syntax">             </span><a href="../foundation-module/8-wm.html#SP1" class="internal">../foundation-module/8-wm.html#SP1</a>
-</pre>
-<ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> There are more than 20, but many are no longer needed in "version 2" of
+<pre class="displayed-code all-displayed-code">
+<span class="function-syntax">INWEB</span><span class="plain-syntax">        </span><a href="2-tr.html#SP1" class="internal">2-tr.html#SP1</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP2" class="internal">2-tr.html#SP2</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP3" class="internal">2-tr.html#SP3</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">2-tp.html#SP1_1_7_5_1_8_1</a><span class="plain-syntax">  ----&gt; </span><a href="2-lc.html#SP1" class="internal">2-lc.html#SP1</a>
+<span class="plain-syntax">              |                |                  |               </span><a href="2-pm.html#SP1" class="internal">2-pm.html#SP1</a>
+<span class="function-syntax">FOUNDATION</span><span class="plain-syntax">   </span><a href="../foundation-module/8-ws.html#SP2" class="internal">../foundation-module/8-ws.html#SP2</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP3" class="internal">../foundation-module/8-ws.html#SP3</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP4" class="internal">../foundation-module/8-ws.html#SP4</a>
+<span class="plain-syntax">             </span><a href="../foundation-module/8-wm.html#SP1" class="internal">../foundation-module/8-wm.html#SP1</a>
+</pre><ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> There are more than 20, but many are no longer needed in "version 2" of
 the Inweb syntax, which is the only one anyone should still use. Continuing
 to support version 1 makes <a href="2-tp.html" class="internal">2-tp.html</a> much fiddlier, and at some point we
 will probably drop this quixotic goal.
@@ -846,10 +837,9 @@ that's done at weaving time instead.
 A line at the top like
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    Language: C</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    </span><span class="element-syntax">Language</span><span class="plain-syntax">:</span><span class="string-syntax"> C</span>
 </pre>
-
 <p class="inwebparagraph">results in the text "C" being stored in the bibliographic datum <code class="display"><span class="extract-syntax">"Language"</span></code>,
 and if contents lines for chapters or sections specify other languages,<sup id="fnref:9"><a href="#fn:9" rel="footnote">9</a></sup>
 the loader stores those in the relevant <a href="../foundation-module/8-ws.html#SP3" class="internal">../foundation-module/8-ws.html#SP3</a> or <a href="../foundation-module/8-ws.html#SP4" class="internal">../foundation-module/8-ws.html#SP4</a>
@@ -861,10 +851,9 @@ calling <a href="4-pl.html#SP2" class="internal">4-pl.html#SP2</a>, and the pars
 finds extract lines like
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    = (text as ACME)</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    = (text as ACME)</span>
 </pre>
-
 <p class="inwebparagraph">to say that a passage of text must be syntax-coloured like the ACME language.
 </p>
 
@@ -918,7 +907,7 @@ of Suzanne Vega's "Freeze Tag".
 <p class="inwebparagraph">It then either calls <a href="1-ts.html#SP2" class="internal">1-ts.html#SP2</a> &mdash; meaning, a subset of the
 web, going into a single output file &mdash; or <a href="1-ts.html#SP1" class="internal">1-ts.html#SP1</a>, which it turn
 splits the web into subsets and sends each of those to <a href="1-ts.html#SP2" class="internal">1-ts.html#SP2</a>;
-and it ensures that <a href="1-ptt.html#SP6" class="internal">1-ptt.html#SP6</a> is called at the
+and it ensures that <a href="1-ptt.html#SP7" class="internal">1-ptt.html#SP7</a> is called at the
 end of the process. "Payloads" are files copied into the weave: for example,
 an icon or a CSS file used in the website being constructed is a "payload".
 </p>

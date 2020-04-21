@@ -18,6 +18,33 @@ body {
 	-webkit-font-smoothing: antialiased;
 }
 
+a.function-link:link, a.function-link:visited {
+	text-decoration-line: underline; text-decoration-style: dotted;
+}
+a.function-link:active, a.function-link:hover {
+	font-weight: 700
+}
+
+a.internal:link, a.internal:visited {
+    color: #22E; text-decoration-style: dotted; text-decoration-line: underline;
+}
+a.internal:active {
+    font-weight: 700
+}
+a.internal:hover {
+    font-weight: 700;
+}
+
+a.external:link, a.external:visited {
+    color: #22E; text-decoration: none;
+}
+a.external:active {
+    font-weight: 700
+}
+a.external:hover {
+    font-weight: 700;
+}
+
 /* Forms of paragraph: */
 
 p {
@@ -77,30 +104,12 @@ pre {
 	font-family: Monaco, monospace;
 }
 
-pre.display {
-	padding: 3px;
+pre.all-displayed-code {
+	padding: 10px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 	margin-left: 30px;
 	margin-right: 10px;
-	background: #f8f8f8;
-	border-width: 1px;
-	border-style: solid solid solid solid;
-	border-color: #ccc;
-	word-wrap: break-word;
-	white-space: pre-wrap;
-}
-
-pre.displaydefn {
-	padding: 3px;
-	margin-top: 0px;
-	margin-bottom: 0px;
-	margin-left: 0px;
-	margin-right: 10px;
-	background: #f8f8f8;
-	border-width: 1px;
-	border-style: solid solid solid solid;
-	border-color: #ccc;
 	word-wrap: break-word;
 	white-space: pre-wrap;
 }

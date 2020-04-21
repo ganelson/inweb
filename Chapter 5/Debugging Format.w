@@ -144,7 +144,9 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 @<Render material@> =
 	weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
 	WRITE(" ");
-	Debugging::show_mat(OUT, C->new_material);
+	Debugging::show_mat(OUT, C->material_type);
+	if (C->material_type == CODE_MATERIAL) WRITE(": %S", C->styling->language_name);
+	if (C->plainly) WRITE(" (plainly)");
 
 @<Render weave_embed_node@> =
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);

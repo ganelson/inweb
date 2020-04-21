@@ -4,7 +4,7 @@ Extension: ".txt"
 
 colouring {
 	=> !plain
-	brackets in /(\$) (.*)/ {
+	brackets in /\s*(\$) (.*)/ {
 		number 1 => !element
 		number 2 => {
 			=> !plain

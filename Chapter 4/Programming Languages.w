@@ -584,7 +584,7 @@ but which are not expressible in the syntax of this file.
 @d RESERVED_COLOUR		'r'
 @d ELEMENT_COLOUR		'e'
 @d IDENTIFIER_COLOUR	'i'
-@d CHARACTER_COLOUR	'c'
+@d CHARACTER_COLOUR     'c'
 @d CONSTANT_COLOUR		'n'
 @d STRING_COLOUR		's'
 @d PLAIN_COLOUR			'p'

@@ -108,6 +108,7 @@ void HTMLFormat::render_EPUB(weave_format *self, text_stream *OUT, heterogeneous
 typedef struct HTML_render_state {
 	struct text_stream *OUT;
 	struct weave_order *wv;
+	struct colour_scheme *colours;
 	int EPUB_flag;
 	int popup_counter;
 	int last_material_seen;
@@ -123,6 +124,7 @@ void HTMLFormat::render_inner(weave_format *self, text_stream *OUT, heterogeneou
 	hrs.popup_counter = 1;
 	hrs.last_material_seen = -1;
 	Swarm::ensure_plugin(C->wv, I"Base");
+	hrs.colours = Swarm::ensure_colour_scheme(C->wv, I"Colours", I"");
 
 	Trees::traverse_from(tree->root, &HTMLFormat::render_visit, (void *) &hrs, 0);
 	
@@ -272,13 +274,22 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 		int first_in_para = FALSE;
 		if (N == N->parent->child) first_in_para = TRUE;
 		weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
-		switch (C->new_material) {
+		switch (C->material_type) {
 			case CODE_MATERIAL:
 				if (first_in_para) {
 					HTMLFormat::cp(OUT);
 				}
-				if (C->plainly) HTMLFormat::pre(OUT, "undisplay");
-				else HTMLFormat::pre(OUT, "display");
+				TEMPORARY_TEXT(csname);
+				WRITE_TO(csname, "%S-Colours", C->styling->language_name);
+				hrs->colours = Swarm::ensure_colour_scheme(hrs->wv,
+					csname, C->styling->language_name);
+				DISCARD_TEXT(csname);
+				TEMPORARY_TEXT(cl);
+				WRITE_TO(cl, "%S", hrs->colours->prefix);
+				if (C->plainly) WRITE_TO(cl, "undisplayed-code");
+				else WRITE_TO(cl, "displayed-code");
+				WRITE("<pre class=\"%S all-displayed-code\">\n", cl);
+				DISCARD_TEXT(cl);
 				break;
 			case REGULAR_MATERIAL:
 				if (first_in_para == FALSE) {
@@ -310,9 +321,9 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 		}
 		for (tree_node *M = N->child; M; M = M->next)
 			Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
-		switch (C->new_material) {
+		switch (C->material_type) {
 			case CODE_MATERIAL:
-				HTMLFormat::cpre(OUT);
+				WRITE("</pre>");
 				break;
 			case REGULAR_MATERIAL:
 				HTMLFormat::cp(OUT);
@@ -331,7 +342,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 				HTMLFormat::cpre(OUT);
 				break;
 		}
-		hrs->last_material_seen = C->new_material;
+		hrs->last_material_seen = C->material_type;
 	}
 	return FALSE;
 
@@ -368,8 +379,10 @@ that service uses to identify the video/audio in question.
 
 @<Render function usage@> =
 	weave_function_usage_node *C = RETRIEVE_POINTER_weave_function_usage_node(N->content);
-	HTML::begin_link_with_class(OUT, I"internal", C->url);
+	HTML::begin_link_with_class(OUT, I"function-link", C->url);
+	HTMLFormat::change_colour(NULL, OUT, hrs->wv, FUNCTION_COLOUR, FALSE, hrs->colours);
 	WRITE("%S", C->fn->function_name);
+	WRITE("</span>");
 	HTML::end_link(OUT);
 
 @<Render commentary@> =
@@ -422,7 +435,7 @@ that service uses to identify the video/audio in question.
 	int starts = FALSE;
 	if (N == N->parent->child) starts = TRUE;
 	HTMLFormat::source_code(hrs->wv->format, OUT, hrs->wv,
-		C->matter, C->colouring, starts);
+		C->matter, C->colouring, hrs->colours);
 	
 @<Render URL@> =
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
@@ -463,7 +476,7 @@ that service uses to identify the video/audio in question.
 @<Render function defn@> =
 	weave_function_defn_node *C = RETRIEVE_POINTER_weave_function_defn_node(N->content);
 	Swarm::ensure_plugin(hrs->wv, I"Popups");
-	HTMLFormat::change_colour(NULL, OUT, hrs->wv, FUNCTION_COLOUR, FALSE);
+	HTMLFormat::change_colour(NULL, OUT, hrs->wv, FUNCTION_COLOUR, FALSE, hrs->colours);
 	WRITE("%S", C->fn->function_name);
 	WRITE("</span>");
 	WRITE("<button class=\"popup\" onclick=\"togglePopup('usagePopup%d')\">", hrs->popup_counter);
@@ -565,8 +578,7 @@ void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
 
 @ =
 void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_order *wv,
-	text_stream *matter,
-	text_stream *colouring, int starts) {
+	text_stream *matter, text_stream *colouring, colour_scheme *cs) {
 	int current_colour = -1, colour_wanted = PLAIN_COLOUR;
 	for (int i=0; i < Str::len(matter); i++) {
 		colour_wanted = Str::get_at(colouring, i); @<Adjust code colour as necessary@>;
@@ -582,7 +594,7 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_order *
 @<Adjust code colour as necessary@> =
 	if (colour_wanted != current_colour) {
 		if (current_colour >= 0) HTML_CLOSE("span");
-		HTMLFormat::change_colour(NULL, OUT, wv, colour_wanted, TRUE);
+		HTMLFormat::change_colour(NULL, OUT, wv, colour_wanted, TRUE, cs);
 		current_colour = colour_wanted;
 	}
 
@@ -596,7 +608,7 @@ void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_order *wv,
 	filename *RF = Filenames::from_text(figname);
 	HTML_OPEN("center");
 	HTML::image(OUT, RF);
-	Patterns::copy_file_into_weave(wv->weave_web, F, NULL);
+	Patterns::copy_file_into_weave(wv->weave_web, F, NULL, NULL);
 	HTML_CLOSE("center");
 	WRITE("\n");
 }
@@ -616,16 +628,12 @@ void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_order *wv,
 		ID = mr.exp[0];
 	}
 	HTMLFormat::exit_current_paragraph(OUT);
+	
 	TEMPORARY_TEXT(embed_leaf);
 	WRITE_TO(embed_leaf, "%S.html", service);
-	filename *F = Filenames::in(	
-		Pathnames::down(wv->weave_web->md->path_to_web, I"Embedding"), embed_leaf);
-	if (TextFiles::exists(F) == FALSE)
-		F = Filenames::in(	
-			Pathnames::down(path_to_inweb, I"Embedding"), embed_leaf);
+	filename *F = Patterns::find_asset(wv->pattern, I"Embedding", embed_leaf);
 	DISCARD_TEXT(embed_leaf);
-
-	if (TextFiles::exists(F) == FALSE) {
+	if (F == NULL) {
 		Main::error_in_web(I"This is not a supported service", wv->current_weave_line);
 		return;
 	}
@@ -657,7 +665,7 @@ void HTMLFormat::para_macro(weave_format *self, text_stream *OUT, weave_order *w
 
 @ =
 void HTMLFormat::change_colour(weave_format *self, text_stream *OUT, weave_order *wv,
-	int col, int in_code) {
+	int col, int in_code, colour_scheme *cs) {
 	char *cl = "plain";
 	switch (col) {
 		case DEFINITION_COLOUR: 	cl = "definition-syntax"; break;
@@ -673,7 +681,7 @@ void HTMLFormat::change_colour(weave_format *self, text_stream *OUT, weave_order
 		case COMMENT_COLOUR: 		cl = "comment-syntax"; break;
 		default: PRINT("col: %d\n", col); internal_error("bad colour"); break;
 	}
-	HTML_OPEN_WITH("span", "class=\"%s\"", cl);
+	HTML_OPEN_WITH("span", "class=\"%S%s\"", cs->prefix, cl);
 }
 
 @ =
@@ -766,7 +774,7 @@ int HTMLFormat::begin_weaving_EPUB(weave_format *wf, web *W, weave_pattern *patt
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "%S", Bibliographic::get_datum(W->md, I"Title"));
 	W->as_ebook = Epub::new(T, "P");
-	filename *CSS = WeavePlugins::find_asset(pattern, I"Base", I"Base.css");
+	filename *CSS = Patterns::find_asset(pattern, I"Base", I"Base.css");
 	Epub::use_CSS_throughout(W->as_ebook, CSS);
 	Epub::attach_metadata(W->as_ebook, L"identifier", T);
 	DISCARD_TEXT(T)

@@ -22,6 +22,7 @@ typedef struct colony {
 	struct linked_list *members; /* of |colony_member| */
 	struct text_stream *home; /* path of home repository */
 	struct pathname *assets_path; /* where assets shared between weaves live */
+	struct pathname *patterns_path; /* where additional patterns live */
 	MEMORY_MANAGEMENT
 } colony;
 
@@ -67,6 +68,7 @@ void Colonies::load(filename *F) {
 	C->members = NEW_LINKED_LIST(colony_member);
 	C->home = I"docs";
 	C->assets_path = NULL;
+	C->patterns_path = NULL;
 	colony_reader_state crs;
 	crs.province = C;
 	crs.nav = NULL;
@@ -116,6 +118,8 @@ void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_crs
 		C->home = Str::duplicate(mr.exp[0]);
 	} else if (Regexp::match(&mr, line, L"assets: *(%c*)")) {
 		C->assets_path = Pathnames::from_text(mr.exp[0]);
+	} else if (Regexp::match(&mr, line, L"patterns: *(%c*)")) {
+		C->patterns_path = Pathnames::from_text(mr.exp[0]);
 	} else if (Regexp::match(&mr, line, L"pattern: none")) {
 		crs->pattern = NULL;
 	} else if (Regexp::match(&mr, line, L"pattern: *(%c*)")) {
@@ -274,6 +278,13 @@ pathname *Colonies::assets_path(void) {
 	colony *C;
 	LOOP_OVER(C, colony)
 		return C->assets_path;
+	return NULL;
+}
+
+pathname *Colonies::patterns_path(void) {
+	colony *C;
+	LOOP_OVER(C, colony)
+		return C->patterns_path;
 	return NULL;
 }
 

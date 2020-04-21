@@ -9,13 +9,7 @@
 
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		<meta name="viewport" content="width=device-width initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta http-equiv="Content-Language" content="en-gb">
-
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 
 	</head>
 	<body>
@@ -53,25 +47,22 @@ looks to see if the web in question defines a custom pattern of that name.
 For example,
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    $ inweb/Tangled/inweb inweb/Examples/goldbach -weave-as Tapestry</span>
+<pre class="ConsoleText-displayed-code all-displayed-code">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> Tapestry</span>
 </pre>
-
 <p class="inwebparagraph">would look for a directory called:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    inweb/Examples/goldbach/Patterns/Tapestry</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    inweb/Examples/goldbach/Patterns/Tapestry</span>
 </pre>
-
 <p class="inwebparagraph">If that is found, Inweb expects it to define <code class="display"><span class="extract-syntax">Tapestry</span></code>. If not, Inweb next
 tries:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    inweb/Patterns/Tapestry</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    inweb/Patterns/Tapestry</span>
 </pre>
-
 <p class="inwebparagraph">since <code class="display"><span class="extract-syntax">inweb/Patterns</span></code> is where the built-in patterns are kept. If it can't
 find either, Inweb issues an error.
 </p>
@@ -85,10 +76,9 @@ series of simple one-line commands.
 <p class="inwebparagraph">Most custom patterns open with the command:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    from Whatever</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    from Whatever</span>
 </pre>
-
 <p class="inwebparagraph">which tells Inweb that this new pattern inherits from an existing one named
 <code class="display"><span class="extract-syntax">Whatever</span></code>. (Do not get these into loops, with A inheriting from B and B
 also inheriting from A.) The rule is then that if Inweb needs a file to do
@@ -100,10 +90,9 @@ only contain actual differences.
 <p class="inwebparagraph">There should then always be a command reading:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    format = HTML</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    format = HTML</span>
 </pre>
-
 <p class="inwebparagraph">or whatever other file format is required (for the TeX pattern, for example,
 this reads <code class="display"><span class="extract-syntax">format = PDF</span></code>). A few other settings can also be made with <code class="display"><span class="extract-syntax">=</span></code>.
 </p>
@@ -130,26 +119,23 @@ is going on; they enable us to give custom titles to different weaves from the
 same web. For example:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    Title = Grammar</span>
-    <span class="plain-syntax">    Booklet Title = A formal grammar for Inform 7</span>
-    <span class="plain-syntax">    Author = The Inform Project</span>
-</pre>
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The command:
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    Title = Grammar</span>
+<span class="plain-syntax">    Booklet Title = A formal grammar for Inform 7</span>
+<span class="plain-syntax">    Author = The Inform Project</span>
+</pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The command:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    use X</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    use X</span>
 </pre>
-
 <p class="inwebparagraph">tells Inweb that the file X, also stored in the pattern directory, should
 be copied into any website being woven. For example, the HTML pattern says
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    use crumbs.gif</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    use crumbs.gif</span>
 </pre>
-
 <p class="inwebparagraph">to instruct Inweb that an image used by the pages generated needs to be
 copied over.
 </p>
@@ -157,10 +143,9 @@ copied over.
 <p class="inwebparagraph">Finally, the command
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    embed css</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    embed css</span>
 </pre>
-
 <p class="inwebparagraph">tells Inweb that in any HTML file produced, the CSS necessary should be
 embedded into the HTML, not linked as an external file. This is tidier for
 patterns like TeX, where there will only be at most one HTML file produced,
@@ -180,10 +165,9 @@ double-square brackets can be used to represent values from the bibliographic
 data at the top of the web's Contents section. For example:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    \noindent{{\stitlefont </span><span class="function-syntax">[[Author]]</span><span class="plain-syntax">}}</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    \noindent{{\stitlefont </span><span class="function-syntax">[[Author]]</span><span class="plain-syntax">}}</span>
 </pre>
-
 <p class="inwebparagraph">In addition:
 </p>
 
@@ -219,20 +203,18 @@ value <code class="display"><span class="extract-syntax">...</span></code>, whic
 </li><li>(b) One of the following details about the entire-web PDF (see below):
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    </span><span class="function-syntax">[[Complete Leafname]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete PDF Size]]</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    </span><span class="function-syntax">[[Complete Leafname]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete PDF Size]]</span>
 </pre>
-
 <p class="inwebparagraph"></p>
 
 </li><li>(b) One of the following details about the "current chapter" (again, see below):
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Leafname]]</span>
-    <span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter PDF Size]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Errors]]</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Leafname]]</span>
+<span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter PDF Size]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Errors]]</span>
 </pre>
-
 <p class="inwebparagraph"></p>
 
 </li><li> The leafname is that of the typeset PDF; the extent is a page count;
@@ -240,13 +222,12 @@ the errors result is a usually blank report.
 </li><li>(c) One of the following details about the "current section" (again, see below):
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    </span><span class="function-syntax">[[Section Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Leafname]]</span>
-    <span class="plain-syntax">    </span><span class="function-syntax">[[Section Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section PDF Size]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Errors]]</span>
-    <span class="plain-syntax">    </span><span class="function-syntax">[[Section Lines]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Paragraphs]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Mean]]</span>
-    <span class="plain-syntax">    </span><span class="function-syntax">[[Section Source]]</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    </span><span class="function-syntax">[[Section Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Leafname]]</span>
+<span class="plain-syntax">    </span><span class="function-syntax">[[Section Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section PDF Size]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Errors]]</span>
+<span class="plain-syntax">    </span><span class="function-syntax">[[Section Lines]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Paragraphs]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Mean]]</span>
+<span class="plain-syntax">    </span><span class="function-syntax">[[Section Source]]</span>
 </pre>
-
 <p class="inwebparagraph"></p>
 
 </li><li> Lines and Paragraphs are counts of the number of each; the Source
@@ -274,28 +255,26 @@ a repetition, but happens just once, for the named chapter or section.
 <p class="inwebparagraph">For example, the following pattern:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    To take chapter 3 as an example, for instance, we find -</span>
-    <span class="plain-syntax">    </span><span class="function-syntax">[[Select 3]]</span>
-    <span class="plain-syntax">    </span><span class="function-syntax">[[Repeat Section]]</span>
-    <span class="plain-syntax">        Section </span><span class="function-syntax">[[Section Title]]</span><span class="plain-syntax">, </span><span class="function-syntax">[[Section Code]]</span><span class="plain-syntax">, </span><span class="function-syntax">[[Section Lines]]</span><span class="plain-syntax"> lines.</span>
-    <span class="plain-syntax">    </span><span class="function-syntax">[[End Repeat]]</span>
-    <span class="plain-syntax">    </span><span class="function-syntax">[[End Select]]</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    To take chapter 3 as an example, for instance, we find -</span>
+<span class="plain-syntax">    </span><span class="function-syntax">[[Select 3]]</span>
+<span class="plain-syntax">    </span><span class="function-syntax">[[Repeat Section]]</span>
+<span class="plain-syntax">        Section </span><span class="function-syntax">[[Section Title]]</span><span class="plain-syntax">, </span><span class="function-syntax">[[Section Code]]</span><span class="plain-syntax">, </span><span class="function-syntax">[[Section Lines]]</span><span class="plain-syntax"> lines.</span>
+<span class="plain-syntax">    </span><span class="function-syntax">[[End Repeat]]</span>
+<span class="plain-syntax">    </span><span class="function-syntax">[[End Select]]</span>
 </pre>
-
 <p class="inwebparagraph">weaves a report somewhat like this:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    To take chapter 3 as an example, for instance, we find -</span>
-    <span class="plain-syntax">        Section Lexer, 3/lex, 1011 lines.</span>
-    <span class="plain-syntax">        Section Read Source Text, 3/read, 394 lines.</span>
-    <span class="plain-syntax">        Section Lexical Writing Back, 3/lwb, 376 lines.</span>
-    <span class="plain-syntax">        Section Lexical Services, 3/lexs, 606 lines.</span>
-    <span class="plain-syntax">        Section Vocabulary, 3/vocab, 338 lines.</span>
-    <span class="plain-syntax">        Section Built-In Words, 3/words, 1207 lines.</span>
-</pre>
-<hr class="tocbar">
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    To take chapter 3 as an example, for instance, we find -</span>
+<span class="plain-syntax">        Section Lexer, 3/lex, 1011 lines.</span>
+<span class="plain-syntax">        Section Read Source Text, 3/read, 394 lines.</span>
+<span class="plain-syntax">        Section Lexical Writing Back, 3/lwb, 376 lines.</span>
+<span class="plain-syntax">        Section Lexical Services, 3/lexs, 606 lines.</span>
+<span class="plain-syntax">        Section Vocabulary, 3/vocab, 338 lines.</span>
+<span class="plain-syntax">        Section Built-In Words, 3/words, 1207 lines.</span>
+</pre><hr class="tocbar">
 <ul class="toc"><li><a href="M-mwiw.html">Back to 'Making Weaves into Websites'</a></li><li><a href="M-spl.html">Continue with 'Supporting Programming Languages'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 		</main>

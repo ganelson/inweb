@@ -78,8 +78,9 @@ typedef struct weave_figure_node {
 } weave_figure_node;
 
 typedef struct weave_material_node {
-	int new_material;
+	int material_type;
 	int plainly;
+	struct programming_language *styling;
 	MEMORY_MANAGEMENT
 } weave_material_node;
 
@@ -477,10 +478,12 @@ tree_node *WeaveTree::figure(heterogeneous_tree *tree,
 		STORE_POINTER_weave_figure_node(C));
 }
 
-tree_node *WeaveTree::material(heterogeneous_tree *tree, int new_material, int plainly) {
+tree_node *WeaveTree::material(heterogeneous_tree *tree, int material_type, int plainly,
+	programming_language *styling) {
 	weave_material_node *C = CREATE(weave_material_node);
-	C->new_material = new_material;
+	C->material_type = material_type;
 	C->plainly = plainly;
+	C->styling = styling;
 	return Trees::new_node(tree, weave_material_node_type, STORE_POINTER_weave_material_node(C));
 }
 

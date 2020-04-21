@@ -80,6 +80,7 @@ typedef struct weave_order {
 	struct linked_list *breadcrumbs; /* non-standard breadcrumb trail, if any */
 	struct filename *navigation; /* navigation links, or |NULL| if not supplied */
 	struct linked_list *plugins; /* of |weave_plugin|: these are for HTML extensions */
+	struct linked_list *colour_schemes; /* of |colour_scheme|: these are for HTML */
 
 	/* used for workspace during an actual weave: */
 	struct source_line *current_weave_line;
@@ -100,6 +101,7 @@ typedef struct weave_order {
 	wv->navigation = navigation;
 	wv->breadcrumbs = breadcrumbs;
 	wv->plugins = NEW_LINKED_LIST(weave_plugin);
+	wv->colour_schemes = NEW_LINKED_LIST(colour_scheme);
 	if (Reader::web_has_one_section(W)) wv->self_contained = TRUE;
 	Str::copy(wv->cover_sheet_to_use, I"cover-sheet");
 	
@@ -192,6 +194,36 @@ void Swarm::ensure_plugin(weave_order *wv, text_stream *name) {
 			return;
 	weave_plugin *wp = WeavePlugins::new(name);
 	ADD_TO_LINKED_LIST(wp, weave_plugin, wv->plugins);
+}
+
+colour_scheme *Swarm::ensure_colour_scheme(weave_order *wv, text_stream *name,
+	text_stream *pre) {
+	colour_scheme *existing;
+	LOOP_OVER_LINKED_LIST(existing, colour_scheme, wv->colour_schemes)
+		if (Str::eq_insensitive(name, existing->scheme_name))
+			return existing;
+	colour_scheme *cs = WeavePlugins::find_colour_scheme(wv->pattern, name, pre);
+	if (cs == NULL) {
+		if (Str::eq(name, I"Colours")) {
+			TEMPORARY_TEXT(err);
+			WRITE_TO(err, "No CSS file for the colour scheme '%S' can be found",
+				name);
+			Main::error_in_web(err, NULL);
+		} else {
+			return Swarm::ensure_colour_scheme(wv, I"Colours", I"");
+		}
+	}
+	if (cs) ADD_TO_LINKED_LIST(cs, colour_scheme, wv->colour_schemes);
+	return cs;
+}
+
+void Swarm::include_plugins(OUTPUT_STREAM, web *W, weave_order *wv, filename *from) {
+	weave_plugin *wp;
+	LOOP_OVER_LINKED_LIST(wp, weave_plugin, wv->plugins)
+		WeavePlugins::include_plugin(OUT, W, wp, wv->pattern, from);
+	colour_scheme *cs;
+	LOOP_OVER_LINKED_LIST(cs, colour_scheme, wv->colour_schemes)
+		WeavePlugins::include_colour_scheme(OUT, W, cs, wv->pattern, from);
 }
 
 @ After every swarm, we rebuild the index. We first try for a template called

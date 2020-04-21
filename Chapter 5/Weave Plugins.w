@@ -12,14 +12,59 @@ it will likely need the |MathJax3| plugin.
 =
 typedef struct weave_plugin {
 	struct text_stream *plugin_name;
+	int last_included_in_round;
 	MEMORY_MANAGEMENT
 } weave_plugin;
 
 @ =
 weave_plugin *WeavePlugins::new(text_stream *name) {
-	weave_plugin *wp = CREATE(weave_plugin);
+	weave_plugin *wp;
+	LOOP_OVER(wp, weave_plugin)
+		if (Str::eq_insensitive(wp->plugin_name, name))
+			return wp;
+	wp = CREATE(weave_plugin);
 	wp->plugin_name = Str::duplicate(name);
+	wp->last_included_in_round = 0;
 	return wp;
+}
+
+@ And almost the same can be said about colour schemes, except that these we
+actually look for: they will be available to some patterns and not others.
+
+=
+typedef struct colour_scheme {
+	struct text_stream *scheme_name;
+	struct text_stream *prefix;
+	struct filename *at;
+	int last_included_in_round;
+	MEMORY_MANAGEMENT
+} colour_scheme;
+
+@ =
+colour_scheme *WeavePlugins::find_colour_scheme(weave_pattern *pattern,
+	text_stream *name, text_stream *pre) {
+	colour_scheme *cs;
+	LOOP_OVER(cs, colour_scheme)
+		if (Str::eq_insensitive(cs->scheme_name, name))
+			return cs;
+	TEMPORARY_TEXT(css);
+	WRITE_TO(css, "%S.css", name);
+	filename *F = Patterns::find_asset(pattern, I"Colouring", css);
+	if (F == NULL) F = Patterns::find_asset(pattern, I"Coloring", css);
+	DISCARD_TEXT(css);
+	if (F == NULL) return NULL;
+	cs = CREATE(colour_scheme);
+	cs->scheme_name = Str::duplicate(name);
+	cs->at = F;
+	cs->prefix = Str::duplicate(pre);
+	cs->last_included_in_round = 0;
+	if (Str::len(pre) > 0) WRITE_TO(cs->prefix, "-");
+	return cs;
+}
+
+int current_inclusion_round = 0;
+void WeavePlugins::begin_inclusions(void) {
+	current_inclusion_round++;
 }
 
 @ When a file is woven, then, the following function can add the plugins
@@ -30,8 +75,10 @@ inclusion of that, and also copy the file into the weave destination.
 The fragment of HTML is compulsory; the CSS file, optional.
 
 =
-void WeavePlugins::include(OUTPUT_STREAM, web *W, weave_plugin *wp,
+void WeavePlugins::include_plugin(OUTPUT_STREAM, web *W, weave_plugin *wp,
 	weave_pattern *pattern, filename *from) {	
+	if (wp->last_included_in_round == current_inclusion_round) return;
+	wp->last_included_in_round = current_inclusion_round;
 	pathname *AP = Colonies::assets_path();
 	int html_mode = FALSE;
 	if (Str::eq(pattern->pattern_format->format_name, I"HTML")) html_mode = TRUE;
@@ -55,7 +102,7 @@ void WeavePlugins::include(OUTPUT_STREAM, web *W, weave_plugin *wp,
 								Indexer::incorporate_template_for_web_and_pattern(OUT,
 									W, pattern, F);
 							} else {
-								Patterns::copy_file_into_weave(W, F, AP);
+								Patterns::copy_file_into_weave(W, F, AP, NULL);
 							}
 						} else {
 							if (html_mode) {
@@ -69,7 +116,7 @@ void WeavePlugins::include(OUTPUT_STREAM, web *W, weave_plugin *wp,
 									DISCARD_TEXT(url);
 								}
 							}
-							Patterns::copy_file_into_weave(W, F, AP);
+							Patterns::copy_file_into_weave(W, F, AP, NULL);
 						}
 						finds++;
 					}
@@ -87,26 +134,31 @@ void WeavePlugins::include(OUTPUT_STREAM, web *W, weave_plugin *wp,
 	DISCARD_TEXT(required);
 }
 
-void WeavePlugins::include_from_pattern(OUTPUT_STREAM, web *W, weave_pattern *pattern, filename *from) {
-	for (weave_pattern *p = pattern; p; p = p->based_on) {
-		weave_plugin *wp;
-		LOOP_OVER_LINKED_LIST(wp, weave_plugin, p->plugins)
-			WeavePlugins::include(OUT, W, wp, pattern, from);
+@ =
+void WeavePlugins::include_colour_scheme(OUTPUT_STREAM, web *W, colour_scheme *cs,
+	weave_pattern *pattern, filename *from) {	
+	if (cs->last_included_in_round == current_inclusion_round) return;
+	cs->last_included_in_round = current_inclusion_round;
+	if (Str::eq(pattern->pattern_format->format_name, I"HTML")) {
+		pathname *AP = Colonies::assets_path();
+		TEMPORARY_TEXT(css);
+		WRITE_TO(css, "%S.css", cs->scheme_name);
+		filename *F = Patterns::find_asset(pattern, I"Colouring", css);
+		if (F == NULL) F = Patterns::find_asset(pattern, I"Coloring", css);
+		if (F == NULL) {
+			TEMPORARY_TEXT(err);
+			WRITE_TO(err, "No CSS file for the colour scheme '%S' can be found",
+				cs->scheme_name);
+			Main::error_in_web(err, NULL);
+			DISCARD_TEXT(err);
+		} else {
+			TEMPORARY_TEXT(url);
+			if (AP) Pathnames::relative_URL(url, Filenames::up(from), AP);
+			WRITE_TO(url, "%S", css);
+			WRITE("<link href=\"%S\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\">\n", url);
+			DISCARD_TEXT(url);
+			Patterns::copy_file_into_weave(W, F, AP, cs->prefix);
+		}
+		DISCARD_TEXT(css);
 	}
-}
-
-void WeavePlugins::include_from_target(OUTPUT_STREAM, web *W, weave_order *target, filename *from) {
-	weave_plugin *wp;
-	LOOP_OVER_LINKED_LIST(wp, weave_plugin, target->plugins)
-		WeavePlugins::include(OUT, W, wp, target->pattern, from);
-}
-
-filename *WeavePlugins::find_asset(weave_pattern *pattern, text_stream *name,
-	text_stream *leafname) {
-	for (weave_pattern *wp = pattern; wp; wp = wp->based_on) {
-		pathname *P = Pathnames::down(wp->pattern_location, name);
-		filename *F = P?(Filenames::in(P, leafname)):NULL;
-		if (TextFiles::exists(F)) return F;
-	}
-	return NULL;
 }

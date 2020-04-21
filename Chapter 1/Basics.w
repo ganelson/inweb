@@ -14,6 +14,7 @@ see //foundation: A Brief Guide to Foundation//.
 @e chapter_MT
 @e colony_MT
 @e colony_member_MT
+@e colour_scheme_MT
 @e colouring_language_block_MT
 @e colouring_rule_MT
 @e enumeration_set_MT
@@ -97,6 +98,7 @@ ALLOCATE_INDIVIDUALLY(breadcrumb_request)
 ALLOCATE_INDIVIDUALLY(chapter)
 ALLOCATE_INDIVIDUALLY(colony)
 ALLOCATE_INDIVIDUALLY(colony_member)
+ALLOCATE_INDIVIDUALLY(colour_scheme)
 ALLOCATE_INDIVIDUALLY(colouring_language_block)
 ALLOCATE_INDIVIDUALLY(colouring_rule)
 ALLOCATE_INDIVIDUALLY(enumeration_set)

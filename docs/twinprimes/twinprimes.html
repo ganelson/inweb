@@ -8,14 +8,6 @@
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		<meta name="viewport" content="width=device-width initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta http-equiv="Content-Language" content="en-gb">
-
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 MathJax = {
   tex: {
@@ -38,6 +30,7 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 
 	</head>
 	<body>
@@ -79,33 +72,30 @@ and many others, 2014).
 and should print output like so:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    3 and 5</span>
-    <span class="plain-syntax">    5 and 7</span>
-    <span class="plain-syntax">    11 and 13</span>
-    <span class="plain-syntax">    ...</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    3 and 5</span>
+<span class="plain-syntax">    5 and 7</span>
+<span class="plain-syntax">    11 and 13</span>
+<span class="plain-syntax">    ...</span>
 </pre>
-
 <pre class="definitions">
     <span class="definition-keyword">define</span> <span class="constant-syntax">RANGE</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="plain-syntax"> </span><span class="comment"> the upper limit to the numbers we will consider</span>
 </pre>
-<pre class="display">
-    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdio</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdio</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 
-    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">main</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">argv</span><span class="plain-syntax">[]) {</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=1; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">RANGE</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
-    <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Test for twin prime at i</span> <span class="named-paragraph-number">1.1</span>&gt;<span class="plain-syntax">;</span>
-    <span class="plain-syntax">}</span>
-</pre>
-<p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b><code class="display">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">main</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">argv</span><span class="plain-syntax">[]) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=1; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">RANGE</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
+<span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Test for twin prime at i</span> <span class="named-paragraph-number">1.1</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre><p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b><code class="display">
 &lt;<span class="named-paragraph-defn">Test for twin prime at i</span> <span class="named-paragraph-number">1.1</span>&gt; =
 </code></p>
 
-<pre class="display">
-    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="S-all.html#SP2" class="internal">isprime</a><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">)) &amp;&amp; (</span><a href="S-all.html#SP2" class="internal">isprime</a><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">+2)))</span>
-    <span class="plain-syntax">        </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%d and %d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">+2);</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="S-all.html#SP1">&#167;1</a>.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Primality. </b>This simple and slow test tries to divide by every whole number at least
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="S-all.html#SP2" class="internal">isprime</a><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">)) &amp;&amp; (</span><a href="S-all.html#SP2" class="internal">isprime</a><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">+2)))</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%d and %d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">+2);</span>
+</pre><ul class="endnotetexts"><li>This code is used in <a href="S-all.html#SP1">&#167;1</a>.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Primality. </b>This simple and slow test tries to divide by every whole number at least
 2 and up to the square root: if none divide exactly, the number is prime.
 A common error with this algorithm is to check where \(m^2 &lt; n\), rather
 than \(m^2 \leq n\), thus wrongly considering 4, 9, 25, 49, ... as prime:
@@ -118,16 +108,15 @@ of the EDSAC computer on 6 May 1949.
     <span class="definition-keyword">define</span> <span class="constant-syntax">TRUE</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
     <span class="definition-keyword">define</span> <span class="constant-syntax">FALSE</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
 </pre>
-<pre class="display">
-    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">isprime</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>isprime</b>:<br><a href="S-all.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">m</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">; </span><span class="identifier-syntax">m</span><span class="plain-syntax">*</span><span class="identifier-syntax">m</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">n</span><span class="plain-syntax">; </span><span class="identifier-syntax">m</span><span class="plain-syntax">++)</span>
-    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> % </span><span class="identifier-syntax">m</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
-    <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">}</span>
-</pre>
-<!--End of weave-->
+<pre class="displayed-code all-displayed-code">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">isprime</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>isprime</b>:<br><a href="S-all.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">m</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">; </span><span class="identifier-syntax">m</span><span class="plain-syntax">*</span><span class="identifier-syntax">m</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">n</span><span class="plain-syntax">; </span><span class="identifier-syntax">m</span><span class="plain-syntax">++)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> % </span><span class="identifier-syntax">m</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre><!--End of weave-->
 		</main>
 	</body>
 </html>

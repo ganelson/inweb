@@ -9,13 +9,6 @@
 
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		<meta name="viewport" content="width=device-width initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta http-equiv="Content-Language" content="en-gb">
-
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 
 	</head>
 	<body>
@@ -62,27 +55,24 @@ avoided altogether.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Each section of an InC web can, optionally, begin:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    [Namespace::] The Title of This Section.</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    </span><span class="identifier-syntax">[Namespace::]</span><span class="plain-syntax"> The Title of This Section.</span>
 </pre>
-
 <p class="inwebparagraph">rather than, as normal,
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    The Title of This Section.</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    The Title of This Section.</span>
 </pre>
-
 <p class="inwebparagraph">That declares that all functions in this section must be have a name which
 begins with <code class="display"><span class="extract-syntax">Namespace::</span></code>. For example,
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">Namespace::initialise</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-    <span class="plain-syntax">        ....</span>
-    <span class="plain-syntax">    }</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">Namespace::initialise</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        ....</span>
+<span class="plain-syntax">    }</span>
 </pre>
-
 <p class="inwebparagraph">Inweb will not allow a function with the wrong namespace (or with none) to
 be declared in the section. This rudimentary feature enables the different
 sections of the web to behave like packages or modules in languages which
@@ -97,19 +87,17 @@ the <code class="display"><span class="extract-syntax">::</span></code> to <code
 <p class="inwebparagraph">Namespaces can be "nested", in the sense that, for example, we could have:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    [Errors::Fatal::] Handling fatal errors.</span>
-</pre>
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The <code class="display"><span class="extract-syntax">foundation</span></code> module contains a suite of utility functions for handling
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    </span><span class="identifier-syntax">[Errors::Fatal::]</span><span class="plain-syntax"> Handling fatal errors.</span>
+</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The <code class="display"><span class="extract-syntax">foundation</span></code> module contains a suite of utility functions for handling
 strings and streams of text. These are unified in a structure called
 <code class="display"><span class="extract-syntax">text_stream</span></code>, so that strings in InC webs are almost all values of type
 <code class="display"><span class="extract-syntax">text_stream *</span></code>. InC provides one convenient feature for this: the notation
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    text_stream *excuse = I"The compiler is not feeling well today.";</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    text_stream *excuse = I"The compiler is not feeling well today.";</span>
 </pre>
-
 <p class="inwebparagraph">creates a string literal of this type. (This is analogous to ANSI C's little
 used syntax for "long strings", which is <code class="display"><span class="extract-syntax">L"like so"</span></code>.)
 </p>
@@ -122,16 +110,15 @@ tagged <code class="display"><span class="extract-syntax">^"Preform"</span></cod
 notation means, but for example:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    &lt;declaration&gt; ::=</span>
-    <span class="plain-syntax">        declare &lt;dominion&gt; independent	==&gt;	R[1]</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    &lt;declaration&gt; ::=</span>
+<span class="plain-syntax">        declare &lt;dominion&gt; independent	==&gt;	R[1]</span>
 
-    <span class="plain-syntax">    &lt;dominion&gt; ::=</span>
-    <span class="plain-syntax">        canada |</span>
-    <span class="plain-syntax">        india |</span>
-    <span class="plain-syntax">        malaya</span>
-</pre>
-<hr class="tocbar">
+<span class="plain-syntax">    &lt;dominion&gt; ::=</span>
+<span class="plain-syntax">        canada |</span>
+<span class="plain-syntax">        india |</span>
+<span class="plain-syntax">        malaya</span>
+</pre><hr class="tocbar">
 <ul class="toc"><li><a href="M-spl.html">Back to 'Supporting Programming Languages'</a></li><li><a href="M-rc.html">Continue with 'Reference Card'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 		</main>

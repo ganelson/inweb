@@ -238,7 +238,7 @@ typedef struct weaver_state {
 		}
 	}
 	L = NULL;
-	Weaver::change_material(tree, state, ENDNOTES_MATERIAL, FALSE);
+	Weaver::change_material(tree, state, ENDNOTES_MATERIAL, FALSE, NULL);
 	Weaver::show_endnotes_on_previous_paragraph(tree, wv, state->ap, current_P);
 
 @h How paragraphs begin.
@@ -288,7 +288,7 @@ about breaking pages at chapters and sections fail to work. So:
 	}
 
 	if (L->category == END_EXTRACT_LCAT) {
-		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE);
+		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE, NULL);
 		continue;
 	}
 
@@ -376,19 +376,19 @@ add a vertical skip between them to show the division more clearly.
 @<Weave bracketed list indications at start of line into items@> =
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, matter, L"%(...%) (%c*)")) { /* continue single */
-		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE);
+		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE, NULL);
 		Trees::make_child(WeaveTree::weave_item_node(tree, 1, I""), state->ap);
 		Str::copy(matter, mr.exp[0]);
 	} else if (Regexp::match(&mr, matter, L"%(-...%) (%c*)")) { /* continue double */
-		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE);
+		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE, NULL);
 		Trees::make_child(WeaveTree::weave_item_node(tree, 2, I""), state->ap);
 		Str::copy(matter, mr.exp[0]);
 	} else if (Regexp::match(&mr, matter, L"%((%i+)%) (%c*)")) { /* begin single */
-		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE);
+		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE, NULL);
 		Trees::make_child(WeaveTree::weave_item_node(tree, 1, mr.exp[0]), state->ap);
 		Str::copy(matter, mr.exp[1]);
 	} else if (Regexp::match(&mr, matter, L"%(-(%i+)%) (%c*)")) { /* begin double */
-		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE);
+		Weaver::change_material(tree, state, REGULAR_MATERIAL, FALSE, NULL);
 		Trees::make_child(WeaveTree::weave_item_node(tree, 2, mr.exp[0]), state->ap);
 		Str::copy(matter, mr.exp[1]);
 	}
@@ -401,7 +401,7 @@ in the source is set indented in code style.
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, matter, L"\t|(%c*)|(%c*?)")) {
 		TEMPORARY_TEXT(original);
-		Weaver::change_material(tree, state, CODE_MATERIAL, FALSE);
+		Weaver::change_material(tree, state, CODE_MATERIAL, FALSE, NULL);
  		Str::copy(original, mr.exp[0]);
 		Str::copy(matter, mr.exp[1]);
 		TEMPORARY_TEXT(colouring);
@@ -419,7 +419,7 @@ in the source is set indented in code style.
 
 @<Weave footnotes@> =
 	if (L->category == FOOTNOTE_TEXT_LCAT) {
-		Weaver::change_material(tree, state, FOOTNOTES_MATERIAL, FALSE);
+		Weaver::change_material(tree, state, FOOTNOTES_MATERIAL, FALSE, NULL);
 		footnote *F = L->footnote_text;
 		tree_node *FN = WeaveTree::footnote(tree, F->cue_text);
 		Trees::make_child(FN, state->material_node);
@@ -488,7 +488,10 @@ hence the name of the following paragraph:
 			((L->category == CODE_BODY_LCAT) || (L->category == COMMENT_BODY_LCAT)) &&
 			(Str::len(L->text) == 0))
 			will_be = DEFINITION_MATERIAL;
-		Weaver::change_material(tree, state, will_be, L->plainer);
+		programming_language *pl = L->colour_as;
+		if (pl == NULL) pl = S->sect_language;
+		if (will_be != CODE_MATERIAL) pl = NULL;
+		Weaver::change_material(tree, state, will_be, L->plainer, pl);
 		state->line_break_pending = FALSE;
 	}
 
@@ -574,6 +577,7 @@ otherwise, they are set flush right.
 			if (defn) {
 				Str::clear(matter);
 				Str::clear(colouring);
+				Painter::reset_syntax_colouring(S->sect_language);
 			}
 			Trees::make_child(WeaveTree::pmac(tree, pmac, defn), CL);
 		} else break;
@@ -757,9 +761,9 @@ void Weaver::weave_subheading(heterogeneous_tree *tree, weave_order *wv,
 }
 
 void Weaver::change_material(heterogeneous_tree *tree,
-	weaver_state *state, int new_material, int plainly) {
+	weaver_state *state, int new_material, int plainly, programming_language *pl) {
 	if (state->kind_of_material != new_material) {
-		tree_node *D = WeaveTree::material(tree, new_material, plainly);
+		tree_node *D = WeaveTree::material(tree, new_material, plainly, pl);
 		Trees::make_child(D, state->para_node);
 		state->material_node = D;
 		state->ap = D;
@@ -768,7 +772,7 @@ void Weaver::change_material(heterogeneous_tree *tree,
 }
 
 void Weaver::change_material_for_para(heterogeneous_tree *tree, weaver_state *state) {
-	tree_node *D = WeaveTree::material(tree, REGULAR_MATERIAL, FALSE);
+	tree_node *D = WeaveTree::material(tree, REGULAR_MATERIAL, FALSE, NULL);
 	Trees::make_child(D, state->para_node);
 	state->material_node = D;
 	state->ap = D;

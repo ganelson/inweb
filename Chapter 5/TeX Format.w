@@ -187,11 +187,11 @@ to a given width, into the text at the current position.
 @<Render material@> =
 	if (N->child) {
 		weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
-		if ((C->new_material != REGULAR_MATERIAL) && (C->new_material != ENDNOTES_MATERIAL))
+		if ((C->material_type != REGULAR_MATERIAL) && (C->material_type != ENDNOTES_MATERIAL))
 			WRITE("\\beginlines\n");
 		for (tree_node *M = N->child; M; M = M->next)
 			Trees::traverse_from(M, &TeX::render_visit, (void *) trs, L+1);
-		if ((C->new_material != REGULAR_MATERIAL) && (C->new_material != ENDNOTES_MATERIAL))
+		if ((C->material_type != REGULAR_MATERIAL) && (C->material_type != ENDNOTES_MATERIAL))
 			WRITE("\\endlines\n");
 	}
 	return FALSE;

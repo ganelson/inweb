@@ -1,4 +1,4 @@
-Summing Two Primes.
+Summing Primes.
 
 Here we verify the conjecture for small numbers.
 
@@ -10,6 +10,7 @@ number greater than 2 can be written this way. This remains open, though --
 (b) every odd number is a sum of at most five (Tao, 2012).
 
 Besides which, |printf(k+1)|, to say the least: see http://www.google.com
+or for that matter see //The Sieve of Eratosthenes//.
 
 = (figure Letter.jpg height 10cm)
 
@@ -35,7 +36,8 @@ int main(int argc, char *argv[]) {
 }
 
 @ This ought to print:
-= (hyperlinked text)
+= (hyperlinked text as ConsoleText)
+	$ goldbach/Tangled/goldbach -fish 1
 	4 = 2+2
 	6 = 3+3   https://www.wikipedia.org
 	8 = 3+5

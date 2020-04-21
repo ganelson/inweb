@@ -8,14 +8,6 @@
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		<meta name="viewport" content="width=device-width initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta http-equiv="Content-Language" content="en-gb">
-
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
   var popup = document.getElementById(material_id);
@@ -24,6 +16,7 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 
 	</head>
 	<body>
@@ -71,10 +64,9 @@ other tools or libraries to speak of, you could do worse.
 <p class="inwebparagraph">To use <code class="display"><span class="extract-syntax">foundation</span></code>, the Contents section of a web should include:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    Import: foundation</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    Import: foundation</span>
 </pre>
-
 <p class="inwebparagraph">before beginning the chapter rundown. There are then a few conventions
 which must be followed. The <code class="display"><span class="extract-syntax">main</span></code> routine for the client should, as one
 of its very first acts, call <code class="display"><span class="extract-syntax">Foundation::start()</span></code>, and should similarly, just
@@ -93,22 +85,20 @@ Because pthread is not normally available on Windows, a special header is
 supplied instead for that case.
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">ctype</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdarg</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdio</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdlib</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">string</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">time</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">math</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-    <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">wchar</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-</pre>
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">ctype</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdarg</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdio</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdlib</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">string</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">time</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">math</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">wchar</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+</pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
-<pre class="display">
-    <span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment"> Current destination of debugging text: kept </span><code class="display"><span class="extract-syntax">NULL</span></code><span class="comment"> until opened</span>
-</pre>
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>We'll use three truth states, the third of which can also mean "unknown".
+<pre class="displayed-code all-displayed-code">
+<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment"> Current destination of debugging text: kept </span><code class="display"><span class="extract-syntax">NULL</span></code><span class="comment"> until opened</span>
+</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>We'll use three truth states, the third of which can also mean "unknown".
 </p>
 
 
@@ -143,10 +133,9 @@ compromise in practice:
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Very occasionally we'll store a pointer as data:
 </p>
 
-<pre class="display">
-    <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">long</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pointer_sized_int</span><span class="plain-syntax">;</span>
-</pre>
-<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. The beginning and the end. </b>As noted above, the client needs to call these when starting up and when
+<pre class="displayed-code all-displayed-code">
+<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">long</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pointer_sized_int</span><span class="plain-syntax">;</span>
+</pre><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. The beginning and the end. </b>As noted above, the client needs to call these when starting up and when
 shutting down.
 </p>
 
@@ -154,19 +143,18 @@ shutting down.
 that is, literal <code class="display"><span class="extract-syntax">text_stream *</span></code> values written as <code class="display"><span class="extract-syntax">I"strings"</span></code>.
 </p>
 
-<pre class="display">
-    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Foundation::start</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Foundation::start</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-    <span class="plain-syntax">    </span><a href="2-mmr.html#SP5" class="internal">Memory::start</a><span class="plain-syntax">();</span>
-    <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Register the default stream writers</span> <span class="named-paragraph-number">8.1</span>&gt;<span class="plain-syntax">;</span>
-    <span class="plain-syntax">    [[</span><span class="identifier-syntax">textliterals</span><span class="plain-syntax">]];</span>
-    <span class="plain-syntax">    </span><a href="3-tm.html#SP1" class="internal">Time::begin</a><span class="plain-syntax">();</span>
-    <span class="plain-syntax">    </span><a href="3-pth.html#SP2" class="internal">Pathnames::start</a><span class="plain-syntax">();</span>
-    <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Register the default debugging log aspects</span> <span class="named-paragraph-number">8.2</span>&gt;<span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Register the default debugging log writers</span> <span class="named-paragraph-number">8.3</span>&gt;<span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Register the default command line switches</span> <span class="named-paragraph-number">8.5</span>&gt;<span class="plain-syntax">;</span>
-    <span class="plain-syntax">}</span>
-</pre>
-<p class="inwebparagraph"><a id="SP8_1"></a><b>&#167;8.1.  </b>After calling <code class="display"><span class="extract-syntax">Foundation::start()</span></code>, the client can register further stream
+<pre class="displayed-code all-displayed-code">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Foundation::start</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Foundation::start</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><a href="2-mmr.html#SP5" class="internal">Memory::start</a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Register the default stream writers</span> <span class="named-paragraph-number">8.1</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    [[</span><span class="identifier-syntax">textliterals</span><span class="plain-syntax">]];</span>
+<span class="plain-syntax">    </span><a href="3-tm.html#SP1" class="internal">Time::begin</a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="3-pth.html#SP2" class="internal">Pathnames::start</a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Register the default debugging log aspects</span> <span class="named-paragraph-number">8.2</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Register the default debugging log writers</span> <span class="named-paragraph-number">8.3</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Register the default command line switches</span> <span class="named-paragraph-number">8.5</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre><p class="inwebparagraph"><a id="SP8_1"></a><b>&#167;8.1.  </b>After calling <code class="display"><span class="extract-syntax">Foundation::start()</span></code>, the client can register further stream
 writing routines, following these models: they define the meaning of escape
 characters in <code class="display"><span class="extract-syntax">WRITE</span></code>, our version of formatted printing. <code class="display"><span class="extract-syntax">%f</span></code>, for example,
 prints a filename by calling <code class="display"><span class="extract-syntax">Filenames::writer</span></code>.
@@ -177,13 +165,12 @@ prints a filename by calling <code class="display"><span class="extract-syntax">
 &lt;<span class="named-paragraph-defn">Register the default stream writers</span> <span class="named-paragraph-number">8.1</span>&gt; =
 </code></p>
 
-<pre class="display">
-    <span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="internal">Writers::register_writer</a><span class="plain-syntax">(</span><span class="character-syntax">'f'</span><span class="plain-syntax">, &amp;</span><a href="3-fln.html#SP4" class="internal">Filenames::writer</a><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="internal">Writers::register_writer</a><span class="plain-syntax">(</span><span class="character-syntax">'p'</span><span class="plain-syntax">, &amp;</span><a href="3-pth.html#SP6" class="internal">Pathnames::writer</a><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="internal">Writers::register_writer</a><span class="plain-syntax">(</span><span class="character-syntax">'v'</span><span class="plain-syntax">, &amp;</span><a href="7-vn.html#SP6" class="internal">VersionNumbers::writer</a><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="internal">Writers::register_writer</a><span class="plain-syntax">(</span><span class="character-syntax">'S'</span><span class="plain-syntax">, &amp;</span><a href="2-str.html#SP43" class="internal">Streams::writer</a><span class="plain-syntax">);</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-fm.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_2"></a><b>&#167;8.2.  </b>We provide a full logging service, in which different "aspects" can be
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="internal">Writers::register_writer</a><span class="plain-syntax">(</span><span class="character-syntax">'f'</span><span class="plain-syntax">, &amp;</span><a href="3-fln.html#SP4" class="internal">Filenames::writer</a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="internal">Writers::register_writer</a><span class="plain-syntax">(</span><span class="character-syntax">'p'</span><span class="plain-syntax">, &amp;</span><a href="3-pth.html#SP6" class="internal">Pathnames::writer</a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="internal">Writers::register_writer</a><span class="plain-syntax">(</span><span class="character-syntax">'v'</span><span class="plain-syntax">, &amp;</span><a href="7-vn.html#SP6" class="internal">VersionNumbers::writer</a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="internal">Writers::register_writer</a><span class="plain-syntax">(</span><span class="character-syntax">'S'</span><span class="plain-syntax">, &amp;</span><a href="2-str.html#SP43" class="internal">Streams::writer</a><span class="plain-syntax">);</span>
+</pre><ul class="endnotetexts"><li>This code is used in <a href="1-fm.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_2"></a><b>&#167;8.2.  </b>We provide a full logging service, in which different "aspects" can be
 switched on or off. Each aspect represents an activity of the program about
 which a narrative is printed, or not printed, to the debugging log file.
 The following are always provided, but are all off by default.
@@ -194,13 +181,12 @@ The following are always provided, but are all off by default.
 &lt;<span class="named-paragraph-defn">Register the default debugging log aspects</span> <span class="named-paragraph-number">8.2</span>&gt; =
 </code></p>
 
-<pre class="display">
-    <span class="plain-syntax">    </span><a href="2-dl.html#SP4" class="internal">Log::declare_aspect</a><span class="plain-syntax">(</span><span class="constant-syntax">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"debugging log inclusions"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="2-dl.html#SP4" class="internal">Log::declare_aspect</a><span class="plain-syntax">(</span><span class="constant-syntax">SHELL_USAGE_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"shell usage"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="2-dl.html#SP4" class="internal">Log::declare_aspect</a><span class="plain-syntax">(</span><span class="constant-syntax">MEMORY_USAGE_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"memory usage"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="2-dl.html#SP4" class="internal">Log::declare_aspect</a><span class="plain-syntax">(</span><span class="constant-syntax">TEXT_FILES_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"text files"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-fm.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_3"></a><b>&#167;8.3.  </b>Debugging log writers are similar to stream writers, but implement the <code class="display"><span class="extract-syntax">$</span></code>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    </span><a href="2-dl.html#SP4" class="internal">Log::declare_aspect</a><span class="plain-syntax">(</span><span class="constant-syntax">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"debugging log inclusions"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-dl.html#SP4" class="internal">Log::declare_aspect</a><span class="plain-syntax">(</span><span class="constant-syntax">SHELL_USAGE_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"shell usage"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-dl.html#SP4" class="internal">Log::declare_aspect</a><span class="plain-syntax">(</span><span class="constant-syntax">MEMORY_USAGE_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"memory usage"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-dl.html#SP4" class="internal">Log::declare_aspect</a><span class="plain-syntax">(</span><span class="constant-syntax">TEXT_FILES_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"text files"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
+</pre><ul class="endnotetexts"><li>This code is used in <a href="1-fm.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_3"></a><b>&#167;8.3.  </b>Debugging log writers are similar to stream writers, but implement the <code class="display"><span class="extract-syntax">$</span></code>
 escapes only available to the debugging log. For example, <code class="display"><span class="extract-syntax">$S</span></code> calls the
 <code class="display"><span class="extract-syntax">Streams::log</span></code> function to print a textual representation of the current
 state of a stream.
@@ -211,11 +197,10 @@ state of a stream.
 &lt;<span class="named-paragraph-defn">Register the default debugging log writers</span> <span class="named-paragraph-number">8.3</span>&gt; =
 </code></p>
 
-<pre class="display">
-    <span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="internal">Writers::register_logger</a><span class="plain-syntax">(</span><span class="character-syntax">'a'</span><span class="plain-syntax">, &amp;</span><a href="4-taa.html#SP9" class="internal">Tries::log_avinue</a><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="internal">Writers::register_logger</a><span class="plain-syntax">(</span><span class="character-syntax">'S'</span><span class="plain-syntax">, &amp;</span><a href="2-str.html#SP21" class="internal">Streams::log</a><span class="plain-syntax">);</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-fm.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_4"></a><b>&#167;8.4.  </b>We provide an optional service for parsing the command line. By default,
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="internal">Writers::register_logger</a><span class="plain-syntax">(</span><span class="character-syntax">'a'</span><span class="plain-syntax">, &amp;</span><a href="4-taa.html#SP9" class="internal">Tries::log_avinue</a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="internal">Writers::register_logger</a><span class="plain-syntax">(</span><span class="character-syntax">'S'</span><span class="plain-syntax">, &amp;</span><a href="2-str.html#SP21" class="internal">Streams::log</a><span class="plain-syntax">);</span>
+</pre><ul class="endnotetexts"><li>This code is used in <a href="1-fm.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_4"></a><b>&#167;8.4.  </b>We provide an optional service for parsing the command line. By default,
 the <code class="display"><span class="extract-syntax">-log A</span></code> switch makes that aspect active, though it's hyphenated, so
 for example <code class="display"><span class="extract-syntax">-log memory-usage</span></code> or <code class="display"><span class="extract-syntax">-log no-memory-usage</span></code>. <code class="display"><span class="extract-syntax">-fixtime</span></code> is
 used to ease automated testing: we don't want to reject the output from
@@ -237,36 +222,34 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 &lt;<span class="named-paragraph-defn">Register the default command line switches</span> <span class="named-paragraph-number">8.5</span>&gt; =
 </code></p>
 
-<pre class="display">
-    <span class="plain-syntax">    </span><a href="3-cla.html#SP5" class="internal">CommandLine::begin_group</a><span class="plain-syntax">(</span><span class="constant-syntax">FOUNDATION_CLSG</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">LOG_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"log"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
-    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"write the debugging log to include diagnostics on X"</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">VERSION_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"version"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">,</span>
-    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"print out version number"</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="3-cla.html#SP6" class="internal">CommandLine::declare_boolean_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">CRASH_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"crash"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">,</span>
-    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"intentionally crash on internal errors, for backtracing"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">HELP_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"help"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">,</span>
-    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"print this help information"</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="3-cla.html#SP6" class="internal">CommandLine::declare_boolean_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">FIXTIME_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"fixtime"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">,</span>
-    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"pretend the time is 11 a.m. on 28 March 2016 for testing"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">AT_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"at"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
-    <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"specify that this tool is installed at X"</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><a href="3-cla.html#SP5" class="internal">CommandLine::end_group</a><span class="plain-syntax">();</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-fm.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Once the following has been called, it is not safe to use any of the
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    </span><a href="3-cla.html#SP5" class="internal">CommandLine::begin_group</a><span class="plain-syntax">(</span><span class="constant-syntax">FOUNDATION_CLSG</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">LOG_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"log"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"write the debugging log to include diagnostics on X"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">VERSION_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"version"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"print out version number"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-cla.html#SP6" class="internal">CommandLine::declare_boolean_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">CRASH_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"crash"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"intentionally crash on internal errors, for backtracing"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">HELP_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"help"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"print this help information"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-cla.html#SP6" class="internal">CommandLine::declare_boolean_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">FIXTIME_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"fixtime"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"pretend the time is 11 a.m. on 28 March 2016 for testing"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-cla.html#SP5" class="internal">CommandLine::declare_switch</a><span class="plain-syntax">(</span><span class="constant-syntax">AT_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"at"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"specify that this tool is installed at X"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-cla.html#SP5" class="internal">CommandLine::end_group</a><span class="plain-syntax">();</span>
+</pre><ul class="endnotetexts"><li>This code is used in <a href="1-fm.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Once the following has been called, it is not safe to use any of the
 <code class="display"><span class="extract-syntax">foundation</span></code> facilities. It should be called on any normal exit, but not on
 an early termination due to a fatal error, as this may lead to thread
 safety problems.
 </p>
 
-<pre class="display">
-    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Foundation::end</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Foundation::end</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-dl.html#SP7" class="internal">Log::aspect_switched_on</a><span class="plain-syntax">(</span><span class="constant-syntax">MEMORY_USAGE_DA</span><span class="plain-syntax">)) </span><a href="2-mmr.html#SP32" class="internal">Memory::log_statistics</a><span class="plain-syntax">();</span>
-    <span class="plain-syntax">    </span><a href="2-dl.html#SP5" class="internal">Log::close</a><span class="plain-syntax">();</span>
-    <span class="plain-syntax">    </span><a href="2-mmr.html#SP12" class="internal">Memory::free</a><span class="plain-syntax">();</span>
-    <span class="plain-syntax">}</span>
-</pre>
-<hr class="tocbar">
+<pre class="displayed-code all-displayed-code">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Foundation::end</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Foundation::end</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-dl.html#SP7" class="internal">Log::aspect_switched_on</a><span class="plain-syntax">(</span><span class="constant-syntax">MEMORY_USAGE_DA</span><span class="plain-syntax">)) </span><a href="2-mmr.html#SP32" class="internal">Memory::log_statistics</a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-dl.html#SP5" class="internal">Log::close</a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="2-mmr.html#SP12" class="internal">Memory::free</a><span class="plain-syntax">();</span>
+<span class="plain-syntax">}</span>
+</pre><hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 1: Setting Up.)</i></li><li><a href="1-pp.html">Continue with 'POSIX Platforms'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 		</main>

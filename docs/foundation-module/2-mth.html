@@ -8,14 +8,6 @@
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		<meta name="viewport" content="width=device-width initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta http-equiv="Content-Language" content="en-gb">
-
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
   var popup = document.getElementById(material_id);
@@ -24,6 +16,7 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 
 	</head>
 	<body>
@@ -90,19 +83,18 @@ tagged functions attached to it dynamically: those, we'll call "methods".
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>A "method set" is simply a linked list of methods:
 </p>
 
-<pre class="display">
-    <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">method_set</span><span class="plain-syntax"> {</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">method</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_method</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
-    <span class="plain-syntax">} </span><span class="reserved-syntax">method_set</span><span class="plain-syntax">;</span>
+<pre class="displayed-code all-displayed-code">
+<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">method_set</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">method</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_method</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">} </span><span class="reserved-syntax">method_set</span><span class="plain-syntax">;</span>
 
-    <span class="reserved-syntax">method_set</span><span class="plain-syntax"> *</span><span class="function-syntax">Methods::new_set</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Methods::new_set</b>:<br><a href="2-mth.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">method_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">method_set</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_method</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">}</span>
-</pre>
-<ul class="endnotetexts"><li>The structure method_set is private to this section.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Declaring methods. </b>Each method is a function, though we don't know its type &mdash; which is why we
+<span class="reserved-syntax">method_set</span><span class="plain-syntax"> *</span><span class="function-syntax">Methods::new_set</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Methods::new_set</b>:<br><a href="2-mth.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">method_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">method_set</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_method</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre><ul class="endnotetexts"><li>The structure method_set is private to this section.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Declaring methods. </b>Each method is a function, though we don't know its type &mdash; which is why we
 resort to the desperate measure of storing it as a <code class="display"><span class="extract-syntax">void *</span></code> &mdash; with an ID
 number attached to it. IDs should be from the <code class="display"><span class="extract-syntax">*_MTID</span></code> enumeration set.
 </p>
@@ -127,10 +119,9 @@ functions sharing the method ID <code class="display"><span class="extract-synta
     <span class="definition-keyword">define</span> <span class="identifier-syntax">VMETHOD_TYPE</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">args</span><span class="plain-syntax">...)</span>
     <span class="plain-syntax">    </span><span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">id</span><span class="plain-syntax">##</span><span class="identifier-syntax">_type</span><span class="plain-syntax">)(</span><span class="identifier-syntax">args</span><span class="plain-syntax">);</span>
 </pre>
-<pre class="display">
-    <span class="identifier-syntax">IMETHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">UNUSED_METHOD_ID_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">example</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wont_be_used</span><span class="plain-syntax">)</span>
-</pre>
-<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Adding methods. </b>Provided a function has the right type for the ID we're using, we can now
+<pre class="displayed-code all-displayed-code">
+<span class="identifier-syntax">IMETHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">UNUSED_METHOD_ID_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">example</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wont_be_used</span><span class="plain-syntax">)</span>
+</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Adding methods. </b>Provided a function has the right type for the ID we're using, we can now
 attach it to an object with a method set, using the <code class="display"><span class="extract-syntax">METHOD_ADD</span></code> macro.
 (If the type is wrong, the C compiler will throw errors here.)
 </p>
@@ -140,37 +131,36 @@ attach it to an object with a method set, using the <code class="display"><span 
     <span class="definition-keyword">define</span> <span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">upon</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">func</span><span class="plain-syntax">)</span>
     <span class="plain-syntax">    </span><a href="2-mth.html#SP6" class="internal">Methods::add</a><span class="plain-syntax">(</span><span class="identifier-syntax">upon</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">methods</span><span class="plain-syntax">, </span><span class="identifier-syntax">id</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) &amp;</span><span class="identifier-syntax">func</span><span class="plain-syntax">);</span>
 </pre>
-<pre class="display">
-    <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">method</span><span class="plain-syntax"> {</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">method_id</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">method_function</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">method</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_method</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
-    <span class="plain-syntax">} </span><span class="reserved-syntax">method</span><span class="plain-syntax">;</span>
+<pre class="displayed-code all-displayed-code">
+<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">method</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">method_id</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">method_function</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">method</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_method</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">} </span><span class="reserved-syntax">method</span><span class="plain-syntax">;</span>
 
-    <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Methods::add</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Methods::add</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">method_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ID</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">function</span><span class="plain-syntax">) {</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">method</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">method</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">method_id</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ID</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">method_function</span><span class="plain-syntax"> = </span><span class="identifier-syntax">function</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_method</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Methods::add</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Methods::add</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">method_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ID</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">function</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">method</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">method</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">method_id</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ID</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">method_function</span><span class="plain-syntax"> = </span><span class="identifier-syntax">function</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_method</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
-    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">first_method</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_method</span><span class="plain-syntax"> = </span><span class="identifier-syntax">M</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-    <span class="plain-syntax">        </span><span class="reserved-syntax">method</span><span class="plain-syntax"> *</span><span class="identifier-syntax">existing</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_method</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">        </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">existing</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">existing</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_method</span><span class="plain-syntax">)) </span><span class="identifier-syntax">existing</span><span class="plain-syntax"> = </span><span class="identifier-syntax">existing</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_method</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">        </span><span class="identifier-syntax">existing</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_method</span><span class="plain-syntax"> = </span><span class="identifier-syntax">M</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    }</span>
-    <span class="plain-syntax">}</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">first_method</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_method</span><span class="plain-syntax"> = </span><span class="identifier-syntax">M</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">method</span><span class="plain-syntax"> *</span><span class="identifier-syntax">existing</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_method</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">existing</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">existing</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_method</span><span class="plain-syntax">)) </span><span class="identifier-syntax">existing</span><span class="plain-syntax"> = </span><span class="identifier-syntax">existing</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_method</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">existing</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_method</span><span class="plain-syntax"> = </span><span class="identifier-syntax">M</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
 
-    <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Methods::provided</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Methods::provided</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">method_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ID</span><span class="plain-syntax">) {</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">method</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_method</span><span class="plain-syntax">; </span><span class="identifier-syntax">M</span><span class="plain-syntax">; </span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_method</span><span class="plain-syntax">)</span>
-    <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">method_id</span><span class="plain-syntax"> == </span><span class="identifier-syntax">ID</span><span class="plain-syntax">)</span>
-    <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">}</span>
-</pre>
-<ul class="endnotetexts"><li>The structure method is private to this section.</li></ul><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Calling methods. </b>Method calls are also done with a macro, but it has to come in four variants:
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Methods::provided</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Methods::provided</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">method_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ID</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">method</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_method</span><span class="plain-syntax">; </span><span class="identifier-syntax">M</span><span class="plain-syntax">; </span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_method</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">method_id</span><span class="plain-syntax"> == </span><span class="identifier-syntax">ID</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre><ul class="endnotetexts"><li>The structure method is private to this section.</li></ul><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Calling methods. </b>Method calls are also done with a macro, but it has to come in four variants:
 </p>
 
 </li><li>(a) <code class="display"><span class="extract-syntax">IMETHOD_CALL</span></code> for a method taking arguments and returning an <code class="display"><span class="extract-syntax">int</span></code>,
@@ -181,10 +171,9 @@ attach it to an object with a method set, using the <code class="display"><span 
 <p class="inwebparagraph">For example:
 </p>
 
-<pre class="display">
-    <span class="plain-syntax">    </span><span class="identifier-syntax">IMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">some_object</span><span class="plain-syntax">, </span><span class="constant-syntax">UNUSED_METHOD_ID_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Hello"</span><span class="plain-syntax">, </span><span class="constant-syntax">17</span><span class="plain-syntax">)</span>
+<pre class="displayed-code all-displayed-code">
+<span class="plain-syntax">    </span><span class="identifier-syntax">IMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">some_object</span><span class="plain-syntax">, </span><span class="constant-syntax">UNUSED_METHOD_ID_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Hello"</span><span class="plain-syntax">, </span><span class="constant-syntax">17</span><span class="plain-syntax">)</span>
 </pre>
-
 <p class="inwebparagraph">Note that it's entirely possible for the <code class="display"><span class="extract-syntax">upon</span></code> object to have multiple methods
 added for the same ID &mdash; or none. In the <code class="display"><span class="extract-syntax">V</span></code> (void) cases, what we then do is
 to call each of them in turn. In the <code class="display"><span class="extract-syntax">I</span></code> (int) cases, we call each in turn, but

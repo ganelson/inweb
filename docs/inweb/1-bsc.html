@@ -9,13 +9,6 @@
 
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		<meta name="viewport" content="width=device-width initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta http-equiv="Content-Language" content="en-gb">
-
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
 
 	</head>
 	<body>
@@ -61,6 +54,7 @@ see <a href="../foundation-module/P-abgtf.html" class="internal">../foundation-m
     <span class="definition-keyword">enum</span> <span class="constant-syntax">chapter_MT</span>
     <span class="definition-keyword">enum</span> <span class="constant-syntax">colony_MT</span>
     <span class="definition-keyword">enum</span> <span class="constant-syntax">colony_member_MT</span>
+    <span class="definition-keyword">enum</span> <span class="constant-syntax">colour_scheme_MT</span>
     <span class="definition-keyword">enum</span> <span class="constant-syntax">colouring_language_block_MT</span>
     <span class="definition-keyword">enum</span> <span class="constant-syntax">colouring_rule_MT</span>
     <span class="definition-keyword">enum</span> <span class="constant-syntax">enumeration_set_MT</span>
@@ -138,87 +132,87 @@ see <a href="../foundation-module/P-abgtf.html" class="internal">../foundation-m
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>And then expand the following macros, all defined in <a href="../foundation-module/2-mmr.html" class="internal">../foundation-module/2-mmr.html</a>.
 </p>
 
-<pre class="display">
-    <span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">source_line</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">chapter</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">colony</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">colony_member</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">footnote</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table_entry_usage</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table_entry</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">language_function</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">language_type</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">macro_tokens</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">macro_usage</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">macro</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">nonterminal_variable</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">para_macro</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">paragraph_tagging</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">paragraph</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">preform_nonterminal</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">reserved_word</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">section</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">structure_element</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">tex_results</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_literal</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">theme_tag</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_format</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_order</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">writeme_asset</span><span class="plain-syntax">)</span>
+<pre class="displayed-code all-displayed-code">
+<span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">source_line</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">chapter</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">colony</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">colony_member</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">colour_scheme</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">footnote</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table_entry_usage</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table_entry</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">language_function</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">language_type</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">macro_tokens</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">macro_usage</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">macro</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">nonterminal_variable</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">para_macro</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">paragraph_tagging</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">paragraph</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">preform_nonterminal</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">reserved_word</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">section</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">structure_element</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">tex_results</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_literal</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">theme_tag</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_format</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_order</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">writeme_asset</span><span class="plain-syntax">)</span>
 
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_document_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_head_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_body_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_tail_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_section_header_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_section_footer_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_chapter_header_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_chapter_footer_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_verbatim_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_section_purpose_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_subheading_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_bar_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pagebreak_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_paragraph_heading_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_endnote_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_material_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_figure_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_embed_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pmac_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_vskip_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_apres_defn_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_chapter_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_section_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_code_line_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_function_usage_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_commentary_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_preform_document_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_toc_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_toc_line_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_chapter_title_page_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_defn_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_source_code_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_url_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_footnote_cue_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_begin_footnote_text_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_display_line_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_item_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_grammar_index_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_inline_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_locale_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_maths_node</span><span class="plain-syntax">)</span>
-    <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_function_defn_node</span><span class="plain-syntax">)</span>
-</pre>
-<hr class="tocbar">
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_document_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_head_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_body_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_tail_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_section_header_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_section_footer_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_chapter_header_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_chapter_footer_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_verbatim_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_section_purpose_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_subheading_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_bar_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pagebreak_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_paragraph_heading_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_endnote_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_material_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_figure_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_embed_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pmac_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_vskip_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_apres_defn_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_chapter_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_section_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_code_line_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_function_usage_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_commentary_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_preform_document_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_toc_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_toc_line_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_chapter_title_page_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_defn_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_source_code_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_url_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_footnote_cue_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_begin_footnote_text_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_display_line_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_item_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_grammar_index_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_inline_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_locale_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_maths_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_function_defn_node</span><span class="plain-syntax">)</span>
+</pre><hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 1: Top Level.)</i></li><li><a href="1-pc.html">Continue with 'Program Control'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 		</main>

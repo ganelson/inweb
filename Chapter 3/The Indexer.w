@@ -85,9 +85,10 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 		state->halves |= IN_SECOND_HALF;
 	} else if (Str::eq_wide_string(command, L"Plugins")) {
 		if (include) {
-			WeavePlugins::include_from_pattern(OUT, state->target->weave_web,
+			WeavePlugins::begin_inclusions();
+			Patterns::include_plugins(OUT, state->target->weave_web,
 				state->target->pattern, state->target->weave_to);
-			WeavePlugins::include_from_target(OUT, state->target->weave_web,
+			Swarm::include_plugins(OUT, state->target->weave_web,
 				state->target, state->target->weave_to);
 		}
 	} else if (Str::eq_wide_string(command, L"Cover Sheet")) {
@@ -539,7 +540,8 @@ not pages. (Except for navigation purposes, and navigation files should never
 use this.)
 
 @<Substitute Plugins@> =
-	WeavePlugins::include_from_pattern(OUT, ies->for_web, ies->nav_pattern, Indexer::current_file());
+	WeavePlugins::begin_inclusions();
+	Patterns::include_plugins(OUT, ies->for_web, ies->nav_pattern, Indexer::current_file());
 
 @ A list of all modules in the current web.
 

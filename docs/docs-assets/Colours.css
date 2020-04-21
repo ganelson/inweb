@@ -16,3 +16,10 @@ span.definition-keyword { color:#801010; font-weight:bold; }
 
 span.named-paragraph, span.named-paragraph-defn { color: #000000; font-weight: bold; }
 span.named-paragraph-number { color: #000000; font-size: 80%; }
+
+pre.displayed-code {
+	background: #f8f8f8;
+	border-width: 1px;
+	border-style: solid solid solid solid;
+	border-color: #cccccc;
+}

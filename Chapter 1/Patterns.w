@@ -15,6 +15,7 @@ typedef struct weave_pattern {
 
 	struct weave_format *pattern_format; /* such as |DVI|: the desired final format */
 	struct linked_list *plugins; /* of |weave_plugin|: any extras needed */
+	struct linked_list *colour_schemes; /* of |colour_scheme|: any extras needed */
 	struct linked_list *payloads; /* of |text_stream|: leafnames of associated files */
 	struct linked_list *up_payloads; /* of |text_stream|: leafnames of associated files */
 
@@ -48,6 +49,7 @@ weave_pattern *Patterns::find(web *W, text_stream *name) {
 	wp->pattern_name = Str::duplicate(name);
 	wp->pattern_location = NULL;
 	wp->plugins = NEW_LINKED_LIST(weave_plugin);
+	wp->colour_schemes = NEW_LINKED_LIST(colour_scheme);
 	wp->payloads = NEW_LINKED_LIST(text_stream);
 	wp->up_payloads = NEW_LINKED_LIST(text_stream);
 	wp->based_on = NULL;
@@ -62,17 +64,27 @@ weave_pattern *Patterns::find(web *W, text_stream *name) {
 	wp->open_command = Str::duplicate(I"open");
 
 @<Locate the pattern directory@> =
-	wp->pattern_location =
-		Pathnames::down(
-			Pathnames::down(W->md->path_to_web, I"Patterns"),
-			name);
-	pattern_file = Filenames::in(wp->pattern_location, I"pattern.txt");
-	if (TextFiles::exists(pattern_file) == FALSE) {
-		wp->pattern_location = Pathnames::down(path_to_inweb_patterns, name);
+	wp->pattern_location = NULL;
+	pathname *CP = Colonies::patterns_path();
+	if (CP) {
+		wp->pattern_location = Pathnames::down(CP, name);
 		pattern_file = Filenames::in(wp->pattern_location, I"pattern.txt");
-		if (TextFiles::exists(pattern_file) == FALSE)
-			Errors::fatal_with_text("no such weave pattern as '%S'", name);
+		if (TextFiles::exists(pattern_file) == FALSE) wp->pattern_location = NULL;
 	}
+	if (wp->pattern_location == NULL) {
+		wp->pattern_location = Pathnames::down(
+			Pathnames::down(W->md->path_to_web, I"Patterns"), name);
+		pattern_file = Filenames::in(wp->pattern_location, I"pattern.txt");
+		if (TextFiles::exists(pattern_file) == FALSE) wp->pattern_location = NULL;
+	}
+	if (wp->pattern_location == NULL) {
+		wp->pattern_location = Pathnames::down(
+			path_to_inweb_patterns, name);
+		pattern_file = Filenames::in(wp->pattern_location, I"pattern.txt");
+		if (TextFiles::exists(pattern_file) == FALSE) wp->pattern_location = NULL;
+	}
+	if (wp->pattern_location == NULL)
+		Errors::fatal_with_text("no such weave pattern as '%S'", name);
 
 @<Read in the pattern.txt file@> =
 	if (pattern_file)
@@ -196,6 +208,19 @@ filename *Patterns::obtain_filename(weave_pattern *pattern, text_stream *leafnam
 	return NULL;
 }
 
+@ And similarly, but with an intermediate directory:
+
+=
+filename *Patterns::find_asset(weave_pattern *pattern, text_stream *dirname,
+	text_stream *leafname) {
+	for (weave_pattern *wp = pattern; wp; wp = wp->based_on) {
+		pathname *P = Pathnames::down(wp->pattern_location, dirname);
+		filename *F = Filenames::in(P, leafname);
+		if (TextFiles::exists(F)) return F;
+	}
+	return NULL;
+}
+
 @ When we eventually want to deal with the |use P| commands, which call
 for payloads to be copied into weave, we make good use of the above:
 
@@ -204,7 +229,7 @@ void Patterns::copy_payloads_into_weave(web *W, weave_pattern *pattern) {
 	text_stream *leafname;
 	LOOP_OVER_LINKED_LIST(leafname, text_stream, pattern->payloads) {
 		filename *F = Patterns::obtain_filename(pattern, leafname);
-		Patterns::copy_file_into_weave(W, F, NULL);
+		Patterns::copy_file_into_weave(W, F, NULL, NULL);
 		if (W->as_ebook) {
 			filename *rel = Filenames::in(NULL, leafname);
 			Epub::note_image(W->as_ebook, rel);
@@ -221,16 +246,64 @@ void Patterns::copy_payloads_into_weave(web *W, weave_pattern *pattern) {
 }
 
 @ =
-void Patterns::copy_file_into_weave(web *W, filename *F, pathname *P) {
+typedef struct css_file_transformation {
+	struct text_stream *OUT;
+	struct text_stream *trans;
+} css_file_transformation;
+
+void Patterns::copy_file_into_weave(web *W, filename *F, pathname *P, text_stream *trans) {
 	pathname *H = W->redirect_weaves_to;
 	if (H == NULL) H = Reader::woven_folder(W);
 	if (P) H = P;
-	Shell::copy(F, H, "");
+	if (Str::len(trans) > 0) {
+		text_stream css_S;
+		filename *G = Filenames::in(P, Filenames::get_leafname(F));
+		if (STREAM_OPEN_TO_FILE(&css_S, G, ISO_ENC) == FALSE)
+			Errors::fatal_with_file("unable to write tangled file", F);
+		css_file_transformation cft;
+		cft.OUT = &css_S;
+		cft.trans = trans;
+		TextFiles::read(F, FALSE, "can't open CSS file", TRUE,
+			Patterns::transform_CSS, NULL, (void *) &cft);
+		STREAM_CLOSE(cft.OUT);
+	} else Shell::copy(F, H, "");
 }
+
+void Patterns::transform_CSS(text_stream *line, text_file_position *tfp, void *X) {
+	css_file_transformation *cft = (css_file_transformation *) X;
+	text_stream *OUT = cft->OUT;
+	match_results mr = Regexp::create_mr();
+	TEMPORARY_TEXT(spanned);
+	while (Regexp::match(&mr, line, L"(%c*?span.)(%i+)(%c*?)")) {
+		WRITE_TO(spanned, "%S%S%S", mr.exp[0], cft->trans, mr.exp[1]);
+		Str::clear(line); Str::copy(line, mr.exp[2]);
+	}
+	WRITE_TO(spanned, "%S\n", line);
+	while (Regexp::match(&mr, spanned, L"(%c*?pre.)(%i+)(%c*?)")) {
+		WRITE("%S%S%S", mr.exp[0], cft->trans, mr.exp[1]);
+		Str::clear(spanned); Str::copy(spanned, mr.exp[2]);
+	}
+	WRITE("%S\n", spanned);
+	DISCARD_TEXT(spanned);
+	Regexp::dispose_of(&mr);
+}
+
 void Patterns::copy_up_file_into_weave(web *W, filename *F, pathname *P) {
 	pathname *H = W->redirect_weaves_to;
 	if (H == NULL) H = Reader::woven_folder(W);
 	H = Pathnames::up(H);
 	if (P) H = P;
 	Shell::copy(F, H, "");
+}
+
+@ =
+void Patterns::include_plugins(OUTPUT_STREAM, web *W, weave_pattern *pattern, filename *from) {
+	for (weave_pattern *p = pattern; p; p = p->based_on) {
+		weave_plugin *wp;
+		LOOP_OVER_LINKED_LIST(wp, weave_plugin, p->plugins)
+			WeavePlugins::include_plugin(OUT, W, wp, pattern, from);
+		colour_scheme *cs;
+		LOOP_OVER_LINKED_LIST(cs, colour_scheme, p->colour_schemes)
+			WeavePlugins::include_colour_scheme(OUT, W, cs, pattern, from);
+	}
 }
