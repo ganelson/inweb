@@ -9,33 +9,10 @@ number greater than 2 can be written this way. This remains open, though --
 (a) every even number is a sum of at most six primes (Ramaré, 1995), and
 (b) every odd number is a sum of at most five (Tao, 2012).
 
-Besides which, |printf(k+1)|, to say the least: see http://www.google.com
-or for that matter see //The Sieve of Eratosthenes//.
-
 = (figure Letter.jpg at height 10cm)
 
 Computer verification has been made up to around $10^{18}$, but by rather better
-methods.[1] Which is awesome.[2]  And $i<j$, that's for sure.
-$$ \int_0^1 \cos x {\rm d}x $$
-Which is really the point.
-
-[1] And don't just take my word for it.
-
-[2] Really!
-
-@ And now...
-
-= (carousel "This is numero 1" above)
-= (figure img1.jpg)
-= (carousel)
-= (figure img2.jpg)
-= (carousel "So, this is a program to see if even numbers from 4 to 100 can all be written as a sum of two primes. Christian Goldbach asked Euler in 1742 if every even number greater than 2 can be written this way." below)
-= (figure img3.jpg)
-= (carousel end)
-
-So there, really!
-
-@
+methods. We will proceed only to:
 
 @d RANGE 100
 
@@ -48,10 +25,10 @@ int main(int argc, char *argv[]) {
 }
 
 @ This ought to print:
-= (hyperlinked text as ConsoleText)
-	$ goldbach/Tangled/goldbach -fish 1
+= (text as ConsoleText)
+	$ goldbach/Tangled/goldbach
 	4 = 2+2
-	6 = 3+3   https://www.wikipedia.org
+	6 = 3+3
 	8 = 3+5
 	10 = 3+7 = 5+5
 	12 = 5+7
