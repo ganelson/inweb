@@ -12,7 +12,7 @@ number greater than 2 can be written this way. This remains open, though --
 Besides which, |printf(k+1)|, to say the least: see http://www.google.com
 or for that matter see //The Sieve of Eratosthenes//.
 
-= (figure Letter.jpg height 10cm)
+= (figure Letter.jpg at height 10cm)
 
 Computer verification has been made up to around $10^{18}$, but by rather better
 methods.[1] Which is awesome.[2]  And $i<j$, that's for sure.
@@ -25,22 +25,12 @@ Which is really the point.
 
 @ And now...
 
-= (carousel "This is numero 1")
+= (carousel "This is numero 1" above)
 = (figure img1.jpg)
-= (carousel "Deuxieme")
-I wonder if I can type text here?
-
-Perhaps lots of text.
-
-Even $x \leq \log y$?
-= (carousel "Bliney")
+= (carousel)
+= (figure img2.jpg)
+= (carousel "So, this is a program to see if even numbers from 4 to 100 can all be written as a sum of two primes. Christian Goldbach asked Euler in 1742 if every even number greater than 2 can be written this way." below)
 = (figure img3.jpg)
-= (carousel "Codey")
-= (text as C)
-	int k = j++;
-	printf("Splodhge!\n");
-=
-Which is reasonable.
 = (carousel end)
 
 So there, really!

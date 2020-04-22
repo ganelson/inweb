@@ -87,6 +87,8 @@ typedef struct weave_material_node {
 typedef struct weave_embed_node {
 	struct text_stream *service;
 	struct text_stream *ID;
+	int w;
+	int h;
 	MEMORY_MANAGEMENT
 } weave_embed_node;
 
@@ -133,6 +135,7 @@ typedef struct weave_commentary_node {
 
 typedef struct weave_carousel_slide_node {
 	struct text_stream *caption;
+	int caption_command;
 	MEMORY_MANAGEMENT
 } weave_carousel_slide_node;
 
@@ -489,10 +492,12 @@ tree_node *WeaveTree::material(heterogeneous_tree *tree, int material_type, int 
 }
 
 tree_node *WeaveTree::embed(heterogeneous_tree *tree,
-	text_stream *service, text_stream *ID) {
+	text_stream *service, text_stream *ID, int w, int h) {
 	weave_embed_node *C = CREATE(weave_embed_node);
 	C->service = Str::duplicate(service);
 	C->ID = Str::duplicate(ID);
+	C->w = w;
+	C->h = h;
 	return Trees::new_node(tree, weave_embed_node_type, STORE_POINTER_weave_embed_node(C));
 }
 
@@ -556,9 +561,10 @@ tree_node *WeaveTree::commentary(heterogeneous_tree *tree, text_stream *text, in
 	return Trees::new_node(tree, weave_commentary_node_type, STORE_POINTER_weave_commentary_node(C));
 }
 
-tree_node *WeaveTree::carousel_slide(heterogeneous_tree *tree, text_stream *caption) {
+tree_node *WeaveTree::carousel_slide(heterogeneous_tree *tree, text_stream *caption, int c) {
 	weave_carousel_slide_node *C = CREATE(weave_carousel_slide_node);
 	C->caption = Str::duplicate(caption);
+	C->caption_command = c;
 	return Trees::new_node(tree, weave_carousel_slide_node_type, STORE_POINTER_weave_carousel_slide_node(C));
 }
 

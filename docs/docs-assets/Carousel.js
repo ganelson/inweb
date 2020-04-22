@@ -1,28 +1,35 @@
-var slideIndex = 1;
-showSlides(slideIndex);
-
 // Next/previous controls
-function plusSlides(n) {
-  showSlides(slideIndex += n);
+function carouselMoveSlide(id, did, n) {
+	carouselSetSlide(id, did, carouselGetSlide(id, did) + n);
 }
 
-// Thumbnail image controls
-function currentSlide(n) {
-  showSlides(slideIndex = n);
+function carouselGetSlide(id, did) {
+	var carousel = document.getElementById(id);
+	var slides = carousel.getElementsByClassName("carousel-slide");
+	var i;
+	for (i = 0; i < slides.length; i++) {
+		if (slides[i].style.display == "block") {
+			return i;
+		}
+	}
+	return 0;
 }
 
-function showSlides(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {slideIndex = 1} 
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none"; 
-  }
-  for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block"; 
-  dots[slideIndex-1].className += " active";
+function carouselSetSlide(id, did, n) {
+	var carousel = document.getElementById(id);
+	var dotrow = document.getElementById(did);
+	var i;
+	var slides = carousel.getElementsByClassName("carousel-slide");
+	var dots = dotrow.getElementsByClassName("carousel-dot");
+	if (n >= slides.length) { n = 0 } 
+	if (n < 0) { n = slides.length - 1 }
+	for (i = 0; i < slides.length; i++) {
+		if (i != n) {
+			slides[i].style.display = "none";
+			dots[i].className = "carousel-dot";
+		} else {
+			slides[i].style.display = "block";
+			dots[i].className = "carousel-dot carousel-dot-active";
+		}
+	}
 }

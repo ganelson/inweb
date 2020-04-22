@@ -463,15 +463,78 @@ To embed an image, we write like so:
 With results like so:
 = (figure mars.jpg)
 
-Inweb also has some limited ability to control the dimensions of an image as it
-would be used in a PDF via TeX:
+Inweb also has some limited ability to control the dimensions of an image:
 = (text as Inweb)
-	= (figure Whatever.jpg width 6cm)
-	= (figure Something.jpg height 2cm)
+	= (figure Whatever.jpg at width 500)
+	= (figure Something.jpg at height 2cm)
 =
-In these examples, we constrain the width or the height of the image
-to be exactly that given: it is scaled accordingly. (They can't both be
-constrained, so you can't change the aspect ratio.)
+Dimensions given in cm are scaled at 72 times dimensions given without a
+measurement; in practice, rendering to TeX produces roughly the number of
+centimeters asked for, and rendering to HTML makes the image width or height
+correspond. If you really want to monkey with the aspect ratio,
+= (text as Inweb)
+	= (figure Whatever.jpg at 20 by 100)
+=
+
+@h Carousels.
+A carousel is a slide-show of (usually but not always) figures; there's a
+set of slides with captions, only one of which is visible at a time.
+= (carousel "Royal Albert Hall, London: King Crimson's 50th Anniversary Concert")
+= (figure rah.jpg)
+= (carousel "Brighton Beach")
+= (figure brighton.jpg)
+= (carousel "Roman Amphitheatre, Pula")
+= (figure pula.jpg)
+= (carousel "St Mark's Basilica, Venice")
+= (figure venice.jpg)
+= (carousel end)
+That carousel was produced by:
+= (text as Inweb)
+	= (carousel "Royal Albert Hall, London: King Crimson's 50th Anniversary Concert")
+	= (figure rah.jpg)
+	= (carousel "Brighton Beach")
+	= (figure brighton.jpg)
+	= (carousel "Roman Amphitheatre, Pula")
+	= (figure pula.jpg)
+	= (carousel "St Mark's Basilica, Venice")
+	= (figure venice.jpg)
+	= (carousel end)
+=
+That carousel contained only figures, but almost any material can go into the
+slides, paragraph breaks excepted. For example:
+= (carousel "Stage 1 - Raw tree" above)
+= (text as BoxArt)
+	ROOT ---> DOCUMENT
+=
+= (carousel "Stage 2 - Developed tree" above)
+= (text as BoxArt)
+	ROOT ---> DOCUMENT
+	            |
+	          NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+=
+= (carousel "Stage 3 - Completed tree" above)
+= (text as BoxArt)
+	ROOT ---> DOCUMENT
+	            |
+	          NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+	            |            |            |
+	          text 1       text 2       text 3  ...
+=
+= (carousel end)
+This carousel has differently placed captions, too: that's because the
+slide lines were typed as:
+= (text as Inweb)
+	= (carousel "Stage 2 - Developed tree" above)
+=
+and the like. By default, a caption overlaps slightly with the content; but
+it can also be |above| or |below|. A slide can also have no caption at all:
+= (text as Inweb)
+	= (carousel)
+	= (figure anonymous.jpg)
+	= (carousel)
+	= (figure furtive.jpg)
+	= (carousel end)
+=
 
 @h Embedded video.
 This makes sense only for some HTML-like weave formats, but we can also
@@ -503,7 +566,7 @@ With results like so:
 720 by 405.
 = (text as Inweb)
 	= (embedded Vimeo video 204519 at 400 by 300)
-	= (embedded SoundCloud audio 42803139 at 200)
+	= (embedded SoundCloud audio 42803139 at height 200)
 =
 The latter sets just the height (of the displayed waveform, that is --
 arguably music has width and not height, but SoundCloud thinks otherwise).
@@ -524,8 +587,7 @@ For example, it's known that the average running time of Euclid's GCD
 algorithm on $a$ and numbers coprime to $a$ is:
 $$ \tau (a)={\frac {12}{\pi ^{2}}}\ln 2\ln a+C+O(a^{-1/6-\varepsilon }) $$
 where $C$ is Porter's constant,
-$$ C=-{\frac {1}{2}}+{\frac {6\ln 2}{\pi ^{2}}}
-\left(4\gamma - {\frac {24}{\pi ^{2}}}\zeta'(2)+3\ln 2-2\right)\approx 1.467 $$
+$$ C=-{\frac {1}{2}}+{\frac {6\ln 2}{\pi ^{2}}}\left(4\gamma - {\frac {24}{\pi ^{2}}}\zeta'(2)+3\ln 2-2\right)\approx 1.467 $$
 which involves evaluating Euler's constant $\gamma$ and the first derivative
 of the Riemann zeta function $\zeta'(z)$ at $z=2$.
 
@@ -535,8 +597,7 @@ That passage was achieved by typing this as the Inweb source:
 	algorithm on $a$ and numbers coprime to $a$ is:
 	$$ \tau (a)={\frac {12}{\pi ^{2}}}\ln 2\ln a+C+O(a^{-1/6-\varepsilon }) $$
 	where $C$ is Porter's constant,
-	$$ C=-{\frac {1}{2}}+{\frac {6\ln 2}{\pi ^{2}}}
-	\left(4\gamma - {\frac {24}{\pi^{2}}}\zeta'(2)+3\ln 2-2\right)\approx 1.467 $$
+	$$ C=-{\frac {1}{2}}+{\frac {6\ln 2}{\pi ^{2}}} \left(4\gamma - {\frac {24}{\pi^{2}}}\zeta'(2)+3\ln 2-2\right)\approx 1.467 $$
 	which involves evaluating Euler's constant $\gamma$ and the first derivative
 	of the Riemann zeta function $\zeta'(z)$ at $z=2$.
 =

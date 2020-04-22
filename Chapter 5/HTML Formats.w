@@ -112,6 +112,7 @@ typedef struct HTML_render_state {
 	int EPUB_flag;
 	int popup_counter;
 	int last_material_seen;
+	int carousel_number;
 	int slide_number;
 	int slide_of;
 } HTML_render_state;
@@ -125,6 +126,7 @@ void HTMLFormat::render_inner(weave_format *self, text_stream *OUT, heterogeneou
 	hrs.EPUB_flag = EPUB_mode;
 	hrs.popup_counter = 1;
 	hrs.last_material_seen = -1;
+	hrs.carousel_number = 1;
 	hrs.slide_number = -1;
 	hrs.slide_of = -1;
 	Swarm::ensure_plugin(C->wv, I"Base");
@@ -270,7 +272,16 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 
 @<Render figure@> =
 	weave_figure_node *C = RETRIEVE_POINTER_weave_figure_node(N->content);
-	HTMLFormat::figure(hrs->wv->format, OUT, hrs->wv, C->figname, C->w, C->h);
+	HTMLFormat::exit_current_paragraph(OUT);
+	filename *F = Filenames::in(
+		Pathnames::down(hrs->wv->weave_web->md->path_to_web, I"Figures"),
+		C->figname);
+	filename *RF = Filenames::from_text(C->figname);
+	HTML_OPEN("center");
+	HTML::image_to_dimensions(OUT, RF, C->w, C->h);
+	Patterns::copy_file_into_weave(hrs->wv->weave_web, F, NULL, NULL);
+	HTML_CLOSE("center");
+	WRITE("\n");
 
 @<Render material@> =
 	if (N->child) {
@@ -355,7 +366,7 @@ that service uses to identify the video/audio in question.
 
 @<Render embed@> =
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
-	HTMLFormat::embed(hrs->wv->format, OUT, hrs->wv, C->service, C->ID);
+	HTMLFormat::embed(hrs->wv->format, OUT, hrs->wv, C->service, C->ID, C->w, C->h);
 
 @<Render pmac@> =
 	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
@@ -397,6 +408,17 @@ that service uses to identify the video/audio in question.
 @<Render carousel slide@> =
 	weave_carousel_slide_node *C = RETRIEVE_POINTER_weave_carousel_slide_node(N->content);
 	Swarm::ensure_plugin(hrs->wv, I"Carousel");
+	TEMPORARY_TEXT(carousel_id)
+	TEMPORARY_TEXT(carousel_dots_id)
+	text_stream *caption_class = NULL;
+	text_stream *slide_count_class = I"carousel-number";
+	switch (C->caption_command) {
+		case CAROUSEL_CMD: caption_class = I"carousel-caption"; break;
+		case CAROUSEL_ABOVE_CMD: caption_class = I"carousel-caption-above"; slide_count_class = I"carousel-number-above"; break;
+		case CAROUSEL_BELOW_CMD: caption_class = I"carousel-caption-below"; slide_count_class = I"carousel-number-below"; break;
+	}
+	WRITE_TO(carousel_id, "carousel-no-%d", hrs->carousel_number);
+	WRITE_TO(carousel_dots_id, "carousel-dots-no-%d", hrs->carousel_number);
 	if (hrs->slide_number == -1) {
 		hrs->slide_number = 1;
 		hrs->slide_of = 0;
@@ -406,30 +428,47 @@ that service uses to identify the video/audio in question.
 		if (hrs->slide_number > hrs->slide_of) internal_error("miscounted slides");
 	}
 	if (hrs->slide_number == 1) {
-		WRITE("<div class=\"slideshow-container\">\n");
+		WRITE("<div class=\"carousel-container\" id=\"%S\">\n", carousel_id);
 	}
-	WRITE("<div class=\"mySlides fade\"");
+	WRITE("<div class=\"carousel-slide fading-slide\"");
 	if (hrs->slide_number == 1) WRITE(" style=\"display: block;\"");
+	else WRITE(" style=\"display: none;\"");
 	WRITE(">\n");
-	WRITE("<div class=\"numbertext\">%d / %d</div>\n", hrs->slide_number, hrs->slide_of);
+	if (C->caption_command == CAROUSEL_ABOVE_CMD) {
+		@<Place caption here@>;
+		WRITE("<div class=\"%S\">%d / %d</div>\n", slide_count_class, hrs->slide_number, hrs->slide_of);
+	} else {
+		WRITE("<div class=\"%S\">%d / %d</div>\n", slide_count_class, hrs->slide_number, hrs->slide_of);
+	}
+	WRITE("<div class=\"carousel-content\">");
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
-	WRITE("<div class=\"text\">%S</div>\n", C->caption);
+	WRITE("</div>\n");
+	if (C->caption_command != CAROUSEL_ABOVE_CMD) @<Place caption here@>;
 	WRITE("</div>\n");
 	if (hrs->slide_number == hrs->slide_of) {
+		WRITE("<a class=\"carousel-prev-button\" onclick=\"carouselMoveSlide(&quot;%S&quot;, &quot;%S&quot;, -1)\">&#10094;</a>\n", carousel_id, carousel_dots_id);
+		WRITE("<a class=\"carousel-next-button\" onclick=\"carouselMoveSlide(&quot;%S&quot;, &quot;%S&quot;, 1)\">&#10095;</a>\n", carousel_id, carousel_dots_id);
 		WRITE("</div>\n");
-		WRITE("<div style=\"text-align:center\">\n");
+		WRITE("<div class=\"carousel-dots-container\" id=\"%S\">\n", carousel_dots_id);
 		for (int i=1; i<=hrs->slide_of; i++) {
 			if (i == 1)
-				WRITE("<span class=\"dot active\" onclick=\"currentSlide(1)\"></span>\n");
+				WRITE("<span class=\"carousel-dot carousel-dot-active\" onclick=\"carouselSetSlide(&quot;%S&quot;, &quot;%S&quot;, 0)\"></span>\n", carousel_id, carousel_dots_id);
 			else
-				WRITE("<span class=\"dot\" onclick=\"currentSlide(%d)\"></span>\n", i);
+				WRITE("<span class=\"carousel-dot\" onclick=\"carouselSetSlide(&quot;%S&quot;, &quot;%S&quot;, %d)\"></span>\n", carousel_id, carousel_dots_id, i-1);
 		}
 		WRITE("</div>\n");
 		hrs->slide_number = -1;
 		hrs->slide_of = -1;
+		hrs->carousel_number++;
 	}
+	DISCARD_TEXT(carousel_id)
+	DISCARD_TEXT(carousel_dots_id)
 	return FALSE;
+
+@<Place caption here@> =
+	if (C->caption_command != CAROUSEL_UNCAPTIONED_CMD)
+		WRITE("<div class=\"%S\">%S</div>\n", caption_class, C->caption);
 
 @<Render toc@> =
 	HTMLFormat::exit_current_paragraph(OUT);
@@ -635,34 +674,12 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_order *
 	}
 
 @ =
-void HTMLFormat::figure(weave_format *self, text_stream *OUT, weave_order *wv,
-	text_stream *figname, int w, int h) {
-	HTMLFormat::exit_current_paragraph(OUT);
-	filename *F = Filenames::in(
-		Pathnames::down(wv->weave_web->md->path_to_web, I"Figures"),
-		figname);
-	filename *RF = Filenames::from_text(figname);
-	HTML_OPEN("center");
-	HTML::image(OUT, RF);
-	Patterns::copy_file_into_weave(wv->weave_web, F, NULL, NULL);
-	HTML_CLOSE("center");
-	WRITE("\n");
-}
-
-@ =
 void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_order *wv,
-	text_stream *service, text_stream *ID) {
+	text_stream *service, text_stream *ID, int w, int h) {
 	text_stream *CH = I"405";
 	text_stream *CW = I"720";
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, ID, L"(%c+) at (%c+) by (%c+)")) {
-		CW = Str::duplicate(mr.exp[1]);
-		CH = Str::duplicate(mr.exp[2]);
-		ID = mr.exp[0];
-	} else if (Regexp::match(&mr, ID, L"(%c+) at (%c+)")) {
-		CH = Str::duplicate(mr.exp[1]);
-		ID = mr.exp[0];
-	}
+	if (w > 0) { Str::clear(CW); WRITE_TO(CW, "%d", w); }
+	if (h > 0) { Str::clear(CH); WRITE_TO(CH, "%d", h); }
 	HTMLFormat::exit_current_paragraph(OUT);
 	
 	TEMPORARY_TEXT(embed_leaf);
@@ -673,7 +690,6 @@ void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_order *wv,
 		Main::error_in_web(I"This is not a supported service", wv->current_weave_line);
 		return;
 	}
-
 	Bibliographic::set_datum(wv->weave_web->md, I"Content ID", ID);
 	Bibliographic::set_datum(wv->weave_web->md, I"Content Width", CW);
 	Bibliographic::set_datum(wv->weave_web->md, I"Content Height", CH);
@@ -681,7 +697,6 @@ void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_order *wv,
 	Indexer::incorporate_template_for_web_and_pattern(OUT, wv->weave_web, wv->pattern, F);
 	HTML_CLOSE("center");
 	WRITE("\n");
-	Regexp::dispose_of(&mr);
 }
 
 @ =

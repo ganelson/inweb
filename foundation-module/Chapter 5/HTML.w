@@ -340,6 +340,18 @@ void HTML::image(OUTPUT_STREAM, filename *F) {
 	HTML_TAG_WITH("img", "src=\"%/f\"", F);
 }
 
+void HTML::image_to_dimensions(OUTPUT_STREAM, filename *F, int w, int h) {
+	if ((w > 0) && (h > 0)) {
+		HTML_TAG_WITH("img", "src=\"%/f\" width=\"%d\" height=\"%d\"", F, w, h);
+	} else if (w > 0) {
+		HTML_TAG_WITH("img", "src=\"%/f\" width=\"%d\"", F, w);
+	} else if (h > 0) {
+		HTML_TAG_WITH("img", "src=\"%/f\" height=\"%d\"", F, h);
+	} else {
+		HTML_TAG_WITH("img", "src=\"%/f\"", F);
+	}
+}
+
 @h Links.
 
 =

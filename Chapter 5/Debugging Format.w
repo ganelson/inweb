@@ -150,7 +150,7 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 
 @<Render embed@> =
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
-	WRITE(" service <%S> ID <%S>", C->service, C->ID);
+	WRITE(" service <%S> ID <%S> %d by %d", C->service, C->ID, C->w, C->h);
 
 @<Render pmac@> =
 	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);

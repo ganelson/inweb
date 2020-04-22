@@ -309,36 +309,28 @@ at us; but we don't weave them into the output, that's for sure.
 		if (L->command_code == GRAMMAR_INDEX_CMD)
 			Trees::make_child(WeaveTree::grammar_index(tree), state->ap);
 		if (L->command_code == FIGURE_CMD) @<Weave a figure@>;
+		if (L->command_code == EMBED_CMD) @<Weave an embed@>;
 		if (L->command_code == CAROUSEL_CMD) @<Weave a carousel@>;
+		if (L->command_code == CAROUSEL_ABOVE_CMD) @<Weave a carousel@>;
+		if (L->command_code == CAROUSEL_BELOW_CMD) @<Weave a carousel@>;
+		if (L->command_code == CAROUSEL_UNCAPTIONED_CMD) @<Weave a carousel@>;
 		if (L->command_code == CAROUSEL_END_CMD) @<Weave a carousel end@>;
-		if (L->command_code == EMBED_CMD)
-			Weaver::embed(tree, wv, state->ap, L->text_operand, L->text_operand2);
 		/* Otherwise assume it was a tangler command, and ignore it here */
 		continue;
 	}
 
 @<Weave a figure@> =
-	text_stream *figname = L->text_operand;
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, figname, L"(%d+)cm: (%c+)")) {
-		if (S->md->using_syntax > V1_SYNTAX)
-			Parser::wrong_version(S->md->using_syntax, L, "Figure: Xcm:...", V1_SYNTAX);
-		Weaver::figure(tree, wv, state->ap, mr.exp[1], Str::atoi(mr.exp[0], 0), -1);
-	} else if (Regexp::match(&mr, figname, L"(%c+) width (%d+)cm")) {
-		if (S->md->using_syntax < V2_SYNTAX)
-			Parser::wrong_version(S->md->using_syntax, L, "F width Xcm", V2_SYNTAX);
-		Weaver::figure(tree, wv, state->ap, mr.exp[0], Str::atoi(mr.exp[1], 0), -1);
-	} else if (Regexp::match(&mr, figname, L"(%c+) height (%d+)cm")) {
-		if (S->md->using_syntax < V2_SYNTAX)
-			Parser::wrong_version(S->md->using_syntax, L, "F height Xcm", V2_SYNTAX);
-		Weaver::figure(tree, wv, state->ap, mr.exp[0], -1, Str::atoi(mr.exp[1], 0));
-	} else {
-		Weaver::figure(tree, wv, state->ap, figname, -1, -1);
-	}
-	Regexp::dispose_of(&mr);	
+	int w, h;
+	text_stream *figname = Weaver::dimensions(L->text_operand, &w, &h, L);
+	Trees::make_child(WeaveTree::figure(tree, figname, w, h), state->ap);
+
+@<Weave an embed@> =
+	int w, h;
+	text_stream *ID = Weaver::dimensions(L->text_operand2, &w, &h, L);
+	Trees::make_child(WeaveTree::embed(tree, L->text_operand, ID, w, h), state->ap);
 
 @<Weave a carousel@> =
-	tree_node *C = WeaveTree::carousel_slide(tree, L->text_operand);
+	tree_node *C = WeaveTree::carousel_slide(tree, L->text_operand, L->command_code);
 	Trees::make_child(C, state->para_node);
 	state->ap = C;
 	state->carousel_node = C;
@@ -800,15 +792,56 @@ void Weaver::figure(heterogeneous_tree *tree, weave_order *wv,
 	Trees::make_child(F, ap);
 }
 
-void Weaver::embed(heterogeneous_tree *tree, weave_order *wv,
-	tree_node *ap, text_stream *service, text_stream *ID) {
-	tree_node *F = WeaveTree::embed(tree, service, ID);
-	Trees::make_child(F, ap);
-}
-
 void Weaver::commentary_text(heterogeneous_tree *tree, weave_order *wv,
 	tree_node *ap, text_stream *matter) {
 	TextWeaver::commentary_text(tree, ap, matter);
+}
+
+@
+
+@d POINTS_PER_CM 72
+
+=
+text_stream *Weaver::dimensions(text_stream *item, int *w, int *h, source_line *L) {
+	int sv = L->owning_section->md->using_syntax;
+	*w = -1; *h = -1;
+	text_stream *use = item;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, item, L"(%c+) at (%d+) by (%d+)")) {
+		if (sv < V2_SYNTAX)
+			Parser::wrong_version(sv, L, "at X by Y", V2_SYNTAX);
+		*w = Str::atoi(mr.exp[1], 0);
+		*h = Str::atoi(mr.exp[2], 0);
+		use = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, item, L"(%c+) at height (%d+)")) {
+		if (sv < V2_SYNTAX)
+			Parser::wrong_version(sv, L, "at height Y", V2_SYNTAX);
+		*h = Str::atoi(mr.exp[1], 0);
+		use = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, item, L"(%c+) at width (%d+)")) {
+		if (sv < V2_SYNTAX)
+			Parser::wrong_version(sv, L, "at width Y", V2_SYNTAX);
+		*w = Str::atoi(mr.exp[1], 0);
+		use = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, item, L"(%c+) at (%d+)cm by (%d+)cm")) {
+		if (sv < V2_SYNTAX)
+			Parser::wrong_version(sv, L, "at Xcm by Ycm", V2_SYNTAX);
+		*w = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
+		*h = POINTS_PER_CM*Str::atoi(mr.exp[2], 0);
+		use = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, item, L"(%c+) at height (%d+)cm")) {
+		if (sv < V2_SYNTAX)
+			Parser::wrong_version(sv, L, "at height Ycm", V2_SYNTAX);
+		*h = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
+		use = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, item, L"(%c+) at width (%d+)cm")) {
+		if (sv < V2_SYNTAX)
+			Parser::wrong_version(sv, L, "at width Ycm", V2_SYNTAX);
+		*w = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
+		use = Str::duplicate(mr.exp[0]);
+	}
+	Regexp::dispose_of(&mr);
+	return use;
 }
 
 @h Section tables of contents.
