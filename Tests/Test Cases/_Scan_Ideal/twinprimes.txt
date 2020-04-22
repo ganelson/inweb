@@ -4,7 +4,7 @@ Scan of source lines for '0'
 0000002  COMMENT_BODY........  
 0000003  PURPOSE.............  Implied Purpose: This example of using inweb is a whole web in a single short file, to look for twin primes, a classic problem in number theory.
 0000004  COMMENT_BODY........  
-0000005  PB_PARAGRAPH_START..  @h The conjecture.
+0000005  HEADING_START.......  @h The conjecture.
 0000006  COMMENT_BODY........  It is widely believed that there are an infinite number of twin primes, that
 0000007  COMMENT_BODY........  is, prime numbers occurring in pairs different by 2. Twins are known to exist
 0000008  COMMENT_BODY........  at least as far out as $10^{388,342}$ (as of 2016), and there are infinitely
@@ -35,7 +35,7 @@ Scan of source lines for '0'
 0000033  CODE_BODY...........  	if ((isprime(i)) && (isprime(i+2)))
 0000034  CODE_BODY...........  		printf("%d and %d\n", i, i+2);
 0000035  CODE_BODY...........  
-0000036  PB_PARAGRAPH_START..  @h Primality.
+0000036  HEADING_START.......  @h Primality.
 0000037  COMMENT_BODY........  This simple and slow test tries to divide by every whole number at least
 0000038  COMMENT_BODY........  2 and up to the square root: if none divide exactly, the number is prime.
 0000039  COMMENT_BODY........  A common error with this algorithm is to check where $m^2 < n$, rather

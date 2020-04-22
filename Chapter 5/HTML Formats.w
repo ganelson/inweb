@@ -293,11 +293,13 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 				if (first_in_para) {
 					HTMLFormat::cp(OUT);
 				}
-				TEMPORARY_TEXT(csname);
-				WRITE_TO(csname, "%S-Colours", C->styling->language_name);
-				hrs->colours = Swarm::ensure_colour_scheme(hrs->wv,
-					csname, C->styling->language_name);
-				DISCARD_TEXT(csname);
+				if (C->styling) {
+					TEMPORARY_TEXT(csname);
+					WRITE_TO(csname, "%S-Colours", C->styling->language_name);
+					hrs->colours = Swarm::ensure_colour_scheme(hrs->wv,
+						csname, C->styling->language_name);
+					DISCARD_TEXT(csname);
+				}
 				TEMPORARY_TEXT(cl);
 				WRITE_TO(cl, "%S", hrs->colours->prefix);
 				if (C->plainly) WRITE_TO(cl, "undisplayed-code");
