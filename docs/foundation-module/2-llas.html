@@ -172,10 +172,10 @@ want speed rather than memory efficiency.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">I</span><span class="plain-syntax">?(</span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">item_contents</span><span class="plain-syntax">):</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. A macro-ized API. </b>These intentionally hide the implementation. The difference between
-<code class="display"><span class="extract-syntax">FIRST_IN_LINKED_LIST</span></code> and <code class="display"><span class="extract-syntax">FIRST_ITEM_IN_LINKED_LIST</span></code> is that one returns
+<span class="extract"><span class="extract-syntax">FIRST_IN_LINKED_LIST</span></span> and <span class="extract"><span class="extract-syntax">FIRST_ITEM_IN_LINKED_LIST</span></span> is that one returns
 the first structure in the list, and the other returns the first
-<code class="display"><span class="extract-syntax">linked_list_item</span></code> chunk in the list. From the latter you can make the
-former using <code class="display"><span class="extract-syntax">CONTENT_IN_ITEM</span></code>, but not vice versa. The same object
+<span class="extract"><span class="extract-syntax">linked_list_item</span></span> chunk in the list. From the latter you can make the
+former using <span class="extract"><span class="extract-syntax">CONTENT_IN_ITEM</span></span>, but not vice versa. The same object
 may be listed in many different lists, so if all you have is the object,
 you don't know its place in the list.
 </p>
@@ -203,14 +203,14 @@ you don't know its place in the list.
     <span class="definition-keyword">define</span> <span class="identifier-syntax">LAST_IN_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">)</span>
     <span class="plain-syntax">    ((</span><span class="identifier-syntax">T</span><span class="plain-syntax"> *) (</span><a href="2-llas.html#SP6" class="function-link"><span class="function-syntax">LinkedLists::content</span></a><span class="plain-syntax">(</span><a href="2-llas.html#SP6" class="function-link"><span class="function-syntax">LinkedLists::last</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">))))</span>
 </pre>
-<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>The following macro requires slight care to use: the list <code class="display"><span class="extract-syntax">L</span></code> needs to be
-calculable without side-effects. There's no such worry over <code class="display"><span class="extract-syntax">P</span></code> or <code class="display"><span class="extract-syntax">T</span></code>, since
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>The following macro requires slight care to use: the list <span class="extract"><span class="extract-syntax">L</span></span> needs to be
+calculable without side-effects. There's no such worry over <span class="extract"><span class="extract-syntax">P</span></span> or <span class="extract"><span class="extract-syntax">T</span></span>, since
 they're just identifier names: the loop variable and the type name respectively.
 </p>
 
-<p class="inwebparagraph">Note that the loop variable <code class="display"><span class="extract-syntax">P</span></code> must already be defined. Inside the loop body,
-a new variable will also then exist, <code class="display"><span class="extract-syntax">P_item</span></code>, to refer to the item which
-points to <code class="display"><span class="extract-syntax">P</span></code>. This allows us to iterate despite the comments above.
+<p class="inwebparagraph">Note that the loop variable <span class="extract"><span class="extract-syntax">P</span></span> must already be defined. Inside the loop body,
+a new variable will also then exist, <span class="extract"><span class="extract-syntax">P_item</span></span>, to refer to the item which
+points to <span class="extract"><span class="extract-syntax">P</span></span>. This allows us to iterate despite the comments above.
 </p>
 
 
@@ -227,7 +227,7 @@ front iten.
 </p>
 
 <p class="inwebparagraph">We provide an abstract type name for these stacks, even though they're the
-exact same structure. For reasons to do with the way <code class="display"><span class="extract-syntax">typedef</span></code> works in C,
+exact same structure. For reasons to do with the way <span class="extract"><span class="extract-syntax">typedef</span></span> works in C,
 it is awkward to typedef the two names together, so we'll simply use the
 preprocessor:
 </p>

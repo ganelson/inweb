@@ -1,2 +1,2 @@
-format = PDF
-embed css
+name: PDF
+format: PDF

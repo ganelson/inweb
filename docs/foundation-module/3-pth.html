@@ -61,8 +61,8 @@ and "filename" to mean a location of a file. For example:
 <span class="plain-syntax">    /Users/rblackmore/Documents/Fireball/whoosh.aiff</span>
 </pre>
 <p class="inwebparagraph">is a filename. All references to directory locations in the filing system will be
-held internally as <code class="display"><span class="extract-syntax">pathname</span></code> objects, and all references to file locations as
-<code class="display"><span class="extract-syntax">filename</span></code> objects. Once created, these are never destroyed or modified,
+held internally as <span class="extract"><span class="extract-syntax">pathname</span></span> objects, and all references to file locations as
+<span class="extract"><span class="extract-syntax">filename</span></span> objects. Once created, these are never destroyed or modified,
 so that it's safe to store a pointer to a pathname or filename anywhere.
 </p>
 
@@ -76,15 +76,15 @@ describe a directory which doesn't exist on disc.
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    /Users/rblackmore/Documents/</span>
 </pre>
-<p class="inwebparagraph">would be represented as a pointer to the <code class="display"><span class="extract-syntax">pathname</span></code> for "Documents", which
+<p class="inwebparagraph">would be represented as a pointer to the <span class="extract"><span class="extract-syntax">pathname</span></span> for "Documents", which
 in turn points to one for "rblackmore", which in turn points to "/Users".
 Thus the root of the filing system is represented by the null pointer.
 </p>
 
-<p class="inwebparagraph">Each <code class="display"><span class="extract-syntax">pathname</span></code> can represent only a single level in the hierarchy, and
-its textual name is not allowed to contain the <code class="display"><span class="extract-syntax">FOLDER_SEPARATOR</span></code> character,
-with just one exception: the <code class="display"><span class="extract-syntax">pathname</span></code> at the end of the chain is allowed
-to begin with <code class="display"><span class="extract-syntax">FOLDER_SEPARATOR</span></code> to denote that it's at the root of the
+<p class="inwebparagraph">Each <span class="extract"><span class="extract-syntax">pathname</span></span> can represent only a single level in the hierarchy, and
+its textual name is not allowed to contain the <span class="extract"><span class="extract-syntax">FOLDER_SEPARATOR</span></span> character,
+with just one exception: the <span class="extract"><span class="extract-syntax">pathname</span></span> at the end of the chain is allowed
+to begin with <span class="extract"><span class="extract-syntax">FOLDER_SEPARATOR</span></span> to denote that it's at the root of the
 host file system.
 </p>
 
@@ -96,7 +96,7 @@ host file system.
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">pathname</span><span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>The structure pathname is accessed in 3/fln and here.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Home directory. </b>We get the path to the user's home directory from the environment variable
-<code class="display"><span class="extract-syntax">HOME</span></code>, if it exists.
+<span class="extract"><span class="extract-syntax">HOME</span></span>, if it exists.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -139,7 +139,7 @@ host file system.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">def</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">def</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Creation. </b>A subdirectory is made by taking an existing pathname (or possible <code class="display"><span class="extract-syntax">NULL</span></code>) and
+</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Creation. </b>A subdirectory is made by taking an existing pathname (or possible <span class="extract"><span class="extract-syntax">NULL</span></span>) and
 then going one level deeper, using the supplied name.
 </p>
 
@@ -161,9 +161,9 @@ then going one level deeper, using the supplied name.
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Text to pathnames. </b>The following takes a text of a name and returns a pathname,
 possibly relative to the home directory. Empty directory names are ignored
-except possibly for an initial slash, so for example <code class="display"><span class="extract-syntax">paris/roubaix</span></code>,
-<code class="display"><span class="extract-syntax">paris//roubaix</span></code> and <code class="display"><span class="extract-syntax">paris/roubaix/</span></code> are indistinguishable here, but
-<code class="display"><span class="extract-syntax">/paris/roubaix</span></code> is different.
+except possibly for an initial slash, so for example <span class="extract"><span class="extract-syntax">paris/roubaix</span></span>,
+<span class="extract"><span class="extract-syntax">paris//roubaix</span></span> and <span class="extract"><span class="extract-syntax">paris/roubaix/</span></span> are indistinguishable here, but
+<span class="extract"><span class="extract-syntax">/paris/roubaix</span></span> is different.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -220,7 +220,7 @@ for example,
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Fireball/tablature</span>
 </pre>
-<p class="inwebparagraph">Note that this does not correctly handle symlinks, <code class="display"><span class="extract-syntax">.</span></code>, <code class="display"><span class="extract-syntax">..</span></code> and so on,
+<p class="inwebparagraph">Note that this does not correctly handle symlinks, <span class="extract"><span class="extract-syntax">.</span></span>, <span class="extract"><span class="extract-syntax">..</span></span> and so on,
 so it's probably not wise to use it with filenames typed in at the command
 line.
 </p>
@@ -249,8 +249,8 @@ line.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">intermediate</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Relative URLs. </b>Suppose a web page in the directory at <code class="display"><span class="extract-syntax">from</span></code> wants to link to a page in
-the directory <code class="display"><span class="extract-syntax">to</span></code>. The following composes a minimal-length URL to do so:
+</pre><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Relative URLs. </b>Suppose a web page in the directory at <span class="extract"><span class="extract-syntax">from</span></span> wants to link to a page in
+the directory <span class="extract"><span class="extract-syntax">to</span></span>. The following composes a minimal-length URL to do so:
 possibly, if they are in fact the same directory, an empty one.
 </p>
 
@@ -302,8 +302,8 @@ on the file system with that path.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">known_to_exist</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Directory synchronisation. </b>Both pathnames here represent directories which do exist. The function makes
-the <code class="display"><span class="extract-syntax">dest</span></code> tree an exact copy of the <code class="display"><span class="extract-syntax">source</span></code> tree (and therefore deletes
-anything different which was originally in <code class="display"><span class="extract-syntax">dest</span></code>).
+the <span class="extract"><span class="extract-syntax">dest</span></span> tree an exact copy of the <span class="extract"><span class="extract-syntax">source</span></span> tree (and therefore deletes
+anything different which was originally in <span class="extract"><span class="extract-syntax">dest</span></span>).
 </p>
 
 <pre class="displayed-code all-displayed-code">

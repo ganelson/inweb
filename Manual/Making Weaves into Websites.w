@@ -96,6 +96,18 @@ directory name.) The point of this web is that it weaves to the |index.html|
 home page; it's referred to in links as being the "overview", because that's
 its name as a web.
 
+@ The command |assets X| tells Inweb to place "assets" such as images, CSS and
+JavaScript files which are needed by plugins (see //Advanced Weaving with Patterns//)
+into the directory |X|. In practice, this avoids a great deal of duplication:
+if there are 30 webs in the colony, there's no need for each to have its own
+copy of the same CSS files for the basic page makeup. (But that is what will
+indeed happen if the |assets| command is not used.)
+
+Another convenience is |patterns X|, which tells X that some unusual weave
+patterns can be found in directory |X|. That's useful if multiple webs in
+the colony need to use the same pattern, and the pattern isn't one which is
+built in the Inweb.
+
 @h The navigation sidebar.
 When assembling large numbers of woven websites together, as is needed for
 example by the main Inform repository's GitHub pages, we need to navigate
@@ -172,3 +184,6 @@ The links after the colon can also be Inweb cross-references, so, for example,
 	breadcrumbs: "Overview: //overview//"
 =
 makes a link to the web/module called |overview| in the colony file.
+
+@h Adding custom HTML, CSS and such.
+This is done by creating a new pattern: see //Advanced Weaving with Patterns//.

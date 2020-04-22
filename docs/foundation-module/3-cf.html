@@ -48,7 +48,7 @@ function togglePopup(material_id) {
 <ul class="toc"><li><a href="3-cf.html#SP3">&#167;3. The routine</a></li><li><a href="3-cf.html#SP3_1">&#167;3.1. Looking for case-insensitive matches instead</a></li><li><a href="3-cf.html#SP3_3">&#167;3.3. Allocation and deallocation</a></li><li><a href="3-cf.html#SP3_6">&#167;3.6. Pathname hacking</a></li><li><a href="3-cf.html#SP4">&#167;4. Counting matches</a></li><li><a href="3-cf.html#SP5">&#167;5. Non-POSIX tail</a></li></ul><hr class="tocbar">
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>This section contains a single utility routine, contributed by Adam
-Thornton: a specialised, case-insensitive form of <code class="display"><span class="extract-syntax">fopen()</span></code>. It is specialised
+Thornton: a specialised, case-insensitive form of <span class="extract"><span class="extract-syntax">fopen()</span></span>. It is specialised
 in that it is designed for opening extensions, where the file path will be
 case-correct up to the last two components of the path (the leafname and the
 immediately containing directory), but where the casing may be wrong in those
@@ -56,32 +56,32 @@ last two components.
 </p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>If the exact filename or extension directory (case-correct) exists,
-<code class="display"><span class="extract-syntax">CIFilingSystem::fopen()</span></code> will choose it to open. If not, it will
-use <code class="display"><span class="extract-syntax">strcasecmp()</span></code> to find a file or directory with the same name but
+<span class="extract"><span class="extract-syntax">CIFilingSystem::fopen()</span></span> will choose it to open. If not, it will
+use <span class="extract"><span class="extract-syntax">strcasecmp()</span></span> to find a file or directory with the same name but
 differing in case and use it instead. If it finds exactly one candidate file,
-it will then attempt to <code class="display"><span class="extract-syntax">fopen()</span></code> it and return the result.
+it will then attempt to <span class="extract"><span class="extract-syntax">fopen()</span></span> it and return the result.
 </p>
 
-<p class="inwebparagraph">If <code class="display"><span class="extract-syntax">CIFilingSystem::fopen()</span></code> succeeds, it returns a <code class="display"><span class="extract-syntax">FILE *</span></code>
-(passed back to it from the underlying <code class="display"><span class="extract-syntax">fopen()</span></code>). If
-<code class="display"><span class="extract-syntax">CIFilingSystem::fopen()</span></code> fails, it returns <code class="display"><span class="extract-syntax">NULL</span></code>, and
-<code class="display"><span class="extract-syntax">errno</span></code> is set accordingly:
+<p class="inwebparagraph">If <span class="extract"><span class="extract-syntax">CIFilingSystem::fopen()</span></span> succeeds, it returns a <span class="extract"><span class="extract-syntax">FILE *</span></span>
+(passed back to it from the underlying <span class="extract"><span class="extract-syntax">fopen()</span></span>). If
+<span class="extract"><span class="extract-syntax">CIFilingSystem::fopen()</span></span> fails, it returns <span class="extract"><span class="extract-syntax">NULL</span></span>, and
+<span class="extract"><span class="extract-syntax">errno</span></span> is set accordingly:
 </p>
 
-<ul class="items"><li>(a) If no suitable file was found, <code class="display"><span class="extract-syntax">errno</span></code> is set to <code class="display"><span class="extract-syntax">ENOENT</span></code>.
+<ul class="items"><li>(a) If no suitable file was found, <span class="extract"><span class="extract-syntax">errno</span></span> is set to <span class="extract"><span class="extract-syntax">ENOENT</span></span>.
 </li><li>(b) If more than one possibility was found, but none of them exactly match
-the supplied case, <code class="display"><span class="extract-syntax">errno</span></code> is set to <code class="display"><span class="extract-syntax">EBADF</span></code>.
+the supplied case, <span class="extract"><span class="extract-syntax">errno</span></span> is set to <span class="extract"><span class="extract-syntax">EBADF</span></span>.
 </li><li>(c) Note that if multiple directories which match case-insensitively are
-found, but none is an exact match, <code class="display"><span class="extract-syntax">EBADF</span></code> will be set regardless of the
+found, but none is an exact match, <span class="extract"><span class="extract-syntax">EBADF</span></span> will be set regardless of the
 contents of the directories.
-</li><li>(d) If <code class="display"><span class="extract-syntax">CIFilingSystem::fopen()</span></code> fails during its allocation of
+</li><li>(d) If <span class="extract"><span class="extract-syntax">CIFilingSystem::fopen()</span></span> fails during its allocation of
 space to hold its intermediate strings for comparison, or for its various
-data structures, <code class="display"><span class="extract-syntax">errno</span></code> is set to <code class="display"><span class="extract-syntax">ENOMEM</span></code>.
-</li><li>(e) If an unambiguous filename is found but the <code class="display"><span class="extract-syntax">fopen()</span></code> fails, <code class="display"><span class="extract-syntax">errno</span></code> is
-left at whatever value the underlying <code class="display"><span class="extract-syntax">fopen()</span></code> set it to.
+data structures, <span class="extract"><span class="extract-syntax">errno</span></span> is set to <span class="extract"><span class="extract-syntax">ENOMEM</span></span>.
+</li><li>(e) If an unambiguous filename is found but the <span class="extract"><span class="extract-syntax">fopen()</span></span> fails, <span class="extract"><span class="extract-syntax">errno</span></span> is
+left at whatever value the underlying <span class="extract"><span class="extract-syntax">fopen()</span></span> set it to.
 </p>
 
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. The routine. </b>The routine is available only on POSIX platforms where <code class="display"><span class="extract-syntax">PLATFORM_POSIX</span></code>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. The routine. </b>The routine is available only on POSIX platforms where <span class="extract"><span class="extract-syntax">PLATFORM_POSIX</span></span>
 is defined (see "Platform-Specific Definitions"). In practice this means
 everywhere except Windows, but all Windows file systems are case-preserving
 and case-insensitive in any case.
@@ -108,7 +108,7 @@ file itself.
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Parse the path to break it into topdir path, extension directory and leafname</span> <span class="named-paragraph-number">3.7</span>&gt;<span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">topdir</span><span class="plain-syntax"> = </span><span class="identifier-syntax">opendir</span><span class="plain-syntax">(</span><span class="identifier-syntax">topdirpath</span><span class="plain-syntax">); </span><span class="comment"> whose pathname is assumed case-correct...</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">topdir</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="comment"> ...so that failure is fatal; </span><code class="display"><span class="extract-syntax">errno</span></code><span class="comment"> is set by </span><code class="display"><span class="extract-syntax">opendir</span></code>&lt;<span class="named-paragraph">Sad ending to ci-fopen</span> <span class="named-paragraph-number">3.5</span>&gt;<span class="plain-syntax">; </span><span class="comment"> ...so that failure is fatal; </span><code class="display"><span class="extract-syntax">errno</span></code><span class="comment"> is set by </span><code class="display"><span class="extract-syntax">opendir</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">topdir</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="comment"> ...so that failure is fatal; </span><span class="extract"><span class="extract-syntax">errno</span></span><span class="comment"> is set by </span><span class="extract"><span class="extract-syntax">opendir</span></span>&lt;<span class="named-paragraph">Sad ending to ci-fopen</span> <span class="named-paragraph-number">3.5</span>&gt;<span class="plain-syntax">; </span><span class="comment"> ...so that failure is fatal; </span><span class="extract"><span class="extract-syntax">errno</span></span><span class="comment"> is set by </span><span class="extract"><span class="extract-syntax">opendir</span></span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">sprintf</span><span class="plain-syntax">(</span><span class="identifier-syntax">workstring</span><span class="plain-syntax">, </span><span class="string-syntax">"%s%c%s"</span><span class="plain-syntax">, </span><span class="identifier-syntax">topdirpath</span><span class="plain-syntax">, </span><span class="constant-syntax">FOLDER_SEPARATOR</span><span class="plain-syntax">, </span><span class="identifier-syntax">ciextdirpath</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">extdir</span><span class="plain-syntax"> = </span><span class="identifier-syntax">opendir</span><span class="plain-syntax">(</span><span class="identifier-syntax">workstring</span><span class="plain-syntax">); </span><span class="comment"> try with supplied extension directory name</span>
@@ -201,7 +201,7 @@ return from the function.
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Prepare to exit ci-fopen cleanly</span> <span class="named-paragraph-number">3.4.1</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">handle</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-cf.html#SP3">&#167;3</a> (twice), <a href="3-cf.html#SP3_2">&#167;3.2</a>.</li></ul><p class="inwebparagraph"><a id="SP3_5"></a><b>&#167;3.5.  </b>...and otherwise <code class="display"><span class="extract-syntax">NULL</span></code>, having already set <code class="display"><span class="extract-syntax">errno</span></code> with the reason why.
+</pre><ul class="endnotetexts"><li>This code is used in <a href="3-cf.html#SP3">&#167;3</a> (twice), <a href="3-cf.html#SP3_2">&#167;3.2</a>.</li></ul><p class="inwebparagraph"><a id="SP3_5"></a><b>&#167;3.5.  </b>...and otherwise <span class="extract"><span class="extract-syntax">NULL</span></span>, having already set <span class="extract"><span class="extract-syntax">errno</span></span> with the reason why.
 </p>
 
 
@@ -242,11 +242,11 @@ return from the function.
 <p class="inwebparagraph">into three components:
 </p>
 
-</li><li>(a) <code class="display"><span class="extract-syntax">topdirpath</span></code> is <code class="display"><span class="extract-syntax">/Users/bobama/Library/Inform/Extensions</span></code>, and its casing is correct.
-</li><li>(b) <code class="display"><span class="extract-syntax">ciextdirpath</span></code> is <code class="display"><span class="extract-syntax">Hillary Clinton</span></code>, but its casing may not be correct.
-</li><li>(c) <code class="display"><span class="extract-syntax">ciextname</span></code> is <code class="display"><span class="extract-syntax">Health Care.i7x</span></code>, but its casing may not be correct.
+</li><li>(a) <span class="extract"><span class="extract-syntax">topdirpath</span></span> is <span class="extract"><span class="extract-syntax">/Users/bobama/Library/Inform/Extensions</span></span>, and its casing is correct.
+</li><li>(b) <span class="extract"><span class="extract-syntax">ciextdirpath</span></span> is <span class="extract"><span class="extract-syntax">Hillary Clinton</span></span>, but its casing may not be correct.
+</li><li>(c) <span class="extract"><span class="extract-syntax">ciextname</span></span> is <span class="extract"><span class="extract-syntax">Health Care.i7x</span></span>, but its casing may not be correct.
 </li></ul>
-<p class="inwebparagraph">The contents of <code class="display"><span class="extract-syntax">workstring</span></code> are not significant afterwards.
+<p class="inwebparagraph">The contents of <span class="extract"><span class="extract-syntax">workstring</span></span> are not significant afterwards.
 </p>
 
 
@@ -280,12 +280,12 @@ return from the function.
 <span class="plain-syntax">    </span><span class="identifier-syntax">strncpy</span><span class="plain-syntax">(</span><span class="identifier-syntax">ciextdirpath</span><span class="plain-syntax">, </span><span class="identifier-syntax">path</span><span class="plain-syntax"> + </span><span class="identifier-syntax">extdirindex</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="identifier-syntax">dirlen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ciextdirpath</span><span class="plain-syntax">[</span><span class="identifier-syntax">dirlen</span><span class="plain-syntax">] = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="3-cf.html#SP3">&#167;3</a>.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Counting matches. </b>We count the number of names within the directory which case-insensitively
-match against <code class="display"><span class="extract-syntax">name</span></code>, and copy the last which matches into <code class="display"><span class="extract-syntax">last_match</span></code>.
-This must be at least as long as <code class="display"><span class="extract-syntax">name</span></code>. (We ought to be just a little careful
+match against <span class="extract"><span class="extract-syntax">name</span></span>, and copy the last which matches into <span class="extract"><span class="extract-syntax">last_match</span></span>.
+This must be at least as long as <span class="extract"><span class="extract-syntax">name</span></span>. (We ought to be just a little careful
 in case of improbable cases where the matched name contains a different
-number of characters from <code class="display"><span class="extract-syntax">name</span></code>, for instance because on a strict reading
+number of characters from <span class="extract"><span class="extract-syntax">name</span></span>, for instance because on a strict reading
 of Unicode "SS" is casing-equivalent to the eszet, but it's unlikely
-that many contemporary implementations of <code class="display"><span class="extract-syntax">strcasecmp</span></code> are aware of this,
+that many contemporary implementations of <span class="extract"><span class="extract-syntax">strcasecmp</span></span> are aware of this,
 and in any case the code above contains much larger buffers than needed.)
 </p>
 
@@ -305,7 +305,7 @@ and in any case the code above contains much larger buffers than needed.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Non-POSIX tail. </b>On platforms without POSIX directory handling, we revert to regular <code class="display"><span class="extract-syntax">fopen</span></code>.
+</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Non-POSIX tail. </b>On platforms without POSIX directory handling, we revert to regular <span class="extract"><span class="extract-syntax">fopen</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">

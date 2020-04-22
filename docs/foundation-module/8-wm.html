@@ -50,7 +50,7 @@ function togglePopup(material_id) {
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Creation. </b>Each web of source material discovered by Inweb is given one of the following.
 Ordinarily these are found only when reading in a web for weaving, tangling
 and so on: in the vast majority of Inweb runs, all modules will have the
-"module origin marker" <code class="display"><span class="extract-syntax">READING_WEB_MOM</span></code>. But when Inweb is constructing a
+"module origin marker" <span class="extract"><span class="extract-syntax">READING_WEB_MOM</span></span>. But when Inweb is constructing a
 makefile for a suite of tools, it can also discover multiple webs by other
 means.
 </p>
@@ -66,11 +66,11 @@ means.
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">module</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">module_location</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">module_name</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dependencies</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">module</span></code><span class="comment">: which other modules does this need?</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dependencies</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">module</span></span><span class="comment">: which other modules does this need?</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">module_tag</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">origin_marker</span><span class="plain-syntax">; </span><span class="comment"> one of the </span><code class="display"><span class="extract-syntax">*_MOM</span></code><span class="comment"> values above</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">chapters_md</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">chapter_md</span></code><span class="comment">: just the ones in this module</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sections_md</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">section_md</span></code><span class="comment">: just the ones in this module</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">origin_marker</span><span class="plain-syntax">; </span><span class="comment"> one of the </span><span class="extract"><span class="extract-syntax">*_MOM</span></span><span class="comment"> values above</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">chapters_md</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">chapter_md</span></span><span class="comment">: just the ones in this module</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sections_md</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">section_md</span></span><span class="comment">: just the ones in this module</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">module</span><span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>The structure module is accessed in 8/ws and here.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
@@ -92,9 +92,9 @@ contains a suite of utility routines, or a major component of a program, but
 which is not a program in its own right.
 </p>
 
-<p class="inwebparagraph">Internally, though, every web produces a <code class="display"><span class="extract-syntax">module</span></code> structure. The one for the
+<p class="inwebparagraph">Internally, though, every web produces a <span class="extract"><span class="extract-syntax">module</span></span> structure. The one for the
 main web &mdash; which can be tangled, and results in an actual program &mdash; is
-internally named <code class="display"><span class="extract-syntax">"(main)"</span></code>, a name which the user will never see.
+internally named <span class="extract"><span class="extract-syntax">"(main)"</span></span>, a name which the user will never see.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -129,8 +129,8 @@ program generated by A.
 <span class="plain-syntax">    </span><span class="identifier-syntax">ms</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path_to_search</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ext_path</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ms</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>When a web's contents page says to <code class="display"><span class="extract-syntax">import Blah</span></code>, how do we find the module
-called <code class="display"><span class="extract-syntax">Blah</span></code> on disc? We try four possibilities in sequence:
+</pre><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>When a web's contents page says to <span class="extract"><span class="extract-syntax">import Blah</span></span>, how do we find the module
+called <span class="extract"><span class="extract-syntax">Blah</span></span> on disc? We try four possibilities in sequence:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -151,7 +151,7 @@ called <code class="display"><span class="extract-syntax">Blah</span></code> on 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b>When the module is found (if it is), a suitable module structure is made,
-and a dependency created from the web's <code class="display"><span class="extract-syntax">(main)</span></code> module to this one.
+and a dependency created from the web's <span class="extract"><span class="extract-syntax">(main)</span></span> module to this one.
 </p>
 
 
@@ -171,23 +171,23 @@ sought if it looks like a web.
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">WebModules::exists</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>WebModules::exists</b>:<br><a href="8-wm.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="8-ws.html#SP8" class="function-link"><span class="function-syntax">WebMetadata::directory_looks_like_a_web</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Resolving cross-reference names. </b>Suppose we are in module <code class="display"><span class="extract-syntax">from_M</span></code> and want to understand which section of
-a relevant web <code class="display"><span class="extract-syntax">text</span></code> might refer to. It could be the name of a module,
+</pre><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Resolving cross-reference names. </b>Suppose we are in module <span class="extract"><span class="extract-syntax">from_M</span></span> and want to understand which section of
+a relevant web <span class="extract"><span class="extract-syntax">text</span></span> might refer to. It could be the name of a module,
 either this one or one dependent on it; or the name of a chapter in one
 of those, or the shortened forms of those; or the name of a section. It
 may match multiple possibilities: we return how many, and if this is
-positive, we write the module in which the first find was made in <code class="display"><span class="extract-syntax">*return M</span></code>,
-the section in <code class="display"><span class="extract-syntax">*return_Sm</span></code>, and set the flag <code class="display"><span class="extract-syntax">*named_as_module</span></code> according
+positive, we write the module in which the first find was made in <span class="extract"><span class="extract-syntax">*return M</span></span>,
+the section in <span class="extract"><span class="extract-syntax">*return_Sm</span></span>, and set the flag <span class="extract"><span class="extract-syntax">*named_as_module</span></span> according
 to whether the reference was a bare module name (say, "foundation") or not.
 </p>
 
-<p class="inwebparagraph">Note that we consider first the possibilities within <code class="display"><span class="extract-syntax">from_M</span></code>: we only
+<p class="inwebparagraph">Note that we consider first the possibilities within <span class="extract"><span class="extract-syntax">from_M</span></span>: we only
 look at other modules if there are none. Thus, an unambiguous result in
-<code class="display"><span class="extract-syntax">from_M</span></code> is good enough, even if there are other possibilities elsewhere.
+<span class="extract"><span class="extract-syntax">from_M</span></span> is good enough, even if there are other possibilities elsewhere.
 </p>
 
-<p class="inwebparagraph">A reference in the form <code class="display"><span class="extract-syntax">module: reference</span></code> is taken to be in the module
-of that name: for example, <code class="display"><span class="extract-syntax">"foundation: Web Modules"</span></code> would find the
+<p class="inwebparagraph">A reference in the form <span class="extract"><span class="extract-syntax">module: reference</span></span> is taken to be in the module
+of that name: for example, <span class="extract"><span class="extract-syntax">"foundation: Web Modules"</span></span> would find the
 section of code you are now reading.
 </p>
 

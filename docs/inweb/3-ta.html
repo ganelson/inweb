@@ -141,8 +141,8 @@ these identifiers.
 
 
 <pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">ELEMENT_ACCESS_USAGE</span><span class="plain-syntax">     </span><span class="constant-syntax">0x00000001</span><span class="plain-syntax"> </span><span class="comment"> C-like languages: access via </span><code class="display"><span class="extract-syntax">-&gt;</span></code><span class="comment"> or </span><code class="display"><span class="extract-syntax">.</span></code><span class="comment"> operators to structure element</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">FCALL_USAGE</span><span class="plain-syntax">              </span><span class="constant-syntax">0x00000002</span><span class="plain-syntax"> </span><span class="comment"> C-like languages: function call made using brackets, </span><code class="display"><span class="extract-syntax">name(args)</span></code>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">ELEMENT_ACCESS_USAGE</span><span class="plain-syntax">     </span><span class="constant-syntax">0x00000001</span><span class="plain-syntax"> </span><span class="comment"> C-like languages: access via </span><span class="extract"><span class="extract-syntax">-&gt;</span></span><span class="comment"> or </span><span class="extract"><span class="extract-syntax">.</span></span><span class="comment"> operators to structure element</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">FCALL_USAGE</span><span class="plain-syntax">              </span><span class="constant-syntax">0x00000002</span><span class="plain-syntax"> </span><span class="comment"> C-like languages: function call made using brackets, </span><span class="extract"><span class="extract-syntax">name(args)</span></span>
     <span class="definition-keyword">define</span> <span class="constant-syntax">PREFORM_IN_CODE_USAGE</span><span class="plain-syntax">    </span><span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment"> InC only: use of a Preform nonterminal as a C "constant"</span>
     <span class="definition-keyword">define</span> <span class="constant-syntax">PREFORM_IN_GRAMMAR_USAGE</span><span class="plain-syntax"> </span><span class="constant-syntax">0x00000008</span><span class="plain-syntax"> </span><span class="comment"> InC only: ditto, but within Preform production rather than C code</span>
     <span class="definition-keyword">define</span> <span class="constant-syntax">MISC_USAGE</span><span class="plain-syntax">               </span><span class="constant-syntax">0x00000010</span><span class="plain-syntax"> </span><span class="comment"> any other appearance as an identifier</span>
@@ -150,7 +150,7 @@ these identifiers.
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The main analysis routine goes through a web as follows. Note that we only
 perform the search here, we don't comment on the results; any action to be
-taken must be handled by <code class="display"><span class="extract-syntax">LanguageMethods::late_preweave_analysis</span></code> when we're done.
+taken must be handled by <span class="extract"><span class="extract-syntax">LanguageMethods::late_preweave_analysis</span></span> when we're done.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -184,7 +184,7 @@ below) to look for names of particular functions it knows about.
 
 <p class="inwebparagraph">In Version 1 webs, this code is also expected to parse any Interface lines in
 a section which it recognises, marking those by setting their
-<code class="display"><span class="extract-syntax">interface_line_identified</span></code> flags. Any that are left must be erroneous.
+<span class="extract"><span class="extract-syntax">interface_line_identified</span></span> flags. Any that are left must be erroneous.
 Version 2 removed Interface altogeter as being cumbersome for no real gain in
 practice.
 </p>
@@ -221,7 +221,7 @@ practice.
 <span class="plain-syntax">        </span><a href="3-ta.html#SP5" class="function-link"><span class="function-syntax">Analyser::analyse_as_code</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text</span><span class="plain-syntax">, </span><span class="constant-syntax">ANY_USAGE</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="3-ta.html#SP4">&#167;4</a>.</li></ul><p class="inwebparagraph"><a id="SP4_4"></a><b>&#167;4.4.  </b>Lines in a Preform grammar generally take the form of some BNF grammar, where
-we want only to identify any nonterminals mentioned, then a <code class="display"><span class="extract-syntax">==&gt;</span></code> divider,
+we want only to identify any nonterminals mentioned, then a <span class="extract"><span class="extract-syntax">==&gt;</span></span> divider,
 and then some C code to deal with a match. The code is subjected to analysis
 just as any other code would be.
 </p>
@@ -234,17 +234,17 @@ just as any other code would be.
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><a href="3-ta.html#SP5" class="function-link"><span class="function-syntax">Analyser::analyse_as_code</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text_operand2</span><span class="plain-syntax">, </span><span class="constant-syntax">ANY_USAGE</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="3-ta.html#SP5" class="function-link"><span class="function-syntax">Analyser::analyse_as_code</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text_operand</span><span class="plain-syntax">, </span><span class="constant-syntax">PREFORM_IN_CODE_USAGE</span><span class="plain-syntax">, </span><span class="constant-syntax">PREFORM_IN_GRAMMAR_USAGE</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-ta.html#SP4">&#167;4</a>.</li></ul><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Identifier searching. </b>Here's what we actually do, then. We take the code fragment <code class="display"><span class="extract-syntax">text</span></code>, drawn
-from part or all of source line <code class="display"><span class="extract-syntax">L</span></code> from web <code class="display"><span class="extract-syntax">W</span></code>, and look for any identifier
-names used in one of the contexts in the bitmap <code class="display"><span class="extract-syntax">mask</span></code>. Any that we find are
-passed to <code class="display"><span class="extract-syntax">Analyser::analyse_find</span></code>, along with the context they were found in (or, if
-<code class="display"><span class="extract-syntax">transf</span></code> is nonzero, with <code class="display"><span class="extract-syntax">transf</span></code> as their context).
+</pre><ul class="endnotetexts"><li>This code is used in <a href="3-ta.html#SP4">&#167;4</a>.</li></ul><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Identifier searching. </b>Here's what we actually do, then. We take the code fragment <span class="extract"><span class="extract-syntax">text</span></span>, drawn
+from part or all of source line <span class="extract"><span class="extract-syntax">L</span></span> from web <span class="extract"><span class="extract-syntax">W</span></span>, and look for any identifier
+names used in one of the contexts in the bitmap <span class="extract"><span class="extract-syntax">mask</span></span>. Any that we find are
+passed to <span class="extract"><span class="extract-syntax">Analyser::analyse_find</span></span>, along with the context they were found in (or, if
+<span class="extract"><span class="extract-syntax">transf</span></span> is nonzero, with <span class="extract"><span class="extract-syntax">transf</span></span> as their context).
 </p>
 
 <p class="inwebparagraph">What we do is to look for instances of an identifier, defined as a maximal
-string of <code class="display"><span class="extract-syntax">%i</span></code> characters or hyphens not followed by <code class="display"><span class="extract-syntax">&gt;</span></code> characters. (Thus
-<code class="display"><span class="extract-syntax">fish-or-chips</span></code> counts, but <code class="display"><span class="extract-syntax">fish-</span></code> is not an identifier when it occurs in
-<code class="display"><span class="extract-syntax">fish-&gt;bone</span></code>.)
+string of <span class="extract"><span class="extract-syntax">%i</span></span> characters or hyphens not followed by <span class="extract"><span class="extract-syntax">&gt;</span></span> characters. (Thus
+<span class="extract"><span class="extract-syntax">fish-or-chips</span></span> counts, but <span class="extract"><span class="extract-syntax">fish-</span></span> is not an identifier when it occurs in
+<span class="extract"><span class="extract-syntax">fish-&gt;bone</span></span>.)
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -315,7 +315,7 @@ in Aho, Sethi and Ullman, "Compilers: Principles, Techniques and Tools"
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">analysis_hash</span><span class="plain-syntax">[</span><span class="constant-syntax">HASH_TAB_SIZE</span><span class="plain-syntax">]; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">hash_table_entry</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">analysis_hash</span><span class="plain-syntax">[</span><span class="constant-syntax">HASH_TAB_SIZE</span><span class="plain-syntax">]; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">hash_table_entry</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">analysis_hash_initialised</span><span class="plain-syntax">; </span><span class="comment"> when we start up, array's contents are undefined</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">hash_table</span><span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>The structure hash_table is accessed in 2/tr, 4/pl and here.</li></ul><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Where we define:
@@ -325,7 +325,7 @@ in Aho, Sethi and Ullman, "Compilers: Principles, Techniques and Tools"
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">hash_table_entry</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">hash_key</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="reserved-syntax">reserved_word</span><span class="plain-syntax">; </span><span class="comment"> in the language currently being woven, that is</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">usages</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">hash_table_entry_usage</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">usages</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">hash_table_entry_usage</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">definition_line</span><span class="plain-syntax">; </span><span class="comment"> or null, if it's not a constant, function or type name</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">language_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_function</span><span class="plain-syntax">; </span><span class="comment"> for function names only</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
@@ -422,7 +422,7 @@ same paragraph of code.
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">hash_table_entry_usage</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">usage_recorded_at</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">form_of_usage</span><span class="plain-syntax">; </span><span class="comment"> bitmap of the </span><code class="display"><span class="extract-syntax">*_USAGE</span></code><span class="comment"> constants defined above</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">form_of_usage</span><span class="plain-syntax">; </span><span class="comment"> bitmap of the </span><span class="extract"><span class="extract-syntax">*_USAGE</span></span><span class="comment"> constants defined above</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">hash_table_entry_usage</span><span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>The structure hash_table_entry_usage is accessed in 3/tw, 4/as, 4/is and here.</li></ul><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>And here's how we create these usages:

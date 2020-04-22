@@ -72,9 +72,9 @@ so the fork in the road is not met until halfway through Inweb's execution.
 </pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>This operation will be applied to a single web, and will apply to the whole
 of that web unless we specify otherwise. Subsets of the web are represented by
 short pieces of text called "ranges". This can be a section range like
-<code class="display"><span class="extract-syntax">2/pine</span></code>, a chapter number like <code class="display"><span class="extract-syntax">12</span></code>, an appendix letter <code class="display"><span class="extract-syntax">A</span></code> or the
-preliminaries block <code class="display"><span class="extract-syntax">P</span></code>, the special chapter <code class="display"><span class="extract-syntax">S</span></code> for the "Sections" chapter
-of an unchaptered web, or the special value <code class="display"><span class="extract-syntax">0</span></code> to mean the entire web (which
+<span class="extract"><span class="extract-syntax">2/pine</span></span>, a chapter number like <span class="extract"><span class="extract-syntax">12</span></span>, an appendix letter <span class="extract"><span class="extract-syntax">A</span></span> or the
+preliminaries block <span class="extract"><span class="extract-syntax">P</span></span>, the special chapter <span class="extract"><span class="extract-syntax">S</span></span> for the "Sections" chapter
+of an unchaptered web, or the special value <span class="extract"><span class="extract-syntax">0</span></span> to mean the entire web (which
 is the default).
 </p>
 
@@ -95,7 +95,7 @@ one after another.
 enables it to find its configuration file, the macros file, and so on.
 Unless told otherwise on the command line, we'll assume Inweb is present
 in the current working directory. The "materials" will then be in a further
-subfolder called <code class="display"><span class="extract-syntax">Materials</span></code>.
+subfolder called <span class="extract"><span class="extract-syntax">Materials</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -265,7 +265,7 @@ output, but needs to be part of the web since it's essential to an understanding
 of the whole system.
 </p>
 
-<p class="inwebparagraph">In this section we determine <code class="display"><span class="extract-syntax">tn</span></code>, the target number wanted, and <code class="display"><span class="extract-syntax">tangle_to</span></code>,
+<p class="inwebparagraph">In this section we determine <span class="extract"><span class="extract-syntax">tn</span></span>, the target number wanted, and <span class="extract"><span class="extract-syntax">tangle_to</span></span>,
 the filename of the tangled code to write. This may have been set at the command
 line , but otherwise we impose a sensible choice based on the target.
 </p>
@@ -310,7 +310,7 @@ which for many small webs will be the entire thing.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tangle_leaf</span><span class="plain-syntax">, </span><a href="../foundation-module/8-bdfw.html#SP6" class="function-link"><span class="function-syntax">Bibliographic::get_datum</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Title"</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::concatenate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tangle_leaf</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">main_language</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">file_extension</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="1-pc.html#SP7_4_2">&#167;7.4.2</a>.</li></ul><p class="inwebparagraph"><a id="SP7_4_2_2"></a><b>&#167;7.4.2.2.  </b>If someone tangles, say, <code class="display"><span class="extract-syntax">2/eg</span></code> then the default filename is "Example Section".
+</pre><ul class="endnotetexts"><li>This code is used in <a href="1-pc.html#SP7_4_2">&#167;7.4.2</a>.</li></ul><p class="inwebparagraph"><a id="SP7_4_2_2"></a><b>&#167;7.4.2.2.  </b>If someone tangles, say, <span class="extract"><span class="extract-syntax">2/eg</span></span> then the default filename is "Example Section".
 </p>
 
 
@@ -354,7 +354,6 @@ which for many small webs will be the entire thing.
 <span class="plain-syntax">        </span><a href="1-ts.html#SP2" class="function-link"><span class="function-syntax">Swarm::weave_subset</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">ins</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chosen_range</span><span class="plain-syntax">, </span><span class="identifier-syntax">shall_we_open</span><span class="plain-syntax">, </span><span class="identifier-syntax">tag</span><span class="plain-syntax">, </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">ins</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_to_setting</span><span class="plain-syntax">, </span><span class="identifier-syntax">ins</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_into_setting</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">ins</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumb_setting</span><span class="plain-syntax">, </span><span class="identifier-syntax">ins</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">navigation_setting</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="1-ptt.html#SP7" class="function-link"><span class="function-syntax">Patterns::copy_payloads_into_weave</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><a href="1-ts.html#SP1" class="function-link"><span class="function-syntax">Swarm::weave</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">ins</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chosen_range</span><span class="plain-syntax">, </span><span class="identifier-syntax">ins</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">swarm_mode</span><span class="plain-syntax">, </span><span class="identifier-syntax">tag</span><span class="plain-syntax">, </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">ins</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_to_setting</span><span class="plain-syntax">, </span><span class="identifier-syntax">ins</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_into_setting</span><span class="plain-syntax">,</span>

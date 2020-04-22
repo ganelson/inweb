@@ -131,12 +131,12 @@ constraints:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Each node in a tree also has a type. Whenever the children of a node change,
-they are re-verified by the <code class="display"><span class="extract-syntax">verify_children</span></code>.
+they are re-verified by the <span class="extract"><span class="extract-syntax">verify_children</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">tree_node_type</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">node_type_name</span><span class="plain-syntax">; </span><span class="comment"> text such as </span><code class="display"><span class="extract-syntax">I"INVOCATION"</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">node_type_name</span><span class="plain-syntax">; </span><span class="comment"> text such as </span><span class="extract"><span class="extract-syntax">I"INVOCATION"</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">required_MT</span><span class="plain-syntax">; </span><span class="comment"> if any; or negative for no restriction</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">verify_children</span><span class="plain-syntax">)(</span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">tree_node</span><span class="plain-syntax"> *); </span><span class="comment"> function to vet the children</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>

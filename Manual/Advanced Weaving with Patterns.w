@@ -1,129 +1,305 @@
 Advanced Weaving with Patterns.
 
-Customise the booklets woven from a web.
+Customise your weave by creating a new pattern.
 
-@h Weave patterns.
-As noted, the two most useful weave patterns are |-weave-as HTML| and
-|-weave-as TeX|, and these are both supplied built in to Inweb. When you
-weave something with |-weave-as P|, for some pattern name |P|, Inweb first
-looks to see if the web in question defines a custom pattern of that name.
-For example,
+@h Patterns versus formats.
+Every weave produces output in a "format". The formats are built in to Inweb,
+and adding new ones would mean contributing code to the project: currently
+we have HTML, ePub, Plain Text, PDF, DIV, and TeX.
+
+There is no way to specify the format at the command line. That's because
+|-weave-as P| tells Inweb to weave with a given "pattern": a weave pattern
+combines a choice of format with other settings to produce a customised
+weave. Patterns can also be based on other patterns: one can, in effect, say
+"I want something like P but with some differences". For example, the Inweb
+manual at GitHub is woven with |-weave-as GitHubPages|, which is a pattern
+based heavily on a generic website-producing pattern called |HTML|.
+
+The upshot of all this is that if you want a website, but one which looks and
+behaves differently from what |-weave-as HTML| would give, you should create
+a new pattern based on it, and work from there. But patterns are not just
+for websites.
+
+@ A pattern definition is a directory containing various files, which we'll
+get to in due course. Inweb looks for patterns in three places in turn:
+(a) The location given by the |patterns| command in the current colony file,
+if there is one: see //Making Weaves into Websites//.
+(b) The |Patterns| subdirectory of the current web, if there is a current web,
+and if it has such a subdirectory.
+(c) The set of built-in patterns supplied with Inweb, at |inweb/Patterns|
+in the usual distribution.
+
+For example, the command
 = (text as ConsoleText)
 	$ inweb/Tangled/inweb inweb/Examples/goldbach -weave-as Tapestry
 =
-would look for a directory called:
-= (text)
-	inweb/Examples/goldbach/Patterns/Tapestry
-=
-If that is found, Inweb expects it to define |Tapestry|. If not, Inweb next
-tries:
-= (text)
-	inweb/Patterns/Tapestry
-=
-since |inweb/Patterns| is where the built-in patterns are kept. If it can't
-find either, Inweb issues an error.
+didn't set a colony file, so (a) doesn't apply. Inweb first tries 
+|inweb/Examples/goldbach/Patterns/Tapestry| and then |inweb/Patterns/Tapestry|.
+If it can't find either, Inweb issues an error.
 
-@ Patterns are a relatively new feature of Inweb, but allow for considerable
-customisation of the woven output. In brief, a pattern directory is expected
-to contain a configuration file called |pattern.txt|. This consists of a
-series of simple one-line commands.
+@h Basic settings.
+Patterns allow for extensive customisation of the woven output, especially
+through the use of plugins (see below). But they can also be extremely minimal.
+The one absolute requirement is to include a configuration file called
+|pattern.txt|, which consists of a series of simple one-line commands.
+In this file, blank lines, leading and trailing white space are all ignored,
+as is any file whose first character is |#|.
 
-Most custom patterns open with the command:
-= (text)
-	from Whatever
-=
-which tells Inweb that this new pattern inherits from an existing one named
-|Whatever|. (Do not get these into loops, with A inheriting from B and B
-also inheriting from A.) The rule is then that if Inweb needs a file to do
-with weaving, it looks first in the new custom pattern, and then, failing
-that, in the pattern inherited from. As a result, the custom pattern need
-only contain actual differences.
-
-There should then always be a command reading:
-= (text)
-	format = HTML
-=
-or whatever other file format is required (for the TeX pattern, for example,
-this reads |format = PDF|). A few other settings can also be made with |=|.
-
-(a) |numbered = yes| causes the weaver to apply numbers to section headings:
-the first included will be number 1, and so on. Default is |no|.
-
-(b) |abbrevs = no| causes the weaver to suppress all mention of abbreviated
-sections ranges, such as |2/tpc|, which aren't useful for documentation (for
-example). Default is |yes|.
-
-(c) |tex-command = C| tells the weaver that the TeX typesetting system should
-be invoked with the shell command |C|. Default is |tex|.
-
-(d) |pdftex-command = C| tells the weaver that the TeX typesetting system should
-be invoked with the shell command |C| when what we want is a PDF, not a DVI
-file. Default is |pdftex|.
-
-(e) |open-command = C| tells the weaver to use the shell command |C| if it
-wants to open the woven file (i.e., on the user's computer) after it finishes.
-Default is |open|, which works nicely for MacOS.
-
-(f) |default-range = R| tells the weaver to assume the range |R|, if the user
-tries to weave a multi-section web with this pattern. (For example, the standard
-HTML pattern sets |default-range = sections|.)
-
-(g) The equals sign can also be used to override values of the bibliographic data
-for the web. These changes are only temporary for the period in which the weave
-is going on; they enable us to give custom titles to different weaves from the
-same web. For example:
-= (text)
-	Title = Grammar
-	Booklet Title = A formal grammar for Inform 7
-	Author = The Inform Project
-=
-@ The command:
-= (text)
-	use X
-=
-tells Inweb that the file X, also stored in the pattern directory, should
-be copied into any website being woven. For example, the HTML pattern says
-= (text)
-	use crumbs.gif
-=
-to instruct Inweb that an image used by the pages generated needs to be
-copied over.
-
-Finally, the command
-= (text)
-	embed css
-=
-tells Inweb that in any HTML file produced, the CSS necessary should be
-embedded into the HTML, not linked as an external file. This is tidier for
-patterns like TeX, where there will only be at most one HTML file produced,
-and there's no need for an external CSS file.
-
-@h Cover sheets.
-If a weave has a range bigger than a single section -- for example, if it's
-a weave of a chapter, or of the complete web -- then it will include a
-"cover sheet". In the case of a PDF being made via TeX, this will actually
-be an extra page at the front of the PDF; for HTML, of course, it will just
-be additional material at the top of the web page.
-
-The template for the cover sheet should be given in a file in the pattern
-folder called |cover-sheet.tex|, |cover-sheet.html| or similar. Within it,
-double-square brackets can be used to represent values from the bibliographic
-data at the top of the web's Contents section. For example:
+The first genuine line of the file should always give the pattern's name,
+and say what if anything it is based on. For example, this might be:
 = (text as Inweb)
-	\noindent{{\stitlefont [[Author]]}}
+	name: Tapestry based on HTML
 =
-In addition:
-(a) |[[Cover Sheet]]| expands to the parent pattern's cover sheet -- this is
-convenient if all you want to do is to add a note at the bottom of the
-standard look.
-(b) |[[Booklet Title]]| expands to text such as "Chapter 3", appropriate
-to the weave being made.
-(c) |[[Capitalized Title]]| is a form of the title in block capital letters.
+That is the only compulsory content; with that one line in one file, the
+Tapestry pattern is ready for use. (But of course it behaves identically
+to HTML in every respect, so it's not very useful yet.)
+
+Do not get these into loops, with A based on B and B based on A.
+
+For a pattern not based on an existing one, simply omit the "based on X"
+part. Thus, for example,
+= (text as Inweb)
+	name: HTML
+=
+
+@ There are then a handful of other, optional, settings. The following are
+all inherited automatically from the pattern we are based on, unless we
+set them ourselves.
+
+= (text as Inweb)
+	format: F
+=
+sets the format. At present, this must be |HTML|, |plain| (plain text),
+|ePub|, |TeX|, |DVI|, or |PDF|.
+
+= (text as Inweb)
+	number sections: yes
+	number sections: no
+=
+causes the weaver to apply numbers to section headings: the first included will
+be number 1, and so on. Default is |no|.
+
+= (text as Inweb)
+	embed CSS: yes
+	embed CSS: no
+=
+causes the weaver to embed copies of CSS files into each HTML file it creates,
+rather than to link to them. Default is |no|, and there's no effect on non-HTML
+formats.
+
+= (text as Inweb)
+	default range: R
+=
+tells the weaver to assume the range |R|, if the user tries to weave a
+multi-section web with this pattern. (For example, the standard HTML pattern
+sets this to |sections|, causing a swarm of individual HTML files to be produced.)
+
+Lastly, there are commands to do with plugins, covered below, which are also
+inherited.
+
+@ And there are a few settings which are not inherited: they apply only to the
+pattern being defined, not to other patterns based on it.
+
+= (text as Inweb)
+	tex command: C
+=
+tells the weaver that the TeX typesetting system should be invoked with the
+shell command |C|. Default is |tex|. Similarly for |pdftex command: C|, used
+when we want to make a PDF rather than a DVI.
+
+= (text as Inweb)
+	open command: C
+=
+tells the weaver to use the shell command |C| if it wants to open the woven
+file (i.e., on the user's computer) after it finishes. Default is |open|,
+which works nicely for MacOS.
+
+= (text as Inweb)
+	bibliographic data: K = V
+=
+tells the weaver to override the bibliographic data on any web it weaves, setting
+the key |K| to the value |V|. For example:
+= (text as Inweb)
+	bibliographic data: Booklet Title = A formal grammar for Inform 7
+=
+
+@h Plugins.
+Plugins are named bundles of resources which are sometimes added to a weave,
+and sometimes not, depending on its needs; they are placed in the pattern's
+folder, and Inweb has access to the plugins not only for the current pattern,
+but also for any pattern(s) it is based on. Plugins were designed for HTML,
+but there's no reason they shouldn't also be useful for other formats.
+
+A plugin is identified by name alone, case-insensitively, and that name should
+be a single alphanumeric word. For example, the HTML pattern file says
+= (text as Inweb)
+	plugin: Base
+=
+and this ensures that every file woven by this pattern, or any pattern based
+on it, will use |Base|. There can be multiple such commands, for multiple such
+plugins, and the ability isn't restricted to HTML alone.
+
+In addition, the HTML format:
+(a) includes |MathJax3| if the woven file needs mathematics notation;
+(b) includes |Breadcrumbs| if it has a breadcrumb navigation trail;
+(c) includes |Carousel| if it has any image carousels;
+(d) includes |Popups| if it has any clickable popups (for example, to show
+function usage);
+(e) includes |Bigfoot| if it includes footnotes.
+
+Two of these draw on other open-source projects:
+(a) |MathJax3| is an excellent rendering system for mathematics on the web: see
+https://docs.mathjax.org/en/latest/index.html
+(b) |Bigfoot| is adapted from a popularly used piece of web coding: see
+https://github.com/lemonmade/bigfoot
+
+But if you would like your pattern to use different plugins to handle
+mathematics and footnoting, provide lines like these in your pattern file,
+but with your preferred plugin names:
+= (text as Inweb)
+	mathematics plugin: MathJax3
+	footnotes plugin: Bigfoot
+=
+|Bigfoot| may eventually need to be simplified and rewritten: its big feet
+presently tread on the |MathJax3| plugin, so right now it's not possible to
+have mathematics in a footnote when |Bigfoot| is in use.
+
+@ It's also possible to supply your own version of any plugin you would like
+to tinker with. If you want |Carousel| to have rather different CSS effects,
+for example, make your own copy of |Carousel| (copying it from the one in
+the Inweb distribution at |inweb/Patterns/HTML/Carousel|) and place it in your
+own pattern. Your version will prevail over the built-in one.
+
+@ So what's in a plugin? There's not much to it. Every file in a plugin, whose
+name does not begin with a |.|, is copied into the weave: that means it either
+gets copied to the weave destination directory, or possibly to the |assets|
+directory specified in the colony file (if there is one). However:
+(a) If the format is HTML, and the filename ends |.css|, then a link to the
+CSS file is automatically included in the head of the file. If the pattern
+says to |embed CSS| (see above), then the file is spliced in rather than
+being copied.
+(b) If the format is HTML, and the filename ends |.js|, then a link to the
+Javascript file is automatically included in the head of the file.
+
+For example, the |Breadcrumbs| plugin contains an image file and a CSS file;
+both are copied across, but a link to the CSS file is also included in the
+woven file needing to use the plugin.
+
+@h Embeddings.
+Patterns with the HTML format may also want to provide "embeddings". These
+are for embedded video/audio or other gadgets, and each different "service" --
+|YouTube|, |SoundCloud|, and such -- is represented by an embedding file.
+Inweb looks for these in the pattern's |Embedding| subdirectory, if there is
+one; then it tries in the pattern we are based on, and so on until it gives
+up and throws an error.
+
+The services in the standard Inweb installation, then, are in
+|inweb/Patterns/HTML/Embeddings|. It's easy to add new ones; for example,
+by creating a similar fragment in |Tapestry/Embedding/WebTubeo.html| you
+would provide for embedding videos from |WebTubeo| when using your pattern.
+
+@h Syntax colouring.
+No two people ever agree on the ideal colour scheme for syntax-colouring,
+so one prime reason to create a custom pattern is to change Inweb's defaults.
+
+Suppose Inweb wants to weave an extract of code written in, say, C. It will
+use the programming language definition for C to make a syntax-colouring,
+but then use the weave pattern to decide the colour scheme. For example,
+it's up to the C language to say which text is a function name: but it's up
+to the pattern to say whether functions are red or green.
+
+A pattern based on HTML may provide a subdirectory called |Colouring|. If it
+does, then the contents will be CSS files which provide colour schemes for
+different programming languages. The scheme |Colours.css| is the fallback,
+and is used for any language not providing a colour scheme; otherwise, a
+language called, say, |Anaconda| would be coloured by |Anaconda-Colours.css|.
+Inweb looks first in the |Colouring| directory of the current pattern, then
+tries the pattern it is based on, and so on.
+
+The practical effect is that if you want a pattern to colour Anaconda programs
+in your own preferred way -- let's call this hypothetical pattern |SnakeSkin| --
+then you need only write two files: |SnakeSkin/pattern.txt|, consisting of
+the single line
+= (text as Inweb)
+	name: SnakeSkin based on HTML
+=
+(or perhaps based on |GitHubPages|, if you want to host there); and then
+a colouring file in |SnakeSkin/Colouring/Anaconda-Colours.css|. You should
+make this by copying the default |Colours.css| and tinkering.
+
+@ Note that Inweb supports multiple languages in the same weave, each having
+their own colour schemes. To do this, it renames CSS spans on the fly in
+order to prevent namespace clashes. But you can forget this, because it's
+automatic.
+
+@h Templates.
+The final possible ingredient for a pattern is a "template"; this is a file
+like a pro-forma letter, into which just the details need to be entered.
+At present, Inweb does this in four circumstances:
+(a) After a weave which ranges over more than a single section -- for example,
+if it's a weave of a chapter, or of the complete web -- Inweb can generate
+an "index". (This is more often a contents page, but Inweb uses the generic
+term "index".) For this, it uses |unchaptered-index.html| if the web has
+sections but no chapters; or |chaptered-index.html| if it has chapters. If
+Inweb can't locate either of those, it looks simply for |index.html|, and
+if it can't find that either then it gives up.
+(b) Similarly, after a weave which is not a single section, Inweb looks to
+see if there is |cover-sheet.XXX| template, in whatever format is being used:
+|cover-sheet.tex|, or |cover-sheet.html|, as appropriate. This is placed at
+the start of the material, and can be, e.g., a fancily typeset title page:
+it's a feature intended more for serial formats than for the web.
+(c) A weave using the HTML format is built around a pro-forma |template.html|.
+This is required to exist and defines the overall shape of the HTML pages
+which Inweb weaves.
+(d) When one template wants to use another one -- i.e., as a consequence of
+reasons (a) or (b).
+
+As with other pattern-related resources, when Inweb needs to find, say,
+|template.html|, it looks first in the current pattern's directory, then
+tries the pattern this is based on, and so on. You can therefore override
+the standard HTML pattern's |template.html| by placing your own in your
+new pattern.
+
+@ For example, here is a template file for making an HTML page:
+= (text as Inweb)
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>[[Booklet Title]]</title>
+		[[Plugins]]
+	</head>
+	<body>
+[[Code]]
+	</body>
+</html>
+=
+The weaver uses this to generate any HTML page of program taken from the
+web being woven. (I.e., it doesn't use it to generate the index: only to
+generate the pages for sections or chapters.) What you see is what you get,
+except for the placeholders in double square brackets:
+(a) |[[Code]]| expands to the body of the web page -- the headings,
+paragraphs and so on.
+(b) |[[Plugins]]| expands to any links to CSS or Javascript files needed
+by the plugins being used -- see above.
+(c) Any bibliographic datum for the web expands to its value: thus |[[Title]]|,
+|[[Author]]| and so on. Booklet Title is one of these, but the weaver always
+sets it to a sensible title for the current file being woven -- typically the
+name of a section or chapter, if that's what the file will contain. Another
+sometimes useful case to know is |[[Capitalized Title]]|, which is the title
+in BLOCK CAPITAL LETTERS.
+
+@ Other placeholders, not used in the example above, include:
+(a) |[[Template X]]| expands to an insertion of the template file |X|.
+(b) |[[Navigation]]| expands to the navigation sidebar in use when weaving
+a colony of webs -- see //Making Weaves into Websites// for more, and for
+syntaxes to do with links and URLs.
+(c) |[[Breadcrumbs]]| expands to the HTML for the breadcrumb trail.
 
 @h Indexing.
-Some weaves are accompanied by indexes. For example, a standard weave into
-sections (for the HTML pattern) generates an |index.html| contents page,
-linking to the weaves for the individual sections. How is this done?
+As noted above, some weaves are accompanied by indexes. For example, a
+standard weave into sections (for the HTML pattern) generates an |index.html|
+contents page, linking to the weaves for the individual sections. How is this
+done?
 
 Inweb looks in the pattern for a template file called either
 |chaptered-index.html| or |unchaptered-index.html|, according to whether the
@@ -131,16 +307,9 @@ web's sections are in chapters or simply in a single directory of |Sections|.
 If it doesn't find this, it looks for a template simply called |index.html|,
 using that template in either case.
 
-An index is then made by taking this template file and running it through
-the "template interpreter". This is basically a filter: that is, it
-works through one line at a time, and most of the time it simply copies
-the input to the output. The filtering consists of making the following
-replacements. Any text in the form |[[...]]| is substituted with the
-value |...|, which can be any of:
+Now, however, there are additional double-squared placeholders available:
 
-(a) A bibliographic variable, set at the top of the |Contents.w| section.
-
-(b) One of the following details about the entire-web PDF (see below):
+(a) One of the following details about the entire-web PDF (see below):
 = (text as Inweb)
 	[[Complete Leafname]]  [[Complete Extent]]  [[Complete PDF Size]]
 =
@@ -164,9 +333,9 @@ substitution is the leafname of the original |.w| file. The Mean is the
 average number of lines per paragraph: where this is large, the section
 is rather raw and literate programming is not being used to the full.
 
-@ But the template interpreter isn't merely "editing the stream", because
-it can also handle repetitions. The following commands must occupy entire
-lines:
+@ And here the indexer isn't merely "editing the stream" of the template,
+because it can also handle repetitions. The following commands must occupy
+entire lines:
 
 |[[Repeat Chapter]]| and |[[Repeat Section]]| begin blocks of lines which
 are repeated for each chapter or section: the material to be repeated

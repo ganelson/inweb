@@ -172,7 +172,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"unable to render unknown node"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>The structure TeX_render_state is accessed in 1/ptt, 3/twot, 5/wt, 5/fm, 5/ptf, 5/hf, 5/df, 6/rw and here.</li></ul><p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
+</pre><ul class="endnotetexts"><li>The structure TeX_render_state is accessed in 1/ptt, 3/twot, 5/wt, 5/fm, 5/ptf, 5/hf, 5/df, 5/wp, 6/rw and here.</li></ul><p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
 &lt;<span class="named-paragraph-defn">Render head</span> <span class="named-paragraph-number">2.1</span>&gt; =
 </code></p>
 
@@ -249,7 +249,7 @@ function togglePopup(material_id) {
 </pre><ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_11"></a><b>&#167;2.11.  </b>TeX itself has an almost defiant lack of support for anything pictorial,
 which is one reason it didn't live up to its hope of being the definitive basis
 for typography; even today the loose confederation of TeX-like programs and
-extensions lack standard approaches. Here we're going to use <code class="display"><span class="extract-syntax">pdftex</span></code> features,
+extensions lack standard approaches. Here we're going to use <span class="extract"><span class="extract-syntax">pdftex</span></span> features,
 having nothing better. All we're trying for is to insert a picture, scaled
 to a given width, into the text at the current position.
 </p>
@@ -371,11 +371,7 @@ to a given width, into the text at the current position.
 </code></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="plain-syntax">    </span><span class="reserved-syntax">weave_toc_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RETRIEVE_POINTER_weave_toc_node</span><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">content</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">trs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">show_abbrevs</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont %S."</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">N</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child</span><span class="plain-syntax">; </span><span class="identifier-syntax">M</span><span class="plain-syntax">; </span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/2-trs.html#SP13" class="function-link"><span class="function-syntax">Trees::traverse_from</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">M</span><span class="plain-syntax">, &amp;</span><a href="5-hf.html#SP5" class="function-link"><span class="function-syntax">HTMLFormat::render_visit</span></a><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">trs</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">+1);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"; "</span><span class="plain-syntax">);</span>
@@ -495,9 +491,9 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">displayed</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"$$"</span><span class="plain-syntax">); </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"$"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">content</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">displayed</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"$$"</span><span class="plain-syntax">); </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"$"</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_1_1"></a><b>&#167;2.1.1.  </b>We don't use TeX's <code class="display"><span class="extract-syntax">\input</span></code> mechanism for macros because it is so prone to
+</pre><ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_1_1"></a><b>&#167;2.1.1.  </b>We don't use TeX's <span class="extract"><span class="extract-syntax">\input</span></span> mechanism for macros because it is so prone to
 failures when searching directories (especially those with spaces in the
-names) and then locking TeX into a repeated prompt for help from <code class="display"><span class="extract-syntax">stdin</span></code>
+names) and then locking TeX into a repeated prompt for help from <span class="extract"><span class="extract-syntax">stdin</span></span>
 which is rather hard to escape from.
 </p>
 
@@ -554,10 +550,7 @@ which is rather hard to escape from.
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text1</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text2</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">stage</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">:</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">show_abbrevs</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont %S."</span><span class="plain-syntax">, </span><span class="identifier-syntax">text1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">else</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">:</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"; "</span><span class="plain-syntax">);</span>
@@ -580,7 +573,6 @@ which is rather hard to escape from.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">section</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sections</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\smallskip\\noindent "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">number_sections</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%d. "</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">printed_number</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">show_abbrevs</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"|%S|: "</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_range</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"{\\it %S}\\qquad\n%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_title</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_purpose</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
@@ -605,7 +597,7 @@ which is rather hard to escape from.
 <span class="plain-syntax">        </span><a href="../foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">modified</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">modified</span><span class="plain-syntax">, </span><span class="string-syntax">"{\\sinchhigh %S}\\quad %S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[1]);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">weight</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) &amp;&amp; ((</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">is_a_singleton</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">show_abbrevs</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)))</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">weight</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\%S{%S}{%S}{%S}{\\%S}{%S}%%\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">TeX_macro</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="identifier-syntax">modified</span><span class="plain-syntax">, </span><span class="identifier-syntax">mark</span><span class="plain-syntax">, </span><span class="identifier-syntax">orn</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
@@ -626,9 +618,9 @@ to pass the weight that way. Instead we use
 <span class="plain-syntax">    \weavesectionss</span>
 <span class="plain-syntax">    \weavesectionsss</span>
 </pre>
-<p class="inwebparagraph">where the weight is the number of terminal <code class="display"><span class="extract-syntax">s</span></code>s, 0 to 3. (TeX macros,
+<p class="inwebparagraph">where the weight is the number of terminal <span class="extract"><span class="extract-syntax">s</span></span>s, 0 to 3. (TeX macros,
 lamentably, are not allowed digits in their name.) In the cases 0 and 1, we
-also have variants <code class="display"><span class="extract-syntax">\nsweavesection</span></code> and <code class="display"><span class="extract-syntax">\nsweavesections</span></code> which are
+also have variants <span class="extract"><span class="extract-syntax">\nsweavesection</span></span> and <span class="extract"><span class="extract-syntax">\nsweavesections</span></span> which are
 the same, but with the initial vertical spacing removed; these allow us to
 prevent unsightly excess white space in certain configurations of a section.
 </p>
@@ -664,7 +656,7 @@ which follow the material on those pages: so that the running head for a page
 can show the paragraph range for the material which tops it, for instance.
 </p>
 
-<p class="inwebparagraph">The ornament has to be set in math mode, even in the mark. <code class="display"><span class="extract-syntax">\S</span></code> and <code class="display"><span class="extract-syntax">\P</span></code>,
+<p class="inwebparagraph">The ornament has to be set in math mode, even in the mark. <span class="extract"><span class="extract-syntax">\S</span></span> and <span class="extract"><span class="extract-syntax">\P</span></span>,
 making a section sign and a pilcrow respectively, only work in math mode
 because they abbreviate characters found in math fonts but not regular ones,
 in TeX's deeply peculiar font encoding system.
@@ -684,8 +676,7 @@ in TeX's deeply peculiar font encoding system.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">weight</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sectionmark</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_title</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">show_abbrevs</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><a href="../foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">chaptermark</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">sect_range</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="../foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">chaptermark</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_range</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="../foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">chaptermark</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">chaptermark</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sectionmark</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">sectionmark</span><span class="plain-syntax">, </span><span class="string-syntax">" - %S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_title</span><span class="plain-syntax">);</span>
@@ -714,7 +705,7 @@ mode once again:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">colour_wanted</span><span class="plain-syntax"> = </span><span class="constant-syntax">PLAIN_COLOUR</span><span class="plain-syntax">; </span>&lt;<span class="named-paragraph">Adjust code colour as necessary</span> <span class="named-paragraph-number">8.2</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP8_1"></a><b>&#167;8.1.  </b>We actually use <code class="display"><span class="extract-syntax">\qquad</span></code> horizontal spaces rather than risk using TeX's
+</pre><p class="inwebparagraph"><a id="SP8_1"></a><b>&#167;8.1.  </b>We actually use <span class="extract"><span class="extract-syntax">\qquad</span></span> horizontal spaces rather than risk using TeX's
 messy alignment system:
 </p>
 
@@ -952,8 +943,8 @@ the special Preform grammar document.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-rtt.html#SP5" class="function-link"><span class="function-syntax">RunningTeX::substitute_post_processing_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">wv</span><span class="plain-syntax">, </span><span class="identifier-syntax">detail</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Removing math mode. </b>"Math mode", in TeX jargon, is what happens when a mathematical formula
-is written inside dollar signs: in <code class="display"><span class="extract-syntax">Answer is $x+y^2$</span></code>, the math mode
-content is <code class="display"><span class="extract-syntax">x+y^2</span></code>. But since math mode doesn't (easily) exist in HTML,
+is written inside dollar signs: in <span class="extract"><span class="extract-syntax">Answer is $x+y^2$</span></span>, the math mode
+content is <span class="extract"><span class="extract-syntax">x+y^2</span></span>. But since math mode doesn't (easily) exist in HTML,
 for example, we want to strip it out if the format is not TeX-related.
 To do this, the weaver calls the following.
 </p>
@@ -986,7 +977,7 @@ To do this, the weaver calls the following.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP20_1"></a><b>&#167;20.1.  </b>Here we remove <code class="display"><span class="extract-syntax">{{top}\over{bottom}}</span></code>, converting it to <code class="display"><span class="extract-syntax">((top) / (bottom))</span></code>.
+</pre><p class="inwebparagraph"><a id="SP20_1"></a><b>&#167;20.1.  </b>Here we remove <span class="extract"><span class="extract-syntax">{{top}\over{bottom}}</span></span>, converting it to <span class="extract"><span class="extract-syntax">((top) / (bottom))</span></span>.
 </p>
 
 
@@ -1027,7 +1018,7 @@ To do this, the weaver calls the following.
 <span class="plain-syntax">        </span><a href="5-tf.html#SP20" class="function-link"><span class="function-syntax">TeX::remove_math_mode_range</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">j</span><span class="plain-syntax">+2, </span><span class="identifier-syntax">to</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP20">&#167;20</a>.</li></ul><p class="inwebparagraph"><a id="SP20_2"></a><b>&#167;20.2.  </b>Here we remove <code class="display"><span class="extract-syntax">{\rm text}</span></code>, converting it to <code class="display"><span class="extract-syntax">text</span></code>, and similarly <code class="display"><span class="extract-syntax">\it</span></code>.
+</pre><ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP20">&#167;20</a>.</li></ul><p class="inwebparagraph"><a id="SP20_2"></a><b>&#167;20.2.  </b>Here we remove <span class="extract"><span class="extract-syntax">{\rm text}</span></span>, converting it to <span class="extract"><span class="extract-syntax">text</span></span>, and similarly <span class="extract"><span class="extract-syntax">\it</span></span>.
 </p>
 
 
@@ -1049,8 +1040,8 @@ To do this, the weaver calls the following.
 <span class="plain-syntax">        </span><a href="5-tf.html#SP20" class="function-link"><span class="function-syntax">TeX::remove_math_mode_range</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">j</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">to</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP20">&#167;20</a>.</li></ul><p class="inwebparagraph"><a id="SP20_3"></a><b>&#167;20.3.  </b>Here we remove <code class="display"><span class="extract-syntax">\sqrt{N}</span></code>, converting it to <code class="display"><span class="extract-syntax">sqrt(N)</span></code>. As a special case,
-we also look out for <code class="display"><span class="extract-syntax">{}^3\sqrt{N}</span></code> for cube root.
+</pre><ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP20">&#167;20</a>.</li></ul><p class="inwebparagraph"><a id="SP20_3"></a><b>&#167;20.3.  </b>Here we remove <span class="extract"><span class="extract-syntax">\sqrt{N}</span></span>, converting it to <span class="extract"><span class="extract-syntax">sqrt(N)</span></span>. As a special case,
+we also look out for <span class="extract"><span class="extract-syntax">{}^3\sqrt{N}</span></span> for cube root.
 </p>
 
 
@@ -1214,7 +1205,7 @@ we also look out for <code class="display"><span class="extract-syntax">{}^3\sqr
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\%S"</span><span class="plain-syntax">, </span><span class="reserved-syntax">macro</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP20_4">&#167;20.4</a>.</li></ul><p class="inwebparagraph"><a id="SP20_4_2"></a><b>&#167;20.4.2.  </b>For Inform's purposes, we need to deal with just <code class="display"><span class="extract-syntax">\not\exists</span></code> and <code class="display"><span class="extract-syntax">\not\forall</span></code>.
+</pre><ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP20_4">&#167;20.4</a>.</li></ul><p class="inwebparagraph"><a id="SP20_4_2"></a><b>&#167;20.4.2.  </b>For Inform's purposes, we need to deal with just <span class="extract"><span class="extract-syntax">\not\exists</span></span> and <span class="extract"><span class="extract-syntax">\not\forall</span></span>.
 </p>
 
 

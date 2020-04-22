@@ -48,7 +48,7 @@ function togglePopup(material_id) {
 <ul class="toc"><li><a href="7-vn.html#SP1">&#167;1. Standard adoption</a></li><li><a href="7-vn.html#SP5">&#167;5. Printing and parsing</a></li><li><a href="7-vn.html#SP8">&#167;8. Precendence</a></li><li><a href="7-vn.html#SP11">&#167;11. Trichotomy</a></li></ul><hr class="tocbar">
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Standard adoption. </b>The Semantic Version Number standard, semver 2.0.0, provides a strict set
-of rules for the format and meaning of version numbers: see <code class="display"><span class="extract-syntax">https://semver.org</span></code>.
+of rules for the format and meaning of version numbers: see <span class="extract"><span class="extract-syntax">https://semver.org</span></span>.
 </p>
 
 <p class="inwebparagraph">Prior to the standard most version numbers in computing usage looked like
@@ -59,10 +59,10 @@ not be so strict on the textual form, which we will allow to be abbreviated.
 Thus:
 </p>
 
-<ul class="items"><li>(a) The text <code class="display"><span class="extract-syntax">6.4.7</span></code> is understood to mean 6.4.7 and printed back as <code class="display"><span class="extract-syntax">6.4.7</span></code>
-</li><li>(b) The text <code class="display"><span class="extract-syntax">6</span></code> is understood to mean 6.0.0 and printed back as <code class="display"><span class="extract-syntax">6</span></code>
-</li><li>(c) The text <code class="display"><span class="extract-syntax">6.1</span></code> is understood to mean 6.1.0 and printed back as <code class="display"><span class="extract-syntax">6.1</span></code>
-</li><li>(d) The text <code class="display"><span class="extract-syntax">6.1.0</span></code> is understood to mean 6.1.0 and printed back as <code class="display"><span class="extract-syntax">6.1.0</span></code>
+<ul class="items"><li>(a) The text <span class="extract"><span class="extract-syntax">6.4.7</span></span> is understood to mean 6.4.7 and printed back as <span class="extract"><span class="extract-syntax">6.4.7</span></span>
+</li><li>(b) The text <span class="extract"><span class="extract-syntax">6</span></span> is understood to mean 6.0.0 and printed back as <span class="extract"><span class="extract-syntax">6</span></span>
+</li><li>(c) The text <span class="extract"><span class="extract-syntax">6.1</span></span> is understood to mean 6.1.0 and printed back as <span class="extract"><span class="extract-syntax">6.1</span></span>
+</li><li>(d) The text <span class="extract"><span class="extract-syntax">6.1.0</span></span> is understood to mean 6.1.0 and printed back as <span class="extract"><span class="extract-syntax">6.1.0</span></span>
 </li></ul>
 <p class="inwebparagraph">Similarly, the absence of a version number (called "null" below) will be
 understood to mean 0.0.0, but will be distinguished from the explicit choice
@@ -70,8 +70,8 @@ to number something as 0.0.0.
 </p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>A complication is that Inform 7 extensions have for many years allowed two
-forms of version number: either just <code class="display"><span class="extract-syntax">N</span></code>, which fits the scheme above, or
-<code class="display"><span class="extract-syntax">N/DDDDDD</span></code>, which does not. This is a format which was chosen for sentimental
+forms of version number: either just <span class="extract"><span class="extract-syntax">N</span></span>, which fits the scheme above, or
+<span class="extract"><span class="extract-syntax">N/DDDDDD</span></span>, which does not. This is a format which was chosen for sentimental
 reasons: IF enthusiasts know it well from the banner text of the Infocom
 titles of the 1980s. This story file, for instance, was compiled at the
 time of the Reykjavik summit between Presidents Gorbachev and Reagan:
@@ -84,11 +84,11 @@ time of the Reykjavik summit between Presidents Gorbachev and Reagan:
 <span class="plain-syntax">    Moonmist is a trademark of Infocom, Inc.</span>
 <span class="plain-syntax">    Release number 9 / Serial number 861022</span>
 </pre>
-<p class="inwebparagraph">Story file collectors customarily abbreviate this in catalogues to <code class="display"><span class="extract-syntax">9/861022</span></code>.
+<p class="inwebparagraph">Story file collectors customarily abbreviate this in catalogues to <span class="extract"><span class="extract-syntax">9/861022</span></span>.
 </p>
 
 <p class="inwebparagraph">We will therefore allow this notation, and convert it silently each way.
-<code class="display"><span class="extract-syntax">N/DDDDDD</span></code> is equivalent to <code class="display"><span class="extract-syntax">N.DDDDDD</span></code>. Thus, <code class="display"><span class="extract-syntax">9/861022</span></code> means 9.861022.0 in
+<span class="extract"><span class="extract-syntax">N/DDDDDD</span></span> is equivalent to <span class="extract"><span class="extract-syntax">N.DDDDDD</span></span>. Thus, <span class="extract"><span class="extract-syntax">9/861022</span></span> means 9.861022.0 in
 semver precedence order.
 </p>
 
@@ -99,14 +99,14 @@ Such-and-Such by Me begins here", and so on: it would break all existing
 extensions, for one thing, and it looks unfriendly.
 </p>
 
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>In the array below, unspecified numbers are stored as <code class="display"><span class="extract-syntax">-1</span></code>. The three
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>In the array below, unspecified numbers are stored as <span class="extract"><span class="extract-syntax">-1</span></span>. The three
 components are otherwise required to be non-negative integers.
 </p>
 
-<p class="inwebparagraph">Semver allows for more elaborate forms: for example <code class="display"><span class="extract-syntax">3.1.41-alpha.72.zeta+6Q45</span></code>
-would mean 3.1.41 but with prerelease versioning <code class="display"><span class="extract-syntax">alpha.72.zeta</span></code> and build
-metadata <code class="display"><span class="extract-syntax">6Q45</span></code>. The <code class="display"><span class="extract-syntax">prerelease_segments</span></code> list for this would be a list of
-three texts: <code class="display"><span class="extract-syntax">alpha</span></code>, <code class="display"><span class="extract-syntax">72</span></code>, <code class="display"><span class="extract-syntax">zeta</span></code>.
+<p class="inwebparagraph">Semver allows for more elaborate forms: for example <span class="extract"><span class="extract-syntax">3.1.41-alpha.72.zeta+6Q45</span></span>
+would mean 3.1.41 but with prerelease versioning <span class="extract"><span class="extract-syntax">alpha.72.zeta</span></span> and build
+metadata <span class="extract"><span class="extract-syntax">6Q45</span></span>. The <span class="extract"><span class="extract-syntax">prerelease_segments</span></span> list for this would be a list of
+three texts: <span class="extract"><span class="extract-syntax">alpha</span></span>, <span class="extract"><span class="extract-syntax">72</span></span>, <span class="extract"><span class="extract-syntax">zeta</span></span>.
 </p>
 
 
@@ -116,7 +116,7 @@ three texts: <code class="display"><span class="extract-syntax">alpha</span></co
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">version_numbers</span><span class="plain-syntax">[</span><span class="constant-syntax">SEMVER_NUMBER_DEPTH</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prerelease_segments</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">text_stream</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prerelease_segments</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">text_stream</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">build_metadata</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax">;</span>
 
@@ -127,7 +127,7 @@ three texts: <code class="display"><span class="extract-syntax">alpha</span></co
 </pre><ul class="endnotetexts"><li>The structure semantic_version_number is accessed in 7/vnr and here.</li><li>The structure semantic_version_number_holder is private to this section.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>All invalid strings of numbers &mdash; i.e., breaking the above rules &mdash; are
 called "null" versions, and can never be valid as the version of anything.
 Instead they are used to represent the absence of a version number.
-(In particular, a string of <code class="display"><span class="extract-syntax">-1</span></code>s is null.)
+(In particular, a string of <span class="extract"><span class="extract-syntax">-1</span></span>s is null.)
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -171,9 +171,9 @@ Instead they are used to represent the absence of a version number.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="identifier-syntax">build_metadata</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"+%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="element-syntax">build_metadata</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>And this provides for the <code class="display"><span class="extract-syntax">%v</span></code> escape, though we must be careful when
+</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>And this provides for the <span class="extract"><span class="extract-syntax">%v</span></span> escape, though we must be careful when
 using this to pass a pointer to the version, not the version itself;
-variadic macros are not carefully enough type-checked by <code class="display"><span class="extract-syntax">clang</span></code> or <code class="display"><span class="extract-syntax">gcc</span></code>
+variadic macros are not carefully enough type-checked by <span class="extract"><span class="extract-syntax">clang</span></span> or <span class="extract"><span class="extract-syntax">gcc</span></span>
 to catch this sort of slip.
 </p>
 
@@ -183,9 +183,9 @@ to catch this sort of slip.
 <span class="plain-syntax">    </span><a href="7-vn.html#SP5" class="function-link"><span class="function-syntax">VersionNumbers::to_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, *</span><span class="identifier-syntax">V</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Parsing is much more of a slog. The following returns a null version if
-the text <code class="display"><span class="extract-syntax">T</span></code> is in any respect malformed, i.e., if it deviates from the
+the text <span class="extract"><span class="extract-syntax">T</span></span> is in any respect malformed, i.e., if it deviates from the
 above specification in even the most trivial way. We parse the three parts
-of a semver version in order: e.g. <code class="display"><span class="extract-syntax">3.1.41-alpha.72.zeta+6Q45</span></code> the first
+of a semver version in order: e.g. <span class="extract"><span class="extract-syntax">3.1.41-alpha.72.zeta+6Q45</span></span> the first
 part is up to the hyphen, the second part between the hyphen and the plus
 sign, and the third part runs to the end. The second and third parts are
 optional, but if both are given, they must be in that order.
@@ -311,7 +311,7 @@ as if they were 0:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>This returns a non-negative integer if <code class="display"><span class="extract-syntax">T</span></code> contains only digits, and <code class="display"><span class="extract-syntax">-1</span></code>
+</pre><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>This returns a non-negative integer if <span class="extract"><span class="extract-syntax">T</span></span> contains only digits, and <span class="extract"><span class="extract-syntax">-1</span></span>
 otherwise. If the value has more than about 10 digits, then the result will
 not be meaningful, which I think is a technical violation of the standard.
 </p>
@@ -326,8 +326,8 @@ not be meaningful, which I think is a technical violation of the standard.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-sm.html#SP7" class="function-link"><span class="function-syntax">Str::atoi</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Trichotomy. </b>We now use the above function to construct ordering relations on semvers.
-These are trichotomous, that is, for each pair <code class="display"><span class="extract-syntax">V1, V2</span></code>, exactly one of the
-<code class="display"><span class="extract-syntax">VersionNumbers::eq(V1, V2)</span></code>, <code class="display"><span class="extract-syntax">VersionNumbers::gt(V1, V2)</span></code>, <code class="display"><span class="extract-syntax">VersionNumbers::lt(V1, V2)</span></code>
+These are trichotomous, that is, for each pair <span class="extract"><span class="extract-syntax">V1, V2</span></span>, exactly one of the
+<span class="extract"><span class="extract-syntax">VersionNumbers::eq(V1, V2)</span></span>, <span class="extract"><span class="extract-syntax">VersionNumbers::gt(V1, V2)</span></span>, <span class="extract"><span class="extract-syntax">VersionNumbers::lt(V1, V2)</span></span>
 is true.
 </p>
 
@@ -353,7 +353,7 @@ is true.
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::lt</span><button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>VersionNumbers::lt</b>:<br>Version Number Ranges - <a href="7-vnr.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><a href="7-vn.html#SP11" class="function-link"><span class="function-syntax">VersionNumbers::ge</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="identifier-syntax">V2</span><span class="plain-syntax">))?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>And the following can be used for sorting, following the <code class="display"><span class="extract-syntax">strcmp</span></code> convention.
+</pre><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>And the following can be used for sorting, following the <span class="extract"><span class="extract-syntax">strcmp</span></span> convention.
 </p>
 
 <pre class="displayed-code all-displayed-code">

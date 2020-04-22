@@ -69,11 +69,11 @@ from 0. These IDs will be unique across all threads.
 </p>
 
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Before going much further, we will need to anticipate what the memory
-manager wants.  An "object" is a copy in memory of a C <code class="display"><span class="extract-syntax">struct</span></code>; thus,
-a plain <code class="display"><span class="extract-syntax">int</span></code> is not an object. The memory manager can only deal with
-a given type of <code class="display"><span class="extract-syntax">struct</span></code> if it contains three special elements, and we
+manager wants.  An "object" is a copy in memory of a C <span class="extract"><span class="extract-syntax">struct</span></span>; thus,
+a plain <span class="extract"><span class="extract-syntax">int</span></span> is not an object. The memory manager can only deal with
+a given type of <span class="extract"><span class="extract-syntax">struct</span></span> if it contains three special elements, and we
 define those using a macro. Thus, if the user wants to allocate larger
-structures of type <code class="display"><span class="extract-syntax">thingummy</span></code>, then it needs to be defined like so:
+structures of type <span class="extract"><span class="extract-syntax">thingummy</span></span>, then it needs to be defined like so:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -98,8 +98,8 @@ IDs; and they cannot be iterated over.
     <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prev_structure</span><span class="plain-syntax">; </span><span class="comment"> Previous object in double-linked list</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>It is also necessary to define a constant in the following enumeration
-family: for <code class="display"><span class="extract-syntax">thingummy</span></code>, it would be <code class="display"><span class="extract-syntax">thingummy_MT</span></code>. Had it been a smaller
-object, it would have been <code class="display"><span class="extract-syntax">thingummy_array_MT</span></code> instead.
+family: for <span class="extract"><span class="extract-syntax">thingummy</span></span>, it would be <span class="extract"><span class="extract-syntax">thingummy_MT</span></span>. Had it been a smaller
+object, it would have been <span class="extract"><span class="extract-syntax">thingummy_array_MT</span></span> instead.
 </p>
 
 <p class="inwebparagraph">There is no significance to the order in which structures are registered
@@ -147,9 +147,9 @@ with the memory system. The ones here are those needed by Foundation.
 </pre>
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>For each type of object to be allocated, a single structure of the
 following design is maintained. Types which are allocated individually,
-like world objects, have <code class="display"><span class="extract-syntax">no_allocated_together</span></code> set to 1, and the doubly
+like world objects, have <span class="extract"><span class="extract-syntax">no_allocated_together</span></span> set to 1, and the doubly
 linked list is of the objects themselves. For types allocated in small
-arrays (typically of 100 objects at a time), <code class="display"><span class="extract-syntax">no_allocated_together</span></code> is set
+arrays (typically of 100 objects at a time), <span class="extract"><span class="extract-syntax">no_allocated_together</span></span> is set
 to the number of objects in each completed array (so, typically 100) and
 the doubly linked list is of the arrays.
 </p>
@@ -162,7 +162,7 @@ the doubly linked list is of the arrays.
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_in_memory</span><span class="plain-syntax">; </span><span class="comment"> tail of doubly linked list</span>
 
 <span class="plain-syntax">    </span><span class="comment"> used only to provide statistics for the debugging log:</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_of_type</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><code class="display"><span class="extract-syntax">"lexicon_entry_MT"</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_of_type</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><span class="extract"><span class="extract-syntax">"lexicon_entry_MT"</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">bytes_allocated</span><span class="plain-syntax">; </span><span class="comment"> total allocation for this type of object, not counting overhead</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">objects_count</span><span class="plain-syntax">; </span><span class="comment"> total number currently in existence (i.e., undeleted)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_allocated_together</span><span class="plain-syntax">; </span><span class="comment"> number of objects in each array of this type of object</span>
@@ -216,15 +216,15 @@ the debugging log.
     <span class="definition-keyword">define</span> <span class="constant-syntax">SAFETY_MARGIN</span><span class="plain-syntax"> </span><span class="constant-syntax">128</span>
     <span class="definition-keyword">define</span> <span class="constant-syntax">BLANK_END_SIZE</span><span class="plain-syntax"> </span><span class="constant-syntax">256</span>
 </pre>
-<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>At present <code class="display"><span class="extract-syntax">MEMORY_GRANULARITY</span></code> is 800K. This is the quantity of memory
-allocated by each individual <code class="display"><span class="extract-syntax">malloc</span></code> call.
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>At present <span class="extract"><span class="extract-syntax">MEMORY_GRANULARITY</span></span> is 800K. This is the quantity of memory
+allocated by each individual <span class="extract"><span class="extract-syntax">malloc</span></span> call.
 </p>
 
-<p class="inwebparagraph">After <code class="display"><span class="extract-syntax">MAX_BLOCKS_ALLOWED</span></code> blocks, we throw in the towel: we must have
+<p class="inwebparagraph">After <span class="extract"><span class="extract-syntax">MAX_BLOCKS_ALLOWED</span></span> blocks, we throw in the towel: we must have
 fallen into an endless loop which creates endless new objects somewhere.
 (If this ever happens, it would be a bug: the point of this mechanism is to
 be able to recover. Without this safety measure, OS X in particular would
-grind slowly to a halt, never refusing a <code class="display"><span class="extract-syntax">malloc</span></code>, until the user was
+grind slowly to a halt, never refusing a <span class="extract"><span class="extract-syntax">malloc</span></span>, until the user was
 unable to get the GUI responsive enough to kill the process.)
 </p>
 
@@ -238,7 +238,7 @@ unable to get the GUI responsive enough to kill the process.)
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">total_objects_allocated</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment"> a potentially larger number, used only for the debugging log</span>
 </pre><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Memory blocks are stored in a linked list, and we keep track of the
 size of the current block: that is, the block at the tail of the list.
-Each memory block consists of a header structure, followed by <code class="display"><span class="extract-syntax">SAFETY_MARGIN</span></code>
+Each memory block consists of a header structure, followed by <span class="extract"><span class="extract-syntax">SAFETY_MARGIN</span></span>
 null bytes, followed by actual data.
 </p>
 
@@ -272,7 +272,7 @@ pair of routines.
 
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Add new block to the tail of the list of memory blocks</span> <span class="named-paragraph-number">11.2</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP11_1"></a><b>&#167;11.1.  </b>Note that <code class="display"><span class="extract-syntax">cp</span></code> and <code class="display"><span class="extract-syntax">mh</span></code> are set to the same value: they merely have different
+</pre><p class="inwebparagraph"><a id="SP11_1"></a><b>&#167;11.1.  </b>Note that <span class="extract"><span class="extract-syntax">cp</span></span> and <span class="extract"><span class="extract-syntax">mh</span></span> are set to the same value: they merely have different
 pointer types as far as the C compiler is concerned.
 </p>
 
@@ -338,7 +338,7 @@ a single large object, or a single array of small objects.
 </pre>
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">memory_frame</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">integrity_check</span><span class="plain-syntax">; </span><span class="comment"> this should always contain the </span><code class="display"><span class="extract-syntax">INTEGRITY_NUMBER</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">integrity_check</span><span class="plain-syntax">; </span><span class="comment"> this should always contain the </span><span class="extract"><span class="extract-syntax">INTEGRITY_NUMBER</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">memory_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_frame</span><span class="plain-syntax">; </span><span class="comment"> next frame in the list of memory frames</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mem_type</span><span class="plain-syntax">; </span><span class="comment"> type of object stored in this frame</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">; </span><span class="comment"> allocation ID number of object stored in this frame</span>
@@ -353,7 +353,7 @@ blocks, but we don't need to worry about that.)
 <span class="reserved-syntax">memory_frame</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_memory_frame</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;  </span><span class="comment"> most recent memory frame allocated</span>
 </pre><p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>If the integrity numbers of every frame are still intact, then it is pretty
 unlikely that any bug has caused memory to overwrite one frame into another.
-<code class="display"><span class="extract-syntax">Memory::check_memory_integrity</span></code> might on very large runs be run often, if we didn't
+<span class="extract"><span class="extract-syntax">Memory::check_memory_integrity</span></span> might on very large runs be run often, if we didn't
 prevent this: since the number of calls would be roughly proportional to
 memory usage, we would implicitly have an \(O(n^2)\) running time in the
 amount of storage \(n\) allocated.
@@ -398,7 +398,7 @@ memory frame is created by the following function:
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">bytes_free_in_current_memblock</span><span class="plain-syntax">, </span><span class="identifier-syntax">extent_without_overheads</span><span class="plain-syntax"> = </span><span class="identifier-syntax">extent</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">extent</span><span class="plain-syntax"> += </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="reserved-syntax">memory_frame</span><span class="plain-syntax">); </span><span class="comment"> each allocation is preceded by a memory frame</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">extent</span><span class="plain-syntax"> += </span><span class="constant-syntax">SAFETY_MARGIN</span><span class="plain-syntax">; </span><span class="comment"> each allocation is followed by </span><code class="display"><span class="extract-syntax">SAFETY_MARGIN</span></code><span class="comment"> null bytes</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">extent</span><span class="plain-syntax"> += </span><span class="constant-syntax">SAFETY_MARGIN</span><span class="plain-syntax">; </span><span class="comment"> each allocation is followed by </span><span class="extract"><span class="extract-syntax">SAFETY_MARGIN</span></span><span class="comment"> null bytes</span>
 
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Ensure that the current memory block has room for this many bytes</span> <span class="named-paragraph-number">16.1</span>&gt;<span class="plain-syntax">;</span>
 
@@ -451,7 +451,7 @@ for a user with a particularly long and involved source text to discover.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">first_memory_frame</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">first_memory_frame</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">last_memory_frame</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_frame</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">last_memory_frame</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mf</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-mmr.html#SP16">&#167;16</a>.</li></ul><p class="inwebparagraph"><a id="SP16_3"></a><b>&#167;16.3.  </b>See the definition of <code class="display"><span class="extract-syntax">alloc_status</span></code> above.
+</pre><ul class="endnotetexts"><li>This code is used in <a href="2-mmr.html#SP16">&#167;16</a>.</li></ul><p class="inwebparagraph"><a id="SP16_3"></a><b>&#167;16.3.  </b>See the definition of <span class="extract"><span class="extract-syntax">alloc_status</span></span> above.
 </p>
 
 
@@ -473,9 +473,9 @@ through which all other sections allocate and leaf through memory.
 
 <p class="inwebparagraph">Note that Inweb allows multi-line macro definitions without backslashes
 to continue them, unlike ordinary C. Otherwise these are "standard"
-macros, though this was my first brush with the <code class="display"><span class="extract-syntax">##</span></code> concatenation
-operator: basically <code class="display"><span class="extract-syntax">CREATE(thing)</span></code> expands into <code class="display"><span class="extract-syntax">(allocate_thing())</span></code>
-because of the <code class="display"><span class="extract-syntax">##</span></code>. (See Kernighan and Ritchie, section 4.11.2.)
+macros, though this was my first brush with the <span class="extract"><span class="extract-syntax">##</span></span> concatenation
+operator: basically <span class="extract"><span class="extract-syntax">CREATE(thing)</span></span> expands into <span class="extract"><span class="extract-syntax">(allocate_thing())</span></span>
+because of the <span class="extract"><span class="extract-syntax">##</span></span>. (See Kernighan and Ritchie, section 4.11.2.)
 </p>
 
 
@@ -503,12 +503,12 @@ given type.
     <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">var</span><span class="plain-syntax">=</span><span class="identifier-syntax">LAST_OBJECT</span><span class="plain-syntax">(</span><span class="identifier-syntax">type_name</span><span class="plain-syntax">); </span><span class="identifier-syntax">var</span><span class="plain-syntax"> != </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="identifier-syntax">var</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PREV_OBJECT</span><span class="plain-syntax">(</span><span class="identifier-syntax">var</span><span class="plain-syntax">, </span><span class="identifier-syntax">type_name</span><span class="plain-syntax">))</span>
 </pre>
 <p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Allocator functions created by macros. </b>The following macros generate a family of systematically named functions.
-For instance, we shall shortly expand <code class="display"><span class="extract-syntax">ALLOCATE_INDIVIDUALLY(parse_node)</span></code>,
-which will expand to three functions: <code class="display"><span class="extract-syntax">allocate_parse_node</span></code>,
-<code class="display"><span class="extract-syntax">deallocate_parse_node</span></code> and <code class="display"><span class="extract-syntax">allocate_parse_node_before</span></code>.
+For instance, we shall shortly expand <span class="extract"><span class="extract-syntax">ALLOCATE_INDIVIDUALLY(parse_node)</span></span>,
+which will expand to three functions: <span class="extract"><span class="extract-syntax">allocate_parse_node</span></span>,
+<span class="extract"><span class="extract-syntax">deallocate_parse_node</span></span> and <span class="extract"><span class="extract-syntax">allocate_parse_node_before</span></span>.
 </p>
 
-<p class="inwebparagraph">Quaintly, <code class="display"><span class="extract-syntax">#type_name</span></code> expands into the value of <code class="display"><span class="extract-syntax">type_name</span></code> put within
+<p class="inwebparagraph">Quaintly, <span class="extract"><span class="extract-syntax">#type_name</span></span> expands into the value of <span class="extract"><span class="extract-syntax">type_name</span></span> put within
 double-quotes.
 </p>
 
@@ -578,10 +578,10 @@ double-quotes.
     <span class="plain-syntax">    </span><span class="identifier-syntax">UNLOCK_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">mutex</span><span class="plain-syntax">);</span>
     <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b><code class="display"><span class="extract-syntax">ALLOCATE_IN_ARRAYS</span></code> is still more obfuscated. When we
-<code class="display"><span class="extract-syntax">ALLOCATE_IN_ARRAYS(X, 100)</span></code>, the result will be definitions of a new type
-<code class="display"><span class="extract-syntax">X_block</span></code> and functions <code class="display"><span class="extract-syntax">allocate_X</span></code>, <code class="display"><span class="extract-syntax">allocate_X_block</span></code>,
-<code class="display"><span class="extract-syntax">deallocate_X_block</span></code> and <code class="display"><span class="extract-syntax">allocate_X_block_before</span></code> (though the last is not
+<p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b><span class="extract"><span class="extract-syntax">ALLOCATE_IN_ARRAYS</span></span> is still more obfuscated. When we
+<span class="extract"><span class="extract-syntax">ALLOCATE_IN_ARRAYS(X, 100)</span></span>, the result will be definitions of a new type
+<span class="extract"><span class="extract-syntax">X_block</span></span> and functions <span class="extract"><span class="extract-syntax">allocate_X</span></span>, <span class="extract"><span class="extract-syntax">allocate_X_block</span></span>,
+<span class="extract"><span class="extract-syntax">deallocate_X_block</span></span> and <span class="extract"><span class="extract-syntax">allocate_X_block_before</span></span> (though the last is not
 destined ever to be used). Note that we are not provided with the means to
 deallocate individual objects this time: that's the trade-off for
 allocating in blocks.
@@ -612,31 +612,31 @@ allocating in blocks.
     <span class="plain-syntax">        </span><span class="identifier-syntax">next_</span><span class="plain-syntax">##</span><span class="identifier-syntax">type_name</span><span class="plain-syntax">##</span><span class="identifier-syntax">_array</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">used</span><span class="plain-syntax">++]);</span>
     <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP21"></a><b>&#167;21. Expanding many macros. </b>Each given structure must have a typedef name, say <code class="display"><span class="extract-syntax">marvel</span></code>, and can be
+<p class="inwebparagraph"><a id="SP21"></a><b>&#167;21. Expanding many macros. </b>Each given structure must have a typedef name, say <span class="extract"><span class="extract-syntax">marvel</span></span>, and can be
 used in one of two ways. Either way, we can obtain a new one with the macro
-<code class="display"><span class="extract-syntax">CREATE(marvel)</span></code>.
+<span class="extract"><span class="extract-syntax">CREATE(marvel)</span></span>.
 </p>
 
-<p class="inwebparagraph">Either (a) it will be individually allocated. In this case <code class="display"><span class="extract-syntax">marvel_MT</span></code>
+<p class="inwebparagraph">Either (a) it will be individually allocated. In this case <span class="extract"><span class="extract-syntax">marvel_MT</span></span>
 should be defined with a new MT (memory type) number, and the macro
-<code class="display"><span class="extract-syntax">ALLOCATE_INDIVIDUALLY(marvel)</span></code> should be expanded. The first and last
-objects created will be <code class="display"><span class="extract-syntax">FIRST_OBJECT(marvel)</span></code> and <code class="display"><span class="extract-syntax">LAST_OBJECT(marvel)</span></code>,
+<span class="extract"><span class="extract-syntax">ALLOCATE_INDIVIDUALLY(marvel)</span></span> should be expanded. The first and last
+objects created will be <span class="extract"><span class="extract-syntax">FIRST_OBJECT(marvel)</span></span> and <span class="extract"><span class="extract-syntax">LAST_OBJECT(marvel)</span></span>,
 and we can proceed either way through a double linked list of them with
-<code class="display"><span class="extract-syntax">PREV_OBJECT(mv, marvel)</span></code> and <code class="display"><span class="extract-syntax">NEXT_OBJECT(mv, marvel)</span></code>. For convenience,
-we can loop through marvels, in creation order, using <code class="display"><span class="extract-syntax">LOOP_OVER(var,
-</span></code>marvel)<code class="display"><span class="extract-syntax">, which expands to a </span></code>for<code class="display"><span class="extract-syntax"> loop in which the variable </span></code>var<code class="display"><span class="extract-syntax"> runs
-</span></code>through each created marvel in turn; or equally we can run backwards
-through using <code class="display"><span class="extract-syntax">LOOP_BACKWARDS_OVER(var, marvel)</span></code>. In addition, there are
+<span class="extract"><span class="extract-syntax">PREV_OBJECT(mv, marvel)</span></span> and <span class="extract"><span class="extract-syntax">NEXT_OBJECT(mv, marvel)</span></span>. For convenience,
+we can loop through marvels, in creation order, using <span class="extract"><span class="extract-syntax">LOOP_OVER(var,
+</span></span>marvel)<span class="extract"><span class="extract-syntax">, which expands to a </span></span>for<span class="extract"><span class="extract-syntax"> loop in which the variable </span></span>var<span class="extract"><span class="extract-syntax"> runs
+</span></span>through each created marvel in turn; or equally we can run backwards
+through using <span class="extract"><span class="extract-syntax">LOOP_BACKWARDS_OVER(var, marvel)</span></span>. In addition, there are
 corruption checks to protect the memory from overrunning accidents, and the
 structure can be used as a value in the symbols table. Good for large
 structures with significant semantic content.
 </p>
 
 <p class="inwebparagraph">Or (b) it will be allocated in arrays. Once again we can obtain new marvels
-with <code class="display"><span class="extract-syntax">CREATE(marvel)</span></code>. This is more efficient both in speed and memory
+with <span class="extract"><span class="extract-syntax">CREATE(marvel)</span></span>. This is more efficient both in speed and memory
 usage, but we lose the ability to loop through the objects. For this
-arrangement, define <code class="display"><span class="extract-syntax">marvel_array_MT</span></code> with a new MT number and expand the
-macro <code class="display"><span class="extract-syntax">ALLOCATE_IN_ARRAYS(marvel, 100)</span></code>, where 100 (or what may you) is the
+arrangement, define <span class="extract"><span class="extract-syntax">marvel_array_MT</span></span> with a new MT number and expand the
+macro <span class="extract"><span class="extract-syntax">ALLOCATE_IN_ARRAYS(marvel, 100)</span></span>, where 100 (or what may you) is the
 number of objects allocated jointly as a block. Good for small structures
 used in the lower levels.
 </p>
@@ -683,7 +683,7 @@ used in the lower levels.
 <span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">match_trie</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 </pre><p class="inwebparagraph"><a id="SP22"></a><b>&#167;22. Simple memory allocations. </b>Not all of our memory will be claimed in the form of structures: now and then
-we need to use the equivalent of traditional <code class="display"><span class="extract-syntax">malloc</span></code> and <code class="display"><span class="extract-syntax">calloc</span></code> routines.
+we need to use the equivalent of traditional <span class="extract"><span class="extract-syntax">malloc</span></span> and <span class="extract"><span class="extract-syntax">calloc</span></span> routines.
 </p>
 
 
@@ -730,11 +730,11 @@ claimed" &mdash; the highest recorded net usage count over the run.
 <span class="plain-syntax">    </span><span class="identifier-syntax">memory_claimed_for_each_need</span><span class="plain-syntax">[</span><span class="identifier-syntax">NO_DEFINED_MREASON_VALUES</span><span class="plain-syntax">],</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">number_of_claims_for_each_need</span><span class="plain-syntax">[</span><span class="identifier-syntax">NO_DEFINED_MREASON_VALUES</span><span class="plain-syntax">];</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">total_claimed_simply</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-</pre><p class="inwebparagraph"><a id="SP25"></a><b>&#167;25.  </b>Our allocation routines behave just like the standard C library's <code class="display"><span class="extract-syntax">malloc</span></code>
-and <code class="display"><span class="extract-syntax">calloc</span></code>, but where a third argument supplies a reason why the memory is
+</pre><p class="inwebparagraph"><a id="SP25"></a><b>&#167;25.  </b>Our allocation routines behave just like the standard C library's <span class="extract"><span class="extract-syntax">malloc</span></span>
+and <span class="extract"><span class="extract-syntax">calloc</span></span>, but where a third argument supplies a reason why the memory is
 needed, and where any failure to allocate memory is tidily dealt with. We will
 exit on any such failure, so that the caller can be certain that the return
-values of these functions are always non-<code class="display"><span class="extract-syntax">NULL</span></code> pointers.
+values of these functions are always non-<span class="extract"><span class="extract-syntax">NULL</span></span> pointers.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -760,8 +760,8 @@ values of these functions are always non-<code class="display"><span class="extr
 <span class="plain-syntax">    </span><span class="identifier-syntax">UNLOCK_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">mutex</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pointer</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP26_1"></a><b>&#167;26.1.  </b>I am nervous about assuming that <code class="display"><span class="extract-syntax">calloc(0, X)</span></code> returns a non-<code class="display"><span class="extract-syntax">NULL</span></code> pointer
-in all implementations of the standard C library, so the case when <code class="display"><span class="extract-syntax">N</span></code> is zero
+</pre><p class="inwebparagraph"><a id="SP26_1"></a><b>&#167;26.1.  </b>I am nervous about assuming that <span class="extract"><span class="extract-syntax">calloc(0, X)</span></span> returns a non-<span class="extract"><span class="extract-syntax">NULL</span></span> pointer
+in all implementations of the standard C library, so the case when <span class="extract"><span class="extract-syntax">N</span></span> is zero
 allocates a tiny but positive amount of memory, just to be safe.
 </p>
 
@@ -782,7 +782,7 @@ allocates a tiny but positive amount of memory, just to be safe.
 <span class="plain-syntax">        </span><a href="3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_C_string</span></a><span class="plain-syntax">(</span><span class="string-syntax">"Out of memory for %s"</span><span class="plain-syntax">, </span><a href="2-mmr.html#SP23" class="function-link"><span class="function-syntax">Memory::description_of_reason</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    }</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="2-mmr.html#SP26">&#167;26</a>.</li></ul><p class="inwebparagraph"><a id="SP26_2"></a><b>&#167;26.2.  </b>These statistics have no function except to improve the diagnostics in the
-debugging log, but they are very cheap to keep, since <code class="display"><span class="extract-syntax">Memory::alloc_inner</span></code> is called only
+debugging log, but they are very cheap to keep, since <span class="extract"><span class="extract-syntax">Memory::alloc_inner</span></span> is called only
 rarely and to allocate large blocks of memory.
 </p>
 
@@ -808,7 +808,7 @@ rarely and to allocate large blocks of memory.
 <span class="plain-syntax">    </span><span class="identifier-syntax">number_of_claims_for_each_need</span><span class="plain-syntax">[</span><span class="identifier-syntax">R</span><span class="plain-syntax">]++;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">memory_claimed_for_each_need</span><span class="plain-syntax">[</span><span class="identifier-syntax">R</span><span class="plain-syntax">] &gt; </span><span class="identifier-syntax">max_memory_at_once_for_each_need</span><span class="plain-syntax">[</span><span class="identifier-syntax">R</span><span class="plain-syntax">])</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">max_memory_at_once_for_each_need</span><span class="plain-syntax">[</span><span class="identifier-syntax">R</span><span class="plain-syntax">] = </span><span class="identifier-syntax">memory_claimed_for_each_need</span><span class="plain-syntax">[</span><span class="identifier-syntax">R</span><span class="plain-syntax">];</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-mmr.html#SP26">&#167;26</a>.</li></ul><p class="inwebparagraph"><a id="SP27"></a><b>&#167;27.  </b>We also provide our own wrapper for <code class="display"><span class="extract-syntax">free</span></code>:
+</pre><ul class="endnotetexts"><li>This code is used in <a href="2-mmr.html#SP26">&#167;26</a>.</li></ul><p class="inwebparagraph"><a id="SP27"></a><b>&#167;27.  </b>We also provide our own wrapper for <span class="extract"><span class="extract-syntax">free</span></span>:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -902,7 +902,7 @@ report in the debugging log (for which, see below).
 
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Sort the table of memory type usages into decreasing size order</span> <span class="named-paragraph-number">32.2</span>&gt;<span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">total_for_objects_used</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment"> out of the </span><code class="display"><span class="extract-syntax">total_for_objects</span></code><span class="comment">, the bytes used</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">total_for_objects_used</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment"> out of the </span><span class="extract"><span class="extract-syntax">total_for_objects</span></span><span class="comment">, the bytes used</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">total_objects</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Calculate the memory usage for objects</span> <span class="named-paragraph-number">32.1</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">overhead_for_objects</span><span class="plain-syntax"> = </span><span class="identifier-syntax">total_for_objects</span><span class="plain-syntax"> - </span><span class="identifier-syntax">total_for_objects_used</span><span class="plain-syntax">; </span><span class="comment"> bytes wasted</span>
@@ -984,7 +984,7 @@ order of total number of bytes allocated.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">alloc_status</span><span class="plain-syntax">[</span><span class="identifier-syntax">ix2</span><span class="plain-syntax">].</span><span class="element-syntax">bytes_allocated</span><span class="plain-syntax"> - </span><span class="identifier-syntax">alloc_status</span><span class="plain-syntax">[</span><span class="identifier-syntax">ix1</span><span class="plain-syntax">].</span><span class="element-syntax">bytes_allocated</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP34"></a><b>&#167;34.  </b>Finally, a little routine to compute the proportions of memory for each
-usage. Recall that <code class="display"><span class="extract-syntax">bytes</span></code> is measured in bytes, but <code class="display"><span class="extract-syntax">total</span></code> in kilobytes.
+usage. Recall that <span class="extract"><span class="extract-syntax">bytes</span></span> is measured in bytes, but <span class="extract"><span class="extract-syntax">total</span></span> in kilobytes.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -1003,7 +1003,7 @@ usage. Recall that <code class="display"><span class="extract-syntax">bytes</spa
 <span class="plain-syntax">    </span><span class="identifier-syntax">UNLOCK_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">mutex</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP36"></a><b>&#167;36. Run-time pointer type checking. </b>In several places Inform needs to store pointers of type <code class="display"><span class="extract-syntax">void *</span></code>, that is,
+</pre><p class="inwebparagraph"><a id="SP36"></a><b>&#167;36. Run-time pointer type checking. </b>In several places Inform needs to store pointers of type <span class="extract"><span class="extract-syntax">void *</span></span>, that is,
 pointers which have no indication of what type of data they point to.
 This is not type-safe and therefore offers plenty of opportunity for
 blunders. The following provides run-time type checking to ensure that
@@ -1011,15 +1011,15 @@ each time we dereference a typeless pointer, it does indeed point to
 a structure of the type we think it should.
 </p>
 
-<p class="inwebparagraph">The structure <code class="display"><span class="extract-syntax">general_pointer</span></code> holds a <code class="display"><span class="extract-syntax">void *</span></code> pointer to any one of the
+<p class="inwebparagraph">The structure <span class="extract"><span class="extract-syntax">general_pointer</span></span> holds a <span class="extract"><span class="extract-syntax">void *</span></span> pointer to any one of the
 following:
 </p>
 
-</li><li>(a) <code class="display"><span class="extract-syntax">NULL</span></code>, to which we assign ID number \(-1\);
-</li><li>(b) <code class="display"><span class="extract-syntax">char</span></code>, to which we assign ID number 1000;
+</li><li>(a) <span class="extract"><span class="extract-syntax">NULL</span></span>, to which we assign ID number \(-1\);
+</li><li>(b) <span class="extract"><span class="extract-syntax">char</span></span>, to which we assign ID number 1000;
 </li><li>(c) any individually allocated structure of the types listed above, to
-which we assign the ID numbers used above: for instance, <code class="display"><span class="extract-syntax">blorb_figure_MT</span></code>
-is the ID number for a <code class="display"><span class="extract-syntax">general_pointer</span></code> which points to a <code class="display"><span class="extract-syntax">blorb_figure</span></code>
+which we assign the ID numbers used above: for instance, <span class="extract"><span class="extract-syntax">blorb_figure_MT</span></span>
+is the ID number for a <span class="extract"><span class="extract-syntax">general_pointer</span></span> which points to a <span class="extract"><span class="extract-syntax">blorb_figure</span></span>
 structure.
 </p>
 
@@ -1037,7 +1037,7 @@ structure.
 <span class="reserved-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="function-syntax">Memory::store_gp_null</span><button class="popup" onclick="togglePopup('usagePopup22')">...<span class="popuptext" id="usagePopup22">Usage of <b>Memory::store_gp_null</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">gp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">gp</span><span class="plain-syntax">.</span><span class="element-syntax">pointer_to_data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">gp</span><span class="plain-syntax">.</span><span class="element-syntax">run_time_type_code</span><span class="plain-syntax"> = -1; </span><span class="comment"> guaranteed to differ from all </span><code class="display"><span class="extract-syntax">_MT</span></code><span class="comment"> values</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">gp</span><span class="plain-syntax">.</span><span class="element-syntax">run_time_type_code</span><span class="plain-syntax"> = -1; </span><span class="comment"> guaranteed to differ from all </span><span class="extract"><span class="extract-syntax">_MT</span></span><span class="comment"> values</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">gp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Memory::test_gp_null</span><button class="popup" onclick="togglePopup('usagePopup23')">...<span class="popuptext" id="usagePopup23">Usage of <b>Memory::test_gp_null</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">gp</span><span class="plain-syntax">) {</span>
@@ -1057,11 +1057,11 @@ objects and to help with interpreting output from GDB, so we abstract that too.
     <span class="definition-keyword">define</span> <span class="identifier-syntax">GENERAL_POINTER_AS_INT</span><span class="plain-syntax">(</span><span class="identifier-syntax">gp</span><span class="plain-syntax">)</span>
     <span class="plain-syntax">    ((</span><span class="identifier-syntax">pointer_sized_int</span><span class="plain-syntax">) </span><span class="identifier-syntax">gp</span><span class="plain-syntax">.</span><span class="element-syntax">pointer_to_data</span><span class="plain-syntax">)</span>
 </pre>
-<p class="inwebparagraph"><a id="SP38"></a><b>&#167;38.  </b>If we have a pointer to <code class="display"><span class="extract-syntax">circus</span></code> (say) then <code class="display"><span class="extract-syntax">g=STORE_POINTER_circus(p)</span></code>
-returns a <code class="display"><span class="extract-syntax">general_pointer</span></code> with <code class="display"><span class="extract-syntax">p</span></code> as the actual pointer, but will not
-compile unless <code class="display"><span class="extract-syntax">p</span></code> is indeed of type <code class="display"><span class="extract-syntax">circus *</span></code>. When we later
-<code class="display"><span class="extract-syntax">RETRIEVE_POINTER_circus(g)</span></code>, an internal error is thrown if <code class="display"><span class="extract-syntax">g</span></code> contains a pointer
-which is other than <code class="display"><span class="extract-syntax">void *</span></code>, or which has never been referenced.
+<p class="inwebparagraph"><a id="SP38"></a><b>&#167;38.  </b>If we have a pointer to <span class="extract"><span class="extract-syntax">circus</span></span> (say) then <span class="extract"><span class="extract-syntax">g=STORE_POINTER_circus(p)</span></span>
+returns a <span class="extract"><span class="extract-syntax">general_pointer</span></span> with <span class="extract"><span class="extract-syntax">p</span></span> as the actual pointer, but will not
+compile unless <span class="extract"><span class="extract-syntax">p</span></span> is indeed of type <span class="extract"><span class="extract-syntax">circus *</span></span>. When we later
+<span class="extract"><span class="extract-syntax">RETRIEVE_POINTER_circus(g)</span></span>, an internal error is thrown if <span class="extract"><span class="extract-syntax">g</span></span> contains a pointer
+which is other than <span class="extract"><span class="extract-syntax">void *</span></span>, or which has never been referenced.
 </p>
 
 
@@ -1092,8 +1092,8 @@ which is other than <code class="display"><span class="extract-syntax">void *</s
     <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
     <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP39"></a><b>&#167;39.  </b>Suitable <code class="display"><span class="extract-syntax">MAKE_REFERENCE_ROUTINES</span></code> were expanded for all of the memory
-allocated objects above; so that leaves only humble <code class="display"><span class="extract-syntax">char *</span></code> pointers:
+<p class="inwebparagraph"><a id="SP39"></a><b>&#167;39.  </b>Suitable <span class="extract"><span class="extract-syntax">MAKE_REFERENCE_ROUTINES</span></span> were expanded for all of the memory
+allocated objects above; so that leaves only humble <span class="extract"><span class="extract-syntax">char *</span></span> pointers:
 </p>
 
 <pre class="displayed-code all-displayed-code">

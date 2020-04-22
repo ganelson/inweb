@@ -58,7 +58,7 @@ two groups: the POSIX group, and Windows.
 </p>
 
 <p class="inwebparagraph">This Foundation module therefore comes with two variant versions of the
-<code class="display"><span class="extract-syntax">Platform::</span></code> section of code. The one you're reading compiles on a POSIX
+<span class="extract"><span class="extract-syntax">Platform::</span></span> section of code. The one you're reading compiles on a POSIX
 operating system, and the other one on Windows.
 </p>
 
@@ -142,10 +142,10 @@ here is UTF-8 since OS X and Linux both adopt this.
 <span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><a href="1-wp.html#SP4" class="function-link"><span class="function-syntax">Platform::getenv</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">getenv</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::getenv is used in Windows Platform (<a href="1-wp.html#SP4">&#167;4</a>), Pathnames (<a href="3-pth.html#SP2">&#167;2</a>, <a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Executable location. </b>Fill the wide-char buffer <code class="display"><span class="extract-syntax">p</span></code> with the path to the current executable, up to
-length <code class="display"><span class="extract-syntax">length</span></code>. This function is guaranteed to be called from only one
-thread. Should the information be unavailable, or fail to fit into <code class="display"><span class="extract-syntax">p</span></code>,
-truncate <code class="display"><span class="extract-syntax">p</span></code> to zero length. (On some platforms, the information will
+</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::getenv is used in Windows Platform (<a href="1-wp.html#SP4">&#167;4</a>), Pathnames (<a href="3-pth.html#SP2">&#167;2</a>, <a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Executable location. </b>Fill the wide-char buffer <span class="extract"><span class="extract-syntax">p</span></span> with the path to the current executable, up to
+length <span class="extract"><span class="extract-syntax">length</span></span>. This function is guaranteed to be called from only one
+thread. Should the information be unavailable, or fail to fit into <span class="extract"><span class="extract-syntax">p</span></span>,
+truncate <span class="extract"><span class="extract-syntax">p</span></span> to zero length. (On some platforms, the information will
 always be unavailable: that doesn't mean we can't run on those platforms,
 just that installation and use of Foundation-built tools is less convenient.)
 </p>
@@ -156,10 +156,10 @@ just that installation and use of Foundation-built tools is less convenient.)
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Follow the proc filesystem symlink to the real filesystem's file</span> <span class="named-paragraph-number">9.1</span>&gt;<span class="character-syntax">;</span>
 <span class="character-syntax">    </span>&lt;<span class="named-paragraph">Transcode buffer, which is locale-encoded, into the wide-char buffer</span> <span class="named-paragraph-number">9.2</span>&gt;<span class="character-syntax">;</span>
 <span class="character-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9_1"></a><b>&#167;9.1.  </b>On Linux, <code class="display"><span class="extract-syntax">/proc/self/exe</span></code> is a symlink to the current process's executable.
+</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9_1"></a><b>&#167;9.1.  </b>On Linux, <span class="extract"><span class="extract-syntax">/proc/self/exe</span></span> is a symlink to the current process's executable.
 Follow that link to find the path. Normally when reading a symlink, one uses
-<code class="display"><span class="extract-syntax">lstat()</span></code> to find the path length instead of guessing <code class="display"><span class="extract-syntax">PATH_MAX</span></code>, but the
-symlinks in <code class="display"><span class="extract-syntax">/proc</span></code> are special and don't provide a length to <code class="display"><span class="extract-syntax">lstat()</span></code>.
+<span class="extract"><span class="extract-syntax">lstat()</span></span> to find the path length instead of guessing <span class="extract"><span class="extract-syntax">PATH_MAX</span></span>, but the
+symlinks in <span class="extract"><span class="extract-syntax">/proc</span></span> are special and don't provide a length to <span class="extract"><span class="extract-syntax">lstat()</span></span>.
 </p>
 
 
@@ -240,24 +240,24 @@ string.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">system</span><span class="plain-syntax">(</span><span class="identifier-syntax">cmd</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined and if PLATFORM_MACOS is undefined.</li><li>The function Platform::system is used in <a href="1-pp.html#SP11">&#167;11</a>, <a href="1-pp.html#SP14">&#167;14</a>, Windows Platform (<a href="1-wp.html#SP6">&#167;6</a>), Shell (<a href="3-shl.html#SP5">&#167;5</a>).</li></ul><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>In MacOS 10.5, a new implementation of the C standard library
-crippled performance of <code class="display"><span class="extract-syntax">system()</span></code> by placing it behind a global mutex, so
+crippled performance of <span class="extract"><span class="extract-syntax">system()</span></span> by placing it behind a global mutex, so
 that it was impossible for two cores to be calling the function at the same
 time. The net effect of this is that the Inform test suite, executing in
 Intest, ran in 1/16th speed. This issue didn't come to light until 2019,
-however, because the build setting <code class="display"><span class="extract-syntax">-mmacosx-version-min=10.4</span></code> turned out
-to force use of the (perfectly good) pre-10.5 library, where <code class="display"><span class="extract-syntax">system()</span></code>
+however, because the build setting <span class="extract"><span class="extract-syntax">-mmacosx-version-min=10.4</span></span> turned out
+to force use of the (perfectly good) pre-10.5 library, where <span class="extract"><span class="extract-syntax">system()</span></span>
 continued to run in a multi-threaded way, just as it does on Linux and
 most all other Unixes. The old library was eventually withdrawn by Apple
 in 2018, and in any case would stop working at some point in 2019-20 due
 to the final removal of 32-bit binary support from MacOS.
 </p>
 
-<p class="inwebparagraph">It took several days to find a pthread-safe way to reimplement <code class="display"><span class="extract-syntax">system()</span></code>.
-The obvious way, using <code class="display"><span class="extract-syntax">fork()</span></code> and then running <code class="display"><span class="extract-syntax">execve()</span></code> on the child
-process &mdash; essentially the standard way to implement <code class="display"><span class="extract-syntax">system()</span></code>, if you forget
+<p class="inwebparagraph">It took several days to find a pthread-safe way to reimplement <span class="extract"><span class="extract-syntax">system()</span></span>.
+The obvious way, using <span class="extract"><span class="extract-syntax">fork()</span></span> and then running <span class="extract"><span class="extract-syntax">execve()</span></span> on the child
+process &mdash; essentially the standard way to implement <span class="extract"><span class="extract-syntax">system()</span></span>, if you forget
 about signal-handling &mdash; led to obscure and unrepeatable memory corruption
 bugs in Intest, with the worker threads apparently writing on each other's
-memory space. Using <code class="display"><span class="extract-syntax">posix_spawn()</span></code> instead appears to work better.
+memory space. Using <span class="extract"><span class="extract-syntax">posix_spawn()</span></span> instead appears to work better.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -314,7 +314,7 @@ memory space. Using <code class="display"><span class="extract-syntax">posix_spa
 <span class="plain-syntax">    </span><span class="identifier-syntax">DIR</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dirp</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">DIR</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">D</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">closedir</span><span class="plain-syntax">(</span><span class="identifier-syntax">dirp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::mkdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Pathnames (<a href="3-pth.html#SP9">&#167;9</a>).</li><li>The function Platform::opendir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li><li>The function Platform::readdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li><li>The function Platform::closedir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li></ul><p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Timestamp. </b>There are implementations of the C standard library where <code class="display"><span class="extract-syntax">time_t</span></code> has
+</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::mkdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Pathnames (<a href="3-pth.html#SP9">&#167;9</a>).</li><li>The function Platform::opendir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li><li>The function Platform::readdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li><li>The function Platform::closedir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li></ul><p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Timestamp. </b>There are implementations of the C standard library where <span class="extract"><span class="extract-syntax">time_t</span></span> has
 super-weird behaviour, but on almost POSIX systems, time 0 corresponds to
 midnight on 1 January 1970. All we really need is that the "never" value
 is one which is earlier than any possible timestamp on the files we'll
@@ -332,11 +332,11 @@ be dealing with.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="1-wp.html#SP12" class="function-link"><span class="function-syntax">Platform::never_time</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::never_time is used in Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>).</li><li>The function Platform::timestamp is used in Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>), Filenames (<a href="3-fln.html#SP12">&#167;12</a>).</li></ul><p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Sync. </b>Both names here are of directories which do exist. The function makes
-the <code class="display"><span class="extract-syntax">dest</span></code> tree an exact copy of the <code class="display"><span class="extract-syntax">source</span></code> tree (and therefore deletes
-anything different which was originally in <code class="display"><span class="extract-syntax">dest</span></code>).
+the <span class="extract"><span class="extract-syntax">dest</span></span> tree an exact copy of the <span class="extract"><span class="extract-syntax">source</span></span> tree (and therefore deletes
+anything different which was originally in <span class="extract"><span class="extract-syntax">dest</span></span>).
 </p>
 
-<p class="inwebparagraph">In POSIX world, we can fairly well depend on <code class="display"><span class="extract-syntax">rsync</span></code> being around:
+<p class="inwebparagraph">In POSIX world, we can fairly well depend on <span class="extract"><span class="extract-syntax">rsync</span></span> being around:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -374,7 +374,7 @@ SoundJam, the program which Apple bought and rebranded as iTunes. Apple now
 seems to consider this alert a general-purpose "something good has happened".
 </p>
 
-<p class="inwebparagraph">It is anybody's guess how long Apple will permit the shell command <code class="display"><span class="extract-syntax">osascript</span></code>
+<p class="inwebparagraph">It is anybody's guess how long Apple will permit the shell command <span class="extract"><span class="extract-syntax">osascript</span></span>
 to survive, given the MacOS team's current hostility to scripting; we're
 actually running a one-line AppleScript here.
 </p>

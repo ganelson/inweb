@@ -61,16 +61,16 @@ need to write a command-line utility in ANSI C with no dependencies on
 other tools or libraries to speak of, you could do worse.
 </p>
 
-<p class="inwebparagraph">To use <code class="display"><span class="extract-syntax">foundation</span></code>, the Contents section of a web should include:
+<p class="inwebparagraph">To use <span class="extract"><span class="extract-syntax">foundation</span></span>, the Contents section of a web should include:
 </p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Import: foundation</span>
 </pre>
 <p class="inwebparagraph">before beginning the chapter rundown. There are then a few conventions
-which must be followed. The <code class="display"><span class="extract-syntax">main</span></code> routine for the client should, as one
-of its very first acts, call <code class="display"><span class="extract-syntax">Foundation::start()</span></code>, and should similarly, just
-before it exits, call <code class="display"><span class="extract-syntax">Foundation::end()</span></code>. Any other module used should be
+which must be followed. The <span class="extract"><span class="extract-syntax">main</span></span> routine for the client should, as one
+of its very first acts, call <span class="extract"><span class="extract-syntax">Foundation::start()</span></span>, and should similarly, just
+before it exits, call <span class="extract"><span class="extract-syntax">Foundation::end()</span></span>. Any other module used should be
 started after Foundation starts, and ended before Foundation ends.
 </p>
 
@@ -97,7 +97,7 @@ supplied instead for that case.
 </pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment"> Current destination of debugging text: kept </span><code class="display"><span class="extract-syntax">NULL</span></code><span class="comment"> until opened</span>
+<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment"> Current destination of debugging text: kept </span><span class="extract"><span class="extract-syntax">NULL</span></span><span class="comment"> until opened</span>
 </pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>We'll use three truth states, the third of which can also mean "unknown".
 </p>
 
@@ -107,7 +107,7 @@ supplied instead for that case.
     <span class="definition-keyword">define</span> <span class="constant-syntax">FALSE</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
     <span class="definition-keyword">define</span> <span class="constant-syntax">NOT_APPLICABLE</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
 </pre>
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>And we recognise two different encodings for narrow (i.e., <code class="display"><span class="extract-syntax">char *</span></code>) C strings.
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>And we recognise two different encodings for narrow (i.e., <span class="extract"><span class="extract-syntax">char *</span></span>) C strings.
 </p>
 
 
@@ -117,12 +117,12 @@ supplied instead for that case.
 </pre>
 <p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>It is assumed that our host filing system can manage at least 30-character
 filenames, that space is legal as a character in a filename, and that trailing
-extensions can be longer than 3 characters (in particular, that <code class="display"><span class="extract-syntax">.html</span></code> is
-allowed). There are no clear rules but on Windows <code class="display"><span class="extract-syntax">MAX_PATH</span></code> can be as low as
+extensions can be longer than 3 characters (in particular, that <span class="extract"><span class="extract-syntax">.html</span></span> is
+allowed). There are no clear rules but on Windows <span class="extract"><span class="extract-syntax">MAX_PATH</span></span> can be as low as
 260, and on Mac OS X the equivalent limit is 1024; both systems can house
 files buried more deeply, but in both cases the user interface to the
 operating system fails to recognise them. Some Linux implementations raise the
-equivalent <code class="display"><span class="extract-syntax">PATH_MAX</span></code> limit as high as 4096. This seems a reasonable
+equivalent <span class="extract"><span class="extract-syntax">PATH_MAX</span></span> limit as high as 4096. This seems a reasonable
 compromise in practice:
 </p>
 
@@ -139,8 +139,8 @@ compromise in practice:
 shutting down.
 </p>
 
-<p class="inwebparagraph">The Inweb notation <code class="display"><span class="extract-syntax">[[textliterals]]</span></code> inserts declarations of I-literals,
-that is, literal <code class="display"><span class="extract-syntax">text_stream *</span></code> values written as <code class="display"><span class="extract-syntax">I"strings"</span></code>.
+<p class="inwebparagraph">The Inweb notation <span class="extract"><span class="extract-syntax">[[textliterals]]</span></span> inserts declarations of I-literals,
+that is, literal <span class="extract"><span class="extract-syntax">text_stream *</span></span> values written as <span class="extract"><span class="extract-syntax">I"strings"</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -154,10 +154,10 @@ that is, literal <code class="display"><span class="extract-syntax">text_stream 
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Register the default debugging log writers</span> <span class="named-paragraph-number">8.3</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Register the default command line switches</span> <span class="named-paragraph-number">8.5</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP8_1"></a><b>&#167;8.1.  </b>After calling <code class="display"><span class="extract-syntax">Foundation::start()</span></code>, the client can register further stream
+</pre><p class="inwebparagraph"><a id="SP8_1"></a><b>&#167;8.1.  </b>After calling <span class="extract"><span class="extract-syntax">Foundation::start()</span></span>, the client can register further stream
 writing routines, following these models: they define the meaning of escape
-characters in <code class="display"><span class="extract-syntax">WRITE</span></code>, our version of formatted printing. <code class="display"><span class="extract-syntax">%f</span></code>, for example,
-prints a filename by calling <code class="display"><span class="extract-syntax">Filenames::writer</span></code>.
+characters in <span class="extract"><span class="extract-syntax">WRITE</span></span>, our version of formatted printing. <span class="extract"><span class="extract-syntax">%f</span></span>, for example,
+prints a filename by calling <span class="extract"><span class="extract-syntax">Filenames::writer</span></span>.
 </p>
 
 
@@ -186,9 +186,9 @@ The following are always provided, but are all off by default.
 <span class="plain-syntax">    </span><a href="2-dl.html#SP4" class="function-link"><span class="function-syntax">Log::declare_aspect</span></a><span class="plain-syntax">(</span><span class="constant-syntax">SHELL_USAGE_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"shell usage"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-dl.html#SP4" class="function-link"><span class="function-syntax">Log::declare_aspect</span></a><span class="plain-syntax">(</span><span class="constant-syntax">MEMORY_USAGE_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"memory usage"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-dl.html#SP4" class="function-link"><span class="function-syntax">Log::declare_aspect</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TEXT_FILES_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"text files"</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="1-fm.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_3"></a><b>&#167;8.3.  </b>Debugging log writers are similar to stream writers, but implement the <code class="display"><span class="extract-syntax">$</span></code>
-escapes only available to the debugging log. For example, <code class="display"><span class="extract-syntax">$S</span></code> calls the
-<code class="display"><span class="extract-syntax">Streams::log</span></code> function to print a textual representation of the current
+</pre><ul class="endnotetexts"><li>This code is used in <a href="1-fm.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_3"></a><b>&#167;8.3.  </b>Debugging log writers are similar to stream writers, but implement the <span class="extract"><span class="extract-syntax">$</span></span>
+escapes only available to the debugging log. For example, <span class="extract"><span class="extract-syntax">$S</span></span> calls the
+<span class="extract"><span class="extract-syntax">Streams::log</span></span> function to print a textual representation of the current
 state of a stream.
 </p>
 
@@ -201,11 +201,11 @@ state of a stream.
 <span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="function-link"><span class="function-syntax">Writers::register_logger</span></a><span class="plain-syntax">(</span><span class="character-syntax">'a'</span><span class="plain-syntax">, &amp;</span><a href="4-taa.html#SP9" class="function-link"><span class="function-syntax">Tries::log_avinue</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="function-link"><span class="function-syntax">Writers::register_logger</span></a><span class="plain-syntax">(</span><span class="character-syntax">'S'</span><span class="plain-syntax">, &amp;</span><a href="2-str.html#SP21" class="function-link"><span class="function-syntax">Streams::log</span></a><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="1-fm.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_4"></a><b>&#167;8.4.  </b>We provide an optional service for parsing the command line. By default,
-the <code class="display"><span class="extract-syntax">-log A</span></code> switch makes that aspect active, though it's hyphenated, so
-for example <code class="display"><span class="extract-syntax">-log memory-usage</span></code> or <code class="display"><span class="extract-syntax">-log no-memory-usage</span></code>. <code class="display"><span class="extract-syntax">-fixtime</span></code> is
+the <span class="extract"><span class="extract-syntax">-log A</span></span> switch makes that aspect active, though it's hyphenated, so
+for example <span class="extract"><span class="extract-syntax">-log memory-usage</span></span> or <span class="extract"><span class="extract-syntax">-log no-memory-usage</span></span>. <span class="extract"><span class="extract-syntax">-fixtime</span></span> is
 used to ease automated testing: we don't want to reject the output from
 some tool just because it contains today's date and not the date when the
-test was set up. <code class="display"><span class="extract-syntax">-crash</span></code> tells the tool to crash on a fatal error, rather
+test was set up. <span class="extract"><span class="extract-syntax">-crash</span></span> tells the tool to crash on a fatal error, rather
 than to exit cleanly, to make it easier to diagnose in a debugger.
 </p>
 
@@ -238,7 +238,7 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"specify that this tool is installed at X"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::end_group</span></a><span class="plain-syntax">();</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="1-fm.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Once the following has been called, it is not safe to use any of the
-<code class="display"><span class="extract-syntax">foundation</span></code> facilities. It should be called on any normal exit, but not on
+<span class="extract"><span class="extract-syntax">foundation</span></span> facilities. It should be called on any normal exit, but not on
 an early termination due to a fatal error, as this may lead to thread
 safety problems.
 </p>

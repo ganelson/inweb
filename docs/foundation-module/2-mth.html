@@ -68,8 +68,8 @@ the ways that one language differs from another, and they can do that by
 providing "methods".
 </p>
 
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The model is this. If a <code class="display"><span class="extract-syntax">typedef struct</span></code> definition includes the line
-<code class="display"><span class="extract-syntax">METHOD_CALLS</span></code>, then any instance of that structure can have a queue of
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The model is this. If a <span class="extract"><span class="extract-syntax">typedef struct</span></span> definition includes the line
+<span class="extract"><span class="extract-syntax">METHOD_CALLS</span></span>, then any instance of that structure can have a queue of
 tagged functions attached to it dynamically: those, we'll call "methods".
 </p>
 
@@ -95,8 +95,8 @@ tagged functions attached to it dynamically: those, we'll call "methods".
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><ul class="endnotetexts"><li>The structure method_set is private to this section.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Declaring methods. </b>Each method is a function, though we don't know its type &mdash; which is why we
-resort to the desperate measure of storing it as a <code class="display"><span class="extract-syntax">void *</span></code> &mdash; with an ID
-number attached to it. IDs should be from the <code class="display"><span class="extract-syntax">*_MTID</span></code> enumeration set.
+resort to the desperate measure of storing it as a <span class="extract"><span class="extract-syntax">void *</span></span> &mdash; with an ID
+number attached to it. IDs should be from the <span class="extract"><span class="extract-syntax">*_MTID</span></span> enumeration set.
 </p>
 
 
@@ -108,8 +108,8 @@ of two macros: one for methods returning an integer, one for void methods,
 i.e., those returning no value.
 </p>
 
-<p class="inwebparagraph">What these do is to use typedef to give the name <code class="display"><span class="extract-syntax">X_type</span></code> to the type of all
-functions sharing the method ID <code class="display"><span class="extract-syntax">X</span></code>.
+<p class="inwebparagraph">What these do is to use typedef to give the name <span class="extract"><span class="extract-syntax">X_type</span></span> to the type of all
+functions sharing the method ID <span class="extract"><span class="extract-syntax">X</span></span>.
 </p>
 
 
@@ -122,7 +122,7 @@ functions sharing the method ID <code class="display"><span class="extract-synta
 <pre class="displayed-code all-displayed-code">
 <span class="identifier-syntax">IMETHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">UNUSED_METHOD_ID_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">example</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wont_be_used</span><span class="plain-syntax">)</span>
 </pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Adding methods. </b>Provided a function has the right type for the ID we're using, we can now
-attach it to an object with a method set, using the <code class="display"><span class="extract-syntax">METHOD_ADD</span></code> macro.
+attach it to an object with a method set, using the <span class="extract"><span class="extract-syntax">METHOD_ADD</span></span> macro.
 (If the type is wrong, the C compiler will throw errors here.)
 </p>
 
@@ -163,10 +163,10 @@ attach it to an object with a method set, using the <code class="display"><span 
 </pre><ul class="endnotetexts"><li>The structure method is private to this section.</li></ul><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Calling methods. </b>Method calls are also done with a macro, but it has to come in four variants:
 </p>
 
-</li><li>(a) <code class="display"><span class="extract-syntax">IMETHOD_CALL</span></code> for a method taking arguments and returning an <code class="display"><span class="extract-syntax">int</span></code>,
-</li><li>(b) <code class="display"><span class="extract-syntax">IMETHOD_CALLV</span></code> for a method without arguments which returns an <code class="display"><span class="extract-syntax">int</span></code>,
-</li><li>(c) <code class="display"><span class="extract-syntax">VMETHOD_CALL</span></code> for a method taking arguments and returning nothing,
-</li><li>(d) <code class="display"><span class="extract-syntax">VMETHOD_CALLV</span></code> for a method without arguments which returns nothing.
+</li><li>(a) <span class="extract"><span class="extract-syntax">IMETHOD_CALL</span></span> for a method taking arguments and returning an <span class="extract"><span class="extract-syntax">int</span></span>,
+</li><li>(b) <span class="extract"><span class="extract-syntax">IMETHOD_CALLV</span></span> for a method without arguments which returns an <span class="extract"><span class="extract-syntax">int</span></span>,
+</li><li>(c) <span class="extract"><span class="extract-syntax">VMETHOD_CALL</span></span> for a method taking arguments and returning nothing,
+</li><li>(d) <span class="extract"><span class="extract-syntax">VMETHOD_CALLV</span></span> for a method without arguments which returns nothing.
 </li></ul>
 <p class="inwebparagraph">For example:
 </p>
@@ -174,19 +174,19 @@ attach it to an object with a method set, using the <code class="display"><span 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">IMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">some_object</span><span class="plain-syntax">, </span><span class="constant-syntax">UNUSED_METHOD_ID_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Hello"</span><span class="plain-syntax">, </span><span class="constant-syntax">17</span><span class="plain-syntax">)</span>
 </pre>
-<p class="inwebparagraph">Note that it's entirely possible for the <code class="display"><span class="extract-syntax">upon</span></code> object to have multiple methods
-added for the same ID &mdash; or none. In the <code class="display"><span class="extract-syntax">V</span></code> (void) cases, what we then do is
-to call each of them in turn. In the <code class="display"><span class="extract-syntax">I</span></code> (int) cases, we call each in turn, but
-stop the moment any of them returns something other than <code class="display"><span class="extract-syntax">FALSE</span></code>, and then
-we put that value into the specified result variable <code class="display"><span class="extract-syntax">rval</span></code>.
+<p class="inwebparagraph">Note that it's entirely possible for the <span class="extract"><span class="extract-syntax">upon</span></span> object to have multiple methods
+added for the same ID &mdash; or none. In the <span class="extract"><span class="extract-syntax">V</span></span> (void) cases, what we then do is
+to call each of them in turn. In the <span class="extract"><span class="extract-syntax">I</span></span> (int) cases, we call each in turn, but
+stop the moment any of them returns something other than <span class="extract"><span class="extract-syntax">FALSE</span></span>, and then
+we put that value into the specified result variable <span class="extract"><span class="extract-syntax">rval</span></span>.
 </p>
 
-<p class="inwebparagraph">If <code class="display"><span class="extract-syntax">some_object</span></code> has no methods for the given ID, then nothing happens, and
-in the <code class="display"><span class="extract-syntax">I</span></code> case, the return value is <code class="display"><span class="extract-syntax">FALSE</span></code>.
+<p class="inwebparagraph">If <span class="extract"><span class="extract-syntax">some_object</span></span> has no methods for the given ID, then nothing happens, and
+in the <span class="extract"><span class="extract-syntax">I</span></span> case, the return value is <span class="extract"><span class="extract-syntax">FALSE</span></span>.
 </p>
 
-<p class="inwebparagraph">It will, however, produce a compilation error if <code class="display"><span class="extract-syntax">some_object</span></code> is not a pointer
-to a structure which has <code class="display"><span class="extract-syntax">METHOD_CALLS</span></code> as part of its definition.
+<p class="inwebparagraph">It will, however, produce a compilation error if <span class="extract"><span class="extract-syntax">some_object</span></span> is not a pointer
+to a structure which has <span class="extract"><span class="extract-syntax">METHOD_CALLS</span></span> as part of its definition.
 </p>
 
 

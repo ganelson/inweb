@@ -51,7 +51,7 @@ function togglePopup(material_id) {
 independent of the programming language being written, woven or tangled;
 Knuth began literate programming with Pascal, but now uses C, and the original
 Pascal webs were mechanically translated into C ones with remarkably little
-fuss or bother. Modern LP tools, such as <code class="display"><span class="extract-syntax">noweb</span></code>, aim to be language-agnostic.
+fuss or bother. Modern LP tools, such as <span class="extract"><span class="extract-syntax">noweb</span></span>, aim to be language-agnostic.
 But of course if you act the same on all languages, you give up the benefits
 which might follow from knowing something about the languages you actually
 write in.
@@ -74,7 +74,7 @@ the web into chapters, sections and paragraphs, but for some languages we will
 need a more detailed picture.
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract-syntax">PARSE_TYPES_PAR_MTID</span></code> gives a language to look for type declarations.
+<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">PARSE_TYPES_PAR_MTID</span></span> gives a language to look for type declarations.
 </p>
 
 
@@ -86,7 +86,7 @@ need a more detailed picture.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LanguageMethods::parse_types</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>LanguageMethods::parse_types</b>:<br>The Parser - <a href="2-tp.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">VMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="constant-syntax">PARSE_TYPES_PAR_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b><code class="display"><span class="extract-syntax">PARSE_FUNCTIONS_PAR_MTID</span></code> is, similarly, for function declarations.
+</pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b><span class="extract"><span class="extract-syntax">PARSE_FUNCTIONS_PAR_MTID</span></span> is, similarly, for function declarations.
 </p>
 
 
@@ -98,7 +98,7 @@ need a more detailed picture.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LanguageMethods::parse_functions</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>LanguageMethods::parse_functions</b>:<br>The Parser - <a href="2-tp.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">VMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="constant-syntax">PARSE_FUNCTIONS_PAR_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b><code class="display"><span class="extract-syntax">FURTHER_PARSING_PAR_MTID</span></code> is "further" in that it is called when the main
+</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b><span class="extract"><span class="extract-syntax">FURTHER_PARSING_PAR_MTID</span></span> is "further" in that it is called when the main
 parser has finished work; it typically looks over the whole web for something
 of interest.
 </p>
@@ -112,7 +112,7 @@ of interest.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LanguageMethods::further_parsing</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>LanguageMethods::further_parsing</b>:<br>The Parser - <a href="2-tp.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">VMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="constant-syntax">FURTHER_PARSING_PAR_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b><code class="display"><span class="extract-syntax">SUBCATEGORISE_LINE_PAR_MTID</span></code> looks at a single line, after the main parser
+</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b><span class="extract"><span class="extract-syntax">SUBCATEGORISE_LINE_PAR_MTID</span></span> looks at a single line, after the main parser
 has given it a category. The idea is not so much to second-guess the parser
 (although we can) but to change to a more exotic category which it would
 otherwise never produce.
@@ -128,7 +128,7 @@ otherwise never produce.
 <span class="plain-syntax">    </span><span class="identifier-syntax">VMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="constant-syntax">SUBCATEGORISE_LINE_PAR_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Comments have different syntax in different languages. The method here is
-expected to look for a comment on the <code class="display"><span class="extract-syntax">line</span></code>, and if so to return <code class="display"><span class="extract-syntax">TRUE</span></code>,
+expected to look for a comment on the <span class="extract"><span class="extract-syntax">line</span></span>, and if so to return <span class="extract"><span class="extract-syntax">TRUE</span></span>,
 but not before splicing the non-comment parts of the line before and
 within the comment into the supplied strings.
 </p>
@@ -151,8 +151,8 @@ the top to the bottom of the file.
 </p>
 
 <p class="inwebparagraph">The top of the tangled file is a header called the "shebang". By default,
-there's nothing there, but <code class="display"><span class="extract-syntax">SHEBANG_TAN_MTID</span></code> allows the language to add one.
-For example, Perl prints <code class="display"><span class="extract-syntax">#!/usr/bin/perl</span></code> here.
+there's nothing there, but <span class="extract"><span class="extract-syntax">SHEBANG_TAN_MTID</span></span> allows the language to add one.
+For example, Perl prints <span class="extract"><span class="extract-syntax">#!/usr/bin/perl</span></span> here.
 </p>
 
 
@@ -194,10 +194,10 @@ at tangled (therefore not original) material.
 <span class="plain-syntax">    </span><span class="identifier-syntax">VMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="constant-syntax">ADDITIONAL_EARLY_MATTER_TAN_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">target</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>A tangled file then normally declares "definitions". The following write a
-definition of the constant named <code class="display"><span class="extract-syntax">term</span></code> as the value given. If the value spans
-multiple lines, the first-line part is supplied to <code class="display"><span class="extract-syntax">START_DEFN_TAN_MTID</span></code> and
-then subsequent lines are fed in order to <code class="display"><span class="extract-syntax">PROLONG_DEFN_TAN_MTID</span></code>. At the end,
-<code class="display"><span class="extract-syntax">END_DEFN_TAN_MTID</span></code> is called.
+definition of the constant named <span class="extract"><span class="extract-syntax">term</span></span> as the value given. If the value spans
+multiple lines, the first-line part is supplied to <span class="extract"><span class="extract-syntax">START_DEFN_TAN_MTID</span></span> and
+then subsequent lines are fed in order to <span class="extract"><span class="extract-syntax">PROLONG_DEFN_TAN_MTID</span></span>. At the end,
+<span class="extract"><span class="extract-syntax">END_DEFN_TAN_MTID</span></span> is called.
 </p>
 
 
@@ -264,8 +264,8 @@ the more routine matter, tangling ordinary paragraphs into code.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rv</span><span class="plain-syntax">)?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>Inweb supports very few "tangle commands", that is, instructions written
-inside double squares <code class="display"><span class="extract-syntax">[[Thus]]</span></code>. These can be handled by attaching methods
-as follows, which return <code class="display"><span class="extract-syntax">TRUE</span></code> if they recognised and acted on the command.
+inside double squares <span class="extract"><span class="extract-syntax">[[Thus]]</span></span>. These can be handled by attaching methods
+as follows, which return <span class="extract"><span class="extract-syntax">TRUE</span></span> if they recognised and acted on the command.
 </p>
 
 
@@ -281,7 +281,7 @@ as follows, which return <code class="display"><span class="extract-syntax">TRUE
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>The following methods make it possible for languages to tangle unorthodox
-lines into code. Ordinarily, only <code class="display"><span class="extract-syntax">CODE_BODY_LCAT</span></code> lines are tangled, but
+lines into code. Ordinarily, only <span class="extract"><span class="extract-syntax">CODE_BODY_LCAT</span></span> lines are tangled, but
 we can intervene to say that we want to tangle a different line; and if we
 do so, we should then act on that basis.
 </p>
@@ -304,7 +304,7 @@ do so, we should then act on that basis.
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>In order for C compilers to report C syntax errors on the correct line,
 despite rearranging by automatic tools, C conventionally recognises the
-preprocessor directive <code class="display"><span class="extract-syntax">#line</span></code> to tell it that a contiguous extract follows
+preprocessor directive <span class="extract"><span class="extract-syntax">#line</span></span> to tell it that a contiguous extract follows
 from the given file; we generate this automatically.
 </p>
 
@@ -319,7 +319,7 @@ from the given file; we generate this automatically.
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>The following hooks are provided so that we can top and/or tail the expansion
 of paragraph macros in the code. For example, C-like languages, use this to
-splice <code class="display"><span class="extract-syntax">{</span></code> and <code class="display"><span class="extract-syntax">}</span></code> around the expanded matter.
+splice <span class="extract"><span class="extract-syntax">{</span></span> and <span class="extract"><span class="extract-syntax">}</span></span> around the expanded matter.
 </p>
 
 
@@ -338,7 +338,7 @@ splice <code class="display"><span class="extract-syntax">{</span></code> and <c
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>It's a sad necessity, but sometimes we have to unconditionally tangle code
 for a preprocessor to conditionally read: that is, to tangle code which contains
-<code class="display"><span class="extract-syntax">#ifdef</span></code> or similar preprocessor directive.
+<span class="extract"><span class="extract-syntax">#ifdef</span></span> or similar preprocessor directive.
 </p>
 
 
@@ -369,7 +369,7 @@ for a preprocessor to conditionally read: that is, to tangle code which contains
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b>The inner code tangler now acts on all code known not to contain CWEB
 macros or double-square substitutions. In almost every language this simply
-passes the code straight through, printing <code class="display"><span class="extract-syntax">original</span></code> to <code class="display"><span class="extract-syntax">OUT</span></code>.
+passes the code straight through, printing <span class="extract"><span class="extract-syntax">original</span></span> to <span class="extract"><span class="extract-syntax">OUT</span></span>.
 </p>
 
 
@@ -474,7 +474,7 @@ sake, which minimises the knock-on effect of any colouring mistakes.
 <span class="plain-syntax">            </span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">colouring</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b>This method is called for each code line to be woven. If it returns <code class="display"><span class="extract-syntax">FALSE</span></code>, the
+</pre><p class="inwebparagraph"><a id="SP26"></a><b>&#167;26.  </b>This method is called for each code line to be woven. If it returns <span class="extract"><span class="extract-syntax">FALSE</span></span>, the
 weaver carries on in the normal way. If not, it does nothing, assuming that the
 method has already woven something more attractive.
 </p>
@@ -492,7 +492,7 @@ method has already woven something more attractive.
 <span class="plain-syntax">    </span><span class="identifier-syntax">IMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">rv</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="constant-syntax">WEAVE_CODE_LINE_WEA_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">wv</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">concluding_comment</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP27"></a><b>&#167;27.  </b>When Inweb creates a new <code class="display"><span class="extract-syntax"> </span></code>, it lets everybody know about that.
+</pre><p class="inwebparagraph"><a id="SP27"></a><b>&#167;27.  </b>When Inweb creates a new <span class="extract"><span class="extract-syntax"> </span></span>, it lets everybody know about that.
 </p>
 
 

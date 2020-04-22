@@ -101,9 +101,9 @@ markup syntax, and trying to detect incorrect uses of one within the other.
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">If the section as a whole is tagged, apply that tag to each paragraph in it</span> <span class="named-paragraph-number">1.1.3</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Work out footnote numbering for this section</span> <span class="named-paragraph-number">1.1.4</span>&gt;<span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1">&#167;1</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_1"></a><b>&#167;1.1.1.  </b>In versiom 2 syntax, the notation for tags was clarified. The tag list
-for a paragraph is the run of <code class="display"><span class="extract-syntax">^"This"</span></code> and <code class="display"><span class="extract-syntax">^"That"</span></code> markers at the end of
+for a paragraph is the run of <span class="extract"><span class="extract-syntax">^"This"</span></span> and <span class="extract"><span class="extract-syntax">^"That"</span></span> markers at the end of
 the line introducing that paragraph. They can only occur, therefore, on a
-line beginning with an <code class="display"><span class="extract-syntax">@</span></code>. We extract them into a string called <code class="display"><span class="extract-syntax">tag_list</span></code>.
+line beginning with an <span class="extract"><span class="extract-syntax">@</span></span>. We extract them into a string called <span class="extract"><span class="extract-syntax">tag_list</span></span>.
 (The reason we can't act on them straight away, which would make for simpler
 code, is that they need to be applied to a paragraph structure which doesn't
 yet exist &mdash; it will only exist when the line has been fully parsed.)
@@ -126,7 +126,7 @@ yet exist &mdash; it will only exist when the line has been fully parsed.)
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1">&#167;1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_2"></a><b>&#167;1.1.2.  </b>And now it's later, and we can safely apply the tags. <code class="display"><span class="extract-syntax">current_paragraph</span></code>
+</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1">&#167;1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_2"></a><b>&#167;1.1.2.  </b>And now it's later, and we can safely apply the tags. <span class="extract"><span class="extract-syntax">current_paragraph</span></span>
 now points to the para which was created by this line, not the one before.
 </p>
 
@@ -166,7 +166,7 @@ now points to the para which was created by this line, not the one before.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">paragraphs</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Work out footnote numbering for this paragraph</span> <span class="named-paragraph-number">1.1.4.3</span>&gt;<span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1">&#167;1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_5"></a><b>&#167;1.1.5.  </b>The "purpose" of a section is a brief note about what it's for. In version 1
-syntax, this had to be explicitly declared with a <code class="display"><span class="extract-syntax">@Purpose:</span></code> command; in
+syntax, this had to be explicitly declared with a <span class="extract"><span class="extract-syntax">@Purpose:</span></span> command; in
 version 2 it's much tidier.
 </p>
 
@@ -325,7 +325,7 @@ namespace for its functions.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_7_3"></a><b>&#167;1.1.7.3.  </b>Version 1 syntax was cluttered up with a number of hardly-used markup
-syntaxes called "commands", written in double squared brackets <code class="display"><span class="extract-syntax">[[Thus]]</span></code>.
+syntaxes called "commands", written in double squared brackets <span class="extract"><span class="extract-syntax">[[Thus]]</span></span>.
 In version 2, this notation is never used.
 </p>
 
@@ -399,7 +399,7 @@ handling. We'll call these "paragraph macros".
 <span class="plain-syntax">        </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_7_5"></a><b>&#167;1.1.7.5.  </b>A structural marker is introduced by an <code class="display"><span class="extract-syntax">@</span></code> in column 1, and is a structural
+</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_7_5"></a><b>&#167;1.1.7.5.  </b>A structural marker is introduced by an <span class="extract"><span class="extract-syntax">@</span></span> in column 1, and is a structural
 division in the current section.
 </p>
 
@@ -599,11 +599,11 @@ division in the current section.
 <span class="plain-syntax">    </span><span class="identifier-syntax">latest</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_line</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EEL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">code_lcat_for_body</span><span class="plain-syntax"> = </span><span class="constant-syntax">TEXT_EXTRACT_LCAT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">extract_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_7">&#167;1.1.7.7</a> (three times).</li></ul><p class="inwebparagraph"><a id="SP1_1_7_5_1"></a><b>&#167;1.1.7.5.1.  </b>So here we have the possibilities which start with a column-1 <code class="display"><span class="extract-syntax">@</span></code> sign.
+</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_7">&#167;1.1.7.7</a> (three times).</li></ul><p class="inwebparagraph"><a id="SP1_1_7_5_1"></a><b>&#167;1.1.7.5.1.  </b>So here we have the possibilities which start with a column-1 <span class="extract"><span class="extract-syntax">@</span></span> sign.
 There appear to be hordes of these, but in fact most of them were removed
-in Inweb syntax version 2: in modern syntax, only <code class="display"><span class="extract-syntax">@d</span></code>, <code class="display"><span class="extract-syntax">@e</span></code>, <code class="display"><span class="extract-syntax">@h</span></code>, their
-long forms <code class="display"><span class="extract-syntax">@define</span></code>, <code class="display"><span class="extract-syntax">@enum</span></code> and <code class="display"><span class="extract-syntax">@heading</span></code>, and plain old <code class="display"><span class="extract-syntax">@</span></code> remain.
-(But <code class="display"><span class="extract-syntax">@e</span></code> has a different meaning from in version 1.)
+in Inweb syntax version 2: in modern syntax, only <span class="extract"><span class="extract-syntax">@d</span></span>, <span class="extract"><span class="extract-syntax">@e</span></span>, <span class="extract"><span class="extract-syntax">@h</span></span>, their
+long forms <span class="extract"><span class="extract-syntax">@define</span></span>, <span class="extract"><span class="extract-syntax">@enum</span></span> and <span class="extract"><span class="extract-syntax">@heading</span></span>, and plain old <span class="extract"><span class="extract-syntax">@</span></span> remain.
+(But <span class="extract"><span class="extract-syntax">@e</span></span> has a different meaning from in version 1.)
 </p>
 
 
@@ -703,7 +703,7 @@ in the file made of hyphens, called "the bar". All of that has gone in V2.
 <span class="plain-syntax">    </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">is_commentary</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">before_bar</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">next_par_number</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_7_5_1_4"></a><b>&#167;1.1.7.5.1.4.  </b>An <code class="display"><span class="extract-syntax">@</span></code> sign in the first column, followed by a row of four or more dashes,
+</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_7_5_1_4"></a><b>&#167;1.1.7.5.1.4.  </b>An <span class="extract"><span class="extract-syntax">@</span></span> sign in the first column, followed by a row of four or more dashes,
 constitutes the optional division bar in a section.
 </p>
 
@@ -725,7 +725,7 @@ constitutes the optional division bar in a section.
 <span class="plain-syntax">    </span><span class="identifier-syntax">next_par_number</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_7_5_1_5"></a><b>&#167;1.1.7.5.1.5.  </b>In version 1, the division point where a paragraoh begins to go into
 verbatim code was not marked with an equals sign, but with one of the three
-commands <code class="display"><span class="extract-syntax">@c</span></code> ("code"), <code class="display"><span class="extract-syntax">@e</span></code> ("early code") and <code class="display"><span class="extract-syntax">@x</span></code> ("code-like extract").
+commands <span class="extract"><span class="extract-syntax">@c</span></span> ("code"), <span class="extract"><span class="extract-syntax">@e</span></span> ("early code") and <span class="extract"><span class="extract-syntax">@x</span></span> ("code-like extract").
 These had identical behaviour except for whether or not to tangle what
 follows:
 </p>
@@ -747,8 +747,8 @@ follows:
 <span class="plain-syntax">    </span><span class="identifier-syntax">comment_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">code_plainness_for_body</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">hyperlink_body</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_7_5_1_6"></a><b>&#167;1.1.7.5.1.6.  </b>This is for <code class="display"><span class="extract-syntax">@d</span></code> and <code class="display"><span class="extract-syntax">@define</span></code>. Definitions are intended to translate to
-C preprocessor macros, Inform 6 <code class="display"><span class="extract-syntax">Constant</span></code>s, and so on.
+</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_7_5_1_6"></a><b>&#167;1.1.7.5.1.6.  </b>This is for <span class="extract"><span class="extract-syntax">@d</span></span> and <span class="extract"><span class="extract-syntax">@define</span></span>. Definitions are intended to translate to
+C preprocessor macros, Inform 6 <span class="extract"><span class="extract-syntax">Constant</span></span>s, and so on.
 </p>
 
 
@@ -772,8 +772,8 @@ C preprocessor macros, Inform 6 <code class="display"><span class="extract-synta
 <span class="plain-syntax">    </span><span class="identifier-syntax">comment_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">is_commentary</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a> (three times).</li></ul><p class="inwebparagraph"><a id="SP1_1_7_5_1_7"></a><b>&#167;1.1.7.5.1.7.  </b>This is for <code class="display"><span class="extract-syntax">@e</span></code> (in version 2) and <code class="display"><span class="extract-syntax">@enum</span></code>, which makes an automatically
-enumerated sort of <code class="display"><span class="extract-syntax">@d</span></code>.
+</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a> (three times).</li></ul><p class="inwebparagraph"><a id="SP1_1_7_5_1_7"></a><b>&#167;1.1.7.5.1.7.  </b>This is for <span class="extract"><span class="extract-syntax">@e</span></span> (in version 2) and <span class="extract"><span class="extract-syntax">@enum</span></span>, which makes an automatically
+enumerated sort of <span class="extract"><span class="extract-syntax">@d</span></span>.
 </p>
 
 
@@ -809,11 +809,11 @@ enumerated sort of <code class="display"><span class="extract-syntax">@d</span><
 <span class="plain-syntax">    </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">is_commentary</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a> (twice).</li></ul><p class="inwebparagraph"><a id="SP1_1_7_5_1_8"></a><b>&#167;1.1.7.5.1.8.  </b>Here we handle paragraph breaks which may or may not be headings. In
-version 1, <code class="display"><span class="extract-syntax">@p</span></code> was a heading, and <code class="display"><span class="extract-syntax">@pp</span></code> a grander heading, while plain <code class="display"><span class="extract-syntax">@</span></code>
+version 1, <span class="extract"><span class="extract-syntax">@p</span></span> was a heading, and <span class="extract"><span class="extract-syntax">@pp</span></span> a grander heading, while plain <span class="extract"><span class="extract-syntax">@</span></span>
 is no heading at all. The use of "p" was a little confusing, and went back
 to CWEB, which used the term "paragraph" differently from us: it was "p"
-short for what CWEB called a "paragraph". We now use <code class="display"><span class="extract-syntax">@h</span></code> or equivalently
-<code class="display"><span class="extract-syntax">@heading</span></code> for a heading.
+short for what CWEB called a "paragraph". We now use <span class="extract"><span class="extract-syntax">@h</span></span> or equivalently
+<span class="extract"><span class="extract-syntax">@heading</span></span> for a heading.
 </p>
 
 <p class="inwebparagraph">The noteworthy thing here is the way we fool around with the text on the line
@@ -881,14 +881,14 @@ of French weaving" and the remainder,
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">next_child_number</span><span class="plain-syntax">; </span><span class="comment"> used when working out paragraph numbers</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">parent_paragraph</span><span class="plain-syntax">; </span><span class="comment"> ditto</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">weight</span><span class="plain-syntax">; </span><span class="comment"> typographic prominence: one of the </span><code class="display"><span class="extract-syntax">*_WEIGHT</span></code><span class="comment"> values</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">weight</span><span class="plain-syntax">; </span><span class="comment"> typographic prominence: one of the </span><span class="extract"><span class="extract-syntax">*_WEIGHT</span></span><span class="comment"> values</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">starts_on_new_page</span><span class="plain-syntax">; </span><span class="comment"> relevant for weaving to TeX only, of course</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">para_macro</span><span class="plain-syntax"> *</span><span class="identifier-syntax">defines_macro</span><span class="plain-syntax">; </span><span class="comment"> there can only be one</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">functions</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">function</span></code><span class="comment">: those defined in this para</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">structures</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">language_type</span></code><span class="comment">: similarly</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">taggings</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">paragraph_tagging</span></code>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">footnotes</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">footnote</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">functions</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">function</span></span><span class="comment">: those defined in this para</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">structures</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">language_type</span></span><span class="comment">: similarly</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">taggings</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">paragraph_tagging</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">footnotes</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">footnote</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_line_in_paragraph</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">under_section</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
@@ -945,7 +945,7 @@ of French weaving" and the remainder,
 <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">text_operand</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_7_9"></a><b>&#167;1.1.7.9.  </b>Note that in an <code class="display"><span class="extract-syntax">@d</span></code> definition, a blank line is treated as the end of the
+</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_7_9"></a><b>&#167;1.1.7.9.  </b>Note that in an <span class="extract"><span class="extract-syntax">@d</span></span> definition, a blank line is treated as the end of the
 definition. (This is unnecessary for C, and is a point of difference with
 CWEB, but is needed for languages which don't allow multi-line definitions.)
 </p>
@@ -972,7 +972,7 @@ CWEB, but is needed for languages which don't allow multi-line definitions.)
 
 <span class="plain-syntax">    </span><a href="4-lm.html#SP5" class="function-link"><span class="function-syntax">LanguageMethods::subcategorise_line</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_language</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_4_1"></a><b>&#167;1.1.4.1.  </b>The purpose text occurs just below the heading. In version 1 it's cued with
-a <code class="display"><span class="extract-syntax">@Purpose:</span></code> command; in version 2 it is unmarked. The following routine
+a <span class="extract"><span class="extract-syntax">@Purpose:</span></span> command; in version 2 it is unmarked. The following routine
 is not elegant but handles the back end of both possibilities.
 </p>
 
@@ -995,8 +995,8 @@ is not elegant but handles the back end of both possibilities.
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">footnote</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">footnote_cue_number</span><span class="plain-syntax">; </span><span class="comment"> used only for </span><code class="display"><span class="extract-syntax">FOOTNOTE_TEXT_LCAT</span></code><span class="comment"> lines</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">footnote_text_number</span><span class="plain-syntax">; </span><span class="comment"> used only for </span><code class="display"><span class="extract-syntax">FOOTNOTE_TEXT_LCAT</span></code><span class="comment"> lines</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">footnote_cue_number</span><span class="plain-syntax">; </span><span class="comment"> used only for </span><span class="extract"><span class="extract-syntax">FOOTNOTE_TEXT_LCAT</span></span><span class="comment"> lines</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">footnote_text_number</span><span class="plain-syntax">; </span><span class="comment"> used only for </span><span class="extract"><span class="extract-syntax">FOOTNOTE_TEXT_LCAT</span></span><span class="comment"> lines</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cue_text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cued_already</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>

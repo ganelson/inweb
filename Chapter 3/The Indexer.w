@@ -59,20 +59,13 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 	TEMPORARY_TEXT(matter);
 	Str::copy(matter, line);
 	match_results mr = Regexp::create_mr();
-	if ((include) &&
-		((state->target->self_contained) || (state->target->pattern->embed_CSS)) &&
-		(Regexp::match(&mr, matter, L" *%<link href=%\"(%c+?)\"%c*"))) {
-		filename *CSS_file = Patterns::obtain_filename(state->target->pattern, mr.exp[0]);
-		Indexer::transcribe_CSS(matter, CSS_file);
-	} else {
-		while (Regexp::match(&mr, matter, L"(%c*?)%[%[(%c*?)%]%](%c*)")) {
-			text_stream *left = mr.exp[0];
-			text_stream *command = mr.exp[1];
-			text_stream *right = mr.exp[2];
-			if (include) WRITE("%S", left);
-			@<Deal with a double-squares escape in a cover sheet@>;
-			Str::copy(matter, right);
-		}
+	while (Regexp::match(&mr, matter, L"(%c*?)%[%[(%c*?)%]%](%c*)")) {
+		text_stream *left = mr.exp[0];
+		text_stream *command = mr.exp[1];
+		text_stream *right = mr.exp[2];
+		if (include) WRITE("%S", left);
+		@<Deal with a double-squares escape in a cover sheet@>;
+		Str::copy(matter, right);
 	}
 	Regexp::dispose_of(&mr);
 	if (include) WRITE("%S\n", matter);
@@ -91,8 +84,6 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 			Swarm::include_plugins(OUT, state->target->weave_web,
 				state->target, state->target->weave_to);
 		}
-	} else if (Str::eq_wide_string(command, L"Cover Sheet")) {
-		if (include) @<Weave in the parent pattern's cover sheet@>;
 	} else if (Regexp::match(&mr2, command, L"Navigation")) {
 		if (include) @<Weave in navigation@>;
 	} else if (Regexp::match(&mr2, command, L"Template (%c*?)")) {
@@ -103,18 +94,6 @@ void Indexer::scan_cover_line(text_stream *line, text_file_position *tfp, void *
 		if (include) WRITE("[[%S]]", command);
 	}
 	Regexp::dispose_of(&mr2);
-
-@<Weave in the parent pattern's cover sheet@> =
-	if (state->target->pattern->based_on) {
-		weave_pattern *saved = state->target->pattern;
-		state->target->pattern = state->target->pattern->based_on;
-		Indexer::cover_sheet_maker(OUT, state->target->weave_web,
-			I"cover-sheet", state->target,
-			(state->halves & (WEAVE_FIRST_HALF + WEAVE_SECOND_HALF)));
-		state->target->pattern = saved;
-	} else {
-		Errors::in_text_file("cover sheet recursively includes itself", tfp);
-	}
 
 @<Weave in navigation@> =
 	if (state->target->navigation) {
@@ -250,12 +229,6 @@ void Indexer::run_engine(text_stream *OUT, index_engine_state *ies) {
 	if (Regexp::match(&mr, tl, L"(%c*?) ")) Str::copy(tl, mr.exp[0]); /* Strip trailing spaces */
 	if (TRACE_CI_EXECUTION)
 		@<Print line and contents of repeat stack@>;
-	if ((ies->nav_pattern->embed_CSS) &&
-		(Regexp::match(&mr, tl, L" *%<link href=%\"(%c+?)\"%c*"))) {
-		filename *CSS_file = Patterns::obtain_filename(ies->nav_pattern, mr.exp[0]);
-		Indexer::transcribe_CSS(OUT, CSS_file);
-		Str::clear(tl);
-	}
 	if ((Regexp::match(&mr, tl, L"%[%[(%c+)%]%]")) ||
 		(Regexp::match(&mr, tl, L" %[%[(%c+)%]%]"))) {
 		TEMPORARY_TEXT(command);
@@ -716,21 +689,6 @@ void Indexer::list_module(OUTPUT_STREAM, module *M, int list_this) {
 	module *N;
 	LOOP_OVER_LINKED_LIST(N, module, M->dependencies)
 		Indexer::list_module(OUT, N, TRUE);
-}
-
-@h Transcribing CSS.
-
-=
-void Indexer::transcribe_CSS(OUTPUT_STREAM, filename *CSS_file) {
-	WRITE("<style type=\"text/css\">\n");
-	TextFiles::read(CSS_file, FALSE, "can't open CSS file",
-		TRUE, Indexer::copy_CSS, NULL, OUT);
-	WRITE("\n</style>\n");
-}
-
-void Indexer::copy_CSS(text_stream *line, text_file_position *tfp, void *X) {
-	text_stream *OUT = (text_stream *) X;
-	WRITE("%S\n", line);
 }
 
 @h Tracking the file being written to.

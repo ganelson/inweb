@@ -47,7 +47,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-tt.html#SP1">&#167;1. The Master Tangler</a></li><li><a href="3-tt.html#SP3">&#167;3. The Code Tangler</a></li><li><a href="3-tt.html#SP4">&#167;4. Prinary target</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. The Master Tangler. </b>Here's what has happened so far, on a <code class="display"><span class="extract-syntax">-tangle</span></code> run of Inweb: on any
+<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. The Master Tangler. </b>Here's what has happened so far, on a <span class="extract"><span class="extract-syntax">-tangle</span></span> run of Inweb: on any
 other sort of run, of course, we would never be in this section of code.
 The web was read completely into memory, and then fully parsed, with all
 of the arrays and hashes populated. Program Control then sent us straight
@@ -96,7 +96,7 @@ of which can be seen below.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">placed_very_early</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">defines_macro</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><a href="3-tt.html#SP2" class="function-link"><span class="function-syntax">Tangler::tangle_paragraph</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="comment"> (b) Results of </span><code class="display"><span class="extract-syntax">@d</span></code><span class="comment"> declarations</span>
+<span class="plain-syntax">    </span><span class="comment"> (b) Results of </span><span class="extract"><span class="extract-syntax">@d</span></span><span class="comment"> declarations</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Tangle all the constant definitions in section order</span> <span class="named-paragraph-number">1.1.1</span>&gt;<span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="comment"> (c) Miscellaneous automated C predeclarations</span>
@@ -114,7 +114,7 @@ of which can be seen below.
 
 <span class="plain-syntax">    </span><span class="comment"> (f) Opposite of the shebang: a footer</span>
 <span class="plain-syntax">    </span><a href="4-lm.html#SP20" class="function-link"><span class="function-syntax">LanguageMethods::gnabehs</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tt.html#SP1">&#167;1</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_1"></a><b>&#167;1.1.1.  </b>This is the result of all those <code class="display"><span class="extract-syntax">@d</span></code> definitions; note that these sometimes
+</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tt.html#SP1">&#167;1</a>.</li></ul><p class="inwebparagraph"><a id="SP1_1_1"></a><b>&#167;1.1.1.  </b>This is the result of all those <span class="extract"><span class="extract-syntax">@d</span></span> definitions; note that these sometimes
 extend across multiple lines.
 </p>
 
@@ -163,7 +163,7 @@ extend across multiple lines.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">headers</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-shl.html#SP3" class="function-link"><span class="function-syntax">Shell::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><a href="2-tr.html#SP7" class="function-link"><span class="function-syntax">Reader::tangled_folder</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">), </span><span class="string-syntax">""</span><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="3-tt.html#SP1">&#167;1</a>.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>So here is the main tangler for a single paragraph. We basically expect to
-act only on <code class="display"><span class="extract-syntax">CODE_BODY_LCAT</span></code> lines (those containing actual code), unless
+act only on <span class="extract"><span class="extract-syntax">CODE_BODY_LCAT</span></span> lines (those containing actual code), unless
 something quirky has been done to support a language feature.
 </p>
 
@@ -203,7 +203,7 @@ else; if so, here's where we use it.
 <span class="plain-syntax">        </span><a href="4-lm.html#SP15" class="function-link"><span class="function-syntax">LanguageMethods::insert_line_marker</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">under_section</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_language</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="3-tt.html#SP2">&#167;2</a> (twice).</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. The Code Tangler. </b>All of the final tangled code passes through the following routine.
-Almost all of the time, it simply prints <code class="display"><span class="extract-syntax">original</span></code> verbatim to the file <code class="display"><span class="extract-syntax">OUT</span></code>.
+Almost all of the time, it simply prints <span class="extract"><span class="extract-syntax">original</span></span> verbatim to the file <span class="extract"><span class="extract-syntax">OUT</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -226,17 +226,17 @@ example, we handle
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    if (banana_count == 0) @&lt;Yes, we have no bananas@&gt;;</span>
 </pre>
-<p class="inwebparagraph">by calling the lower-level tangler on <code class="display"><span class="extract-syntax">if (banana_count == 0) </span></code> (a substring
+<p class="inwebparagraph">by calling the lower-level tangler on <span class="extract"><span class="extract-syntax">if (banana_count == 0) </span></span> (a substring
 which we know can't involve any macros, since we are detecting macros from
 left to right, and this is to the left of the one we found); then by tangling
 the definition of "Yes, we have no bananas"; then by calling the upper-level
-code tangler on <code class="display"><span class="extract-syntax">;</span></code>. (In this case, of course, there's nothing much there,
+code tangler on <span class="extract"><span class="extract-syntax">;</span></span>. (In this case, of course, there's nothing much there,
 but in principle it could contain further macros.)
 </p>
 
 <p class="inwebparagraph">Note that when we've expanded "Yes, we have no bananas" we have certainly
 placed code into the tangled file from a different location; that will insert
-a <code class="display"><span class="extract-syntax">#line</span></code> marker for the definition location; and we don't want the eventual
+a <span class="extract"><span class="extract-syntax">#line</span></span> marker for the definition location; and we don't want the eventual
 C compiler to think that the code which follows is also from that location.
 So we insert a fresh line marker.
 </p>
@@ -284,11 +284,11 @@ page) and substitutes that, so that we end up with (say)
 <span class="plain-syntax">    </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"This is build 5Q47.\n"</span><span class="plain-syntax">);</span>
 </pre>
 <p class="inwebparagraph">In some languages there are also special expansions (for example, in
-InC <code class="display"><span class="extract-syntax">[[nonterminals]]</span></code> has a special meaning).
+InC <span class="extract"><span class="extract-syntax">[[nonterminals]]</span></span> has a special meaning).
 </p>
 
 <p class="inwebparagraph">If the text in double-squares isn't recognised, that's not an error: it simply
-passes straight through. So <code class="display"><span class="extract-syntax">[[water]]</span></code> becomes just <code class="display"><span class="extract-syntax">[[water]]</span></code>.
+passes straight through. So <span class="extract"><span class="extract-syntax">[[water]]</span></span> becomes just <span class="extract"><span class="extract-syntax">[[water]]</span></span>.
 </p>
 
 

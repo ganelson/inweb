@@ -56,7 +56,7 @@ of line terminator will always be stripped out before this is applied.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">' '</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'\t'</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The presence of <code class="display"><span class="extract-syntax">:</span></code> here is perhaps a bit surprising, since it's illegal in
+</pre><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The presence of <span class="extract"><span class="extract-syntax">:</span></span> here is perhaps a bit surprising, since it's illegal in
 C and has other meanings in other languages, but it's legal in C-for-Inform
 identifiers.
 </p>
@@ -70,8 +70,8 @@ identifiers.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Simple parsing. </b>The following finds the earliest minimal-length substring of a string,
-delimited by two pairs of characters: for example, <code class="display"><span class="extract-syntax">&lt;&lt;</span></code> and <code class="display"><span class="extract-syntax">&gt;&gt;</span></code>. This could
-easily be done as a regular expression using <code class="display"><span class="extract-syntax">Regexp::match</span></code>, but the routine
+delimited by two pairs of characters: for example, <span class="extract"><span class="extract-syntax">&lt;&lt;</span></span> and <span class="extract"><span class="extract-syntax">&gt;&gt;</span></span>. This could
+easily be done as a regular expression using <span class="extract"><span class="extract-syntax">Regexp::match</span></span>, but the routine
 here is much quicker.
 </p>
 
@@ -99,7 +99,7 @@ here is much quicker.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Note that we count the empty string as being white space. Again, this is
-equivalent to <code class="display"><span class="extract-syntax">Regexp::match(p, " *")</span></code>, but much faster.
+equivalent to <span class="extract"><span class="extract-syntax">Regexp::match(p, " *")</span></span>, but much faster.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -109,8 +109,8 @@ equivalent to <code class="display"><span class="extract-syntax">Regexp::match(p
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. A Worse PCRE. </b>I originally wanted to call the function in this section <code class="display"><span class="extract-syntax">a_better_sscanf</span></code>, then
-thought perhaps <code class="display"><span class="extract-syntax">a_worse_PCRE</span></code> would be more true. (PCRE is Philip Hazel's superb
+</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. A Worse PCRE. </b>I originally wanted to call the function in this section <span class="extract"><span class="extract-syntax">a_better_sscanf</span></span>, then
+thought perhaps <span class="extract"><span class="extract-syntax">a_worse_PCRE</span></span> would be more true. (PCRE is Philip Hazel's superb
 C implementation of regular-expression parsing, but I didn't need its full strength,
 and I didn't want to complicate the build process by linking to it.)
 </p>
@@ -127,25 +127,25 @@ short texts against particularly simple patterns. Here is an example of use:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="function-syntax">Regexp::dispose_of</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph">Note the <code class="display"><span class="extract-syntax">L</span></code> at the front of the regex itself: this is a wide string.
+<p class="inwebparagraph">Note the <span class="extract"><span class="extract-syntax">L</span></span> at the front of the regex itself: this is a wide string.
 </p>
 
-<p class="inwebparagraph">This tries to match the given <code class="display"><span class="extract-syntax">text</span></code> to see if it consists of the word fish,
+<p class="inwebparagraph">This tries to match the given <span class="extract"><span class="extract-syntax">text</span></span> to see if it consists of the word fish,
 then any amount of whitespace, then a string of digits which are copied into
-<code class="display"><span class="extract-syntax">mr-&gt;exp[0]</span></code>, then whitespace again, and then an alphanumeric identifier to be
-copied into <code class="display"><span class="extract-syntax">mr-&gt;exp[1]</span></code>, and finally optional whitespace. (If no match is
+<span class="extract"><span class="extract-syntax">mr-&gt;exp[0]</span></span>, then whitespace again, and then an alphanumeric identifier to be
+copied into <span class="extract"><span class="extract-syntax">mr-&gt;exp[1]</span></span>, and finally optional whitespace. (If no match is
 made, the contents of the found strings are undefined.)
 </p>
 
 <p class="inwebparagraph">Note that this differs from, for example, Perl's regular expression matcher
 in several ways. The regular expression syntax is slightly different and in
 general simpler. A match has to be made from start to end, so it's as if there
-were an implicit <code class="display"><span class="extract-syntax">^</span></code> at the front and <code class="display"><span class="extract-syntax">$</span></code> at the back (in Perl terms). The
+were an implicit <span class="extract"><span class="extract-syntax">^</span></span> at the front and <span class="extract"><span class="extract-syntax">$</span></span> at the back (in Perl terms). The
 full match text is therefore always the entire text put in, so there's no
-need to record this. In Perl, matching against <code class="display"><span class="extract-syntax">m/(.*) plus (.*)/</span></code> would
+need to record this. In Perl, matching against <span class="extract"><span class="extract-syntax">m/(.*) plus (.*)/</span></span> would
 set three subexpressions: number 0 would be the whole text matched, number
 1 would be the first bracketed part, number 2 the second. Here, though, the
-corresponding regex would be written <code class="display"><span class="extract-syntax">L"(%c*) plus (%c*)"</span></code>, and the bracketed
+corresponding regex would be written <span class="extract"><span class="extract-syntax">L"(%c*) plus (%c*)"</span></span>, and the bracketed
 terms would be subexpressions 0 and 1.
 </p>
 
@@ -268,8 +268,8 @@ deallocate.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">allow_partial</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">[</span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">ppos</span><span class="plain-syntax">] == </span><span class="constant-syntax">0</span><span class="plain-syntax">)) </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Parentheses in the match pattern set up substrings to extract</span> <span class="named-paragraph-number">11.1</span>&gt;<span class="plain-syntax">;</span>
 
-<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">chcl</span><span class="plain-syntax">, </span><span class="comment"> what class of characters to match: a </span><code class="display"><span class="extract-syntax">*_CLASS</span></code><span class="comment"> value</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">range_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">range_to</span><span class="plain-syntax">, </span><span class="comment"> for </span><code class="display"><span class="extract-syntax">LITERAL_CLASS</span></code><span class="comment"> only</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">chcl</span><span class="plain-syntax">, </span><span class="comment"> what class of characters to match: a </span><span class="extract"><span class="extract-syntax">*_CLASS</span></span><span class="comment"> value</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">range_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">range_to</span><span class="plain-syntax">, </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">LITERAL_CLASS</span></span><span class="comment"> only</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">reverse</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">; </span><span class="comment"> require a non-match rather than a match</span>
 <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Extract the character class to match from the pattern</span> <span class="named-paragraph-number">11.2</span>&gt;<span class="plain-syntax">;</span>
 
@@ -281,7 +281,7 @@ deallocate.
 <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Count how many repetitions can be made here</span> <span class="named-paragraph-number">11.4</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">reps</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">rep_from</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 
-<span class="plain-syntax">        </span><span class="comment"> we can now accept anything from </span><code class="display"><span class="extract-syntax">rep_from</span></code><span class="comment"> to </span><code class="display"><span class="extract-syntax">reps</span></code><span class="comment"> repetitions</span>
+<span class="plain-syntax">        </span><span class="comment"> we can now accept anything from </span><span class="extract"><span class="extract-syntax">rep_from</span></span><span class="comment"> to </span><span class="extract"><span class="extract-syntax">reps</span></span><span class="comment"> repetitions</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rep_from</span><span class="plain-syntax"> == </span><span class="identifier-syntax">reps</span><span class="plain-syntax">) { </span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">tpos</span><span class="plain-syntax"> += </span><span class="identifier-syntax">reps</span><span class="plain-syntax">; </span><span class="reserved-syntax">continue</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Try all possible match lengths until we find a match</span> <span class="named-paragraph-number">11.5</span>&gt;<span class="plain-syntax">;</span>
 
@@ -375,25 +375,25 @@ to implement numeric repetition counts, which we won't need:
 <span class="plain-syntax">        </span><span class="identifier-syntax">mr</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_matched_texts</span><span class="plain-syntax"> = </span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">bc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP11">&#167;11</a>.</li></ul><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>So then: most characters in the pattern are taken literally (if the pattern
-says <code class="display"><span class="extract-syntax">q</span></code>, the only match is with a lower-case letter "q"), except that:
+says <span class="extract"><span class="extract-syntax">q</span></span>, the only match is with a lower-case letter "q"), except that:
 </p>
 
 </li><li>(a) a space means "one or more characters of white space";
-</li><li>(b) <code class="display"><span class="extract-syntax">%d</span></code> means any decimal digit;
-</li><li>(c) <code class="display"><span class="extract-syntax">%c</span></code> means any character at all;
-</li><li>(d) <code class="display"><span class="extract-syntax">%C</span></code> means any character which isn't white space;
-</li><li>(e) <code class="display"><span class="extract-syntax">%i</span></code> means any character from the identifier class (see above);
-</li><li>(f) <code class="display"><span class="extract-syntax">%p</span></code> means any character which can be used in the name of a Preform
+</li><li>(b) <span class="extract"><span class="extract-syntax">%d</span></span> means any decimal digit;
+</li><li>(c) <span class="extract"><span class="extract-syntax">%c</span></span> means any character at all;
+</li><li>(d) <span class="extract"><span class="extract-syntax">%C</span></span> means any character which isn't white space;
+</li><li>(e) <span class="extract"><span class="extract-syntax">%i</span></span> means any character from the identifier class (see above);
+</li><li>(f) <span class="extract"><span class="extract-syntax">%p</span></span> means any character which can be used in the name of a Preform
 nonterminal, which is to say, an identifier character or a hyphen;
-</li><li>(g) <code class="display"><span class="extract-syntax">%P</span></code> means the same or else a colon;
-</li><li>(h) <code class="display"><span class="extract-syntax">%t</span></code> means a tab;
-</li><li>(i) <code class="display"><span class="extract-syntax">%q</span></code> means a double-quote.
+</li><li>(g) <span class="extract"><span class="extract-syntax">%P</span></span> means the same or else a colon;
+</li><li>(h) <span class="extract"><span class="extract-syntax">%t</span></span> means a tab;
+</li><li>(i) <span class="extract"><span class="extract-syntax">%q</span></span> means a double-quote.
 </li></ul>
-<p class="inwebparagraph"><code class="display"><span class="extract-syntax">%</span></code> otherwise makes a literal escape; a space means any whitespace character;
+<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">%</span></span> otherwise makes a literal escape; a space means any whitespace character;
 square brackets enclose literal alternatives, and note as usual with grep
-engines that <code class="display"><span class="extract-syntax">[]xyz]</span></code> is legal and makes a set of four possibilities, the
+engines that <span class="extract"><span class="extract-syntax">[]xyz]</span></span> is legal and makes a set of four possibilities, the
 first of which is a literal close square; within a set, a hyphen makes a
-character range; an initial <code class="display"><span class="extract-syntax">^</span></code> negates the result; and otherwise everything
+character range; an initial <span class="extract"><span class="extract-syntax">^</span></span> negates the result; and otherwise everything
 is literal.
 </p>
 
@@ -475,7 +475,7 @@ is literal.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">match</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Replacement. </b>And this routine conveniently handles searching and replacing. This time we
-can match at substrings of the <code class="display"><span class="extract-syntax">text</span></code> (i.e., we are not forced to match
+can match at substrings of the <span class="extract"><span class="extract-syntax">text</span></span> (i.e., we are not forced to match
 from the start right to the end), and multiple replacements can be made.
 For example,
 </p>
@@ -483,7 +483,7 @@ For example,
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">Regexp::replace</span><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"[aeiou]"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"!"</span><span class="plain-syntax">, </span><span class="constant-syntax">REP_REPEATING</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph">will turn the <code class="display"><span class="extract-syntax">text</span></code> "goose eggs" into "g!!s! !ggs".
+<p class="inwebparagraph">will turn the <span class="extract"><span class="extract-syntax">text</span></span> "goose eggs" into "g!!s! !ggs".
 </p>
 
 

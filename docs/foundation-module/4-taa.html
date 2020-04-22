@@ -62,13 +62,13 @@ There are two versions of this: a start head represents matching from the
 front of a text, whereas an end head represents matching from the back.
 </li><li>(b) "Choices". A choice node has a given match character, say an "f", and
 represents which node to go to next if this is the current character in the
-text. It must either be a valid Unicode character or <code class="display"><span class="extract-syntax">TRIE_ANYTHING</span></code>, which
+text. It must either be a valid Unicode character or <span class="extract"><span class="extract-syntax">TRIE_ANYTHING</span></span>, which
 is a wildcard representing "any text of any length here". Since a choice
-must always lead somewhere, <code class="display"><span class="extract-syntax">on_success</span></code> must point to another node.
+must always lead somewhere, <span class="extract"><span class="extract-syntax">on_success</span></span> must point to another node.
 There can be any number of choices at a given position, so choice nodes
-are always organised in linked lists joined by <code class="display"><span class="extract-syntax">next</span></code>.
+are always organised in linked lists joined by <span class="extract"><span class="extract-syntax">next</span></span>.
 </li><li>(c) "Terminals", always leaves, which have match character set to the
-impossible value <code class="display"><span class="extract-syntax">TRIE_STOP</span></code>, and for which <code class="display"><span class="extract-syntax">match_outcome</span></code> is non-null; thus,
+impossible value <span class="extract"><span class="extract-syntax">TRIE_STOP</span></span>, and for which <span class="extract"><span class="extract-syntax">match_outcome</span></span> is non-null; thus,
 different terminal nodes can result in different outcomes if they are ever
 reached at the end of a successful scan. A terminal node is always the only item
 in a list.
@@ -93,30 +93,30 @@ in a list.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">match_trie</span><span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>The structure match_trie is accessed in 2/mmr, 2/trs and here.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>We have just one routine for extending and scanning the trie: it either
-tries to find whether a text <code class="display"><span class="extract-syntax">p</span></code> leads to any outcome in the existing trie,
+tries to find whether a text <span class="extract"><span class="extract-syntax">p</span></span> leads to any outcome in the existing trie,
 or else forcibly extends the existing trie to ensure that it does.
 </p>
 
-<p class="inwebparagraph">It might look as if calling <code class="display"><span class="extract-syntax">Tries::search</span></code> always returns <code class="display"><span class="extract-syntax">add_outcome</span></code> when
+<p class="inwebparagraph">It might look as if calling <span class="extract"><span class="extract-syntax">Tries::search</span></span> always returns <span class="extract"><span class="extract-syntax">add_outcome</span></span> when
 this is set, but this isn't true: if the trie already contains a node
-representing how to deal with <code class="display"><span class="extract-syntax">p</span></code>, we get whatever outcome is already
+representing how to deal with <span class="extract"><span class="extract-syntax">p</span></span>, we get whatever outcome is already
 established.
 </p>
 
-<p class="inwebparagraph">There are two motions to keep track of: our progress through the text <code class="display"><span class="extract-syntax">p</span></code>
+<p class="inwebparagraph">There are two motions to keep track of: our progress through the text <span class="extract"><span class="extract-syntax">p</span></span>
 being scanned, and our progress through the trie which tells us how to scan it.
 </p>
 
 <p class="inwebparagraph">We scan the text either forwards or backwards, starting with the first or
 last character and then working through, finishing with a 0 terminator.
 (This is true even if working backwards: we pretend the character stored
-before the text began is 0.) <code class="display"><span class="extract-syntax">i</span></code> represents the index of our current position
-in <code class="display"><span class="extract-syntax">p</span></code>, and runs either from 0 up to <code class="display"><span class="extract-syntax">N</span></code> or from <code class="display"><span class="extract-syntax">N-1</span></code> down to <code class="display"><span class="extract-syntax">-1</span></code>,
-where <code class="display"><span class="extract-syntax">N</span></code> is the number of characters in <code class="display"><span class="extract-syntax">p</span></code>.
+before the text began is 0.) <span class="extract"><span class="extract-syntax">i</span></span> represents the index of our current position
+in <span class="extract"><span class="extract-syntax">p</span></span>, and runs either from 0 up to <span class="extract"><span class="extract-syntax">N</span></span> or from <span class="extract"><span class="extract-syntax">N-1</span></span> down to <span class="extract"><span class="extract-syntax">-1</span></span>,
+where <span class="extract"><span class="extract-syntax">N</span></span> is the number of characters in <span class="extract"><span class="extract-syntax">p</span></span>.
 </p>
 
-<p class="inwebparagraph">We scan the trie using a pair of pointers. <code class="display"><span class="extract-syntax">prev</span></code> is the last node we
-successfully left, and <code class="display"><span class="extract-syntax">pos</span></code> is one we are currently at, which can be
+<p class="inwebparagraph">We scan the trie using a pair of pointers. <span class="extract"><span class="extract-syntax">prev</span></span> is the last node we
+successfully left, and <span class="extract"><span class="extract-syntax">pos</span></span> is one we are currently at, which can be
 either a terminal node or a choice node (in which case it's the head of
 a linked list of such nodes).
 </p>
@@ -201,8 +201,8 @@ But we aren't going to search these tries anything like intensively enough
 to make it worth the trouble.
 </p>
 
-<p class="inwebparagraph">(The following cannot be a <code class="display"><span class="extract-syntax">while</span></code> loop since C does not allow us to <code class="display"><span class="extract-syntax">break</span></code>
-or <code class="display"><span class="extract-syntax">continue</span></code> out of an outer loop from an inner one.)
+<p class="inwebparagraph">(The following cannot be a <span class="extract"><span class="extract-syntax">while</span></span> loop since C does not allow us to <span class="extract"><span class="extract-syntax">break</span></span>
+or <span class="extract"><span class="extract-syntax">continue</span></span> out of an outer loop from an inner one.)
 </p>
 
 
@@ -283,8 +283,8 @@ or <code class="display"><span class="extract-syntax">continue</span></code> out
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pos</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"trie invariant broken"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">prev</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pos</span><span class="plain-syntax">; </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_success</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-taa.html#SP2">&#167;2</a> (twice), <a href="4-taa.html#SP2_2">&#167;2.2</a>, <a href="4-taa.html#SP2_3">&#167;2.3</a>.</li></ul><p class="inwebparagraph"><a id="SP2_5"></a><b>&#167;2.5.  </b>If <code class="display"><span class="extract-syntax">pos</span></code> is <code class="display"><span class="extract-syntax">NULL</span></code> then it follows that <code class="display"><span class="extract-syntax">prev-&gt;on_success</span></code> is <code class="display"><span class="extract-syntax">NULL</span></code>, since
-this is how <code class="display"><span class="extract-syntax">pos</span></code> was calculated; so to add a new terminal node we simply add
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-taa.html#SP2">&#167;2</a> (twice), <a href="4-taa.html#SP2_2">&#167;2.2</a>, <a href="4-taa.html#SP2_3">&#167;2.3</a>.</li></ul><p class="inwebparagraph"><a id="SP2_5"></a><b>&#167;2.5.  </b>If <span class="extract"><span class="extract-syntax">pos</span></span> is <span class="extract"><span class="extract-syntax">NULL</span></span> then it follows that <span class="extract"><span class="extract-syntax">prev-&gt;on_success</span></span> is <span class="extract"><span class="extract-syntax">NULL</span></span>, since
+this is how <span class="extract"><span class="extract-syntax">pos</span></span> was calculated; so to add a new terminal node we simply add
 it there.
 </p>
 

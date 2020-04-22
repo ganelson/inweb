@@ -47,7 +47,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="8-bf.html#SP1">&#167;1. About build files</a></li><li><a href="8-bf.html#SP5">&#167;5. Bibliographic implications</a></li><li><a href="8-bf.html#SP7">&#167;7. Advancing</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. About build files. </b>When we read a web, we look for a file in it called <code class="display"><span class="extract-syntax">build.txt</span></code>. If no such
+<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. About build files. </b>When we read a web, we look for a file in it called <span class="extract"><span class="extract-syntax">build.txt</span></span>. If no such
 file exists, we look for the same thing in the current working directory.
 </p>
 
@@ -136,7 +136,7 @@ called even if no build file had ever been found, so it's quite legal for
 the Contents page to specify all of this.
 </p>
 
-<p class="inwebparagraph">If no error occurs, then the expansion <code class="display"><span class="extract-syntax">[[Semantic Version Number]]</span></code> is
+<p class="inwebparagraph">If no error occurs, then the expansion <span class="extract"><span class="extract-syntax">[[Semantic Version Number]]</span></span> is
 guaranteed to produce a semver-legal version number.
 </p>
 
@@ -184,8 +184,8 @@ number if we find that the date has changed.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>The standard date format we use is "26 February 2018". If the contents of
-<code class="display"><span class="extract-syntax">dateline</span></code> match today's date in this format, we return <code class="display"><span class="extract-syntax">TRUE</span></code>; otherwise we
-rewrite <code class="display"><span class="extract-syntax">dateline</span></code> to today and return <code class="display"><span class="extract-syntax">FALSE</span></code>.
+<span class="extract"><span class="extract-syntax">dateline</span></span> match today's date in this format, we return <span class="extract"><span class="extract-syntax">TRUE</span></span>; otherwise we
+rewrite <span class="extract"><span class="extract-syntax">dateline</span></span> to today and return <span class="extract"><span class="extract-syntax">FALSE</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -204,11 +204,11 @@ rewrite <code class="display"><span class="extract-syntax">dateline</span></code
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">today</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Traditional Inform build codes are four-character, e.g., <code class="display"><span class="extract-syntax">3Q27</span></code>. Here, we
+</pre><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Traditional Inform build codes are four-character, e.g., <span class="extract"><span class="extract-syntax">3Q27</span></span>. Here, we
 read such a code and increase it by one. The two-digit code at the back is
-incremented, but rolls around from <code class="display"><span class="extract-syntax">99</span></code> to <code class="display"><span class="extract-syntax">01</span></code>, in which case the letter is
-advanced, except that <code class="display"><span class="extract-syntax">I</span></code> and <code class="display"><span class="extract-syntax">O</span></code> are skipped, and if the letter passes <code class="display"><span class="extract-syntax">Z</span></code>
-then it rolls back around to <code class="display"><span class="extract-syntax">A</span></code> and the initial digit is incremented.
+incremented, but rolls around from <span class="extract"><span class="extract-syntax">99</span></span> to <span class="extract"><span class="extract-syntax">01</span></span>, in which case the letter is
+advanced, except that <span class="extract"><span class="extract-syntax">I</span></span> and <span class="extract"><span class="extract-syntax">O</span></span> are skipped, and if the letter passes <span class="extract"><span class="extract-syntax">Z</span></span>
+then it rolls back around to <span class="extract"><span class="extract-syntax">A</span></span> and the initial digit is incremented.
 </p>
 
 <p class="inwebparagraph">This allows for 21384 distinct build codes, enough to use one each day for

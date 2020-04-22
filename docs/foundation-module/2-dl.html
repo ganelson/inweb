@@ -58,16 +58,16 @@ judiciously placed print statements" (Brian Kernighan).
 </p>
 
 <p class="inwebparagraph">To write to the debugging log, we must in principle write to a stream called
-<code class="display"><span class="extract-syntax">DL</span></code>. In practice we more often use a pair of pseudo-functions called <code class="display"><span class="extract-syntax">LOG</span></code>
-and <code class="display"><span class="extract-syntax">LOGIF</span></code>, which are macros defined in the section on Streams. For
+<span class="extract"><span class="extract-syntax">DL</span></span>. In practice we more often use a pair of pseudo-functions called <span class="extract"><span class="extract-syntax">LOG</span></span>
+and <span class="extract"><span class="extract-syntax">LOGIF</span></span>, which are macros defined in the section on Streams. For
 instance, the pseudo-function-call
 </p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    LOGIF(WHATEVER, "Heading %d skipped\n", n);</span>
 </pre>
-<p class="inwebparagraph">prints the line in question to the debugging log only if the aspect <code class="display"><span class="extract-syntax">WHATEVER</span></code>
-is currently switched on. Plain <code class="display"><span class="extract-syntax">LOG</span></code> does the same, but unconditionally.
+<p class="inwebparagraph">prints the line in question to the debugging log only if the aspect <span class="extract"><span class="extract-syntax">WHATEVER</span></span>
+is currently switched on. Plain <span class="extract"><span class="extract-syntax">LOG</span></span> does the same, but unconditionally.
 </p>
 
 
@@ -96,8 +96,8 @@ length.
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>The structure debugging_aspect is accessed in 8/bdfw and here.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And now we must define all those constants and names. Note that the
-<code class="display"><span class="extract-syntax">TRUE</span></code> or <code class="display"><span class="extract-syntax">FALSE</span></code> settings below are the defaults, and apply unless the
-source says otherwise. The <code class="display"><span class="extract-syntax">alternate</span></code> settings are those used in
+<span class="extract"><span class="extract-syntax">TRUE</span></span> or <span class="extract"><span class="extract-syntax">FALSE</span></span> settings below are the defaults, and apply unless the
+source says otherwise. The <span class="extract"><span class="extract-syntax">alternate</span></span> settings are those used in
 trace-sentences mode, that is, between asterisk sentences.
 </p>
 
@@ -155,11 +155,11 @@ behind the scenes; but such a log file is often buffered by the filing system,
 so that a sudden crash of Inform may result in the loss of recent data written to
 the log. Which is a pity, since this is exactly the most useful evidence as to
 the cause of the crash in the first place. Accordingly, we fairly often
-<code class="display"><span class="extract-syntax">fflush</span></code> the debug log file, forcing any buffered output to be written.
+<span class="extract"><span class="extract-syntax">fflush</span></span> the debug log file, forcing any buffered output to be written.
 </p>
 
-<p class="inwebparagraph">In this rest of this section, we always assume that <code class="display"><span class="extract-syntax">DL</span></code> is open. Note that it
-is possible this has been switched to be <code class="display"><span class="extract-syntax">stdout</span></code>, or even that it is
+<p class="inwebparagraph">In this rest of this section, we always assume that <span class="extract"><span class="extract-syntax">DL</span></span> is open. Note that it
+is possible this has been switched to be <span class="extract"><span class="extract-syntax">stdout</span></span>, or even that it is
 temporarily the sentence tracing file: but we don't care.
 </p>
 
@@ -255,12 +255,12 @@ debug log, and is used when errors occur.
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>We also want the ability to change debugging log settings from the command
 line; the command line form is derived from the textual form by replacing
-every space with a hyphen: for instance, <code class="display"><span class="extract-syntax">property-provision</span></code>.
+every space with a hyphen: for instance, <span class="extract"><span class="extract-syntax">property-provision</span></span>.
 </p>
 
-<p class="inwebparagraph">We also recognise <code class="display"><span class="extract-syntax">no-property-provision</span></code> to switch this off again,
-<code class="display"><span class="extract-syntax">everything</span></code> and <code class="display"><span class="extract-syntax">nothing</span></code> with the obvious meanings, and <code class="display"><span class="extract-syntax">list</span></code> to
-print out a list of debugging aspects to <code class="display"><span class="extract-syntax">STDOUT</span></code>.
+<p class="inwebparagraph">We also recognise <span class="extract"><span class="extract-syntax">no-property-provision</span></span> to switch this off again,
+<span class="extract"><span class="extract-syntax">everything</span></span> and <span class="extract"><span class="extract-syntax">nothing</span></span> with the obvious meanings, and <span class="extract"><span class="extract-syntax">list</span></span> to
+print out a list of debugging aspects to <span class="extract"><span class="extract-syntax">STDOUT</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">

@@ -48,7 +48,7 @@ function togglePopup(material_id) {
 <ul class="toc"><li><a href="3-em.html#SP1">&#167;1. Errors handler</a></li><li><a href="3-em.html#SP2">&#167;2. Error messages</a></li><li><a href="3-em.html#SP4">&#167;4. Deliberately crashing</a></li><li><a href="3-em.html#SP5">&#167;5. Survivable errors</a></li></ul><hr class="tocbar">
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Errors handler. </b>The user can provide a routine to deal with error messages before they're
-issued. If this returns <code class="display"><span class="extract-syntax">FALSE</span></code>, nothing is printed to <code class="display"><span class="extract-syntax">stderr</span></code>.
+issued. If this returns <span class="extract"><span class="extract-syntax">FALSE</span></span>, nothing is printed to <span class="extract"><span class="extract-syntax">stderr</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -136,7 +136,7 @@ the temporary stream, not some other string which might need fresh allocation.
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Deliberately crashing. </b>It's sometimes convenient to get a backtrace from the debugger when an error
 occurs unexpectedly, and one way to do that is to force a division by zero.
-(This is only enabled by <code class="display"><span class="extract-syntax">-crash</span></code> at the command line and is for debugging only.)
+(This is only enabled by <span class="extract"><span class="extract-syntax">-crash</span></span> at the command line and is for debugging only.)
 </p>
 
 <pre class="displayed-code all-displayed-code">

@@ -245,11 +245,7 @@ to a given width, into the text at the current position.
 	if (C->in_code) WRITE("}");
 
 @<Render toc@> =
-	weave_toc_node *C = RETRIEVE_POINTER_weave_toc_node(N->content);
-	if (trs->wv->pattern->show_abbrevs)
-		WRITE("\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont %S.", C->text1);
-	else
-		WRITE("\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont ");
+	WRITE("\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont ");
 	for (tree_node *M = N->child; M; M = M->next) {
 		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) trs, L+1);
 		if (M->next) WRITE("; ");
@@ -377,10 +373,7 @@ void TeX::toc(weave_format *self, text_stream *OUT, weave_order *wv, int stage,
 	text_stream *text1, text_stream *text2, paragraph *P) {
 	switch (stage) {
 		case 1:
-			if (wv->pattern->show_abbrevs)
-				WRITE("\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont %S.", text1);
-			else
-				WRITE("\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont ");
+			WRITE("\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont ");
 			break;
 		case 2:
 			WRITE("; ");
@@ -402,7 +395,6 @@ void TeX::chapter_title_page(weave_format *self, text_stream *OUT, weave_order *
 	LOOP_OVER_LINKED_LIST(S, section, C->sections) {
 		WRITE("\\smallskip\\noindent ");
 		if (wv->pattern->number_sections) WRITE("%d. ", S->printed_number);
-		if (wv->pattern->show_abbrevs) WRITE("|%S|: ", S->md->sect_range);
 		WRITE("{\\it %S}\\qquad\n%S", S->md->sect_title, S->sect_purpose);
 	}
 }
@@ -426,7 +418,7 @@ void TeX::paragraph_heading(weave_format *self, text_stream *OUT, weave_order *w
 		Str::clear(modified);
 		WRITE_TO(modified, "{\\sinchhigh %S}\\quad %S", mr.exp[0], mr.exp[1]);
 	}
-	if ((weight == 2) && ((S->md->is_a_singleton) || (wv->pattern->show_abbrevs == FALSE)))
+	if (weight == 2)
 		WRITE("\\%S{%S}{%S}{%S}{\\%S}{%S}%%\n",
 			TeX_macro, N, modified, mark, orn, NULL);
 	else
@@ -492,8 +484,7 @@ in TeX's deeply peculiar font encoding system.
 	}
 	if (weight == 2) {
 		Str::copy(sectionmark, S->md->sect_title);
-		if (wv->pattern->show_abbrevs == FALSE) Str::clear(chaptermark);
-		else if (Str::len(S->md->sect_range) > 0) Str::copy(chaptermark, S->md->sect_range);
+		Str::clear(chaptermark);
 		if (Str::len(chaptermark) > 0) {
 			Str::clear(sectionmark);
 			WRITE_TO(sectionmark, " - %S", S->md->sect_title);

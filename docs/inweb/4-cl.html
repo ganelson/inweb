@@ -87,10 +87,10 @@ The structure definitions in this Inweb web all take the required form,
 of course, and provide many more examples.
 </p>
 
-<p class="inwebparagraph">Note that a <code class="display"><span class="extract-syntax">fruit</span></code> structure contains a <code class="display"><span class="extract-syntax">pip</span></code> structure (in fact, five of
-them), but only contains pointers to <code class="display"><span class="extract-syntax">tree_species</span></code> structures and itself.
-C requires therefore that the structure definition for <code class="display"><span class="extract-syntax">pip</span></code> must occur
-earlier in the code than that for <code class="display"><span class="extract-syntax">fruit</span></code>. This is a nuisance, so Inweb
+<p class="inwebparagraph">Note that a <span class="extract"><span class="extract-syntax">fruit</span></span> structure contains a <span class="extract"><span class="extract-syntax">pip</span></span> structure (in fact, five of
+them), but only contains pointers to <span class="extract"><span class="extract-syntax">tree_species</span></span> structures and itself.
+C requires therefore that the structure definition for <span class="extract"><span class="extract-syntax">pip</span></span> must occur
+earlier in the code than that for <span class="extract"><span class="extract-syntax">fruit</span></span>. This is a nuisance, so Inweb
 takes care of it automatically.
 </p>
 
@@ -128,7 +128,7 @@ the sake of an illustrative example, let's suppose that line is:
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    unsigned long long int *val;</span>
 </pre>
-<p class="inwebparagraph">We need to extract the element name, <code class="display"><span class="extract-syntax">val</span></code>, and make a note of it.
+<p class="inwebparagraph">We need to extract the element name, <span class="extract"><span class="extract-syntax">val</span></span>, and make a note of it.
 </p>
 
 
@@ -155,7 +155,7 @@ the sake of an illustrative example, let's suppose that line is:
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1">&#167;2.1</a>.</li></ul><p class="inwebparagraph"><a id="SP2_1_1_1"></a><b>&#167;2.1.1.1.  </b>The following reduces <code class="display"><span class="extract-syntax">unsigned long long int *val;</span></code> to just <code class="display"><span class="extract-syntax">int *val;</span></code>.
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1">&#167;2.1</a>.</li></ul><p class="inwebparagraph"><a id="SP2_1_1_1"></a><b>&#167;2.1.1.1.  </b>The following reduces <span class="extract"><span class="extract-syntax">unsigned long long int *val;</span></span> to just <span class="extract"><span class="extract-syntax">int *val;</span></span>.
 </p>
 
 
@@ -177,8 +177,8 @@ the sake of an illustrative example, let's suppose that line is:
 <span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1_1">&#167;2.1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP2_1_1_2"></a><b>&#167;2.1.1.2.  </b>At this point <code class="display"><span class="extract-syntax">p</span></code> has been reduced to <code class="display"><span class="extract-syntax">int *val;</span></code>, but the following moves
-<code class="display"><span class="extract-syntax">pos</span></code> to point to the <code class="display"><span class="extract-syntax">*</span></code>:
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1_1">&#167;2.1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP2_1_1_2"></a><b>&#167;2.1.1.2.  </b>At this point <span class="extract"><span class="extract-syntax">p</span></span> has been reduced to <span class="extract"><span class="extract-syntax">int *val;</span></span>, but the following moves
+<span class="extract"><span class="extract-syntax">pos</span></span> to point to the <span class="extract"><span class="extract-syntax">*</span></span>:
 </p>
 
 
@@ -189,7 +189,7 @@ the sake of an illustrative example, let's suppose that line is:
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">)) &amp;&amp; (</span><a href="../foundation-module/4-chr.html#SP2" class="function-link"><span class="function-syntax">Characters::is_space_or_tab</span></a><span class="plain-syntax">(</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">)) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::forward</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1_1">&#167;2.1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP2_1_1_3"></a><b>&#167;2.1.1.3.  </b>And this moves it past the <code class="display"><span class="extract-syntax">*</span></code> to point to the <code class="display"><span class="extract-syntax">v</span></code> in <code class="display"><span class="extract-syntax">int *val;</span></code>:
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1_1">&#167;2.1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP2_1_1_3"></a><b>&#167;2.1.1.3.  </b>And this moves it past the <span class="extract"><span class="extract-syntax">*</span></span> to point to the <span class="extract"><span class="extract-syntax">v</span></span> in <span class="extract"><span class="extract-syntax">int *val;</span></span>:
 </p>
 
 
@@ -200,8 +200,8 @@ the sake of an illustrative example, let's suppose that line is:
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><a href="../foundation-module/4-chr.html#SP2" class="function-link"><span class="function-syntax">Characters::is_space_or_tab</span></a><span class="plain-syntax">(</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">))) || (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">'*'</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">        (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">'('</span><span class="plain-syntax">) || (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">')'</span><span class="plain-syntax">)) </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::forward</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1_1">&#167;2.1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP2_1_1_4"></a><b>&#167;2.1.1.4.  </b>This then first copies the substring <code class="display"><span class="extract-syntax">val;</span></code> into <code class="display"><span class="extract-syntax">elname</span></code>, then cuts that
-down to just the identifier characters at the front, i.e., to <code class="display"><span class="extract-syntax">val</span></code>.
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1_1">&#167;2.1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP2_1_1_4"></a><b>&#167;2.1.1.4.  </b>This then first copies the substring <span class="extract"><span class="extract-syntax">val;</span></span> into <span class="extract"><span class="extract-syntax">elname</span></span>, then cuts that
+down to just the identifier characters at the front, i.e., to <span class="extract"><span class="extract-syntax">val</span></span>.
 </p>
 
 
@@ -212,14 +212,14 @@ down to just the identifier characters at the front, i.e., to <code class="displ
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><a href="../foundation-module/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::substr</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">elname</span><span class="plain-syntax">, </span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><a href="../foundation-module/4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">elname</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%i+)%c*"</span><span class="plain-syntax">)) </span><a href="../foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">elname</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1_1">&#167;2.1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2. Structure dependency. </b>We say that S depends on T if <code class="display"><span class="extract-syntax">struct S</span></code> has an element whose type is
-<code class="display"><span class="extract-syntax">struct T</span></code>. That matters because if so then <code class="display"><span class="extract-syntax">struct T</span></code> has to be defined
-before <code class="display"><span class="extract-syntax">struct S</span></code> in the tangled output.
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1_1">&#167;2.1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2. Structure dependency. </b>We say that S depends on T if <span class="extract"><span class="extract-syntax">struct S</span></span> has an element whose type is
+<span class="extract"><span class="extract-syntax">struct T</span></span>. That matters because if so then <span class="extract"><span class="extract-syntax">struct T</span></span> has to be defined
+before <span class="extract"><span class="extract-syntax">struct S</span></span> in the tangled output.
 </p>
 
-<p class="inwebparagraph">It's important to note that <code class="display"><span class="extract-syntax">struct S</span></code> merely having a member of type
-<code class="display"><span class="extract-syntax">struct *T</span></code> does not create a dependency. In the code below, because <code class="display"><span class="extract-syntax">%i</span></code>
-matches only identifier characters and <code class="display"><span class="extract-syntax">*</span></code> is not one of those, a line like
+<p class="inwebparagraph">It's important to note that <span class="extract"><span class="extract-syntax">struct S</span></span> merely having a member of type
+<span class="extract"><span class="extract-syntax">struct *T</span></span> does not create a dependency. In the code below, because <span class="extract"><span class="extract-syntax">%i</span></span>
+matches only identifier characters and <span class="extract"><span class="extract-syntax">*</span></span> is not one of those, a line like
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -256,7 +256,7 @@ matches only identifier characters and <code class="display"><span class="extrac
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">str</span><span class="plain-syntax"> != </span><span class="identifier-syntax">current_str</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">used_structure</span><span class="plain-syntax">, </span><span class="identifier-syntax">str</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">structure_name</span><span class="plain-syntax">)))</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">str</span><span class="plain-syntax">, </span><span class="reserved-syntax">language_type</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_str</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">incorporates</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_2">&#167;2.2</a>.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Functions. </b>This time, we will need to keep track of <code class="display"><span class="extract-syntax">#ifdef</span></code> and <code class="display"><span class="extract-syntax">#endif</span></code> pairs
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_2">&#167;2.2</a>.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Functions. </b>This time, we will need to keep track of <span class="extract"><span class="extract-syntax">#ifdef</span></span> and <span class="extract"><span class="extract-syntax">#endif</span></span> pairs
 in the source. This matters because we will want to predeclare functions;
 but if functions are declared in conditional compilation, then their
 predeclarations have to be made under the same conditions.
@@ -314,8 +314,8 @@ source line being scanned lies within.
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    type identifier(args...</span>
 </pre>
-<p class="inwebparagraph">where we parse <code class="display"><span class="extract-syntax">type</span></code> only minimally. In InC (only), the identifier can
-contain namespace dividers written <code class="display"><span class="extract-syntax">::</span></code>. Function declarations, we will assume,
+<p class="inwebparagraph">where we parse <span class="extract"><span class="extract-syntax">type</span></span> only minimally. In InC (only), the identifier can
+contain namespace dividers written <span class="extract"><span class="extract-syntax">::</span></span>. Function declarations, we will assume,
 always begin on column 1 of their source files, and we expect them to take
 modern ANSI C style, not the long-deprecated late 1970s C style.
 </p>
@@ -349,7 +349,7 @@ modern ANSI C style, not the long-deprecated late 1970s C style.
 <span class="plain-syntax">    }</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP3">&#167;3</a>.</li></ul><p class="inwebparagraph"><a id="SP3_2_1"></a><b>&#167;3.2.1.  </b>C has a whole soup of reserved words applying to types, but most of them
 can't apply to the return type of a function. We do, however, iterate so that
-forms like <code class="display"><span class="extract-syntax">static long long int</span></code> will work.
+forms like <span class="extract"><span class="extract-syntax">static long long int</span></span> will work.
 </p>
 
 
@@ -392,9 +392,9 @@ forms like <code class="display"><span class="extract-syntax">static long long i
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">World::Subjects::make_adj_const_domain</span><span class="plain-syntax">(</span><span class="identifier-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">infs</span><span class="plain-syntax">,|</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nc</span><span class="plain-syntax">, </span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn</span><span class="plain-syntax">) {|</span>
 </pre>
-<p class="inwebparagraph">Having read the first line, <code class="display"><span class="extract-syntax">arguments</span></code> would contain <code class="display"><span class="extract-syntax">inference_subject *infs,</span></code>
+<p class="inwebparagraph">Having read the first line, <span class="extract"><span class="extract-syntax">arguments</span></span> would contain <span class="extract"><span class="extract-syntax">inference_subject *infs,</span></span>
 and would thus be incomplete. We continue across subsequent lines until we
-reach an open brace <code class="display"><span class="extract-syntax">{</span></code>.
+reach an open brace <span class="extract"><span class="extract-syntax">{</span></span>.
 </p>
 
 
@@ -425,7 +425,7 @@ reach an open brace <code class="display"><span class="extract-syntax">{</span><
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="../foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::truncate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arguments</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP3_2_2">&#167;3.2.2</a>.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Subcategorisation. </b>The following is called after the parser gives every line in the web a
 category; we can, if we wish, change that for a more exotic one. We simply
-look for a <code class="display"><span class="extract-syntax">#include</span></code> of one of the ANSI C standard libraries.
+look for a <span class="extract"><span class="extract-syntax">#include</span></span> of one of the ANSI C standard libraries.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -447,11 +447,11 @@ look for a <code class="display"><span class="extract-syntax">#include</span></c
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Tangling extras. </b>"Additional early matter" is used for the inclusions of the ANSI library
 files. We need to do that early, because otherwise types declared in them
-(such as <code class="display"><span class="extract-syntax">FILE</span></code>) won't exist in time for the structure definitions we will
+(such as <span class="extract"><span class="extract-syntax">FILE</span></span>) won't exist in time for the structure definitions we will
 be tangling next.
 </p>
 
-<p class="inwebparagraph">It might seem reasonable to move all <code class="display"><span class="extract-syntax">#include</span></code> files up front this way,
+<p class="inwebparagraph">It might seem reasonable to move all <span class="extract"><span class="extract-syntax">#include</span></span> files up front this way,
 not just the ANSI ones. But that would defeat any conditional compilation
 around the inclusions; which Inform (for instance) needs in order to make
 platform-specific details to handle directories without POSIX in Windows.
@@ -482,7 +482,7 @@ structures.
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Predeclare the functions</span> <span class="named-paragraph-number">6.4</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP6_1"></a><b>&#167;6.1.  </b>A "simple typedef" here means one that is aliasing something other than
-a structure: for example <code class="display"><span class="extract-syntax">typedef unsigned int uint;</span></code> would be a simple typedef.
+a structure: for example <span class="extract"><span class="extract-syntax">typedef unsigned int uint;</span></span> would be a simple typedef.
 </p>
 
 
@@ -504,8 +504,8 @@ a structure: for example <code class="display"><span class="extract-syntax">type
 precede outer, but we need to be careful to be terminating if the source
 code we're given is not well founded because of an error by its programmer:
 for example, that structure A contains B contains C contains A. We do this
-with the <code class="display"><span class="extract-syntax">tangled</span></code> flag, which is <code class="display"><span class="extract-syntax">FALSE</span></code> if a structure hasn't been
-started yet, <code class="display"><span class="extract-syntax">NOT_APPLICABLE</span></code> if it's in progress, and <code class="display"><span class="extract-syntax">TRUE</span></code> if it's
+with the <span class="extract"><span class="extract-syntax">tangled</span></span> flag, which is <span class="extract"><span class="extract-syntax">FALSE</span></span> if a structure hasn't been
+started yet, <span class="extract"><span class="extract-syntax">NOT_APPLICABLE</span></span> if it's in progress, and <span class="extract"><span class="extract-syntax">TRUE</span></span> if it's
 finished.
 </p>
 
@@ -541,7 +541,7 @@ finished.
 <span class="plain-syntax">    </span><a href="2-tgs.html#SP7" class="function-link"><span class="function-syntax">Tags::close_ifdefs</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">str</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">structure_header_at</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_paragraph</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP6_4"></a><b>&#167;6.4.  </b>Functions are rather easier to deal with. In general, if a function was
-defined within some number of nested <code class="display"><span class="extract-syntax">#ifdef</span></code> or <code class="display"><span class="extract-syntax">#ifndef</span></code> directives, then
+defined within some number of nested <span class="extract"><span class="extract-syntax">#ifdef</span></span> or <span class="extract"><span class="extract-syntax">#ifndef</span></span> directives, then
 we reproduce those around the predeclaration: except, as a special trick,
 if the line contains a particular comment. For example:
 </p>

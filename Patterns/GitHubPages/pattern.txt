@@ -1,5 +1,5 @@
-from HTML
-format = HTML
-default-range = sections
-plugin GitHub
-plugin Breadcrumbs
+name: GitHubPages based on HTML
+format: HTML
+default range: sections
+plugin: GitHub
+plugin: Breadcrumbs

@@ -74,16 +74,16 @@ is composed to a single code point as E-acute.
 <pre class="definitions">
     <span class="definition-keyword">define</span> <span class="constant-syntax">NEWLINE_IN_STRING</span><span class="plain-syntax"> ((</span><span class="reserved-syntax">char</span><span class="plain-syntax">) </span><span class="constant-syntax">0x7f</span><span class="plain-syntax">) </span><span class="comment"> Within quoted text, all newlines are converted to this</span>
 </pre>
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The <code class="display"><span class="extract-syntax">text_stream</span></code> type began as a generalisation of the standard C library's
-<code class="display"><span class="extract-syntax">FILE</span></code>, and it is used in mostly similar ways. The user &mdash; the whole
-program outside of this section &mdash; deals only with <code class="display"><span class="extract-syntax">text_stream *</span></code> pointers to
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The <span class="extract"><span class="extract-syntax">text_stream</span></span> type began as a generalisation of the standard C library's
+<span class="extract"><span class="extract-syntax">FILE</span></span>, and it is used in mostly similar ways. The user &mdash; the whole
+program outside of this section &mdash; deals only with <span class="extract"><span class="extract-syntax">text_stream *</span></span> pointers to
 represent streams in use.
 </p>
 
 <p class="inwebparagraph">All stream handling is defined via macros. While many operations could be
-handled by ordinary functions, others cannot. <code class="display"><span class="extract-syntax">text_stream</span></code> cannot have exactly
-the semantics of <code class="display"><span class="extract-syntax">FILE</span></code> since we cannot rely on the host operating system
-to allocate and deallocate the structures behind <code class="display"><span class="extract-syntax">text_stream *</span></code> pointers; and
+handled by ordinary functions, others cannot. <span class="extract"><span class="extract-syntax">text_stream</span></span> cannot have exactly
+the semantics of <span class="extract"><span class="extract-syntax">FILE</span></span> since we cannot rely on the host operating system
+to allocate and deallocate the structures behind <span class="extract"><span class="extract-syntax">text_stream *</span></span> pointers; and
 we cannot use our own memory system, either, since we need stream handling
 to work both before the memory allocator starts and after it has finished.
 Our macros allow us to hide all this. Besides that, a macro approach makes it
@@ -95,15 +95,15 @@ implementation is the second stab at it.)
 with code ordering if we leave them until later. They are written in the
 old-fashioned way, for compatibility with old copies of GCC, and avoid the
 need for comma deletion around empty tokens, as that is a point of
-incompatibility between implementations of the C preprocessor <code class="display"><span class="extract-syntax">cpp</span></code>. All the
+incompatibility between implementations of the C preprocessor <span class="extract"><span class="extract-syntax">cpp</span></span>. All the
 same, if you're porting this code, you may need to rewrite the macro with
-<code class="display"><span class="extract-syntax">...</span></code> in place of <code class="display"><span class="extract-syntax">args...</span></code> in the header, and then <code class="display"><span class="extract-syntax">__VA_ARGS__</span></code> in place
-of <code class="display"><span class="extract-syntax">args</span></code> in the definition: that being the modern way, apparently.
+<span class="extract"><span class="extract-syntax">...</span></span> in place of <span class="extract"><span class="extract-syntax">args...</span></span> in the header, and then <span class="extract"><span class="extract-syntax">__VA_ARGS__</span></span> in place
+of <span class="extract"><span class="extract-syntax">args</span></span> in the definition: that being the modern way, apparently.
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract-syntax">WRITE</span></code> is essentially <code class="display"><span class="extract-syntax">sprintf</span></code> and <code class="display"><span class="extract-syntax">fprintf</span></code> combined, since it prints
+<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">WRITE</span></span> is essentially <span class="extract"><span class="extract-syntax">sprintf</span></span> and <span class="extract"><span class="extract-syntax">fprintf</span></span> combined, since it prints
 formatted text to the current stream, which could be either a string or a
-file. <code class="display"><span class="extract-syntax">PRINT</span></code> does the same but to <code class="display"><span class="extract-syntax">STDOUT</span></code>, and is thus essentially <code class="display"><span class="extract-syntax">printf</span></code>.
+file. <span class="extract"><span class="extract-syntax">PRINT</span></span> does the same but to <span class="extract"><span class="extract-syntax">STDOUT</span></span>, and is thus essentially <span class="extract"><span class="extract-syntax">printf</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -120,8 +120,8 @@ file. <code class="display"><span class="extract-syntax">PRINT</span></code> doe
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The main purpose of many functions is to write textual material to some
 file. Such functions almost always have a special argument in their
-prototypes: <code class="display"><span class="extract-syntax">OUTPUT_STREAM</span></code>. This tells them where to pipe their output, which
-is always to a "current stream" called <code class="display"><span class="extract-syntax">OUT</span></code>. What this leads to, and who will
+prototypes: <span class="extract"><span class="extract-syntax">OUTPUT_STREAM</span></span>. This tells them where to pipe their output, which
+is always to a "current stream" called <span class="extract"><span class="extract-syntax">OUT</span></span>. What this leads to, and who will
 see that it's properly opened and closed, are not their concern.
 </p>
 
@@ -129,19 +129,19 @@ see that it's properly opened and closed, are not their concern.
 <pre class="definitions">
     <span class="definition-keyword">define</span> <span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> </span><span class="comment"> used only as a function prototype argument</span>
 </pre>
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Three output streams are always open. One is <code class="display"><span class="extract-syntax">NULL</span></code>, that is, its value
-as a <code class="display"><span class="extract-syntax">text_stream *</span></code> pointer is <code class="display"><span class="extract-syntax">NULL</span></code>, the generic C null pointer. This represents
-an oubliette: it is entirely valid to use it, but output sent to <code class="display"><span class="extract-syntax">NULL</span></code> will
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Three output streams are always open. One is <span class="extract"><span class="extract-syntax">NULL</span></span>, that is, its value
+as a <span class="extract"><span class="extract-syntax">text_stream *</span></span> pointer is <span class="extract"><span class="extract-syntax">NULL</span></span>, the generic C null pointer. This represents
+an oubliette: it is entirely valid to use it, but output sent to <span class="extract"><span class="extract-syntax">NULL</span></span> will
 never be seen again.
 </p>
 
-<p class="inwebparagraph">The others are <code class="display"><span class="extract-syntax">STDOUT</span></code> and <code class="display"><span class="extract-syntax">STDERR</span></code>. As the names suggest these are wrappers
-for <code class="display"><span class="extract-syntax">stdout</span></code> and <code class="display"><span class="extract-syntax">stderr</span></code>, the standard console output and error messages
+<p class="inwebparagraph">The others are <span class="extract"><span class="extract-syntax">STDOUT</span></span> and <span class="extract"><span class="extract-syntax">STDERR</span></span>. As the names suggest these are wrappers
+for <span class="extract"><span class="extract-syntax">stdout</span></span> and <span class="extract"><span class="extract-syntax">stderr</span></span>, the standard console output and error messages
 "files" provided by the C library.
 </p>
 
-<p class="inwebparagraph">We should always use <code class="display"><span class="extract-syntax">PRINT(...)</span></code> instead of <code class="display"><span class="extract-syntax">printf(...)</span></code> for console output,
-so that there are no uses of <code class="display"><span class="extract-syntax">printf</span></code> anywhere in the program.
+<p class="inwebparagraph">We should always use <span class="extract"><span class="extract-syntax">PRINT(...)</span></span> instead of <span class="extract"><span class="extract-syntax">printf(...)</span></span> for console output,
+so that there are no uses of <span class="extract"><span class="extract-syntax">printf</span></span> anywhere in the program.
 </p>
 
 
@@ -149,10 +149,10 @@ so that there are no uses of <code class="display"><span class="extract-syntax">
     <span class="definition-keyword">define</span> <span class="constant-syntax">STDOUT</span><span class="plain-syntax"> </span><a href="2-str.html#SP22" class="function-link"><span class="function-syntax">Streams::get_stdout</span></a><span class="plain-syntax">()</span>
     <span class="definition-keyword">define</span> <span class="constant-syntax">STDERR</span><span class="plain-syntax"> </span><a href="2-str.html#SP23" class="function-link"><span class="function-syntax">Streams::get_stderr</span></a><span class="plain-syntax">()</span>
 </pre>
-<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b><code class="display"><span class="extract-syntax">PUT</span></code> and <code class="display"><span class="extract-syntax">PUT_TO</span></code> similarly print single characters, which are
-specified as unsigned integer values. In practice, <code class="display"><span class="extract-syntax">WRITE_TO</span></code> and
-<code class="display"><span class="extract-syntax">PUT_TO</span></code> are seldom needed because there is almost always only one
-stream of interest at a time &mdash; <code class="display"><span class="extract-syntax">OUT</span></code>, the current stream.
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b><span class="extract"><span class="extract-syntax">PUT</span></span> and <span class="extract"><span class="extract-syntax">PUT_TO</span></span> similarly print single characters, which are
+specified as unsigned integer values. In practice, <span class="extract"><span class="extract-syntax">WRITE_TO</span></span> and
+<span class="extract"><span class="extract-syntax">PUT_TO</span></span> are seldom needed because there is almost always only one
+stream of interest at a time &mdash; <span class="extract"><span class="extract-syntax">OUT</span></span>, the current stream.
 </p>
 
 
@@ -176,7 +176,7 @@ to become negative.
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Other streams only exist when explicitly created, or "opened". A function
 is only allowed to open a new stream if it can be proved that this stream will
 always subsequently be "closed". (Except for the possibility of the tool
-halting with an internal error, and therefore an <code class="display"><span class="extract-syntax">exit(1)</span></code>, while the stream
+halting with an internal error, and therefore an <span class="extract"><span class="extract-syntax">exit(1)</span></span>, while the stream
 is still open.) A stream can be opened and closed only once, and outside that
 time its state is undefined: it must not be used at all.
 </p>
@@ -184,18 +184,18 @@ time its state is undefined: it must not be used at all.
 <p class="inwebparagraph">The simplest way is to make a temporary stream, which can be used as a sort
 of clipboard. For instance, suppose we have to compile X before Y, but have to
 ensure Y comes before X in the eventual output. We create a temporary stream,
-compile X into it, then compile Y to <code class="display"><span class="extract-syntax">OUT</span></code>, then copy the temporary stream
-into <code class="display"><span class="extract-syntax">OUT</span></code> and dispose of it.
+compile X into it, then compile Y to <span class="extract"><span class="extract-syntax">OUT</span></span>, then copy the temporary stream
+into <span class="extract"><span class="extract-syntax">OUT</span></span> and dispose of it.
 </p>
 
 <p class="inwebparagraph">Temporary streams are always created in memory, held in C's local stack frame
-rather than allocated and freed via <code class="display"><span class="extract-syntax">malloc</span></code> and <code class="display"><span class="extract-syntax">free</span></code>. It must always be
-possible to prove that execution passes from <code class="display"><span class="extract-syntax">TEMPORARY_TEXT</span></code> to
-<code class="display"><span class="extract-syntax">DISCARD_TEXT</span></code>, unless the program makes a fatal exit in between. The stream,
-let's call it <code class="display"><span class="extract-syntax">TEMP</span></code>, exists only between those macros. We can legitimately
+rather than allocated and freed via <span class="extract"><span class="extract-syntax">malloc</span></span> and <span class="extract"><span class="extract-syntax">free</span></span>. It must always be
+possible to prove that execution passes from <span class="extract"><span class="extract-syntax">TEMPORARY_TEXT</span></span> to
+<span class="extract"><span class="extract-syntax">DISCARD_TEXT</span></span>, unless the program makes a fatal exit in between. The stream,
+let's call it <span class="extract"><span class="extract-syntax">TEMP</span></span>, exists only between those macros. We can legitimately
 create a temporary stream many times in one function (for instance inside a
-loop body) because each time <code class="display"><span class="extract-syntax">TEMP</span></code> is created as a new stream, overwriting the
-old one. <code class="display"><span class="extract-syntax">TEMP</span></code> is a different stream each time it is created, so it does
+loop body) because each time <span class="extract"><span class="extract-syntax">TEMP</span></span> is created as a new stream, overwriting the
+old one. <span class="extract"><span class="extract-syntax">TEMP</span></span> is a different stream each time it is created, so it does
 not violate the rule that every stream is opened and closed once only.
 </p>
 
@@ -210,14 +210,14 @@ not violate the rule that every stream is opened and closed once only.
 </pre>
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Otherwise we can create new globally existing streams, provided we take on
 the responsibility for seeing that they are properly closed. There are two
-choices: a stream in memory, allocated via <code class="display"><span class="extract-syntax">malloc</span></code> and freed by <code class="display"><span class="extract-syntax">free</span></code> when
-the stream is closed; or a file written to disc, opened via <code class="display"><span class="extract-syntax">fopen</span></code> and
-later closed by <code class="display"><span class="extract-syntax">fclose</span></code>. Files are always written in text mode, that is,
-<code class="display"><span class="extract-syntax">"w"</span></code> not <code class="display"><span class="extract-syntax">"wb"</span></code>, for those platforms where this makes a difference.
+choices: a stream in memory, allocated via <span class="extract"><span class="extract-syntax">malloc</span></span> and freed by <span class="extract"><span class="extract-syntax">free</span></span> when
+the stream is closed; or a file written to disc, opened via <span class="extract"><span class="extract-syntax">fopen</span></span> and
+later closed by <span class="extract"><span class="extract-syntax">fclose</span></span>. Files are always written in text mode, that is,
+<span class="extract"><span class="extract-syntax">"w"</span></span> not <span class="extract"><span class="extract-syntax">"wb"</span></span>, for those platforms where this makes a difference.
 </p>
 
 <p class="inwebparagraph">We use streams to handle all of our text file output, so there should be no
-calls to <code class="display"><span class="extract-syntax">fprintf</span></code> anywhere in the program except for binary files.
+calls to <span class="extract"><span class="extract-syntax">fprintf</span></span> anywhere in the program except for binary files.
 </p>
 
 
@@ -227,7 +227,7 @@ calls to <code class="display"><span class="extract-syntax">fprintf</span></code
     <span class="definition-keyword">define</span> <span class="identifier-syntax">STREAM_OPEN_IN_MEMORY</span><span class="plain-syntax">(</span><span class="identifier-syntax">new</span><span class="plain-syntax">) </span><a href="2-str.html#SP26" class="function-link"><span class="function-syntax">Streams::open_to_memory</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">new</span><span class="plain-syntax">, </span><span class="constant-syntax">20480</span><span class="plain-syntax">)</span>
     <span class="definition-keyword">define</span> <span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">stream</span><span class="plain-syntax">) </span><a href="2-str.html#SP34" class="function-link"><span class="function-syntax">Streams::close</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">stream</span><span class="plain-syntax">)</span>
 </pre>
-<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>The following operation is equivalent to <code class="display"><span class="extract-syntax">fflush</span></code> and makes it more likely
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>The following operation is equivalent to <span class="extract"><span class="extract-syntax">fflush</span></span> and makes it more likely
 (I put it no higher) that the text written to a stream has all actually been
 copied onto the disc, rather than sitting in some operating system buffer.
 This helps ensure that any debugging log is up to the minute, in case of
@@ -241,7 +241,7 @@ a memory stream is legal but does nothing.
 </pre>
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>A piece of information we can read for any stream is the number of characters
 written to it: its "extent". In fact, UTF-8 multi-byte encoding schemes,
-together with differing platform interpretations of C's <code class="display"><span class="extract-syntax">'\n'</span></code>, mean that this
+together with differing platform interpretations of C's <span class="extract"><span class="extract-syntax">'\n'</span></span>, mean that this
 extent is not necessarily either the final file size in bytes or the final
 number of human-readable characters. We will only actually use it to detect
 whether text has, or has not, been written to a stream between two points in
@@ -253,7 +253,7 @@ time, by seeing whether or not it has increased.
     <span class="definition-keyword">define</span> <span class="identifier-syntax">STREAM_EXTENT</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">) </span><a href="2-str.html#SP38" class="function-link"><span class="function-syntax">Streams::get_position</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>The remaining operations are available only for streams in memory (well, and
-for <code class="display"><span class="extract-syntax">NULL</span></code>, but of course they do nothing when applied to that). While they
+for <span class="extract"><span class="extract-syntax">NULL</span></span>, but of course they do nothing when applied to that). While they
 could be provided for file streams, this would be so inefficient that we will
 pretend it is impossible. Any function which might need to use one
 of these operations should open with the following sentinel macro:
@@ -284,24 +284,24 @@ stream).
     <span class="definition-keyword">define</span> <span class="identifier-syntax">STREAM_MOST_RECENT_CHAR</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">) </span><a href="2-str.html#SP39" class="function-link"><span class="function-syntax">Streams::latest</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">)</span>
     <span class="definition-keyword">define</span> <span class="identifier-syntax">STREAM_COPY</span><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">) </span><a href="2-str.html#SP42" class="function-link"><span class="function-syntax">Streams::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">)</span>
 </pre>
-<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>So much for the definition; now the implementation. Here is the <code class="display"><span class="extract-syntax">text_stream</span></code>
+<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>So much for the definition; now the implementation. Here is the <span class="extract"><span class="extract-syntax">text_stream</span></span>
 structure. Open memory streams are represented by structures where
-<code class="display"><span class="extract-syntax">write_to_memory</span></code> is valid, open file streams by those where <code class="display"><span class="extract-syntax">write_to_file</span></code>
-is valid. That counts every open stream except <code class="display"><span class="extract-syntax">NULL</span></code>, which of course
-doesn't point to a <code class="display"><span class="extract-syntax">text_stream</span></code> structure at all.
+<span class="extract"><span class="extract-syntax">write_to_memory</span></span> is valid, open file streams by those where <span class="extract"><span class="extract-syntax">write_to_file</span></span>
+is valid. That counts every open stream except <span class="extract"><span class="extract-syntax">NULL</span></span>, which of course
+doesn't point to a <span class="extract"><span class="extract-syntax">text_stream</span></span> structure at all.
 </p>
 
-<p class="inwebparagraph">Any stream can have <code class="display"><span class="extract-syntax">USES_XML_ESCAPES_STRF</span></code> set or cleared. When this is set, the
-XML (and HTML) escapes of <code class="display"><span class="extract-syntax">&amp;amp;</span></code> for ampersand, and <code class="display"><span class="extract-syntax">&amp;lt;</span></code> and <code class="display"><span class="extract-syntax">&amp;gt;</span></code> for
+<p class="inwebparagraph">Any stream can have <span class="extract"><span class="extract-syntax">USES_XML_ESCAPES_STRF</span></span> set or cleared. When this is set, the
+XML (and HTML) escapes of <span class="extract"><span class="extract-syntax">&amp;amp;</span></span> for ampersand, and <span class="extract"><span class="extract-syntax">&amp;lt;</span></span> and <span class="extract"><span class="extract-syntax">&amp;gt;</span></span> for
 angle brackets, will be used automatically on writing. By default this flag
 is clear, that is, no conversion is made.
 </p>
 
 
 <pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">MALLOCED_STRF</span><span class="plain-syntax">            </span><span class="constant-syntax">0x00000001</span><span class="plain-syntax"> </span><span class="comment"> was the </span><code class="display"><span class="extract-syntax">write_to_memory</span></code><span class="comment"> pointer claimed by </span><code class="display"><span class="extract-syntax">malloc</span></code><span class="comment">?</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">MALLOCED_STRF</span><span class="plain-syntax">            </span><span class="constant-syntax">0x00000001</span><span class="plain-syntax"> </span><span class="comment"> was the </span><span class="extract"><span class="extract-syntax">write_to_memory</span></span><span class="comment"> pointer claimed by </span><span class="extract"><span class="extract-syntax">malloc</span></span><span class="comment">?</span>
     <span class="definition-keyword">define</span> <span class="constant-syntax">USES_XML_ESCAPES_STRF</span><span class="plain-syntax">    </span><span class="constant-syntax">0x00000002</span><span class="plain-syntax"> </span><span class="comment"> see above</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">USES_LOG_ESCAPES_STRF</span><span class="plain-syntax">    </span><span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment"> </span><code class="display"><span class="extract-syntax">WRITE</span></code><span class="comment"> to this stream supports </span><code class="display"><span class="extract-syntax">$</span></code><span class="comment"> escapes</span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">USES_LOG_ESCAPES_STRF</span><span class="plain-syntax">    </span><span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment"> </span><span class="extract"><span class="extract-syntax">WRITE</span></span><span class="comment"> to this stream supports </span><span class="extract"><span class="extract-syntax">$</span></span><span class="comment"> escapes</span>
     <span class="definition-keyword">define</span> <span class="constant-syntax">INDENT_PENDING_STRF</span><span class="plain-syntax">      </span><span class="constant-syntax">0x00000008</span><span class="plain-syntax"> </span><span class="comment"> we have just ended a line, so further text should indent</span>
     <span class="definition-keyword">define</span> <span class="constant-syntax">FILE_ENCODING_ISO_STRF</span><span class="plain-syntax">   </span><span class="constant-syntax">0x00000010</span><span class="plain-syntax"> </span><span class="comment"> relevant only for file streams</span>
     <span class="definition-keyword">define</span> <span class="constant-syntax">FILE_ENCODING_UTF8_STRF</span><span class="plain-syntax">  </span><span class="constant-syntax">0x00000020</span><span class="plain-syntax"> </span><span class="comment"> relevant only for file streams</span>
@@ -317,12 +317,12 @@ is clear, that is, no conversion is made.
 </pre>
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stream_flags</span><span class="plain-syntax">; </span><span class="comment"> bitmap of the </span><code class="display"><span class="extract-syntax">*_STRF</span></code><span class="comment"> values above</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">write_to_file</span><span class="plain-syntax">; </span><span class="comment"> for an open stream, exactly one of these is </span><code class="display"><span class="extract-syntax">NULL</span></code>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">HTML_file_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_HTML</span><span class="plain-syntax">; </span><span class="comment"> relevant only to the </span><code class="display"><span class="extract-syntax">HTML::</span></code><span class="comment"> section</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stream_flags</span><span class="plain-syntax">; </span><span class="comment"> bitmap of the </span><span class="extract"><span class="extract-syntax">*_STRF</span></span><span class="comment"> values above</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">write_to_file</span><span class="plain-syntax">; </span><span class="comment"> for an open stream, exactly one of these is </span><span class="extract"><span class="extract-syntax">NULL</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">HTML_file_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_HTML</span><span class="plain-syntax">; </span><span class="comment"> relevant only to the </span><span class="extract"><span class="extract-syntax">HTML::</span></span><span class="comment"> section</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">write_to_memory</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">file_written</span><span class="plain-syntax">; </span><span class="comment"> ditto</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">chars_written</span><span class="plain-syntax">; </span><span class="comment"> number of characters sent, counting </span><code class="display"><span class="extract-syntax">\n</span></code><span class="comment"> as 1</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">chars_written</span><span class="plain-syntax">; </span><span class="comment"> number of characters sent, counting </span><span class="extract"><span class="extract-syntax">\n</span></span><span class="comment"> as 1</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">chars_capacity</span><span class="plain-syntax">; </span><span class="comment"> maximum number the stream can accept without claiming more resources</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stream_continues</span><span class="plain-syntax">; </span><span class="comment"> if one memory stream is extended by another</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">;</span>
@@ -333,10 +333,10 @@ is clear, that is, no conversion is made.
 <pre class="definitions">
     <span class="definition-keyword">define</span> <span class="identifier-syntax">STREAM_USES_UTF8</span><span class="plain-syntax">(</span><span class="identifier-syntax">x</span><span class="plain-syntax">) ((</span><span class="identifier-syntax">x</span><span class="plain-syntax">)?((</span><span class="identifier-syntax">x</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stream_flags</span><span class="plain-syntax">) &amp; </span><span class="constant-syntax">FILE_ENCODING_UTF8_STRF</span><span class="plain-syntax">):</span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 </pre>
-<p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>When text is stored at <code class="display"><span class="extract-syntax">write_to_memory</span></code>, it is kept as a zero-terminated C
+<p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>When text is stored at <span class="extract"><span class="extract-syntax">write_to_memory</span></span>, it is kept as a zero-terminated C
 wide string, with one word per Unicode code point. It turns out to be
 efficient to preserve a small margin of clear space at the end of the space,
-so out of the <code class="display"><span class="extract-syntax">chars_capacity</span></code> space, the following amount will be kept clear:
+so out of the <span class="extract"><span class="extract-syntax">chars_capacity</span></span> space, the following amount will be kept clear:
 </p>
 
 
@@ -373,7 +373,7 @@ truncated and we will shed no tears.
 <span class="plain-syntax">    </span><span class="identifier-syntax">stream</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">file_written</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>Any stream can have the following flag set or cleared. When this is set, the
-XML (and HTML) escapes of <code class="display"><span class="extract-syntax">&amp;amp;</span></code> for ampersand, and <code class="display"><span class="extract-syntax">&amp;lt;</span></code> and <code class="display"><span class="extract-syntax">&amp;gt;</span></code> for
+XML (and HTML) escapes of <span class="extract"><span class="extract-syntax">&amp;amp;</span></span> for ampersand, and <span class="extract"><span class="extract-syntax">&amp;lt;</span></span> and <span class="extract"><span class="extract-syntax">&amp;gt;</span></span> for
 angle brackets, will be used automatically on writing. By default this flag
 is clear, that is, no conversion is made.
 </p>
@@ -443,8 +443,8 @@ is clear, that is, no conversion is made.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">")"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP22"></a><b>&#167;22. Standard I/O wrappers. </b>The first call to <code class="display"><span class="extract-syntax">Streams::get_stdout()</span></code> creates a suitable wrapper for <code class="display"><span class="extract-syntax">stdout</span></code>
-and returns a <code class="display"><span class="extract-syntax">text_stream *</span></code> pointer to it; subsequent calls just return this wrapper.
+</pre><p class="inwebparagraph"><a id="SP22"></a><b>&#167;22. Standard I/O wrappers. </b>The first call to <span class="extract"><span class="extract-syntax">Streams::get_stdout()</span></span> creates a suitable wrapper for <span class="extract"><span class="extract-syntax">stdout</span></span>
+and returns a <span class="extract"><span class="extract-syntax">text_stream *</span></span> pointer to it; subsequent calls just return this wrapper.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -481,7 +481,7 @@ and returns a <code class="display"><span class="extract-syntax">text_stream *</
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;</span><span class="identifier-syntax">STDERR_struct</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP24"></a><b>&#167;24. Creating file streams. </b>Note that this can fail, if the host filing system refuses to open the file,
-so we return <code class="display"><span class="extract-syntax">TRUE</span></code> if and only if successful.
+so we return <span class="extract"><span class="extract-syntax">TRUE</span></span> if and only if successful.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -518,7 +518,7 @@ so we return <code class="display"><span class="extract-syntax">TRUE</span></cod
 <span class="plain-syntax">    </span><span class="identifier-syntax">total_file_writes</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP26"></a><b>&#167;26. Creating memory streams. </b>Here we have a choice. One option is to use <code class="display"><span class="extract-syntax">malloc</span></code> to allocate memory to hold
+</pre><p class="inwebparagraph"><a id="SP26"></a><b>&#167;26. Creating memory streams. </b>Here we have a choice. One option is to use <span class="extract"><span class="extract-syntax">malloc</span></span> to allocate memory to hold
 the text of the stream; this too can fail for host platform reasons, so again
 we return a success code.
 </p>
@@ -538,7 +538,7 @@ we return a success code.
 <span class="plain-syntax">    </span><span class="identifier-syntax">UNLOCK_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">mutex</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP27"></a><b>&#167;27.  </b>The other option avoids <code class="display"><span class="extract-syntax">malloc</span></code> by using specific storage already available.
+</pre><p class="inwebparagraph"><a id="SP27"></a><b>&#167;27.  </b>The other option avoids <span class="extract"><span class="extract-syntax">malloc</span></span> by using specific storage already available.
 If called validly, this cannot fail.
 </p>
 
@@ -636,7 +636,7 @@ page of the Unicode set, null terminated):
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C_string</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP30"></a><b>&#167;30.  </b>Unicode code points outside the first page are flattened to <code class="display"><span class="extract-syntax">'?'</span></code> in an
+</pre><p class="inwebparagraph"><a id="SP30"></a><b>&#167;30.  </b>Unicode code points outside the first page are flattened to <span class="extract"><span class="extract-syntax">'?'</span></span> in an
 ISO string:
 </p>
 
@@ -716,7 +716,7 @@ ISO string:
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP33"></a><b>&#167;33. Flush and close. </b>Note that flush is an operation which can be performed on any stream, including
-<code class="display"><span class="extract-syntax">NULL</span></code>:
+<span class="extract"><span class="extract-syntax">NULL</span></span>:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -724,7 +724,7 @@ ISO string:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">stream</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">stream</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">write_to_file</span><span class="plain-syntax">) </span><span class="identifier-syntax">fflush</span><span class="plain-syntax">(</span><span class="identifier-syntax">stream</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">write_to_file</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP34"></a><b>&#167;34.  </b>But closing is not allowed for <code class="display"><span class="extract-syntax">NULL</span></code> or the standard I/O wrappers:
+</pre><p class="inwebparagraph"><a id="SP34"></a><b>&#167;34.  </b>But closing is not allowed for <span class="extract"><span class="extract-syntax">NULL</span></span> or the standard I/O wrappers:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -746,7 +746,7 @@ was supplied by our client; it only needs freeing if we were the ones who
 allocated it.
 </p>
 
-<p class="inwebparagraph">Inscrutably, <code class="display"><span class="extract-syntax">fclose</span></code> returns <code class="display"><span class="extract-syntax">EOF</span></code> to report any failure.
+<p class="inwebparagraph">Inscrutably, <span class="extract"><span class="extract-syntax">fclose</span></span> returns <span class="extract"><span class="extract-syntax">EOF</span></span> to report any failure.
 </p>
 
 
@@ -765,12 +765,12 @@ allocated it.
 <span class="plain-syntax">    </span><span class="identifier-syntax">stream</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">write_to_file</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="2-str.html#SP34">&#167;34</a>.</li></ul><p class="inwebparagraph"><a id="SP34_2"></a><b>&#167;34.2.  </b>Note that we need do nothing to close a memory stream when the storage
 was supplied by our client; it only needs freeing if we were the ones who
-allocated it. <code class="display"><span class="extract-syntax">free</span></code> is a void function; in theory it cannot fail, if
+allocated it. <span class="extract"><span class="extract-syntax">free</span></span> is a void function; in theory it cannot fail, if
 supplied a valid argument.
 </p>
 
-<p class="inwebparagraph">We have to be very careful once we have called <code class="display"><span class="extract-syntax">free</span></code>, because that memory
-may well contain the <code class="display"><span class="extract-syntax">text_stream</span></code> structure to which <code class="display"><span class="extract-syntax">stream</span></code> points &mdash; see
+<p class="inwebparagraph">We have to be very careful once we have called <span class="extract"><span class="extract-syntax">free</span></span>, because that memory
+may well contain the <span class="extract"><span class="extract-syntax">text_stream</span></span> structure to which <span class="extract"><span class="extract-syntax">stream</span></span> points &mdash; see
 how continuations are made, below.
 </p>
 
@@ -786,7 +786,7 @@ how continuations are made, below.
 <span class="plain-syntax">        </span><a href="2-mmr.html#SP27" class="function-link"><span class="function-syntax">Memory::I7_free</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mem</span><span class="plain-syntax">, </span><span class="constant-syntax">STREAM_MREASON</span><span class="plain-syntax">, </span><span class="identifier-syntax">stream</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chars_capacity</span><span class="plain-syntax">*((</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax">)));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">stream</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-str.html#SP34">&#167;34</a>.</li></ul><p class="inwebparagraph"><a id="SP35"></a><b>&#167;35. Writing. </b>Our equivalent of <code class="display"><span class="extract-syntax">fputc</span></code> reads:
+</pre><ul class="endnotetexts"><li>This code is used in <a href="2-str.html#SP34">&#167;34</a>.</li></ul><p class="inwebparagraph"><a id="SP35"></a><b>&#167;35. Writing. </b>Our equivalent of <span class="extract"><span class="extract-syntax">fputc</span></span> reads:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -855,20 +855,20 @@ how continuations are made, below.
 <span class="plain-syntax">            </span><a href="2-str.html#SP35" class="function-link"><span class="function-syntax">Streams::putc</span></a><span class="plain-syntax">(</span><span class="character-syntax">' '</span><span class="plain-syntax">, </span><span class="identifier-syntax">first_stream</span><span class="plain-syntax">); </span><a href="2-str.html#SP35" class="function-link"><span class="function-syntax">Streams::putc</span></a><span class="plain-syntax">(</span><span class="character-syntax">' '</span><span class="plain-syntax">, </span><span class="identifier-syntax">first_stream</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-str.html#SP35">&#167;35</a>.</li></ul><p class="inwebparagraph"><a id="SP35_3"></a><b>&#167;35.3.  </b>The following is checked before any numerical <code class="display"><span class="extract-syntax">printf</span></code>-style escape is expanded
+</pre><ul class="endnotetexts"><li>This code is used in <a href="2-str.html#SP35">&#167;35</a>.</li></ul><p class="inwebparagraph"><a id="SP35_3"></a><b>&#167;35.3.  </b>The following is checked before any numerical <span class="extract"><span class="extract-syntax">printf</span></span>-style escape is expanded
 into the stream, or before any single character is written. Thus we cannot
 overrun our buffers unless the expansion of a numerical escape exceeds
-<code class="display"><span class="extract-syntax">SPACE_AT_END_OF_STREAM</span></code> plus 1 in size. Since no outside influence gets to
-choose what formatting escapes we use (so that <code class="display"><span class="extract-syntax">%3000d</span></code>, say, can't occur),
+<span class="extract"><span class="extract-syntax">SPACE_AT_END_OF_STREAM</span></span> plus 1 in size. Since no outside influence gets to
+choose what formatting escapes we use (so that <span class="extract"><span class="extract-syntax">%3000d</span></span>, say, can't occur),
 we can be pretty confident.
 </p>
 
 <p class="inwebparagraph">The interesting case occurs when we run out of memory in a memory stream.
-We make a continuation to a fresh <code class="display"><span class="extract-syntax">text_stream</span></code> structure, which points to twice
-as much memory as the original, allocated via <code class="display"><span class="extract-syntax">malloc</span></code>. (We will actually need
+We make a continuation to a fresh <span class="extract"><span class="extract-syntax">text_stream</span></span> structure, which points to twice
+as much memory as the original, allocated via <span class="extract"><span class="extract-syntax">malloc</span></span>. (We will actually need
 a little more memory than that because we also have to make room for the
-<code class="display"><span class="extract-syntax">text_stream</span></code> structure itself.) We then set <code class="display"><span class="extract-syntax">stream</span></code> to the <code class="display"><span class="extract-syntax">continuation</span></code>. Given
-that <code class="display"><span class="extract-syntax">malloc</span></code> was successful &mdash; and it must have been or we would have stopped
+<span class="extract"><span class="extract-syntax">text_stream</span></span> structure itself.) We then set <span class="extract"><span class="extract-syntax">stream</span></span> to the <span class="extract"><span class="extract-syntax">continuation</span></span>. Given
+that <span class="extract"><span class="extract-syntax">malloc</span></span> was successful &mdash; and it must have been or we would have stopped
 with a fatal error &mdash; the continuation is guaranteed to be large enough,
 since it's twice the size of the original, which itself was large enough to
 hold any escape sequence when opened.
@@ -934,11 +934,11 @@ be a little cautious about assuming that a mismatch means an error.
 <span class="plain-syntax">    </span><span class="identifier-syntax">stream</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stream_flags</span><span class="plain-syntax"> -= </span><span class="identifier-syntax">B</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">stream</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stream_flags</span><span class="plain-syntax"> += </span><span class="identifier-syntax">N</span><span class="plain-syntax">*</span><span class="constant-syntax">INDENTATION_BASE_STRF</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP38"></a><b>&#167;38.  </b>We can read the position for any stream, including <code class="display"><span class="extract-syntax">NULL</span></code>, but no matter
-how much is written to <code class="display"><span class="extract-syntax">NULL</span></code> this position never budges.
+</pre><p class="inwebparagraph"><a id="SP38"></a><b>&#167;38.  </b>We can read the position for any stream, including <span class="extract"><span class="extract-syntax">NULL</span></span>, but no matter
+how much is written to <span class="extract"><span class="extract-syntax">NULL</span></span> this position never budges.
 </p>
 
-<p class="inwebparagraph">Because of continuations, this is not as simple as returning the <code class="display"><span class="extract-syntax">chars_written</span></code>
+<p class="inwebparagraph">Because of continuations, this is not as simple as returning the <span class="extract"><span class="extract-syntax">chars_written</span></span>
 field.
 </p>
 
@@ -1029,8 +1029,8 @@ to open similar ones again).
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP42"></a><b>&#167;42.  </b>Lastly, our copying function, where <code class="display"><span class="extract-syntax">from</span></code> has to be a memory stream (or
-<code class="display"><span class="extract-syntax">NULL</span></code>) but <code class="display"><span class="extract-syntax">to</span></code> can be anything (including <code class="display"><span class="extract-syntax">NULL</span></code>).
+</pre><p class="inwebparagraph"><a id="SP42"></a><b>&#167;42.  </b>Lastly, our copying function, where <span class="extract"><span class="extract-syntax">from</span></span> has to be a memory stream (or
+<span class="extract"><span class="extract-syntax">NULL</span></span>) but <span class="extract"><span class="extract-syntax">to</span></span> can be anything (including <span class="extract"><span class="extract-syntax">NULL</span></span>).
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -1045,7 +1045,7 @@ to open similar ones again).
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stream_continues</span><span class="plain-syntax">) </span><a href="2-str.html#SP42" class="function-link"><span class="function-syntax">Streams::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stream_continues</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP43"></a><b>&#167;43. Writer. </b>This writes one stream into another one, which implements <code class="display"><span class="extract-syntax">%S</span></code>.
+</pre><p class="inwebparagraph"><a id="SP43"></a><b>&#167;43. Writer. </b>This writes one stream into another one, which implements <span class="extract"><span class="extract-syntax">%S</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">

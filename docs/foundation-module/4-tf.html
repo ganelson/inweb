@@ -106,8 +106,8 @@ file actually exists on disc at a given filename:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Text file scanner. </b>We read lines in, delimited by any of the standard line-ending characters,
-and send them one at a time to a function called <code class="display"><span class="extract-syntax">iterator</span></code>. Throughout,
-we preserve a pointer called <code class="display"><span class="extract-syntax">state</span></code> to some object being used by the
+and send them one at a time to a function called <span class="extract"><span class="extract-syntax">iterator</span></span>. Throughout,
+we preserve a pointer called <span class="extract"><span class="extract-syntax">state</span></span> to some object being used by the
 client.
 </p>
 
@@ -134,10 +134,10 @@ client.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">serious</span><span class="plain-syntax">) </span><a href="3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_file</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">message</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { </span><a href="3-em.html#SP7" class="function-link"><span class="function-syntax">Errors::with_file</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">message</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-tf.html#SP5">&#167;5</a>.</li></ul><p class="inwebparagraph"><a id="SP5_2"></a><b>&#167;5.2.  </b>The ANSI definition of <code class="display"><span class="extract-syntax">ftell</span></code> and <code class="display"><span class="extract-syntax">fseek</span></code> says that, with text files, the
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-tf.html#SP5">&#167;5</a>.</li></ul><p class="inwebparagraph"><a id="SP5_2"></a><b>&#167;5.2.  </b>The ANSI definition of <span class="extract"><span class="extract-syntax">ftell</span></span> and <span class="extract"><span class="extract-syntax">fseek</span></span> says that, with text files, the
 only definite position value is 0 &mdash; meaning the beginning of the file &mdash; and
-this is what we initialise <code class="display"><span class="extract-syntax">line_position</span></code> to. We must otherwise only write
-values returned by <code class="display"><span class="extract-syntax">ftell</span></code> into this field.
+this is what we initialise <span class="extract"><span class="extract-syntax">line_position</span></span> to. We must otherwise only write
+values returned by <span class="extract"><span class="extract-syntax">ftell</span></span> into this field.
 </p>
 
 
@@ -160,8 +160,8 @@ values returned by <code class="display"><span class="extract-syntax">ftell</spa
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">actively_scanning</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">text_file_filename</span><span class="plain-syntax"> = </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-tf.html#SP5">&#167;5</a>.</li></ul><p class="inwebparagraph"><a id="SP5_3"></a><b>&#167;5.3.  </b>We aim to get this right whether the lines are terminated by <code class="display"><span class="extract-syntax">0A</span></code>, <code class="display"><span class="extract-syntax">0D</span></code>,
-<code class="display"><span class="extract-syntax">0A 0D</span></code> or <code class="display"><span class="extract-syntax">0D 0A</span></code>. The final line is not required to be terminated.
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-tf.html#SP5">&#167;5</a>.</li></ul><p class="inwebparagraph"><a id="SP5_3"></a><b>&#167;5.3.  </b>We aim to get this right whether the lines are terminated by <span class="extract"><span class="extract-syntax">0A</span></span>, <span class="extract"><span class="extract-syntax">0D</span></span>,
+<span class="extract"><span class="extract-syntax">0A 0D</span></span> or <span class="extract"><span class="extract-syntax">0D 0A</span></span>. The final line is not required to be terminated.
 </p>
 
 
@@ -203,12 +203,12 @@ values returned by <code class="display"><span class="extract-syntax">ftell</spa
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">line_count</span><span class="plain-syntax">++;</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="4-tf.html#SP5_3">&#167;5.3</a> (twice).</li></ul><p class="inwebparagraph"><a id="SP5_3_2"></a><b>&#167;5.3.2.  </b>But we update the text file position after every apparent line terminator.
 This is because we might otherwise, on a Windows text file, end up with an
-<code class="display"><span class="extract-syntax">ftell</span></code> position in between the <code class="display"><span class="extract-syntax">CR</span></code> and the <code class="display"><span class="extract-syntax">LF</span></code>; if we resume at that point,
+<span class="extract"><span class="extract-syntax">ftell</span></span> position in between the <span class="extract"><span class="extract-syntax">CR</span></span> and the <span class="extract"><span class="extract-syntax">LF</span></span>; if we resume at that point,
 later on, we'll then have an off-by-one error in the line numbering in the
 resumption as compared to during the original pass.
 </p>
 
-<p class="inwebparagraph">Properly speaking, <code class="display"><span class="extract-syntax">ftell</span></code> returns a long <code class="display"><span class="extract-syntax">int</span></code>, not an <code class="display"><span class="extract-syntax">int</span></code>, but on a
+<p class="inwebparagraph">Properly speaking, <span class="extract"><span class="extract-syntax">ftell</span></span> returns a long <span class="extract"><span class="extract-syntax">int</span></span>, not an <span class="extract"><span class="extract-syntax">int</span></span>, but on a
 32-bit-or-more integer machine, this gives us room for files to run to 2GB.
 Text files seldom come that large.
 </p>
@@ -259,10 +259,10 @@ calling the following:
 </pre><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Reading UTF-8 files. </b>The following routine reads a sequence of Unicode characters from a UTF-8
 encoded file, but returns them as a sequence of ISO Latin-1 characters, a
 trick it can only pull off by escaping non-ISO characters. This is done by
-taking character number <code class="display"><span class="extract-syntax">N</span></code> and feeding it out, one character at a time, as
-the text <code class="display"><span class="extract-syntax">[unicode N]</span></code>, writing the number in decimal. Only one UTF-8
+taking character number <span class="extract"><span class="extract-syntax">N</span></span> and feeding it out, one character at a time, as
+the text <span class="extract"><span class="extract-syntax">[unicode N]</span></span>, writing the number in decimal. Only one UTF-8
 file like this will be being read at a time, and the routine will be
-repeatedly called until <code class="display"><span class="extract-syntax">EOF</span></code> or a line division.
+repeatedly called until <span class="extract"><span class="extract-syntax">EOF</span></span> or a line division.
 </p>
 
 <p class="inwebparagraph">Strictly speaking, we transmit not as ISO Latin-1 but as that subset of ISO
@@ -271,13 +271,13 @@ excludes some typewriter symbols and a handful of letterforms, as we shall
 see.
 </p>
 
-<p class="inwebparagraph">There are two exceptions: <code class="display"><span class="extract-syntax">TextFiles::utf8_fgetc</span></code> can also return the usual C
-end-of-file pseudo-character <code class="display"><span class="extract-syntax">EOF</span></code>, and it can also return the Unicode BOM
+<p class="inwebparagraph">There are two exceptions: <span class="extract"><span class="extract-syntax">TextFiles::utf8_fgetc</span></span> can also return the usual C
+end-of-file pseudo-character <span class="extract"><span class="extract-syntax">EOF</span></span>, and it can also return the Unicode BOM
 (byte-ordering marker) pseudo-character, which is legal at the start of a
 file and which is automatically prepended by some text editors and
 word-processors when they save a UTF-8 file (though in fact it is not
-required by the UTF-8 specification). Anyone calling <code class="display"><span class="extract-syntax">TextFiles::utf8_fgetc</span></code> must
-check the return value for <code class="display"><span class="extract-syntax">EOF</span></code> every time, and for <code class="display"><span class="extract-syntax">0xFEFF</span></code> every time we
+required by the UTF-8 specification). Anyone calling <span class="extract"><span class="extract-syntax">TextFiles::utf8_fgetc</span></span> must
+check the return value for <span class="extract"><span class="extract-syntax">EOF</span></span> every time, and for <span class="extract"><span class="extract-syntax">0xFEFF</span></span> every time we
 might be at the start of the file being read.
 </p>
 
@@ -355,7 +355,7 @@ rather than Douglas Adams, they might have filled this gap. As it was,
 "eth" never occurred in any of their works.)
 </p>
 
-<p class="inwebparagraph">We let the multiplication sign <code class="display"><span class="extract-syntax">0xd7</span></code> through even though ZSCII doesn't
+<p class="inwebparagraph">We let the multiplication sign <span class="extract"><span class="extract-syntax">0xd7</span></span> through even though ZSCII doesn't
 support it, but convert it to an "x": this is so that we can parse numbers
 in scientific notation.
 </p>

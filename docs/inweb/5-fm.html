@@ -67,7 +67,7 @@ through optional method calls.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">wf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">weave_format</span><span class="plain-syntax"> *</span><span class="function-syntax">Formats::find_by_name</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Formats::find_by_name</b>:<br><a href="5-fm.html#SP10">&#167;10</a>, Patterns - <a href="1-ptt.html#SP3_2">&#167;3.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">weave_format</span><span class="plain-syntax"> *</span><span class="function-syntax">Formats::find_by_name</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Formats::find_by_name</b>:<br><a href="5-fm.html#SP10">&#167;10</a>, Patterns - <a href="1-ptt.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">weave_format</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">wf</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_format</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">wf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">format_name</span><span class="plain-syntax">))</span>
@@ -76,8 +76,8 @@ through optional method calls.
 <span class="plain-syntax">}</span>
 </pre><ul class="endnotetexts"><li>The structure weave_format is accessed in 1/ts, 5/wp and here.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Note that this is the file extension before any post-processing. For
 example, PDFs are made by weaving a TeX file and then running this through
-<code class="display"><span class="extract-syntax">pdftex</span></code>. The extension here will be <code class="display"><span class="extract-syntax">.tex</span></code> because that's what the weave
-stage produces, even though we will later end up with a <code class="display"><span class="extract-syntax">.pdf</span></code>.
+<span class="extract"><span class="extract-syntax">pdftex</span></span>. The extension here will be <span class="extract"><span class="extract-syntax">.tex</span></span> because that's what the weave
+stage produces, even though we will later end up with a <span class="extract"><span class="extract-syntax">.pdf</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -98,13 +98,13 @@ stage produces, even though we will later end up with a <code class="display"><s
 putting away that needs tp be done.
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract-syntax">BEGIN_WEAVING_FOR_MTID</span></code> is called before any output is generated, indeed,
+<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">BEGIN_WEAVING_FOR_MTID</span></span> is called before any output is generated, indeed,
 before even the filename(s) for the output are worked out. Note that it
-can return a <code class="display"><span class="extract-syntax">*_SWM</span></code> code to change the swarm behaviour of the weave to come;
+can return a <span class="extract"><span class="extract-syntax">*_SWM</span></span> code to change the swarm behaviour of the weave to come;
 this is helpful for EPUB weaving.
 </p>
 
-<p class="inwebparagraph">More simply, <code class="display"><span class="extract-syntax">END_WEAVING_FOR_MTID</span></code> is called when all weaving is done.
+<p class="inwebparagraph">More simply, <span class="extract"><span class="extract-syntax">END_WEAVING_FOR_MTID</span></span> is called when all weaving is done.
 </p>
 
 
@@ -124,7 +124,7 @@ this is helpful for EPUB weaving.
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Formats::end_weaving</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Formats::end_weaving</b>:<br>Program Control - <a href="1-pc.html#SP7_4_3">&#167;7.4.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">VMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern_format</span><span class="plain-syntax">, </span><span class="constant-syntax">END_WEAVING_FOR_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b><code class="display"><span class="extract-syntax">RENDER_FOR_MTID</span></code> renders the weave tree in the given format: a format must
+</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b><span class="extract"><span class="extract-syntax">RENDER_FOR_MTID</span></span> renders the weave tree in the given format: a format must
 provide this.
 </p>
 
@@ -225,7 +225,7 @@ to make an index page in HTML which provides annotated links to those PDFs.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>And in that index file, we may want to substitute in values for placeholder
-text like <code class="display"><span class="extract-syntax">[[PDF Size]]</span></code> in the template file. This is the <code class="display"><span class="extract-syntax">detail</span></code>.
+text like <span class="extract"><span class="extract-syntax">[[PDF Size]]</span></span> in the template file. This is the <span class="extract"><span class="extract-syntax">detail</span></span>.
 </p>
 
 

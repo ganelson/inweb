@@ -102,28 +102,27 @@ void WeavePlugins::include_plugin(OUTPUT_STREAM, web *W, weave_plugin *wp,
 								Indexer::incorporate_template_for_web_and_pattern(OUT,
 									W, pattern, F);
 							} else {
-								Patterns::copy_file_into_weave(W, F, AP, NULL);
+								@<Use shell scripting to copy the file over@>;
 							}
 						} else {
 							if (html_mode) {
 								TEMPORARY_TEXT(ext);
 								Filenames::write_extension(ext, F);
 								if (Str::eq_insensitive(ext, I".css")) {
-									TEMPORARY_TEXT(url);
-									if (AP) Pathnames::relative_URL(url, Filenames::up(from), AP);
-									WRITE_TO(url, "%S", leafname);
-									WRITE("<link href=\"%S\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\">\n", url);
-									DISCARD_TEXT(url);
-								}
-								if (Str::eq_insensitive(ext, I".js")) {
+									WeavePlugins::include_CSS_file(OUT, W, F, leafname, NULL, pattern, from);
+								} else if (Str::eq_insensitive(ext, I".js")) {
 									TEMPORARY_TEXT(url);
 									if (AP) Pathnames::relative_URL(url, Filenames::up(from), AP);
 									WRITE_TO(url, "%S", leafname);
 									WRITE("<script src=\"%S\"></script>\n", url);
 									DISCARD_TEXT(url);
+									@<Use shell scripting to copy the file over@>;
+								} else {
+									@<Use shell scripting to copy the file over@>;
 								}
+							} else {
+								@<Use shell scripting to copy the file over@>;
 							}
-							Patterns::copy_file_into_weave(W, F, AP, NULL);
 						}
 						finds++;
 					}
@@ -141,13 +140,19 @@ void WeavePlugins::include_plugin(OUTPUT_STREAM, web *W, weave_plugin *wp,
 	DISCARD_TEXT(required);
 }
 
+@<Use shell scripting to copy the file over@> =
+	Patterns::copy_file_into_weave(W, F, AP, NULL);
+	if (W->as_ebook) {
+		filename *rel = Filenames::in(NULL, leafname);
+		Epub::note_image(W->as_ebook, rel);
+	}
+
 @ =
 void WeavePlugins::include_colour_scheme(OUTPUT_STREAM, web *W, colour_scheme *cs,
 	weave_pattern *pattern, filename *from) {	
 	if (cs->last_included_in_round == current_inclusion_round) return;
 	cs->last_included_in_round = current_inclusion_round;
 	if (Str::eq(pattern->pattern_format->format_name, I"HTML")) {
-		pathname *AP = Colonies::assets_path();
 		TEMPORARY_TEXT(css);
 		WRITE_TO(css, "%S.css", cs->scheme_name);
 		filename *F = Patterns::find_asset(pattern, I"Colouring", css);
@@ -159,13 +164,33 @@ void WeavePlugins::include_colour_scheme(OUTPUT_STREAM, web *W, colour_scheme *c
 			Main::error_in_web(err, NULL);
 			DISCARD_TEXT(err);
 		} else {
-			TEMPORARY_TEXT(url);
-			if (AP) Pathnames::relative_URL(url, Filenames::up(from), AP);
-			WRITE_TO(url, "%S", css);
-			WRITE("<link href=\"%S\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\">\n", url);
-			DISCARD_TEXT(url);
-			Patterns::copy_file_into_weave(W, F, AP, cs->prefix);
+			WeavePlugins::include_CSS_file(OUT, W, F, css, cs->prefix, pattern, from);
 		}
 		DISCARD_TEXT(css);
+	}
+}
+
+void WeavePlugins::include_CSS_file(OUTPUT_STREAM, web *W, filename *F, text_stream *css,
+	text_stream *trans, weave_pattern *pattern, filename *from) {
+	if (pattern->embed_CSS) {
+		WRITE("<style type=\"text/css\">\n");
+		css_file_transformation cft;
+		cft.OUT = OUT;
+		cft.trans = trans;
+		TextFiles::read(F, FALSE, "can't open CSS file", TRUE,
+		Patterns::transform_CSS, NULL, (void *) &cft);
+		WRITE("</style>\n");
+	} else {
+		pathname *AP = Colonies::assets_path();
+		TEMPORARY_TEXT(url);
+		if (AP) Pathnames::relative_URL(url, Filenames::up(from), AP);
+		WRITE_TO(url, "%S", css);
+		WRITE("<link href=\"%S\" rel=\"stylesheet\" rev=\"stylesheet\" type=\"text/css\">\n", url);
+		DISCARD_TEXT(url);
+		Patterns::copy_file_into_weave(W, F, AP, trans);
+		if (W->as_ebook) {
+			filename *rel = Filenames::in(NULL, css);
+			Epub::note_image(W->as_ebook, rel);
+		}
 	}
 }

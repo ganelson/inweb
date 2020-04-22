@@ -88,7 +88,7 @@ can be found in <a href="../foundation-test/index.html" class="internal">foundat
 and chapters.
 </p>
 
-<p class="inwebparagraph">2. The constant <code class="display"><span class="extract-syntax">PROGRAM_NAME</span></code> must be defined equal to a C string with a
+<p class="inwebparagraph">2. The constant <span class="extract"><span class="extract-syntax">PROGRAM_NAME</span></span> must be defined equal to a C string with a
 brief version of the program's name. For example,
 </p>
 
@@ -97,14 +97,14 @@ brief version of the program's name. For example,
 </pre>
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph">3. The <code class="display"><span class="extract-syntax">main</span></code> function for the client should, as one of its very first acts,
-call <code class="display"><span class="extract-syntax">Foundation::start()</span></code>, and should similarly, just before it exits, call
-<code class="display"><span class="extract-syntax">Foundation::end()</span></code>. Any other module used should be started after Foundation
+<p class="inwebparagraph">3. The <span class="extract"><span class="extract-syntax">main</span></span> function for the client should, as one of its very first acts,
+call <span class="extract"><span class="extract-syntax">Foundation::start()</span></span>, and should similarly, just before it exits, call
+<span class="extract"><span class="extract-syntax">Foundation::end()</span></span>. Any other module used should be started after Foundation
 starts, and ended before Foundation ends.
 </p>
 
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Truth. </b>Every large C program starts by defining constants for truth and falsity. So
-does Foundation: <code class="display"><span class="extract-syntax">TRUE</span></code>, <code class="display"><span class="extract-syntax">FALSE</span></code>, and a third state <code class="display"><span class="extract-syntax">NOT_APPLICABLE</span></code>.
+does Foundation: <span class="extract"><span class="extract-syntax">TRUE</span></span>, <span class="extract"><span class="extract-syntax">FALSE</span></span>, and a third state <span class="extract"><span class="extract-syntax">NOT_APPLICABLE</span></span>.
 </p>
 
 <p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Text streams and formatted output. </b>Perhaps the most useful feature of Foundation is that it provides for
@@ -122,9 +122,9 @@ length of a text in memory runs in \(O(1)\) time.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"According to %S, the square of %d is %d.\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">authority</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">*</span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph">Here <code class="display"><span class="extract-syntax">WRITE</span></code> is a variadic macro rather like <code class="display"><span class="extract-syntax">printf</span></code>, and note the use of
-the escape <code class="display"><span class="extract-syntax">%S</span></code> to write a text stream. It writes formatted output into the
-stream <code class="display"><span class="extract-syntax">OUT</span></code>, and is actually an abbreviation for this:
+<p class="inwebparagraph">Here <span class="extract"><span class="extract-syntax">WRITE</span></span> is a variadic macro rather like <span class="extract"><span class="extract-syntax">printf</span></span>, and note the use of
+the escape <span class="extract"><span class="extract-syntax">%S</span></span> to write a text stream. It writes formatted output into the
+stream <span class="extract"><span class="extract-syntax">OUT</span></span>, and is actually an abbreviation for this:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -132,20 +132,20 @@ stream <code class="display"><span class="extract-syntax">OUT</span></code>, and
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="string-syntax">"According to %S, the square of %d is %d.\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">authority</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">*</span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph">The function <code class="display"><span class="extract-syntax">Hypothetical::writer</span></code> can write equally to a text file or to a
+<p class="inwebparagraph">The function <span class="extract"><span class="extract-syntax">Hypothetical::writer</span></span> can write equally to a text file or to a
 string, whichever it's given, and doesn't need to worry about memory management
 or text encodings.
 </p>
 
 <p class="inwebparagraph">The standard output and standard error "files" on Unix-based systems are
-referred to as <code class="display"><span class="extract-syntax">STDOUT</span></code> and <code class="display"><span class="extract-syntax">STDERR</span></code>, both constants of type <code class="display"><span class="extract-syntax">text_stream *</span></code>
-defined by Foundation. The value <code class="display"><span class="extract-syntax">NULL</span></code>, used as a text stream, is valid and
+referred to as <span class="extract"><span class="extract-syntax">STDOUT</span></span> and <span class="extract"><span class="extract-syntax">STDERR</span></span>, both constants of type <span class="extract"><span class="extract-syntax">text_stream *</span></span>
+defined by Foundation. The value <span class="extract"><span class="extract-syntax">NULL</span></span>, used as a text stream, is valid and
 prints as the empty string, while ignoring any content written to it.
 All of these capitalised macros are defined in <a href="2-str.html" class="internal">Streams</a>.
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract-syntax">PRINT("...")</span></code> is an abbreviation for <code class="display"><span class="extract-syntax">WRITE_TO(STDOUT, "...")</span></code>, and
-<code class="display"><span class="extract-syntax">LOG("...")</span></code> similarly writes to the log file. (See <a href="2-dl.html" class="internal">Debugging Log</a>.)
+<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">PRINT("...")</span></span> is an abbreviation for <span class="extract"><span class="extract-syntax">WRITE_TO(STDOUT, "...")</span></span>, and
+<span class="extract"><span class="extract-syntax">LOG("...")</span></span> similarly writes to the log file. (See <a href="2-dl.html" class="internal">Debugging Log</a>.)
 </p>
 
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>If you're using <a href="../inweb/M-tid.html" class="internal">The InC Dialect (in inweb)</a>, the slight extension to C made
@@ -155,7 +155,7 @@ by Inweb, there's a simple notation for constants of this type:
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">error_message</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"quadro-triticale stocks depleted"</span><span class="plain-syntax">;</span>
 </pre>
-<p class="inwebparagraph">The <code class="display"><span class="extract-syntax">I</span></code> prefix is meant to imitate the <code class="display"><span class="extract-syntax">L</span></code> used in standard C99 for long string
+<p class="inwebparagraph">The <span class="extract"><span class="extract-syntax">I</span></span> prefix is meant to imitate the <span class="extract"><span class="extract-syntax">L</span></span> used in standard C99 for long string
 constants. But this is a feature of <a href="../inweb/index.html" class="internal">inweb</a> rather than of Foundation.
 </p>
 
@@ -174,15 +174,15 @@ momentary period, do this:
 <span class="plain-syntax">    ...</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">alpha</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph">Between the use of these two macros, <code class="display"><span class="extract-syntax">alpha</span></code> is a valid <code class="display"><span class="extract-syntax">text_stream *</span></code>,
+<p class="inwebparagraph">Between the use of these two macros, <span class="extract"><span class="extract-syntax">alpha</span></span> is a valid <span class="extract"><span class="extract-syntax">text_stream *</span></span>,
 and is a string capable of growing to arbitrary size.
 </p>
 
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Foundation provides an elaborate system for providing new string escapes
-like <code class="display"><span class="extract-syntax">%S</span></code>: see <a href="2-wal.html" class="internal">Writers and Loggers</a>. A similar system manages a debugging
+like <span class="extract"><span class="extract-syntax">%S</span></span>: see <a href="2-wal.html" class="internal">Writers and Loggers</a>. A similar system manages a debugging
 log, to which it's easy to make "dollar escapes" for pretty-printing internal
-data structures: for example, if you've made a structure called <code class="display"><span class="extract-syntax">recipe</span></code>, you
-could make <code class="display"><span class="extract-syntax">$R</span></code> pretty-print one.
+data structures: for example, if you've made a structure called <span class="extract"><span class="extract-syntax">recipe</span></span>, you
+could make <span class="extract"><span class="extract-syntax">$R</span></span> pretty-print one.
 </p>
 
 <p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Foundation also has an extensive library of string-handling routines,
@@ -200,7 +200,7 @@ benefit of functions like <a href="4-sm.html#SP26" class="internal">Str::substr<
 </p>
 
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Individual characters are represented in Foundation using the standard
-POSIX type <code class="display"><span class="extract-syntax">wchar_t</span></code>, which on all modern systems is a very wide integer,
+POSIX type <span class="extract"><span class="extract-syntax">wchar_t</span></span>, which on all modern systems is a very wide integer,
 whether or not signed. It's safe to assume it can hold all normal Unicode
 code points. See <a href="4-chr.html" class="internal">Characters</a> for class functions like <a href="4-chr.html#SP1" class="internal">Characters::isdigit</a>,
 which have been carefully written to work equivalently on either Windows or
@@ -208,7 +208,7 @@ Unix-based systems.
 </p>
 
 <p class="inwebparagraph"><a href="4-cst.html" class="internal">C Strings</a> and <a href="4-ws.html" class="internal">Wide Strings</a> provide bare-minimum facilities for handling
-traditional null-terminated <code class="display"><span class="extract-syntax">char</span></code> and <code class="display"><span class="extract-syntax">wchar_t</span></code> arrays, but don't use these.
+traditional null-terminated <span class="extract"><span class="extract-syntax">char</span></span> and <span class="extract"><span class="extract-syntax">wchar_t</span></span> arrays, but don't use these.
 Texts are just better.
 </p>
 
@@ -219,7 +219,7 @@ in C which corresponds to objects of the class "recipe". We need to do three
 things:
 </p>
 
-<ul class="items"><li>(1) Declare an enumerated constant ending <code class="display"><span class="extract-syntax">_MT</span></code> to represent this type in the
+<ul class="items"><li>(1) Declare an enumerated constant ending <span class="extract"><span class="extract-syntax">_MT</span></span> to represent this type in the
 memory manager, and then make a matching use of a macro to define some associated
 functions, which we never see or think about. For example:
 </p>
@@ -249,7 +249,7 @@ of throwaway instances, we would instead write:
 actually needed.
 </p>
 
-</li><li>(2) We have to declare the actual structure, and <code class="display"><span class="extract-syntax">typedef</span></code> the name to it. For
+</li><li>(2) We have to declare the actual structure, and <span class="extract"><span class="extract-syntax">typedef</span></span> the name to it. For
 example:
 </p>
 
@@ -260,18 +260,18 @@ example:
 <span class="plain-syntax">        </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">    } </span><span class="identifier-syntax">recipe</span><span class="plain-syntax">;</span>
 </pre>
-<p class="inwebparagraph">Here <code class="display"><span class="extract-syntax">MEMORY_MANAGEMENT</span></code> is a macro defined in <a href="2-mmr.html" class="internal">Memory</a> which expands to the
+<p class="inwebparagraph">Here <span class="extract"><span class="extract-syntax">MEMORY_MANAGEMENT</span></span> is a macro defined in <a href="2-mmr.html" class="internal">Memory</a> which expands to the
 necessary field(s) to keep track of this. We won't use those fields, or ever
 think about them.
 </p>
 
-</li><li>(3) In fact we've now finished. The macro <code class="display"><span class="extract-syntax">CREATE(recipe)</span></code> returns a new
-instance, and <code class="display"><span class="extract-syntax">DESTROY(R)</span></code> would destroy an existing one, <code class="display"><span class="extract-syntax">R</span></code>. Unless manually
+</li><li>(3) In fact we've now finished. The macro <span class="extract"><span class="extract-syntax">CREATE(recipe)</span></span> returns a new
+instance, and <span class="extract"><span class="extract-syntax">DESTROY(R)</span></span> would destroy an existing one, <span class="extract"><span class="extract-syntax">R</span></span>. Unless manually
 destroyed, objects last forever; there is no garbage collection. In practice
 the Inform tools suite, for which Foundation was written, almost never destroy
 objects.
 </li></ul>
-<p class="inwebparagraph">Customarily, though, we wrap the use of <code class="display"><span class="extract-syntax">CREATE</span></code> in a constructor function:
+<p class="inwebparagraph">Customarily, though, we wrap the use of <span class="extract"><span class="extract-syntax">CREATE</span></span> in a constructor function:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -284,7 +284,7 @@ objects.
 </pre>
 <p class="inwebparagraph"></p>
 
-<p class="inwebparagraph">We also often use the convenient <code class="display"><span class="extract-syntax">LOOP_OVER</span></code> macro:
+<p class="inwebparagraph">We also often use the convenient <span class="extract"><span class="extract-syntax">LOOP_OVER</span></span> macro:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -295,7 +295,7 @@ objects.
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"- %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">name_of_dish</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"><code class="display"><span class="extract-syntax">LOOP_OVER</span></code> loops through all created recipe instances (which have not been
+<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">LOOP_OVER</span></span> loops through all created recipe instances (which have not been
 destroyed).
 </p>
 
@@ -305,7 +305,7 @@ allocate memory for arrays &mdash; see <a href="2-mmr.html#SP25" class="internal
 
 <p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Methods. </b>It's also possible to have method calls on object instances, though the
 syntax is not as tidy as it would be in an object-oriented language. To allow
-this for <code class="display"><span class="extract-syntax">recipe</span></code>, we would have to add another line to the structure:
+this for <span class="extract"><span class="extract-syntax">recipe</span></span>, we would have to add another line to the structure:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -322,8 +322,8 @@ this for <code class="display"><span class="extract-syntax">recipe</span></code>
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">        </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">methods</span><span class="plain-syntax"> = </span><span class="function-syntax">Methods::new_set</span><span class="plain-syntax">();</span>
 </pre>
-<p class="inwebparagraph">The object <code class="display"><span class="extract-syntax">R</span></code> is then ready to receive method calls. Each different call needs
-an enumerated constant ending <code class="display"><span class="extract-syntax">_MTID</span></code> to identify it, and an indication of the
+<p class="inwebparagraph">The object <span class="extract"><span class="extract-syntax">R</span></span> is then ready to receive method calls. Each different call needs
+an enumerated constant ending <span class="extract"><span class="extract-syntax">_MTID</span></span> to identify it, and an indication of the
 type of the function call involved:
 </p>
 
@@ -335,7 +335,7 @@ type of the function call involved:
 <span class="plain-syntax">    =</span>
 <span class="plain-syntax">    VMETHOD_TYPE(COOK_MTID, recipe *R, int time_in_oven)</span>
 </pre>
-<p class="inwebparagraph">The <code class="display"><span class="extract-syntax">V</span></code> here means that this will be a void function, that is, returning no
+<p class="inwebparagraph">The <span class="extract"><span class="extract-syntax">V</span></span> here means that this will be a void function, that is, returning no
 value. It's now possible to call this on any recipe:
 </p>
 
@@ -343,7 +343,7 @@ value. It's now possible to call this on any recipe:
 <span class="plain-syntax">    </span><span class="identifier-syntax">VMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">duck_a_l_orange</span><span class="plain-syntax">, </span><span class="identifier-syntax">COOK_MTID</span><span class="plain-syntax">, </span><span class="constant-syntax">45</span><span class="plain-syntax">);</span>
 </pre>
 <p class="inwebparagraph">What then happens? Nothing at all, unless the recipe instance in question &mdash;
-here, <code class="display"><span class="extract-syntax">duck_a_l_orange</span></code> &mdash; has been given a receiver function. Let's revisit
+here, <span class="extract"><span class="extract-syntax">duck_a_l_orange</span></span> &mdash; has been given a receiver function. Let's revisit
 the constructor function for recipes:
 </p>
 
@@ -379,17 +379,17 @@ the effect of
 <span class="plain-syntax">    </span><span class="identifier-syntax">Recipes::cook</span><span class="plain-syntax">(</span><span class="identifier-syntax">duck_a_l_orange</span><span class="plain-syntax">, </span><span class="constant-syntax">45</span><span class="plain-syntax">);</span>
 </pre><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>In fact it's possible to attach multiple receivers to the same object, in
 which case they each run in turn. As a variant on this, methods can also return
-their "success". If multiple receivers run, the first to return <code class="display"><span class="extract-syntax">TRUE</span></code> has
+their "success". If multiple receivers run, the first to return <span class="extract"><span class="extract-syntax">TRUE</span></span> has
 claimed the right to act, and subsequent receivers aren't consulted.
 </p>
 
-<p class="inwebparagraph">Such methods must be defined with <code class="display"><span class="extract-syntax">IMETHOD_CALL</span></code> and are rarely needed. See
+<p class="inwebparagraph">Such methods must be defined with <span class="extract"><span class="extract-syntax">IMETHOD_CALL</span></span> and are rarely needed. See
 <a href="2-mth.html" class="internal">Methods</a> for more.
 </p>
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Collections. </b>Foundation provides three sorts of "collection": see <a href="2-llas.html" class="internal">Linked Lists and Stacks</a>,
 and also <a href="2-dct.html" class="internal">Dictionaries</a>. These all collect values which are expected to be
-pointers: for example, text streams (of type <code class="display"><span class="extract-syntax">text_stream *</span></code>) or objects like
+pointers: for example, text streams (of type <span class="extract"><span class="extract-syntax">text_stream *</span></span>) or objects like
 the ones created above. For example,
 </p>
 
@@ -443,7 +443,7 @@ directories might be.
 </p>
 
 <p class="inwebparagraph">Both tend to refer relative to the current working directory, represented by
-the null <code class="display"><span class="extract-syntax">pathname</span></code> pointer. <a href="3-pth.html#SP7" class="internal">Pathnames::up</a> and <a href="3-pth.html#SP4" class="internal">Pathnames::down</a> go
+the null <span class="extract"><span class="extract-syntax">pathname</span></span> pointer. <a href="3-pth.html#SP7" class="internal">Pathnames::up</a> and <a href="3-pth.html#SP4" class="internal">Pathnames::down</a> go
 to parent or subdirectories, respectively. A filename cannot exist without
 a pathname; for example,
 </p>
@@ -454,13 +454,13 @@ a pathname; for example,
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="function-syntax">Filenames::in</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"options.txt"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"I have arrived at %f.\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph">produces, on platforms where <code class="display"><span class="extract-syntax">/</span></code> is used as the file system dividing character,
+<p class="inwebparagraph">produces, on platforms where <span class="extract"><span class="extract-syntax">/</span></span> is used as the file system dividing character,
 </p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    I have arrived at App/Config/options.txt.</span>
 </pre>
-<p class="inwebparagraph">Note the use of the escape <code class="display"><span class="extract-syntax">%f</span></code> for printing filenames; there's also <code class="display"><span class="extract-syntax">%p</span></code> for
+<p class="inwebparagraph">Note the use of the escape <span class="extract"><span class="extract-syntax">%f</span></span> for printing filenames; there's also <span class="extract"><span class="extract-syntax">%p</span></span> for
 pathnames.
 </p>
 
@@ -483,7 +483,7 @@ for endian-ness.
 <p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b><a href="4-tf.html" class="internal">Text Files</a> allows us to read text files. Its most useful function is
 <a href="4-tf.html#SP5" class="internal">TextFiles::read</a>, which opens a file, can print an error if it doesn't
 exist, and if it does, then feeds the lines one at a time to an iterator.
-For example, if <code class="display"><span class="extract-syntax">F</span></code> is a filename, the following reads the file into a
+For example, if <span class="extract"><span class="extract-syntax">F</span></span> is a filename, the following reads the file into a
 linked list of texts:
 </p>
 
@@ -519,7 +519,7 @@ sections (of <a href="8-ws.html#SP4" class="internal">section_md</a>).
 </p>
 
 <ul class="items"><li>(a) <a href="3-tm.html" class="internal">Time</a> for the time of day and the date of Easter (no, really);
-</li><li>(b) <a href="3-shl.html" class="internal">Shell</a> for issuing shell commands via the C library's <code class="display"><span class="extract-syntax">system</span></code> function,
+</li><li>(b) <a href="3-shl.html" class="internal">Shell</a> for issuing shell commands via the C library's <span class="extract"><span class="extract-syntax">system</span></span> function,
 or its equivalent;
 </li><li>(c) <a href="5-htm.html" class="internal">HTML</a> and <a href="5-ee.html" class="internal">Epub Ebooks</a> for generating web pages and ebooks;
 </li><li>(d) <a href="6-id.html" class="internal">Image Dimensions</a> and <a href="6-sd.html" class="internal">Sound Durations</a> for handling videos and music;

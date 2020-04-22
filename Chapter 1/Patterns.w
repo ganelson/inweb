@@ -16,20 +16,23 @@ typedef struct weave_pattern {
 	struct weave_format *pattern_format; /* such as |DVI|: the desired final format */
 	struct linked_list *plugins; /* of |weave_plugin|: any extras needed */
 	struct linked_list *colour_schemes; /* of |colour_scheme|: any extras needed */
-	struct linked_list *payloads; /* of |text_stream|: leafnames of associated files */
-	struct linked_list *up_payloads; /* of |text_stream|: leafnames of associated files */
+
+	struct text_stream *mathematics_plugin; /* name only, not a |weave_pattern *| */
+	struct text_stream *footnotes_plugin; /* name only, not a |weave_pattern *| */
 
 	struct text_stream *tex_command; /* shell command to use for |tex| */
 	struct text_stream *pdftex_command; /* shell command to use for |pdftex| */
 	struct text_stream *open_command; /* shell command to use for |open| */
 
 	int embed_CSS; /* embed CSS directly into any HTML files made? */
-	int hierarchical; /* weave as one part of a collection of woven webs */
 	int show_abbrevs; /* show section range abbreviations in the weave? */
 	int number_sections; /* insert section numbers into the weave? */
 	struct text_stream *default_range; /* for example, |sections| */
 
 	struct web *patterned_for; /* the web which caused this to be read in */
+	
+	int commands;
+	int name_command_given;
 	MEMORY_MANAGEMENT
 } weave_pattern;
 
@@ -50,18 +53,18 @@ weave_pattern *Patterns::find(web *W, text_stream *name) {
 	wp->pattern_location = NULL;
 	wp->plugins = NEW_LINKED_LIST(weave_plugin);
 	wp->colour_schemes = NEW_LINKED_LIST(colour_scheme);
-	wp->payloads = NEW_LINKED_LIST(text_stream);
-	wp->up_payloads = NEW_LINKED_LIST(text_stream);
 	wp->based_on = NULL;
 	wp->embed_CSS = FALSE;
-	wp->hierarchical = FALSE;
 	wp->patterned_for = W;
-	wp->show_abbrevs = TRUE;
 	wp->number_sections = FALSE;
+	wp->footnotes_plugin = NULL;
+	wp->mathematics_plugin = NULL;
 	wp->default_range = Str::duplicate(I"0");
 	wp->tex_command = Str::duplicate(I"tex");
 	wp->pdftex_command = Str::duplicate(I"pdftex");
 	wp->open_command = Str::duplicate(I"open");
+	wp->commands = 0;
+	wp->name_command_given = FALSE;
 
 @<Locate the pattern directory@> =
 	wp->pattern_location = NULL;
@@ -92,6 +95,8 @@ weave_pattern *Patterns::find(web *W, text_stream *name) {
 			TRUE, Patterns::scan_pattern_line, NULL, wp);
 	if (wp->pattern_format == NULL)
 		Errors::fatal_with_text("pattern did not specify a format", name);
+	if (wp->name_command_given == FALSE)
+		Errors::fatal_with_text("pattern did not name itself at the top", name);
 
 @ The Foundation module provides a standard way to scan text files line by
 line, and this is used to send each line in the |pattern.txt| file to the
@@ -100,82 +105,75 @@ following routine:
 =
 void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, void *X) {
 	weave_pattern *wp = (weave_pattern *) X;
+
+	Str::trim_white_space(line); /* ignore trailing space */
+	if (Str::len(line) == 0) return; /* ignore blank lines */
+	if (Str::get_first_char(line) == '#') return; /* lines opening with |#| are comments */
+
+	wp->commands++;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L" *from (%c+)")) @<This is a from command@>;
-	if (Regexp::match(&mr, line, L" *(%c+?) = (%c+)")) @<This is an X = Y command@>;
-	if (Regexp::match(&mr, line, L" *embed css *")) @<This is an embed CSS command@>;
-	if (Regexp::match(&mr, line, L" *hierarchical *")) @<This is a hierarchical command@>;
-	if (Regexp::match(&mr, line, L" *plugin (%c+)")) @<This is a plugin command@>;
-	if (Regexp::match(&mr, line, L" *use (%c+)")) @<This is a use command@>;
-	if (Regexp::match(&mr, line, L" *use-up (%c+)")) @<This is a use-up command@>;
-	if (Regexp::match(&mr, line, L" *%C%c*"))
-		Errors::in_text_file("unrecognised pattern command", tfp);
-	Regexp::dispose_of(&mr);
-}
-
-@<This is a from command@> =
-	wp->based_on = Patterns::find(wp->patterned_for, mr.exp[0]);
-	Regexp::dispose_of(&mr);
-	return;
-
-@<This is an X = Y command@> =
-	if (Str::eq(mr.exp[0], I"format")) {
-		wp->pattern_format = Formats::find_by_name(mr.exp[1]);
-	} else if (Str::eq(mr.exp[0], I"abbrevs")) {
-		wp->show_abbrevs = Patterns::yes_or_no(mr.exp[1], tfp);
-	} else if (Str::eq(mr.exp[0], I"numbered")) {
-		wp->number_sections = Patterns::yes_or_no(mr.exp[1], tfp);
-	} else if (Str::eq(mr.exp[0], I"default-range")) {
-		wp->default_range = Str::duplicate(mr.exp[1]);
-	} else if (Str::eq(mr.exp[0], I"tex-command")) {
-		wp->tex_command = Str::duplicate(mr.exp[1]);
-	} else if (Str::eq(mr.exp[0], I"pdftex-command")) {
-		wp->pdftex_command = Str::duplicate(mr.exp[1]);
-	} else if (Str::eq(mr.exp[0], I"open-command")) {
-		wp->open_command = Str::duplicate(mr.exp[1]);
-	} else if ((Bibliographic::data_exists(wp->patterned_for->md, mr.exp[0])) ||
-		(Str::eq(mr.exp[0], I"Booklet Title"))) {
-		Bibliographic::set_datum(wp->patterned_for->md, mr.exp[0], mr.exp[1]);
+	if (Regexp::match(&mr, line, L"(%c+) *: *(%c+?)")) {
+		text_stream *key = mr.exp[0], *value = Str::duplicate(mr.exp[1]);
+		if ((Str::eq_insensitive(key, I"name")) && (wp->commands == 1)) {
+			match_results mr2 = Regexp::create_mr();
+			if (Regexp::match(&mr2, value, L"(%c+?) based on (%c+)")) {
+				if (Str::ne_insensitive(mr2.exp[0], wp->pattern_name)) {
+					Errors::in_text_file("wrong pattern name", tfp);
+				}
+				wp->based_on = Patterns::find(wp->patterned_for, mr2.exp[1]);
+				wp->pattern_format = wp->based_on->pattern_format;
+				wp->embed_CSS = wp->based_on->embed_CSS;
+				wp->number_sections = wp->based_on->number_sections;
+				wp->default_range = Str::duplicate(wp->based_on->default_range);
+				wp->mathematics_plugin = Str::duplicate(wp->based_on->mathematics_plugin);
+				wp->footnotes_plugin = Str::duplicate(wp->based_on->footnotes_plugin);
+			} else {
+				if (Str::ne_insensitive(value, wp->pattern_name)) {
+					Errors::in_text_file("wrong pattern name", tfp);
+				}
+			}
+			Regexp::dispose_of(&mr2);
+			wp->name_command_given = TRUE;
+		} else if (Str::eq_insensitive(key, I"plugin")) {
+			text_stream *name = Patterns::plugin_name(value, tfp);
+			if (Str::len(name) > 0) {
+				weave_plugin *plugin = WeavePlugins::new(name);
+				ADD_TO_LINKED_LIST(plugin, weave_plugin, wp->plugins);
+			}
+		} else if (Str::eq_insensitive(key, I"format")) {
+			wp->pattern_format = Formats::find_by_name(value);
+		} else if (Str::eq_insensitive(key, I"embed CSS")) {
+			wp->embed_CSS = Patterns::yes_or_no(value, tfp);
+		} else if (Str::eq_insensitive(key, I"number sections")) {
+			wp->number_sections = Patterns::yes_or_no(value, tfp);
+		} else if (Str::eq_insensitive(key, I"default range")) {
+			wp->default_range = Str::duplicate(value);
+		} else if (Str::eq_insensitive(key, I"mathematics plugin")) {
+			wp->mathematics_plugin = Patterns::plugin_name(value, tfp);
+		} else if (Str::eq_insensitive(key, I"footnotes plugin")) {
+			wp->footnotes_plugin = Patterns::plugin_name(value, tfp);
+		} else if (Str::eq_insensitive(key, I"TeX command")) {
+			wp->tex_command = Str::duplicate(value);
+		} else if (Str::eq_insensitive(key, I"PDFTeX command")) {
+			wp->pdftex_command = Str::duplicate(value);
+		} else if (Str::eq_insensitive(key, I"open command")) {
+			wp->open_command = Str::duplicate(value);
+		} else if (Str::eq_insensitive(key, I"bibliographic data")) {
+			match_results mr2 = Regexp::create_mr();
+			if (Regexp::match(&mr2, value, L"(%c+?) = (%c+)")) {
+				Bibliographic::set_datum(wp->patterned_for->md, mr2.exp[0], mr2.exp[1]);
+			} else {
+				Errors::in_text_file("syntax is 'bibliographic data: X = Y'", tfp);
+			}
+			Regexp::dispose_of(&mr2);
+		} else {
+			Errors::in_text_file("unrecognised pattern command", tfp);
+		}
 	} else {
-		PRINT("Setting: %S\n", mr.exp[0]);
-		Errors::in_text_file("no such pattern setting", tfp);
+		Errors::in_text_file("unrecognised pattern command", tfp);
 	}
 	Regexp::dispose_of(&mr);
-	return;
-
-@<This is an embed CSS command@> =
-	wp->embed_CSS = TRUE;
-	Regexp::dispose_of(&mr);
-	return;
-
-@<This is a hierarchical command@> =
-	wp->hierarchical = TRUE;
-	Regexp::dispose_of(&mr);
-	return;
-
-@ "Plugins" here refer to //Weave Plugins//.
-
-@<This is a plugin command@> =
-	weave_plugin *plugin = WeavePlugins::new(mr.exp[0]);
-	ADD_TO_LINKED_LIST(plugin, weave_plugin, wp->plugins);
-	Regexp::dispose_of(&mr);
-	return;
-
-@ "Payloads" are associated files such as images which may be needed for an
-HTML weave to look right. We identify them here only by leafname: their
-actual location will depend on where the pattern directory is.
-
-@<This is a use command@> =
-	text_stream *leafname = Str::duplicate(mr.exp[0]);
-	ADD_TO_LINKED_LIST(leafname, text_stream, wp->payloads);
-	Regexp::dispose_of(&mr);
-	return;
-
-@<This is a use-up command@> =
-	text_stream *leafname = Str::duplicate(mr.exp[0]);
-	ADD_TO_LINKED_LIST(leafname, text_stream, wp->up_payloads);
-	Regexp::dispose_of(&mr);
-	return;
+}
 
 @ =
 int Patterns::yes_or_no(text_stream *arg, text_file_position *tfp) {
@@ -183,6 +181,18 @@ int Patterns::yes_or_no(text_stream *arg, text_file_position *tfp) {
 	if (Str::eq(arg, I"no")) return FALSE;
 	Errors::in_text_file("setting must be 'yes' or 'no'", tfp);
 	return FALSE;
+}
+
+text_stream *Patterns::plugin_name(text_stream *arg, text_file_position *tfp) {
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, arg, L"(%i+)")) {
+		if (Str::eq_insensitive(arg, I"none")) return NULL;
+	} else {
+		Errors::in_text_file("plugin names must be single alphanumeric words", tfp);
+		arg = NULL;
+	}
+	Regexp::dispose_of(&mr);
+	return Str::duplicate(arg);
 }
 
 @h Obtaining files.
@@ -219,30 +229,6 @@ filename *Patterns::find_asset(weave_pattern *pattern, text_stream *dirname,
 		if (TextFiles::exists(F)) return F;
 	}
 	return NULL;
-}
-
-@ When we eventually want to deal with the |use P| commands, which call
-for payloads to be copied into weave, we make good use of the above:
-
-=
-void Patterns::copy_payloads_into_weave(web *W, weave_pattern *pattern) {
-	text_stream *leafname;
-	LOOP_OVER_LINKED_LIST(leafname, text_stream, pattern->payloads) {
-		filename *F = Patterns::obtain_filename(pattern, leafname);
-		Patterns::copy_file_into_weave(W, F, NULL, NULL);
-		if (W->as_ebook) {
-			filename *rel = Filenames::in(NULL, leafname);
-			Epub::note_image(W->as_ebook, rel);
-		}
-	}
-	LOOP_OVER_LINKED_LIST(leafname, text_stream, pattern->up_payloads) {
-		filename *F = Patterns::obtain_filename(pattern, leafname);
-		Patterns::copy_up_file_into_weave(W, F, NULL);
-		if (W->as_ebook) {
-			filename *rel = Filenames::in(NULL, leafname);
-			Epub::note_image(W->as_ebook, rel);
-		}
-	}
 }
 
 @ =
@@ -286,14 +272,6 @@ void Patterns::transform_CSS(text_stream *line, text_file_position *tfp, void *X
 	WRITE("%S\n", spanned);
 	DISCARD_TEXT(spanned);
 	Regexp::dispose_of(&mr);
-}
-
-void Patterns::copy_up_file_into_weave(web *W, filename *F, pathname *P) {
-	pathname *H = W->redirect_weaves_to;
-	if (H == NULL) H = Reader::woven_folder(W);
-	H = Pathnames::up(H);
-	if (P) H = P;
-	Shell::copy(F, H, "");
 }
 
 @ =

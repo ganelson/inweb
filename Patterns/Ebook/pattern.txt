@@ -1,1 +1,2 @@
-format = ePub
+name: Ebook
+format: ePub

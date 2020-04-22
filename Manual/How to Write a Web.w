@@ -571,13 +571,6 @@ With results like so:
 The latter sets just the height (of the displayed waveform, that is --
 arguably music has width and not height, but SoundCloud thinks otherwise).
 
-@ It's easy to add services. These are all handled by using prototype code
-for a suitable HTML |<iframe>|, and those prototypes are stored in the
-|Embedding| subdirectory of the Inweb installation. But you can use your
-own prototypes instead, by creating an |Embedding| subdirectory of your own
-web; this overrides the ones built in. If your service is, say, |WebTubeo|,
-then the file would be |W/Embedding/WebTubeo.html|.
-
 @h Mathematics notation.
 Literate programming is a good technique to justify code which hangs on
 unobvious pieces of mathematics or computer science, and which must therefore
@@ -601,27 +594,15 @@ That passage was achieved by typing this as the Inweb source:
 	which involves evaluating Euler's constant $\gamma$ and the first derivative
 	of the Riemann zeta function $\zeta'(z)$ at $z=2$.
 =
-Mathematical formulae can be typed in TeX notation between dollar signs,
-as usual for TeX formulae.
-
-The rendering is done by default via the MathJax3 project, full details
-of which can be found at: https://docs.mathjax.org/en/latest/index.html
-
-Inweb in fact managed this by including a "plugin" with the HTML page you
-are now reading: a plugin called |MathJax3|. Plugins are simply small
-fragments of HTML added to the head of a page, and usually contain Javascript
-code needed for special effects in it. To use a different renderer, simply
-change the value of |TeX Mathematics Plugin| for your web (by default it is
-set to |MathJax3|); or if you don't want to use Javascript at all, change
-this to |None|, but then Inweb can really only make the grossest approximation
-of what you would like to achieve.
-
-In some webs, TeX notation is an unwanted nuisance. So this feature can be
-deactivated entirely by writing the following in the Contents section of a web:
+Mathematical formulae is typed in TeX notation between dollar signs,
+as usual for TeX formulae. If those notations are inconvenient, they can be
+changed. The defaults are:
 = (text as Inweb)
-	TeX Mathematics Notation: Off
+	TeX Mathematics Notation: $
+	TeX Mathematics Displayed Notation: $$
 =
-(This is always |On|, the default, or |Off|.)
+Changing these to |None| causes Inweb to disregard mathematics entirely, and
+treat it as any other text would be treated.
 
 @h Footnotes.
 Not everyone likes footnotes,[1] but sometimes they're a tidy way to make
@@ -650,18 +631,7 @@ If you're reading this as a web page (with Javascript on), then you should
 have seen clickable footnote blobs, which reveal the text. If Javascript is
 off, there's a more conventionally textual presentation.
 
-These blob-footnotes are fine for snarky asides or quick references, but long
-discursive notes need more space, so if you intend to use those then you
-should probably turn this rendering off altogether:
-= (text as Inweb)
-	Footnotes Plugin: None
-=
-Footnotes are otherwise rendered by the |Bigfoot| plugin, which is the default
-value of this; its big feet unfortunately tread on the |MathJax3| plugin, so
-right now it's not possible to have mathematics in a footnote when |Bigfoot|
-is in use.
-
-@ Once again, notation may be an issue, and so it's controllable. By default,
+Once again, notation may be an issue, and so it's controllable. By default,
 we have:
 = (text as Inweb)
 	Footnote Begins Notation: [

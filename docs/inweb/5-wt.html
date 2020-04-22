@@ -546,7 +546,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">h</span><span class="plain-syntax"> = </span><span class="identifier-syntax">h</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="../foundation-module/2-trs.html#SP4" class="function-link"><span class="function-syntax">Trees::new_node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="identifier-syntax">weave_embed_node_type</span><span class="plain-syntax">, </span><span class="identifier-syntax">STORE_POINTER_weave_embed_node</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>This node weaves an angle-bracketed paragraph macro name. <code class="display"><span class="extract-syntax">defn</span></code> is set
+</pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>This node weaves an angle-bracketed paragraph macro name. <span class="extract"><span class="extract-syntax">defn</span></span> is set
 if and only if this is the place where the macro is defined &mdash; the usual
 thing is to render some sort of equals sign after it, if so.
 </p>
@@ -559,7 +559,7 @@ thing is to render some sort of equals sign after it, if so.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="../foundation-module/2-trs.html#SP4" class="function-link"><span class="function-syntax">Trees::new_node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="identifier-syntax">weave_pmac_node_type</span><span class="plain-syntax">, </span><span class="identifier-syntax">STORE_POINTER_weave_pmac_node</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The following should render some kind of skip, and may want to take note of
-whether this happens in commentary or in code: the <code class="display"><span class="extract-syntax">in_comment</span></code> flag provides this
+whether this happens in commentary or in code: the <span class="extract"><span class="extract-syntax">in_comment</span></span> flag provides this
 information.
 </p>
 
@@ -570,7 +570,7 @@ information.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="../foundation-module/2-trs.html#SP4" class="function-link"><span class="function-syntax">Trees::new_node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="identifier-syntax">weave_vskip_node_type</span><span class="plain-syntax">, </span><span class="identifier-syntax">STORE_POINTER_weave_vskip_node</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>An opportunity for vertical tidying-up. At the beginning of a code
-line which occurs after a run of <code class="display"><span class="extract-syntax">@d</span></code> or <code class="display"><span class="extract-syntax">@e</span></code> definitions, this node is
+line which occurs after a run of <span class="extract"><span class="extract-syntax">@d</span></span> or <span class="extract"><span class="extract-syntax">@e</span></span> definitions, this node is
 placed. It can then insert a little vertical gap to separate the code from
 the definitions.
 </p>
@@ -685,7 +685,7 @@ definition has just occurred.
 <span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">fn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">fn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="../foundation-module/2-trs.html#SP4" class="function-link"><span class="function-syntax">Trees::new_node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="identifier-syntax">weave_function_defn_node_type</span><span class="plain-syntax">, </span><span class="identifier-syntax">STORE_POINTER_weave_function_defn_node</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>This node produces the <code class="display"><span class="extract-syntax">&gt;&gt; Example</span></code> bits of example source text, really
+</pre><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>This node produces the <span class="extract"><span class="extract-syntax">&gt;&gt; Example</span></span> bits of example source text, really
 a convenience for Inform 7 code commentary.
 </p>
 
@@ -696,18 +696,18 @@ a convenience for Inform 7 code commentary.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="../foundation-module/2-trs.html#SP4" class="function-link"><span class="function-syntax">Trees::new_node</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="identifier-syntax">weave_display_line_node_type</span><span class="plain-syntax">, </span><span class="identifier-syntax">STORE_POINTER_weave_display_line_node</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>An item node produces an item marker in a typical (a), (b), (c), ... sort
-of list. <code class="display"><span class="extract-syntax">depth</span></code> can be 1 or 2: you can have lists in lists, but not lists in
-lists in lists. <code class="display"><span class="extract-syntax">label</span></code> is the marker text, e.g., <code class="display"><span class="extract-syntax">a</span></code>, <code class="display"><span class="extract-syntax">b</span></code>, <code class="display"><span class="extract-syntax">c</span></code>, ...; it can
+of list. <span class="extract"><span class="extract-syntax">depth</span></span> can be 1 or 2: you can have lists in lists, but not lists in
+lists in lists. <span class="extract"><span class="extract-syntax">label</span></span> is the marker text, e.g., <span class="extract"><span class="extract-syntax">a</span></span>, <span class="extract"><span class="extract-syntax">b</span></span>, <span class="extract"><span class="extract-syntax">c</span></span>, ...; it can
 also be empty, in which case the method should move to the matching level of
 indentation but not weave any bracketed marker.
 </p>
 
-</li><li>(a) This was produced by <code class="display"><span class="extract-syntax">depth</span></code> equal to 1, <code class="display"><span class="extract-syntax">label</span></code> equal to <code class="display"><span class="extract-syntax">a</span></code>.
-<ul class="items"><li>(i) This was produced by <code class="display"><span class="extract-syntax">depth</span></code> equal to 2, <code class="display"><span class="extract-syntax">label</span></code> equal to <code class="display"><span class="extract-syntax">i</span></code>.
-</li><li>(ii) This was produced by <code class="display"><span class="extract-syntax">depth</span></code> equal to 2, <code class="display"><span class="extract-syntax">label</span></code> equal to <code class="display"><span class="extract-syntax">ii</span></code>.
+</li><li>(a) This was produced by <span class="extract"><span class="extract-syntax">depth</span></span> equal to 1, <span class="extract"><span class="extract-syntax">label</span></span> equal to <span class="extract"><span class="extract-syntax">a</span></span>.
+<ul class="items"><li>(i) This was produced by <span class="extract"><span class="extract-syntax">depth</span></span> equal to 2, <span class="extract"><span class="extract-syntax">label</span></span> equal to <span class="extract"><span class="extract-syntax">i</span></span>.
+</li><li>(ii) This was produced by <span class="extract"><span class="extract-syntax">depth</span></span> equal to 2, <span class="extract"><span class="extract-syntax">label</span></span> equal to <span class="extract"><span class="extract-syntax">ii</span></span>.
 </li></ul>
-<li> This was produced by <code class="display"><span class="extract-syntax">depth</span></code> equal to 1, <code class="display"><span class="extract-syntax">label</span></code> empty.
-</li><li>(b) This was produced by <code class="display"><span class="extract-syntax">depth</span></code> equal to 1, <code class="display"><span class="extract-syntax">label</span></code> equal to <code class="display"><span class="extract-syntax">b</span></code>.
+<li> This was produced by <span class="extract"><span class="extract-syntax">depth</span></span> equal to 1, <span class="extract"><span class="extract-syntax">label</span></span> empty.
+</li><li>(b) This was produced by <span class="extract"><span class="extract-syntax">depth</span></span> equal to 1, <span class="extract"><span class="extract-syntax">label</span></span> equal to <span class="extract"><span class="extract-syntax">b</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">

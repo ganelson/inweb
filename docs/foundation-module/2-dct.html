@@ -104,8 +104,8 @@ efficiency's sake the caller can set them up with an initial size of her choice.
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Hashing. </b>The whole point of a hash table is that it crudely sorts the contents by a rough
 indication of the key values. This crude indication is the hash value, calculated
-here. If there are <code class="display"><span class="extract-syntax">N</span></code> slots in the dictionary table, this tells us which slot
-(from 0 to <code class="display"><span class="extract-syntax">N-1</span></code>) a given key value belongs in.
+here. If there are <span class="extract"><span class="extract-syntax">N</span></span> slots in the dictionary table, this tells us which slot
+(from 0 to <span class="extract"><span class="extract-syntax">N-1</span></span>) a given key value belongs in.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -132,8 +132,8 @@ so be careful if thread safety's an issue.
 <span class="plain-syntax">    </span><a href="2-dct.html#SP7" class="function-link"><span class="function-syntax">Dictionaries::find_p</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">, -1);</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>A nuisance we have to live with is that we often want to express the key
-as wide text (so that we can use literals like <code class="display"><span class="extract-syntax">L"my-key"</span></code>) instead of text
-streams. So we also offer versions suffixed <code class="display"><span class="extract-syntax">_literal</span></code>:
+as wide text (so that we can use literals like <span class="extract"><span class="extract-syntax">L"my-key"</span></span>) instead of text
+streams. So we also offer versions suffixed <span class="extract"><span class="extract-syntax">_literal</span></span>:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -157,8 +157,8 @@ streams. So we also offer versions suffixed <code class="display"><span class="e
 <span class="plain-syntax">    </span><a href="2-dct.html#SP5" class="function-link"><span class="function-syntax">Dictionaries::destroy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>So, then, find an entry (if <code class="display"><span class="extract-syntax">change</span></code> is <code class="display"><span class="extract-syntax">0</span></code>), create it (if <code class="display"><span class="extract-syntax">+1</span></code>) or delete
-it (if <code class="display"><span class="extract-syntax">-1</span></code>).
+</pre><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>So, then, find an entry (if <span class="extract"><span class="extract-syntax">change</span></span> is <span class="extract"><span class="extract-syntax">0</span></span>), create it (if <span class="extract"><span class="extract-syntax">+1</span></span>) or delete
+it (if <span class="extract"><span class="extract-syntax">-1</span></span>).
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -312,7 +312,7 @@ so we provide convenient wrappers with the correct C types.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">value</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>We only need a read operation, because the caller can write to the dictionary
-entry by reading the text pointer and then using <code class="display"><span class="extract-syntax">WRITE_TO</span></code>.
+entry by reading the text pointer and then using <span class="extract"><span class="extract-syntax">WRITE_TO</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">

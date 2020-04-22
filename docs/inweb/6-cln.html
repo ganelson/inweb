@@ -69,38 +69,38 @@ Orb-Weaving Spiders With Communal Webbing in a Man-Made Structural Habitat
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">colony</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">members</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">colony_member</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">members</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">colony_member</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">home</span><span class="plain-syntax">; </span><span class="comment"> path of home repository</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">assets_path</span><span class="plain-syntax">; </span><span class="comment"> where assets shared between weaves live</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">patterns_path</span><span class="plain-syntax">; </span><span class="comment"> where additional patterns live</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">colony</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure colony is private to this section.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Each member is represented by an instance of the following. Note the <code class="display"><span class="extract-syntax">loaded</span></code>
+</pre><ul class="endnotetexts"><li>The structure colony is private to this section.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Each member is represented by an instance of the following. Note the <span class="extract"><span class="extract-syntax">loaded</span></span>
 field: this holds metadata on the web/module in question. (Recall that a module
 is really just a web that doesn't tangle to an independent program but to a
 library of code: for almost all purposes, it's a web.) But for efficiency's
 sake, we read this metadata only on demand.
 </p>
 
-<p class="inwebparagraph">Note that the <code class="display"><span class="extract-syntax">path</span></code> might be either the name of a single-file web, or of a
+<p class="inwebparagraph">Note that the <span class="extract"><span class="extract-syntax">path</span></span> might be either the name of a single-file web, or of a
 directory holding a multi-section web.
 </p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">colony_member</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">web_rather_than_module</span><span class="plain-syntax">; </span><span class="comment"> </span><code class="display"><span class="extract-syntax">TRUE</span></code><span class="comment"> for a web, </span><code class="display"><span class="extract-syntax">FALSE</span></code><span class="comment"> for a module</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">; </span><span class="comment"> the </span><code class="display"><span class="extract-syntax">N</span></code><span class="comment"> in </span><code class="display"><span class="extract-syntax">N at P in W</span></code>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">path</span><span class="plain-syntax">; </span><span class="comment"> the </span><code class="display"><span class="extract-syntax">P</span></code><span class="comment"> in </span><code class="display"><span class="extract-syntax">N at P in W</span></code>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">weave_path</span><span class="plain-syntax">; </span><span class="comment"> the </span><code class="display"><span class="extract-syntax">W</span></code><span class="comment"> in </span><code class="display"><span class="extract-syntax">N at P in W</span></code>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">home_leaf</span><span class="plain-syntax">; </span><span class="comment"> usually </span><code class="display"><span class="extract-syntax">index.html</span></code><span class="comment">, but not for single-file webs</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">web_rather_than_module</span><span class="plain-syntax">; </span><span class="comment"> </span><span class="extract"><span class="extract-syntax">TRUE</span></span><span class="comment"> for a web, </span><span class="extract"><span class="extract-syntax">FALSE</span></span><span class="comment"> for a module</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">; </span><span class="comment"> the </span><span class="extract"><span class="extract-syntax">N</span></span><span class="comment"> in </span><span class="extract"><span class="extract-syntax">N at P in W</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">path</span><span class="plain-syntax">; </span><span class="comment"> the </span><span class="extract"><span class="extract-syntax">P</span></span><span class="comment"> in </span><span class="extract"><span class="extract-syntax">N at P in W</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">weave_path</span><span class="plain-syntax">; </span><span class="comment"> the </span><span class="extract"><span class="extract-syntax">W</span></span><span class="comment"> in </span><span class="extract"><span class="extract-syntax">N at P in W</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">home_leaf</span><span class="plain-syntax">; </span><span class="comment"> usually </span><span class="extract"><span class="extract-syntax">index.html</span></span><span class="comment">, but not for single-file webs</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">default_weave_pattern</span><span class="plain-syntax">; </span><span class="comment"> for use when weaving</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">web_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">loaded</span><span class="plain-syntax">; </span><span class="comment"> metadata on its sections, lazily evaluated</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">navigation</span><span class="plain-syntax">; </span><span class="comment"> navigation sidebar HTML</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">breadcrumb_tail</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">breadcrumb_request</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">breadcrumb_tail</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">breadcrumb_request</span></span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">colony_member</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure colony_member is accessed in 2/trs, 1/cnf, 1/ts, 3/ti, 5/wt, 6/rw and here.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And the following reads a colony file <code class="display"><span class="extract-syntax">F</span></code> and produces a suitable <code class="display"><span class="extract-syntax">colony</span></code>
+</pre><ul class="endnotetexts"><li>The structure colony_member is accessed in 2/trs, 1/cnf, 1/ts, 3/ti, 5/wt, 6/rw and here.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And the following reads a colony file <span class="extract"><span class="extract-syntax">F</span></span> and produces a suitable <span class="extract"><span class="extract-syntax">colony</span></span>
 object from it. This, for example, is the colony file for the Inweb repository
 at GitHub:
 </p>
@@ -129,7 +129,7 @@ at GitHub:
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">colony_reader_state</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">province</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nav</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crumbs</span><span class="plain-syntax">; </span><span class="comment"> of </span><code class="display"><span class="extract-syntax">breadcrumb_request</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crumbs</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">breadcrumb_request</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">colony_reader_state</span><span class="plain-syntax">;</span>
 
@@ -276,7 +276,7 @@ the page, and this requests one.
 <span class="plain-syntax">        </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"li"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>The structure breadcrumb_request is private to this section.</li></ul><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Searching. </b>Given a name <code class="display"><span class="extract-syntax">T</span></code>, we try to find a colony member of that name, returning the
+</pre><ul class="endnotetexts"><li>The structure breadcrumb_request is private to this section.</li></ul><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Searching. </b>Given a name <span class="extract"><span class="extract-syntax">T</span></span>, we try to find a colony member of that name, returning the
 first we find.
 </p>
 
@@ -380,12 +380,12 @@ the data we already have; but if not, we read it in.
 <span class="plain-syntax">    foundation: Text Streams</span>
 <span class="plain-syntax">    goldbach</span>
 </pre>
-<p class="inwebparagraph">The reference text is in <code class="display"><span class="extract-syntax">text</span></code>; we return <code class="display"><span class="extract-syntax">TRUE</span></code> if we can make unambiguous
-sense of it, or throw an error and return <code class="display"><span class="extract-syntax">FALSE</span></code> if not. If all is well, we
+<p class="inwebparagraph">The reference text is in <span class="extract"><span class="extract-syntax">text</span></span>; we return <span class="extract"><span class="extract-syntax">TRUE</span></span> if we can make unambiguous
+sense of it, or throw an error and return <span class="extract"><span class="extract-syntax">FALSE</span></span> if not. If all is well, we
 must write a title and URL for the link.
 </p>
 
-<p class="inwebparagraph">The web metadata <code class="display"><span class="extract-syntax">Wm</span></code> is for the web currently being woven, and the line <code class="display"><span class="extract-syntax">L</span></code>
+<p class="inwebparagraph">The web metadata <span class="extract"><span class="extract-syntax">Wm</span></span> is for the web currently being woven, and the line <span class="extract"><span class="extract-syntax">L</span></span>
 is where the reference is made from.
 </p>
 
@@ -522,7 +522,7 @@ is where the reference is made from.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="string-syntax">" (in %S)"</span><span class="plain-syntax">, </span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10_5">&#167;10.5</a>.</li></ul><p class="inwebparagraph"><a id="SP10_5_2"></a><b>&#167;10.5.2.  </b>In the absence of a colony file, Inweb can really only guess, and the
 guess it makes is that modules of the current web will be woven alongside
-the main one, and suffixed by <code class="display"><span class="extract-syntax">-module</span></code>.
+the main one, and suffixed by <span class="extract"><span class="extract-syntax">-module</span></span>.
 </p>
 
 

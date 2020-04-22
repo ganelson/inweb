@@ -208,10 +208,7 @@ of Suzanne Vega's "Freeze Tag".
 
 It then either calls //Swarm::weave_subset// -- meaning, a subset of the
 web, going into a single output file -- or //Swarm::weave//, which it turn
-splits the web into subsets and sends each of those to //Swarm::weave_subset//;
-and it ensures that //Patterns::copy_payloads_into_weave// is called at the
-end of the process. "Payloads" are files copied into the weave: for example,
-an icon or a CSS file used in the website being constructed is a "payload".
+splits the web into subsets and sends each of those to //Swarm::weave_subset//.
 
 //Swarm::weave// also causes an "index" to be made, though "index" here is
 Inweb jargon for something which is more likely a contents page listing the

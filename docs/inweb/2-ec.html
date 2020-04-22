@@ -46,9 +46,9 @@ function togglePopup(material_id) {
 <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">inweb</a></li><li><a href="index.html#2">Chapter 2: Parsing a Web</a></li><li><b>Enumerated Constants</b></li></ul><p class="purpose">To define sequentially numbered values for families of constants.</p>
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>The idea here is that each enumeration set is a sequence of named constants
-with a given postfix: for example, <code class="display"><span class="extract-syntax">HARRY_ST</span></code>, <code class="display"><span class="extract-syntax">NEVILLE_ST</span></code>, <code class="display"><span class="extract-syntax">ANGELINA_ST</span></code>
-form the <code class="display"><span class="extract-syntax">*_ST</span></code> set. By definition, the postfix part is the portion of the
-name following the final underscore, so in this case <code class="display"><span class="extract-syntax">ST</span></code>.
+with a given postfix: for example, <span class="extract"><span class="extract-syntax">HARRY_ST</span></span>, <span class="extract"><span class="extract-syntax">NEVILLE_ST</span></span>, <span class="extract"><span class="extract-syntax">ANGELINA_ST</span></span>
+form the <span class="extract"><span class="extract-syntax">*_ST</span></span> set. By definition, the postfix part is the portion of the
+name following the final underscore, so in this case <span class="extract"><span class="extract-syntax">ST</span></span>.
 </p>
 
 <p class="inwebparagraph">Each set of constants begins at a given value (typically 0) and then
@@ -76,7 +76,7 @@ compare all against all:
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">es</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The following is called when an enumeration is found. If <code class="display"><span class="extract-syntax">from</span></code> has a
+</pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The following is called when an enumeration is found. If <span class="extract"><span class="extract-syntax">from</span></span> has a
 sensible value, this is the start of a new enumeration set; otherwise it's
 a further constant in what ought to be an existing set.
 </p>
@@ -92,7 +92,7 @@ a further constant in what ought to be an existing set.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pf</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">) </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">last_observed_at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b>So for instance <code class="display"><span class="extract-syntax">HARRY_ST</span></code> to <code class="display"><span class="extract-syntax">ST</span></code>:
+</pre><p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b>So for instance <span class="extract"><span class="extract-syntax">HARRY_ST</span></span> to <span class="extract"><span class="extract-syntax">ST</span></span>:
 </p>
 
 
@@ -143,8 +143,8 @@ a further constant in what ought to be an existing set.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_value</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">")"</span><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>For each set, a further constant is defined to give the range; for example,
-we would have <code class="display"><span class="extract-syntax">NO_DEFINED_ST_VALUES</span></code> set to 3. This is notionally placed in
-the code at the last line on which an <code class="display"><span class="extract-syntax">*_ST</span></code> value was defined.
+we would have <span class="extract"><span class="extract-syntax">NO_DEFINED_ST_VALUES</span></span> set to 3. This is notionally placed in
+the code at the last line on which an <span class="extract"><span class="extract-syntax">*_ST</span></span> value was defined.
 </p>
 
 <pre class="displayed-code all-displayed-code">

@@ -78,8 +78,8 @@ for primality.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!</span><span class="identifier-syntax">sieve_performed</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Perform the sieve</span> <span class="named-paragraph-number">2.1</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">still_in_sieve</span><span class="plain-syntax">[</span><span class="identifier-syntax">n</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b>We save a little time by noting that if a number up to <code class="display"><span class="extract-syntax">RANGE</span></code> is composite
-then one of its factors must be smaller than the square root of <code class="display"><span class="extract-syntax">RANGE</span></code>. Thus,
+</pre><p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b>We save a little time by noting that if a number up to <span class="extract"><span class="extract-syntax">RANGE</span></span> is composite
+then one of its factors must be smaller than the square root of <span class="extract"><span class="extract-syntax">RANGE</span></span>. Thus,
 in a sieve of size 10000, one only needs to remove multiples of 2 up to 100,
 for example.
 </p>

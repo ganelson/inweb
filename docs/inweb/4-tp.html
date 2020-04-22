@@ -48,15 +48,15 @@ function togglePopup(material_id) {
 <ul class="toc"><li><a href="4-tp.html#SP7">&#167;7. Painting a file</a></li></ul><hr class="tocbar">
 
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>This is a very simple syntax colouring algorithm. The work is done by the
-function <code class="display"><span class="extract-syntax">Painter::syntax_colour</span></code>, which can in principle be applied to texts
+function <span class="extract"><span class="extract-syntax">Painter::syntax_colour</span></span>, which can in principle be applied to texts
 of any length. But it's usually convenient to run it on a long file one line
-at a time, so that it is called repeatedly. The variable <code class="display"><span class="extract-syntax">colouring_state</span></code>
+at a time, so that it is called repeatedly. The variable <span class="extract"><span class="extract-syntax">colouring_state</span></span>
 remembers where we were at the end of the previous line, so that we can pick
 up again later at the start of the next.
 </p>
 
 <p class="inwebparagraph">Because of that, we need to call the following before we begin a run of calls
-to <code class="display"><span class="extract-syntax">Painter::syntax_colour</span></code>:
+to <span class="extract"><span class="extract-syntax">Painter::syntax_colour</span></span>:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -65,16 +65,16 @@ to <code class="display"><span class="extract-syntax">Painter::syntax_colour</sp
 <span class="plain-syntax">    </span><span class="identifier-syntax">colouring_state</span><span class="plain-syntax"> = </span><span class="constant-syntax">PLAIN_COLOUR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">painter_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>As we begin, the text to colour is in <code class="display"><span class="extract-syntax">matter</span></code>, while <code class="display"><span class="extract-syntax">colouring</span></code> is an
+</pre><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>As we begin, the text to colour is in <span class="extract"><span class="extract-syntax">matter</span></span>, while <span class="extract"><span class="extract-syntax">colouring</span></span> is an
 equal-length text where each character represents the colour of its
-corresponding character in <code class="display"><span class="extract-syntax">matter</span></code>. For example, we might start as:
+corresponding character in <span class="extract"><span class="extract-syntax">matter</span></span>. For example, we might start as:
 </p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    int x = 55;</span>
 <span class="plain-syntax">    ppppppppppp</span>
 </pre>
-<p class="inwebparagraph">with every character having <code class="display"><span class="extract-syntax">PLAIN_COLOUR</span></code>, but end up with:
+<p class="inwebparagraph">with every character having <span class="extract"><span class="extract-syntax">PLAIN_COLOUR</span></span>, but end up with:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -220,7 +220,7 @@ its colouring program.
 </pre><ul class="endnotetexts"><li>This code is used in <a href="4-tp.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_3"></a><b>&#167;2.3.  </b>For the moment, we always adopt the C rules on identifiers: they have to
 begin with an underscore or letter, then continue with underscores or
 alphanumeric characters, except that if the language allows it then they
-can contain a <code class="display"><span class="extract-syntax">::</span></code> namespace divider.
+can contain a <span class="extract"><span class="extract-syntax">::</span></span> namespace divider.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -353,12 +353,12 @@ rule across the whole snippet before moving on to the next.
 
 
 <pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment"> for </span><code class="display"><span class="extract-syntax">prefix P</span></code>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment"> for </span><code class="display"><span class="extract-syntax">spaced prefix P</span></code>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment"> for </span><code class="display"><span class="extract-syntax">optionally spaced prefix P</span></code>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment"> for </span><code class="display"><span class="extract-syntax">suffix P</span></code>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="comment"> for </span><code class="display"><span class="extract-syntax">spaced suffix P</span></code>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span><span class="plain-syntax"> </span><span class="comment"> for </span><code class="display"><span class="extract-syntax">optionally spaced suffix P</span></code>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">prefix P</span></span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">spaced prefix P</span></span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">optionally spaced prefix P</span></span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">suffix P</span></span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">spaced suffix P</span></span>
+    <span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">optionally spaced suffix P</span></span>
 </pre>
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::satisfies</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>Painter::satisfies</b>:<br><a href="4-tp.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>

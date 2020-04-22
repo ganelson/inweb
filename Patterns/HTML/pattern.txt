@@ -1,3 +1,6 @@
-format = HTML
-default-range = sections
-plugin Base
+name: HTML
+format: HTML
+default range: sections
+plugin: Base
+mathematics plugin: MathJax3
+footnotes plugin: Bigfoot

@@ -520,18 +520,16 @@ that service uses to identify the video/audio in question.
 
 @<Render footnote cue@> =
 	weave_footnote_cue_node *C = RETRIEVE_POINTER_weave_footnote_cue_node(N->content);
-	text_stream *fn_plugin_name =
-		Bibliographic::get_datum(hrs->wv->weave_web->md, I"Footnotes Plugin");
-	if (Str::ne_insensitive(fn_plugin_name, I"None"))	
+	text_stream *fn_plugin_name = hrs->wv->pattern->footnotes_plugin;
+	if (Str::len(fn_plugin_name) > 0)
 		Swarm::ensure_plugin(hrs->wv, fn_plugin_name);
 	WRITE("<sup id=\"fnref:%S\"><a href=\"#fn:%S\" rel=\"footnote\">%S</a></sup>",
 		C->cue_text, C->cue_text, C->cue_text);
 
 @<Render footnote@> =
 	weave_begin_footnote_text_node *C = RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
-	text_stream *fn_plugin_name =
-		Bibliographic::get_datum(hrs->wv->weave_web->md, I"Footnotes Plugin");
-	if (Str::ne_insensitive(fn_plugin_name, I"None"))	
+	text_stream *fn_plugin_name = hrs->wv->pattern->footnotes_plugin;
+	if (Str::len(fn_plugin_name) > 0)
 		Swarm::ensure_plugin(hrs->wv, fn_plugin_name);
 	WRITE("<li class=\"footnote\" id=\"fn:%S\"><p class=\"inwebfootnote\">", C->cue_text);
 	for (tree_node *M = N->child; M; M = M->next)
@@ -576,10 +574,10 @@ that service uses to identify the video/audio in question.
 	WRITE("%S", C->content);
 
 @<Render inline@> =
-	HTML_OPEN_WITH("code", "class=\"display\"");
+	HTML_OPEN_WITH("span", "class=\"extract\"");
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);	
-	HTML_CLOSE("code");
+	HTML_CLOSE("span");
 	return FALSE;
 
 @<Render locale@> =
@@ -596,9 +594,8 @@ that service uses to identify the video/audio in question.
 
 @<Render maths@> =
 	weave_maths_node *C = RETRIEVE_POINTER_weave_maths_node(N->content);
-	text_stream *plugin_name =
-		Bibliographic::get_datum(hrs->wv->weave_web->md, I"TeX Mathematics Plugin");
-	if (Str::eq_insensitive(plugin_name, I"None")) {
+	text_stream *plugin_name = hrs->wv->pattern->mathematics_plugin;
+	if (Str::len(plugin_name) == 0) {
 		TEMPORARY_TEXT(R);
 		TeX::remove_math_mode(R, C->content);
 		HTMLFormat::escape_text(OUT, R);

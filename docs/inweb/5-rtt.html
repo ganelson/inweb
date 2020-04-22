@@ -47,13 +47,13 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="5-rtt.html#SP1">&#167;1. Running TeX</a></li><li><a href="5-rtt.html#SP4">&#167;4. Reporting</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Running TeX. </b>Although we are running <code class="display"><span class="extract-syntax">pdftex</span></code>, a modern variant of TeX, rather than the
+<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Running TeX. </b>Although we are running <span class="extract"><span class="extract-syntax">pdftex</span></span>, a modern variant of TeX, rather than the
 original, they are very similar as command-line tools; the difference is
 that the output is a PDF file rather than a DVI file, Knuth's original stab
 at the same basic idea.
 </p>
 
-<p class="inwebparagraph">In particular, we call it in <code class="display"><span class="extract-syntax">-interaction=scrollmode</span></code> so that any errors
+<p class="inwebparagraph">In particular, we call it in <span class="extract"><span class="extract-syntax">-interaction=scrollmode</span></span> so that any errors
 whizz by rather than interrupting or halting the session. Because of that, we
 spool the output onto a console file which we can then read in and parse to
 find the number of errors actually generated. Prime among errors is the

@@ -106,13 +106,13 @@ all of those methods, it has a whole lot more of its own.
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1. Parsing Preform grammar. </b>This is where we look for declarations of nonterminals. Very little about
 the following code will make sense unless you've first read the Preform
-section of the <code class="display"><span class="extract-syntax">words</span></code> module, which is what we're supporting, and seen
+section of the <span class="extract"><span class="extract-syntax">words</span></span> module, which is what we're supporting, and seen
 some examples of Preform being used in the Inform source code.
 </p>
 
-<p class="inwebparagraph">In parsing, we categorise the opening lines <code class="display"><span class="extract-syntax">PREFORM_LCAT</span></code>. Subsequent lines
-of grammar are <code class="display"><span class="extract-syntax">PREFORM_GRAMMAR_LCAT</span></code>; but the lines of InC code inside an
-<code class="display"><span class="extract-syntax">internal</span></code> definition remain just plain <code class="display"><span class="extract-syntax">CODE_BODY_LCAT</span></code> lines.
+<p class="inwebparagraph">In parsing, we categorise the opening lines <span class="extract"><span class="extract-syntax">PREFORM_LCAT</span></span>. Subsequent lines
+of grammar are <span class="extract"><span class="extract-syntax">PREFORM_GRAMMAR_LCAT</span></span>; but the lines of InC code inside an
+<span class="extract"><span class="extract-syntax">internal</span></span> definition remain just plain <span class="extract"><span class="extract-syntax">CODE_BODY_LCAT</span></span> lines.
 </p>
 
 
@@ -135,9 +135,9 @@ of grammar are <code class="display"><span class="extract-syntax">PREFORM_GRAMMA
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">form</span><span class="plain-syntax"> != </span><span class="constant-syntax">NOT_A_NONTERMINAL</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Record a Preform nonterminal here</span> <span class="named-paragraph-number">3.1.3</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pntname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">header</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP3">&#167;3</a>.</li></ul><p class="inwebparagraph"><a id="SP3_1_1"></a><b>&#167;3.1.1.  </b>The keyword <code class="display"><span class="extract-syntax">internal</span></code> can be followed by an indication of the number
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP3">&#167;3</a>.</li></ul><p class="inwebparagraph"><a id="SP3_1_1"></a><b>&#167;3.1.1.  </b>The keyword <span class="extract"><span class="extract-syntax">internal</span></span> can be followed by an indication of the number
 of words the nonterminal will match: usually a decimal non-negative number,
-but optionally a question mark <code class="display"><span class="extract-syntax">?</span></code> to indicate voracity.
+but optionally a question mark <span class="extract"><span class="extract-syntax">?</span></span> to indicate voracity.
 </p>
 
 
@@ -172,14 +172,14 @@ structures to be created:
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">preform_nonterminal</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt_name</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><code class="display"><span class="extract-syntax">&lt;action-clause&gt;</span></code>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">unangled_name</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><code class="display"><span class="extract-syntax">action-clause</span></code>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_C_identifier</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><code class="display"><span class="extract-syntax">action_clause_NTM</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt_name</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><span class="extract"><span class="extract-syntax">&lt;action-clause&gt;</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">unangled_name</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><span class="extract"><span class="extract-syntax">action-clause</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_C_identifier</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><span class="extract"><span class="extract-syntax">action_clause_NTM</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">as_function</span><span class="plain-syntax">; </span><span class="comment"> defined internally, that is, parsed by a C language_function</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">voracious</span><span class="plain-syntax">; </span><span class="comment"> a voracious nonterminal: see "The English Syntax of Inform"</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">min_word_count</span><span class="plain-syntax">; </span><span class="comment"> for internals only</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">max_word_count</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">takes_pointer_result</span><span class="plain-syntax">; </span><span class="comment"> right-hand formula defines </span><code class="display"><span class="extract-syntax">*XP</span></code><span class="comment">, not </span><code class="display"><span class="extract-syntax">*X</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">takes_pointer_result</span><span class="plain-syntax">; </span><span class="comment"> right-hand formula defines </span><span class="extract"><span class="extract-syntax">*XP</span></span><span class="comment">, not </span><span class="extract"><span class="extract-syntax">*X</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">where_defined</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">preform_nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_pnt_alphabetically</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
@@ -297,17 +297,17 @@ the following definition:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Preform_theme</span><span class="plain-syntax">) </span><a href="2-tgs.html#SP3" class="function-link"><span class="function-syntax">Tags::add_to_paragraph</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_paragraph</span><span class="plain-syntax">, </span><span class="identifier-syntax">Preform_theme</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">category</span><span class="plain-syntax"> = </span><span class="constant-syntax">PREFORM_LCAT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text_operand</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">header</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP3_1_3">&#167;3.1.3</a>.</li></ul><p class="inwebparagraph"><a id="SP3_1_1_1"></a><b>&#167;3.1.1.1. Parsing the body of Preform grammar. </b>After a line like <code class="display"><span class="extract-syntax">&lt;action-clause&gt; ::=</span></code>, Preform grammar follows on subsequent
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP3_1_3">&#167;3.1.3</a>.</li></ul><p class="inwebparagraph"><a id="SP3_1_1_1"></a><b>&#167;3.1.1.1. Parsing the body of Preform grammar. </b>After a line like <span class="extract"><span class="extract-syntax">&lt;action-clause&gt; ::=</span></span>, Preform grammar follows on subsequent
 lines until we hit the end of the paragraph, or a white-space line, whichever
-comes first. Each line of grammar is categorised <code class="display"><span class="extract-syntax">PREFORM_GRAMMAR_LCAT</span></code>.
+comes first. Each line of grammar is categorised <span class="extract"><span class="extract-syntax">PREFORM_GRAMMAR_LCAT</span></span>.
 If we have a line with an arrow, like so:
 </p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    porcupine tree  ==&gt;  2</span>
 </pre>
-<p class="inwebparagraph">then the text on the left goes into <code class="display"><span class="extract-syntax">text_operand</span></code> and the right into
-<code class="display"><span class="extract-syntax">text_operand2</span></code>, with the arrow itself (and white space around it) cut out.
+<p class="inwebparagraph">then the text on the left goes into <span class="extract"><span class="extract-syntax">text_operand</span></span> and the right into
+<span class="extract"><span class="extract-syntax">text_operand2</span></span>, with the arrow itself (and white space around it) cut out.
 </p>
 
 
@@ -354,8 +354,8 @@ trust me, it's correct.
 <span class="plain-syntax">        </span><span class="identifier-syntax">AL</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text_operand</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP3_1_1_1">&#167;3.1.1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP3_1_1_1_2"></a><b>&#167;3.1.1.1.2.  </b>Note that nonterminal variables are, by default, integers. If their names
-are divided internally with a colon, however, as <code class="display"><span class="extract-syntax">&lt;&lt;structure:name&gt;&gt;</span></code>, then
-they have the type <code class="display"><span class="extract-syntax">structure *</span></code>.
+are divided internally with a colon, however, as <span class="extract"><span class="extract-syntax">&lt;&lt;structure:name&gt;&gt;</span></span>, then
+they have the type <span class="extract"><span class="extract-syntax">structure *</span></span>.
 </p>
 
 
@@ -385,15 +385,15 @@ they have the type <code class="display"><span class="extract-syntax">structure 
 <span class="character-syntax">    DISCARD_TEXT(to_scan);</span>
 <span class="character-syntax">    Regexp::dispose_of(&amp;mr);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP3_1_1_1">&#167;3.1.1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP3_1_1_1_2_1"></a><b>&#167;3.1.1.1.2.1.  </b>Nonterminal variables are actually just global C variables, and their C
-identifiers need to avoid hyphens and colons. For example, <code class="display"><span class="extract-syntax">&lt;&lt;kind:ref&gt;&gt;</span></code>
-has identifier <code class="display"><span class="extract-syntax">"kind_ref_NTMV"</span></code>. Each one is recorded in a structure thus:
+identifiers need to avoid hyphens and colons. For example, <span class="extract"><span class="extract-syntax">&lt;&lt;kind:ref&gt;&gt;</span></span>
+has identifier <span class="extract"><span class="extract-syntax">"kind_ref_NTMV"</span></span>. Each one is recorded in a structure thus:
 </p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">nonterminal_variable</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ntv_name</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><code class="display"><span class="extract-syntax">"num"</span></code>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ntv_type</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><code class="display"><span class="extract-syntax">"int"</span></code>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ntv_identifier</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><code class="display"><span class="extract-syntax">"num_NTMV"</span></code>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ntv_name</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><span class="extract"><span class="extract-syntax">"num"</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ntv_type</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><span class="extract"><span class="extract-syntax">"int"</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ntv_identifier</span><span class="plain-syntax">; </span><span class="comment"> e.g., </span><span class="extract"><span class="extract-syntax">"num_NTMV"</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_mention</span><span class="plain-syntax">; </span><span class="comment"> first usage</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">nonterminal_variable</span><span class="plain-syntax">;</span>
@@ -412,7 +412,7 @@ has identifier <code class="display"><span class="extract-syntax">"kind_ref_NTMV
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">ntv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ntv_identifier</span><span class="plain-syntax">, </span><span class="string-syntax">"%S_NTMV"</span><span class="plain-syntax">, </span><span class="identifier-syntax">var_given</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ntv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_mention</span><span class="plain-syntax"> = </span><span class="identifier-syntax">AL</span><span class="plain-syntax">;</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP3_1_1_1_2">&#167;3.1.1.1.2</a>.</li></ul><p class="inwebparagraph"><a id="SP3_2"></a><b>&#167;3.2. Parsing I-literals. </b>A simpler but useful further addition to C is that we recognise a new form
-of string literal: <code class="display"><span class="extract-syntax">I"quartz"</span></code> makes a constant text stream with the content
+of string literal: <span class="extract"><span class="extract-syntax">I"quartz"</span></span> makes a constant text stream with the content
 "quartz".
 </p>
 
@@ -447,8 +447,8 @@ of string literal: <code class="display"><span class="extract-syntax">I"quartz"<
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ended</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">This is definitely an I-literal</span> <span class="named-paragraph-number">3.2.1.2</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">lit</span><span class="plain-syntax">);</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP3_2">&#167;3.2</a>.</li></ul><p class="inwebparagraph"><a id="SP3_2_1_1"></a><b>&#167;3.2.1.1.  </b>Each I-literal results in an instance of the following being created. The
-I-literal <code class="display"><span class="extract-syntax">I"quartz"</span></code> would have content <code class="display"><span class="extract-syntax">quartz</span></code> and identifier something
-like <code class="display"><span class="extract-syntax">TL_IS_123</span></code>.
+I-literal <span class="extract"><span class="extract-syntax">I"quartz"</span></span> would have content <span class="extract"><span class="extract-syntax">quartz</span></span> and identifier something
+like <span class="extract"><span class="extract-syntax">TL_IS_123</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -464,7 +464,7 @@ like <code class="display"><span class="extract-syntax">TL_IS_123</span></code>.
 <span class="plain-syntax">    text_stream *T = I"quartz";</span>
 </pre>
 <p class="inwebparagraph">We create the necessary I-literal, and splice the line so that it now reads
-<code class="display"><span class="extract-syntax">text_stream *T = TL_IS_123;</span></code>. (That's why we don't call any of this on a
+<span class="extract"><span class="extract-syntax">text_stream *T = TL_IS_123;</span></span>. (That's why we don't call any of this on a
 weave run; we're actually amending the code of the web.)
 </p>
 
@@ -489,7 +489,7 @@ weave run; we're actually amending the code of the web.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">after</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">before</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">after</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP3_2_1">&#167;3.2.1</a>.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Tangling methods. </b>Suppress the expansion of macros occurring on a line introduced by a <code class="display"><span class="extract-syntax">//</span></code>
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP3_2_1">&#167;3.2.1</a>.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Tangling methods. </b>Suppress the expansion of macros occurring on a line introduced by a <span class="extract"><span class="extract-syntax">//</span></span>
 comment. (This avoids problems when tangling code that's been commented out.)
 </p>
 
@@ -500,8 +500,8 @@ comment. (This avoids problems when tangling code that's been commented out.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>InC does three things which C doesn't: it allows the namespaced function
-names like <code class="display"><span class="extract-syntax">Section::function()</span></code>; it allows Foundation-class-style string
-literals marked with an I, <code class="display"><span class="extract-syntax">I"like this"</span></code>, which we will call I-literals;
+names like <span class="extract"><span class="extract-syntax">Section::function()</span></span>; it allows Foundation-class-style string
+literals marked with an I, <span class="extract"><span class="extract-syntax">I"like this"</span></span>, which we will call I-literals;
 and it allows Preform natural language grammar to be mixed in with code.
 </p>
 
@@ -509,13 +509,13 @@ and it allows Preform natural language grammar to be mixed in with code.
 two special tangling commands:
 </p>
 
-<ul class="items"><li>(a) <code class="display"><span class="extract-syntax">[[nonterminals]]</span></code> tangles to code which initialises the Preform
+<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">[[nonterminals]]</span></span> tangles to code which initialises the Preform
 grammar. (The grammar defines the meaning of nonterminals such as
-<code class="display"><span class="extract-syntax">&lt;sentence&gt;</span></code>. They're not terminal in the sense that they are defined
+<span class="extract"><span class="extract-syntax">&lt;sentence&gt;</span></span>. They're not terminal in the sense that they are defined
 as combinations of other things.) In practice, this needs to appear once
 in any program using Preform. For the Inform project, that's done in the
-<code class="display"><span class="extract-syntax">words</span></code> module of the Inform 7 compiler.
-</li><li>(b) <code class="display"><span class="extract-syntax">[[textliterals]]</span></code> tangles to code which initialises the I-literals.
+<span class="extract"><span class="extract-syntax">words</span></span> module of the Inform 7 compiler.
+</li><li>(b) <span class="extract"><span class="extract-syntax">[[textliterals]]</span></span> tangles to code which initialises the I-literals.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -533,12 +533,12 @@ in any program using Preform. For the Inform project, that's done in the
 </pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Time to predeclare things. InC is going to create a special function, right
 at the end of the code, which "registers" the nonterminals, creating their
 run-time data structures; we must predeclare this function. It will set values
-for the pointers <code class="display"><span class="extract-syntax">action_clause_NTM</span></code>, and so on; these are global variables,
-which we initially declare as <code class="display"><span class="extract-syntax">NULL</span></code>.
+for the pointers <span class="extract"><span class="extract-syntax">action_clause_NTM</span></span>, and so on; these are global variables,
+which we initially declare as <span class="extract"><span class="extract-syntax">NULL</span></span>.
 </p>
 
-<p class="inwebparagraph">We also declare the nonterminal variables like <code class="display"><span class="extract-syntax">kind_ref_NTMV</span></code>, initialising
-all integers to zero and all pointers to <code class="display"><span class="extract-syntax">NULL</span></code>.
+<p class="inwebparagraph">We also declare the nonterminal variables like <span class="extract"><span class="extract-syntax">kind_ref_NTMV</span></span>, initialising
+all integers to zero and all pointers to <span class="extract"><span class="extract-syntax">NULL</span></span>.
 </p>
 
 <p class="inwebparagraph">We do something similar, but simpler, to declare text stream constants.
@@ -604,7 +604,7 @@ They make use of macros and data structures defined in the Inform 7 web.
 to how to tangle the lines we've given special categories to.
 </p>
 
-<p class="inwebparagraph">We need to tangle <code class="display"><span class="extract-syntax">PREFORM_LCAT</span></code> lines (those holding nonterminal declarations)
+<p class="inwebparagraph">We need to tangle <span class="extract"><span class="extract-syntax">PREFORM_LCAT</span></span> lines (those holding nonterminal declarations)
 in a special way...
 </p>
 
@@ -626,9 +626,9 @@ In the case of an internal definition, like
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">k_kind_for_template_NTM</span><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> **</span><span class="identifier-syntax">XP</span><span class="plain-syntax">) {</span>
 </pre>
-<p class="inwebparagraph">that is, to a function which returns <code class="display"><span class="extract-syntax">TRUE</span></code> if it makes a match on the text
-excerpt in Inform's source text, <code class="display"><span class="extract-syntax">FALSE</span></code> otherwise; if it matches and produces
-an integer and/or pointer result, these are copied into <code class="display"><span class="extract-syntax">*X</span></code> and <code class="display"><span class="extract-syntax">*XP</span></code>. The
+<p class="inwebparagraph">that is, to a function which returns <span class="extract"><span class="extract-syntax">TRUE</span></span> if it makes a match on the text
+excerpt in Inform's source text, <span class="extract"><span class="extract-syntax">FALSE</span></span> otherwise; if it matches and produces
+an integer and/or pointer result, these are copied into <span class="extract"><span class="extract-syntax">*X</span></span> and <span class="extract"><span class="extract-syntax">*XP</span></span>. The
 remaining lines of the function are tangled unaltered, i.e., following the
 same rules as for the body of any other C function.
 </p>
@@ -659,16 +659,16 @@ Thus the opening line
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">action_clause_NTMC</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> **</span><span class="identifier-syntax">XP</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> **</span><span class="identifier-syntax">RP</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">FW</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 </pre>
-<p class="inwebparagraph">Subsequent lines of the nonterminal are categorised <code class="display"><span class="extract-syntax">PREFORM_GRAMMAR_LCAT</span></code>
+<p class="inwebparagraph">Subsequent lines of the nonterminal are categorised <span class="extract"><span class="extract-syntax">PREFORM_GRAMMAR_LCAT</span></span>
 and thus won't tangle to code at all, by the usual rules; so we tangle from
 them directly here.
 </p>
 
 <p class="inwebparagraph">Composition is what happens after a successful match of the text in the
-word range <code class="display"><span class="extract-syntax">W</span></code>. The idea is that, especially if the pattern was
+word range <span class="extract"><span class="extract-syntax">W</span></span>. The idea is that, especially if the pattern was
 complicated, we will need to "compose" the results of parsing individual
 pieces of it into a result for the whole. These partial results can be found
-in the arrays <code class="display"><span class="extract-syntax">R[n]</span></code> and <code class="display"><span class="extract-syntax">RP[n]</span></code> passed as parameters; recall that every
+in the arrays <span class="extract"><span class="extract-syntax">R[n]</span></span> and <span class="extract"><span class="extract-syntax">RP[n]</span></span> passed as parameters; recall that every
 nonterminal has in principle both an integer and a pointer result, though
 often one or both is undefined.
 </p>
@@ -680,8 +680,8 @@ often one or both is undefined.
 <span class="plain-syntax">    &lt;cardinal-number&gt; + &lt;cardinal-number&gt; ==&gt; R[1] + R[2]</span>
 </pre>
 <p class="inwebparagraph">where the composition function would be called on a match of, say, "\(5 + 7\)",
-and would find the values 5 and 7 in <code class="display"><span class="extract-syntax">R[1]</span></code> and <code class="display"><span class="extract-syntax">R[2]</span></code> respectively. It would
-then add these together, store 12 in <code class="display"><span class="extract-syntax">*X</span></code>, and return <code class="display"><span class="extract-syntax">TRUE</span></code> to show that all
+and would find the values 5 and 7 in <span class="extract"><span class="extract-syntax">R[1]</span></span> and <span class="extract"><span class="extract-syntax">R[2]</span></span> respectively. It would
+then add these together, store 12 in <span class="extract"><span class="extract-syntax">*X</span></span>, and return <span class="extract"><span class="extract-syntax">TRUE</span></span> to show that all
 was well.
 </p>
 
@@ -693,10 +693,10 @@ was well.
 </pre>
 <p class="inwebparagraph">which says that the composite result &mdash; the right-hand formula &mdash; is formed by
 calling a particular routine on the integer result of subexpression 2
-(<code class="display"><span class="extract-syntax">&lt;k-formal-kind-variable&gt;</span></code>) and the pointer result of subexpression 1
-(<code class="display"><span class="extract-syntax">&lt;k-kind-of-kind&gt;</span></code>). The answer, the composite result, that is, must be
-placed in <code class="display"><span class="extract-syntax">*X</span></code> and <code class="display"><span class="extract-syntax">*XP</span></code>. (Composition functions are also allowed to
-invalidate the result, by returning <code class="display"><span class="extract-syntax">FALSE</span></code>, and have other tricks up their
+(<span class="extract"><span class="extract-syntax">&lt;k-formal-kind-variable&gt;</span></span>) and the pointer result of subexpression 1
+(<span class="extract"><span class="extract-syntax">&lt;k-kind-of-kind&gt;</span></span>). The answer, the composite result, that is, must be
+placed in <span class="extract"><span class="extract-syntax">*X</span></span> and <span class="extract"><span class="extract-syntax">*XP</span></span>. (Composition functions are also allowed to
+invalidate the result, by returning <span class="extract"><span class="extract-syntax">FALSE</span></span>, and have other tricks up their
 sleeves, but none of that is handled by Inweb: see the Inform 7 web for more
 on this.)
 </p>
@@ -716,7 +716,7 @@ on this.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">needs_collation</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">At least one of the grammar lines provided an arrow and formula</span> <span class="named-paragraph-number">9.1.2</span>&gt;
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span>&lt;<span class="named-paragraph">None of the grammar lines provided an arrow and formula</span> <span class="named-paragraph-number">9.1.1</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\treturn TRUE;\n"</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP9">&#167;9</a>.</li></ul><p class="inwebparagraph"><a id="SP9_1_1"></a><b>&#167;9.1.1.  </b>In the absence of any <code class="display"><span class="extract-syntax">==&gt;</span></code> formulae, we simply set <code class="display"><span class="extract-syntax">*X</span></code> to the default
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP9">&#167;9</a>.</li></ul><p class="inwebparagraph"><a id="SP9_1_1"></a><b>&#167;9.1.1.  </b>In the absence of any <span class="extract"><span class="extract-syntax">==&gt;</span></span> formulae, we simply set <span class="extract"><span class="extract-syntax">*X</span></span> to the default
 result supplied; this is the production number within the grammar (0 for the
 first line, 1 for the second, and so on) by default, with an undefined pointer.
 </p>
@@ -756,11 +756,11 @@ and that it produces an integer or a pointer according to what the
 non-terminal expects as its main result. But we make one exception: if
 the formula begins with a paragraph macro, then it can't be an expression,
 and instead we read it as code in a void context. (This code will, we
-assume, set <code class="display"><span class="extract-syntax">*X</span></code> and/or <code class="display"><span class="extract-syntax">*XP</span></code> in some ingenious way of its own.)
+assume, set <span class="extract"><span class="extract-syntax">*X</span></span> and/or <span class="extract"><span class="extract-syntax">*XP</span></span> in some ingenious way of its own.)
 </p>
 
-<p class="inwebparagraph">Within the body of the formula, we allow a pseudo-macro to work: <code class="display"><span class="extract-syntax">WR[n]</span></code>
-expands to word range <code class="display"><span class="extract-syntax">n</span></code> in the match which we're compositing. This actually
+<p class="inwebparagraph">Within the body of the formula, we allow a pseudo-macro to work: <span class="extract"><span class="extract-syntax">WR[n]</span></span>
+expands to word range <span class="extract"><span class="extract-syntax">n</span></span> in the match which we're compositing. This actually
 expands like so:
 </p>
 
@@ -821,10 +821,10 @@ we also provide for some other special extensions to C.
 <span class="plain-syntax">        </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">original</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP10_1"></a><b>&#167;10.1.  </b>For example, a function name like <code class="display"><span class="extract-syntax">Text::Parsing::get_next</span></code> must be rewritten
-as <code class="display"><span class="extract-syntax">Text__Parsing__get_next</span></code> since colons aren't valid in C identifiers. The
+</pre><p class="inwebparagraph"><a id="SP10_1"></a><b>&#167;10.1.  </b>For example, a function name like <span class="extract"><span class="extract-syntax">Text::Parsing::get_next</span></span> must be rewritten
+as <span class="extract"><span class="extract-syntax">Text__Parsing__get_next</span></span> since colons aren't valid in C identifiers. The
 following is prone to all kinds of misreadings, of course; it picks up any use
-of <code class="display"><span class="extract-syntax">::</span></code> between an alphanumberic character and a letter. In particular, code
+of <span class="extract"><span class="extract-syntax">::</span></span> between an alphanumberic character and a letter. In particular, code
 like
 </p>
 
@@ -854,9 +854,9 @@ Inform, where no misreadings occur.
 <span class="plain-syntax">        </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP10">&#167;10</a>.</li></ul><p class="inwebparagraph"><a id="SP10_2"></a><b>&#167;10.2.  </b>Angle brackets around a valid Preform variable name expand into its
-C identifier; for example, <code class="display"><span class="extract-syntax">&lt;&lt;R&gt;&gt;</span></code> becomes <code class="display"><span class="extract-syntax">most_recent_result</span></code>.
-We take no action if it's not a valid name, so <code class="display"><span class="extract-syntax">&lt;&lt;fish&gt;&gt;</span></code> becomes
-just <code class="display"><span class="extract-syntax">&lt;&lt;fish&gt;&gt;</span></code>.
+C identifier; for example, <span class="extract"><span class="extract-syntax">&lt;&lt;R&gt;&gt;</span></span> becomes <span class="extract"><span class="extract-syntax">most_recent_result</span></span>.
+We take no action if it's not a valid name, so <span class="extract"><span class="extract-syntax">&lt;&lt;fish&gt;&gt;</span></span> becomes
+just <span class="extract"><span class="extract-syntax">&lt;&lt;fish&gt;&gt;</span></span>.
 </p>
 
 
@@ -880,7 +880,7 @@ just <code class="display"><span class="extract-syntax">&lt;&lt;fish&gt;&gt;</sp
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">check_this</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP10">&#167;10</a>.</li></ul><p class="inwebparagraph"><a id="SP10_3"></a><b>&#167;10.3.  </b>Similarly for nonterminals; <code class="display"><span class="extract-syntax">&lt;k-kind&gt;</span></code> might become <code class="display"><span class="extract-syntax">k_kind_NTM</span></code>.
+</pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP10">&#167;10</a>.</li></ul><p class="inwebparagraph"><a id="SP10_3"></a><b>&#167;10.3.  </b>Similarly for nonterminals; <span class="extract"><span class="extract-syntax">&lt;k-kind&gt;</span></span> might become <span class="extract"><span class="extract-syntax">k_kind_NTM</span></span>.
 Here, though, there's a complication:
 </p>
 
@@ -894,8 +894,8 @@ Here, though, there's a complication:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Text__Languages__parse_nt_against_word_range</span><span class="plain-syntax">(</span><span class="identifier-syntax">k_kind_NTM</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) { ...</span>
 </pre>
 <p class="inwebparagraph">This is all syntactic sugar to make it easier to see parsing in action.
-Anyway, it means we have to set <code class="display"><span class="extract-syntax">fcall_pos</span></code> to remember to add in the
-two <code class="display"><span class="extract-syntax">NULL</span></code> arguments when we hit the <code class="display"><span class="extract-syntax">)</span></code> a little later. We're doing all
+Anyway, it means we have to set <span class="extract"><span class="extract-syntax">fcall_pos</span></span> to remember to add in the
+two <span class="extract"><span class="extract-syntax">NULL</span></span> arguments when we hit the <span class="extract"><span class="extract-syntax">)</span></span> a little later. We're doing all
 of this fairly laxly, but as before: it only needs to work for Inform,
 and Inform doesn't cause any trouble.
 </p>
@@ -947,7 +947,7 @@ the size of Inform 7, there's no significant gain from speeding them up
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pnt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>The special variables <code class="display"><span class="extract-syntax">&lt;&lt;R&gt;&gt;</span></code> and <code class="display"><span class="extract-syntax">&lt;&lt;RP&gt;&gt;</span></code> hold the results,
+</pre><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>The special variables <span class="extract"><span class="extract-syntax">&lt;&lt;R&gt;&gt;</span></span> and <span class="extract"><span class="extract-syntax">&lt;&lt;RP&gt;&gt;</span></span> hold the results,
 integer and pointer, for the most recent successful match. They're defined
 in the Inform 7 web (see the code for parsing text against Preform grammars),
 not by Inweb.
@@ -971,7 +971,7 @@ Inweb.
 </p>
 
 <p class="inwebparagraph">So what does happen to it? The answer is that it's transcribed into an
-auxiliary file called <code class="display"><span class="extract-syntax">Syntax.preform</span></code>, which Inform, once it is compiled,
+auxiliary file called <span class="extract"><span class="extract-syntax">Syntax.preform</span></span>, which Inform, once it is compiled,
 will read in at run-time. This is how that happens:
 </p>
 
@@ -1121,7 +1121,7 @@ nonterminal definitions:
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre><ul class="endnotetexts"><li>This code is used in <a href="4-is.html#SP14">&#167;14</a>.</li></ul><p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Weaving methods. </b>If we're weaving just a document of Preform grammar, then we skip any lines
-of C code which appear in <code class="display"><span class="extract-syntax">internal</span></code> nonterminal definitions:
+of C code which appear in <span class="extract"><span class="extract-syntax">internal</span></span> nonterminal definitions:
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -1151,7 +1151,7 @@ of C code which appear in <code class="display"><span class="extract-syntax">int
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre><p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>In paragraphs where we spot Preform nonterminals being defined, we're
-going to automatically apply the tag <code class="display"><span class="extract-syntax">^"Preform"</span></code>, but only if it already
+going to automatically apply the tag <span class="extract"><span class="extract-syntax">^"Preform"</span></span>, but only if it already
 exists. We watch for it here:
 </p>
 

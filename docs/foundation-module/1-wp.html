@@ -47,7 +47,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-wp.html#SP2">&#167;2. Microsoft Windows</a></li><li><a href="1-wp.html#SP4">&#167;4. Environment variables</a></li><li><a href="1-wp.html#SP5">&#167;5. Executable location</a></li><li><a href="1-wp.html#SP6">&#167;6. Shell commands</a></li><li><a href="1-wp.html#SP7">&#167;7. Directory handling</a></li><li><a href="1-wp.html#SP8">&#167;8. Sleep</a></li><li><a href="1-wp.html#SP9">&#167;9. Notifications</a></li><li><a href="1-wp.html#SP10">&#167;10. Concurrency</a></li><li><a href="1-wp.html#SP12">&#167;12. Timestamp</a></li><li><a href="1-wp.html#SP13">&#167;13. Mutexes</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>This Foundation module comes with two variant versions of the <code class="display"><span class="extract-syntax">Platform::</span></code>
+<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>This Foundation module comes with two variant versions of the <span class="extract"><span class="extract-syntax">Platform::</span></span>
 section of code. The one you're reading compiles on Windows, and the other
 on a POSIX operating system.
 </p>
@@ -70,21 +70,21 @@ on a POSIX operating system.
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">errno</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">io</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">windows</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_WINDOWS is defined.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>A Windows-safe form of <code class="display"><span class="extract-syntax">isdigit</span></code>. Annoyingly, the C specification allows
-the implementation to have <code class="display"><span class="extract-syntax">char</span></code> either signed or unsigned. On Windows it's
+</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_WINDOWS is defined.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>A Windows-safe form of <span class="extract"><span class="extract-syntax">isdigit</span></span>. Annoyingly, the C specification allows
+the implementation to have <span class="extract"><span class="extract-syntax">char</span></span> either signed or unsigned. On Windows it's
 generally signed. Now, consider what happens with a character value of
-acute-e. This has an <code class="display"><span class="extract-syntax">unsigned char</span></code> value of 233. When stored in a <code class="display"><span class="extract-syntax">char</span></code>
-on Windows, this becomes a value of <code class="display"><span class="extract-syntax">-23</span></code>. When this is passed to <code class="display"><span class="extract-syntax">isdigit()</span></code>,
-we need to consider the prototype for <code class="display"><span class="extract-syntax">isdigit()</span></code>:
+acute-e. This has an <span class="extract"><span class="extract-syntax">unsigned char</span></span> value of 233. When stored in a <span class="extract"><span class="extract-syntax">char</span></span>
+on Windows, this becomes a value of <span class="extract"><span class="extract-syntax">-23</span></span>. When this is passed to <span class="extract"><span class="extract-syntax">isdigit()</span></span>,
+we need to consider the prototype for <span class="extract"><span class="extract-syntax">isdigit()</span></span>:
 </p>
 
-<p class="inwebparagraph"><code class="display"><span class="extract-syntax">int isdigit(int);</span></code>
+<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">int isdigit(int);</span></span>
 </p>
 
-<p class="inwebparagraph">So, when casting to int we get <code class="display"><span class="extract-syntax">-23</span></code>, not <code class="display"><span class="extract-syntax">233</span></code>. Unfortunately the return value
-from <code class="display"><span class="extract-syntax">isdigit()</span></code> is only defined by the C specification for values in the
-range 0 to 255 (and also EOF), so the return value for <code class="display"><span class="extract-syntax">-23</span></code> is undefined.
-And with Windows GCC, <code class="display"><span class="extract-syntax">isdigit(-23)</span></code> returns a non-zero value.
+<p class="inwebparagraph">So, when casting to int we get <span class="extract"><span class="extract-syntax">-23</span></span>, not <span class="extract"><span class="extract-syntax">233</span></span>. Unfortunately the return value
+from <span class="extract"><span class="extract-syntax">isdigit()</span></span> is only defined by the C specification for values in the
+range 0 to 255 (and also EOF), so the return value for <span class="extract"><span class="extract-syntax">-23</span></span> is undefined.
+And with Windows GCC, <span class="extract"><span class="extract-syntax">isdigit(-23)</span></span> returns a non-zero value.
 </p>
 
 
@@ -112,10 +112,10 @@ And with Windows GCC, <code class="display"><span class="extract-syntax">isdigit
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">getenv</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_WINDOWS is defined.</li></ul><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Executable location. </b>Fill the wide-char buffer <code class="display"><span class="extract-syntax">p</span></code> with the path to the current executable, up to
-length <code class="display"><span class="extract-syntax">length</span></code>. This function is guaranteed to be called from only one
-thread. Should the information be unavailable, or fail to fit into <code class="display"><span class="extract-syntax">p</span></code>,
-truncate <code class="display"><span class="extract-syntax">p</span></code> to zero length. (On some platforms, the information will
+</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_WINDOWS is defined.</li></ul><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Executable location. </b>Fill the wide-char buffer <span class="extract"><span class="extract-syntax">p</span></span> with the path to the current executable, up to
+length <span class="extract"><span class="extract-syntax">length</span></span>. This function is guaranteed to be called from only one
+thread. Should the information be unavailable, or fail to fit into <span class="extract"><span class="extract-syntax">p</span></span>,
+truncate <span class="extract"><span class="extract-syntax">p</span></span> to zero length. (On some platforms, the information will
 always be unavailable: that doesn't mean we can't run on those platforms,
 just that installation and use of Foundation-built tools is less convenient.)
 </p>
@@ -205,8 +205,8 @@ just that installation and use of Foundation-built tools is less convenient.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">DIR</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dirp</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">DIR</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">D</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">closedir</span><span class="plain-syntax">(</span><span class="identifier-syntax">dirp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_WINDOWS is defined.</li></ul><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Sleep. </b>The Windows <code class="display"><span class="extract-syntax">Sleep</span></code> call measures time in milliseconds, whereas
-POSIX <code class="display"><span class="extract-syntax">sleep</span></code> is for seconds.
+</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_WINDOWS is defined.</li></ul><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Sleep. </b>The Windows <span class="extract"><span class="extract-syntax">Sleep</span></span> call measures time in milliseconds, whereas
+POSIX <span class="extract"><span class="extract-syntax">sleep</span></span> is for seconds.
 </p>
 
 <pre class="displayed-code all-displayed-code">
@@ -266,7 +266,7 @@ POSIX <code class="display"><span class="extract-syntax">sleep</span></code> is 
 <span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="function-syntax">Platform::get_thread_stack_size</span><button class="popup" onclick="togglePopup('usagePopup22')">...<span class="popuptext" id="usagePopup22">Usage of <b>Platform::get_thread_stack_size</b>:<br>POSIX Platforms - <a href="1-pp.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">pthread_attr_t</span><span class="plain-syntax">* </span><span class="identifier-syntax">pa</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_WINDOWS is defined.</li></ul><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Timestamp. </b>There are implementations of the C standard library where <code class="display"><span class="extract-syntax">time_t</span></code> has
+</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_WINDOWS is defined.</li></ul><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Timestamp. </b>There are implementations of the C standard library where <span class="extract"><span class="extract-syntax">time_t</span></span> has
 super-weird behaviour, but on almost POSIX systems, time 0 corresponds to
 midnight on 1 January 1970. All we really need is that the "never" value
 is one which is earlier than any possible timestamp on the files we'll

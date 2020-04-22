@@ -254,5 +254,4 @@ void Swarm::weave_index_templates(web *W, text_stream *range, weave_pattern *pat
 		Indexer::incorporate_template(OUT, W, range, INF, pattern, nav, crumbs);
 		STREAM_CLOSE(OUT);
 	}
-	Patterns::copy_payloads_into_weave(W, pattern);
 }

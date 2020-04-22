@@ -70,14 +70,14 @@ an ebook then you're looking at the woven form.
 </p>
 
 <p class="inwebparagraph">While small webs can be written as single files, Inweb is not a small web,
-so it occupies a directory called <code class="display"><span class="extract-syntax">inweb</span></code>. This is what you see if you pull
+so it occupies a directory called <span class="extract"><span class="extract-syntax">inweb</span></span>. This is what you see if you pull
 the project from GitHub, for example.
 </p>
 
 <p class="inwebparagraph">There is clearly a circularity here. To compile Inweb, you must first run
 Inweb to tangle it. But if you already had Inweb, you wouldn't need to compile
 it. Here's what to do. From a command-line prompt, set the current working
-directory to be the one in which Inweb is stored - that is, not the <code class="display"><span class="extract-syntax">inweb</span></code>
+directory to be the one in which Inweb is stored - that is, not the <span class="extract"><span class="extract-syntax">inweb</span></span>
 directory itself, but its parent. Then type one of the following:
 </p>
 
@@ -110,7 +110,7 @@ the default macos unless you need to build for an old version of MacOS.
 </pre>
 <p class="inwebparagraph">(All that happened, in fact, was that a platform-specific file of make
 settings &mdash; what compilers to use, what options, and so on &mdash; was copied
-over to become the file <code class="display"><span class="ConsoleText-extract-syntax">inweb/platform-settings.mk</span></code>. This is a file which
+over to become the file <span class="extract"><span class="ConsoleText-extract-syntax">inweb/platform-settings.mk</span></span>. This is a file which
 is necessary for Inweb to be fully used, but which is intentionally not
 included in the Git repository for Inweb, in order to oblige users to choose
 a platform before doing anything else.) Anyway, next do as instructed:
@@ -121,7 +121,7 @@ a platform before doing anything else.) Anyway, next do as instructed:
 </pre>
 <p class="inwebparagraph">With that done, make should go on to compile the Inweb executable, leaving
 you with a working copy of the software. You need never run that
-platform-specific command, or make as <code class="display"><span class="ConsoleText-extract-syntax">initial</span></code>, again: you can simply:
+platform-specific command, or make as <span class="extract"><span class="ConsoleText-extract-syntax">initial</span></span>, again: you can simply:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
@@ -137,7 +137,7 @@ platform-specific command, or make as <code class="display"><span class="Console
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-identifier-syntax"> -help</span>
 </pre>
 <p class="inwebparagraph">That location is where the compiled tool ended up. Users of, for example,
-the <code class="display"><span class="ConsoleText-extract-syntax">bash</span></code> shell may want to
+the <span class="extract"><span class="ConsoleText-extract-syntax">bash</span></span> shell may want to
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
@@ -152,18 +152,18 @@ system. There is no completely foolproof, cross-platform way to know this
 decides by the following set of rules:
 </p>
 
-<ul class="items"><li>(a) If the user, at the command line, specified <code class="display"><span class="ConsoleText-extract-syntax">-at P</span></code>, for some path
-<code class="display"><span class="ConsoleText-extract-syntax">P</span></code>, then we use that.
+<ul class="items"><li>(a) If the user, at the command line, specified <span class="extract"><span class="ConsoleText-extract-syntax">-at P</span></span>, for some path
+<span class="extract"><span class="ConsoleText-extract-syntax">P</span></span>, then we use that.
 </li><li>(b) Otherwise, if the host operating system can indeed tell us where the
 executable is, we use that. This is currently implemented only on MacOS,
 Windows and Linux.
-</li><li>(c) Otherwise, if the environment variable <code class="display"><span class="ConsoleText-extract-syntax">$INWEB_PATH</span></code> exists and is
+</li><li>(c) Otherwise, if the environment variable <span class="extract"><span class="ConsoleText-extract-syntax">$INWEB_PATH</span></span> exists and is
 non-empty, we use that.
-</li><li>(d) And if all else fails, we assume that the location is <code class="display"><span class="ConsoleText-extract-syntax">inweb</span></code>, with
+</li><li>(d) And if all else fails, we assume that the location is <span class="extract"><span class="ConsoleText-extract-syntax">inweb</span></span>, with
 respect to the current working directory.
 </li></ul>
 <p class="inwebparagraph">If you're not sure what Inweb has decided and suspect it may be wrong,
-running Inweb with the <code class="display"><span class="ConsoleText-extract-syntax">-verbose</span></code> switch will cause it to print its belief
+running Inweb with the <span class="extract"><span class="ConsoleText-extract-syntax">-verbose</span></span> switch will cause it to print its belief
 about its location as it starts up.
 </p>
 
