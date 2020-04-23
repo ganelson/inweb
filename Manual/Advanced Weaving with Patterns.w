@@ -235,30 +235,22 @@ automatic.
 @h Templates.
 The final possible ingredient for a pattern is a "template"; this is a file
 like a pro-forma letter, into which just the details need to be entered.
-At present, Inweb does this in four circumstances:
-(a) After a weave which ranges over more than a single section -- for example,
-if it's a weave of a chapter, or of the complete web -- Inweb can generate
-an "index". (This is more often a contents page, but Inweb uses the generic
-term "index".) For this, it uses |unchaptered-index.html| if the web has
-sections but no chapters; or |chaptered-index.html| if it has chapters. If
-Inweb can't locate either of those, it looks simply for |index.html|, and
-if it can't find that either then it gives up.
-(b) Similarly, after a weave which is not a single section, Inweb looks to
-see if there is |cover-sheet.XXX| template, in whatever format is being used:
-|cover-sheet.tex|, or |cover-sheet.html|, as appropriate. This is placed at
-the start of the material, and can be, e.g., a fancily typeset title page:
-it's a feature intended more for serial formats than for the web.
-(c) A weave using the HTML format is built around a pro-forma |template.html|.
-This is required to exist and defines the overall shape of the HTML pages
-which Inweb weaves.
-(d) When one template wants to use another one -- i.e., as a consequence of
-reasons (a) or (b).
+Inweb does this in two main circumstances:
+(a) For each woven file, for example each HTML page generated in a website,
+Inweb looks for |template-body.html| (or |.tex|, or |.txt| -- whatever
+file extension is used for files in the current format), and uses that
+to top and tail the weaver's output. Not all formats or patterns need that.
+(b) If Inweb is weaving a large number of individual files for sections or
+chapters, it will try also to make an accompanying contents page, though
+it uses the term "index" for this. It does this by looking for the
+template |template-index.html| -- this time, it's always HTML: the idea is
+that whatever file type you're making, you will want an HTML index page
+offering downloads or links to them.
 
-As with other pattern-related resources, when Inweb needs to find, say,
-|template.html|, it looks first in the current pattern's directory, then
-tries the pattern this is based on, and so on. You can therefore override
-the standard HTML pattern's |template.html| by placing your own in your
-new pattern.
+In fact the same process, called "collation", is also used internally to
+produce navigation sidebars in HTML, and to inject HTML into headers for
+the sake of plugins. But the author of a pattern can't control that, whereas
+she can write her own |template-body.html| and/or |template-index.html|.
 
 @ For example, here is a template file for making an HTML page:
 = (text as Inweb)
@@ -269,15 +261,14 @@ new pattern.
 		[[Plugins]]
 	</head>
 	<body>
-[[Code]]
+[[Weave Content]]
 	</body>
 </html>
 =
 The weaver uses this to generate any HTML page of program taken from the
-web being woven. (I.e., it doesn't use it to generate the index: only to
-generate the pages for sections or chapters.) What you see is what you get,
-except for the placeholders in double square brackets:
-(a) |[[Code]]| expands to the body of the web page -- the headings,
+web being woven. What you see is what you get, except for the placeholders in
+double square brackets:
+(a) |[[Weave Content]]| expands to the body of the web page -- the headings,
 paragraphs and so on.
 (b) |[[Plugins]]| expands to any links to CSS or Javascript files needed
 by the plugins being used -- see above.
@@ -295,19 +286,8 @@ a colony of webs -- see //Making Weaves into Websites// for more, and for
 syntaxes to do with links and URLs.
 (c) |[[Breadcrumbs]]| expands to the HTML for the breadcrumb trail.
 
-@h Indexing.
-As noted above, some weaves are accompanied by indexes. For example, a
-standard weave into sections (for the HTML pattern) generates an |index.html|
-contents page, linking to the weaves for the individual sections. How is this
-done?
-
-Inweb looks in the pattern for a template file called either
-|chaptered-index.html| or |unchaptered-index.html|, according to whether the
-web's sections are in chapters or simply in a single directory of |Sections|.
-If it doesn't find this, it looks for a template simply called |index.html|,
-using that template in either case.
-
-Now, however, there are additional double-squared placeholders available:
+@ The |template-index.html| file has access to additional placeholders
+enabling it to generate contents pages:
 
 (a) One of the following details about the entire-web PDF (see below):
 = (text as Inweb)
@@ -333,11 +313,7 @@ substitution is the leafname of the original |.w| file. The Mean is the
 average number of lines per paragraph: where this is large, the section
 is rather raw and literate programming is not being used to the full.
 
-@ And here the indexer isn't merely "editing the stream" of the template,
-because it can also handle repetitions. The following commands must occupy
-entire lines:
-
-|[[Repeat Chapter]]| and |[[Repeat Section]]| begin blocks of lines which
+@ |[[Repeat Chapter]]| and |[[Repeat Section]]| begin blocks of lines which
 are repeated for each chapter or section: the material to be repeated
 continues to the matching |[[End Repeat]| line. The ``current chapter or
 section'' mentioned above is the one selected in the current innermost

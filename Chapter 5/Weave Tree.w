@@ -103,10 +103,6 @@ typedef struct weave_vskip_node {
 	MEMORY_MANAGEMENT
 } weave_vskip_node;
 
-typedef struct weave_apres_defn_node {
-	MEMORY_MANAGEMENT
-} weave_apres_defn_node;
-
 typedef struct weave_chapter_node {
 	struct chapter *chap;
 	MEMORY_MANAGEMENT
@@ -246,7 +242,6 @@ tree_node_type *weave_material_node_type = NULL;
 tree_node_type *weave_embed_node_type = NULL;
 tree_node_type *weave_pmac_node_type = NULL;
 tree_node_type *weave_vskip_node_type = NULL;
-tree_node_type *weave_apres_defn_node_type = NULL;
 tree_node_type *weave_chapter_node_type = NULL;
 tree_node_type *weave_section_node_type = NULL;
 tree_node_type *weave_code_line_node_type = NULL;
@@ -311,8 +306,6 @@ heterogeneous_tree *WeaveTree::new_tree(weave_order *wv) {
 			Trees::new_node_type(I"pmac", weave_pmac_node_MT, NULL);
 		weave_vskip_node_type =
 			Trees::new_node_type(I"vskip", weave_vskip_node_MT, NULL);
-		weave_apres_defn_node_type =
-			Trees::new_node_type(I"apres_defn", weave_apres_defn_node_MT, NULL);
 		weave_chapter_node_type =
 			Trees::new_node_type(I"chapter", weave_chapter_node_MT, NULL);
 		weave_section_node_type =
@@ -522,17 +515,6 @@ tree_node *WeaveTree::vskip(heterogeneous_tree *tree, int in_comment) {
 	weave_vskip_node *C = CREATE(weave_vskip_node);
 	C->in_comment = in_comment;
 	return Trees::new_node(tree, weave_vskip_node_type, STORE_POINTER_weave_vskip_node(C));
-}
-
-@ An opportunity for vertical tidying-up. At the beginning of a code
-line which occurs after a run of |@d| or |@e| definitions, this node is
-placed. It can then insert a little vertical gap to separate the code from
-the definitions.
-
-=
-tree_node *WeaveTree::apres_defn(heterogeneous_tree *tree) {
-	weave_apres_defn_node *C = CREATE(weave_apres_defn_node);
-	return Trees::new_node(tree, weave_apres_defn_node_type, STORE_POINTER_weave_apres_defn_node(C));
 }
 
 tree_node *WeaveTree::section(heterogeneous_tree *tree, section *sect) {

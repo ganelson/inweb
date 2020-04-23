@@ -92,7 +92,6 @@ int TeX::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
-	else if (N->type == weave_apres_defn_node_type) @<Render apres-defn@>
 	else if (N->type == weave_chapter_node_type) @<Render nothing@>
 	else if (N->type == weave_section_node_type) @<Render section@>
 	else if (N->type == weave_code_line_node_type) @<Render code line@>
@@ -219,9 +218,6 @@ to a given width, into the text at the current position.
 	weave_vskip_node *C = RETRIEVE_POINTER_weave_vskip_node(N->content);
 	if (C->in_comment) WRITE("\\smallskip\\par\\noindent%%\n");
 	else WRITE("\\smallskip\n");
-
-@<Render apres-defn@> =
-	WRITE("\\smallskip\n");
 
 @<Render section@> =
 	weave_section_node *C = RETRIEVE_POINTER_weave_section_node(N->content);

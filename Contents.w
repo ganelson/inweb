@@ -46,7 +46,7 @@ Chapter 3: Outputs
 (or a swarm of many such parts), or tangling the web into an executable program,
 or analysing the web to provide diagnostics on it."
 	The Analyser
-	The Indexer
+	The Collater
 	The Weaver
 	The Weaver of Text
 	The Tangler

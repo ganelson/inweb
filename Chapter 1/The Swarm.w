@@ -74,7 +74,6 @@ typedef struct weave_order {
 	struct weave_pattern *pattern; /* which pattern is to be followed */
 	struct filename *weave_to; /* where to put it */
 	struct weave_format *format; /* plain text, say, or HTML */
-	struct text_stream *cover_sheet_to_use; /* leafname of the copy, or |NULL| for no cover */
 	void *post_processing_results; /* optional typesetting diagnostics after running through */
 	int self_contained; /* make a self-contained file if possible */
 	struct linked_list *breadcrumbs; /* non-standard breadcrumb trail, if any */
@@ -96,14 +95,12 @@ typedef struct weave_order {
 	wv->booklet_title = Str::new();
 	wv->format = pattern->pattern_format;
 	wv->post_processing_results = NULL;
-	wv->cover_sheet_to_use = Str::new();
 	wv->self_contained = FALSE;
 	wv->navigation = navigation;
 	wv->breadcrumbs = breadcrumbs;
 	wv->plugins = NEW_LINKED_LIST(weave_plugin);
 	wv->colour_schemes = NEW_LINKED_LIST(colour_scheme);
 	if (Reader::web_has_one_section(W)) wv->self_contained = TRUE;
-	Str::copy(wv->cover_sheet_to_use, I"cover-sheet");
 	
 	wv->current_weave_line = NULL;
 
@@ -165,7 +162,6 @@ and details of any cover-sheet to use.
 		if (S) Str::copy(wv->booklet_title, S->md->sect_title);
 		else Str::copy(wv->booklet_title, range);
 		Str::copy(leafname, range);
-		Str::clear(wv->cover_sheet_to_use);
 	}
 	Bibliographic::set_datum(W->md, I"Booklet Title", wv->booklet_title);
 	LOOP_THROUGH_TEXT(P, leafname)
@@ -226,20 +222,14 @@ void Swarm::include_plugins(OUTPUT_STREAM, web *W, weave_order *wv, filename *fr
 		WeavePlugins::include_colour_scheme(OUT, W, cs, wv->pattern, from);
 }
 
-@ After every swarm, we rebuild the index. We first try for a template called
-|chaptered-index.html| or |unchaptered-index.html|, then fall back on a
-generic |index.html| if those aren't available in the current pattern.
+@ After every swarm, we rebuild the index:
 
 =
 void Swarm::weave_index_templates(web *W, text_stream *range, weave_pattern *pattern,
 	pathname *into, filename *nav, linked_list *crumbs) {
 	if (!(Bibliographic::data_exists(W->md, I"Version Number")))
 		Bibliographic::set_datum(W->md, I"Version Number", I" ");
-	text_stream *index_leaf = NULL;
-	if (W->md->chaptered) index_leaf = I"chaptered-index.html";
-	else index_leaf = I"unchaptered-index.html";
-	filename *INF = Patterns::obtain_filename(pattern, index_leaf);
-	if (INF == NULL) INF = Patterns::obtain_filename(pattern, I"index.html");
+	filename *INF = Patterns::obtain_filename(pattern, I"template-index.html");
 	if (INF) {
 		pathname *H = W->redirect_weaves_to;
 		if (H == NULL) H = Reader::woven_folder(W);
@@ -249,9 +239,8 @@ void Swarm::weave_index_templates(web *W, text_stream *range, weave_pattern *pat
 			Errors::fatal_with_file("unable to write contents file", Contents);
 		if (W->as_ebook)
 			Epub::note_page(W->as_ebook, Contents, I"Index", I"index");
-		Indexer::set_current_file(Contents);
 		PRINT("[Index file: %f]\n", Contents);
-		Indexer::incorporate_template(OUT, W, range, INF, pattern, nav, crumbs);
+		Collater::collate(OUT, W, range, INF, pattern, nav, crumbs, NULL, Contents);
 		STREAM_CLOSE(OUT);
 	}
 }

@@ -2,112 +2,41 @@
 
 To provide for weaving into HTML and into EPUB books.
 
-@ =
+@h Creation.
+ePub books are basically mini-websites, so they share the same renderer.
+
+=
 void HTMLFormat::create(void) {
 	@<Create HTML@>;
-	@<Create EPUB@>;
+	@<Create ePub@>;
 }
 
 @<Create HTML@> =
 	weave_format *wf = Formats::create_weave_format(I"HTML", I".html");
 	METHOD_ADD(wf, RENDER_FOR_MTID, HTMLFormat::render);
 
-@<Create EPUB@> =
+@<Create ePub@> =
 	weave_format *wf = Formats::create_weave_format(I"ePub", I".html");
 	METHOD_ADD(wf, RENDER_FOR_MTID, HTMLFormat::render_EPUB);
 	METHOD_ADD(wf, BEGIN_WEAVING_FOR_MTID, HTMLFormat::begin_weaving_EPUB);
 	METHOD_ADD(wf, END_WEAVING_FOR_MTID, HTMLFormat::end_weaving_EPUB);
 
-@h Current state.
-To keep track of what we're writing, across many intermittent calls to the
-routines below, we store a crude sort of state in two global variables.
-(This isn't thread-safe and means we can only write one file at a time,
-but in fact that's fine here.)
+@h Rendering.
+To keep track of what we're writing, we store the renderer state in an
+instance of this:
 
-@d HTML_OUT 0 /* write position in HTML file is currently outside of p, pre, li */
-@d HTML_IN_P 1 /* write position in HTML file is currently outside p */
-@d HTML_IN_PRE 2 /* write position in HTML file is currently outside pre */
-@d HTML_IN_LI 3 /* write position in HTML file is currently outside li */
+@d OUTSIDE_HRS 1 /* write position in HTML file is currently outside of p, pre, li */
+@d INSIDE_P_HRS 2 /* write position in HTML file is currently outside p */
+@d INSIDE_PRE_HRS 3 /* write position in HTML file is currently outside pre */
+@d INSIDE_UL_HRS 4 /* write position in HTML file is currently outside li */
 
 =
-int html_in_para = HTML_OUT; /* one of the above */
-int item_depth = 0; /* for |HTML_IN_LI| only: how many lists we're nested inside */
-
-void HTMLFormat::p(OUTPUT_STREAM, char *class) {
-	if (class) HTML_OPEN_WITH("p", "class=\"%s\"", class)
-	else HTML_OPEN("p");
-	html_in_para = HTML_IN_P;
-}
-
-void HTMLFormat::cp(OUTPUT_STREAM) {
-	HTML_CLOSE("p"); WRITE("\n");
-	html_in_para = HTML_OUT;
-}
-
-void HTMLFormat::pre(OUTPUT_STREAM, char *class) {
-	if (class) HTML_OPEN_WITH("pre", "class=\"%s\"", class)
-	else HTML_OPEN("pre");
-	WRITE("\n"); INDENT;
-	html_in_para = HTML_IN_PRE;
-}
-
-void HTMLFormat::cpre(OUTPUT_STREAM) {
-	OUTDENT; HTML_CLOSE("pre"); WRITE("\n");
-	html_in_para = HTML_OUT;
-}
-
-@ Depth 1 means "inside a list entry"; depth 2, "inside an entry of a list
-which is itself inside a list entry"; and so on.
-
-=
-void HTMLFormat::go_to_depth(OUTPUT_STREAM, int depth) {
-	if (html_in_para != HTML_IN_LI) HTMLFormat::exit_current_paragraph(OUT);
-	if (item_depth == depth) {
-		HTML_CLOSE("li");
-	} else {
-		while (item_depth < depth) {
-			HTML_OPEN_WITH("ul", "class=\"items\""); item_depth++;
-		}
-		while (item_depth > depth) {
-			HTML_CLOSE("li");
-			HTML_CLOSE("ul");
-			WRITE("\n"); item_depth--;
-		}
-	}
-	if (depth > 0) {
-		HTML_OPEN("li");
-		html_in_para = HTML_IN_LI;
-	} else {
-		html_in_para = HTML_OUT;
-	}
-}
-
-@ The following generically gets us out of whatever we're currently into:
-
-=
-void HTMLFormat::exit_current_paragraph(OUTPUT_STREAM) {
-	switch (html_in_para) {
-		case HTML_IN_P: HTMLFormat::cp(OUT); break;
-		case HTML_IN_PRE: HTMLFormat::cpre(OUT); break;
-		case HTML_IN_LI: HTMLFormat::go_to_depth(OUT, 0); break;
-	}
-}
-
-@h Methods.
-For documentation, see "Weave Fornats".
-
-=
-void HTMLFormat::render(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) {
-	HTMLFormat::render_inner(self, OUT, tree, FALSE);
-}
-
-void HTMLFormat::render_EPUB(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) {
-	HTMLFormat::render_inner(self, OUT, tree, TRUE);
-}
-
 typedef struct HTML_render_state {
 	struct text_stream *OUT;
+	struct filename *into_file;
 	struct weave_order *wv;
+	int position; /* one of the position constants above */
+	int item_depth; /* how many itemised lists we're nested inside */
 	struct colour_scheme *colours;
 	int EPUB_flag;
 	int popup_counter;
@@ -117,34 +46,118 @@ typedef struct HTML_render_state {
 	int slide_of;
 } HTML_render_state;
 
-void HTMLFormat::render_inner(weave_format *self, text_stream *OUT, heterogeneous_tree *tree, int EPUB_mode) {
-	TEMPORARY_TEXT(interior);
+@ The initial state is as follows:
+
+=
+HTML_render_state HTMLFormat::initial_state(text_stream *OUT, weave_order *wv,
+	int EPUB_mode, filename *into) {
 	HTML_render_state hrs;
-	hrs.OUT = interior;
-	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
-	hrs.wv = C->wv;
+	hrs.OUT = OUT;
+	hrs.into_file = into;
+	hrs.wv = wv;
 	hrs.EPUB_flag = EPUB_mode;
+	hrs.position = OUTSIDE_HRS;
+	hrs.item_depth = 0;
 	hrs.popup_counter = 1;
 	hrs.last_material_seen = -1;
 	hrs.carousel_number = 1;
 	hrs.slide_number = -1;
 	hrs.slide_of = -1;
-	Swarm::ensure_plugin(C->wv, I"Base");
-	hrs.colours = Swarm::ensure_colour_scheme(C->wv, I"Colours", I"");
 
-	Trees::traverse_from(tree->root, &HTMLFormat::render_visit, (void *) &hrs, 0);
-	HTML::declare_as_HTML(OUT, EPUB_mode);
-	if (EPUB_mode)
-		Epub::note_page(C->wv->weave_web->as_ebook, C->wv->weave_to, C->wv->booklet_title, I"");
-	Indexer::cover_sheet_maker(OUT, C->wv->weave_web, I"template", C->wv, WEAVE_FIRST_HALF);
-	WRITE("%S", interior);
-	HTML::completed(OUT);
-	Bibliographic::set_datum(C->wv->weave_web->md, I"Booklet Title", C->wv->booklet_title);
-	Indexer::cover_sheet_maker(OUT, C->wv->weave_web, I"template", C->wv, WEAVE_SECOND_HALF);
-
-	DISCARD_TEXT(interior);
+	Swarm::ensure_plugin(wv, I"Base");
+	hrs.colours = Swarm::ensure_colour_scheme(wv, I"Colours", I"");
+	return hrs;
 }
 
+@ So, then, here are the front-end method functions for rendering to HTML and
+ePub respectively:
+
+=
+void HTMLFormat::render(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) {
+	HTMLFormat::render_inner(self, OUT, tree, FALSE);
+}
+void HTMLFormat::render_EPUB(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) {
+	HTMLFormat::render_inner(self, OUT, tree, TRUE);
+}
+
+@
+
+=
+void HTMLFormat::render_inner(weave_format *self, text_stream *OUT, heterogeneous_tree *tree, int EPUB_mode) {
+	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
+	HTML::declare_as_HTML(OUT, EPUB_mode);
+	HTML_render_state hrs = HTMLFormat::initial_state(OUT, C->wv, EPUB_mode, C->wv->weave_to);
+	Trees::traverse_from(tree->root, &HTMLFormat::render_visit, (void *) &hrs, 0);
+	if (EPUB_mode)
+		Epub::note_page(C->wv->weave_web->as_ebook, C->wv->weave_to, C->wv->booklet_title, I"");
+	HTML::completed(OUT);
+}
+
+@ =
+void HTMLFormat::p(HTML_render_state *hrs, char *class) {
+	text_stream *OUT = hrs->OUT;
+	if (class) HTML_OPEN_WITH("p", "class=\"%s\"", class)
+	else HTML_OPEN("p");
+	hrs->position = INSIDE_P_HRS;
+}
+
+void HTMLFormat::cp(HTML_render_state *hrs) {
+	text_stream *OUT = hrs->OUT;
+	HTML_CLOSE("p"); WRITE("\n");
+	hrs->position = OUTSIDE_HRS;
+}
+
+void HTMLFormat::pre(HTML_render_state *hrs, char *class) {
+	text_stream *OUT = hrs->OUT;
+	if (class) HTML_OPEN_WITH("pre", "class=\"%s\"", class)
+	else HTML_OPEN("pre");
+	WRITE("\n"); INDENT;
+	hrs->position = INSIDE_PRE_HRS;
+}
+
+void HTMLFormat::cpre(HTML_render_state *hrs) {
+	text_stream *OUT = hrs->OUT;
+	OUTDENT; HTML_CLOSE("pre"); WRITE("\n");
+	hrs->position = OUTSIDE_HRS;
+}
+
+@ Depth 1 means "inside a list entry"; depth 2, "inside an entry of a list
+which is itself inside a list entry"; and so on.
+
+=
+void HTMLFormat::go_to_depth(HTML_render_state *hrs, int depth) {
+	text_stream *OUT = hrs->OUT;
+	if (hrs->item_depth == depth) {
+		HTML_CLOSE("li");
+	} else {
+		while (hrs->item_depth < depth) {
+			HTML_OPEN_WITH("ul", "class=\"items\""); hrs->item_depth++;
+		}
+		while (hrs->item_depth > depth) {
+			HTML_CLOSE("li");
+			HTML_CLOSE("ul");
+			WRITE("\n"); hrs->item_depth--;
+		}
+	}
+	if (depth > 0) HTML_OPEN("li");
+}
+
+@ The following generically gets us out of whatever we're currently into:
+
+=
+void HTMLFormat::exit_current_paragraph(HTML_render_state *hrs) {
+	switch (hrs->position) {
+		case INSIDE_P_HRS: HTMLFormat::cp(hrs); break;
+		case INSIDE_PRE_HRS: HTMLFormat::cpre(hrs); break;
+	}
+	if (hrs->item_depth > 0) HTMLFormat::go_to_depth(hrs, 0);
+	hrs->position = OUTSIDE_HRS; hrs->item_depth = 0;
+}
+
+@h Methods.
+For documentation, see "Weave Fornats".
+
+=
 int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	HTML_render_state *hrs = (HTML_render_state *) state;
 	text_stream *OUT = hrs->OUT;
@@ -168,7 +181,6 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
-	else if (N->type == weave_apres_defn_node_type) @<Render nothing@>
 	else if (N->type == weave_chapter_node_type) @<Render nothing@>
 	else if (N->type == weave_section_node_type) @<Render section@>
 	else if (N->type == weave_code_line_node_type) @<Render code line@>
@@ -197,7 +209,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 @<Render head@> =
 	weave_head_node *C = RETRIEVE_POINTER_weave_head_node(N->content);
 	HTML::comment(OUT, C->banner);
-	html_in_para = HTML_OUT;
+	hrs->position = OUTSIDE_HRS;
 
 @<Render header@> =
 	weave_section_header_node *C = RETRIEVE_POINTER_weave_section_header_node(N->content);
@@ -226,6 +238,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 
 @<Render footer@> =
 	weave_section_footer_node *C = RETRIEVE_POINTER_weave_section_footer_node(N->content);
+	HTMLFormat::exit_current_paragraph(hrs);
 	HTMLFormat::tail(hrs->wv->format, OUT, hrs->wv, C->sect);
 
 @<Render tail@> =
@@ -234,14 +247,18 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 
 @<Render purpose@> =
 	weave_section_purpose_node *C = RETRIEVE_POINTER_weave_section_purpose_node(N->content);
-	HTMLFormat::subheading(hrs->wv->format, OUT, hrs->wv, 2, C->purpose, NULL);
+	HTMLFormat::exit_current_paragraph(hrs);
+	HTMLFormat::p(hrs, "purpose");
+	WRITE("%S", C->purpose);
+	HTMLFormat::cp(hrs);
 
 @<Render subheading@> =
 	weave_subheading_node *C = RETRIEVE_POINTER_weave_subheading_node(N->content);
-	HTMLFormat::subheading(hrs->wv->format, OUT, hrs->wv, 1, C->text, NULL);
+	HTMLFormat::exit_current_paragraph(hrs);
+	HTML::heading(OUT, "h3", C->text);
 
 @<Render bar@> =
-	HTMLFormat::exit_current_paragraph(OUT);
+	HTMLFormat::exit_current_paragraph(hrs);
 	HTML::hr(OUT, NULL);
 
 @<Render pagebreak@> =
@@ -250,9 +267,9 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 @<Render paragraph heading@> =
 	weave_paragraph_heading_node *C = RETRIEVE_POINTER_weave_paragraph_heading_node(N->content);
 	paragraph *P = C->para;
-	HTMLFormat::exit_current_paragraph(OUT);
+	HTMLFormat::exit_current_paragraph(hrs);
 	if (P == NULL) internal_error("no para");
-	HTMLFormat::p(OUT, "inwebparagraph");
+	HTMLFormat::p(hrs, "inwebparagraph");
 	TEMPORARY_TEXT(TEMP)
 	Colonies::paragraph_anchor(TEMP, P);
 	HTML::anchor(OUT, TEMP);
@@ -272,7 +289,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 
 @<Render figure@> =
 	weave_figure_node *C = RETRIEVE_POINTER_weave_figure_node(N->content);
-	HTMLFormat::exit_current_paragraph(OUT);
+	HTMLFormat::exit_current_paragraph(hrs);
 	filename *F = Filenames::in(
 		Pathnames::down(hrs->wv->weave_web->md->path_to_web, I"Figures"),
 		C->figname);
@@ -291,7 +308,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 		switch (C->material_type) {
 			case CODE_MATERIAL:
 				if (first_in_para) {
-					HTMLFormat::cp(OUT);
+					HTMLFormat::cp(hrs);
 				}
 				if (C->styling) {
 					TEMPORARY_TEXT(csname);
@@ -310,7 +327,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 			case REGULAR_MATERIAL:
 				if (first_in_para == FALSE) {
 					WRITE("\n");
-					HTMLFormat::p(OUT,"inwebparagraph");
+					HTMLFormat::p(hrs,"inwebparagraph");
 				}
 				break;
 			case FOOTNOTES_MATERIAL:
@@ -322,17 +339,17 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 			case MACRO_MATERIAL:
 				if (first_in_para == FALSE) {
 					WRITE("\n");
-					HTMLFormat::p(OUT,"macrodefinition");
+					HTMLFormat::p(hrs,"macrodefinition");
 				}
 				HTML_OPEN_WITH("code", "class=\"display\"");
 				WRITE("\n");
 				break;
 			case DEFINITION_MATERIAL:
 				if (first_in_para) {
-					HTMLFormat::cp(OUT);
+					HTMLFormat::cp(hrs);
 				}
 				WRITE("\n");
-				HTMLFormat::pre(OUT, "definitions");
+				HTMLFormat::pre(hrs, "definitions");
 				break;
 		}
 		for (tree_node *M = N->child; M; M = M->next)
@@ -342,7 +359,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 				WRITE("</pre>");
 				break;
 			case REGULAR_MATERIAL:
-				HTMLFormat::cp(OUT);
+				HTMLFormat::cp(hrs);
 				break;
 			case ENDNOTES_MATERIAL:
 				HTML_CLOSE("ul");
@@ -352,10 +369,10 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 				break;
 			case MACRO_MATERIAL:
 				HTML_CLOSE("code");
-				HTMLFormat::cp(OUT);
+				HTMLFormat::cp(hrs);
 				break;
 			case DEFINITION_MATERIAL:
-				HTMLFormat::cpre(OUT);
+				HTMLFormat::cpre(hrs);
 				break;
 		}
 		hrs->last_material_seen = C->material_type;
@@ -368,7 +385,26 @@ that service uses to identify the video/audio in question.
 
 @<Render embed@> =
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
-	HTMLFormat::embed(hrs->wv->format, OUT, hrs->wv, C->service, C->ID, C->w, C->h);
+	text_stream *CH = I"405";
+	text_stream *CW = I"720";
+	if (C->w > 0) { Str::clear(CW); WRITE_TO(CW, "%d", C->w); }
+	if (C->h > 0) { Str::clear(CH); WRITE_TO(CH, "%d", C->h); }
+	HTMLFormat::exit_current_paragraph(hrs);
+	TEMPORARY_TEXT(embed_leaf);
+	WRITE_TO(embed_leaf, "%S.html", C->service);
+	filename *F = Patterns::find_asset(hrs->wv->pattern, I"Embedding", embed_leaf);
+	DISCARD_TEXT(embed_leaf);
+	if (F == NULL) {
+		Main::error_in_web(I"This is not a supported service", hrs->wv->current_weave_line);
+	} else {
+		Bibliographic::set_datum(hrs->wv->weave_web->md, I"Content ID", C->ID);
+		Bibliographic::set_datum(hrs->wv->weave_web->md, I"Content Width", CW);
+		Bibliographic::set_datum(hrs->wv->weave_web->md, I"Content Height", CH);
+		HTML_OPEN("center");
+		Collater::for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern, F, hrs->into_file);
+		HTML_CLOSE("center");
+		WRITE("\n");
+	}
 
 @<Render pmac@> =
 	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
@@ -377,8 +413,8 @@ that service uses to identify the video/audio in question.
 @<Render vskip@> =
 	weave_vskip_node *C = RETRIEVE_POINTER_weave_vskip_node(N->content);
 	if (C->in_comment) {
-		HTMLFormat::exit_current_paragraph(OUT);
-		HTMLFormat::p(OUT,"inwebparagraph");
+		HTMLFormat::exit_current_paragraph(hrs);
+		HTMLFormat::p(hrs,"inwebparagraph");
 	} else {
 		WRITE("\n");
 	}
@@ -473,7 +509,7 @@ that service uses to identify the video/audio in question.
 		WRITE("<div class=\"%S\">%S</div>\n", caption_class, C->caption);
 
 @<Render toc@> =
-	HTMLFormat::exit_current_paragraph(OUT);
+	HTMLFormat::exit_current_paragraph(hrs);
 	HTML_OPEN_WITH("ul", "class=\"toc\"");
 	for (tree_node *M = N->child; M; M = M->next) {
 		HTML_OPEN("li");
@@ -541,11 +577,11 @@ that service uses to identify the video/audio in question.
 
 @<Render display line@> =
 	weave_display_line_node *C = RETRIEVE_POINTER_weave_display_line_node(N->content);
-	HTMLFormat::exit_current_paragraph(OUT);
+	HTMLFormat::exit_current_paragraph(hrs);
 	HTML_OPEN("blockquote"); WRITE("\n"); INDENT;
-	HTMLFormat::p(OUT, NULL);
+	HTMLFormat::p(hrs, NULL);
 	WRITE("%S", C->text);
-	HTMLFormat::cp(OUT);
+	HTMLFormat::cp(hrs);
 	OUTDENT; HTML_CLOSE("blockquote"); WRITE("\n");
 
 @<Render function defn@> =
@@ -567,7 +603,9 @@ that service uses to identify the video/audio in question.
 
 @<Render item@> =
 	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
-	HTMLFormat::go_to_depth(OUT, C->depth);
+	if (hrs->position != INSIDE_UL_HRS) HTMLFormat::exit_current_paragraph(hrs);
+	HTMLFormat::go_to_depth(hrs, C->depth);
+	hrs->position = INSIDE_UL_HRS;
 	if (Str::len(C->label) > 0) WRITE("(%S) ", C->label);
 	else WRITE(" ");
 
@@ -613,44 +651,6 @@ that service uses to identify the video/audio in question.
 	;
 
 @ =
-void HTMLFormat::subheading(weave_format *self, text_stream *OUT, weave_order *wv,
-	int level, text_stream *comment, text_stream *head) {
-	HTMLFormat::exit_current_paragraph(OUT);
-	switch (level) {
-		case 1: HTML::heading(OUT, "h3", comment); break;
-		case 2: HTMLFormat::p(OUT, "purpose");
-			WRITE("%S", comment);
-			if (head)
-				WRITE(": "); HTMLFormat::commentary_text(self, OUT, wv, head);
-			HTMLFormat::cp(OUT);
-			break;
-	}
-}
-
-@ =
-section *page_section = NULL;
-
-void HTMLFormat::paragraph_heading(weave_format *self, text_stream *OUT,
-	weave_order *wv, section *S, paragraph *P, text_stream *heading_text,
-	int weight, int no_skip) {
-	page_section = S;
-	if (weight == 2) return; /* Skip section headings */
-	if (weight == 3) return; /* Skip chapter headings */
-	HTMLFormat::exit_current_paragraph(OUT);
-	if (P == NULL) internal_error("no para");
-	HTMLFormat::p(OUT, "inwebparagraph");
-	TEMPORARY_TEXT(TEMP)
-	Colonies::paragraph_anchor(TEMP, P);
-	HTML::anchor(OUT, TEMP);
-	DISCARD_TEXT(TEMP)
-	HTML_OPEN("b");
-	WRITE("%s%S", (Str::get_first_char(P->ornament) == 'S')?"&#167;":"&para;",
-		P->paragraph_number);
-	WRITE(". %S%s ", heading_text, (Str::len(heading_text) > 0)?".":"");
-	HTML_CLOSE("b");
-}
-
-@ =
 void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *matter, text_stream *colouring, colour_scheme *cs) {
 	int current_colour = -1, colour_wanted = PLAIN_COLOUR;
@@ -671,32 +671,6 @@ void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_order *
 		HTMLFormat::change_colour(NULL, OUT, wv, colour_wanted, TRUE, cs);
 		current_colour = colour_wanted;
 	}
-
-@ =
-void HTMLFormat::embed(weave_format *self, text_stream *OUT, weave_order *wv,
-	text_stream *service, text_stream *ID, int w, int h) {
-	text_stream *CH = I"405";
-	text_stream *CW = I"720";
-	if (w > 0) { Str::clear(CW); WRITE_TO(CW, "%d", w); }
-	if (h > 0) { Str::clear(CH); WRITE_TO(CH, "%d", h); }
-	HTMLFormat::exit_current_paragraph(OUT);
-	
-	TEMPORARY_TEXT(embed_leaf);
-	WRITE_TO(embed_leaf, "%S.html", service);
-	filename *F = Patterns::find_asset(wv->pattern, I"Embedding", embed_leaf);
-	DISCARD_TEXT(embed_leaf);
-	if (F == NULL) {
-		Main::error_in_web(I"This is not a supported service", wv->current_weave_line);
-		return;
-	}
-	Bibliographic::set_datum(wv->weave_web->md, I"Content ID", ID);
-	Bibliographic::set_datum(wv->weave_web->md, I"Content Width", CW);
-	Bibliographic::set_datum(wv->weave_web->md, I"Content Height", CH);
-	HTML_OPEN("center");
-	Indexer::incorporate_template_for_web_and_pattern(OUT, wv->weave_web, wv->pattern, F);
-	HTML_CLOSE("center");
-	WRITE("\n");
-}
 
 @ =
 void HTMLFormat::para_macro(weave_format *self, text_stream *OUT, weave_order *wv,
@@ -779,7 +753,6 @@ void HTMLFormat::locale(weave_format *self, text_stream *OUT, weave_order *wv,
 
 @ =
 void HTMLFormat::tail(weave_format *self, text_stream *OUT, weave_order *wv, section *this_S) {
-	HTMLFormat::exit_current_paragraph(OUT);
 	chapter *C = this_S->owning_chapter;
 	section *S, *last_S = NULL, *prev_S = NULL, *next_S = NULL;
 	LOOP_OVER_LINKED_LIST(S, section, C->sections) {

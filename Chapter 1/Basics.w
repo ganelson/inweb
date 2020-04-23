@@ -67,7 +67,6 @@ see //foundation: A Brief Guide to Foundation//.
 @e weave_embed_node_MT
 @e weave_pmac_node_MT
 @e weave_vskip_node_MT
-@e weave_apres_defn_node_MT
 @e weave_chapter_node_MT
 @e weave_section_node_MT
 @e weave_code_line_node_MT
@@ -150,7 +149,6 @@ ALLOCATE_INDIVIDUALLY(weave_figure_node)
 ALLOCATE_INDIVIDUALLY(weave_embed_node)
 ALLOCATE_INDIVIDUALLY(weave_pmac_node)
 ALLOCATE_INDIVIDUALLY(weave_vskip_node)
-ALLOCATE_INDIVIDUALLY(weave_apres_defn_node)
 ALLOCATE_INDIVIDUALLY(weave_chapter_node)
 ALLOCATE_INDIVIDUALLY(weave_section_node)
 ALLOCATE_INDIVIDUALLY(weave_code_line_node)

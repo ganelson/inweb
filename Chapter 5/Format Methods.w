@@ -82,15 +82,29 @@ void Formats::end_weaving(web *W, weave_pattern *pattern) {
 @ |RENDER_FOR_MTID| renders the weave tree in the given format: a format must
 provide this.
 
+Note the use of an optional "body template" to provide material before and
+after the usage of |[[Weave Content]]|; but note also that this content is
+generated first, and the fore and aft matter second, so that the fore matter
+can include plugin links whose need was only realised when rendering the
+actual content.
+
 @e RENDER_FOR_MTID
 
 =
 VMETHOD_TYPE(RENDER_FOR_MTID, weave_format *wf, text_stream *OUT, heterogeneous_tree *tree)
-void Formats::render(text_stream *OUT, heterogeneous_tree *tree) {
-	tree_node *doc_node = tree->root;
-	weave_document_node *doc = RETRIEVE_POINTER_weave_document_node(doc_node->content);
-	weave_format *wf = doc->wv->format;
-	VMETHOD_CALL(wf, RENDER_FOR_MTID, OUT, tree);
+void Formats::render(text_stream *OUT, heterogeneous_tree *tree, filename *into) {
+	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
+	weave_format *wf = C->wv->format;
+	TEMPORARY_TEXT(template);
+	WRITE_TO(template, "template-body%S", wf->woven_extension);
+	filename *F = Patterns::obtain_filename(C->wv->pattern, template);
+	TEMPORARY_TEXT(interior);
+	VMETHOD_CALL(wf, RENDER_FOR_MTID, interior, tree);
+	Bibliographic::set_datum(C->wv->weave_web->md, I"Weave Content", interior);
+	if (F) Collater::for_order(OUT, C->wv, F, into);
+	else WRITE("%S", interior);
+	DISCARD_TEXT(interior);
+	DISCARD_TEXT(template);
 }
 
 @ When whole chapters are wovem, or all-in-one weaves include multiple

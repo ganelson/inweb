@@ -103,20 +103,28 @@ the web is syntactically valid line-by-line, reporting errors if any using
 by calling //Main::error_in_web//. Each line is assigned a "category": for
 example, the category |DEFINITIONS_LCAT| is given to lines holding definitions
 made with |@d| or |@e|. See //Line Categories// for the complete roster.[1]
+Running Inweb with the |-scan| switch lists out the lines parsed in this way;
+for example:
+= (text from Figures/scan.txt)
 
-The parser also recognises headings and footnotes, but most importantly, it
+[1] There are more than 20, but many are no longer needed in "version 2" of
+the Inweb syntax, which is the only one anyone should still use. Continuing
+to support version 1 makes //The Parser// much fiddlier, and at some point we
+will probably drop this quixotic goal.
+
+@ The parser also recognises headings and footnotes, but most importantly, it
 introduces an additional concept: the //paragraph//. Each nunbered passage
 corresponds to one //paragraph// object; it may actually contain several
 paragraphs of prose in the everyday English sense, but has just one heading,
-usually a number like "2.3.1". Those numbers are assigned hierarchically,[2]
+usually a number like "2.3.1". Those numbers are assigned hierarchically,[1]
 which is not a trivial algorithm: see //Numbering::number_web//.
 
 It is the parser which finds all of the "paragraph macros", the term used
 in the source code for named stretches of code in |@<...@>| notation. A
 //para_macro// object is created for each one, and every section has its own
-collection, stored in a |linked_list|.[3] Similarly, the parser finds all of
+collection, stored in a |linked_list|.[2] Similarly, the parser finds all of
 the footnote texts, and works out their proper numbering; each becomes a
-//footnote// object.[4]
+//footnote// object.[3]
 
 At the end of the third stage, then, everything's ready to go, and in memory
 we now have something like this:
@@ -127,21 +135,16 @@ FOUNDATION   //web_md//  ---->  //chapter_md//  ---->  //section_md//
              //module//
 =
 
-[1] There are more than 20, but many are no longer needed in "version 2" of
-the Inweb syntax, which is the only one anyone should still use. Continuing
-to support version 1 makes //The Parser// much fiddlier, and at some point we
-will probably drop this quixotic goal.
-
-[2] Unlike in CWEB and other past literate programming tools, in which
+[1] Unlike in CWEB and other past literate programming tools, in which
 paragraphs -- sometimes called "sections" by those programs, a different use
 of the word to ours -- are numbered simply 1, 2, 3, ..., through the entire
 program. Doing this would entail some webs in the Inform project running up
 to nearly 8000.
 
-[3] In real-world use, to use a |dictionary| instead would involve more
+[2] In real-world use, to use a |dictionary| instead would involve more
 overhead than gain: there are never very many paragraph macros per section.
 
-[4] Though the parser is not able to check that the footnotes are all used;
+[3] Though the parser is not able to check that the footnotes are all used;
 that's done at weaving time instead.
 
 @h Programming languages.
@@ -181,14 +184,14 @@ unnecessary now that colonies allow for multiple webs to coexist happily.
 @h Weaving mode.
 Let's get back to //Program Control//, which has now set everything up and is
 about to take action. What it does depends on which of the four modes Inweb
-is in; we'll start with |WEAVE_MODE|.
+is in; we'll start with |WEAVE_MODE|, the most difficult.
 
 Weaves are highly comfigurable, so they depend on several factors:
 (a) Which format is used, as represented by a //weave_format// object. For
 example, HTML, ePub and PDF are all formats.
 (b) Which pattern is used, as represented by a //weave_pattern// object. A
 pattern is a choice of format together with some naming conventions and
-auxiliary files. For example, GitHubPages is a pattern which imposes HTML
+auxiliary files. For example, |GitHubPages| is a pattern which imposes HTML
 format but also throws in, for example, the GitHub logo icon.
 (c) Whether a filter to particular tags is used, as represented by a
 //theme_tag//.[1]
@@ -229,29 +232,44 @@ source-code web of Inweb itself.
 @ And so we descend into //The Weaver//, where the function //Weaver::weave//
 is given the //weave_order// and told to get on with it.[1]
 
-The method is actually very simple, and is just a depth-first traverse of the
-above tree structure for the web, weaving the lines one at a time and keeping
-track of the "state" as we go -- the state being, for example, are we currently
-in some code, or currently in commentary. For convenience, these running
-details are stored in a //weaver_state// object, but it's thrown away as soon
-as the weaver finishes.
+Rather than directly converting the source to (say) an HTML representation,
+the Weaver first produces a "weave tree" which amounts to a format-neutral
+list of rendering instructions: it then hands the tree over to
+//Formats::render//. In this way, all specifics of individual output formats
+are kept at arm's length from the actual weaving algorithm.
 
-The actual output produced depends throughout on the format, and for individual
-lines it also depends on the programming language they are written in. So the
-weaver does its work by making method calls to the //programming_language//
-or //weave_format// in question: in effect, these are APIs. See the sections
-//Language Methods// and //Format Methods// for itemised lists, but for
-example, to weave a line of C into HTML format, the weaver first calls
-//LanguageMethods::syntax_colour//, which in turn calls the method
-|SYNTAX_COLOUR_WEA_MTID| to the //programming_language// object for C;
-and then....
+The weave tree is a simple business, built in a single pass of a depth-first
+traverse of the web. The weaver keeps track of a modicum of "state" as it works,
+and these running details are stored in a //weaver_state// object, but this is
+thrown away as soon as the weaver finishes.
+
+The trickiest point of building the weave tree is done by //The Weaver of Text//,
+which breaks up lines of commentary or code to identify uses of mathematical
+notation, footnote cues, function calls, and so on.
+
+A convenience for testing the weave algorithm is to |-weave-as TestingInweb|.
+|TestingInweb| is a weave pattern that outputs a textual representation of
+the weave tree. For example:
+= (text from Figures/tree.txt)
+This is a "heterogeneous tree", in that its //tree_node// nodes are annotated
+by data structures of different types. For example, a node for a section
+heading is annotated with a //weave_section_header_node// structure. The
+necessary types and object constructors are laid tediously out in
+//Weave Tree//, a section which intentionally contains no non-trivial code.
 
 [1] "Weaver, weave" really ought to be a folk song, but if so, I can't find
 it on Spotify.
 
-@ Syntax-colouring is worth further mention, since it demonstrates how
-language support works. In principle, any //programming_language// object
-can do whatever it likes in response to |SYNTAX_COLOUR_WEA_MTID|. But if Inweb
+@ Syntax-colouring is worth further mention. Just as the Weaver tries not to
+get itself into fiddly details of formats, it also avoids specifics of
+programming languages. It does this by calling //LanguageMethods::syntax_colour//,
+which in turn calls the |SYNTAX_COLOUR_WEA_MTID| method for the relevant
+instance of //programming_language//. In effect the weaver sends a snippet
+of code and asks to be told how it's to be coloured: not in terms of green
+vs blue, but in terms of |IDENTIFIER_COLOUR| vs |RESERVED_COLOUR| and so on.
+
+Thus, the object representing "the C programming language" can in principle
+choose any semantic colouring that it likes. In practice, if (as is usual) it
 assigns no particular code to this, what instead happens is that the generic
 handler function in //ACME Support// takes on the task.[1] This runs the
 colouring program in the language's definition file, by calling an algorithm
@@ -261,43 +279,74 @@ in a low-level interpreter by //The Painter//.
 
 [1] "ACME" is used here in the sense of "generic".
 
-@ As for the formats, see //TeX Format// for how TeX output is done, and see
-//Running Through TeX// for issuing shell commands to turn that into PDFs.[1]
+@ So, then, the weave tree is now made. Just as each programming language
+has an object representing it, so does each format, and at render time the
+method call |RENDER_FOR_MTID| is sent to it. This has to turn the tree into
+HTML, plain text, TeX source, or whatever may be. It's understood that not
+every rendering instruction in the weave tree can be fully followed in every
+format: for example, there's not much that plain text can do to render an
+image carousel.
 
-See //HTML Formats// for HTML and ebook weaving, but see also a suite of
-useful functions in //Colonies// which coordinate URLs across websites so
+Inweb currently contains four renderers:
+(a) //Debugging Format// renders the weave tree as a plain text display, and
+is solely for testing.
+(b) //TeX Format// renders the weave tree as TeX markup code -- in the early
+days of literate programming, this was the sole weave format used; now it
+has been eclipsed by...
+(c) ...//HTML Formats//, which renders to HTML and also handles ePub ebooks.
+(d) There is also //Plain Text Format//, a comically minimal approach.
+
+Renderers should make requests for weave plugins or colour schemes if, and
+only if, the need arises: for example, the HTML renderer requests the plugin
+|Carousel| only if an image carousel is actually called for. Requests are
+made by calling //Swarm::ensure_plugin// or //Swarm::ensure_colour_scheme//,
+and see also the underlying code at //Weave Plugins//. (We want our HTML to
+run as little JavaScript as necessary at load time, which is why we don't
+just give every weave every possible facility.)
+
+The most complex issue for HTML rendering is working out the URLs for links:
+for example, when weaving the text you are currently reading, Inweb has to
+decide where to send //text_stream//. This is handled by a suite of useful
+functions in //Colonies// which coordinate URLs across websites so
 that one web's weave can safely link to another's. In particular, cross-references
 written in |//this notation//| are "resolved" by //Colonies::resolve_reference_in_weave//,
 and the function //Colonies::reference_URL// turns them into relative URLs
 from any given file. Within the main web being woven, //Colonies::paragraph_URL//
-can make a link to any paragraph of your choice.[2]
+can make a link to any paragraph of your choice.[1]
 
-The HTML format also has the ability to request a //weave_plugin//, which is
-a bundle of JavaScriot and CSS to implement some unusual feature. Inweb uses
-two already, one for footnotes, one for mathematics. Plugins are only woven
-into web pages actually using them, to save loading unnecessary JavaScript
-in the browser. See //Weave Plugins//.
-
-[1] When Inweb was begun, this seemed the main use case, the most important
-thing, the big deal -- all Knuthian points of view. It now seems clear that
-TeX/PDF is much less important than HTML/ePub.
-
-[2] Inweb anchors at paragraphs; it does not anchor at individual lines.
+[1] Inweb anchors at paragraphs; it does not anchor at individual lines.
 This is intentional, as it's intended to take the reader to just enough
 context and explanation to understand what is being linked to.
 
-@ Finally on weaving, special mention should go to //The Indexer//, a
-subsystem of code which works through a template (often, but not necessarily,
-of HTML code), and substitutes special material in at given points. This
-is used in two ways:
-(a) A simple version tops and tails a weave, providing, for example, the
-HTML header for an HTML page, and closing off its |<body>|. For historical
-reasons, these are referred to as "cover sheets". See //Indexer::cover_sheet_maker//.
-(b) A more elaborate version with a much richer set of features can make
-arbitrary constructions, and is used for "index pages" (i.e., contents
-pages) in //The Swarm//, and also for recursively dropping in navigation
-matter to the sidebar of a web page. See //Indexer::run_engine//. This
-is where template/navigation syntax such as |[[Link ...]]| is handled.
+@ Finally on weaving, special mention should go to //The Collater//, a
+subsystem which amounts to a stream editor. Its role is to work through a
+"template" and substitute in material from outside -- from the weave rendering,
+from the bibliographic data for a web, and so on -- to produce a final file.
+For example, a simple use of the collater is to work through the template:
+= (text)
+	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+	<html>
+		<head>
+			<title>[[Booklet Title]]</title>
+			[[Plugins]]
+		</head>
+		<body>
+	[[Weave Content]]
+		</body>
+	</html>
+=
+and to collate material already generated by other parts of Inweb to fill the
+double-squared placeholders, such as |[[Plugins]]|. The Collater, in fact,
+is ultimately what generates all of the files made in a weave, even though
+other parts of Inweb did all of the real work.
+
+With that said, it's not a trivial algorithm, because it can also loop through
+chapters and sections, as it does when it generates an index page to accompany
+a swarm of individual section weaves. The contents pages for typical webs
+presented online are made this way. The Collater is also recursive, in that
+some collation commands call for further acts of collation to happen inside
+the original. See //Advanced Weaving with Patterns// for more on collation,
+and see //Collater::collate// for the machinery.
 
 @h Tangling mode.
 Alternatively, we're in |TANGLE_MODE|, which is more straightforward.
@@ -356,7 +405,7 @@ And that is essentially it. Inweb winds up by returning exit code 1 if there
 were errors, or 0 if not, like a good Unix citizen.
 
 @h Adding to Inweb.
-Here's some miscellaneous advice for those tempted to do so:
+Here's some miscellaneous advice for those who would like to add to Inweb:
 
 1. To add a new command-line switch, declare at //Configuration::read// and
 add a field to //inweb_instructions// which holds the setting; don't act on it
@@ -374,14 +423,15 @@ to a language with a given name, or, preferably, some given declaration in
 the language definition file. On no account insert any language bias into
 //The Weaver// or //The Tangler//.
 
-3. To add new formats, make a new section in //Chapter 5// following the
-model of, say, //Plain Text Format// and then adding methods gradually.
-But don't forget to call your new format's creator function from
-//Formats::create_weave_formats//. Also, don't create a new format if what
-you really want is a new pattern: for example, "an HTML website but done
-differently" should be a pattern based on HTML; but Markdown would be a
-genuinely new format. (And in any case, if you do create a new format, you
-must also create a new pattern in order to use it.)
+3. To add new forms of weave output, try if possible to make a new pattern:
+see //Advanced Weaving with Patterns//. But this won't always be good enough.
+For example, "an HTML website but done differently" should be a pattern based
+on HTML, but Markdown would require a genuinely new format. (Though you would
+still also create a new pattern in order to use it.) If you go down this road,
+make a new section in //Chapter 5// following the model of, say,
+//Plain Text Format// and then adding methods gradually.
+(But don't forget to call your new format's creator function from
+//Formats::create_weave_formats//.)
 
-4. If you are creating a new class of object, don't forget to declare it
-in //Basics//.
+4. As with any program built on Foundation, if you are creating a new class of
+object, don't forget to declare it in //Basics//.

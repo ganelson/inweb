@@ -99,8 +99,8 @@ void WeavePlugins::include_plugin(OUTPUT_STREAM, web *W, weave_plugin *wp,
 						filename *F = Filenames::in(P, leafname);
 						if (Str::eq_insensitive(leafname, required)) {
 							if (html_mode) {
-								Indexer::incorporate_template_for_web_and_pattern(OUT,
-									W, pattern, F);
+								Collater::for_web_and_pattern(OUT,
+									W, pattern, F, from);
 							} else {
 								@<Use shell scripting to copy the file over@>;
 							}

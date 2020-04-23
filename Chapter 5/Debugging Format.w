@@ -53,7 +53,6 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
-	else if (N->type == weave_apres_defn_node_type) @<Render apres-defn@>
 	else if (N->type == weave_chapter_node_type) @<Render chapter@>
 	else if (N->type == weave_section_node_type) @<Render section@>
 	else if (N->type == weave_code_line_node_type) @<Render code line@>

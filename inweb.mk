@@ -86,6 +86,8 @@ commit:
 pages:
 	$(INWEB) -help > $(ME)/Figures/help.txt
 	$(INWEB) -show-languages > $(ME)/Figures/languages.txt
+	$(INWEB) -colony $(COLONY) -member twinprimes -scan > $(ME)/Figures/scan.txt
+	$(INWEB) -colony $(COLONY) -member twinprimes -weave-as TestingInweb -weave-to $(ME)/Figures/tree.txt
 	cp -f $(COLONY) $(ME)/Figures/colony.txt
 	cp -f $(ME)/docs-src/nav.html $(ME)/Figures/nav.txt
 	$(INWEB) -advance-build-file $(ME)/build.txt
