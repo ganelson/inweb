@@ -61,14 +61,19 @@ two groups: the POSIX group, and Windows.
 operating system, and the other one on Windows.
 </p>
 
-<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Some basics that apply to all POSIX-supporting systems.
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>Some basics that apply to all POSIX-supporting systems.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">FOLDER_SEPARATOR</span><span class="plain-syntax"> </span><span class="character-syntax">'/'</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax"> </span><span class="character-syntax">'\''</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">FOLDER_SEPARATOR</span><span class="plain-syntax"> </span><span class="character-syntax">'/'</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax"> </span><span class="character-syntax">'\''</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">sys</span><span class="plain-syntax">/</span><span class="identifier-syntax">stat</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">sys</span><span class="plain-syntax">/</span><span class="identifier-syntax">types</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
@@ -77,57 +82,82 @@ operating system, and the other one on Windows.
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">pthread</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">limits</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">unistd</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Mac OS X. </b></p>
-
-
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">PLATFORM_STRING</span><span class="plain-syntax"> </span><span class="string-syntax">"macos"</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax"> </span><span class="character-syntax">'\''</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">"Library"</span>
 </pre>
-<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Generic Unix. </b>These settings are used both for the Linux versions (both command-line, by
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Mac OS X. </b></p>
+
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">PLATFORM_STRING</span><span class="plain-syntax"> </span><span class="string-syntax">"macos"</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax"> </span><span class="character-syntax">'\''</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">"Library"</span>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li></ul>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Generic Unix. </b>These settings are used both for the Linux versions (both command-line, by
 Adam Thornton, and for Ubuntu, Fedora, Debian and so forth, by Philip
 Chimento) and also for Solaris variants: they can probably be used for any
 Unix-based system.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">PLATFORM_STRING</span><span class="plain-syntax"> </span><span class="string-syntax">"unix"</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">""</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">PLATFORM_STRING</span><span class="plain-syntax"> </span><span class="string-syntax">"unix"</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">""</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">strings</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_UNIX and PLATFORM_POSIX are defined.</li></ul><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Linux. </b>These settings are used both for the Linux versions (both command-line, by
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_UNIX and PLATFORM_POSIX are defined.</li></ul>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Linux. </b>These settings are used both for the Linux versions (both command-line, by
 Adam Thornton, and for Ubuntu, Fedora, Debian and so forth, by Philip
 Chimento) and also for Solaris variants: they can probably be used for any
 Unix-based system.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">PLATFORM_STRING</span><span class="plain-syntax"> </span><span class="string-syntax">"linux"</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">""</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">PLATFORM_STRING</span><span class="plain-syntax"> </span><span class="string-syntax">"linux"</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">""</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">strings</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</li></ul><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Android. </b>These settings are used for Nathan Summers's Android versions.
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</li></ul>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Android. </b>These settings are used for Nathan Summers's Android versions.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">PLATFORM_STRING</span><span class="plain-syntax"> </span><span class="string-syntax">"android"</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">SUPPRESS_MAIN</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">""</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">PLATFORM_STRING</span><span class="plain-syntax"> </span><span class="string-syntax">"android"</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SUPPRESS_MAIN</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">""</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">strings</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_ANDROID and PLATFORM_POSIX are defined.</li></ul><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Locale. </b>The following definition handles possible differences of text encoding
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_ANDROID and PLATFORM_POSIX are defined.</li></ul>
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Locale. </b>The following definition handles possible differences of text encoding
 in filenames, which depend on the current "locale". Locale is an odd piece
 of old Unix terminology, but one thing it includes is how the textual names
 of files are encoded (as ASCII, as ISO Latin-1, as UTF-8, etc.). The default
 here is UTF-8 since OS X and Linux both adopt this.
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="constant-syntax">LOCALE_IS_ISO</span>
@@ -135,13 +165,21 @@ here is UTF-8 since OS X and Linux both adopt this.
 <span class="plain-syntax">#</span><span class="identifier-syntax">define</span><span class="plain-syntax"> </span><span class="identifier-syntax">LOCALE_IS_UTF8</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Environment variables. </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul>
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Environment variables. </b></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><a href="1-wp.html#SP4" class="function-link"><span class="function-syntax">Platform::getenv</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">getenv</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::getenv is used in Windows Platform (<a href="1-wp.html#SP4">&#167;4</a>), Pathnames (<a href="3-pth.html#SP2">&#167;2</a>, <a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Executable location. </b>Fill the wide-char buffer <span class="extract"><span class="extract-syntax">p</span></span> with the path to the current executable, up to
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::getenv is used in Windows Platform (<a href="1-wp.html#SP4">&#167;4</a>), Pathnames (<a href="3-pth.html#SP2">&#167;2</a>, <a href="3-pth.html#SP3">&#167;3</a>).</li></ul>
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Executable location. </b>Fill the wide-char buffer <span class="extract"><span class="extract-syntax">p</span></span> with the path to the current executable, up to
 length <span class="extract"><span class="extract-syntax">length</span></span>. This function is guaranteed to be called from only one
 thread. Should the information be unavailable, or fail to fit into <span class="extract"><span class="extract-syntax">p</span></span>,
 truncate <span class="extract"><span class="extract-syntax">p</span></span> to zero length. (On some platforms, the information will
@@ -149,45 +187,69 @@ always be unavailable: that doesn't mean we can't run on those platforms,
 just that installation and use of Foundation-built tools is less convenient.)
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP5" class="function-link"><span class="function-syntax">Platform::where_am_i</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">length</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">buffer</span><span class="plain-syntax">[</span><span class="identifier-syntax">PATH_MAX</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Follow the proc filesystem symlink to the real filesystem's file</span> <span class="named-paragraph-number">9.1</span>&gt;<span class="character-syntax">;</span>
 <span class="character-syntax">    </span>&lt;<span class="named-paragraph">Transcode buffer, which is locale-encoded, into the wide-char buffer</span> <span class="named-paragraph-number">9.2</span>&gt;<span class="character-syntax">;</span>
 <span class="character-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9_1"></a><b>&#167;9.1.  </b>On Linux, <span class="extract"><span class="extract-syntax">/proc/self/exe</span></span> is a symlink to the current process's executable.
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul>
+<p class="inwebparagraph"><a id="SP9_1"></a><b>&#167;9.1.  </b>On Linux, <span class="extract"><span class="extract-syntax">/proc/self/exe</span></span> is a symlink to the current process's executable.
 Follow that link to find the path. Normally when reading a symlink, one uses
 <span class="extract"><span class="extract-syntax">lstat()</span></span> to find the path length instead of guessing <span class="extract"><span class="extract-syntax">PATH_MAX</span></span>, but the
 symlinks in <span class="extract"><span class="extract-syntax">/proc</span></span> are special and don't provide a length to <span class="extract"><span class="extract-syntax">lstat()</span></span>.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Follow the proc filesystem symlink to the real filesystem's file</span> <span class="named-paragraph-number">9.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">ssize_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">link_len</span><span class="plain-syntax"> = </span><span class="identifier-syntax">readlink</span><span class="plain-syntax">(</span><span class="string-syntax">"/proc/self/exe"</span><span class="plain-syntax">, </span><span class="identifier-syntax">buffer</span><span class="plain-syntax">, </span><span class="identifier-syntax">PATH_MAX</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">link_len</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="comment"> unable to find</span>&lt;<span class="named-paragraph">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt;<span class="plain-syntax">; </span><span class="comment"> unable to find</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">buffer</span><span class="plain-syntax">[</span><span class="identifier-syntax">link_len</span><span class="plain-syntax">] = </span><span class="character-syntax">'\0'</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>This code is used in <a href="1-pp.html#SP9">&#167;9</a>.</li></ul><p class="inwebparagraph"><a id="SP9_2"></a><b>&#167;9.2.  </b>Next, convert the obtained buffer (which is a string in the local filename
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>This code is used in <a href="1-pp.html#SP9">&#167;9</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP9_2"></a><b>&#167;9.2.  </b>Next, convert the obtained buffer (which is a string in the local filename
 encoding, and possibly in a multibyte encoding such as UTF-8) to a wide-char
 string.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Transcode buffer, which is locale-encoded, into the wide-char buffer</span> <span class="named-paragraph-number">9.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">convert_len</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mbstowcs</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">buffer</span><span class="plain-syntax">, </span><span class="identifier-syntax">length</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">convert_len</span><span class="plain-syntax"> == (</span><span class="identifier-syntax">size_t</span><span class="plain-syntax">)-1) </span><span class="comment"> wouldn't fit</span>&lt;<span class="named-paragraph">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt;<span class="plain-syntax">; </span><span class="comment"> wouldn't fit</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>This code is used in <a href="1-pp.html#SP9">&#167;9</a>.</li></ul><p class="inwebparagraph"><a id="SP9_1_1"></a><b>&#167;9.1.1.  </b>And now the Mac version: 
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>This code is used in <a href="1-pp.html#SP9">&#167;9</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP9_1_1"></a><b>&#167;9.1.1.  </b>And now the Mac version: 
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">_NSGetExecutablePath</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>_NSGetExecutablePath</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax">* </span><span class="identifier-syntax">buf</span><span class="plain-syntax">, </span><span class="identifier-syntax">uint32_t</span><span class="plain-syntax">* </span><span class="identifier-syntax">bufsize</span><span class="plain-syntax">);</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">_NSGetExecutablePath</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>_NSGetExecutablePath</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax">* </span><span class="identifier-syntax">buf</span><span class="plain-syntax">, </span><span class="identifier-syntax">uint32_t</span><span class="plain-syntax">* </span><span class="identifier-syntax">bufsize</span><span class="plain-syntax">);</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP5" class="function-link"><span class="function-syntax">Platform::where_am_i</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">length</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">relative_path</span><span class="plain-syntax">[4 * </span><span class="identifier-syntax">PATH_MAX</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">];</span>
@@ -207,38 +269,66 @@ string.
 <span class="plain-syntax">    </span><span class="identifier-syntax">convert_len</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mbstowcs</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">absolute_path</span><span class="plain-syntax">, </span><span class="identifier-syntax">length</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">convert_len</span><span class="plain-syntax"> == (</span><span class="identifier-syntax">size_t</span><span class="plain-syntax">)-1) </span>&lt;<span class="named-paragraph">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9_1_2"></a><b>&#167;9.1.2.  </b>For Unix, there's nothing we can generically do. 
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul>
+<p class="inwebparagraph"><a id="SP9_1_2"></a><b>&#167;9.1.2.  </b>For Unix, there's nothing we can generically do. 
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP5" class="function-link"><span class="function-syntax">Platform::where_am_i</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">length</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_UNIX and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9_1_3"></a><b>&#167;9.1.3.  </b>On Android, there's no real need for this. 
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_UNIX and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul>
+<p class="inwebparagraph"><a id="SP9_1_3"></a><b>&#167;9.1.3.  </b>On Android, there's no real need for this. 
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP5" class="function-link"><span class="function-syntax">Platform::where_am_i</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">length</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_ANDROID and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul><p class="inwebparagraph"><a id="SP9_1_4"></a><b>&#167;9.1.4.  </b>All of the above make use of:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_ANDROID and PLATFORM_POSIX are defined.</li><li>The function Platform::where_am_i is used in <a href="1-pp.html#SP9">&#167;9</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a>, <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, Windows Platform (<a href="1-wp.html#SP5">&#167;5</a>), Pathnames (<a href="3-pth.html#SP3">&#167;3</a>).</li></ul>
+<p class="inwebparagraph"><a id="SP9_1_4"></a><b>&#167;9.1.4.  </b>All of the above make use of:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Fail</span> <span class="named-paragraph-number">9.1.4</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">p</span><span class="plain-syntax">[0] = </span><span class="character-syntax">'\0'</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>This code is used in <a href="1-pp.html#SP9_1">&#167;9.1</a>, <a href="1-pp.html#SP9_2">&#167;9.2</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a> (three times), <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>.</li></ul><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Shell commands. </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>This code is used in <a href="1-pp.html#SP9_1">&#167;9.1</a>, <a href="1-pp.html#SP9_2">&#167;9.2</a>, <a href="1-pp.html#SP9_1_1">&#167;9.1.1</a> (three times), <a href="1-pp.html#SP9_1_2">&#167;9.1.2</a>, <a href="1-pp.html#SP9_1_3">&#167;9.1.3</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Shell commands. </b></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><a href="1-wp.html#SP6" class="function-link"><span class="function-syntax">Platform::system</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cmd</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">system</span><span class="plain-syntax">(</span><span class="identifier-syntax">cmd</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined and if PLATFORM_MACOS is undefined.</li><li>The function Platform::system is used in <a href="1-pp.html#SP11">&#167;11</a>, <a href="1-pp.html#SP14">&#167;14</a>, Windows Platform (<a href="1-wp.html#SP6">&#167;6</a>), Shell (<a href="3-shl.html#SP5">&#167;5</a>).</li></ul><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>In MacOS 10.5, a new implementation of the C standard library
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined and if PLATFORM_MACOS is undefined.</li><li>The function Platform::system is used in <a href="1-pp.html#SP11">&#167;11</a>, <a href="1-pp.html#SP14">&#167;14</a>, Windows Platform (<a href="1-wp.html#SP6">&#167;6</a>), Shell (<a href="3-shl.html#SP5">&#167;5</a>).</li></ul>
+<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>In MacOS 10.5, a new implementation of the C standard library
 crippled performance of <span class="extract"><span class="extract-syntax">system()</span></span> by placing it behind a global mutex, so
 that it was impossible for two cores to be calling the function at the same
 time. The net effect of this is that the Inform test suite, executing in
@@ -259,6 +349,8 @@ bugs in Intest, with the worker threads apparently writing on each other's
 memory space. Using <span class="extract"><span class="extract-syntax">posix_spawn()</span></span> instead appears to work better.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">spawn</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">sys</span><span class="plain-syntax">/</span><span class="identifier-syntax">wait</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
@@ -278,7 +370,11 @@ memory space. Using <span class="extract"><span class="extract-syntax">posix_spa
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li><li>The function Platform::system is used in <a href="1-pp.html#SP10">&#167;10</a>, <a href="1-pp.html#SP14">&#167;14</a>, Windows Platform (<a href="1-wp.html#SP6">&#167;6</a>), Shell (<a href="3-shl.html#SP5">&#167;5</a>).</li></ul><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Directory handling. </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li><li>The function Platform::system is used in <a href="1-pp.html#SP10">&#167;10</a>, <a href="1-pp.html#SP14">&#167;14</a>, Windows Platform (<a href="1-wp.html#SP6">&#167;6</a>), Shell (<a href="3-shl.html#SP5">&#167;5</a>).</li></ul>
+<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Directory handling. </b></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><a href="1-wp.html#SP7" class="function-link"><span class="function-syntax">Platform::mkdir</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transcoded_pathname</span><span class="plain-syntax">) {</span>
@@ -313,12 +409,18 @@ memory space. Using <span class="extract"><span class="extract-syntax">posix_spa
 <span class="plain-syntax">    </span><span class="identifier-syntax">DIR</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dirp</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">DIR</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">D</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">closedir</span><span class="plain-syntax">(</span><span class="identifier-syntax">dirp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::mkdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Pathnames (<a href="3-pth.html#SP9">&#167;9</a>).</li><li>The function Platform::opendir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li><li>The function Platform::readdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li><li>The function Platform::closedir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li></ul><p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Timestamp. </b>There are implementations of the C standard library where <span class="extract"><span class="extract-syntax">time_t</span></span> has
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::mkdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Pathnames (<a href="3-pth.html#SP9">&#167;9</a>).</li><li>The function Platform::opendir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li><li>The function Platform::readdir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li><li>The function Platform::closedir is used in Windows Platform (<a href="1-wp.html#SP7">&#167;7</a>), Directories (<a href="3-drc.html#SP2">&#167;2</a>).</li></ul>
+<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Timestamp. </b>There are implementations of the C standard library where <span class="extract"><span class="extract-syntax">time_t</span></span> has
 super-weird behaviour, but on almost POSIX systems, time 0 corresponds to
 midnight on 1 January 1970. All we really need is that the "never" value
 is one which is earlier than any possible timestamp on the files we'll
 be dealing with.
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="identifier-syntax">time_t</span><span class="plain-syntax"> </span><a href="1-wp.html#SP12" class="function-link"><span class="function-syntax">Platform::never_time</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -330,7 +432,11 @@ be dealing with.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">stat</span><span class="plain-syntax">(</span><span class="identifier-syntax">transcoded_filename</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">filestat</span><span class="plain-syntax">) != -1) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">filestat</span><span class="plain-syntax">.</span><span class="identifier-syntax">st_mtime</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="1-wp.html#SP12" class="function-link"><span class="function-syntax">Platform::never_time</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::never_time is used in Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>).</li><li>The function Platform::timestamp is used in Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>), Filenames (<a href="3-fln.html#SP12">&#167;12</a>).</li></ul><p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Sync. </b>Both names here are of directories which do exist. The function makes
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::never_time is used in Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>).</li><li>The function Platform::timestamp is used in Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>), Filenames (<a href="3-fln.html#SP12">&#167;12</a>).</li></ul>
+<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Sync. </b>Both names here are of directories which do exist. The function makes
 the <span class="extract"><span class="extract-syntax">dest</span></span> tree an exact copy of the <span class="extract"><span class="extract-syntax">source</span></span> tree (and therefore deletes
 anything different which was originally in <span class="extract"><span class="extract-syntax">dest</span></span>).
 </p>
@@ -338,8 +444,10 @@ anything different which was originally in <span class="extract"><span class="ex
 <p class="inwebparagraph">In POSIX world, we can fairly well depend on <span class="extract"><span class="extract-syntax">rsync</span></span> being around:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Platform::rsync</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Platform::rsync</b>:<br>Pathnames - <a href="3-pth.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transcoded_source</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transcoded_dest</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Platform::rsync</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Platform::rsync</b>:<br>Pathnames - <a href="3-pth.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transcoded_source</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transcoded_dest</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax">[10*</span><span class="constant-syntax">MAX_FILENAME_LENGTH</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sprintf</span><span class="plain-syntax">(</span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax">, </span><span class="string-syntax">"rsync -a --delete "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="1-pp.html#SP14" class="function-link"><span class="function-syntax">Platform::quote_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax"> + </span><span class="identifier-syntax">strlen</span><span class="plain-syntax">(</span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax">), </span><span class="identifier-syntax">transcoded_source</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
@@ -348,7 +456,7 @@ anything different which was originally in <span class="extract"><span class="ex
 <span class="plain-syntax">    </span><a href="1-wp.html#SP6" class="function-link"><span class="function-syntax">Platform::system</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rsync_command</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Platform::quote_text</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Platform::quote_text</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quoted</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">raw</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">terminate</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Platform::quote_text</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Platform::quote_text</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quoted</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">raw</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">terminate</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">quoted</span><span class="plain-syntax">[0] = </span><span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">qp</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rp</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">raw</span><span class="plain-syntax">[</span><span class="identifier-syntax">rp</span><span class="plain-syntax">]; </span><span class="identifier-syntax">rp</span><span class="plain-syntax">++) {</span>
@@ -360,13 +468,21 @@ anything different which was originally in <span class="extract"><span class="ex
 <span class="plain-syntax">    </span><span class="identifier-syntax">quoted</span><span class="plain-syntax">[</span><span class="identifier-syntax">qp</span><span class="plain-syntax">++] = </span><span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">quoted</span><span class="plain-syntax">[</span><span class="identifier-syntax">qp</span><span class="plain-syntax">++] = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul><p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Sleep. </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul>
+<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Sleep. </b></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP8" class="function-link"><span class="function-syntax">Platform::sleep</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">seconds</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sleep</span><span class="plain-syntax">((</span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><span class="identifier-syntax">seconds</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::sleep is used in Windows Platform (<a href="1-wp.html#SP8">&#167;8</a>).</li></ul><p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Notifications. </b>The "submarine" sound is a gloomy thunk; the "bell" is the three-tone rising
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::sleep is used in Windows Platform (<a href="1-wp.html#SP8">&#167;8</a>).</li></ul>
+<p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Notifications. </b>The "submarine" sound is a gloomy thunk; the "bell" is the three-tone rising
 alert noise which iPhones make when they receive texts, but which hackers of a
 certain age will remember as the "I have ripped your music CD now" alert from
 SoundJam, the program which Apple bought and rebranded as iTunes. Apple now
@@ -378,6 +494,8 @@ to survive, given the MacOS team's current hostility to scripting; we're
 actually running a one-line AppleScript here.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP9" class="function-link"><span class="function-syntax">Platform::notification</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">happy</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sound_name</span><span class="plain-syntax"> = </span><span class="string-syntax">"Bell.aiff"</span><span class="plain-syntax">;</span>
@@ -388,17 +506,29 @@ actually running a one-line AppleScript here.
 <span class="plain-syntax">    </span><a href="3-shl.html#SP5" class="function-link"><span class="function-syntax">Shell::run</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li><li>The function Platform::notification is used in <a href="1-pp.html#SP17">&#167;17</a>, Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>).</li></ul><p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li><li>The function Platform::notification is used in <a href="1-pp.html#SP17">&#167;17</a>, Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>).</li></ul>
+<p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP9" class="function-link"><span class="function-syntax">Platform::notification</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">happy</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined and if PLATFORM_MACOS is undefined.</li><li>The function Platform::notification is used in <a href="1-pp.html#SP16">&#167;16</a>, Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>).</li></ul><p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Concurrency. </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined and if PLATFORM_MACOS is undefined.</li><li>The function Platform::notification is used in <a href="1-pp.html#SP16">&#167;16</a>, Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>).</li></ul>
+<p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Concurrency. </b></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="identifier-syntax">pthread_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">foundation_thread</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="identifier-syntax">pthread_attr_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">foundation_thread_attributes</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul><p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul>
+<p class="inwebparagraph"><a id="SP19"></a><b>&#167;19.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><a href="1-wp.html#SP11" class="function-link"><span class="function-syntax">Platform::create_thread</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">foundation_thread</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pt</span><span class="plain-syntax">,</span>
@@ -420,16 +550,21 @@ actually running a one-line AppleScript here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">pthread_attr_getstacksize</span><span class="plain-syntax">(</span><span class="identifier-syntax">pa</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">mystacksize</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">mystacksize</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::create_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</li><li>The function Platform::join_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</li><li>The function Platform::init_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</li><li>The function Platform::get_thread_stack_size is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</li></ul><p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Mutexes. </b></p>
-
-
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="identifier-syntax">CREATE_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">)</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">static</span><span class="plain-syntax"> </span><span class="identifier-syntax">pthread_mutex_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PTHREAD_MUTEX_INITIALIZER</span><span class="plain-syntax">;</span>
-    <span class="definition-keyword">define</span> <span class="identifier-syntax">LOCK_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">) </span><span class="identifier-syntax">pthread_mutex_lock</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
-    <span class="definition-keyword">define</span> <span class="identifier-syntax">UNLOCK_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">) </span><span class="identifier-syntax">pthread_mutex_unlock</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul><hr class="tocbar">
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::create_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</li><li>The function Platform::join_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</li><li>The function Platform::init_thread is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</li><li>The function Platform::get_thread_stack_size is used in Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</li></ul>
+<p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Mutexes. </b></p>
+
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="identifier-syntax">CREATE_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">static</span><span class="plain-syntax"> </span><span class="identifier-syntax">pthread_mutex_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PTHREAD_MUTEX_INITIALIZER</span><span class="plain-syntax">;</span>
+<span class="definition-keyword">define</span> <span class="identifier-syntax">LOCK_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">) </span><span class="identifier-syntax">pthread_mutex_lock</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
+<span class="definition-keyword">define</span> <span class="identifier-syntax">UNLOCK_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">) </span><span class="identifier-syntax">pthread_mutex_unlock</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul>
+<hr class="tocbar">
 <ul class="toc"><li><a href="1-fm.html">Back to 'Foundation Module'</a></li><li><a href="1-wp.html">Continue with 'Windows Platform'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 

@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::find_by_name</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Languages::find_by_name</b>:<br><a href="4-pl.html#SP3">&#167;3</a>, The Reader - <a href="2-tr.html#SP4_2">&#167;4.2</a>, <a href="2-tr.html#SP4_3">&#167;4.3</a>, <a href="2-tr.html#SP4_4">&#167;4.4</a>&lt;br&gt;The Parser - <a href="2-tp.html#SP1_1_7_7">&#167;1.1.7.7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lname</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::find_by_name</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Languages::find_by_name</b>:<br><a href="4-pl.html#SP3">&#167;3</a>, The Reader - <a href="2-tr.html#SP4_2">&#167;4.2</a>, <a href="2-tr.html#SP4_3">&#167;4.3</a>, <a href="2-tr.html#SP4_4">&#167;4.4</a>&lt;br&gt;The Parser - <a href="2-tp.html#SP1_1_7_7">&#167;1.1.7.7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lname</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">If this is the name of a language already known, return that</span> <span class="named-paragraph-number">2.1</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Read the language definition file with this name</span> <span class="named-paragraph-number">2.2</span>&gt;<span class="plain-syntax">;</span>
@@ -61,17 +61,32 @@ function togglePopup(material_id) {
 <span class="plain-syntax">            </span><span class="string-syntax">"definition of programming language '%S' is for something else"</span><span class="plain-syntax">, </span><span class="identifier-syntax">lname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">If this is the name of a language already known, return that</span> <span class="named-paragraph-number">2.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lname</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">language_name</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pl</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP2">&#167;2</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Read the language definition file with this name</span> <span class="named-paragraph-number">2.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -85,9 +100,18 @@ function togglePopup(material_id) {
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_text</span></a><span class="plain-syntax">(</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"unsupported programming language '%S'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">lname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">pl</span><span class="plain-syntax"> = </span><a href="4-pl.html#SP7" class="function-link"><span class="function-syntax">Languages::read_definition</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_2_1"></a><b>&#167;2.2.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP2">&#167;2</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP2_2_1"></a><b>&#167;2.2.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Try P</span> <span class="named-paragraph-number">2.2.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">F</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
@@ -97,15 +121,21 @@ function togglePopup(material_id) {
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leaf</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-tf.html#SP1" class="function-link"><span class="function-syntax">TextFiles::exists</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP2_2">&#167;2.2</a> (twice).</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>I'm probably showing my age here.
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP2_2">&#167;2.2</a> (twice).</li></ul>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>I'm probably showing my age here.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::default</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Languages::default</b>:<br>The Reader - <a href="2-tr.html#SP4_2">&#167;4.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::default</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Languages::default</b>:<br>The Reader - <a href="2-tr.html#SP4_2">&#167;4.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-pl.html#SP2" class="function-link"><span class="function-syntax">Languages::find_by_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"C"</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::show</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Languages::show</b>:<br>Program Control - <a href="1-pc.html#SP7_2">&#167;7.2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::show</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Languages::show</b>:<br>Program Control - <a href="1-pc.html#SP7_2">&#167;7.2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"Inweb can see the following programming language definitions:\n\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NUMBER_CREATED</span><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> **</span><span class="identifier-syntax">sorted_table</span><span class="plain-syntax"> =</span>
@@ -120,19 +150,23 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/2-mmr.html#SP27" class="function-link"><span class="function-syntax">Memory::I7_free</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sorted_table</span><span class="plain-syntax">, </span><span class="constant-syntax">CLS_SORTING_MREASON</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">*((</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *)));</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
+</pre>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::compare_names</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Languages::compare_names</b>:<br><a href="4-pl.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ent1</span><span class="plain-syntax">, </span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ent2</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::compare_names</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>Languages::compare_names</b>:<br><a href="4-pl.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ent1</span><span class="plain-syntax">, </span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ent2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tx1</span><span class="plain-syntax"> = (*((</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> **) </span><span class="identifier-syntax">ent1</span><span class="plain-syntax">))-&gt;</span><span class="element-syntax">language_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tx2</span><span class="plain-syntax"> = (*((</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> **) </span><span class="identifier-syntax">ent2</span><span class="plain-syntax">))-&gt;</span><span class="element-syntax">language_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="../foundation-module/4-sm.html#SP20" class="function-link"><span class="function-syntax">Str::cmp_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tx1</span><span class="plain-syntax">, </span><span class="identifier-syntax">tx2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>We can read every language in a directory:
+</pre>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>We can read every language in a directory:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::read_definitions</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>Languages::read_definitions</b>:<br>Program Control - <a href="1-pc.html#SP7_2">&#167;7.2</a>&lt;br&gt;Configuration - <a href="1-cnf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::read_definitions</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>Languages::read_definitions</b>:<br>Program Control - <a href="1-pc.html#SP7_2">&#167;7.2</a>&lt;br&gt;Configuration - <a href="1-cnf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="4-pl.html#SP5" class="function-link"><span class="function-syntax">Languages::default_directory</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">scan_directory</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-drc.html#SP2" class="function-link"><span class="function-syntax">Directories::open</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
@@ -146,12 +180,15 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="../foundation-module/3-drc.html#SP2" class="function-link"><span class="function-syntax">Directories::close</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::default_directory</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Languages::default_directory</b>:<br><a href="4-pl.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::default_directory</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>Languages::default_directory</b>:<br><a href="4-pl.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="../foundation-module/3-pth.html#SP4" class="function-link"><span class="function-syntax">Pathnames::down</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">path_to_inweb</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Languages"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>So, then, languages are defined by files which are read in, and parsed
+</pre>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>So, then, languages are defined by files which are read in, and parsed
 into the following structure (one per language):
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> {</span>
@@ -196,12 +233,18 @@ into the following structure (one per language):
 <span class="plain-syntax">    </span><span class="constant-syntax">METHOD_CALLS</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure programming_language is accessed in 1/pc, 3/tt, 4/taf, 4/lm, 4/as, 4/tp, 5/hf, 5/df and here.</li></ul><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>This is a simple one-pass compiler. The <span class="extract"><span class="extract-syntax">language_reader_state</span></span> provides
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure programming_language is accessed in 1/pc, 3/tt, 4/taf, 4/lm, 4/as, 4/tp, 5/hf, 5/df and here.</li></ul>
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>This is a simple one-pass compiler. The <span class="extract"><span class="extract-syntax">language_reader_state</span></span> provides
 the only state preserved as we work through line by line, except of course
 that we are also working on the programming language it is <span class="extract"><span class="extract-syntax">defining</span></span>. The
 <span class="extract"><span class="extract-syntax">current_block</span></span> is the braced block of colouring instructions we are
 currently inside.
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">language_reader_state</span><span class="plain-syntax"> {</span>
@@ -209,7 +252,7 @@ currently inside.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_block</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">language_reader_state</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::read_definition</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>Languages::read_definition</b>:<br><a href="4-pl.html#SP2_2">&#167;2.2</a>, <a href="4-pl.html#SP5">&#167;5</a>, Configuration - <a href="1-cnf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::read_definition</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>Languages::read_definition</b>:<br><a href="4-pl.html#SP2_2">&#167;2.2</a>, <a href="4-pl.html#SP5">&#167;5</a>, Configuration - <a href="1-cnf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Initialise the language to a plain-text state</span> <span class="named-paragraph-number">7.1</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">language_reader_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">lrs</span><span class="plain-syntax">;</span>
@@ -220,9 +263,18 @@ currently inside.
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Add method calls to the language</span> <span class="named-paragraph-number">7.2</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>The structure language_reader_state is private to this section.</li></ul><p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure language_reader_state is private to this section.</li></ul>
+<p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Initialise the language to a plain-text state</span> <span class="named-paragraph-number">7.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">language_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -260,7 +312,11 @@ currently inside.
 <span class="plain-syntax">    </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">built_in_keywords</span><span class="plain-syntax">.</span><span class="element-syntax">analysis_hash_initialised</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">program</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">methods</span><span class="plain-syntax"> = </span><a href="../foundation-module/2-mth.html#SP3" class="function-link"><span class="function-syntax">Methods::new_set</span></a><span class="plain-syntax">();</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP7">&#167;7</a>.</li></ul><p class="inwebparagraph"><a id="SP7_2"></a><b>&#167;7.2.  </b>Note that there are two levels of extra privilege: any language calling
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP7">&#167;7</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP7_2"></a><b>&#167;7.2.  </b>Note that there are two levels of extra privilege: any language calling
 itself C-like has functionality for function and structure definitions;
 the language whose name is InC gets even more, without having to ask.
 </p>
@@ -270,20 +326,30 @@ extra features are provided. The call to <span class="extract"><span class="extr
 adds generic method calls to give effect to the settings in the definition.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Add method calls to the language</span> <span class="named-paragraph-number">7.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">C_like</span><span class="plain-syntax">) </span><a href="4-cl.html#SP1" class="function-link"><span class="function-syntax">CLike::make_c_like</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">language_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"InC"</span><span class="plain-syntax">)) </span><a href="4-is.html#SP1" class="function-link"><span class="function-syntax">InCSupport::add_features</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="4-as.html#SP1" class="function-link"><span class="function-syntax">ACMESupport::add_fallbacks</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP7">&#167;7</a>.</li></ul><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>So, then, the above reads the file and feeds it line by line to this:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP7">&#167;7</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>So, then, the above reads the file and feeds it line by line to this:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::read_definition_line</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>Languages::read_definition_line</b>:<br><a href="4-pl.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">v_state</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::read_definition_line</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>Languages::read_definition_line</b>:<br><a href="4-pl.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">v_state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">language_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">language_reader_state</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">v_state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">state</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">defining</span><span class="plain-syntax">;</span>
 
@@ -296,14 +362,19 @@ adds generic method calls to give effect to the settings in the definition.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span>&lt;<span class="named-paragraph">Syntax outside a colouring program</span> <span class="named-paragraph-number">8.1</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP8_1"></a><b>&#167;8.1.  </b>Outside a colouring program, you can do three things: start a program,
+</pre>
+<p class="inwebparagraph"><a id="SP8_1"></a><b>&#167;8.1.  </b>Outside a colouring program, you can do three things: start a program,
 declare a reserved keyword, or set a key to a value.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Syntax outside a colouring program</span> <span class="named-paragraph-number">8.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"colouring {"</span><span class="plain-syntax">)) {</span>
@@ -383,15 +454,23 @@ declare a reserved keyword, or set a key to a value.
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::in_text_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"line in language definition illegible"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_2"></a><b>&#167;8.2.  </b>Inside a colouring program, you can close the current block (which may be
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP8">&#167;8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP8_2"></a><b>&#167;8.2.  </b>Inside a colouring program, you can close the current block (which may be
 the entire program), open a new block to apply to each character or to
 runs of a given colour, or give an if-X-then-Y rule:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Syntax inside a colouring program</span> <span class="named-paragraph-number">8.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"}"</span><span class="plain-syntax">)) {</span>
@@ -448,19 +527,25 @@ runs of a given colour, or give an if-X-then-Y rule:
 <span class="plain-syntax">            </span><a href="../foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::in_text_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"line in colouring block illegible"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Blocks. </b>These are code blocks of colouring instructions. A block whose <span class="extract"><span class="extract-syntax">parent</span></span> is <span class="extract"><span class="extract-syntax">NULL</span></span>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP8">&#167;8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Blocks. </b>These are code blocks of colouring instructions. A block whose <span class="extract"><span class="extract-syntax">parent</span></span> is <span class="extract"><span class="extract-syntax">NULL</span></span>
 represents a complete program.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">WHOLE_LINE_CRULE_RUN</span><span class="plain-syntax"> -1 </span><span class="comment"> This block applies to the whole snippet being coloured</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">CHARACTERS_CRULE_RUN</span><span class="plain-syntax"> -2 </span><span class="comment"> This block applies to each character in turn</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">CHARACTERS_IN_CRULE_RUN</span><span class="plain-syntax"> -3 </span><span class="comment"> This block applies to each character from a set in turn</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">INSTANCES_CRULE_RUN</span><span class="plain-syntax"> -4 </span><span class="comment"> This block applies to each instance in turn</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">MATCHES_CRULE_RUN</span><span class="plain-syntax"> -5 </span><span class="comment"> This block applies to each match against a regexp in turn</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">BRACKETS_CRULE_RUN</span><span class="plain-syntax"> -6 </span><span class="comment"> This block applies to bracketed subexpressions in a regexp</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">WHOLE_LINE_CRULE_RUN</span><span class="plain-syntax"> -1 </span><span class="comment"> This block applies to the whole snippet being coloured</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">CHARACTERS_CRULE_RUN</span><span class="plain-syntax"> -2 </span><span class="comment"> This block applies to each character in turn</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">CHARACTERS_IN_CRULE_RUN</span><span class="plain-syntax"> -3 </span><span class="comment"> This block applies to each character from a set in turn</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">INSTANCES_CRULE_RUN</span><span class="plain-syntax"> -4 </span><span class="comment"> This block applies to each instance in turn</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">MATCHES_CRULE_RUN</span><span class="plain-syntax"> -5 </span><span class="comment"> This block applies to each match against a regexp in turn</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">BRACKETS_CRULE_RUN</span><span class="plain-syntax"> -6 </span><span class="comment"> This block applies to bracketed subexpressions in a regexp</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rules</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">colouring_rule</span></span>
@@ -474,10 +559,14 @@ represents a complete program.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax">; </span><span class="comment"> of a regular expression</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure colouring_language_block is accessed in 2/trs, 4/tp, 5/tf, 5/hf and here.</li></ul><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure colouring_language_block is accessed in 2/trs, 4/tp, 5/tf, 5/hf and here.</li></ul>
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::new_block</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Languages::new_block</b>:<br><a href="4-pl.html#SP8_1">&#167;8.1</a>, <a href="4-pl.html#SP8_2">&#167;8.2</a>, <a href="4-pl.html#SP13_2">&#167;13.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax"> *</span><span class="identifier-syntax">within</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">r</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::new_block</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>Languages::new_block</b>:<br><a href="4-pl.html#SP8_1">&#167;8.1</a>, <a href="4-pl.html#SP8_2">&#167;8.2</a>, <a href="4-pl.html#SP13_2">&#167;13.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax"> *</span><span class="identifier-syntax">within</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">r</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax"> *</span><span class="identifier-syntax">block</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">block</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">rules</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">block</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">parent</span><span class="plain-syntax"> = </span><span class="identifier-syntax">within</span><span class="plain-syntax">;</span>
@@ -488,7 +577,8 @@ represents a complete program.
 <span class="plain-syntax">    </span><span class="identifier-syntax">block</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">block</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Colouring Rules. </b>Each individual rule has the form: if a premiss, then a conclusion. It will be
+</pre>
+<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Colouring Rules. </b>Each individual rule has the form: if a premiss, then a conclusion. It will be
 applied to a snippet of text, and the premiss can test that, together with a
 little context before it (where available).
 </p>
@@ -496,17 +586,19 @@ little context before it (where available).
 <p class="inwebparagraph">Note that rules can be unconditional, in that the premiss always passes.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">NOT_A_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment"> this isn't a prefix rule</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">prefix P</span></span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">spaced prefix P</span></span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">optionally spaced prefix P</span></span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">suffix P</span></span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">spaced suffix P</span></span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">optionally spaced suffix P</span></span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">MAX_ILDF_REGEXP_LENGTH</span><span class="plain-syntax"> </span><span class="constant-syntax">64</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">NOT_A_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment"> this isn't a prefix rule</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">prefix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">spaced prefix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">optionally spaced prefix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">suffix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">spaced suffix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">optionally spaced suffix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">MAX_ILDF_REGEXP_LENGTH</span><span class="plain-syntax"> </span><span class="constant-syntax">64</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="comment"> the premiss:</span>
@@ -530,10 +622,14 @@ little context before it (where available).
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax">; </span><span class="comment"> of a regular expression</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure colouring_rule is accessed in 4/tp and here.</li></ul><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure colouring_rule is accessed in 4/tp and here.</li></ul>
+<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::new_rule</span><button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>Languages::new_rule</b>:<br><a href="4-pl.html#SP8_2">&#167;8.2</a>, <a href="4-pl.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax"> *</span><span class="identifier-syntax">within</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::new_rule</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="popuptext" id="usagePopup10">Usage of <b>Languages::new_rule</b>:<br><a href="4-pl.html#SP8_2">&#167;8.2</a>, <a href="4-pl.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax"> *</span><span class="identifier-syntax">within</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">within</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"rule outside block"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax">, </span><span class="identifier-syntax">within</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">rules</span><span class="plain-syntax">);</span>
@@ -555,10 +651,11 @@ little context before it (where available).
 <span class="plain-syntax">    </span><span class="identifier-syntax">rule</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rule</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
+</pre>
+<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::parse_rule</span><button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>Languages::parse_rule</b>:<br><a href="4-pl.html#SP8_2">&#167;8.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">language_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">premiss</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::parse_rule</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="popuptext" id="usagePopup11">Usage of <b>Languages::parse_rule</b>:<br><a href="4-pl.html#SP8_2">&#167;8.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">language_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">premiss</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">action</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule</span><span class="plain-syntax"> = </span><a href="4-pl.html#SP12" class="function-link"><span class="function-syntax">Languages::new_rule</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">state</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">current_block</span><span class="plain-syntax">);</span>
@@ -567,9 +664,15 @@ little context before it (where available).
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Parse the conclusion</span> <span class="named-paragraph-number">13.2</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP13_1"></a><b>&#167;13.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP13_1"></a><b>&#167;13.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Parse the premiss</span> <span class="named-paragraph-number">13.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">premiss</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"not (%c+)"</span><span class="plain-syntax">)) {</span>
@@ -610,9 +713,18 @@ little context before it (where available).
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">premiss</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">rule</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">match_text</span><span class="plain-syntax"> = </span><a href="4-pl.html#SP17" class="function-link"><span class="function-syntax">Languages::text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">premiss</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP13">&#167;13</a>.</li></ul><p class="inwebparagraph"><a id="SP13_2"></a><b>&#167;13.2.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP13">&#167;13</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP13_2"></a><b>&#167;13.2.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Parse the conclusion</span> <span class="named-paragraph-number">13.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">action</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"{"</span><span class="plain-syntax">)) {</span>
@@ -633,8 +745,14 @@ little context before it (where available).
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::in_text_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"action after '=&gt;' illegible"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP13">&#167;13</a>.</li></ul><p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Reserved words. </b>Note that these can come in any colour, though usually it's <span class="extract"><span class="extract-syntax">!reserved</span></span>.
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pl.html#SP13">&#167;13</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Reserved words. </b>Note that these can come in any colour, though usually it's <span class="extract"><span class="extract-syntax">!reserved</span></span>.
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">reserved_word</span><span class="plain-syntax"> {</span>
@@ -643,7 +761,7 @@ little context before it (where available).
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">reserved_word</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">reserved_word</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::reserved</span><button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>Languages::reserved</b>:<br><a href="4-pl.html#SP8_1">&#167;8.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">reserved_word</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::reserved</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="popuptext" id="usagePopup12">Usage of <b>Languages::reserved</b>:<br><a href="4-pl.html#SP8_1">&#167;8.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">reserved_word</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rw</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">rw</span><span class="plain-syntax">, </span><span class="reserved-syntax">reserved_word</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">reserved_words</span><span class="plain-syntax">)</span>
@@ -657,30 +775,36 @@ little context before it (where available).
 <span class="plain-syntax">    </span><a href="3-ta.html#SP10" class="function-link"><span class="function-syntax">Analyser::mark_reserved_word</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">built_in_keywords</span><span class="plain-syntax">), </span><span class="identifier-syntax">rw</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">word</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rw</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>The structure reserved_word is accessed in 4/as and here.</li></ul><p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Expressions. </b>Language definition files have three types of data: colours, booleans, and
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure reserved_word is accessed in 4/as and here.</li></ul>
+<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Expressions. </b>Language definition files have three types of data: colours, booleans, and
 text. Colours first. Note that there are two pseudo-colours used above,
 but which are not expressible in the syntax of this file.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">DEFINITION_COLOUR</span><span class="plain-syntax"> 	</span><span class="character-syntax">'d'</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">FUNCTION_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'f'</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">RESERVED_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'r'</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">ELEMENT_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'e'</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">IDENTIFIER_COLOUR</span><span class="plain-syntax">	</span><span class="character-syntax">'i'</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">CHARACTER_COLOUR</span><span class="plain-syntax">     </span><span class="character-syntax">'c'</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">CONSTANT_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'n'</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">STRING_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'s'</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">PLAIN_COLOUR</span><span class="plain-syntax">			</span><span class="character-syntax">'p'</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">EXTRACT_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'x'</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">COMMENT_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'!'</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">NEWLINE_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'\n'</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">NOT_A_COLOUR</span><span class="plain-syntax"> </span><span class="character-syntax">' '</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">UNQUOTED_COLOUR</span><span class="plain-syntax"> </span><span class="character-syntax">'_'</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">DEFINITION_COLOUR</span><span class="plain-syntax"> 	</span><span class="character-syntax">'d'</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">FUNCTION_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'f'</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">RESERVED_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'r'</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">ELEMENT_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'e'</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">IDENTIFIER_COLOUR</span><span class="plain-syntax">	</span><span class="character-syntax">'i'</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">CHARACTER_COLOUR</span><span class="plain-syntax">     </span><span class="character-syntax">'c'</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">CONSTANT_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'n'</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">STRING_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'s'</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">PLAIN_COLOUR</span><span class="plain-syntax">			</span><span class="character-syntax">'p'</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">EXTRACT_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'x'</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">COMMENT_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'!'</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">NEWLINE_COLOUR</span><span class="plain-syntax">		</span><span class="character-syntax">'\n'</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">NOT_A_COLOUR</span><span class="plain-syntax"> </span><span class="character-syntax">' '</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">UNQUOTED_COLOUR</span><span class="plain-syntax"> </span><span class="character-syntax">'_'</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::colour</span><button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>Languages::colour</b>:<br><a href="4-pl.html#SP8_1">&#167;8.1</a>, <a href="4-pl.html#SP8_2">&#167;8.2</a>, <a href="4-pl.html#SP13_1">&#167;13.1</a>, <a href="4-pl.html#SP13_2">&#167;13.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::colour</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="popuptext" id="usagePopup13">Usage of <b>Languages::colour</b>:<br><a href="4-pl.html#SP8_1">&#167;8.1</a>, <a href="4-pl.html#SP8_2">&#167;8.2</a>, <a href="4-pl.html#SP13_1">&#167;13.1</a>, <a href="4-pl.html#SP13_2">&#167;13.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_first_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">) != </span><span class="character-syntax">'!'</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::in_text_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"colour names must begin with !"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">PLAIN_COLOUR</span><span class="plain-syntax">;</span>
@@ -701,11 +825,14 @@ but which are not expressible in the syntax of this file.
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">PLAIN_COLOUR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>A boolean must be written as <span class="extract"><span class="extract-syntax">true</span></span> or <span class="extract"><span class="extract-syntax">false</span></span>.
+</pre>
+<p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>A boolean must be written as <span class="extract"><span class="extract-syntax">true</span></span> or <span class="extract"><span class="extract-syntax">false</span></span>.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::boolean</span><button class="popup" onclick="togglePopup('usagePopup14')">...<span class="popuptext" id="usagePopup14">Usage of <b>Languages::boolean</b>:<br><a href="4-pl.html#SP8_1">&#167;8.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::boolean</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="popuptext" id="usagePopup14">Usage of <b>Languages::boolean</b>:<br><a href="4-pl.html#SP8_1">&#167;8.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"true"</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"false"</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
@@ -713,13 +840,16 @@ but which are not expressible in the syntax of this file.
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>In text, <span class="extract"><span class="extract-syntax">\n</span></span> represents a newline, <span class="extract"><span class="extract-syntax">\s</span></span> a space and <span class="extract"><span class="extract-syntax">\t</span></span> a tab. Spaces
+</pre>
+<p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>In text, <span class="extract"><span class="extract-syntax">\n</span></span> represents a newline, <span class="extract"><span class="extract-syntax">\s</span></span> a space and <span class="extract"><span class="extract-syntax">\t</span></span> a tab. Spaces
 can be given in the ordinary way inside a text in any case. <span class="extract"><span class="extract-syntax">\\</span></span> is a
 literal backslash.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::text</span><button class="popup" onclick="togglePopup('usagePopup15')">...<span class="popuptext" id="usagePopup15">Usage of <b>Languages::text</b>:<br><a href="4-pl.html#SP8_1">&#167;8.1</a>, <a href="4-pl.html#SP8_2">&#167;8.2</a>, <a href="4-pl.html#SP13_1">&#167;13.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allow</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::text</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="popuptext" id="usagePopup15">Usage of <b>Languages::text</b>:<br><a href="4-pl.html#SP8_1">&#167;8.1</a>, <a href="4-pl.html#SP8_2">&#167;8.2</a>, <a href="4-pl.html#SP13_1">&#167;13.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allow</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP2" class="function-link"><span class="function-syntax">Str::new</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">bareword</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">spaced</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">)-1;</span>
@@ -802,11 +932,14 @@ literal backslash.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b>And regular expressions.
+</pre>
+<p class="inwebparagraph"><a id="SP18"></a><b>&#167;18.  </b>And regular expressions.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::regexp</span><button class="popup" onclick="togglePopup('usagePopup16')">...<span class="popuptext" id="usagePopup16">Usage of <b>Languages::regexp</b>:<br><a href="4-pl.html#SP8_1">&#167;8.1</a>, <a href="4-pl.html#SP8_2">&#167;8.2</a>, <a href="4-pl.html#SP13_1">&#167;13.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">write_to</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::regexp</span><button class="popup" onclick="togglePopup('usagePopup16')"><span class="popuptext" id="usagePopup16">Usage of <b>Languages::regexp</b>:<br><a href="4-pl.html#SP8_1">&#167;8.1</a>, <a href="4-pl.html#SP8_2">&#167;8.2</a>, <a href="4-pl.html#SP13_1">&#167;13.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">write_to</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">write_to</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no buffer"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">write_to</span><span class="plain-syntax">[0] = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
@@ -856,17 +989,18 @@ literal backslash.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::add_to_regexp</span><button class="popup" onclick="togglePopup('usagePopup17')">...<span class="popuptext" id="usagePopup17">Usage of <b>Languages::add_to_regexp</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">write_to</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::add_to_regexp</span><button class="popup" onclick="togglePopup('usagePopup17')"><span class="popuptext" id="usagePopup17">Usage of <b>Languages::add_to_regexp</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">write_to</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">MAX_ILDF_REGEXP_LENGTH</span><span class="plain-syntax">) </span><span class="identifier-syntax">write_to</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">++] = </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::add_escape_to_regexp</span><button class="popup" onclick="togglePopup('usagePopup18')">...<span class="popuptext" id="usagePopup18">Usage of <b>Languages::add_escape_to_regexp</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">write_to</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::add_escape_to_regexp</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="popuptext" id="usagePopup18">Usage of <b>Languages::add_escape_to_regexp</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">write_to</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><a href="4-pl.html#SP18" class="function-link"><span class="function-syntax">Languages::add_to_regexp</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">write_to</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="character-syntax">'%'</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><a href="4-pl.html#SP18" class="function-link"><span class="function-syntax">Languages::add_to_regexp</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">write_to</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 4: Languages.)</i></li><li><a href="4-taf.html">Continue with 'Types and Functions'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 

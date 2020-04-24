@@ -50,6 +50,8 @@ We suppose that the current working directory is one up from this, and contains
 the installation of <span class="extract"><span class="extract-syntax">inweb</span></span> as well as <span class="extract"><span class="extract-syntax">example</span></span>. Then:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
 <span class="ConsoleText-plain-syntax">    inweb   example</span>
@@ -74,6 +76,8 @@ at <span class="extract"><span class="ConsoleText-extract-syntax">example/beth</
 in the repository, but let's say at <span class="extract"><span class="ConsoleText-extract-syntax">example/colony.txt</span></span>:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    pattern: GitHubPages</span>
 <span class="ConsoleText-plain-syntax">    web: "aleph" at "example/aleph" in "example/docs/aleph"</span>
@@ -83,11 +87,15 @@ in the repository, but let's say at <span class="extract"><span class="ConsoleTe
 now write, for example,
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-identifier-syntax"> -colony</span><span class="ConsoleText-plain-syntax"> example/colony.txt</span><span class="ConsoleText-identifier-syntax"> -member</span><span class="ConsoleText-plain-syntax"> beth</span><span class="ConsoleText-identifier-syntax"> -weave</span>
 </pre>
 <p class="inwebparagraph">and this is equivalent to
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> example/beth</span><span class="ConsoleText-identifier-syntax"> -weave -weave-into</span><span class="ConsoleText-plain-syntax"> example/docs/beth</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> GitHubPages</span>
@@ -103,6 +111,8 @@ is conventionally the directory above the actual web, and that's why the
 file needs to say:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    home: inweb/docs</span>
 </pre>
@@ -115,6 +125,8 @@ web to the weave of another, even when they are independent programs. For
 example, a section of code in <span class="extract"><span class="extract-syntax">beth</span></span> could say:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Handling file system problems is more of a job for //aleph// than</span>
 <span class="plain-syntax">    for us, so we'll just proceed. (See //aleph: Error Recovery//.)</span>
@@ -124,6 +136,8 @@ one could be recognised, because Inweb wouldn't know what <span class="extract">
 To demonstrate that right here, see <a href="../goldbach/S-tsoe.html" class="internal">The Sieve of Eratosthenes (in goldbach)</a>.
 That last sentence was typed as:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    To demonstrate that right here, see //goldbach: The Sieve of Eratosthenes//.</span>
@@ -137,6 +151,8 @@ every web in the colony into memory, which would slow it down too much.
 <p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>As a more sustained example, here is the current version of the colony file
 for the Inweb repository:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">home: inweb/docs</span>
@@ -220,6 +236,8 @@ one which generates the sidebar visible to the left of the pages on the
 Inweb <span class="extract"><span class="extract-syntax">docs</span></span> site:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">&lt;h1&gt;[[Link "overview"]]</span>
 <span class="plain-syntax">&lt;img src="[[Docs]]docs-assets/Octagram.png" width=72 height=72"&gt;</span>
@@ -249,6 +267,8 @@ more general, and makes the text <span class="extract"><span class="extract-synt
 recognised by beginning with <span class="extract"><span class="extract-syntax">http</span></span>, or else a web cross-reference. Thus:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    [[Item "innards" -&gt; //inweb: Programming Languages//]]</span>
 </pre>
@@ -259,6 +279,8 @@ of the Inweb source.
 <p class="inwebparagraph">An item text can begin or end with an icon name, in angle brackets. For
 example:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    [[Item "&lt;github.png&gt; github" -&gt; https://github.com/ganelson/intest]]</span>
@@ -272,12 +294,16 @@ that one's guaranteed to be present.
 breadcrumbs above each page: for example,
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Beth &gt; Chapter 4 &gt; File Organisation</span>
 </pre>
 <p class="inwebparagraph">That may be sufficient in itself. However, it's possible to add extra
 crumbs to the left. Suppose we want:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Home &gt; Beth &gt; Chapter 4 &gt; File Organisation</span>
@@ -287,17 +313,23 @@ with <span class="extract"><span class="extract-syntax">-breadcrumb 'Home:index.
 file, as
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    breadcrumbs: "Home: index.html"</span>
 </pre>
 <p class="inwebparagraph">We can add more than one, by, e.g., <span class="extract"><span class="extract-syntax">-breadcrumb 'Home:index.html' -breadcrumb 'Webs: webs.html'</span></span>.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    breadcrumbs: "Home: index.html" &gt; "Webs: webs.html"</span>
 </pre>
 <p class="inwebparagraph">The links after the colon can also be Inweb cross-references, so, for example,
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    breadcrumbs: "Overview: //overview//"</span>

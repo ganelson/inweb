@@ -65,7 +65,7 @@ are too wide to display.)
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RunningTeX::post_process_weave</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>RunningTeX::post_process_weave</b>:<br>TeX Format - <a href="5-tf.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">open_afterwards</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_DVI</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RunningTeX::post_process_weave</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>RunningTeX::post_process_weave</b>:<br>TeX Format - <a href="5-tf.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">open_afterwards</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_DVI</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">console_filename</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP8" class="function-link"><span class="function-syntax">Filenames::set_extension</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_to</span><span class="plain-syntax">, </span><span class="string-syntax">"console"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">log_filename</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP8" class="function-link"><span class="function-syntax">Filenames::set_extension</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_to</span><span class="plain-syntax">, </span><span class="string-syntax">"log"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pdf_filename</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP8" class="function-link"><span class="function-syntax">Filenames::set_extension</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_to</span><span class="plain-syntax">, </span><span class="string-syntax">"pdf"</span><span class="plain-syntax">);</span>
@@ -80,9 +80,12 @@ are too wide to display.)
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">open_afterwards</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Try to open the PDF file in the host operating system</span> <span class="named-paragraph-number">2.6</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b>We're going to have to read in a console file of TeX output to work out
+</pre>
+<p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b>We're going to have to read in a console file of TeX output to work out
 what happened, and this structure will store what we find:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">tex_results</span><span class="plain-syntax"> {</span>
@@ -93,9 +96,18 @@ what happened, and this structure will store what we find:
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">PDF_filename</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">tex_results</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure tex_results is private to this section.</li></ul><p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure tex_results is private to this section.</li></ul>
+<p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Initialise the TeX results</span> <span class="named-paragraph-number">2.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">res</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">overfull_hbox_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -103,9 +115,18 @@ what happened, and this structure will store what we find:
 <span class="plain-syntax">    </span><span class="identifier-syntax">res</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">page_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">res</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pdf_size</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">res</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">PDF_filename</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pdf_filename</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="5-rtt.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_3"></a><b>&#167;2.3.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="5-rtt.html#SP2">&#167;2</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP2_3"></a><b>&#167;2.3.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Call TeX and transcribe its output into a console file</span> <span class="named-paragraph-number">2.3</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
@@ -125,21 +146,33 @@ what happened, and this structure will store what we find:
 <span class="plain-syntax">    </span><a href="../foundation-module/3-shl.html#SP1" class="function-link"><span class="function-syntax">Shell::quote_file</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">, </span><span class="identifier-syntax">console_rel</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/3-shl.html#SP5" class="function-link"><span class="function-syntax">Shell::run</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="5-rtt.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_4"></a><b>&#167;2.4.  </b>TeX helpfully reports the size and page count of what it produces, and
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="5-rtt.html#SP2">&#167;2</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP2_4"></a><b>&#167;2.4.  </b>TeX helpfully reports the size and page count of what it produces, and
 we're not too proud to scrape that information out of the console file, besides
 the error messages (which begin with an exclamation mark in column 1).
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Read back the console file and parse it for error messages</span> <span class="named-paragraph-number">2.4</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><a href="../foundation-module/4-tf.html#SP5" class="function-link"><span class="function-syntax">TextFiles::read</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">console_filename</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"can't open console file"</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">, </span><a href="5-rtt.html#SP3" class="function-link"><span class="function-syntax">RunningTeX::scan_console_line</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">res</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="5-rtt.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_5"></a><b>&#167;2.5.  </b>The log file we never wanted, but TeX produced it anyway; it's really a
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="5-rtt.html#SP2">&#167;2</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP2_5"></a><b>&#167;2.5.  </b>The log file we never wanted, but TeX produced it anyway; it's really a
 verbose form of its console output. Now it can go. So can the console file
 and even the TeX source, since that was mechanically generated from the
 web, and so is of no lasting value. The one exception is that we keep the
@@ -147,10 +180,14 @@ console file in the event of serious errors, since otherwise it's impossible
 for the user to find out what those errors were.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Remove the now redundant TeX, console and log files, to reduce clutter</span> <span class="named-paragraph-number">2.5</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">res</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tex_error_count</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
@@ -158,23 +195,35 @@ for the user to find out what those errors were.
 <span class="plain-syntax">        </span><a href="../foundation-module/3-shl.html#SP3" class="function-link"><span class="function-syntax">Shell::rm</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">log_filename</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-shl.html#SP3" class="function-link"><span class="function-syntax">Shell::rm</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_to</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="5-rtt.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_6"></a><b>&#167;2.6.  </b>We often want to see the PDF immediately, so:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="5-rtt.html#SP2">&#167;2</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP2_6"></a><b>&#167;2.6.  </b>We often want to see the PDF immediately, so:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Try to open the PDF file in the host operating system</span> <span class="named-paragraph-number">2.6</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">open_command</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal</span></a><span class="plain-syntax">(</span><span class="string-syntax">"no way to open PDF (see pattern.txt file)"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-shl.html#SP2" class="function-link"><span class="function-syntax">Shell::apply_S</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">open_command</span><span class="plain-syntax">, </span><span class="identifier-syntax">pdf_filename</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="5-rtt.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="5-rtt.html#SP2">&#167;2</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RunningTeX::scan_console_line</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>RunningTeX::scan_console_line</b>:<br><a href="5-rtt.html#SP2_4">&#167;2.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RunningTeX::scan_console_line</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>RunningTeX::scan_console_line</b>:<br><a href="5-rtt.html#SP2_4">&#167;2.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">res_V</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">tex_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">res</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">tex_results</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">res_V</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
@@ -190,10 +239,11 @@ for the user to find out what those errors were.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Reporting. </b></p>
+</pre>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Reporting. </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RunningTeX::report_on_post_processing</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>RunningTeX::report_on_post_processing</b>:<br>TeX Format - <a href="5-tf.html#SP18">&#167;18</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RunningTeX::report_on_post_processing</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>RunningTeX::report_on_post_processing</b>:<br>TeX Format - <a href="5-tf.html#SP18">&#167;18</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">tex_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">res</span><span class="plain-syntax"> = </span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">post_processing_results</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">res</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">": %dpp %dK"</span><span class="plain-syntax">, </span><span class="identifier-syntax">res</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">page_count</span><span class="plain-syntax">, </span><span class="identifier-syntax">res</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pdf_size</span><span class="plain-syntax">/1024);</span>
@@ -203,11 +253,14 @@ for the user to find out what those errors were.
 <span class="plain-syntax">            </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">", %d error(s)"</span><span class="plain-syntax">, </span><span class="identifier-syntax">res</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tex_error_count</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>And here are some details to do with the results of post-processing.
+</pre>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>And here are some details to do with the results of post-processing.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">RunningTeX::substitute_post_processing_data</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>RunningTeX::substitute_post_processing_data</b>:<br>TeX Format - <a href="5-tf.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">RunningTeX::substitute_post_processing_data</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>RunningTeX::substitute_post_processing_data</b>:<br>TeX Format - <a href="5-tf.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">detail</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wv</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">tex_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">res</span><span class="plain-syntax"> = </span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">post_processing_results</span><span class="plain-syntax">;</span>
@@ -238,7 +291,8 @@ for the user to find out what those errors were.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><a href="5-wp.html">Back to 'Weave Plugins'</a></li><li><i>(This section ends Chapter 5: Formats.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
 

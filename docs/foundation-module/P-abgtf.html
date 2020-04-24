@@ -80,6 +80,8 @@ can be found in <a href="../foundation-test/index.html" class="internal">foundat
 <p class="inwebparagraph">1. The Contents section of its web must import Foundation as a module, thus:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="element-syntax">Import</span><span class="plain-syntax">:</span><span class="string-syntax"> foundation</span>
 </pre>
@@ -91,11 +93,11 @@ and chapters.
 brief version of the program's name. For example,
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@d</span><span class="plain-syntax"> PROGRAM_NAME "declutter"</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph">3. The <span class="extract"><span class="extract-syntax">main</span></span> function for the client should, as one of its very first acts,
 call <span class="extract"><span class="extract-syntax">Foundation::start()</span></span>, and should similarly, just before it exits, call
 <span class="extract"><span class="extract-syntax">Foundation::end()</span></span>. Any other module used should be started after Foundation
@@ -116,6 +118,8 @@ length of a text in memory runs in \(O(1)\) time.
 <p class="inwebparagraph">A typical function writing to one of these might be:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">Hypothetical::writer</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">authority</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"According to %S, the square of %d is %d.\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">authority</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">*</span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
@@ -125,6 +129,8 @@ length of a text in memory runs in \(O(1)\) time.
 the escape <span class="extract"><span class="extract-syntax">%S</span></span> to write a text stream. It writes formatted output into the
 stream <span class="extract"><span class="extract-syntax">OUT</span></span>, and is actually an abbreviation for this:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">Hypothetical::writer</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">authority</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
@@ -151,6 +157,8 @@ All of these capitalised macros are defined in <a href="2-str.html" class="inter
 by Inweb, there's a simple notation for constants of this type:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">error_message</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"quadro-triticale stocks depleted"</span><span class="plain-syntax">;</span>
 </pre>
@@ -166,6 +174,8 @@ existing one. But these are permanent creations, and not easy to deallocate
 amount of memory they might be using). If you want a string just for a
 momentary period, do this:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">alpha</span><span class="plain-syntax">);</span>
@@ -218,10 +228,12 @@ in C which corresponds to objects of the class "recipe". We need to do three
 things:
 </p>
 
-<ul class="items"><li>(1) Declare an enumerated constant ending <span class="extract"><span class="extract-syntax">_MT</span></span> to represent this type in the
+<ul class="items"><li>(1) <p class="inwebparagraph">Declare an enumerated constant ending <span class="extract"><span class="extract-syntax">_MT</span></span> to represent this type in the
 memory manager, and then make a matching use of a macro to define some associated
 functions, which we never see or think about. For example:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Here are my classes...</span>
@@ -236,6 +248,8 @@ we expect to have relatively few instances. If we expect to have huge numbers
 of throwaway instances, we would instead write:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Here are my classes...</span>
 
@@ -248,10 +262,11 @@ of throwaway instances, we would instead write:
 actually needed.
 </p>
 
-</li></ul>
-<ul class="items"><li>(2) We have to declare the actual structure, and <span class="extract"><span class="extract-syntax">typedef</span></span> the name to it. For
+<ul class="items"><li>(2) <p class="inwebparagraph">We have to declare the actual structure, and <span class="extract"><span class="extract-syntax">typedef</span></span> the name to it. For
 example:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> {</span>
@@ -265,15 +280,17 @@ necessary field(s) to keep track of this. We won't use those fields, or ever
 think about them.
 </p>
 
-</li></ul>
-<ul class="items"><li>(3) In fact we've now finished. The macro <span class="extract"><span class="extract-syntax">CREATE(recipe)</span></span> returns a new
+<ul class="items"><li>(3) <p class="inwebparagraph">In fact we've now finished. The macro <span class="extract"><span class="extract-syntax">CREATE(recipe)</span></span> returns a new
 instance, and <span class="extract"><span class="extract-syntax">DESTROY(R)</span></span> would destroy an existing one, <span class="extract"><span class="extract-syntax">R</span></span>. Unless manually
 destroyed, objects last forever; there is no garbage collection. In practice
 the Inform tools suite, for which Foundation was written, almost never destroy
 objects.
-</li></ul>
+</p>
+
 <p class="inwebparagraph">Customarily, though, we wrap the use of <span class="extract"><span class="extract-syntax">CREATE</span></span> in a constructor function:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Recipes::new</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
@@ -283,10 +300,10 @@ objects.
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <p class="inwebparagraph">We also often use the convenient <span class="extract"><span class="extract-syntax">LOOP_OVER</span></span> macro:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">Recipes::list_all</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">) {</span>
@@ -309,6 +326,8 @@ syntax is not as tidy as it would be in an object-oriented language. To allow
 this for <span class="extract"><span class="extract-syntax">recipe</span></span>, we would have to add another line to the structure:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_of_dish</span><span class="plain-syntax">;</span>
@@ -320,6 +339,8 @@ this for <span class="extract"><span class="extract-syntax">recipe</span></span>
 <p class="inwebparagraph">and another line to the constructor function:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">        </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">methods</span><span class="plain-syntax"> = </span><span class="function-syntax">Methods::new_set</span><span class="plain-syntax">();</span>
 </pre>
@@ -327,6 +348,8 @@ this for <span class="extract"><span class="extract-syntax">recipe</span></span>
 an enumerated constant ending <span class="extract"><span class="extract-syntax">_MTID</span></span> to identify it, and an indication of the
 type of the function call involved:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Here is my "cook the recipe" method call:</span>
@@ -340,6 +363,8 @@ type of the function call involved:
 value. It's now possible to call this on any recipe:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">VMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">duck_a_l_orange</span><span class="plain-syntax">, </span><span class="identifier-syntax">COOK_MTID</span><span class="plain-syntax">, </span><span class="constant-syntax">45</span><span class="plain-syntax">);</span>
 </pre>
@@ -347,6 +372,8 @@ value. It's now possible to call this on any recipe:
 here, <span class="extract"><span class="extract-syntax">duck_a_l_orange</span></span> &mdash; has been given a receiver function. Let's revisit
 the constructor function for recipes:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Recipes::new</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
@@ -361,6 +388,8 @@ the constructor function for recipes:
 <p class="inwebparagraph">and now add:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">Recipes::cook</span><span class="plain-syntax">(</span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">time_in_oven</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        ...</span>
@@ -370,15 +399,20 @@ the constructor function for recipes:
 the effect of
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">VMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">duck_a_l_orange</span><span class="plain-syntax">, </span><span class="identifier-syntax">COOK_MTID</span><span class="plain-syntax">, </span><span class="constant-syntax">45</span><span class="plain-syntax">);</span>
 </pre>
 <p class="inwebparagraph">is to call:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Recipes::cook</span><span class="plain-syntax">(</span><span class="identifier-syntax">duck_a_l_orange</span><span class="plain-syntax">, </span><span class="constant-syntax">45</span><span class="plain-syntax">);</span>
-</pre><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>In fact it's possible to attach multiple receivers to the same object, in
+</pre>
+<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>In fact it's possible to attach multiple receivers to the same object, in
 which case they each run in turn. As a variant on this, methods can also return
 their "success". If multiple receivers run, the first to return <span class="extract"><span class="extract-syntax">TRUE</span></span> has
 claimed the right to act, and subsequent receivers aren't consulted.
@@ -394,11 +428,15 @@ pointers: for example, text streams (of type <span class="extract"><span class="
 the ones created above. For example,
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cookbook</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">recipe</span><span class="plain-syntax">);</span>
 </pre>
 <p class="inwebparagraph">initialises a list as ready to use. It's then accessed by macros:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lobster_thermidor</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Recipes::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"lobster thermidor"</span><span class="plain-syntax">, </span><span class="constant-syntax">200</span><span class="plain-syntax">);</span>
@@ -406,6 +444,8 @@ the ones created above. For example,
 </pre>
 <p class="inwebparagraph">Similarly:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
@@ -449,6 +489,8 @@ to parent or subdirectories, respectively. A filename cannot exist without
 a pathname; for example,
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="function-syntax">Pathnames::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"App"</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="function-syntax">Pathnames::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Config"</span><span class="plain-syntax">)</span>
@@ -457,6 +499,8 @@ a pathname; for example,
 </pre>
 <p class="inwebparagraph">produces, on platforms where <span class="extract"><span class="extract-syntax">/</span></span> is used as the file system dividing character,
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    I have arrived at App/Config/options.txt.</span>
@@ -488,6 +532,8 @@ For example, if <span class="extract"><span class="extract-syntax">F</span></spa
 linked list of texts:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Hypothetical::list_from_file</span><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">);</span>
@@ -505,9 +551,12 @@ linked list of texts:
 functions from <a href="3-em.html" class="internal">Error Messages</a> can then report errors where they occur:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">Errors::in_text_file</span><span class="plain-syntax">(</span><span class="string-syntax">"bad syntax here"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
-</pre><p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Handling webs. </b>Foundation provides routines which can read the metadata of a web, i.e., a
+</pre>
+<p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Handling webs. </b>Foundation provides routines which can read the metadata of a web, i.e., a
 literate program in the <a href="../inweb/index.html" class="internal">inweb</a> format, from a copy in the file system.
 The main function here is <a href="8-ws.html#SP5" class="internal">WebMetadata::get</a>, which returns a <a href="8-ws.html#SP2" class="internal">web_md</a>
 object. You can then access its bibliographic data using
@@ -519,16 +568,23 @@ sections (of <a href="8-ws.html#SP4" class="internal">section_md</a>).
 <p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Miscellaneous other features. </b>What else? Well:
 </p>
 
-<ul class="items"><li>(a) <a href="3-tm.html" class="internal">Time</a> for the time of day and the date of Easter (no, really);
-</li><li>(b) <a href="3-shl.html" class="internal">Shell</a> for issuing shell commands via the C library's <span class="extract"><span class="extract-syntax">system</span></span> function,
+<ul class="items"><li>(a) <p class="inwebparagraph"><a href="3-tm.html" class="internal">Time</a> for the time of day and the date of Easter (no, really);
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph"><a href="3-shl.html" class="internal">Shell</a> for issuing shell commands via the C library's <span class="extract"><span class="extract-syntax">system</span></span> function,
 or its equivalent;
-</li><li>(c) <a href="5-htm.html" class="internal">HTML</a> and <a href="5-ee.html" class="internal">Epub Ebooks</a> for generating web pages and ebooks;
-</li><li>(d) <a href="6-id.html" class="internal">Image Dimensions</a> and <a href="6-sd.html" class="internal">Sound Durations</a> for handling videos and music;
-</li><li>(e) <a href="7-vn.html" class="internal">Version Numbers</a> and <a href="7-vnr.html" class="internal">Version Number Ranges</a> for managing version
+</p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph"><a href="5-htm.html" class="internal">HTML</a> and <a href="5-ee.html" class="internal">Epub Ebooks</a> for generating web pages and ebooks;
+</p>
+
+<ul class="items"><li>(d) <p class="inwebparagraph"><a href="6-id.html" class="internal">Image Dimensions</a> and <a href="6-sd.html" class="internal">Sound Durations</a> for handling videos and music;
+</p>
+
+<ul class="items"><li>(e) <p class="inwebparagraph"><a href="7-vn.html" class="internal">Version Numbers</a> and <a href="7-vnr.html" class="internal">Version Number Ranges</a> for managing version
 numbers of software according to the Semantic Versioning standard.
 </p>
 
-</li></ul>
 <!--End of weave-->
 
 		</main>

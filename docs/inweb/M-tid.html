@@ -54,11 +54,15 @@ avoided altogether.
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Each section of an InC web can, optionally, begin:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">[Namespace::]</span><span class="plain-syntax"> The Title of This Section.</span>
 </pre>
 <p class="inwebparagraph">rather than, as normal,
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    The Title of This Section.</span>
@@ -66,6 +70,8 @@ avoided altogether.
 <p class="inwebparagraph">That declares that all functions in this section must be have a name which
 begins with <span class="extract"><span class="extract-syntax">Namespace::</span></span>. For example,
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">Namespace::initialise</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -86,13 +92,18 @@ the <span class="extract"><span class="extract-syntax">::</span></span> to <span
 <p class="inwebparagraph">Namespaces can be "nested", in the sense that, for example, we could have:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">[Errors::Fatal::]</span><span class="plain-syntax"> Handling fatal errors.</span>
-</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The <span class="extract"><span class="extract-syntax">foundation</span></span> module contains a suite of utility functions for handling
+</pre>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The <span class="extract"><span class="extract-syntax">foundation</span></span> module contains a suite of utility functions for handling
 strings and streams of text. These are unified in a structure called
 <span class="extract"><span class="extract-syntax">text_stream</span></span>, so that strings in InC webs are almost all values of type
 <span class="extract"><span class="extract-syntax">text_stream *</span></span>. InC provides one convenient feature for this: the notation
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    text_stream *excuse = I"The compiler is not feeling well today.";</span>
@@ -109,6 +120,8 @@ tagged <span class="extract"><span class="extract-syntax">^"Preform"</span></spa
 notation means, but for example:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    &lt;declaration&gt; ::=</span>
 <span class="plain-syntax">        declare &lt;dominion&gt; independent	==&gt;	R[1]</span>
@@ -117,7 +130,8 @@ notation means, but for example:
 <span class="plain-syntax">        canada |</span>
 <span class="plain-syntax">        india |</span>
 <span class="plain-syntax">        malaya</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><a href="M-spl.html">Back to 'Supporting Programming Languages'</a></li><li><a href="M-rc.html">Continue with 'Reference Card'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 

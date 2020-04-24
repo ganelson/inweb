@@ -61,19 +61,21 @@ directly.
 <p class="inwebparagraph">For convenience, we provide three ways to call:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::for_web_and_pattern</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Collater::for_web_and_pattern</b>:<br>HTML Formats - <a href="5-hf.html#SP9_13">&#167;9.13</a>&lt;br&gt;Weave Plugins - <a href="5-wp.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::for_web_and_pattern</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Collater::for_web_and_pattern</b>:<br>HTML Formats - <a href="5-hf.html#SP6_13">&#167;6.13</a>&lt;br&gt;Weave Plugins - <a href="5-wp.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">into</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-tc.html#SP1" class="function-link"><span class="function-syntax">Collater::collate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">""</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">into</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::for_order</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Collater::for_order</b>:<br>Format Methods - <a href="5-fm.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::for_order</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Collater::for_order</b>:<br>Format Methods - <a href="5-fm.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">into</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-tc.html#SP1" class="function-link"><span class="function-syntax">Collater::collate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_web</span><span class="plain-syntax">, </span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weave_range</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">navigation</span><span class="plain-syntax">, </span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">breadcrumbs</span><span class="plain-syntax">, </span><span class="identifier-syntax">wv</span><span class="plain-syntax">, </span><span class="identifier-syntax">into</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::collate</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Collater::collate</b>:<br><a href="3-tc.html#SP5_1_8_2">&#167;5.1.8.2</a>, The Swarm - <a href="1-ts.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">range</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::collate</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Collater::collate</b>:<br><a href="3-tc.html#SP5_1_8_2">&#167;5.1.8.2</a>, The Swarm - <a href="1-ts.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">range</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">template_filename</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nav_file</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crumbs</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">into</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">actual_ies</span><span class="plain-syntax"> =</span>
@@ -82,15 +84,18 @@ directly.
 <span class="plain-syntax">    </span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ies</span><span class="plain-syntax"> = &amp;</span><span class="identifier-syntax">actual_ies</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="3-tc.html#SP5" class="function-link"><span class="function-syntax">Collater::process</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">ies</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The current state of the processor is recorded in the following.
+</pre>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The current state of the processor is recorded in the following.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">TRACE_COLLATER_EXECUTION</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax"> </span><span class="comment"> set true for debugging</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">MAX_TEMPLATE_LINES</span><span class="plain-syntax"> </span><span class="constant-syntax">8192</span><span class="plain-syntax"> </span><span class="comment"> maximum number of lines in template</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">CI_STACK_CAPACITY</span><span class="plain-syntax"> </span><span class="constant-syntax">8</span><span class="plain-syntax"> </span><span class="comment"> maximum recursion of chapter/section iteration</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">TRACE_COLLATER_EXECUTION</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax"> </span><span class="comment"> set true for debugging</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">MAX_TEMPLATE_LINES</span><span class="plain-syntax"> </span><span class="constant-syntax">8192</span><span class="plain-syntax"> </span><span class="comment"> maximum number of lines in template</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">CI_STACK_CAPACITY</span><span class="plain-syntax"> </span><span class="constant-syntax">8</span><span class="plain-syntax"> </span><span class="comment"> maximum recursion of chapter/section iteration</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">for_web</span><span class="plain-syntax">;</span>
@@ -110,13 +115,19 @@ directly.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">into_file</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">collater_state</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure collater_state is accessed in 3/twot, 5/wt, 5/fm, 5/ptf, 5/tf, 5/hf, 5/df, 6/mkf, 6/gs, 6/cln and here.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Note the unfortunate maximum size limit on the template file. It means
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure collater_state is accessed in 3/twot, 5/wt, 5/fm, 5/ptf, 5/tf, 5/hf, 5/df, 6/mkf, 6/gs, 6/cln and here.</li></ul>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Note the unfortunate maximum size limit on the template file. It means
 that really humungous Javascript files in plugins might have trouble, though
 if so, they can always be subdivided.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">collater_state</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::initial_state</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Collater::initial_state</b>:<br><a href="3-tc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">range</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">collater_state</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::initial_state</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>Collater::initial_state</b>:<br><a href="3-tc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">range</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">template_filename</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nav_file</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crumbs</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">into</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">cls</span><span class="plain-syntax">;</span>
@@ -134,9 +145,15 @@ if so, they can always be subdivided.
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Read in the source file containing the contents page template</span> <span class="named-paragraph-number">3.1</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cls</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Read in the source file containing the contents page template</span> <span class="named-paragraph-number">3.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><a href="../foundation-module/4-tf.html#SP5" class="function-link"><span class="function-syntax">TextFiles::read</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">template_filename</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">,</span>
@@ -146,19 +163,26 @@ if so, they can always be subdivided.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cls</span><span class="plain-syntax">.</span><span class="element-syntax">no_tlines</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">MAX_TEMPLATE_LINES</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Warning: template &lt;%f&gt; truncated after %d line(s)\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">template_filename</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">.</span><span class="element-syntax">no_tlines</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP3">&#167;3</a>.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP3">&#167;3</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::temp_line</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>Collater::temp_line</b>:<br><a href="3-tc.html#SP3_1">&#167;3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">v_ies</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::temp_line</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>Collater::temp_line</b>:<br><a href="3-tc.html#SP3_1">&#167;3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">v_ies</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">v_ies</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_tlines</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">MAX_TEMPLATE_LINES</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tlines</span><span class="plain-syntax">[</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_tlines</span><span class="plain-syntax">++] = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Running the engine...
+</pre>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Running the engine...
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::process</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Collater::process</b>:<br><a href="3-tc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::process</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>Collater::process</b>:<br><a href="3-tc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_INDENT</span><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lpos</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment"> This is our program counter: a line number in the template</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">lpos</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_tlines</span><span class="plain-syntax">) {</span>
@@ -175,9 +199,15 @@ if so, they can always be subdivided.
 <span class="plain-syntax">    </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">inside_navigation_submenu</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_OUTDENT</span><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5_1"></a><b>&#167;5.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP5_1"></a><b>&#167;5.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Make any necessary substitutions to turn tl into final output</span> <span class="named-paragraph-number">5.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">tl</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%c*?) "</span><span class="plain-syntax">)) </span><a href="../foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tl</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]); </span><span class="comment"> Strip trailing spaces</span>
@@ -196,13 +226,21 @@ if so, they can always be subdivided.
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_INDENT</span><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Make substitutions of square-bracketed variables in line</span> <span class="named-paragraph-number">5.1.8</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_OUTDENT</span><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5">&#167;5</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_1"></a><b>&#167;5.1.1. The repeat stack and loops. </b>This is used only for debugging:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5">&#167;5</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_1"></a><b>&#167;5.1.1. The repeat stack and loops. </b>This is used only for debugging:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Print line and contents of repeat stack</span> <span class="named-paragraph-number">5.1.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"%04d: %S\nStack:"</span><span class="plain-syntax">, </span><span class="identifier-syntax">lpos</span><span class="plain-syntax">-1, </span><span class="identifier-syntax">tl</span><span class="plain-syntax">);</span>
@@ -221,15 +259,23 @@ if so, they can always be subdivided.
 <span class="plain-syntax">                    </span><span class="identifier-syntax">CONTENT_IN_ITEM</span><span class="plain-syntax">(</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">repeat_stack_threshold</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">], </span><span class="reserved-syntax">section</span><span class="plain-syntax">))-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_range</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1">&#167;5.1</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_2"></a><b>&#167;5.1.2.  </b>We start the direct commands with Select, which is implemented as a
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1">&#167;5.1</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_2"></a><b>&#167;5.1.2.  </b>We start the direct commands with Select, which is implemented as a
 one-iteration loop in which the loop variable has the given section or
 chapter as its value during the sole iteration.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Deal with a Select command</span> <span class="named-paragraph-number">5.1.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
@@ -254,13 +300,21 @@ chapter as its value during the sole iteration.
 <span class="plain-syntax">        </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">goto</span><span class="plain-syntax"> </span><span class="identifier-syntax">CYCLE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1">&#167;5.1</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_3"></a><b>&#167;5.1.3.  </b>Next, a genuine loop beginning:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1">&#167;5.1</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_3"></a><b>&#167;5.1.3.  </b>Next, a genuine loop beginning:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Deal with a Repeat command</span> <span class="named-paragraph-number">5.1.3</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">loop_level</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -302,13 +356,21 @@ chapter as its value during the sole iteration.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax">) </span><a href="3-tc.html#SP5_1_7" class="function-link"><span class="function-syntax">Collater::start_CI_loop</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cls</span><span class="plain-syntax">, </span><span class="identifier-syntax">loop_level</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">lpos</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">goto</span><span class="plain-syntax"> </span><span class="identifier-syntax">CYCLE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1">&#167;5.1</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_4"></a><b>&#167;5.1.4.  </b>And at the other bookend:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1">&#167;5.1</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_4"></a><b>&#167;5.1.4.  </b>And at the other bookend:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Deal with a Repeat End command</span> <span class="named-paragraph-number">5.1.4</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">command</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"End Repeat"</span><span class="plain-syntax">)) ||</span>
@@ -338,13 +400,21 @@ chapter as its value during the sole iteration.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">goto</span><span class="plain-syntax"> </span><span class="identifier-syntax">CYCLE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1">&#167;5.1</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_5"></a><b>&#167;5.1.5.  </b>It can happen that a section loop, at least, is empty:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1">&#167;5.1</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_5"></a><b>&#167;5.1.5.  </b>It can happen that a section loop, at least, is empty:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Skip line if inside an empty loop</span> <span class="named-paragraph-number">5.1.5</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rstl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stack_pointer</span><span class="plain-syntax">-1; </span><span class="identifier-syntax">rstl</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">rstl</span><span class="plain-syntax">--)</span>
@@ -354,28 +424,37 @@ chapter as its value during the sole iteration.
 <span class="plain-syntax">                </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">repeat_stack_variable</span><span class="plain-syntax">[</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stack_pointer</span><span class="plain-syntax">-1])</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">goto</span><span class="plain-syntax"> </span><span class="identifier-syntax">CYCLE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1">&#167;5.1</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_6"></a><b>&#167;5.1.6.  </b>If called with level <span class="extract"><span class="extract-syntax">CHAPTER_LEVEL</span></span>, this returns the topmost chapter number
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1">&#167;5.1</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_6"></a><b>&#167;5.1.6.  </b>If called with level <span class="extract"><span class="extract-syntax">CHAPTER_LEVEL</span></span>, this returns the topmost chapter number
 on the stack; and similarly for <span class="extract"><span class="extract-syntax">SECTION_LEVEL</span></span>.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">CHAPTER_LEVEL</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">SECTION_LEVEL</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">CHAPTER_LEVEL</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SECTION_LEVEL</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">linked_list_item</span><span class="plain-syntax"> *</span><span class="function-syntax">Collater::heading_topmost_on_stack</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>Collater::heading_topmost_on_stack</b>:<br><a href="3-tc.html#SP5_1_3">&#167;5.1.3</a>, <a href="3-tc.html#SP5_1_8_7">&#167;5.1.8.7</a>, <a href="3-tc.html#SP5_1_8_8">&#167;5.1.8.8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">level</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">linked_list_item</span><span class="plain-syntax"> *</span><span class="function-syntax">Collater::heading_topmost_on_stack</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>Collater::heading_topmost_on_stack</b>:<br><a href="3-tc.html#SP5_1_3">&#167;5.1.3</a>, <a href="3-tc.html#SP5_1_8_7">&#167;5.1.8.7</a>, <a href="3-tc.html#SP5_1_8_8">&#167;5.1.8.8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">level</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rstl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stack_pointer</span><span class="plain-syntax">-1; </span><span class="identifier-syntax">rstl</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">rstl</span><span class="plain-syntax">--)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">repeat_stack_level</span><span class="plain-syntax">[</span><span class="identifier-syntax">rstl</span><span class="plain-syntax">] == </span><span class="identifier-syntax">level</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">repeat_stack_variable</span><span class="plain-syntax">[</span><span class="identifier-syntax">rstl</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5_1_7"></a><b>&#167;5.1.7.  </b>This is the code for starting a loop, which stacks up the details, and
+</pre>
+<p class="inwebparagraph"><a id="SP5_1_7"></a><b>&#167;5.1.7.  </b>This is the code for starting a loop, which stacks up the details, and
 similarly for ending it by popping them again:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::start_CI_loop</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>Collater::start_CI_loop</b>:<br><a href="3-tc.html#SP5_1_2">&#167;5.1.2</a>, <a href="3-tc.html#SP5_1_3">&#167;5.1.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">level</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::start_CI_loop</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>Collater::start_CI_loop</b>:<br><a href="3-tc.html#SP5_1_2">&#167;5.1.2</a>, <a href="3-tc.html#SP5_1_3">&#167;5.1.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">level</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">linked_list_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">linked_list_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stack_pointer</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">CI_STACK_CAPACITY</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">repeat_stack_level</span><span class="plain-syntax">[</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stack_pointer</span><span class="plain-syntax">] = </span><span class="identifier-syntax">level</span><span class="plain-syntax">;</span>
@@ -385,10 +464,11 @@ similarly for ending it by popping them again:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::end_CI_loop</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Collater::end_CI_loop</b>:<br><a href="3-tc.html#SP5_1_4">&#167;5.1.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::end_CI_loop</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>Collater::end_CI_loop</b>:<br><a href="3-tc.html#SP5_1_4">&#167;5.1.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">collater_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stack_pointer</span><span class="plain-syntax">--;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5_1_8"></a><b>&#167;5.1.8. Variable substitutions. </b>We can now forget about this tiny stack machine: the one task left is to
+</pre>
+<p class="inwebparagraph"><a id="SP5_1_8"></a><b>&#167;5.1.8. Variable substitutions. </b>We can now forget about this tiny stack machine: the one task left is to
 take a line from the template, and make substitutions of variables into
 its square-bracketed parts.
 </p>
@@ -399,10 +479,14 @@ inner one. If we did, then the value of the bibliographic variable <span class="
 used by the HTML renderer, would cause a modest-sized explosion on some pages.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Make substitutions of square-bracketed variables in line</span> <span class="named-paragraph-number">5.1.8</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">rewritten</span><span class="plain-syntax">);</span>
@@ -474,24 +558,40 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">rewritten</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tl</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tl</span><span class="plain-syntax">); </span><a href="../foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tl</span><span class="plain-syntax">, </span><span class="identifier-syntax">rewritten</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">rewritten</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1">&#167;5.1</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_1"></a><b>&#167;5.1.8.1.  </b>This is why, for instance, <span class="extract"><span class="extract-syntax">[[Author]]</span></span> is replaced by the author's name:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1">&#167;5.1</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_1"></a><b>&#167;5.1.8.1.  </b>This is why, for instance, <span class="extract"><span class="extract-syntax">[[Author]]</span></span> is replaced by the author's name:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute any bibliographic datum named</span> <span class="named-paragraph-number">5.1.8.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><a href="../foundation-module/8-bdfw.html#SP6" class="function-link"><span class="function-syntax">Bibliographic::get_datum</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">for_web</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">, </span><span class="identifier-syntax">varname</span><span class="plain-syntax">));</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_2"></a><b>&#167;5.1.8.2.  </b><span class="extract"><span class="extract-syntax">[[Navigation]]</span></span> substitutes to the content of the sidebar navigation file;
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_2"></a><b>&#167;5.1.8.2.  </b><span class="extract"><span class="extract-syntax">[[Navigation]]</span></span> substitutes to the content of the sidebar navigation file;
 this will recursively call The Collater, in fact.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute Navigation</span> <span class="named-paragraph-number">5.1.8.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nav_file</span><span class="plain-syntax">) {</span>
@@ -503,40 +603,64 @@ this will recursively call The Collater, in fact.
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Warning: no sidebar links will be generated, as -navigation is unset"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_3"></a><b>&#167;5.1.8.3.  </b>A trail of breadcrumbs, used for overhead navigation in web pages.
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_3"></a><b>&#167;5.1.8.3.  </b>A trail of breadcrumbs, used for overhead navigation in web pages.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute Breadcrumbs</span> <span class="named-paragraph-number">5.1.8.3</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><a href="6-cln.html#SP6" class="function-link"><span class="function-syntax">Colonies::drop_initial_breadcrumbs</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">into_file</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">crumbs</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_4"></a><b>&#167;5.1.8.4.  </b><span class="extract"><span class="extract-syntax">[[Plugins]]</span></span> here expands to material needed by any plugins required
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_4"></a><b>&#167;5.1.8.4.  </b><span class="extract"><span class="extract-syntax">[[Plugins]]</span></span> here expands to material needed by any plugins required
 by the weave cls-&gt;nav_pattern itself; it doesn't include optional extras for a
 specific page because, of course, The Collater is used for cover sheets and
 not pages. (Except for navigation purposes, and navigation files should never
 use this.)
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute Plugins</span> <span class="named-paragraph-number">5.1.8.4</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><a href="5-wp.html#SP4" class="function-link"><span class="function-syntax">WeavePlugins::begin_inclusions</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="1-ptt.html#SP8" class="function-link"><span class="function-syntax">Patterns::include_plugins</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">for_web</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nav_pattern</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">into_file</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">wv</span><span class="plain-syntax">) </span><a href="1-ts.html#SP3" class="function-link"><span class="function-syntax">Swarm::include_plugins</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">for_web</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">wv</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">into_file</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_5"></a><b>&#167;5.1.8.5.  </b>A list of all modules in the current web.
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_5"></a><b>&#167;5.1.8.5.  </b>A list of all modules in the current web.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute Modules</span> <span class="named-paragraph-number">5.1.8.5</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">for_web</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_module</span><span class="plain-syntax">;</span>
@@ -549,26 +673,42 @@ use this.)
 <span class="plain-syntax">        </span><a href="3-tc.html#SP6" class="function-link"><span class="function-syntax">Collater::list_module</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">for_web</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_module</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"&lt;/ul&gt;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_6"></a><b>&#167;5.1.8.6.  </b>We store little about the complete-web-in-one-file PDF:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_6"></a><b>&#167;5.1.8.6.  </b>We store little about the complete-web-in-one-file PDF:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute a detail about the complete PDF</span> <span class="named-paragraph-number">5.1.8.6</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">swarm_leader</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-fm.html#SP11" class="function-link"><span class="function-syntax">Formats::substitute_post_processing_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">swarm_leader</span><span class="plain-syntax">, </span><span class="identifier-syntax">detail</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nav_pattern</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"%S for complete web"</span><span class="plain-syntax">, </span><span class="identifier-syntax">detail</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_7"></a><b>&#167;5.1.8.7.  </b>And here for Chapters:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_7"></a><b>&#167;5.1.8.7.  </b>And here for Chapters:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute a Chapter</span> <span class="named-paragraph-number">5.1.8.7</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CONTENT_IN_ITEM</span><span class="plain-syntax">(</span>
@@ -577,9 +717,18 @@ use this.)
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP6" class="function-link"><span class="function-syntax">Errors::at_position</span></a><span class="plain-syntax">(</span><span class="string-syntax">"no chapter is currently selected"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">errors_at</span><span class="plain-syntax">, </span><span class="identifier-syntax">lpos</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span>&lt;<span class="named-paragraph">Substitute a detail about the currently selected Chapter</span> <span class="named-paragraph-number">5.1.8.7.1</span>&gt;<span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_7_1"></a><b>&#167;5.1.8.7.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_7_1"></a><b>&#167;5.1.8.7.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute a detail about the currently selected Chapter</span> <span class="named-paragraph-number">5.1.8.7.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP22" class="function-link"><span class="function-syntax">Str::eq_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">detail</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"Title"</span><span class="plain-syntax">)) {</span>
@@ -594,13 +743,21 @@ use this.)
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"%S for %S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">varname</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ch_title</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8_7">&#167;5.1.8.7</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_8"></a><b>&#167;5.1.8.8.  </b>And this is a very similar construction for Sections.
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8_7">&#167;5.1.8.7</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_8"></a><b>&#167;5.1.8.8.  </b>And this is a very similar construction for Sections.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute a Section</span> <span class="named-paragraph-number">5.1.8.8</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CONTENT_IN_ITEM</span><span class="plain-syntax">(</span>
@@ -609,9 +766,18 @@ use this.)
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP6" class="function-link"><span class="function-syntax">Errors::at_position</span></a><span class="plain-syntax">(</span><span class="string-syntax">"no section is currently selected"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">errors_at</span><span class="plain-syntax">, </span><span class="identifier-syntax">lpos</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span>&lt;<span class="named-paragraph">Substitute a detail about the currently selected Section</span> <span class="named-paragraph-number">5.1.8.8.1</span>&gt;<span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_8_1"></a><b>&#167;5.1.8.8.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_8_1"></a><b>&#167;5.1.8.8.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute a detail about the currently selected Section</span> <span class="named-paragraph-number">5.1.8.8.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP22" class="function-link"><span class="function-syntax">Str::eq_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">detail</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"Title"</span><span class="plain-syntax">)) {</span>
@@ -638,46 +804,90 @@ use this.)
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"%S for %S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">varname</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_title</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8_8">&#167;5.1.8.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_9"></a><b>&#167;5.1.8.9.  </b>These commands are all used in constructing relative URLs, especially for
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8_8">&#167;5.1.8.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_9"></a><b>&#167;5.1.8.9.  </b>These commands are all used in constructing relative URLs, especially for
 navigation purposes.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute a Docs</span> <span class="named-paragraph-number">5.1.8.9</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><a href="../foundation-module/3-pth.html#SP8" class="function-link"><span class="function-syntax">Pathnames::relative_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-fln.html#SP6" class="function-link"><span class="function-syntax">Filenames::up</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">into_file</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text</span></a><span class="plain-syntax">(</span><a href="6-cln.html#SP9" class="function-link"><span class="function-syntax">Colonies::home</span></a><span class="plain-syntax">()));</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_10"></a><b>&#167;5.1.8.10.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_10"></a><b>&#167;5.1.8.10.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute a URL</span> <span class="named-paragraph-number">5.1.8.10</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><a href="../foundation-module/3-pth.html#SP8" class="function-link"><span class="function-syntax">Pathnames::relative_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-fln.html#SP6" class="function-link"><span class="function-syntax">Filenames::up</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">into_file</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">));</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_11"></a><b>&#167;5.1.8.11.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_11"></a><b>&#167;5.1.8.11.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute a Link</span> <span class="named-paragraph-number">5.1.8.11</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"&lt;a href=\""</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::reference_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">into_file</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"\"&gt;"</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_12"></a><b>&#167;5.1.8.12.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_12"></a><b>&#167;5.1.8.12.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute a Menu</span> <span class="named-paragraph-number">5.1.8.12</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">inside_navigation_submenu</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"&lt;/ul&gt;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"&lt;h2&gt;%S&lt;/h2&gt;&lt;ul&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">menu_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">inside_navigation_submenu</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_13"></a><b>&#167;5.1.8.13.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_13"></a><b>&#167;5.1.8.13.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Look for icon text</span> <span class="named-paragraph-number">5.1.8.13</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
@@ -689,27 +899,54 @@ navigation purposes.
 <span class="plain-syntax">        </span><span class="identifier-syntax">item_name</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a> (twice).</li></ul><p class="inwebparagraph"><a id="SP5_1_8_14"></a><b>&#167;5.1.8.14.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a> (twice).</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_14"></a><b>&#167;5.1.8.14.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute a member Item</span> <span class="named-paragraph-number">5.1.8.14</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::reference_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">into_file</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Substitute an item at this URL</span> <span class="named-paragraph-number">5.1.8.14.1</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_15"></a><b>&#167;5.1.8.15.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_15"></a><b>&#167;5.1.8.15.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute a general Item</span> <span class="named-paragraph-number">5.1.8.15</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::link_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">into_file</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Substitute an item at this URL</span> <span class="named-paragraph-number">5.1.8.14.1</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_14_1"></a><b>&#167;5.1.8.14.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8">&#167;5.1.8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_14_1"></a><b>&#167;5.1.8.14.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute an item at this URL</span> <span class="named-paragraph-number">5.1.8.14.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">inside_navigation_submenu</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"&lt;ul&gt;"</span><span class="plain-syntax">);</span>
@@ -731,9 +968,18 @@ navigation purposes.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"&lt;/a&gt;"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"&lt;/li&gt;"</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8_14">&#167;5.1.8.14</a>, <a href="3-tc.html#SP5_1_8_15">&#167;5.1.8.15</a>.</li></ul><p class="inwebparagraph"><a id="SP5_1_8_14_1_1"></a><b>&#167;5.1.8.14.1.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8_14">&#167;5.1.8.14</a>, <a href="3-tc.html#SP5_1_8_15">&#167;5.1.8.15</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5_1_8_14_1_1"></a><b>&#167;5.1.8.14.1.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Substitute icon and name</span> <span class="named-paragraph-number">5.1.8.14.1.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">icon_text</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
@@ -745,10 +991,14 @@ navigation purposes.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"%S\" height=18&gt; "</span><span class="plain-syntax">, </span><span class="identifier-syntax">icon_text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">substituted</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">item_name</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8_14_1">&#167;5.1.8.14.1</a> (three times).</li></ul><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-tc.html#SP5_1_8_14_1">&#167;5.1.8.14.1</a> (three times).</li></ul>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::list_module</span><button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>Collater::list_module</b>:<br><a href="3-tc.html#SP5_1_8_5">&#167;5.1.8.5</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">list_this</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Collater::list_module</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="popuptext" id="usagePopup10">Usage of <b>Collater::list_module</b>:<br><a href="3-tc.html#SP5_1_8_5">&#167;5.1.8.5</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">list_this</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">list_this</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;li&gt;&lt;p&gt;%S - "</span><span class="plain-syntax">, </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">module_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
@@ -761,7 +1011,8 @@ navigation purposes.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="reserved-syntax">module</span><span class="plain-syntax">, </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dependencies</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="3-tc.html#SP6" class="function-link"><span class="function-syntax">Collater::list_module</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><a href="3-ta.html">Back to 'The Analyser'</a></li><li><a href="3-tw.html">Continue with 'The Weaver'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 

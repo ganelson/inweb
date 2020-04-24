@@ -47,20 +47,23 @@
 Inweb, which is a literate program or "web". Before diving in:
 </p>
 
-<ul class="items"><li>(a) It helps to have some experience of reading webs. The short examples
+<ul class="items"><li>(a) <p class="inwebparagraph">It helps to have some experience of reading webs. The short examples
 <a href="../goldbach/index.html" class="internal">goldbach</a> and <a href="../twinprimes/twinprimes.html" class="internal">twinprimes</a> are enough to give the idea.
-</li><li>(b) Inweb is written in C, in fact ANSI C99, but this is disguised by the
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph">Inweb is written in C, in fact ANSI C99, but this is disguised by the
 fact that it uses some extension syntaxes provided by <a href="index.html" class="internal">inweb</a> itself.
 Turn to <a href="M-tid.html" class="internal">The InC Dialect</a> for full details, but essentially: it's plain
 old C without predeclarations or header files, and where functions have names
 like <span class="extract"><span class="extract-syntax">Tags::add_by_name</span></span> rather than just <span class="extract"><span class="extract-syntax">add_by_name</span></span>.
-</li><li>(c) Inweb makes use of a "module" of utility functions called <a href="../foundation-module/index.html" class="internal">foundation</a>.
+</p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph">Inweb makes use of a "module" of utility functions called <a href="../foundation-module/index.html" class="internal">foundation</a>.
 This is a web in its own right. There's no need to read it, but you may want
 to take a quick look at <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a> or the
 example <a href="../eastertide/index.html" class="internal">eastertide</a>.
 </p>
 
-</li></ul>
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Working out what to do, and what to do it to. </b>Inweb is a C program, so it begins at <a href="1-pc.html#SP6" class="internal">main</a>, in <a href="1-pc.html" class="internal">Program Control</a>. PC
 works out where Inweb is installed, then calls <a href="1-cnf.html" class="internal">Configuration</a>, which
 <a href="1-cnf.html#SP2" class="internal">reads the command line options</a>.
@@ -83,12 +86,15 @@ see <a href="1-cnf.html#SP4" class="internal">Configuration::member_and_colony</
 no traveller returns.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Tangling and weaving are fundamental to all LP tools. Analysis means, say,
 reading a web and listing functions in it. Translation is for side-activities
 like <a href="6-mkf.html" class="internal">making makefiles</a> or <a href="6-gs.html" class="internal">gitignores</a>.
 Strictly speaking there is also <span class="extract"><span class="extract-syntax">NO_MODE</span></span> for runs where the user simply
 asked for <span class="extract"><span class="extract-syntax">-help</span></span> at the command line.
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b><a href="1-pc.html" class="internal">Program Control</a> then resumes, calling <a href="1-pc.html#SP7" class="internal">Main::follow_instructions</a> to
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b><a href="1-pc.html" class="internal">Program Control</a> then resumes, calling <a href="1-pc.html#SP7" class="internal">Main::follow_instructions</a> to
 act on the <a href="1-cnf.html#SP1" class="internal">inweb_instructions</a> object. If the user did specify a web to
 work on, PC then goes through three stages to understand it.
 </p>
@@ -118,6 +124,8 @@ on the metadata considerably. If <span class="extract"><span class="extract-synt
 metadata, but <span class="extract"><span class="extract-syntax">W</span></span> also has numerous other fields.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <ul class="footnotetexts"><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> For single-file webs like <a href="../twinprimes/twinprimes.html" class="internal">twinprimes</a>, with no contents pages, Inweb
 makes what it calls an "implied" chapter and section heading.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> Range texts are used at the command line, and in <span class="extract"><span class="extract-syntax">-catalogue</span></span> output, for
@@ -127,7 +135,8 @@ Manual chapter, <span class="extract"><span class="extract-syntax">2/tp</span></
 <a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> The difference is that the <a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a> lists every chapter and section,
 imported or not, whereas the <a href="../foundation-module/8-wm.html#SP1" class="internal">module</a> lists only those falling under its
 own aegis.
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>After loading, the second stage is to call <a href="2-tr.html#SP5" class="internal">Reader::read_web</a>. Whereas
+<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>After loading, the second stage is to call <a href="2-tr.html#SP5" class="internal">Reader::read_web</a>. Whereas
 loading was rapid and involved looking only at the contents page, reading
 takes longer and means extracting every line of commentary or code. Just
 as the loader wrapped the <a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a> in a larger <a href="2-tr.html#SP1" class="internal">web</a> object, so too
@@ -141,12 +150,15 @@ a four-level hierarchy on top of the more basic three-level hierarchy produced
 by <a href="../foundation-module/index.html" class="internal">foundation</a>:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="function-syntax">INWEB</span><span class="plain-syntax">        </span><a href="2-tr.html#SP1" class="internal">web</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP2" class="internal">chapter</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP3" class="internal">section</a><span class="plain-syntax">     ----&gt;   </span><a href="2-lc.html#SP1" class="internal">source_line</a>
 <span class="plain-syntax">              |                |                  |</span>
 <span class="function-syntax">FOUNDATION</span><span class="plain-syntax">   </span><a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP3" class="internal">chapter_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP4" class="internal">section_md</a>
 <span class="plain-syntax">             </span><a href="../foundation-module/8-wm.html#SP1" class="internal">module</a>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The third stage is to call <a href="2-tp.html#SP1" class="internal">Parser::parse_web</a>. This is where we check that
+</pre>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The third stage is to call <a href="2-tp.html#SP1" class="internal">Parser::parse_web</a>. This is where we check that
 the web is syntactically valid line-by-line, reporting errors if any using
 by calling <a href="1-pc.html#SP8" class="internal">Main::error_in_web</a>. Each line is assigned a "category": for
 example, the category <span class="extract"><span class="extract-syntax">DEFINITIONS_LCAT</span></span> is given to lines holding definitions
@@ -154,6 +166,8 @@ made with <span class="extract"><span class="extract-syntax">@d</span></span> or
 Running Inweb with the <span class="extract"><span class="extract-syntax">-scan</span></span> switch lists out the lines parsed in this way;
 for example:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">web "The Twin Primes Conjecture": 1 section : 3 paragraphs : 55 lines</span>
@@ -213,11 +227,15 @@ for example:
 <span class="plain-syntax">0000053  CODE_BODY...........  	return TRUE;</span>
 <span class="plain-syntax">0000054  CODE_BODY...........  }</span>
 <span class="plain-syntax">0000055  CODE_BODY...........  </span>
-</pre><ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> There are more than 20, but many are no longer needed in "version 2" of
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> There are more than 20, but many are no longer needed in "version 2" of
 the Inweb syntax, which is the only one anyone should still use. Continuing
 to support version 1 makes <a href="2-tp.html" class="internal">The Parser</a> much fiddlier, and at some point we
 will probably drop this quixotic goal.
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>The parser also recognises headings and footnotes, but most importantly, it
+<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>The parser also recognises headings and footnotes, but most importantly, it
 introduces an additional concept: the <a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">paragraph</a>. Each nunbered passage
 corresponds to one <a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">paragraph</a> object; it may actually contain several
 paragraphs of prose in the everyday English sense, but has just one heading,
@@ -237,12 +255,17 @@ the footnote texts, and works out their proper numbering; each becomes a
 we now have something like this:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="function-syntax">INWEB</span><span class="plain-syntax">        </span><a href="2-tr.html#SP1" class="internal">web</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP2" class="internal">chapter</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP3" class="internal">section</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">paragraph</a><span class="plain-syntax">  ----&gt; </span><a href="2-lc.html#SP1" class="internal">source_line</a>
 <span class="plain-syntax">              |                |                  |               </span><a href="2-pm.html#SP1" class="internal">para_macro</a>
 <span class="function-syntax">FOUNDATION</span><span class="plain-syntax">   </span><a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP3" class="internal">chapter_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP4" class="internal">section_md</a>
 <span class="plain-syntax">             </span><a href="../foundation-module/8-wm.html#SP1" class="internal">module</a>
-</pre><ul class="footnotetexts"><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> Unlike in CWEB and other past literate programming tools, in which
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> Unlike in CWEB and other past literate programming tools, in which
 paragraphs &mdash; sometimes called "sections" by those programs, a different use
 of the word to ours &mdash; are numbered simply 1, 2, 3, ..., through the entire
 program. Doing this would entail some webs in the Inform project running up
@@ -251,9 +274,12 @@ to nearly 8000.
 overhead than gain: there are never very many paragraph macros per section.
 <a href="#fnref:7" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:8"><p class="inwebfootnote"><sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup> Though the parser is not able to check that the footnotes are all used;
 that's done at weaving time instead.
-<a href="#fnref:8" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Programming languages. </b>The contents page of a web usually mentions one or more programming languages.
+<a href="#fnref:8" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Programming languages. </b>The contents page of a web usually mentions one or more programming languages.
 A line at the top like
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="element-syntax">Language</span><span class="plain-syntax">:</span><span class="string-syntax"> C</span>
@@ -268,6 +294,8 @@ objects. But to the loader, these are all just names.
 calling <a href="4-pl.html#SP2" class="internal">Languages::find_by_name</a>, and the parser does the same when it
 finds extract lines like
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (text as ACME)</span>
@@ -289,9 +317,12 @@ the main use case is to have just one throughout. <a href="2-tr.html#SP1" class=
 to a <a href="4-pl.html#SP6" class="internal">programming_language</a>.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <ul class="footnotetexts"><li class="footnote" id="fn:9"><p class="inwebfootnote"><sup id="fnref:9"><a href="#fn:9" rel="footnote">9</a></sup> A little-used feature of Inweb, which should arguably be taken out as
 unnecessary now that colonies allow for multiple webs to coexist happily.
-<a href="#fnref:9" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Weaving mode. </b>Let's get back to <a href="1-pc.html" class="internal">Program Control</a>, which has now set everything up and is
+<a href="#fnref:9" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Weaving mode. </b>Let's get back to <a href="1-pc.html" class="internal">Program Control</a>, which has now set everything up and is
 about to take action. What it does depends on which of the four modes Inweb
 is in; we'll start with <span class="extract"><span class="extract-syntax">WEAVE_MODE</span></span>, the most difficult.
 </p>
@@ -299,25 +330,33 @@ is in; we'll start with <span class="extract"><span class="extract-syntax">WEAVE
 <p class="inwebparagraph">Weaves are highly comfigurable, so they depend on several factors:
 </p>
 
-<ul class="items"><li>(a) Which format is used, as represented by a <a href="5-fm.html#SP1" class="internal">weave_format</a> object. For
+<ul class="items"><li>(a) <p class="inwebparagraph">Which format is used, as represented by a <a href="5-fm.html#SP1" class="internal">weave_format</a> object. For
 example, HTML, ePub and PDF are all formats.
-</li><li>(b) Which pattern is used, as represented by a <a href="1-ptt.html#SP1" class="internal">weave_pattern</a> object. A
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph">Which pattern is used, as represented by a <a href="1-ptt.html#SP1" class="internal">weave_pattern</a> object. A
 pattern is a choice of format together with some naming conventions and
 auxiliary files. For example, <span class="extract"><span class="extract-syntax">GitHubPages</span></span> is a pattern which imposes HTML
 format but also throws in, for example, the GitHub logo icon.
-</li><li>(c) Whether a filter to particular tags is used, as represented by a
+</p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph">Whether a filter to particular tags is used, as represented by a
 <a href="2-tgs.html#SP1" class="internal">theme_tag</a>.<sup id="fnref:10"><a href="#fn:10" rel="footnote">10</a></sup>
-</li><li>(d) What subset of the web the user wants to weave &mdash; by default the whole
+</p>
+
+<ul class="items"><li>(d) <p class="inwebparagraph">What subset of the web the user wants to weave &mdash; by default the whole
 thing, but sometimes just one chapter, or just one section, and sometimes
 a special setting for "do all chapters one at a time" or "do all sections
 one at a time", a procedure called <a href="1-ts.html" class="internal">The Swarm</a>.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <ul class="footnotetexts"><li class="footnote" id="fn:10"><p class="inwebfootnote"><sup id="fnref:10"><a href="#fn:10" rel="footnote">10</a></sup> For example, Inweb automatically applies the <span class="extract"><span class="extract-syntax">"Functions"</span></span> tag to any
 paragraph defining one (see <a href="4-taf.html" class="internal">Types and Functions</a>), and using <span class="extract"><span class="extract-syntax">-weave-tag</span></span>
 at the command line filters the weave down to just these. Sing to the tune
 of Suzanne Vega's "Freeze Tag".
-<a href="#fnref:10" title="return to text"> &#x21A9;</a></p></li></ul></li></ul>
+<a href="#fnref:10" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b><a href="1-pc.html" class="internal">Program Control</a> begins by attempting to load the weave pattern, with
 <a href="1-ptt.html#SP2" class="internal">Patterns::find</a>; the syntax of weave pattern files can be found in
 <a href="1-ptt.html#SP3" class="internal">Patterns::scan_pattern_line</a>.
@@ -338,13 +377,16 @@ which consolidates all the settings needed into a <a href="1-ts.html#SP2_1" clas
 it says, in effect, "weave content X into file Y using pattern Z".<sup id="fnref:12"><a href="#fn:12" rel="footnote">12</a></sup>
 </p>
 
+<p class="inwebparagraph"></p>
+
 <ul class="footnotetexts"><li class="footnote" id="fn:11"><p class="inwebfootnote"><sup id="fnref:11"><a href="#fn:11" rel="footnote">11</a></sup> No index is made if the user asked for only a single section or chapter
 to be woven; only if there was a swarm.
 <a href="#fnref:11" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:12"><p class="inwebfootnote"><sup id="fnref:12"><a href="#fn:12" rel="footnote">12</a></sup> So when Inweb is used to construct the website you are, perhaps, reading
 this text on, around 80 <a href="1-ts.html#SP2_1" class="internal">weave_order</a> objects will be made, one for each
 call to <a href="1-ts.html#SP2" class="internal">Swarm::weave_subset</a>, which in turn is one for each section of the
 source-code web of Inweb itself.
-<a href="#fnref:12" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>And so we descend into <a href="3-tw.html" class="internal">The Weaver</a>, where the function <a href="3-tw.html#SP1" class="internal">Weaver::weave</a>
+<a href="#fnref:12" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>And so we descend into <a href="3-tw.html" class="internal">The Weaver</a>, where the function <a href="3-tw.html#SP1" class="internal">Weaver::weave</a>
 is given the <a href="1-ts.html#SP2_1" class="internal">weave_order</a> and told to get on with it.<sup id="fnref:13"><a href="#fn:13" rel="footnote">13</a></sup>
 </p>
 
@@ -370,6 +412,8 @@ notation, footnote cues, function calls, and so on.
 <span class="extract"><span class="extract-syntax">TestingInweb</span></span> is a weave pattern that outputs a textual representation of
 the weave tree. For example:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">document weave order 0</span>
@@ -515,9 +559,12 @@ necessary types and object constructors are laid tediously out in
 <a href="5-wt.html" class="internal">Weave Tree</a>, a section which intentionally contains no non-trivial code.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <ul class="footnotetexts"><li class="footnote" id="fn:13"><p class="inwebfootnote"><sup id="fnref:13"><a href="#fn:13" rel="footnote">13</a></sup> "Weaver, weave" really ought to be a folk song, but if so, I can't find
 it on Spotify.
-<a href="#fnref:13" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>Syntax-colouring is worth further mention. Just as the Weaver tries not to
+<a href="#fnref:13" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>Syntax-colouring is worth further mention. Just as the Weaver tries not to
 get itself into fiddly details of formats, it also avoids specifics of
 programming languages. It does this by calling <a href="4-lm.html#SP25" class="internal">LanguageMethods::syntax_colour</a>,
 which in turn calls the <span class="extract"><span class="extract-syntax">SYNTAX_COLOUR_WEA_MTID</span></span> method for the relevant
@@ -536,8 +583,11 @@ of their own, which is compiled by <a href="4-pl.html" class="internal">Programm
 in a low-level interpreter by <a href="4-tp.html" class="internal">The Painter</a>.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <ul class="footnotetexts"><li class="footnote" id="fn:14"><p class="inwebfootnote"><sup id="fnref:14"><a href="#fn:14" rel="footnote">14</a></sup> "ACME" is used here in the sense of "generic".
-<a href="#fnref:14" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>So, then, the weave tree is now made. Just as each programming language
+<a href="#fnref:14" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>So, then, the weave tree is now made. Just as each programming language
 has an object representing it, so does each format, and at render time the
 method call <span class="extract"><span class="extract-syntax">RENDER_FOR_MTID</span></span> is sent to it. This has to turn the tree into
 HTML, plain text, TeX source, or whatever may be. It's understood that not
@@ -549,14 +599,21 @@ image carousel.
 <p class="inwebparagraph">Inweb currently contains four renderers:
 </p>
 
-<ul class="items"><li>(a) <a href="5-df.html" class="internal">Debugging Format</a> renders the weave tree as a plain text display, and
+<ul class="items"><li>(a) <p class="inwebparagraph"><a href="5-df.html" class="internal">Debugging Format</a> renders the weave tree as a plain text display, and
 is solely for testing.
-</li><li>(b) <a href="5-tf.html" class="internal">TeX Format</a> renders the weave tree as TeX markup code &mdash; in the early
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph"><a href="5-tf.html" class="internal">TeX Format</a> renders the weave tree as TeX markup code &mdash; in the early
 days of literate programming, this was the sole weave format used; now it
 has been eclipsed by...
-</li><li>(c) ...<a href="5-hf.html" class="internal">HTML Formats</a>, which renders to HTML and also handles ePub ebooks.
-</li><li>(d) There is also <a href="5-ptf.html" class="internal">Plain Text Format</a>, a comically minimal approach.
-</li></ul>
+</p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph">...<a href="5-hf.html" class="internal">HTML Formats</a>, which renders to HTML and also handles ePub ebooks.
+</p>
+
+<ul class="items"><li>(d) <p class="inwebparagraph">There is also <a href="5-ptf.html" class="internal">Plain Text Format</a>, a comically minimal approach.
+</p>
+
 <p class="inwebparagraph">Renderers should make requests for weave plugins or colour schemes if, and
 only if, the need arises: for example, the HTML renderer requests the plugin
 <span class="extract"><span class="extract-syntax">Carousel</span></span> only if an image carousel is actually called for. Requests are
@@ -577,15 +634,20 @@ from any given file. Within the main web being woven, <a href="6-cln.html#SP11" 
 can make a link to any paragraph of your choice.<sup id="fnref:15"><a href="#fn:15" rel="footnote">15</a></sup>
 </p>
 
+<p class="inwebparagraph"></p>
+
 <ul class="footnotetexts"><li class="footnote" id="fn:15"><p class="inwebfootnote"><sup id="fnref:15"><a href="#fn:15" rel="footnote">15</a></sup> Inweb anchors at paragraphs; it does not anchor at individual lines.
 This is intentional, as it's intended to take the reader to just enough
 context and explanation to understand what is being linked to.
-<a href="#fnref:15" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>Finally on weaving, special mention should go to <a href="3-tc.html" class="internal">The Collater</a>, a
+<a href="#fnref:15" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>Finally on weaving, special mention should go to <a href="3-tc.html" class="internal">The Collater</a>, a
 subsystem which amounts to a stream editor. Its role is to work through a
 "template" and substitute in material from outside &mdash; from the weave rendering,
 from the bibliographic data for a web, and so on &mdash; to produce a final file.
 For example, a simple use of the collater is to work through the template:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    &lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;</span>
@@ -644,6 +706,8 @@ and <a href="4-is.html#SP3_1_2" class="internal">preform_nonterminal</a> for Pre
 <span class="extract"><span class="extract-syntax">&lt;sentence-ending&gt;</span></span>.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <ul class="footnotetexts"><li class="footnote" id="fn:16"><p class="inwebfootnote"><sup id="fnref:16"><a href="#fn:16" rel="footnote">16</a></sup> The original intention of this feature was that a program might want
 to have, as "appendices", certain configuration files or other extraneous
 matter needing explanation. The author was motivated here by the example of
@@ -652,7 +716,8 @@ to understand without also reading its format files quite carefully. However,
 it now seems better practice to make such a sidekick file its own web, and
 use a colony file to make everything tidy on a woven website. So maybe this
 feature can go.
-<a href="#fnref:16" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Analysis mode. </b>Alternatively, we're in <span class="extract"><span class="extract-syntax">ANALYSE_MODE</span></span>. There's not much to this: <a href="1-pc.html" class="internal">Program Control</a>
+<a href="#fnref:16" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Analysis mode. </b>Alternatively, we're in <span class="extract"><span class="extract-syntax">ANALYSE_MODE</span></span>. There's not much to this: <a href="1-pc.html" class="internal">Program Control</a>
 simply calls <a href="3-ta.html#SP2" class="internal">Analyser::catalogue_the_sections</a>, or else makes use of the same
 functions as <span class="extract"><span class="extract-syntax">TRANSLATE_MODE</span></span> would &mdash; but in the context of having read in a
 web. If it makes a <span class="extract"><span class="extract-syntax">.gitignore</span></span> file, for example, it does so for that specific
@@ -663,13 +728,20 @@ the abstract and for no particular web.
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Translation mode. </b>Or, finally, we're in <span class="extract"><span class="extract-syntax">TRANSLATE_MODE</span></span>. We can:
 </p>
 
-<ul class="items"><li>(a) make a makefile by calling <a href="6-mkf.html#SP1" class="internal">Makefiles::write</a>;
-</li><li>(b) make a <span class="extract"><span class="extract-syntax">.gitignore</span></span> file by calling <a href="6-gs.html#SP1" class="internal">Git::write_gitignore</a>;
-</li><li>(c) advance the build number in a build file, by calling out to the
+<ul class="items"><li>(a) <p class="inwebparagraph">make a makefile by calling <a href="6-mkf.html#SP1" class="internal">Makefiles::write</a>;
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph">make a <span class="extract"><span class="extract-syntax">.gitignore</span></span> file by calling <a href="6-gs.html#SP1" class="internal">Git::write_gitignore</a>;
+</p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph">advance the build number in a build file, by calling out to the
 Foundation code at <a href="../foundation-module/8-bf.html#SP7" class="internal">BuildFiles::advance</a>;
-</li><li>(d) run a syntax-colouring test to help debug a programming language definition &mdash;
+</p>
+
+<ul class="items"><li>(d) <p class="inwebparagraph">run a syntax-colouring test to help debug a programming language definition &mdash;
 see <a href="1-pc.html" class="internal">Program Control</a> itself for details.
-</li></ul>
+</p>
+
 <p class="inwebparagraph">And that is essentially it. Inweb winds up by returning exit code 1 if there
 were errors, or 0 if not, like a good Unix citizen.
 </p>

@@ -65,13 +65,13 @@ produce guru meditation numbers rather than user-friendly information.
 given one of the following categories:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">VACANT_ECAT</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">		</span><span class="comment"> unregistered</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">POINTER_ECAT</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">		</span><span class="comment"> data to be printed is a pointer to a structure</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">INTSIZED_ECAT</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">		</span><span class="comment"> data to be printed is or fits into an integer</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">WORDING_ECAT</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">		</span><span class="comment"> data to be printed is a </span><span class="extract"><span class="extract-syntax">wording</span></span><span class="comment"> structure from inform7</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">DIRECT_ECAT</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax">		</span><span class="comment"> data must be printed directly by the code below</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">VACANT_ECAT</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">		</span><span class="comment"> unregistered</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">POINTER_ECAT</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">		</span><span class="comment"> data to be printed is a pointer to a structure</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">INTSIZED_ECAT</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">		</span><span class="comment"> data to be printed is or fits into an integer</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">WORDING_ECAT</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">		</span><span class="comment"> data to be printed is a </span><span class="extract"><span class="extract-syntax">wording</span></span><span class="comment"> structure from inform7</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">DIRECT_ECAT</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax">		</span><span class="comment"> data must be printed directly by the code below</span>
 </pre>
 <p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>We'll start with <span class="extract"><span class="extract-syntax">%</span></span> escapes, which generalise the familiar <span class="extract"><span class="extract-syntax">printf</span></span>
 escapes such as <span class="extract"><span class="extract-syntax">%d</span></span>. Cumbersomely, we need three sorts of escape: those where
@@ -81,6 +81,8 @@ called a <span class="extract"><span class="extract-syntax">wording</span></span
 so we have to do everything three times. (And then we have to do all that twice,
 because the loggers don't use format strings.)
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">escapes_registered</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -95,10 +97,11 @@ because the loggers don't use format strings.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">writer_function_W</span><span class="plain-syntax">)(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *, </span><span class="identifier-syntax">wording</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">log_function_W</span><span class="plain-syntax">)(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="identifier-syntax">wording</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
-</pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
+</pre>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::log_escape_usage</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Writers::log_escape_usage</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::log_escape_usage</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Writers::log_escape_usage</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cat</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">cat</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">2</span><span class="plain-syntax">; </span><span class="identifier-syntax">cat</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alphanum</span><span class="plain-syntax"> = </span><span class="string-syntax">"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Vacant escapes: %s: "</span><span class="plain-syntax">, (</span><span class="identifier-syntax">cat</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)?</span><span class="string-syntax">"%"</span><span class="plain-syntax">:</span><span class="string-syntax">"$"</span><span class="plain-syntax">);</span>
@@ -110,31 +113,37 @@ because the loggers don't use format strings.)
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>That gives us a number of front doors:
+</pre>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>That gives us a number of front doors:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::register_writer</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Writers::register_writer</b>:<br>Foundation Module - <a href="1-fm.html#SP8_1">&#167;8.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">f</span><span class="plain-syntax">)(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *)) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::register_writer</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Writers::register_writer</b>:<br>Foundation Module - <a href="1-fm.html#SP8_1">&#167;8.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">f</span><span class="plain-syntax">)(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *)) {</span>
 <span class="plain-syntax">    </span><a href="2-wal.html#SP5" class="function-link"><span class="function-syntax">Writers::register_writer_p</span></a><span class="plain-syntax">(0, </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">POINTER_ECAT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::register_logger</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Writers::register_logger</b>:<br>Foundation Module - <a href="1-fm.html#SP8_3">&#167;8.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">f</span><span class="plain-syntax">)(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *)) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::register_logger</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Writers::register_logger</b>:<br>Foundation Module - <a href="1-fm.html#SP8_3">&#167;8.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">f</span><span class="plain-syntax">)(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *)) {</span>
 <span class="plain-syntax">    </span><a href="2-wal.html#SP5" class="function-link"><span class="function-syntax">Writers::register_writer_p</span></a><span class="plain-syntax">(1, </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">POINTER_ECAT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::register_writer_I</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Writers::register_writer_I</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">f</span><span class="plain-syntax">)(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">int</span><span class="plain-syntax">)) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::register_writer_I</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>Writers::register_writer_I</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">f</span><span class="plain-syntax">)(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">int</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">    </span><a href="2-wal.html#SP5" class="function-link"><span class="function-syntax">Writers::register_writer_p</span></a><span class="plain-syntax">(0, </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">INTSIZED_ECAT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::register_logger_I</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>Writers::register_logger_I</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">f</span><span class="plain-syntax">)(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">int</span><span class="plain-syntax">)) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::register_logger_I</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>Writers::register_logger_I</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">f</span><span class="plain-syntax">)(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">int</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">    </span><a href="2-wal.html#SP5" class="function-link"><span class="function-syntax">Writers::register_writer_p</span></a><span class="plain-syntax">(1, </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">INTSIZED_ECAT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">WORDS_MODULE</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">define</span><span class="plain-syntax"> </span><span class="identifier-syntax">Writers::register_writer_W</span><span class="plain-syntax">(</span><span class="identifier-syntax">esc</span><span class="plain-syntax">, </span><span class="identifier-syntax">f</span><span class="plain-syntax">) </span><a href="2-wal.html#SP5" class="function-link"><span class="function-syntax">Writers::register_writer_p</span></a><span class="plain-syntax">(0, </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">WORDING_ECAT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">define</span><span class="plain-syntax"> </span><span class="identifier-syntax">Writers::register_logger_W</span><span class="plain-syntax">(</span><span class="identifier-syntax">esc</span><span class="plain-syntax">, </span><span class="identifier-syntax">f</span><span class="plain-syntax">) </span><a href="2-wal.html#SP5" class="function-link"><span class="function-syntax">Writers::register_writer_p</span></a><span class="plain-syntax">(1, </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="constant-syntax">WORDING_ECAT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>All leading to:
+</pre>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>All leading to:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::register_writer_p</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Writers::register_writer_p</b>:<br><a href="2-wal.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">set</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cat</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::register_writer_p</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>Writers::register_writer_p</b>:<br><a href="2-wal.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">set</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">esc</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cat</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">escapes_registered</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Initialise the table of escapes</span> <span class="named-paragraph-number">5.1</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">esc</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">esc</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">128</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">        ((</span><a href="4-chr.html#SP1" class="function-link"><span class="function-syntax">Characters::isalpha</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">esc</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp; (</span><a href="4-chr.html#SP1" class="function-link"><span class="function-syntax">Characters::isdigit</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">esc</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)))</span>
@@ -146,7 +155,8 @@ because the loggers don't use format strings.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">escapes_category</span><span class="plain-syntax">[</span><span class="identifier-syntax">set</span><span class="plain-syntax">][</span><span class="identifier-syntax">esc</span><span class="plain-syntax">] = </span><span class="identifier-syntax">cat</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">the_escapes</span><span class="plain-syntax">[</span><span class="identifier-syntax">set</span><span class="plain-syntax">][</span><span class="identifier-syntax">esc</span><span class="plain-syntax">] = </span><span class="identifier-syntax">f</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5_1"></a><b>&#167;5.1.  </b>We're going to implement <span class="extract"><span class="extract-syntax">%d</span></span> and a few others directly, so those are marked
+</pre>
+<p class="inwebparagraph"><a id="SP5_1"></a><b>&#167;5.1.  </b>We're going to implement <span class="extract"><span class="extract-syntax">%d</span></span> and a few others directly, so those are marked
 in the table as being unavailable for registration.
 </p>
 
@@ -154,10 +164,14 @@ in the table as being unavailable for registration.
 for wide strings.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Initialise the table of escapes</span> <span class="named-paragraph-number">5.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">escapes_registered</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -176,12 +190,18 @@ for wide strings.
 <span class="plain-syntax">    </span><span class="identifier-syntax">escapes_category</span><span class="plain-syntax">[0][</span><span class="character-syntax">'$'</span><span class="plain-syntax">] = </span><span class="constant-syntax">DIRECT_ECAT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">escapes_category</span><span class="plain-syntax">[1][</span><span class="character-syntax">'%'</span><span class="plain-syntax">] = </span><span class="constant-syntax">DIRECT_ECAT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">escapes_category</span><span class="plain-syntax">[1][</span><span class="character-syntax">'$'</span><span class="plain-syntax">] = </span><span class="constant-syntax">DIRECT_ECAT</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-wal.html#SP5">&#167;5</a>.</li></ul><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Writing. </b>We can finally get on with that formatted-print function we've all been
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-wal.html#SP5">&#167;5</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Writing. </b>We can finally get on with that formatted-print function we've all been
 waiting for:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::printf</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>Writers::printf</b>:<br>Streams - <a href="2-str.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stream</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fmt</span><span class="plain-syntax">, ...) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writers::printf</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>Writers::printf</b>:<br>Streams - <a href="2-str.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stream</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fmt</span><span class="plain-syntax">, ...) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">va_list</span><span class="plain-syntax"> </span><span class="identifier-syntax">ap</span><span class="plain-syntax">; </span><span class="comment"> the variable argument list signified by the dots</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">stream</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
@@ -212,9 +232,15 @@ waiting for:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">va_end</span><span class="plain-syntax">(</span><span class="identifier-syntax">ap</span><span class="plain-syntax">); </span><span class="comment"> macro to end variable argument processing</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6_1"></a><b>&#167;6.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP6_1"></a><b>&#167;6.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Deal with escape sequences</span> <span class="named-paragraph-number">6.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">format_string</span><span class="plain-syntax">[8];</span>
@@ -275,7 +301,11 @@ waiting for:
 <span class="plain-syntax">            </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"Unknown string escape"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-wal.html#SP6">&#167;6</a> (twice).</li></ul><p class="inwebparagraph"><a id="SP6_1_1"></a><b>&#167;6.1.1.  </b>Here the traditional C library helps us out with the difficult ones to get
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-wal.html#SP6">&#167;6</a> (twice).</li></ul>
+<p class="inwebparagraph"><a id="SP6_1_1"></a><b>&#167;6.1.1.  </b>Here the traditional C library helps us out with the difficult ones to get
 right. We don't trouble to check that correct <span class="extract"><span class="extract-syntax">printf</span></span> escapes have been used:
 instead, we pass anything in the form of a percentage sign, followed by
 up to four nonalphabetic modifying characters, followed by an alphabetic
@@ -291,10 +321,14 @@ escapes involve only characters whose representation is the same in all our
 file encodings, but expanding <span class="extract"><span class="extract-syntax">%s</span></span> does not.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Implement this using the original printf</span> <span class="named-paragraph-number">6.1.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    #</span><span class="identifier-syntax">pragma</span><span class="plain-syntax"> </span><span class="identifier-syntax">clang</span><span class="plain-syntax"> </span><span class="identifier-syntax">diagnostic</span><span class="plain-syntax"> </span><span class="identifier-syntax">push</span>
@@ -326,7 +360,11 @@ file encodings, but expanding <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'$'</span><span class="plain-syntax">: </span><a href="2-str.html#SP35" class="function-link"><span class="function-syntax">Streams::putc</span></a><span class="plain-syntax">(</span><span class="character-syntax">'$'</span><span class="plain-syntax">, </span><span class="identifier-syntax">stream</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">pragma</span><span class="plain-syntax"> </span><span class="identifier-syntax">clang</span><span class="plain-syntax"> </span><span class="identifier-syntax">diagnostic</span><span class="plain-syntax"> </span><span class="identifier-syntax">pop</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-wal.html#SP6_1">&#167;6.1</a>.</li></ul><hr class="tocbar">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-wal.html#SP6_1">&#167;6.1</a>.</li></ul>
+<hr class="tocbar">
 <ul class="toc"><li><a href="2-str.html">Back to 'Streams'</a></li><li><a href="2-mth.html">Continue with 'Methods'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 

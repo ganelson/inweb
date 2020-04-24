@@ -50,32 +50,40 @@ function togglePopup(material_id) {
 of line terminator will always be stripped out before this is applied.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::white_space</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Regexp::white_space</b>:<br><a href="4-pm.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::white_space</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Regexp::white_space</b>:<br><a href="4-pm.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">' '</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'\t'</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The presence of <span class="extract"><span class="extract-syntax">:</span></span> here is perhaps a bit surprising, since it's illegal in
+</pre>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The presence of <span class="extract"><span class="extract-syntax">:</span></span> here is perhaps a bit surprising, since it's illegal in
 C and has other meanings in other languages, but it's legal in C-for-Inform
 identifiers.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::identifier_char</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Regexp::identifier_char</b>:<br><a href="4-pm.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::identifier_char</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Regexp::identifier_char</b>:<br><a href="4-pm.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'_'</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">':'</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">        ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &gt;= </span><span class="character-syntax">'A'</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt;= </span><span class="character-syntax">'Z'</span><span class="plain-syntax">)) ||</span>
 <span class="plain-syntax">        ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &gt;= </span><span class="character-syntax">'a'</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt;= </span><span class="character-syntax">'z'</span><span class="plain-syntax">)) ||</span>
 <span class="plain-syntax">        ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &gt;= </span><span class="character-syntax">'0'</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt;= </span><span class="character-syntax">'9'</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Simple parsing. </b>The following finds the earliest minimal-length substring of a string,
+</pre>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Simple parsing. </b>The following finds the earliest minimal-length substring of a string,
 delimited by two pairs of characters: for example, <span class="extract"><span class="extract-syntax">&lt;&lt;</span></span> and <span class="extract"><span class="extract-syntax">&gt;&gt;</span></span>. This could
 easily be done as a regular expression using <span class="extract"><span class="extract-syntax">Regexp::match</span></span>, but the routine
 here is much quicker.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::find_expansion</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Regexp::find_expansion</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">on1</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">on2</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::find_expansion</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Regexp::find_expansion</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">on1</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">on2</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">off1</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">off2</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">len</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax"> &lt; </span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">); </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">) == </span><span class="identifier-syntax">on1</span><span class="plain-syntax">) &amp;&amp; (</span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">+1) == </span><span class="identifier-syntax">on2</span><span class="plain-syntax">)) {</span>
@@ -87,28 +95,35 @@ here is much quicker.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Still more simply:
+</pre>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Still more simply:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::find_open_brace</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Regexp::find_open_brace</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::find_open_brace</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>Regexp::find_open_brace</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax"> &lt; </span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">); </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">) == </span><span class="character-syntax">'{'</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Note that we count the empty string as being white space. Again, this is
+</pre>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Note that we count the empty string as being white space. Again, this is
 equivalent to <span class="extract"><span class="extract-syntax">Regexp::match(p, " *")</span></span>, but much faster.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::string_is_white_space</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>Regexp::string_is_white_space</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::string_is_white_space</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>Regexp::string_is_white_space</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-pm.html#SP1" class="function-link"><span class="function-syntax">Regexp::white_space</span></a><span class="plain-syntax">(</span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">)) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. A Worse PCRE. </b>I originally wanted to call the function in this section <span class="extract"><span class="extract-syntax">a_better_sscanf</span></span>, then
+</pre>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. A Worse PCRE. </b>I originally wanted to call the function in this section <span class="extract"><span class="extract-syntax">a_better_sscanf</span></span>, then
 thought perhaps <span class="extract"><span class="extract-syntax">a_worse_PCRE</span></span> would be more true. (PCRE is Philip Hazel's superb
 C implementation of regular-expression parsing, but I didn't need its full strength,
 and I didn't want to complicate the build process by linking to it.)
@@ -117,6 +132,8 @@ and I didn't want to complicate the build process by linking to it.)
 <p class="inwebparagraph">This is a very minimal regular expression parser, simply for convenience of parsing
 short texts against particularly simple patterns. Here is an example of use:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><span class="function-syntax">Regexp::create_mr</span><span class="plain-syntax">();</span>
@@ -148,12 +165,14 @@ corresponding regex would be written <span class="extract"><span class="extract-
 terms would be subexpressions 0 and 1.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">MAX_BRACKETED_SUBEXPRESSIONS</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment"> this many bracketed subexpressions can be extracted</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_BRACKETED_SUBEXPRESSIONS</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment"> this many bracketed subexpressions can be extracted</span>
 </pre>
 <p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>The internal state of the matcher is stored as follows:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">match_position</span><span class="plain-syntax"> {</span>
@@ -166,14 +185,20 @@ terms would be subexpressions 0 and 1.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">brackets_start</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_BRACKETED_SUBEXPRESSIONS</span><span class="plain-syntax">], </span><span class="identifier-syntax">brackets_end</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_BRACKETED_SUBEXPRESSIONS</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="comment"> positions in text being matched, inclusive</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">match_position</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure match_position is private to this section.</li></ul><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>It may appear that match texts are limited to 64 characters here, but they
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure match_position is private to this section.</li></ul>
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>It may appear that match texts are limited to 64 characters here, but they
 are not. They are simply a little faster to access if short.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">MATCH_TEXT_INITIAL_ALLOCATION</span><span class="plain-syntax"> </span><span class="constant-syntax">64</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">MATCH_TEXT_INITIAL_ALLOCATION</span><span class="plain-syntax"> </span><span class="constant-syntax">64</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">match_result</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">match_text_storage</span><span class="plain-syntax">[</span><span class="constant-syntax">MATCH_TEXT_INITIAL_ALLOCATION</span><span class="plain-syntax">];</span>
@@ -185,15 +210,21 @@ are not. They are simply a little faster to access if short.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">exp</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_BRACKETED_SUBEXPRESSIONS</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">exp_at</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_BRACKETED_SUBEXPRESSIONS</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">match_results</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure match_result is private to this section.</li><li>The structure match_results is accessed in 3/cla, 8/ws, 8/wm, 8/bf and here.</li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Match result objects are inherently ephemeral, and we can expect to be
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure match_result is private to this section.</li><li>The structure match_results is accessed in 3/cla, 8/ws, 8/wm, 8/bf and here.</li></ul>
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Match result objects are inherently ephemeral, and we can expect to be
 creating them and throwing them away frequently. This must be done
 explicitly. Note that the storage required is on the C stack (unless some
 result strings grow very large), so that it's very quick to allocate and
 deallocate.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::create_mr</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Regexp::create_mr</b>:<br><a href="4-pm.html#SP14">&#167;14</a>, Command Line Arguments - <a href="3-cla.html#SP11">&#167;11</a>, <a href="3-cla.html#SP12">&#167;12</a>&lt;br&gt;Web Structure - <a href="8-ws.html#SP7_3_2">&#167;7.3.2</a>, <a href="8-ws.html#SP7_3_3_2">&#167;7.3.3.2</a>, <a href="8-ws.html#SP7_3_3_2_1">&#167;7.3.3.2.1</a>, <a href="8-ws.html#SP7_2_1">&#167;7.2.1</a>, <a href="8-ws.html#SP7_2_2_1">&#167;7.2.2.1</a>, <a href="8-ws.html#SP7_2_2_3">&#167;7.2.2.3</a>&lt;br&gt;Web Modules - <a href="8-wm.html#SP9">&#167;9</a>&lt;br&gt;Build Files - <a href="8-bf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::create_mr</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>Regexp::create_mr</b>:<br><a href="4-pm.html#SP14">&#167;14</a>, Command Line Arguments - <a href="3-cla.html#SP11">&#167;11</a>, <a href="3-cla.html#SP12">&#167;12</a>&lt;br&gt;Web Structure - <a href="8-ws.html#SP7_3_2">&#167;7.3.2</a>, <a href="8-ws.html#SP7_3_3_2">&#167;7.3.3.2</a>, <a href="8-ws.html#SP7_3_3_2_1">&#167;7.3.3.2.1</a>, <a href="8-ws.html#SP7_2_1">&#167;7.2.1</a>, <a href="8-ws.html#SP7_2_2_1">&#167;7.2.2.1</a>, <a href="8-ws.html#SP7_2_2_3">&#167;7.2.2.3</a>&lt;br&gt;Web Modules - <a href="8-wm.html#SP9">&#167;9</a>&lt;br&gt;Build Files - <a href="8-bf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">no_matched_texts</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">MAX_BRACKETED_SUBEXPRESSIONS</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
@@ -203,7 +234,7 @@ deallocate.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::dispose_of</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>Regexp::dispose_of</b>:<br><a href="4-pm.html#SP10">&#167;10</a>, <a href="4-pm.html#SP14">&#167;14</a>, Command Line Arguments - <a href="3-cla.html#SP11">&#167;11</a>&lt;br&gt;Web Structure - <a href="8-ws.html#SP7_3_2">&#167;7.3.2</a>, <a href="8-ws.html#SP7_3_3_2">&#167;7.3.3.2</a>, <a href="8-ws.html#SP7_3_3_2_1">&#167;7.3.3.2.1</a>, <a href="8-ws.html#SP7_2_1">&#167;7.2.1</a>, <a href="8-ws.html#SP7_2_2_1">&#167;7.2.2.1</a>, <a href="8-ws.html#SP7_2_2_3">&#167;7.2.2.3</a>&lt;br&gt;Web Modules - <a href="8-wm.html#SP9">&#167;9</a>&lt;br&gt;Build Files - <a href="8-bf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mr</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::dispose_of</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>Regexp::dispose_of</b>:<br><a href="4-pm.html#SP10">&#167;10</a>, <a href="4-pm.html#SP14">&#167;14</a>, Command Line Arguments - <a href="3-cla.html#SP11">&#167;11</a>&lt;br&gt;Web Structure - <a href="8-ws.html#SP7_3_2">&#167;7.3.2</a>, <a href="8-ws.html#SP7_3_3_2">&#167;7.3.3.2</a>, <a href="8-ws.html#SP7_3_3_2_1">&#167;7.3.3.2.1</a>, <a href="8-ws.html#SP7_2_1">&#167;7.2.1</a>, <a href="8-ws.html#SP7_2_2_1">&#167;7.2.2.1</a>, <a href="8-ws.html#SP7_2_2_3">&#167;7.2.2.3</a>&lt;br&gt;Web Modules - <a href="8-wm.html#SP9">&#167;9</a>&lt;br&gt;Build Files - <a href="8-bf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mr</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">mr</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">MAX_BRACKETED_SUBEXPRESSIONS</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">mr</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">exp</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]) {</span>
@@ -213,18 +244,21 @@ deallocate.
 <span class="plain-syntax">        </span><span class="identifier-syntax">mr</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_matched_texts</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>So, then: the matcher itself.
+</pre>
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>So, then: the matcher itself.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::match</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>Regexp::match</b>:<br>Command Line Arguments - <a href="3-cla.html#SP11">&#167;11</a>, <a href="3-cla.html#SP12">&#167;12</a>&lt;br&gt;Web Structure - <a href="8-ws.html#SP7_3_2">&#167;7.3.2</a>, <a href="8-ws.html#SP7_3_3_2">&#167;7.3.3.2</a>, <a href="8-ws.html#SP7_3_3_2_1">&#167;7.3.3.2.1</a>, <a href="8-ws.html#SP7_2_1">&#167;7.2.1</a>, <a href="8-ws.html#SP7_2_2_1">&#167;7.2.2.1</a>, <a href="8-ws.html#SP7_2_2_3">&#167;7.2.2.3</a>&lt;br&gt;Web Modules - <a href="8-wm.html#SP9">&#167;9</a>&lt;br&gt;Build Files - <a href="8-bf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::match</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>Regexp::match</b>:<br>Command Line Arguments - <a href="3-cla.html#SP11">&#167;11</a>, <a href="3-cla.html#SP12">&#167;12</a>&lt;br&gt;Web Structure - <a href="8-ws.html#SP7_3_2">&#167;7.3.2</a>, <a href="8-ws.html#SP7_3_3_2">&#167;7.3.3.2</a>, <a href="8-ws.html#SP7_3_3_2_1">&#167;7.3.3.2.1</a>, <a href="8-ws.html#SP7_2_1">&#167;7.2.1</a>, <a href="8-ws.html#SP7_2_2_1">&#167;7.2.2.1</a>, <a href="8-ws.html#SP7_2_2_3">&#167;7.2.2.3</a>&lt;br&gt;Web Modules - <a href="8-wm.html#SP9">&#167;9</a>&lt;br&gt;Build Files - <a href="8-bf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">mr</span><span class="plain-syntax">) </span><a href="4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::prepare</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = (</span><a href="4-pm.html#SP11" class="function-link"><span class="function-syntax">Regexp::match_r</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">)?</span><span class="identifier-syntax">TRUE:FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">mr</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">rv</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)) </span><a href="4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::match_from</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Regexp::match_from</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::match_from</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>Regexp::match_from</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allow_partial</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">match_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> &lt; </span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">)) {</span>
@@ -240,7 +274,7 @@ deallocate.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">match_to</span><span class="plain-syntax"> - </span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::prepare</span><button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>Regexp::prepare</b>:<br><a href="4-pm.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mr</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::prepare</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="popuptext" id="usagePopup10">Usage of <b>Regexp::prepare</b>:<br><a href="4-pm.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mr</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">mr</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">mr</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_matched_texts</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">MAX_BRACKETED_SUBEXPRESSIONS</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
@@ -254,10 +288,11 @@ deallocate.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
+</pre>
+<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::match_r</span><button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>Regexp::match_r</b>:<br><a href="4-pm.html#SP10">&#167;10</a>, <a href="4-pm.html#SP11_5">&#167;11.5</a>, <a href="4-pm.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::match_r</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="popuptext" id="usagePopup11">Usage of <b>Regexp::match_r</b>:<br><a href="4-pm.html#SP10">&#167;10</a>, <a href="4-pm.html#SP11_5">&#167;11.5</a>, <a href="4-pm.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">scan_from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allow_partial</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">scan_from</span><span class="plain-syntax">) </span><span class="identifier-syntax">at</span><span class="plain-syntax"> = *</span><span class="identifier-syntax">scan_from</span><span class="plain-syntax">;</span>
@@ -290,9 +325,15 @@ deallocate.
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Copy the bracketed texts found into the global strings</span> <span class="named-paragraph-number">11.6</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">tpos</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP11_1"></a><b>&#167;11.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP11_1"></a><b>&#167;11.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Parentheses in the match pattern set up substrings to extract</span> <span class="named-paragraph-number">11.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">[</span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">ppos</span><span class="plain-syntax">] == </span><span class="character-syntax">'('</span><span class="plain-syntax">) {</span>
@@ -311,22 +352,39 @@ deallocate.
 <span class="plain-syntax">        </span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="identifier-syntax">ppos</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP11">&#167;11</a>.</li></ul><p class="inwebparagraph"><a id="SP11_2"></a><b>&#167;11.2.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP11">&#167;11</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP11_2"></a><b>&#167;11.2.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Extract the character class to match from the pattern</span> <span class="named-paragraph-number">11.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">len</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">chcl</span><span class="plain-syntax"> = </span><a href="4-pm.html#SP12" class="function-link"><span class="function-syntax">Regexp::get_cclass</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">ppos</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">len</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">range_from</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">range_to</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">reverse</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">ppos</span><span class="plain-syntax"> += </span><span class="identifier-syntax">len</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP11">&#167;11</a>.</li></ul><p class="inwebparagraph"><a id="SP11_3"></a><b>&#167;11.3.  </b>This is standard regular-expression notation, except that I haven't bothered
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP11">&#167;11</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP11_3"></a><b>&#167;11.3.  </b>This is standard regular-expression notation, except that I haven't bothered
 to implement numeric repetition counts, which we won't need:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Extract repetition markers from the pattern</span> <span class="named-paragraph-number">11.3</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">chcl</span><span class="plain-syntax"> == </span><span class="constant-syntax">WHITESPACE_CLASS</span><span class="plain-syntax">) {</span>
@@ -338,18 +396,36 @@ to implement numeric repetition counts, which we won't need:
 <span class="plain-syntax">        </span><span class="identifier-syntax">rep_from</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">rep_to</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">)-</span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">tpos</span><span class="plain-syntax">; </span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">ppos</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">[</span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">ppos</span><span class="plain-syntax">] == </span><span class="character-syntax">'?'</span><span class="plain-syntax">) { </span><span class="identifier-syntax">greedy</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">; </span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">ppos</span><span class="plain-syntax">++; }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP11">&#167;11</a>.</li></ul><p class="inwebparagraph"><a id="SP11_4"></a><b>&#167;11.4.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP11">&#167;11</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP11_4"></a><b>&#167;11.4.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Count how many repetitions can be made here</span> <span class="named-paragraph-number">11.4</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">reps</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; ((</span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">tpos</span><span class="plain-syntax">+</span><span class="identifier-syntax">reps</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="identifier-syntax">reps</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">rep_to</span><span class="plain-syntax">)); </span><span class="identifier-syntax">reps</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-pm.html#SP13" class="function-link"><span class="function-syntax">Regexp::test_cclass</span></a><span class="plain-syntax">(</span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">tpos</span><span class="plain-syntax">+</span><span class="identifier-syntax">reps</span><span class="plain-syntax">), </span><span class="identifier-syntax">chcl</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">range_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">range_to</span><span class="plain-syntax">, </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="identifier-syntax">reverse</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP11">&#167;11</a>.</li></ul><p class="inwebparagraph"><a id="SP11_5"></a><b>&#167;11.5.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP11">&#167;11</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP11_5"></a><b>&#167;11.5.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Try all possible match lengths until we find a match</span> <span class="named-paragraph-number">11.5</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">rep_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">reps</span><span class="plain-syntax">, </span><span class="identifier-syntax">dj</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="identifier-syntax">from_tpos</span><span class="plain-syntax"> = </span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">tpos</span><span class="plain-syntax">;</span>
@@ -359,9 +435,18 @@ to implement numeric repetition counts, which we won't need:
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">try</span><span class="plain-syntax"> = </span><a href="4-pm.html#SP11" class="function-link"><span class="function-syntax">Regexp::match_r</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">at</span><span class="plain-syntax">, </span><span class="identifier-syntax">allow_partial</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">try</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">try</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP11">&#167;11</a>.</li></ul><p class="inwebparagraph"><a id="SP11_6"></a><b>&#167;11.6.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP11">&#167;11</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP11_6"></a><b>&#167;11.6.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Copy the bracketed texts found into the global strings</span> <span class="named-paragraph-number">11.6</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">mr</span><span class="plain-syntax">) {</span>
@@ -373,21 +458,42 @@ to implement numeric repetition counts, which we won't need:
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">mr</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_matched_texts</span><span class="plain-syntax"> = </span><span class="identifier-syntax">at</span><span class="plain-syntax">.</span><span class="element-syntax">bc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP11">&#167;11</a>.</li></ul><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>So then: most characters in the pattern are taken literally (if the pattern
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP11">&#167;11</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>So then: most characters in the pattern are taken literally (if the pattern
 says <span class="extract"><span class="extract-syntax">q</span></span>, the only match is with a lower-case letter "q"), except that:
 </p>
 
-<ul class="items"><li>(a) a space means "one or more characters of white space";
-</li><li>(b) <span class="extract"><span class="extract-syntax">%d</span></span> means any decimal digit;
-</li><li>(c) <span class="extract"><span class="extract-syntax">%c</span></span> means any character at all;
-</li><li>(d) <span class="extract"><span class="extract-syntax">%C</span></span> means any character which isn't white space;
-</li><li>(e) <span class="extract"><span class="extract-syntax">%i</span></span> means any character from the identifier class (see above);
-</li><li>(f) <span class="extract"><span class="extract-syntax">%p</span></span> means any character which can be used in the name of a Preform
+<ul class="items"><li>(a) <p class="inwebparagraph">a space means "one or more characters of white space";
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">%d</span></span> means any decimal digit;
+</p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">%c</span></span> means any character at all;
+</p>
+
+<ul class="items"><li>(d) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">%C</span></span> means any character which isn't white space;
+</p>
+
+<ul class="items"><li>(e) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">%i</span></span> means any character from the identifier class (see above);
+</p>
+
+<ul class="items"><li>(f) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">%p</span></span> means any character which can be used in the name of a Preform
 nonterminal, which is to say, an identifier character or a hyphen;
-</li><li>(g) <span class="extract"><span class="extract-syntax">%P</span></span> means the same or else a colon;
-</li><li>(h) <span class="extract"><span class="extract-syntax">%t</span></span> means a tab;
-</li><li>(i) <span class="extract"><span class="extract-syntax">%q</span></span> means a double-quote.
-</li></ul>
+</p>
+
+<ul class="items"><li>(g) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">%P</span></span> means the same or else a colon;
+</p>
+
+<ul class="items"><li>(h) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">%t</span></span> means a tab;
+</p>
+
+<ul class="items"><li>(i) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">%q</span></span> means a double-quote.
+</p>
+
 <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">%</span></span> otherwise makes a literal escape; a space means any whitespace character;
 square brackets enclose literal alternatives, and note as usual with grep
 engines that <span class="extract"><span class="extract-syntax">[]xyz]</span></span> is legal and makes a set of four possibilities, the
@@ -396,21 +502,23 @@ character range; an initial <span class="extract"><span class="extract-syntax">^
 is literal.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">ANY_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">DIGIT_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">WHITESPACE_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">NONWHITESPACE_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">IDENTIFIER_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">PREFORM_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">PREFORMC_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">LITERAL_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">8</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">TAB_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">9</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">QUOTE_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">ANY_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">DIGIT_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">WHITESPACE_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">NONWHITESPACE_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">IDENTIFIER_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">PREFORM_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">PREFORMC_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">LITERAL_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">8</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">TAB_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">9</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">QUOTE_CLASS</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::get_cclass</span><button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>Regexp::get_cclass</b>:<br><a href="4-pm.html#SP11_2">&#167;11.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ppos</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">len</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">reverse</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::get_cclass</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="popuptext" id="usagePopup12">Usage of <b>Regexp::get_cclass</b>:<br><a href="4-pm.html#SP11_2">&#167;11.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ppos</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">len</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">reverse</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">[</span><span class="identifier-syntax">ppos</span><span class="plain-syntax">] == </span><span class="character-syntax">'^'</span><span class="plain-syntax">) { </span><span class="identifier-syntax">ppos</span><span class="plain-syntax">++; *</span><span class="identifier-syntax">reverse</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { *</span><span class="identifier-syntax">reverse</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">[</span><span class="identifier-syntax">ppos</span><span class="plain-syntax">]) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'%'</span><span class="plain-syntax">:</span>
@@ -438,10 +546,11 @@ is literal.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    *</span><span class="identifier-syntax">len</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; *</span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ppos</span><span class="plain-syntax">; *</span><span class="identifier-syntax">to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ppos</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">LITERAL_CLASS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
+</pre>
+<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::test_cclass</span><button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>Regexp::test_cclass</b>:<br><a href="4-pm.html#SP11_4">&#167;11.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">chcl</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">range_from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">range_to</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">drawn_from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reverse</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::test_cclass</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="popuptext" id="usagePopup13">Usage of <b>Regexp::test_cclass</b>:<br><a href="4-pm.html#SP11_4">&#167;11.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">chcl</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">range_from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">range_to</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">drawn_from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">reverse</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">match</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">chcl</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ANY_CLASS:</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax">) </span><span class="identifier-syntax">match</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
@@ -473,11 +582,14 @@ is literal.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">reverse</span><span class="plain-syntax">) </span><span class="identifier-syntax">match</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">match</span><span class="plain-syntax">)?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">match</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Replacement. </b>And this routine conveniently handles searching and replacing. This time we
+</pre>
+<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Replacement. </b>And this routine conveniently handles searching and replacing. This time we
 can match at substrings of the <span class="extract"><span class="extract-syntax">text</span></span> (i.e., we are not forced to match
 from the start right to the end), and multiple replacements can be made.
 For example,
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">Regexp::replace</span><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"[aeiou]"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"!"</span><span class="plain-syntax">, </span><span class="constant-syntax">REP_REPEATING</span><span class="plain-syntax">);</span>
@@ -485,13 +597,15 @@ For example,
 <p class="inwebparagraph">will turn the <span class="extract"><span class="extract-syntax">text</span></span> "goose eggs" into "g!!s! !ggs".
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">REP_REPEATING</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">REP_ATSTART</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">REP_REPEATING</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">REP_ATSTART</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::replace</span><button class="popup" onclick="togglePopup('usagePopup14')">...<span class="popuptext" id="usagePopup14">Usage of <b>Regexp::replace</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">replacement</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">options</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Regexp::replace</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="popuptext" id="usagePopup14">Usage of <b>Regexp::replace</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">replacement</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">options</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">altered</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">changes</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -528,14 +642,24 @@ For example,
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">altered</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">changes</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP14_1"></a><b>&#167;14.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP14_1"></a><b>&#167;14.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Add the rest</span> <span class="named-paragraph-number">14.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">++; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">L</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">altered</span><span class="plain-syntax">, </span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">));</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP14">&#167;14</a> (twice).</li></ul><hr class="tocbar">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="4-pm.html#SP14">&#167;14</a> (twice).</li></ul>
+<hr class="tocbar">
 <ul class="toc"><li><a href="4-taa.html">Back to 'Tries and Avinues'</a></li><li><i>(This section ends Chapter 4: Text Handling.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
 

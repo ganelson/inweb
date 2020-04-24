@@ -54,6 +54,8 @@ name following the final underscore, so in this case <span class="extract"><span
 increments sequentially in definition order.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">postfix</span><span class="plain-syntax">;</span>
@@ -63,25 +65,34 @@ increments sequentially in definition order.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_observed_at</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure enumeration_set is private to this section.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>There won't be enough sets to make a hash table worth the overhead, so
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure enumeration_set is private to this section.</li></ul>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>There won't be enough sets to make a hash table worth the overhead, so
 compare all against all:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">enumeration_set</span><span class="plain-syntax"> *</span><span class="function-syntax">Enumerations::find</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Enumerations::find</b>:<br><a href="2-ec.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">post</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">enumeration_set</span><span class="plain-syntax"> *</span><span class="function-syntax">Enumerations::find</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Enumerations::find</b>:<br><a href="2-ec.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">post</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">es</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">es</span><span class="plain-syntax">, </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">post</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">postfix</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">es</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The following is called when an enumeration is found. If <span class="extract"><span class="extract-syntax">from</span></span> has a
+</pre>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The following is called when an enumeration is found. If <span class="extract"><span class="extract-syntax">from</span></span> has a
 sensible value, this is the start of a new enumeration set; otherwise it's
 a further constant in what ought to be an existing set.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Enumerations::define</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Enumerations::define</b>:<br>The Parser - <a href="2-tp.html#SP1_1_7_5_1_7">&#167;1.1.7.5.1.7</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">symbol</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Enumerations::define</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Enumerations::define</b>:<br>The Parser - <a href="2-tp.html#SP1_1_7_5_1_7">&#167;1.1.7.5.1.7</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">symbol</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pf</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Find the postfix in this symbol name</span> <span class="named-paragraph-number">3.1</span>&gt;<span class="plain-syntax">;</span>
@@ -91,13 +102,18 @@ a further constant in what ought to be an existing set.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pf</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">) </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">last_observed_at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b>So for instance <span class="extract"><span class="extract-syntax">HARRY_ST</span></span> to <span class="extract"><span class="extract-syntax">ST</span></span>:
+</pre>
+<p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b>So for instance <span class="extract"><span class="extract-syntax">HARRY_ST</span></span> to <span class="extract"><span class="extract-syntax">ST</span></span>:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Find the postfix in this symbol name</span> <span class="named-paragraph-number">3.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
@@ -107,9 +123,18 @@ a further constant in what ought to be an existing set.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">pf</span><span class="plain-syntax">, </span><span class="string-syntax">"BOGUS"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</li></ul><p class="inwebparagraph"><a id="SP3_2"></a><b>&#167;3.2.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP3_2"></a><b>&#167;3.2.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Continue existing set</span> <span class="named-paragraph-number">3.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">) {</span>
@@ -117,9 +142,18 @@ a further constant in what ought to be an existing set.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_free_value</span><span class="plain-syntax">++);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">")"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="1-pc.html#SP8" class="function-link"><span class="function-syntax">Main::error_in_web</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"this enumeration _FAMILY is unknown"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</li></ul><p class="inwebparagraph"><a id="SP3_3"></a><b>&#167;3.3.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP3_3"></a><b>&#167;3.3.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Begin new set</span> <span class="named-paragraph-number">3.3</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">) </span><a href="1-pc.html#SP8" class="function-link"><span class="function-syntax">Main::error_in_web</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"this enumeration _FAMILY already exists"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
@@ -141,13 +175,19 @@ a further constant in what ought to be an existing set.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"(%S+"</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_value</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">")"</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>For each set, a further constant is defined to give the range; for example,
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>For each set, a further constant is defined to give the range; for example,
 we would have <span class="extract"><span class="extract-syntax">NO_DEFINED_ST_VALUES</span></span> set to 3. This is notionally placed in
 the code at the last line on which an <span class="extract"><span class="extract-syntax">*_ST</span></span> value was defined.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Enumerations::define_extents</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Enumerations::define_extents</b>:<br>The Tangler - <a href="3-tt.html#SP1_1_1">&#167;1.1.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax"> *</span><span class="identifier-syntax">target</span><span class="plain-syntax">, </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lang</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Enumerations::define_extents</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Enumerations::define_extents</b>:<br>The Tangler - <a href="3-tt.html#SP1_1_1">&#167;1.1.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax"> *</span><span class="identifier-syntax">target</span><span class="plain-syntax">, </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lang</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">es</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">es</span><span class="plain-syntax">, </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">symbol</span><span class="plain-syntax">);</span>
@@ -162,7 +202,8 @@ the code at the last line on which an <span class="extract"><span class="extract
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">value</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><a href="2-tgs.html">Back to 'Tags'</a></li><li><a href="2-pn.html">Continue with 'Paragraph Numbering'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 

@@ -58,13 +58,18 @@ need to be cross-referenced in their woven form, so that readers can easily
 turn from one to another.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Those curious to see what a colony of 110,000,000 spiders might be like
 to walk through should see Albert Greene et al., "An Immense Concentration of
 Orb-Weaving Spiders With Communal Webbing in a Man-Made Structural Habitat
 (Arachnida: Araneae: Tetragnathidae, Araneidae)", American Entomologist
 (Fall 2010), at: <a href="https://www.entsoc.org/PDF/2010/Orb-weaving-spiders.pdf" class="external">https://www.entsoc.org/PDF/2010/Orb-weaving-spiders.pdf</a>
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>So, then, a colony is really just a membership list:
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>So, then, a colony is really just a membership list:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">colony</span><span class="plain-syntax"> {</span>
@@ -74,7 +79,11 @@ Orb-Weaving Spiders With Communal Webbing in a Man-Made Structural Habitat
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">patterns_path</span><span class="plain-syntax">; </span><span class="comment"> where additional patterns live</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">colony</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure colony is private to this section.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Each member is represented by an instance of the following. Note the <span class="extract"><span class="extract-syntax">loaded</span></span>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure colony is private to this section.</li></ul>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Each member is represented by an instance of the following. Note the <span class="extract"><span class="extract-syntax">loaded</span></span>
 field: this holds metadata on the web/module in question. (Recall that a module
 is really just a web that doesn't tangle to an independent program but to a
 library of code: for almost all purposes, it's a web.) But for efficiency's
@@ -84,6 +93,8 @@ sake, we read this metadata only on demand.
 <p class="inwebparagraph">Note that the <span class="extract"><span class="extract-syntax">path</span></span> might be either the name of a single-file web, or of a
 directory holding a multi-section web.
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">colony_member</span><span class="plain-syntax"> {</span>
@@ -99,10 +110,16 @@ directory holding a multi-section web.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">breadcrumb_tail</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">breadcrumb_request</span></span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">colony_member</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure colony_member is accessed in 2/trs, 1/cnf, 1/ts, 3/tc, 5/wt, 6/rw and here.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And the following reads a colony file <span class="extract"><span class="extract-syntax">F</span></span> and produces a suitable <span class="extract"><span class="extract-syntax">colony</span></span>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure colony_member is accessed in 2/trs, 1/cnf, 1/ts, 3/tc, 5/wt, 6/rw and here.</li></ul>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And the following reads a colony file <span class="extract"><span class="extract-syntax">F</span></span> and produces a suitable <span class="extract"><span class="extract-syntax">colony</span></span>
 object from it. This, for example, is the colony file for the Inweb repository
 at GitHub:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">home: inweb/docs</span>
@@ -124,7 +141,10 @@ at GitHub:
 
 <span class="plain-syntax">web: "intest" at "intest" in "intest/docs"</span>
 <span class="plain-syntax">web: "inform" at "inform/docs/docs-src/index.inweb" in "inform/docs"</span>
-</pre><pre class="displayed-code all-displayed-code">
+</pre>
+<p class="inwebparagraph"></p>
+
+<pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">colony_reader_state</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">province</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nav</span><span class="plain-syntax">;</span>
@@ -132,7 +152,7 @@ at GitHub:
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">colony_reader_state</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::load</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Colonies::load</b>:<br>Configuration - <a href="1-cnf.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::load</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Colonies::load</b>:<br>Configuration - <a href="1-cnf.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">colony</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">members</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">colony_member</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">home</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"docs"</span><span class="plain-syntax">;</span>
@@ -146,11 +166,17 @@ at GitHub:
 <span class="plain-syntax">    </span><a href="../foundation-module/4-tf.html#SP5" class="function-link"><span class="function-syntax">TextFiles::read</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="string-syntax">"can't open colony file"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">, </span><a href="6-cln.html#SP5" class="function-link"><span class="function-syntax">Colonies::read_line</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) &amp;</span><span class="identifier-syntax">crs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>The structure colony_reader_state is accessed in 1/ts, 3/tc, 5/fm, 5/tf, 5/hf, 5/rtt and here.</li></ul><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Lines from the colony file are fed, one by one, into:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure colony_reader_state is accessed in 1/ts, 3/tc, 5/fm, 5/tf, 5/hf, 5/rtt and here.</li></ul>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Lines from the colony file are fed, one by one, into:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::read_line</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Colonies::read_line</b>:<br><a href="6-cln.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">v_crs</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::read_line</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Colonies::read_line</b>:<br><a href="6-cln.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">v_crs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">colony_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crs</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">colony_reader_state</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">v_crs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax"> = </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">province</span><span class="plain-syntax">;</span>
 
@@ -212,12 +238,15 @@ at GitHub:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>"Breadcrumbs" are the chain of links in a horizontal list at the top of
+</pre>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>"Breadcrumbs" are the chain of links in a horizontal list at the top of
 the page, and this requests one.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::add_crumb</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Colonies::add_crumb</b>:<br><a href="6-cln.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::add_crumb</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Colonies::add_crumb</b>:<br><a href="6-cln.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"\"(%c*?)\""</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::in_text_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"each crumb must be in double-quotes"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
@@ -235,7 +264,7 @@ the page, and this requests one.
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::request_breadcrumb</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Colonies::request_breadcrumb</b>:<br>Configuration - <a href="1-cnf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::request_breadcrumb</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>Colonies::request_breadcrumb</b>:<br>Configuration - <a href="1-cnf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">BR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%c*?): *(%c*)"</span><span class="plain-syntax">)) {</span>
@@ -250,7 +279,7 @@ the page, and this requests one.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">BR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::drop_initial_breadcrumbs</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>Colonies::drop_initial_breadcrumbs</b>:<br>The Collater - <a href="3-tc.html#SP5_1_8_3">&#167;5.1.8.3</a>&lt;br&gt;HTML Formats - <a href="5-hf.html#SP9_2">&#167;9.2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crumbs</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::drop_initial_breadcrumbs</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>Colonies::drop_initial_breadcrumbs</b>:<br>The Collater - <a href="3-tc.html#SP5_1_8_3">&#167;5.1.8.3</a>&lt;br&gt;HTML Formats - <a href="5-hf.html#SP6_2">&#167;6.2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crumbs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">BR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">BR</span><span class="plain-syntax">, </span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">, </span><span class="identifier-syntax">crumbs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
@@ -260,7 +289,7 @@ the page, and this requests one.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::write_breadcrumb</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Colonies::write_breadcrumb</b>:<br>HTML Formats - <a href="5-hf.html#SP9_2">&#167;9.2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::write_breadcrumb</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>Colonies::write_breadcrumb</b>:<br>HTML Formats - <a href="5-hf.html#SP6_2">&#167;6.2</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">link</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"li"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/5-htm.html#SP15" class="function-link"><span class="function-syntax">HTML::begin_link</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">link</span><span class="plain-syntax">);</span>
@@ -275,12 +304,18 @@ the page, and this requests one.
 <span class="plain-syntax">        </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"li"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>The structure breadcrumb_request is private to this section.</li></ul><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Searching. </b>Given a name <span class="extract"><span class="extract-syntax">T</span></span>, we try to find a colony member of that name, returning the
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure breadcrumb_request is private to this section.</li></ul>
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Searching. </b>Given a name <span class="extract"><span class="extract-syntax">T</span></span>, we try to find a colony member of that name, returning the
 first we find.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">colony_member</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::find</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>Colonies::find</b>:<br><a href="6-cln.html#SP10_1">&#167;10.1</a>, <a href="6-cln.html#SP10_2">&#167;10.2</a>, <a href="6-cln.html#SP11">&#167;11</a>, Configuration - <a href="1-cnf.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">colony_member</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::find</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>Colonies::find</b>:<br><a href="6-cln.html#SP10_1">&#167;10.1</a>, <a href="6-cln.html#SP10_2">&#167;10.2</a>, <a href="6-cln.html#SP11">&#167;11</a>, Configuration - <a href="1-cnf.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">colony</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">colony_member</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CM</span><span class="plain-syntax">;</span>
@@ -290,31 +325,49 @@ first we find.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>And this is where we find the web metadata for a colony member. It's a
+</pre>
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>And this is where we find the web metadata for a colony member. It's a
 more subtle business than first appears, because maybe the colony member is
 already in Inweb's memory (because it is the web being woven, or is a module
 imported by that web even if not now being woven). If it is, we want to use
 the data we already have; but if not, we read it in.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::as_module</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>Colonies::as_module</b>:<br><a href="6-cln.html#SP10_1">&#167;10.1</a>, <a href="6-cln.html#SP10_2">&#167;10.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">colony_member</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CM</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="reserved-syntax">web_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::as_module</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>Colonies::as_module</b>:<br><a href="6-cln.html#SP10_1">&#167;10.1</a>, <a href="6-cln.html#SP10_2">&#167;10.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">colony_member</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CM</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="reserved-syntax">web_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Perhaps the web being woven</span> <span class="named-paragraph-number">8.1</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Perhaps a module imported by the web being woven</span> <span class="named-paragraph-number">8.2</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Perhaps a module not yet seen</span> <span class="named-paragraph-number">8.3</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Failing that, throw an error</span> <span class="named-paragraph-number">8.4</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_module</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP8_1"></a><b>&#167;8.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP8_1"></a><b>&#167;8.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Perhaps the web being woven</span> <span class="named-paragraph-number">8.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">) &amp;&amp; (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_module</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">)))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_2"></a><b>&#167;8.2.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP8_2"></a><b>&#167;8.2.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Perhaps a module imported by the web being woven</span> <span class="named-paragraph-number">8.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">) {</span>
@@ -323,9 +376,18 @@ the data we already have; but if not, we read it in.
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_3"></a><b>&#167;8.3.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP8_3"></a><b>&#167;8.3.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Perhaps a module not yet seen</span> <span class="named-paragraph-number">8.3</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -335,40 +397,58 @@ the data we already have; but if not, we read it in.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> = </span><a href="../foundation-module/8-ws.html#SP5" class="function-link"><span class="function-syntax">WebMetadata::get_without_modules</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP8_4"></a><b>&#167;8.4.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP8_4"></a><b>&#167;8.4.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Failing that, throw an error</span> <span class="named-paragraph-number">8.4</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">, </span><span class="string-syntax">"unable to load '%S'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="1-pc.html#SP8" class="function-link"><span class="function-syntax">Main::error_in_web</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Finally:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Finally:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::home</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Colonies::home</b>:<br>The Collater - <a href="3-tc.html#SP5_1_8_9">&#167;5.1.8.9</a>, <a href="3-tc.html#SP5_1_8_14_1_1">&#167;5.1.8.14.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::home</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>Colonies::home</b>:<br>The Collater - <a href="3-tc.html#SP5_1_8_9">&#167;5.1.8.9</a>, <a href="3-tc.html#SP5_1_8_14_1_1">&#167;5.1.8.14.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">colony</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">home</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">I</span><span class="string-syntax">"docs"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::assets_path</span><button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>Colonies::assets_path</b>:<br>The Collater - <a href="3-tc.html#SP5_1_8_14_1_1">&#167;5.1.8.14.1.1</a>&lt;br&gt;Weave Plugins - <a href="5-wp.html#SP5">&#167;5</a>, <a href="5-wp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::assets_path</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="popuptext" id="usagePopup10">Usage of <b>Colonies::assets_path</b>:<br>The Collater - <a href="3-tc.html#SP5_1_8_14_1_1">&#167;5.1.8.14.1.1</a>&lt;br&gt;Weave Plugins - <a href="5-wp.html#SP5">&#167;5</a>, <a href="5-wp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">colony</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">assets_path</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::patterns_path</span><button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>Colonies::patterns_path</b>:<br>Patterns - <a href="1-ptt.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::patterns_path</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="popuptext" id="usagePopup11">Usage of <b>Colonies::patterns_path</b>:<br>Patterns - <a href="1-ptt.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">colony</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">patterns_path</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Cross-references. </b>The following must decide what references like the following should refer to:
+</pre>
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Cross-references. </b>The following must decide what references like the following should refer to:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Chapter 3</span>
@@ -388,8 +468,10 @@ must write a title and URL for the link.
 is where the reference is made from.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::resolve_reference_in_weave</span><button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>Colonies::resolve_reference_in_weave</b>:<br><a href="6-cln.html#SP11">&#167;11</a>, The Weaver of Text - <a href="3-twot.html#SP1_5_1">&#167;1.5.1</a>, <a href="3-twot.html#SP3_2_1">&#167;3.2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::resolve_reference_in_weave</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="popuptext" id="usagePopup12">Usage of <b>Colonies::resolve_reference_in_weave</b>:<br><a href="6-cln.html#SP11">&#167;11</a>, The Weaver of Text - <a href="3-twot.html#SP1_5_1">&#167;1.5.1</a>, <a href="3-twot.html#SP3_2_1">&#167;3.2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">for_HTML_file</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">web_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">r</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
@@ -404,7 +486,7 @@ is where the reference is made from.
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">r</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::resolve_reference_in_weave_inner</span><button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>Colonies::resolve_reference_in_weave_inner</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::resolve_reference_in_weave_inner</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="popuptext" id="usagePopup13">Usage of <b>Colonies::resolve_reference_in_weave_inner</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">for_HTML_file</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">web_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from_M</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_module</span><span class="plain-syntax">):</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">module</span><span class="plain-syntax"> *</span><span class="identifier-syntax">search_M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">from_M</span><span class="plain-syntax">;</span>
@@ -439,9 +521,15 @@ is where the reference is made from.
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP10_1"></a><b>&#167;10.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP10_1"></a><b>&#167;10.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Is it the name of a member of our colony?</span> <span class="named-paragraph-number">10.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">search_CM</span><span class="plain-syntax"> = </span><a href="6-cln.html#SP7" class="function-link"><span class="function-syntax">Colonies::find</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
@@ -452,9 +540,18 @@ is where the reference is made from.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">It refers unambiguously to a single section</span> <span class="named-paragraph-number">10.5</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul><p class="inwebparagraph"><a id="SP10_2"></a><b>&#167;10.2.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP10_2"></a><b>&#167;10.2.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">If it contains a colon, does this indicate a section in a colony member?</span> <span class="named-paragraph-number">10.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
@@ -470,9 +567,18 @@ is where the reference is made from.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul><p class="inwebparagraph"><a id="SP10_3"></a><b>&#167;10.3.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP10_3"></a><b>&#167;10.3.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Is it the name of a function in the current web?</span> <span class="named-paragraph-number">10.3</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">language_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn</span><span class="plain-syntax">;</span>
@@ -484,9 +590,18 @@ is where the reference is made from.
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul><p class="inwebparagraph"><a id="SP10_4"></a><b>&#167;10.4.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP10_4"></a><b>&#167;10.4.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Is it the name of a type in the current web?</span> <span class="named-paragraph-number">10.4</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">language_type</span><span class="plain-syntax"> *</span><span class="identifier-syntax">str</span><span class="plain-syntax">;</span>
@@ -498,18 +613,36 @@ is where the reference is made from.
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul><p class="inwebparagraph"><a id="SP10_5"></a><b>&#167;10.5.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP10_5"></a><b>&#167;10.5.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">It refers unambiguously to a single section</span> <span class="named-paragraph-number">10.5</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">found_M</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"could not locate M"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">The section is a known colony member</span> <span class="named-paragraph-number">10.5.1</span>&gt;
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span>&lt;<span class="named-paragraph">The section is not in a known colony member</span> <span class="named-paragraph-number">10.5.2</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>, <a href="6-cln.html#SP10_1">&#167;10.1</a>.</li></ul><p class="inwebparagraph"><a id="SP10_5_1"></a><b>&#167;10.5.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>, <a href="6-cln.html#SP10_1">&#167;10.1</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP10_5_1"></a><b>&#167;10.5.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">The section is a known colony member</span> <span class="named-paragraph-number">10.5.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP6" class="function-link"><span class="function-syntax">Filenames::up</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">for_HTML_file</span><span class="plain-syntax">);</span>
@@ -519,15 +652,23 @@ is where the reference is made from.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">) </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::section_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">found_Sm</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bare_module_name</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="string-syntax">" (in %S)"</span><span class="plain-syntax">, </span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10_5">&#167;10.5</a>.</li></ul><p class="inwebparagraph"><a id="SP10_5_2"></a><b>&#167;10.5.2.  </b>In the absence of a colony file, Inweb can really only guess, and the
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10_5">&#167;10.5</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP10_5_2"></a><b>&#167;10.5.2.  </b>In the absence of a colony file, Inweb can really only guess, and the
 guess it makes is that modules of the current web will be woven alongside
 the main one, and suffixed by <span class="extract"><span class="extract-syntax">-module</span></span>.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">The section is not in a known colony member</span> <span class="named-paragraph-number">10.5.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">found_M</span><span class="plain-syntax"> == </span><span class="identifier-syntax">from_M</span><span class="plain-syntax">) {</span>
@@ -538,10 +679,14 @@ the main one, and suffixed by <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bare_module_name</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="string-syntax">" (in %S)"</span><span class="plain-syntax">, </span><span class="identifier-syntax">found_M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">module_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10_5">&#167;10.5</a>.</li></ul><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. URL management. </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10_5">&#167;10.5</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. URL management. </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::link_URL</span><button class="popup" onclick="togglePopup('usagePopup14')">...<span class="popuptext" id="usagePopup14">Usage of <b>Colonies::link_URL</b>:<br><a href="6-cln.html#SP6">&#167;6</a>, The Collater - <a href="3-tc.html#SP5_1_8_15">&#167;5.1.8.15</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::link_URL</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="popuptext" id="usagePopup14">Usage of <b>Colonies::link_URL</b>:<br><a href="6-cln.html#SP6">&#167;6</a>, The Collater - <a href="3-tc.html#SP5_1_8_15">&#167;5.1.8.15</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">" *//(%c+)// *"</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::reference_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
@@ -550,7 +695,7 @@ the main one, and suffixed by <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::reference_URL</span><button class="popup" onclick="togglePopup('usagePopup15')">...<span class="popuptext" id="usagePopup15">Usage of <b>Colonies::reference_URL</b>:<br>The Collater - <a href="3-tc.html#SP5_1_8_11">&#167;5.1.8.11</a>, <a href="3-tc.html#SP5_1_8_14">&#167;5.1.8.14</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::reference_URL</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="popuptext" id="usagePopup15">Usage of <b>Colonies::reference_URL</b>:<br>The Collater - <a href="3-tc.html#SP5_1_8_11">&#167;5.1.8.11</a>, <a href="3-tc.html#SP5_1_8_14">&#167;5.1.8.14</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="6-cln.html#SP10" class="function-link"><span class="function-syntax">Colonies::resolve_reference_in_weave</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
@@ -561,7 +706,7 @@ the main one, and suffixed by <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::section_URL</span><button class="popup" onclick="togglePopup('usagePopup16')">...<span class="popuptext" id="usagePopup16">Usage of <b>Colonies::section_URL</b>:<br><a href="6-cln.html#SP10_5_1">&#167;10.5.1</a>, <a href="6-cln.html#SP10_5_2">&#167;10.5.2</a>, The Collater - <a href="3-tc.html#SP5_1_8_8_1">&#167;5.1.8.8.1</a>&lt;br&gt;HTML Formats - <a href="5-hf.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">section_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Sm</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::section_URL</span><button class="popup" onclick="togglePopup('usagePopup16')"><span class="popuptext" id="usagePopup16">Usage of <b>Colonies::section_URL</b>:<br><a href="6-cln.html#SP10_5_1">&#167;10.5.1</a>, <a href="6-cln.html#SP10_5_2">&#167;10.5.2</a>, The Collater - <a href="3-tc.html#SP5_1_8_8_1">&#167;5.1.8.8.1</a>&lt;br&gt;HTML Formats - <a href="5-hf.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">section_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Sm</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Sm</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"unwoven section"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">Sm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_range</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">'/'</span><span class="plain-syntax">) || (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">' '</span><span class="plain-syntax">))</span>
@@ -571,7 +716,7 @@ the main one, and suffixed by <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">".html"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::paragraph_URL</span><button class="popup" onclick="togglePopup('usagePopup17')">...<span class="popuptext" id="usagePopup17">Usage of <b>Colonies::paragraph_URL</b>:<br><a href="6-cln.html#SP10_3">&#167;10.3</a>, <a href="6-cln.html#SP10_4">&#167;10.4</a>, The Weaver of Text - <a href="3-twot.html#SP3_3">&#167;3.3</a>&lt;br&gt;HTML Formats - <a href="5-hf.html#SP9_22">&#167;9.22</a>, <a href="5-hf.html#SP9_34">&#167;9.34</a>, <a href="5-hf.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::paragraph_URL</span><button class="popup" onclick="togglePopup('usagePopup17')"><span class="popuptext" id="usagePopup17">Usage of <b>Colonies::paragraph_URL</b>:<br><a href="6-cln.html#SP10_3">&#167;10.3</a>, <a href="6-cln.html#SP10_4">&#167;10.4</a>, The Weaver of Text - <a href="3-twot.html#SP3_3">&#167;3.3</a>&lt;br&gt;HTML Formats - <a href="5-hf.html#SP6_22">&#167;6.22</a>, <a href="5-hf.html#SP6_34">&#167;6.34</a>, <a href="5-hf.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no from file"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no para"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">under_section</span><span class="plain-syntax">;</span>
@@ -592,7 +737,7 @@ the main one, and suffixed by <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">    </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::paragraph_anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::paragraph_anchor</span><button class="popup" onclick="togglePopup('usagePopup18')">...<span class="popuptext" id="usagePopup18">Usage of <b>Colonies::paragraph_anchor</b>:<br>HTML Formats - <a href="5-hf.html#SP9_9">&#167;9.9</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::paragraph_anchor</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="popuptext" id="usagePopup18">Usage of <b>Colonies::paragraph_anchor</b>:<br>HTML Formats - <a href="5-hf.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no para"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ornament</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"P"</span><span class="plain-syntax">);</span>
@@ -601,7 +746,8 @@ the main one, and suffixed by <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">'.'</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"_"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><a href="6-rw.html">Back to 'Readme Writeme'</a></li><li><i>(This section ends Chapter 6: Extras.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
 

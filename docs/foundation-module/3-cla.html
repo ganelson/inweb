@@ -52,6 +52,8 @@ followed by an argument. Anything not part of the switches is termed
 a "bareword". For example, in
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    -log no-memory-usage -fixtime jam marmalade</span>
 </pre>
@@ -68,23 +70,25 @@ command-line switches created by Foundation itself in "Foundation".
 Switches come in five sorts:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">ACTION_CLSF</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment"> does something</span>
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">BOOLEAN_ON_CLSF</span><span class="plain-syntax"> </span><span class="comment"> sets a flag true</span>
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">BOOLEAN_OFF_CLSF</span><span class="plain-syntax"> </span><span class="comment"> sets a flag false</span>
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">NUMERICAL_CLSF</span><span class="plain-syntax"> </span><span class="comment"> sets an integer to the given value</span>
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">TEXTUAL_CLSF</span><span class="plain-syntax"> </span><span class="comment"> sets text to the given value</span>
+<pre class="definitions"><span class="definition-keyword">enum</span> <span class="constant-syntax">ACTION_CLSF</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment"> does something</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">BOOLEAN_ON_CLSF</span><span class="plain-syntax"> </span><span class="comment"> sets a flag true</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">BOOLEAN_OFF_CLSF</span><span class="plain-syntax"> </span><span class="comment"> sets a flag false</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">NUMERICAL_CLSF</span><span class="plain-syntax"> </span><span class="comment"> sets an integer to the given value</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">TEXTUAL_CLSF</span><span class="plain-syntax"> </span><span class="comment"> sets text to the given value</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Switches are also grouped, though this affects only the printout of them
 in <span class="extract"><span class="extract-syntax">-help</span></span>. Groups are enumerated thus:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">NO_CLSG</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">FOUNDATION_CLSG</span>
+<pre class="definitions"><span class="definition-keyword">enum</span> <span class="constant-syntax">NO_CLSG</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">FOUNDATION_CLSG</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">switch_id</span><span class="plain-syntax">;</span>
@@ -98,37 +102,46 @@ in <span class="extract"><span class="extract-syntax">-help</span></span>. Group
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> *</span><span class="identifier-syntax">negates</span><span class="plain-syntax">; </span><span class="comment"> relevant only for booleans</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure command_line_switch is private to this section.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>In case of a prodigious number of switches (ever tried typing <span class="extract"><span class="extract-syntax">clang -help</span></span>?),
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure command_line_switch is private to this section.</li></ul>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>In case of a prodigious number of switches (ever tried typing <span class="extract"><span class="extract-syntax">clang -help</span></span>?),
 we'll hash the switch names into the following:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls_dictionary</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The client must declare all the switches her program will make use of, not
+</pre>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The client must declare all the switches her program will make use of, not
 counting the standard set already declared by Foundation (such as <span class="extract"><span class="extract-syntax">-help</span></span>).
 A new <span class="extract"><span class="extract-syntax">*_CLSW</span></span> value should be enumerated to be the ID referring to this
 swtich, and then the client should call:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">current_switch_group</span><span class="plain-syntax"> = -1;</span>
 <span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">switch_group_names</span><span class="plain-syntax">[</span><span class="identifier-syntax">NO_DEFINED_CLSG_VALUES</span><span class="plain-syntax">+1];</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::begin_group</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>CommandLine::begin_group</b>:<br>Foundation Module - <a href="1-fm.html#SP8_5">&#167;8.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::begin_group</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>CommandLine::begin_group</b>:<br>Foundation Module - <a href="1-fm.html#SP8_5">&#167;8.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_switch_group</span><span class="plain-syntax"> == -1)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">NO_DEFINED_CLSG_VALUES</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">switch_group_names</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_switch_group</span><span class="plain-syntax"> = </span><span class="identifier-syntax">id</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">switch_group_names</span><span class="plain-syntax">[</span><span class="identifier-syntax">id</span><span class="plain-syntax">] = </span><span class="identifier-syntax">name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::end_group</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>CommandLine::end_group</b>:<br>Foundation Module - <a href="1-fm.html#SP8_5">&#167;8.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::end_group</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>CommandLine::end_group</b>:<br>Foundation Module - <a href="1-fm.html#SP8_5">&#167;8.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_switch_group</span><span class="plain-syntax"> = </span><span class="constant-syntax">NO_CLSG</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-<span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandLine::declare_switch</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>CommandLine::declare_switch</b>:<br><a href="3-cla.html#SP6">&#167;6</a>, Foundation Module - <a href="1-fm.html#SP8_5">&#167;8.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandLine::declare_switch</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>CommandLine::declare_switch</b>:<br><a href="3-cla.html#SP6">&#167;6</a>, Foundation Module - <a href="1-fm.html#SP8_5">&#167;8.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_literal</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">help_literal</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::declare_switch_p</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><a href="4-sm.html#SP4" class="function-link"><span class="function-syntax">Str::new_from_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">name_literal</span><span class="plain-syntax">), </span><span class="identifier-syntax">val</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><a href="4-sm.html#SP4" class="function-link"><span class="function-syntax">Str::new_from_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">help_literal</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
-<span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandLine::declare_switch_p</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>CommandLine::declare_switch_p</b>:<br><a href="3-cla.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandLine::declare_switch_p</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>CommandLine::declare_switch_p</b>:<br><a href="3-cla.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">help_literal</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_switch_group</span><span class="plain-syntax"> == -1) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">current_switch_group</span><span class="plain-syntax"> = </span><span class="constant-syntax">NO_CLSG</span><span class="plain-syntax">;</span>
@@ -149,15 +162,20 @@ swtich, and then the client should call:
 <span class="plain-syntax">    </span><a href="2-dct.html#SP8" class="function-link"><span class="function-syntax">Dictionaries::write_value</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cls_dictionary</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">switch_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">cls</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cls</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5_1"></a><b>&#167;5.1.  </b>When we alphabetically sort switches for the <span class="extract"><span class="extract-syntax">-help</span></span> output, we want to
+</pre>
+<p class="inwebparagraph"><a id="SP5_1"></a><b>&#167;5.1.  </b>When we alphabetically sort switches for the <span class="extract"><span class="extract-syntax">-help</span></span> output, we want to
 file, say, <span class="extract"><span class="extract-syntax">-no-verbose</span></span> immediately after <span class="extract"><span class="extract-syntax">-verbose</span></span>, not back in the N
 section. So the sorting version of <span class="extract"><span class="extract-syntax">no-verbose</span></span> is <span class="extract"><span class="extract-syntax">verbose_</span></span>.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Make the sorting name</span> <span class="named-paragraph-number">5.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">switch_sort_name</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
@@ -165,12 +183,18 @@ section. So the sorting version of <span class="extract"><span class="extract-sy
 <span class="plain-syntax">        </span><a href="4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_n_characters</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">switch_sort_name</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">switch_sort_name</span><span class="plain-syntax">, </span><span class="string-syntax">"_"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-cla.html#SP5">&#167;5</a>.</li></ul><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Booleans are automatically created in pairs, e.g., <span class="extract"><span class="extract-syntax">-destroy-world</span></span> and
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-cla.html#SP5">&#167;5</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Booleans are automatically created in pairs, e.g., <span class="extract"><span class="extract-syntax">-destroy-world</span></span> and
 <span class="extract"><span class="extract-syntax">-no-destroy-world</span></span>:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandLine::declare_boolean_switch</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>CommandLine::declare_boolean_switch</b>:<br>Foundation Module - <a href="1-fm.html#SP8_5">&#167;8.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> *</span><span class="function-syntax">CommandLine::declare_boolean_switch</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>CommandLine::declare_boolean_switch</b>:<br>Foundation Module - <a href="1-fm.html#SP8_5">&#167;8.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_literal</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">help_literal</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">active</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">        </span><a href="3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::declare_switch</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">name_literal</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="identifier-syntax">help_literal</span><span class="plain-syntax">);</span>
@@ -189,20 +213,21 @@ section. So the sorting version of <span class="extract"><span class="extract-sy
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cls</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::declare_numerical_switch</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>CommandLine::declare_numerical_switch</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::declare_numerical_switch</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>CommandLine::declare_numerical_switch</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_literal</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">help_literal</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">        </span><a href="3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::declare_switch</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">name_literal</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="identifier-syntax">help_literal</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">form</span><span class="plain-syntax"> = </span><span class="constant-syntax">NUMERICAL_CLSF</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::declare_textual_switch</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>CommandLine::declare_textual_switch</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::declare_textual_switch</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>CommandLine::declare_textual_switch</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_literal</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">help_literal</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">        </span><a href="3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::declare_switch</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">name_literal</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="identifier-syntax">help_literal</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">form</span><span class="plain-syntax"> = </span><span class="constant-syntax">TEXTUAL_CLSF</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Reading the command line. </b>Once all the switches are declared, the client calls the following routine
+</pre>
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Reading the command line. </b>Once all the switches are declared, the client calls the following routine
 in order to parse the usual C <span class="extract"><span class="extract-syntax">argc</span></span> and <span class="extract"><span class="extract-syntax">argv</span></span> pair, and take action as
 appropriate. The client passes a pointer to some structure in <span class="extract"><span class="extract-syntax">state</span></span>:
 probably a structure holding its settings variables. When we parse a
@@ -223,10 +248,12 @@ general, the client should then exit with exit code 0 if this happens.
 through the file if one has by that point been provided.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">BOGUS_CLSN</span><span class="plain-syntax"> -12345678 </span><span class="comment"> bogus because guaranteed not to be a genuine switch ID</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">BOGUS_CLSN</span><span class="plain-syntax"> -12345678 </span><span class="comment"> bogus because guaranteed not to be a genuine switch ID</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">clf_reader_state</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
@@ -236,7 +263,7 @@ through the file if one has by that point been provided.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">nrt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">clf_reader_state</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>CommandLine::read</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>CommandLine::read</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">f</span><span class="plain-syntax">)(</span><span class="reserved-syntax">int</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *), </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">g</span><span class="plain-syntax">)(</span><span class="reserved-syntax">int</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *)) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">clf_reader_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">crs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">crs</span><span class="plain-syntax">.</span><span class="element-syntax">state</span><span class="plain-syntax"> = </span><span class="identifier-syntax">state</span><span class="plain-syntax">; </span><span class="identifier-syntax">crs</span><span class="plain-syntax">.</span><span class="element-syntax">f</span><span class="plain-syntax"> = </span><span class="identifier-syntax">f</span><span class="plain-syntax">; </span><span class="identifier-syntax">crs</span><span class="plain-syntax">.</span><span class="element-syntax">g</span><span class="plain-syntax"> = </span><span class="identifier-syntax">g</span><span class="plain-syntax">;</span>
@@ -246,7 +273,7 @@ through the file if one has by that point been provided.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">crs</span><span class="plain-syntax">.</span><span class="element-syntax">subs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read_array</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>CommandLine::read_array</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">clf_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crs</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read_array</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>CommandLine::read_array</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">clf_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crs</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=1; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">argc</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">switched</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">argv</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">];</span>
@@ -267,37 +294,47 @@ through the file if one has by that point been provided.
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>The structure clf_reader_state is accessed in 2/dl, 2/mmr, 6/id, 6/sd, 8/ws and here.</li></ul><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>We can also read the "command line" from a file. The following variable
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure clf_reader_state is accessed in 2/dl, 2/mmr, 6/id, 6/sd, 8/ws and here.</li></ul>
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>We can also read the "command line" from a file. The following variable
 holds the filename to read from.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">command_line_file</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::also_read_file</span><button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>CommandLine::also_read_file</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::also_read_file</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="popuptext" id="usagePopup10">Usage of <b>CommandLine::also_read_file</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">command_line_file</span><span class="plain-syntax"> = </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>It's useful to log some of what we're reading here, so that people can tell
+</pre>
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>It's useful to log some of what we're reading here, so that people can tell
 from the debugging log what switches were actually used. But since the log
 might not exist as early as now, we have to record any log entries, and play
 them back later (i.e., when the debugging log does exist).
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">command_line_logs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::record_log</span><button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>CommandLine::record_log</b>:<br><a href="3-cla.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::record_log</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="popuptext" id="usagePopup11">Usage of <b>CommandLine::record_log</b>:<br><a href="3-cla.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">command_line_logs</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">command_line_logs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">, </span><span class="identifier-syntax">command_line_logs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::play_back_log</span><button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>CommandLine::play_back_log</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::play_back_log</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="popuptext" id="usagePopup12">Usage of <b>CommandLine::play_back_log</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">command_line_logs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">, </span><span class="identifier-syntax">command_line_logs</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"%S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>White space at start and end of lines is ignored; blank lines and those
+</pre>
+<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>White space at start and end of lines is ignored; blank lines and those
 beginning with a <span class="extract"><span class="extract-syntax">#</span></span> are ignored (but a # following other content does not
 mean a comment, so don't use trailing comments on lines); each line must
 either be a single switch like <span class="extract"><span class="extract-syntax">-no-service</span></span> or a pair like <span class="extract"><span class="extract-syntax">-connect tower11</span></span>.
@@ -306,8 +343,10 @@ is equivalent to <span class="extract"><span class="extract-syntax">-greet 'Fred
 problem with internal space characters in arguments.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read_file</span><button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>CommandLine::read_file</b>:<br><a href="3-cla.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">clf_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crs</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read_file</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="popuptext" id="usagePopup13">Usage of <b>CommandLine::read_file</b>:<br><a href="3-cla.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">clf_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">logline</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP2" class="function-link"><span class="function-syntax">Str::new</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">logline</span><span class="plain-syntax">, </span><span class="string-syntax">"Reading further switches from file: %f"</span><span class="plain-syntax">, </span><span class="identifier-syntax">command_line_file</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="3-cla.html#SP10" class="function-link"><span class="function-syntax">CommandLine::record_log</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">logline</span><span class="plain-syntax">);</span>
@@ -319,7 +358,7 @@ problem with internal space characters in arguments.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">lastline</span><span class="plain-syntax">, </span><span class="string-syntax">"Completed expert settings file"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="3-cla.html#SP10" class="function-link"><span class="function-syntax">CommandLine::record_log</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lastline</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read_file_helper</span><button class="popup" onclick="togglePopup('usagePopup14')">...<span class="popuptext" id="usagePopup14">Usage of <b>CommandLine::read_file_helper</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read_file_helper</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="popuptext" id="usagePopup14">Usage of <b>CommandLine::read_file_helper</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">clf_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crs</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">clf_reader_state</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="4-sm.html#SP23" class="function-link"><span class="function-syntax">Str::is_whitespace</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">)) || (</span><a href="4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">" *#%c*"</span><span class="plain-syntax">))) {</span>
@@ -348,15 +387,18 @@ problem with internal space characters in arguments.
 <span class="plain-syntax">    </span><a href="4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read_one</span><button class="popup" onclick="togglePopup('usagePopup15')">...<span class="popuptext" id="usagePopup15">Usage of <b>CommandLine::read_one</b>:<br><a href="3-cla.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">clf_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crs</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">opt</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read_one</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="popuptext" id="usagePopup15">Usage of <b>CommandLine::read_one</b>:<br><a href="3-cla.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">clf_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crs</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">opt</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    (*(</span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">g</span><span class="plain-syntax">))(</span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nrt</span><span class="plain-syntax">++, </span><span class="identifier-syntax">opt</span><span class="plain-syntax">, </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">state</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">subs</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>We also allow <span class="extract"><span class="extract-syntax">-setting=X</span></span> as equivalent to <span class="extract"><span class="extract-syntax">-setting X</span></span>.
+</pre>
+<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>We also allow <span class="extract"><span class="extract-syntax">-setting=X</span></span> as equivalent to <span class="extract"><span class="extract-syntax">-setting X</span></span>.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read_pair</span><button class="popup" onclick="togglePopup('usagePopup16')">...<span class="popuptext" id="usagePopup16">Usage of <b>CommandLine::read_pair</b>:<br><a href="3-cla.html#SP8">&#167;8</a>, <a href="3-cla.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">clf_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crs</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">opt</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read_pair</span><button class="popup" onclick="togglePopup('usagePopup16')"><span class="popuptext" id="usagePopup16">Usage of <b>CommandLine::read_pair</b>:<br><a href="3-cla.html#SP8">&#167;8</a>, <a href="3-cla.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">clf_reader_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crs</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">opt</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">opt_p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">opt_val</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">opt_p</span><span class="plain-syntax">, </span><span class="identifier-syntax">opt</span><span class="plain-syntax">);</span>
@@ -376,11 +418,14 @@ problem with internal space characters in arguments.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">opt_val</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>So at this point we have definitely found what looks like a switch:
+</pre>
+<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>So at this point we have definitely found what looks like a switch:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read_pair_p</span><button class="popup" onclick="togglePopup('usagePopup17')">...<span class="popuptext" id="usagePopup17">Usage of <b>CommandLine::read_pair_p</b>:<br><a href="3-cla.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">opt</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">opt_val</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::read_pair_p</span><button class="popup" onclick="togglePopup('usagePopup17')"><span class="popuptext" id="usagePopup17">Usage of <b>CommandLine::read_pair_p</b>:<br><a href="3-cla.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">opt</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">opt_val</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">f</span><span class="plain-syntax">)(</span><span class="reserved-syntax">int</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *), </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">substantive</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-dct.html#SP5" class="function-link"><span class="function-syntax">Dictionaries::find</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cls_dictionary</span><span class="plain-syntax">, </span><span class="identifier-syntax">opt</span><span class="plain-syntax">) == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -405,14 +450,19 @@ problem with internal space characters in arguments.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">innocuous</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">substantive</span><span class="plain-syntax">)) *</span><span class="identifier-syntax">substantive</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">valency</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP13_1"></a><b>&#167;13.1.  </b>The common set of switches declared by Foundation are all handled here;
+</pre>
+<p class="inwebparagraph"><a id="SP13_1"></a><b>&#167;13.1.  </b>The common set of switches declared by Foundation are all handled here;
 all other switches are delegated to the client's callback function <span class="extract"><span class="extract-syntax">f</span></span>.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Take action on what is now definitely a switch</span> <span class="named-paragraph-number">13.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">switch_id</span><span class="plain-syntax">) {</span>
@@ -452,9 +502,18 @@ all other switches are delegated to the client's callback function <span class="
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-cla.html#SP13">&#167;13</a>.</li></ul><p class="inwebparagraph"><a id="SP13_1_1"></a><b>&#167;13.1.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-cla.html#SP13">&#167;13</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP13_1_1"></a><b>&#167;13.1.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Parse debugging log inclusion</span> <span class="named-paragraph-number">13.1.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-dl.html#SP5" class="function-link"><span class="function-syntax">Log::get_debug_log_filename</span></a><span class="plain-syntax">() == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
@@ -466,7 +525,11 @@ all other switches are delegated to the client's callback function <span class="
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="2-dl.html#SP5" class="function-link"><span class="function-syntax">Log::open</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-dl.html#SP9" class="function-link"><span class="function-syntax">Log::set_aspect_from_command_line</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-cla.html#SP13_1">&#167;13.1</a>.</li></ul><p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Help text. </b>That just leaves the following, which implements the <span class="extract"><span class="extract-syntax">-help</span></span> switch. It
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-cla.html#SP13_1">&#167;13.1</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Help text. </b>That just leaves the following, which implements the <span class="extract"><span class="extract-syntax">-help</span></span> switch. It
 alphabetically sorts the switches, and prints out a list of them as grouped,
 with ungrouped switches as the top paragraph and Foundation switches as the
 bottom one. (Those are the dull ones.)
@@ -476,14 +539,16 @@ bottom one. (Those are the dull ones.)
 a brief description of the tool's name and purpose.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls_heading</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::declare_heading</span><button class="popup" onclick="togglePopup('usagePopup18')">...<span class="popuptext" id="usagePopup18">Usage of <b>CommandLine::declare_heading</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">heading_text_literal</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::declare_heading</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="popuptext" id="usagePopup18">Usage of <b>CommandLine::declare_heading</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">heading_text_literal</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">cls_heading</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP4" class="function-link"><span class="function-syntax">Str::new_from_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">heading_text_literal</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::write_help</span><button class="popup" onclick="togglePopup('usagePopup19')">...<span class="popuptext" id="usagePopup19">Usage of <b>CommandLine::write_help</b>:<br><a href="3-cla.html#SP13_1">&#167;13.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::write_help</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="popuptext" id="usagePopup19">Usage of <b>CommandLine::write_help</b>:<br><a href="3-cla.html#SP13_1">&#167;13.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">max</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">cls</span><span class="plain-syntax">, </span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax">) {</span>
@@ -507,9 +572,15 @@ a brief description of the tool's name and purpose.
 
 <span class="plain-syntax">    </span><a href="2-mmr.html#SP27" class="function-link"><span class="function-syntax">Memory::I7_free</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sorted_table</span><span class="plain-syntax">, </span><span class="constant-syntax">CLS_SORTING_MREASON</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">*((</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> *)));</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP14_1"></a><b>&#167;14.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP14_1"></a><b>&#167;14.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Show options in alphabetical order</span> <span class="named-paragraph-number">14.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">new_para_needed</span><span class="plain-syntax">) {</span>
@@ -542,15 +613,20 @@ a brief description of the tool's name and purpose.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="3-cla.html#SP14">&#167;14</a> (three times).</li></ul><p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="3-cla.html#SP14">&#167;14</a> (three times).</li></ul>
+<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::compare_names</span><button class="popup" onclick="togglePopup('usagePopup20')">...<span class="popuptext" id="usagePopup20">Usage of <b>CommandLine::compare_names</b>:<br><a href="3-cla.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ent1</span><span class="plain-syntax">, </span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ent2</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::compare_names</span><button class="popup" onclick="togglePopup('usagePopup20')"><span class="popuptext" id="usagePopup20">Usage of <b>CommandLine::compare_names</b>:<br><a href="3-cla.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ent1</span><span class="plain-syntax">, </span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ent2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tx1</span><span class="plain-syntax"> = (*((</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> **) </span><span class="identifier-syntax">ent1</span><span class="plain-syntax">))-&gt;</span><span class="element-syntax">switch_sort_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tx2</span><span class="plain-syntax"> = (*((</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> **) </span><span class="identifier-syntax">ent2</span><span class="plain-syntax">))-&gt;</span><span class="element-syntax">switch_sort_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-sm.html#SP20" class="function-link"><span class="function-syntax">Str::cmp_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tx1</span><span class="plain-syntax">, </span><span class="identifier-syntax">tx2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><a href="3-em.html">Back to 'Error Messages'</a></li><li><a href="3-pth.html">Continue with 'Pathnames'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 

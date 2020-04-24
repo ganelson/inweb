@@ -25,18 +25,11 @@ void HTMLFormat::create(void) {
 To keep track of what we're writing, we store the renderer state in an
 instance of this:
 
-@d OUTSIDE_HRS 1 /* write position in HTML file is currently outside of p, pre, li */
-@d INSIDE_P_HRS 2 /* write position in HTML file is currently outside p */
-@d INSIDE_PRE_HRS 3 /* write position in HTML file is currently outside pre */
-@d INSIDE_UL_HRS 4 /* write position in HTML file is currently outside li */
-
 =
 typedef struct HTML_render_state {
 	struct text_stream *OUT;
 	struct filename *into_file;
 	struct weave_order *wv;
-	int position; /* one of the position constants above */
-	int item_depth; /* how many itemised lists we're nested inside */
 	struct colour_scheme *colours;
 	int EPUB_flag;
 	int popup_counter;
@@ -56,8 +49,6 @@ HTML_render_state HTMLFormat::initial_state(text_stream *OUT, weave_order *wv,
 	hrs.into_file = into;
 	hrs.wv = wv;
 	hrs.EPUB_flag = EPUB_mode;
-	hrs.position = OUTSIDE_HRS;
-	hrs.item_depth = 0;
 	hrs.popup_counter = 1;
 	hrs.last_material_seen = -1;
 	hrs.carousel_number = 1;
@@ -91,67 +82,6 @@ void HTMLFormat::render_inner(weave_format *self, text_stream *OUT, heterogeneou
 	if (EPUB_mode)
 		Epub::note_page(C->wv->weave_web->as_ebook, C->wv->weave_to, C->wv->booklet_title, I"");
 	HTML::completed(OUT);
-}
-
-@ =
-void HTMLFormat::p(HTML_render_state *hrs, char *class) {
-	text_stream *OUT = hrs->OUT;
-	if (class) HTML_OPEN_WITH("p", "class=\"%s\"", class)
-	else HTML_OPEN("p");
-	hrs->position = INSIDE_P_HRS;
-}
-
-void HTMLFormat::cp(HTML_render_state *hrs) {
-	text_stream *OUT = hrs->OUT;
-	HTML_CLOSE("p"); WRITE("\n");
-	hrs->position = OUTSIDE_HRS;
-}
-
-void HTMLFormat::pre(HTML_render_state *hrs, char *class) {
-	text_stream *OUT = hrs->OUT;
-	if (class) HTML_OPEN_WITH("pre", "class=\"%s\"", class)
-	else HTML_OPEN("pre");
-	WRITE("\n"); INDENT;
-	hrs->position = INSIDE_PRE_HRS;
-}
-
-void HTMLFormat::cpre(HTML_render_state *hrs) {
-	text_stream *OUT = hrs->OUT;
-	OUTDENT; HTML_CLOSE("pre"); WRITE("\n");
-	hrs->position = OUTSIDE_HRS;
-}
-
-@ Depth 1 means "inside a list entry"; depth 2, "inside an entry of a list
-which is itself inside a list entry"; and so on.
-
-=
-void HTMLFormat::go_to_depth(HTML_render_state *hrs, int depth) {
-	text_stream *OUT = hrs->OUT;
-	if (hrs->item_depth == depth) {
-		HTML_CLOSE("li");
-	} else {
-		while (hrs->item_depth < depth) {
-			HTML_OPEN_WITH("ul", "class=\"items\""); hrs->item_depth++;
-		}
-		while (hrs->item_depth > depth) {
-			HTML_CLOSE("li");
-			HTML_CLOSE("ul");
-			WRITE("\n"); hrs->item_depth--;
-		}
-	}
-	if (depth > 0) HTML_OPEN("li");
-}
-
-@ The following generically gets us out of whatever we're currently into:
-
-=
-void HTMLFormat::exit_current_paragraph(HTML_render_state *hrs) {
-	switch (hrs->position) {
-		case INSIDE_P_HRS: HTMLFormat::cp(hrs); break;
-		case INSIDE_PRE_HRS: HTMLFormat::cpre(hrs); break;
-	}
-	if (hrs->item_depth > 0) HTMLFormat::go_to_depth(hrs, 0);
-	hrs->position = OUTSIDE_HRS; hrs->item_depth = 0;
 }
 
 @h Methods.
@@ -209,7 +139,6 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 @<Render head@> =
 	weave_head_node *C = RETRIEVE_POINTER_weave_head_node(N->content);
 	HTML::comment(OUT, C->banner);
-	hrs->position = OUTSIDE_HRS;
 
 @<Render header@> =
 	weave_section_header_node *C = RETRIEVE_POINTER_weave_section_header_node(N->content);
@@ -238,7 +167,6 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 
 @<Render footer@> =
 	weave_section_footer_node *C = RETRIEVE_POINTER_weave_section_footer_node(N->content);
-	HTMLFormat::exit_current_paragraph(hrs);
 	HTMLFormat::tail(hrs->wv->format, OUT, hrs->wv, C->sect);
 
 @<Render tail@> =
@@ -247,18 +175,17 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 
 @<Render purpose@> =
 	weave_section_purpose_node *C = RETRIEVE_POINTER_weave_section_purpose_node(N->content);
-	HTMLFormat::exit_current_paragraph(hrs);
-	HTMLFormat::p(hrs, "purpose");
-	WRITE("%S", C->purpose);
-	HTMLFormat::cp(hrs);
+	HTML_OPEN_WITH("p", "class=\"purpose\"");
+	HTMLFormat::escape_text(OUT, C->purpose);
+	HTML_CLOSE("p"); WRITE("\n");
 
 @<Render subheading@> =
 	weave_subheading_node *C = RETRIEVE_POINTER_weave_subheading_node(N->content);
-	HTMLFormat::exit_current_paragraph(hrs);
-	HTML::heading(OUT, "h3", C->text);
+	HTML_OPEN("h3");
+	HTMLFormat::escape_text(OUT, C->text);
+	HTML_CLOSE("h3"); WRITE("\n");
 
 @<Render bar@> =
-	HTMLFormat::exit_current_paragraph(hrs);
 	HTML::hr(OUT, NULL);
 
 @<Render pagebreak@> =
@@ -267,18 +194,12 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 @<Render paragraph heading@> =
 	weave_paragraph_heading_node *C = RETRIEVE_POINTER_weave_paragraph_heading_node(N->content);
 	paragraph *P = C->para;
-	HTMLFormat::exit_current_paragraph(hrs);
 	if (P == NULL) internal_error("no para");
-	HTMLFormat::p(hrs, "inwebparagraph");
-	TEMPORARY_TEXT(TEMP)
-	Colonies::paragraph_anchor(TEMP, P);
-	HTML::anchor(OUT, TEMP);
-	DISCARD_TEXT(TEMP)
-	HTML_OPEN("b");
-	WRITE("%s%S", (Str::get_first_char(P->ornament) == 'S')?"&#167;":"&para;",
-		P->paragraph_number);
-	WRITE(". %S%s ", P->heading_text, (Str::len(P->heading_text) > 0)?".":"");
-	HTML_CLOSE("b");
+	if (N->child == NULL) {
+		HTML_OPEN_WITH("p", "class=\"inwebparagraph\"");
+		HTMLFormat::paragraph_number(OUT, P);
+		HTML_CLOSE("p");
+	}
 
 @<Render endnote@> =
 	HTML_OPEN("li");
@@ -289,7 +210,6 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 
 @<Render figure@> =
 	weave_figure_node *C = RETRIEVE_POINTER_weave_figure_node(N->content);
-	HTMLFormat::exit_current_paragraph(hrs);
 	filename *F = Filenames::in(
 		Pathnames::down(hrs->wv->weave_web->md->path_to_web, I"Figures"),
 		C->figname);
@@ -302,14 +222,16 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 
 @<Render material@> =
 	if (N->child) {
-		int first_in_para = FALSE;
-		if (N == N->parent->child) first_in_para = TRUE;
+		paragraph *first_in_para = NULL;
+		if ((N == N->parent->child) && (N->parent->type == weave_paragraph_heading_node_type)) {
+			weave_paragraph_heading_node *C =
+				RETRIEVE_POINTER_weave_paragraph_heading_node(N->parent->content);
+			first_in_para = C->para;
+		}
 		weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
 		switch (C->material_type) {
 			case CODE_MATERIAL:
-				if (first_in_para) {
-					HTMLFormat::cp(hrs);
-				}
+				@<Material is not in a p tag@>;
 				if (C->styling) {
 					TEMPORARY_TEXT(csname);
 					WRITE_TO(csname, "%S-Colours", C->styling->language_name);
@@ -325,59 +247,99 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 				DISCARD_TEXT(cl);
 				break;
 			case REGULAR_MATERIAL:
-				if (first_in_para == FALSE) {
-					WRITE("\n");
-					HTMLFormat::p(hrs,"inwebparagraph");
-				}
 				break;
 			case FOOTNOTES_MATERIAL:
+				@<Material is not in a p tag@>;
 				HTML_OPEN_WITH("ul", "class=\"footnotetexts\"");
 				break;
 			case ENDNOTES_MATERIAL:
+				@<Material is not in a p tag@>;
 				HTML_OPEN_WITH("ul", "class=\"endnotetexts\"");
 				break;
 			case MACRO_MATERIAL:
-				if (first_in_para == FALSE) {
-					WRITE("\n");
-					HTMLFormat::p(hrs,"macrodefinition");
-				}
+				@<Material is not in a p tag@>;
 				HTML_OPEN_WITH("code", "class=\"display\"");
 				WRITE("\n");
 				break;
 			case DEFINITION_MATERIAL:
-				if (first_in_para) {
-					HTMLFormat::cp(hrs);
-				}
-				WRITE("\n");
-				HTMLFormat::pre(hrs, "definitions");
+				@<Material is not in a p tag@>;
+				HTML_OPEN_WITH("pre", "class=\"definitions\"");
 				break;
 		}
-		for (tree_node *M = N->child; M; M = M->next)
-			Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
+		if (C->material_type == REGULAR_MATERIAL)
+			@<Render the regular material@>
+		else 
+			for (tree_node *M = N->child; M; M = M->next)
+				Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
 		switch (C->material_type) {
 			case CODE_MATERIAL:
-				WRITE("</pre>");
+				HTML_CLOSE("pre"); WRITE("\n");
 				break;
 			case REGULAR_MATERIAL:
-				HTMLFormat::cp(hrs);
 				break;
 			case ENDNOTES_MATERIAL:
-				HTML_CLOSE("ul");
+				HTML_CLOSE("ul"); WRITE("\n");
 				break;
 			case FOOTNOTES_MATERIAL:
-				HTML_CLOSE("ul");
+				HTML_CLOSE("ul"); WRITE("\n");
 				break;
 			case MACRO_MATERIAL:
-				HTML_CLOSE("code");
-				HTMLFormat::cp(hrs);
+				HTML_CLOSE("code"); WRITE("\n");
+				HTML_CLOSE("p"); WRITE("\n");
 				break;
 			case DEFINITION_MATERIAL:
-				HTMLFormat::cpre(hrs);
+				HTML_CLOSE("pre"); WRITE("\n");
 				break;
 		}
 		hrs->last_material_seen = C->material_type;
 	}
 	return FALSE;
+
+@<Material is in a p tag@> =
+	HTML_OPEN_WITH("p", "class=\"inwebparagraph\"");
+	if (first_in_para) HTMLFormat::paragraph_number(OUT, first_in_para);
+
+@<Material is not in a p tag@> =
+	HTML_OPEN_WITH("p", "class=\"inwebparagraph\"");
+	if (first_in_para) HTMLFormat::paragraph_number(OUT, first_in_para);
+	HTML_CLOSE("p"); WRITE("\n");
+
+@<Render the regular material@> =
+	int item_depth = 0;
+	for (tree_node *M = N->child; M; M = M->next) {
+		if (M->type == weave_item_node_type) {
+			weave_item_node *C = RETRIEVE_POINTER_weave_item_node(M->content);
+			HTMLFormat::go_to_depth(hrs, item_depth, C->depth);
+			Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
+			continue;
+		}
+		if (HTMLFormat::interior_material(M)) @<Render a run of interior matter@>;
+		if (item_depth > 0) {
+			HTMLFormat::go_to_depth(hrs, item_depth, 0);
+			item_depth = 0;
+		}
+		if (M->type == weave_vskip_node_type) continue;
+		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
+	}
+	if (item_depth > 0) {
+		HTMLFormat::go_to_depth(hrs, item_depth, 0);
+		item_depth = 0;
+	}
+
+@<Render a run of interior matter@> =
+	if (item_depth == 0)
+		HTML_OPEN_WITH("p", "class=\"inwebparagraph\"");
+	if (first_in_para) {
+		HTMLFormat::paragraph_number(OUT, first_in_para);
+		first_in_para = NULL;
+	}
+	while (M) {
+		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
+		if ((M->next == NULL) || (HTMLFormat::interior_material(M->next) == FALSE)) break;
+		M = M->next;
+	}
+	if (item_depth == 0) { HTML_CLOSE("p"); WRITE("\n"); }
+	continue;
 
 @ This has to embed some Internet-sourced content. |service|
 here is something like |YouTube| or |Soundcloud|, and |ID| is whatever code
@@ -389,7 +351,6 @@ that service uses to identify the video/audio in question.
 	text_stream *CW = I"720";
 	if (C->w > 0) { Str::clear(CW); WRITE_TO(CW, "%d", C->w); }
 	if (C->h > 0) { Str::clear(CH); WRITE_TO(CH, "%d", C->h); }
-	HTMLFormat::exit_current_paragraph(hrs);
 	TEMPORARY_TEXT(embed_leaf);
 	WRITE_TO(embed_leaf, "%S.html", C->service);
 	filename *F = Patterns::find_asset(hrs->wv->pattern, I"Embedding", embed_leaf);
@@ -411,13 +372,7 @@ that service uses to identify the video/audio in question.
 	HTMLFormat::para_macro(hrs->wv->format, OUT, hrs->wv, C->pmac, C->defn);
 
 @<Render vskip@> =
-	weave_vskip_node *C = RETRIEVE_POINTER_weave_vskip_node(N->content);
-	if (C->in_comment) {
-		HTMLFormat::exit_current_paragraph(hrs);
-		HTMLFormat::p(hrs,"inwebparagraph");
-	} else {
-		WRITE("\n");
-	}
+	WRITE("\n");
 
 @<Render section@> =
 	weave_section_node *C = RETRIEVE_POINTER_weave_section_node(N->content);
@@ -509,7 +464,6 @@ that service uses to identify the video/audio in question.
 		WRITE("<div class=\"%S\">%S</div>\n", caption_class, C->caption);
 
 @<Render toc@> =
-	HTMLFormat::exit_current_paragraph(hrs);
 	HTML_OPEN_WITH("ul", "class=\"toc\"");
 	for (tree_node *M = N->child; M; M = M->next) {
 		HTML_OPEN("li");
@@ -577,11 +531,10 @@ that service uses to identify the video/audio in question.
 
 @<Render display line@> =
 	weave_display_line_node *C = RETRIEVE_POINTER_weave_display_line_node(N->content);
-	HTMLFormat::exit_current_paragraph(hrs);
 	HTML_OPEN("blockquote"); WRITE("\n"); INDENT;
-	HTMLFormat::p(hrs, NULL);
-	WRITE("%S", C->text);
-	HTMLFormat::cp(hrs);
+	HTML_OPEN("p");
+	HTMLFormat::escape_text(OUT, C->text);
+	HTML_CLOSE("p");
 	OUTDENT; HTML_CLOSE("blockquote"); WRITE("\n");
 
 @<Render function defn@> =
@@ -591,7 +544,6 @@ that service uses to identify the video/audio in question.
 	WRITE("%S", C->fn->function_name);
 	WRITE("</span>");
 	WRITE("<button class=\"popup\" onclick=\"togglePopup('usagePopup%d')\">", hrs->popup_counter);
-	WRITE("...");
 	WRITE("<span class=\"popuptext\" id=\"usagePopup%d\">Usage of <b>%S</b>:<br>",
 		hrs->popup_counter, C->fn->function_name);
 	for (tree_node *M = N->child; M; M = M->next)
@@ -603,9 +555,6 @@ that service uses to identify the video/audio in question.
 
 @<Render item@> =
 	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
-	if (hrs->position != INSIDE_UL_HRS) HTMLFormat::exit_current_paragraph(hrs);
-	HTMLFormat::go_to_depth(hrs, C->depth);
-	hrs->position = INSIDE_UL_HRS;
 	if (Str::len(C->label) > 0) WRITE("(%S) ", C->label);
 	else WRITE(" ");
 
@@ -649,6 +598,51 @@ that service uses to identify the video/audio in question.
 
 @<Render nothing@> =
 	;
+
+@ =
+int HTMLFormat::interior_material(tree_node *N) {
+	if (N->type == weave_commentary_node_type) return TRUE;
+	if (N->type == weave_url_node_type) return TRUE;
+	if (N->type == weave_inline_node_type) return TRUE;
+	if (N->type == weave_locale_node_type) return TRUE;
+	if (N->type == weave_maths_node_type) return TRUE;
+	if (N->type == weave_footnote_cue_node_type) return TRUE;
+	return FALSE;
+}
+
+@ Depth 1 means "inside a list entry"; depth 2, "inside an entry of a list
+which is itself inside a list entry"; and so on.
+
+=
+void HTMLFormat::go_to_depth(HTML_render_state *hrs, int from_depth, int to_depth) {
+	text_stream *OUT = hrs->OUT;
+	if (from_depth == to_depth) {
+		HTML_CLOSE("li");
+	} else {
+		while (from_depth < to_depth) {
+			HTML_OPEN_WITH("ul", "class=\"items\""); from_depth++;
+		}
+		while (from_depth > to_depth) {
+			HTML_CLOSE("li");
+			HTML_CLOSE("ul");
+			WRITE("\n"); from_depth--;
+		}
+	}
+	if (to_depth > 0) HTML_OPEN("li");
+}
+
+@ =
+void HTMLFormat::paragraph_number(text_stream *OUT, paragraph *P) {
+	TEMPORARY_TEXT(TEMP)
+	Colonies::paragraph_anchor(TEMP, P);
+	HTML::anchor(OUT, TEMP);
+	DISCARD_TEXT(TEMP)
+	HTML_OPEN("b");
+	WRITE("%s%S", (Str::get_first_char(P->ornament) == 'S')?"&#167;":"&para;",
+		P->paragraph_number);
+	WRITE(". %S%s ", P->heading_text, (Str::len(P->heading_text) > 0)?".":"");
+	HTML_CLOSE("b");
+}
 
 @ =
 void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_order *wv,

@@ -58,11 +58,18 @@ not be so strict on the textual form, which we will allow to be abbreviated.
 Thus:
 </p>
 
-<ul class="items"><li>(a) The text <span class="extract"><span class="extract-syntax">6.4.7</span></span> is understood to mean 6.4.7 and printed back as <span class="extract"><span class="extract-syntax">6.4.7</span></span>
-</li><li>(b) The text <span class="extract"><span class="extract-syntax">6</span></span> is understood to mean 6.0.0 and printed back as <span class="extract"><span class="extract-syntax">6</span></span>
-</li><li>(c) The text <span class="extract"><span class="extract-syntax">6.1</span></span> is understood to mean 6.1.0 and printed back as <span class="extract"><span class="extract-syntax">6.1</span></span>
-</li><li>(d) The text <span class="extract"><span class="extract-syntax">6.1.0</span></span> is understood to mean 6.1.0 and printed back as <span class="extract"><span class="extract-syntax">6.1.0</span></span>
-</li></ul>
+<ul class="items"><li>(a) <p class="inwebparagraph">The text <span class="extract"><span class="extract-syntax">6.4.7</span></span> is understood to mean 6.4.7 and printed back as <span class="extract"><span class="extract-syntax">6.4.7</span></span>
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph">The text <span class="extract"><span class="extract-syntax">6</span></span> is understood to mean 6.0.0 and printed back as <span class="extract"><span class="extract-syntax">6</span></span>
+</p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph">The text <span class="extract"><span class="extract-syntax">6.1</span></span> is understood to mean 6.1.0 and printed back as <span class="extract"><span class="extract-syntax">6.1</span></span>
+</p>
+
+<ul class="items"><li>(d) <p class="inwebparagraph">The text <span class="extract"><span class="extract-syntax">6.1.0</span></span> is understood to mean 6.1.0 and printed back as <span class="extract"><span class="extract-syntax">6.1.0</span></span>
+</p>
+
 <p class="inwebparagraph">Similarly, the absence of a version number (called "null" below) will be
 understood to mean 0.0.0, but will be distinguished from the explicit choice
 to number something as 0.0.0.
@@ -75,6 +82,8 @@ reasons: IF enthusiasts know it well from the banner text of the Infocom
 titles of the 1980s. This story file, for instance, was compiled at the
 time of the Reykjavik summit between Presidents Gorbachev and Reagan:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Moonmist</span>
@@ -108,10 +117,12 @@ metadata <span class="extract"><span class="extract-syntax">6Q45</span></span>. 
 three texts: <span class="extract"><span class="extract-syntax">alpha</span></span>, <span class="extract"><span class="extract-syntax">72</span></span>, <span class="extract"><span class="extract-syntax">zeta</span></span>.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">SEMVER_NUMBER_DEPTH</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment"> major, minor, patch</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">SEMVER_NUMBER_DEPTH</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment"> major, minor, patch</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">version_numbers</span><span class="plain-syntax">[</span><span class="constant-syntax">SEMVER_NUMBER_DEPTH</span><span class="plain-syntax">];</span>
@@ -123,14 +134,20 @@ three texts: <span class="extract"><span class="extract-syntax">alpha</span></sp
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">version</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">semantic_version_number_holder</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure semantic_version_number is accessed in 7/vnr and here.</li><li>The structure semantic_version_number_holder is private to this section.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>All invalid strings of numbers &mdash; i.e., breaking the above rules &mdash; are
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure semantic_version_number is accessed in 7/vnr and here.</li><li>The structure semantic_version_number_holder is private to this section.</li></ul>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>All invalid strings of numbers &mdash; i.e., breaking the above rules &mdash; are
 called "null" versions, and can never be valid as the version of anything.
 Instead they are used to represent the absence of a version number.
 (In particular, a string of <span class="extract"><span class="extract-syntax">-1</span></span>s is null.)
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::null</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>VersionNumbers::null</b>:<br><a href="7-vn.html#SP7">&#167;7</a>, <a href="7-vn.html#SP7_1">&#167;7.1</a>, Version Number Ranges - <a href="7-vnr.html#SP3">&#167;3</a>, <a href="7-vnr.html#SP4">&#167;4</a>&lt;br&gt;Web Structure - <a href="8-ws.html#SP5_2">&#167;5.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::null</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>VersionNumbers::null</b>:<br><a href="7-vn.html#SP7">&#167;7</a>, <a href="7-vn.html#SP7_1">&#167;7.1</a>, Version Number Ranges - <a href="7-vnr.html#SP3">&#167;3</a>, <a href="7-vnr.html#SP4">&#167;4</a>&lt;br&gt;Web Structure - <a href="8-ws.html#SP5_2">&#167;5.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">pragma</span><span class="plain-syntax"> </span><span class="identifier-syntax">clang</span><span class="plain-syntax"> </span><span class="identifier-syntax">diagnostic</span><span class="plain-syntax"> </span><span class="identifier-syntax">push</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">pragma</span><span class="plain-syntax"> </span><span class="identifier-syntax">clang</span><span class="plain-syntax"> </span><span class="identifier-syntax">diagnostic</span><span class="plain-syntax"> </span><span class="identifier-syntax">ignored</span><span class="plain-syntax"> </span><span class="string-syntax">"-Wconditional-uninitialized"</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">;</span>
@@ -141,7 +158,7 @@ Instead they are used to represent the absence of a version number.
 <span class="plain-syntax">#</span><span class="identifier-syntax">pragma</span><span class="plain-syntax"> </span><span class="identifier-syntax">clang</span><span class="plain-syntax"> </span><span class="identifier-syntax">diagnostic</span><span class="plain-syntax"> </span><span class="identifier-syntax">pop</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::is_null</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>VersionNumbers::is_null</b>:<br><a href="7-vn.html#SP5">&#167;5</a>, Version Number Ranges - <a href="7-vnr.html#SP4">&#167;4</a>, <a href="7-vnr.html#SP6">&#167;6</a>&lt;br&gt;Build Files - <a href="8-bf.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::is_null</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>VersionNumbers::is_null</b>:<br><a href="7-vn.html#SP5">&#167;5</a>, Version Number Ranges - <a href="7-vnr.html#SP4">&#167;4</a>, <a href="7-vnr.html#SP6">&#167;6</a>&lt;br&gt;Build Files - <a href="8-bf.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0, </span><span class="identifier-syntax">allow</span><span class="plain-syntax">=</span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">SEMVER_NUMBER_DEPTH</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="element-syntax">version_numbers</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] &lt; -1) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; </span><span class="comment"> should never happen</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="element-syntax">version_numbers</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] == -1) </span><span class="identifier-syntax">allow</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -150,11 +167,14 @@ Instead they are used to represent the absence of a version number.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="identifier-syntax">version_numbers</span><span class="plain-syntax">[0] &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Printing and parsing. </b>Printing is simple enough:
+</pre>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Printing and parsing. </b>Printing is simple enough:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::to_text</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>VersionNumbers::to_text</b>:<br><a href="7-vn.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::to_text</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>VersionNumbers::to_text</b>:<br><a href="7-vn.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="7-vn.html#SP4" class="function-link"><span class="function-syntax">VersionNumbers::is_null</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">)) { </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"null"</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; (</span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">SEMVER_NUMBER_DEPTH</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="element-syntax">version_numbers</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">); </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">&gt;0) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"."</span><span class="plain-syntax">);</span>
@@ -170,18 +190,22 @@ Instead they are used to represent the absence of a version number.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="identifier-syntax">build_metadata</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"+%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="element-syntax">build_metadata</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>And this provides for the <span class="extract"><span class="extract-syntax">%v</span></span> escape, though we must be careful when
+</pre>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>And this provides for the <span class="extract"><span class="extract-syntax">%v</span></span> escape, though we must be careful when
 using this to pass a pointer to the version, not the version itself;
 variadic macros are not carefully enough type-checked by <span class="extract"><span class="extract-syntax">clang</span></span> or <span class="extract"><span class="extract-syntax">gcc</span></span>
 to catch this sort of slip.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::writer</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>VersionNumbers::writer</b>:<br>Foundation Module - <a href="1-fm.html#SP8_1">&#167;8.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">format_string</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vE</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::writer</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>VersionNumbers::writer</b>:<br>Foundation Module - <a href="1-fm.html#SP8_1">&#167;8.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">format_string</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">vE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="7-vn.html#SP5" class="function-link"><span class="function-syntax">VersionNumbers::to_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, *</span><span class="identifier-syntax">V</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Parsing is much more of a slog. The following returns a null version if
+</pre>
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>Parsing is much more of a slog. The following returns a null version if
 the text <span class="extract"><span class="extract-syntax">T</span></span> is in any respect malformed, i.e., if it deviates from the
 above specification in even the most trivial way. We parse the three parts
 of a semver version in order: e.g. <span class="extract"><span class="extract-syntax">3.1.41-alpha.72.zeta+6Q45</span></span> the first
@@ -190,14 +214,16 @@ sign, and the third part runs to the end. The second and third parts are
 optional, but if both are given, they must be in that order.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">MMP_SEMVERPART</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">PRE_SEMVERPART</span>
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">BM_SEMVERPART</span>
+<pre class="definitions"><span class="definition-keyword">enum</span> <span class="constant-syntax">MMP_SEMVERPART</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">PRE_SEMVERPART</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">BM_SEMVERPART</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::from_text</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>VersionNumbers::from_text</b>:<br>Build Files - <a href="8-bf.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::from_text</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>VersionNumbers::from_text</b>:<br>Build Files - <a href="8-bf.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax"> = </span><a href="7-vn.html#SP4" class="function-link"><span class="function-syntax">VersionNumbers::null</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">component</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">val</span><span class="plain-syntax"> = -1, </span><span class="identifier-syntax">dots_used</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">slashes_used</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">part</span><span class="plain-syntax"> = </span><span class="constant-syntax">MMP_SEMVERPART</span><span class="plain-syntax">;</span>
@@ -252,16 +278,26 @@ optional, but if both are given, they must be in that order.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Add prerelease content</span> <span class="named-paragraph-number">7.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prerelease</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="7-vn.html#SP4" class="function-link"><span class="function-syntax">VersionNumbers::null</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="identifier-syntax">prerelease_segments</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="element-syntax">prerelease_segments</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><a href="4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prerelease</span><span class="plain-syntax">), </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">, </span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="element-syntax">prerelease_segments</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prerelease</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="7-vn.html#SP7">&#167;7</a> (three times).</li></ul><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Precendence. </b>The most important part of the semver standard is the rule on which versions
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="7-vn.html#SP7">&#167;7</a> (three times).</li></ul>
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Precendence. </b>The most important part of the semver standard is the rule on which versions
 take precedence over which others, and we follow it exactly. The following
 criteria are used in turn: major version; minor version; patch version;
 any prerelease elements, which must be compared numerically if consisting
@@ -269,8 +305,10 @@ of digits only, and alphabetically otherwise; and finally the number of
 prerelease elements. Build metadata is disregarded entirely.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::le</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>VersionNumbers::le</b>:<br><a href="7-vn.html#SP11">&#167;11</a>, Version Number Ranges - <a href="7-vnr.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::le</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>VersionNumbers::le</b>:<br><a href="7-vn.html#SP11">&#167;11</a>, Version Number Ranges - <a href="7-vnr.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">SEMVER_NUMBER_DEPTH</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N1</span><span class="plain-syntax"> = </span><a href="7-vn.html#SP9" class="function-link"><span class="function-syntax">VersionNumbers::floor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V1</span><span class="plain-syntax">.</span><span class="element-syntax">version_numbers</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N2</span><span class="plain-syntax"> = </span><a href="7-vn.html#SP9" class="function-link"><span class="function-syntax">VersionNumbers::floor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V2</span><span class="plain-syntax">.</span><span class="element-syntax">version_numbers</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);</span>
@@ -301,22 +339,28 @@ prerelease elements. Build metadata is disregarded entirely.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">I1</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">I2</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>The effect of this is to read unspecified versions of major, minor or patch
+</pre>
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>The effect of this is to read unspecified versions of major, minor or patch
 as if they were 0:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::floor</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>VersionNumbers::floor</b>:<br><a href="7-vn.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::floor</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>VersionNumbers::floor</b>:<br><a href="7-vn.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>This returns a non-negative integer if <span class="extract"><span class="extract-syntax">T</span></span> contains only digits, and <span class="extract"><span class="extract-syntax">-1</span></span>
+</pre>
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>This returns a non-negative integer if <span class="extract"><span class="extract-syntax">T</span></span> contains only digits, and <span class="extract"><span class="extract-syntax">-1</span></span>
 otherwise. If the value has more than about 10 digits, then the result will
 not be meaningful, which I think is a technical violation of the standard.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::strict_atoi</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>VersionNumbers::strict_atoi</b>:<br><a href="7-vn.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::strict_atoi</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>VersionNumbers::strict_atoi</b>:<br><a href="7-vn.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-chr.html#SP1" class="function-link"><span class="function-syntax">Characters::isdigit</span></a><span class="plain-syntax">(</span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">)) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
@@ -324,44 +368,51 @@ not be meaningful, which I think is a technical violation of the standard.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'0'</span><span class="plain-syntax">) &amp;&amp; (</span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-sm.html#SP7" class="function-link"><span class="function-syntax">Str::atoi</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Trichotomy. </b>We now use the above function to construct ordering relations on semvers.
+</pre>
+<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Trichotomy. </b>We now use the above function to construct ordering relations on semvers.
 These are trichotomous, that is, for each pair <span class="extract"><span class="extract-syntax">V1, V2</span></span>, exactly one of the
 <span class="extract"><span class="extract-syntax">VersionNumbers::eq(V1, V2)</span></span>, <span class="extract"><span class="extract-syntax">VersionNumbers::gt(V1, V2)</span></span>, <span class="extract"><span class="extract-syntax">VersionNumbers::lt(V1, V2)</span></span>
 is true.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::eq</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>VersionNumbers::eq</b>:<br><a href="7-vn.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::eq</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>VersionNumbers::eq</b>:<br><a href="7-vn.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="7-vn.html#SP8" class="function-link"><span class="function-syntax">VersionNumbers::le</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="identifier-syntax">V2</span><span class="plain-syntax">)) &amp;&amp; (</span><a href="7-vn.html#SP8" class="function-link"><span class="function-syntax">VersionNumbers::le</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V2</span><span class="plain-syntax">, </span><span class="identifier-syntax">V1</span><span class="plain-syntax">)))</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::ne</span><button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>VersionNumbers::ne</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::ne</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="popuptext" id="usagePopup10">Usage of <b>VersionNumbers::ne</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><a href="7-vn.html#SP11" class="function-link"><span class="function-syntax">VersionNumbers::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="identifier-syntax">V2</span><span class="plain-syntax">))?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::gt</span><button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>VersionNumbers::gt</b>:<br><a href="7-vn.html#SP12">&#167;12</a>, Version Number Ranges - <a href="7-vnr.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::gt</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="popuptext" id="usagePopup11">Usage of <b>VersionNumbers::gt</b>:<br><a href="7-vn.html#SP12">&#167;12</a>, Version Number Ranges - <a href="7-vnr.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><a href="7-vn.html#SP8" class="function-link"><span class="function-syntax">VersionNumbers::le</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="identifier-syntax">V2</span><span class="plain-syntax">))?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::ge</span><button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>VersionNumbers::ge</b>:<br>Version Number Ranges - <a href="7-vnr.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::ge</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="popuptext" id="usagePopup12">Usage of <b>VersionNumbers::ge</b>:<br>Version Number Ranges - <a href="7-vnr.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="7-vn.html#SP8" class="function-link"><span class="function-syntax">VersionNumbers::le</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V2</span><span class="plain-syntax">, </span><span class="identifier-syntax">V1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::lt</span><button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>VersionNumbers::lt</b>:<br>Version Number Ranges - <a href="7-vnr.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::lt</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="popuptext" id="usagePopup13">Usage of <b>VersionNumbers::lt</b>:<br>Version Number Ranges - <a href="7-vnr.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><a href="7-vn.html#SP11" class="function-link"><span class="function-syntax">VersionNumbers::ge</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="identifier-syntax">V2</span><span class="plain-syntax">))?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>And the following can be used for sorting, following the <span class="extract"><span class="extract-syntax">strcmp</span></span> convention.
+</pre>
+<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>And the following can be used for sorting, following the <span class="extract"><span class="extract-syntax">strcmp</span></span> convention.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::cmp</span><button class="popup" onclick="togglePopup('usagePopup14')">...<span class="popuptext" id="usagePopup14">Usage of <b>VersionNumbers::cmp</b>:<br>Version Number Ranges - <a href="7-vnr.html#SP8">&#167;8</a>, <a href="7-vnr.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumbers::cmp</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="popuptext" id="usagePopup14">Usage of <b>VersionNumbers::cmp</b>:<br>Version Number Ranges - <a href="7-vnr.html#SP8">&#167;8</a>, <a href="7-vnr.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="7-vn.html#SP11" class="function-link"><span class="function-syntax">VersionNumbers::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="identifier-syntax">V2</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="7-vn.html#SP11" class="function-link"><span class="function-syntax">VersionNumbers::gt</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V1</span><span class="plain-syntax">, </span><span class="identifier-syntax">V2</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">}</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 7: Semantic Versioning.)</i></li><li><a href="7-vnr.html">Continue with 'Version Number Ranges'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 

@@ -51,6 +51,8 @@ names such as <span class="extract"><span class="extract-syntax">HTML</span></sp
 to such a name, and to read it in. This structure holds the result:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern_name</span><span class="plain-syntax">; </span><span class="comment"> such as </span><span class="extract"><span class="extract-syntax">HTML</span></span>
@@ -79,11 +81,17 @@ to such a name, and to read it in. This structure holds the result:
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">name_command_given</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure weave_pattern is accessed in 1/pc, 1/ts, 5/fm, 5/tf, 5/hf, 5/wp, 5/rtt and here.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>When a given web needs a pattern with a given name, this is where it comes.
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure weave_pattern is accessed in 1/pc, 1/ts, 5/fm, 5/tf, 5/hf, 5/wp, 5/rtt and here.</li></ul>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>When a given web needs a pattern with a given name, this is where it comes.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="function-syntax">Patterns::find</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Patterns::find</b>:<br><a href="1-ptt.html#SP3">&#167;3</a>, Program Control - <a href="1-pc.html#SP7_4_3">&#167;7.4.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="function-syntax">Patterns::find</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Patterns::find</b>:<br><a href="1-ptt.html#SP3">&#167;3</a>, Program Control - <a href="1-pc.html#SP7_4_3">&#167;7.4.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern_file</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Initialise the pattern structure</span> <span class="named-paragraph-number">2.1</span>&gt;<span class="plain-syntax">;</span>
@@ -91,9 +99,15 @@ to such a name, and to read it in. This structure holds the result:
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Read in the pattern.txt file</span> <span class="named-paragraph-number">2.3</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">wp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Initialise the pattern structure</span> <span class="named-paragraph-number">2.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern_name</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
@@ -112,9 +126,18 @@ to such a name, and to read it in. This structure holds the result:
 <span class="plain-syntax">    </span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">open_command</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"open"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">commands</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name_command_given</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="1-ptt.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="1-ptt.html#SP2">&#167;2</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Locate the pattern directory</span> <span class="named-paragraph-number">2.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern_location</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -138,9 +161,18 @@ to such a name, and to read it in. This structure holds the result:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern_location</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_text</span></a><span class="plain-syntax">(</span><span class="string-syntax">"no such weave pattern as '%S'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="1-ptt.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_3"></a><b>&#167;2.3.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="1-ptt.html#SP2">&#167;2</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP2_3"></a><b>&#167;2.3.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Read in the pattern.txt file</span> <span class="named-paragraph-number">2.3</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pattern_file</span><span class="plain-syntax">)</span>
@@ -150,13 +182,19 @@ to such a name, and to read it in. This structure holds the result:
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_text</span></a><span class="plain-syntax">(</span><span class="string-syntax">"pattern did not specify a format"</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name_command_given</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_text</span></a><span class="plain-syntax">(</span><span class="string-syntax">"pattern did not name itself at the top"</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="1-ptt.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The Foundation module provides a standard way to scan text files line by
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="1-ptt.html#SP2">&#167;2</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The Foundation module provides a standard way to scan text files line by
 line, and this is used to send each line in the <span class="extract"><span class="extract-syntax">pattern.txt</span></span> file to the
 following routine:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Patterns::scan_pattern_line</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Patterns::scan_pattern_line</b>:<br><a href="1-ptt.html#SP2_3">&#167;2.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Patterns::scan_pattern_line</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Patterns::scan_pattern_line</b>:<br><a href="1-ptt.html#SP2_3">&#167;2.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wp</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">X</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><a href="../foundation-module/4-sm.html#SP24" class="function-link"><span class="function-syntax">Str::trim_white_space</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">); </span><span class="comment"> ignore trailing space</span>
@@ -227,17 +265,18 @@ following routine:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
+</pre>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Patterns::yes_or_no</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Patterns::yes_or_no</b>:<br><a href="1-ptt.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Patterns::yes_or_no</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Patterns::yes_or_no</b>:<br><a href="1-ptt.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"yes"</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"no"</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::in_text_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"setting must be 'yes' or 'no'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Patterns::plugin_name</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Patterns::plugin_name</b>:<br><a href="1-ptt.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Patterns::plugin_name</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>Patterns::plugin_name</b>:<br><a href="1-ptt.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%i+)"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"none"</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -248,7 +287,8 @@ following routine:
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Obtaining files. </b>Patterns provide not merely some configuration settings (above): they also
+</pre>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Obtaining files. </b>Patterns provide not merely some configuration settings (above): they also
 provide template or style files of various kinds. When Inweb wants to find
 a pattern file with a given leafname, it looks for it in the pattern
 directory. If that fails, it then looks in the directory of the pattern
@@ -259,8 +299,10 @@ inherited from.
 from each other then this routine will lock up into an infinite loop.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">Patterns::obtain_filename</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>Patterns::obtain_filename</b>:<br>The Swarm - <a href="1-ts.html#SP4">&#167;4</a>&lt;br&gt;Format Methods - <a href="5-fm.html#SP5">&#167;5</a>&lt;br&gt;TeX Format - <a href="5-tf.html#SP2_1_1">&#167;2.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">Patterns::obtain_filename</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>Patterns::obtain_filename</b>:<br>The Swarm - <a href="1-ts.html#SP4">&#167;4</a>&lt;br&gt;Format Methods - <a href="5-fm.html#SP5">&#167;5</a>&lt;br&gt;TeX Format - <a href="5-tf.html#SP2_1_1">&#167;2.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP21" class="function-link"><span class="function-syntax">Str::prefix_eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"../"</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
@@ -271,11 +313,14 @@ from each other then this routine will lock up into an infinite loop.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">based_on</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="1-ptt.html#SP5" class="function-link"><span class="function-syntax">Patterns::obtain_filename</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">based_on</span><span class="plain-syntax">, </span><span class="identifier-syntax">leafname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>And similarly, but with an intermediate directory:
+</pre>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>And similarly, but with an intermediate directory:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">Patterns::find_asset</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Patterns::find_asset</b>:<br>HTML Formats - <a href="5-hf.html#SP9_13">&#167;9.13</a>, <a href="5-hf.html#SP16">&#167;16</a>&lt;br&gt;Weave Plugins - <a href="5-wp.html#SP4">&#167;4</a>, <a href="5-wp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dirname</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">Patterns::find_asset</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>Patterns::find_asset</b>:<br>HTML Formats - <a href="5-hf.html#SP6_13">&#167;6.13</a>, <a href="5-hf.html#SP16">&#167;16</a>&lt;br&gt;Weave Plugins - <a href="5-wp.html#SP4">&#167;4</a>, <a href="5-wp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dirname</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">; </span><span class="identifier-syntax">wp</span><span class="plain-syntax">; </span><span class="identifier-syntax">wp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">based_on</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-pth.html#SP4" class="function-link"><span class="function-syntax">Pathnames::down</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern_location</span><span class="plain-syntax">, </span><span class="identifier-syntax">dirname</span><span class="plain-syntax">);</span>
@@ -284,7 +329,8 @@ from each other then this routine will lock up into an infinite loop.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
+</pre>
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">css_file_transformation</span><span class="plain-syntax"> {</span>
@@ -292,7 +338,7 @@ from each other then this routine will lock up into an infinite loop.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">trans</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">css_file_transformation</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Patterns::copy_file_into_weave</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>Patterns::copy_file_into_weave</b>:<br>HTML Formats - <a href="5-hf.html#SP9_11">&#167;9.11</a>&lt;br&gt;Weave Plugins - <a href="5-wp.html#SP5_1">&#167;5.1</a>, <a href="5-wp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">trans</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Patterns::copy_file_into_weave</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>Patterns::copy_file_into_weave</b>:<br>HTML Formats - <a href="5-hf.html#SP6_11">&#167;6.11</a>&lt;br&gt;Weave Plugins - <a href="5-wp.html#SP5_1">&#167;5.1</a>, <a href="5-wp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">trans</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">H</span><span class="plain-syntax"> = </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">redirect_weaves_to</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">H</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">H</span><span class="plain-syntax"> = </span><a href="2-tr.html#SP7" class="function-link"><span class="function-syntax">Reader::woven_folder</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">) </span><span class="identifier-syntax">H</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
@@ -310,7 +356,7 @@ from each other then this routine will lock up into an infinite loop.
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="../foundation-module/3-shl.html#SP3" class="function-link"><span class="function-syntax">Shell::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">H</span><span class="plain-syntax">, </span><span class="string-syntax">""</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Patterns::transform_CSS</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>Patterns::transform_CSS</b>:<br>Weave Plugins - <a href="5-wp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Patterns::transform_CSS</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>Patterns::transform_CSS</b>:<br>Weave Plugins - <a href="5-wp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">css_file_transformation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cft</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">css_file_transformation</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">X</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cft</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">OUT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
@@ -328,10 +374,14 @@ from each other then this routine will lock up into an infinite loop.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">spanned</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><ul class="endnotetexts"><li>The structure css_file_transformation is accessed in 5/ptf, 5/tf, 5/hf, 5/df, 5/wp, 6/rw and here.</li></ul><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure css_file_transformation is accessed in 5/ptf, 5/tf, 5/hf, 5/df, 5/wp, 6/rw and here.</li></ul>
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Patterns::include_plugins</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Patterns::include_plugins</b>:<br>The Collater - <a href="3-tc.html#SP5_1_8_4">&#167;5.1.8.4</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Patterns::include_plugins</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>Patterns::include_plugins</b>:<br>The Collater - <a href="3-tc.html#SP5_1_8_4">&#167;5.1.8.4</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">; </span><span class="identifier-syntax">p</span><span class="plain-syntax">; </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">based_on</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">wp</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">plugins</span><span class="plain-syntax">)</span>
@@ -341,7 +391,8 @@ from each other then this routine will lock up into an infinite loop.
 <span class="plain-syntax">            </span><a href="5-wp.html#SP6" class="function-link"><span class="function-syntax">WeavePlugins::include_colour_scheme</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">cs</span><span class="plain-syntax">, </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><a href="1-ts.html">Back to 'The Swarm'</a></li><li><i>(This section ends Chapter 1: Top Level.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
 

@@ -49,10 +49,13 @@ function togglePopup(material_id) {
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. The DL stream. </b>The debugging log file occupies the following stream:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">text_stream</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_log_file_struct</span><span class="plain-syntax">; </span><span class="comment"> The actual debugging log file</span>
 <span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">debug_log_file</span><span class="plain-syntax"> = &amp;</span><span class="identifier-syntax">debug_log_file_struct</span><span class="plain-syntax">; </span><span class="comment"> The actual debugging log file</span>
-</pre><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Macros. </b>"The most effective debugging tool is still careful thought, coupled with
+</pre>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Macros. </b>"The most effective debugging tool is still careful thought, coupled with
 judiciously placed print statements" (Brian Kernighan).
 </p>
 
@@ -62,6 +65,8 @@ and <span class="extract"><span class="extract-syntax">LOGIF</span></span>, whic
 instance, the pseudo-function-call
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    LOGIF(WHATEVER, "Heading %d skipped\n", n);</span>
 </pre>
@@ -69,10 +74,10 @@ instance, the pseudo-function-call
 is currently switched on. Plain <span class="extract"><span class="extract-syntax">LOG</span></span> does the same, but unconditionally.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">LOG_INDENT</span><span class="plain-syntax"> </span><span class="identifier-syntax">STREAM_INDENT</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">)</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">LOG_OUTDENT</span><span class="plain-syntax"> </span><span class="identifier-syntax">STREAM_OUTDENT</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">)</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">LOG_INDENT</span><span class="plain-syntax"> </span><span class="identifier-syntax">STREAM_INDENT</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">)</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">LOG_OUTDENT</span><span class="plain-syntax"> </span><span class="identifier-syntax">STREAM_OUTDENT</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Debugging aspects. </b>There are many different things which can go into the debugging file, or
 need not: for Inform even a simple half-page source can result in a
@@ -85,6 +90,8 @@ not, as we please. Each has a unique number and a name of up to three words in
 length.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">hyphenated_name</span><span class="plain-syntax">; </span><span class="comment"> e.g., "memory-usage"</span>
@@ -94,24 +101,30 @@ length.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">alternate</span><span class="plain-syntax">; </span><span class="comment"> whether or not active when writing in trace mode</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure debugging_aspect is accessed in 8/bdfw and here.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And now we must define all those constants and names. Note that the
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure debugging_aspect is accessed in 8/bdfw and here.</li></ul>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And now we must define all those constants and names. Note that the
 <span class="extract"><span class="extract-syntax">TRUE</span></span> or <span class="extract"><span class="extract-syntax">FALSE</span></span> settings below are the defaults, and apply unless the
 source says otherwise. The <span class="extract"><span class="extract-syntax">alternate</span></span> settings are those used in
 trace-sentences mode, that is, between asterisk sentences.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">SHELL_USAGE_DA</span>
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">MEMORY_USAGE_DA</span>
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">TEXT_FILES_DA</span>
+<pre class="definitions"><span class="definition-keyword">enum</span> <span class="constant-syntax">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">SHELL_USAGE_DA</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">MEMORY_USAGE_DA</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">TEXT_FILES_DA</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">das_created</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax"> </span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">NO_DEFINED_DA_VALUES</span><span class="plain-syntax">];</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::declare_aspect</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Log::declare_aspect</b>:<br>Foundation Module - <a href="1-fm.html#SP8_2">&#167;8.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">def</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">alt</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::declare_aspect</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Log::declare_aspect</b>:<br>Foundation Module - <a href="1-fm.html#SP8_2">&#167;8.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">def</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">alt</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">das_created</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">das_created</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Empty the aspects table</span> <span class="named-paragraph-number">4.1</span>&gt;<span class="plain-syntax">;</span>
@@ -121,9 +134,15 @@ trace-sentences mode, that is, between asterisk sentences.
 <span class="plain-syntax">    </span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax"> *</span><span class="identifier-syntax">da</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">a</span><span class="plain-syntax">]);</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Set up the new aspect</span> <span class="named-paragraph-number">4.2</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP4_1"></a><b>&#167;4.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP4_1"></a><b>&#167;4.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Empty the aspects table</span> <span class="named-paragraph-number">4.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">a</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">NO_DEFINED_DA_VALUES</span><span class="plain-syntax">; </span><span class="identifier-syntax">a</span><span class="plain-syntax">++) {</span>
@@ -134,9 +153,18 @@ trace-sentences mode, that is, between asterisk sentences.
 <span class="plain-syntax">        </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_or_off</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">alternate</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-dl.html#SP4">&#167;4</a>.</li></ul><p class="inwebparagraph"><a id="SP4_2"></a><b>&#167;4.2.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-dl.html#SP4">&#167;4</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP4_2"></a><b>&#167;4.2.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Set up the new aspect</span> <span class="named-paragraph-number">4.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">negated_name</span><span class="plain-syntax">, </span><span class="string-syntax">"no-"</span><span class="plain-syntax">);</span>
@@ -149,7 +177,11 @@ trace-sentences mode, that is, between asterisk sentences.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_or_off</span><span class="plain-syntax"> = </span><span class="identifier-syntax">def</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">alternate</span><span class="plain-syntax"> = </span><span class="identifier-syntax">alt</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-dl.html#SP4">&#167;4</a>.</li></ul><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The debugging log provides an opportunity to see what has been happening
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-dl.html#SP4">&#167;4</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>The debugging log provides an opportunity to see what has been happening
 behind the scenes; but such a log file is often buffered by the filing system,
 so that a sudden crash of Inform may result in the loss of recent data written to
 the log. Which is a pity, since this is exactly the most useful evidence as to
@@ -162,18 +194,20 @@ is possible this has been switched to be <span class="extract"><span class="extr
 temporarily the sentence tracing file: but we don't care.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">debug_log_filename</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">Log::get_debug_log_filename</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Log::get_debug_log_filename</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">Log::get_debug_log_filename</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Log::get_debug_log_filename</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_log_filename</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::set_debug_log_filename</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Log::set_debug_log_filename</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::set_debug_log_filename</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Log::set_debug_log_filename</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">debug_log_filename</span><span class="plain-syntax"> = </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Log::open</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Log::open</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Log::open</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>Log::open</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">debug_log_filename</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">DL</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">STREAM_OPEN_TO_FILE</span><span class="plain-syntax">(</span><span class="identifier-syntax">debug_log_file</span><span class="plain-syntax">, </span><span class="identifier-syntax">debug_log_filename</span><span class="plain-syntax">, </span><span class="constant-syntax">ISO_ENC</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -185,7 +219,7 @@ temporarily the sentence tracing file: but we don't care.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Log::open_alternative</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>Log::open_alternative</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">at</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Log::open_alternative</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>Log::open_alternative</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">at</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">STREAM_OPEN_TO_FILE</span><span class="plain-syntax">(</span><span class="identifier-syntax">at</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">ISO_ENC</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">at</span><span class="plain-syntax">;</span>
@@ -194,21 +228,24 @@ temporarily the sentence tracing file: but we don't care.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::close</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Log::close</b>:<br>Foundation Module - <a href="1-fm.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::close</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>Log::close</b>:<br>Foundation Module - <a href="1-fm.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">DL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><a href="2-dl.html#SP11" class="function-link"><span class="function-syntax">Log::show_debugging_contents</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">); </span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Subheadings. </b>To provide signposts in what is otherwise a huge amorphous pile of text,
+</pre>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Subheadings. </b>To provide signposts in what is otherwise a huge amorphous pile of text,
 the debugging log can be divided into "phases", subdivided into "stages".
 This is how.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_log_phase</span><span class="plain-syntax">[32];</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">debug_log_subheading</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::new_phase</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>Log::new_phase</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">q</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::new_phase</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>Log::new_phase</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">q</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="4-cst.html#SP9" class="function-link"><span class="function-syntax">CStrings::truncated_strcpy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">debug_log_phase</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="constant-syntax">32</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n\n-----------------------------------------------------\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Phase %s ... %S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">q</span><span class="plain-syntax">);</span>
@@ -217,34 +254,40 @@ This is how.
 <span class="plain-syntax">    </span><span class="identifier-syntax">debug_log_subheading</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::new_stage</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>Log::new_stage</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::new_stage</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>Log::new_stage</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n\n==== Phase %s.%d ... %S ====\n\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">debug_log_phase</span><span class="plain-syntax">, </span><span class="identifier-syntax">debug_log_subheading</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">debug_log_subheading</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_FLUSH</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Aspects. </b>As mentioned above, a wide range of activities can be logged to the debugging
+</pre>
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Aspects. </b>As mentioned above, a wide range of activities can be logged to the debugging
 log: these are called "aspects" and we can switch logging of them off or on
 independently. The following routine tests whether a given aspect is currently
 being logged, and is used by our main macros. Aspect 0 mandates writing to the
 debug log, and is used when errors occur.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Log::aspect_switched_on</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Log::aspect_switched_on</b>:<br><a href="2-dl.html#SP11">&#167;11</a>, Foundation Module - <a href="1-fm.html#SP9">&#167;9</a>&lt;br&gt;Streams - <a href="2-str.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">aspect</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Log::aspect_switched_on</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>Log::aspect_switched_on</b>:<br><a href="2-dl.html#SP11">&#167;11</a>, Foundation Module - <a href="1-fm.html#SP9">&#167;9</a>&lt;br&gt;Streams - <a href="2-str.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">aspect</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">decision</span><span class="plain-syntax"> = </span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">aspect</span><span class="plain-syntax">].</span><span class="element-syntax">on_or_off</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">aspect</span><span class="plain-syntax"> == </span><span class="constant-syntax">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain-syntax">) </span><span class="identifier-syntax">decision</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">decision</span><span class="plain-syntax">) </span><span class="identifier-syntax">STREAM_FLUSH</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">decision</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::set_aspect</span><button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>Log::set_aspect</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">aspect</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::set_aspect</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="popuptext" id="usagePopup10">Usage of <b>Log::set_aspect</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">aspect</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">aspect</span><span class="plain-syntax">].</span><span class="element-syntax">on_or_off</span><span class="plain-syntax"> = </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>We sometimes want to switch everything on, or switch everything off:
+</pre>
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>We sometimes want to switch everything on, or switch everything off:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::set_all_aspects</span><button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>Log::set_all_aspects</b>:<br><a href="2-dl.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">new_state</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::set_all_aspects</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="popuptext" id="usagePopup11">Usage of <b>Log::set_all_aspects</b>:<br><a href="2-dl.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">new_state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">DL</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">DEBUGGING_LOG_INCLUSIONS</span><span class="plain-syntax">, </span><span class="string-syntax">"Set debugging aspect: everything -&gt; %s\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">new_state</span><span class="plain-syntax">?</span><span class="string-syntax">"TRUE"</span><span class="plain-syntax">:</span><span class="string-syntax">"FALSE"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">a</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">NO_DEFINED_DA_VALUES</span><span class="plain-syntax">; </span><span class="identifier-syntax">a</span><span class="plain-syntax">++) {</span>
@@ -252,7 +295,8 @@ debug log, and is used when errors occur.
 <span class="plain-syntax">        </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_or_off</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>We also want the ability to change debugging log settings from the command
+</pre>
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>We also want the ability to change debugging log settings from the command
 line; the command line form is derived from the textual form by replacing
 every space with a hyphen: for instance, <span class="extract"><span class="extract-syntax">property-provision</span></span>.
 </p>
@@ -262,8 +306,10 @@ every space with a hyphen: for instance, <span class="extract"><span class="extr
 print out a list of debugging aspects to <span class="extract"><span class="extract-syntax">STDOUT</span></span>.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Log::set_aspect_from_command_line</span><button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>Log::set_aspect_from_command_line</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">give_error</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Log::set_aspect_from_command_line</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="popuptext" id="usagePopup12">Usage of <b>Log::set_aspect_from_command_line</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">give_error</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">list_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP22" class="function-link"><span class="function-syntax">Str::eq_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"everything"</span><span class="plain-syntax">)) { </span><a href="2-dl.html#SP8" class="function-link"><span class="function-syntax">Log::set_all_aspects</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TRUE</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP22" class="function-link"><span class="function-syntax">Str::eq_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"nothing"</span><span class="plain-syntax">)) { </span><a href="2-dl.html#SP8" class="function-link"><span class="function-syntax">Log::set_all_aspects</span></a><span class="plain-syntax">(</span><span class="constant-syntax">FALSE</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; }</span>
@@ -288,12 +334,15 @@ print out a list of debugging aspects to <span class="extract"><span class="extr
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">list_mode</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. The starred trace. </b>This is a useful way to switch into a more detailed view, and then switch
+</pre>
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. The starred trace. </b>This is a useful way to switch into a more detailed view, and then switch
 out again without having lost our earlier settings.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::tracing_on</span><button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>Log::tracing_on</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">starred</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">heading</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::tracing_on</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="popuptext" id="usagePopup13">Usage of <b>Log::tracing_on</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">starred</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">heading</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">starred</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n*** Entering sentence trace mode: %S ***\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">heading</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
@@ -306,13 +355,16 @@ out again without having lost our earlier settings.
 <span class="plain-syntax">        </span><span class="identifier-syntax">da</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">alternate</span><span class="plain-syntax"> = </span><span class="identifier-syntax">j</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Wrapping up. </b>At the end of the debugging log we list what was in it, mostly to provide
+</pre>
+<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Wrapping up. </b>At the end of the debugging log we list what was in it, mostly to provide
 the reader with a list of other things which could have been put into it,
 but weren't.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::show_debugging_settings_with_state</span><button class="popup" onclick="togglePopup('usagePopup14')">...<span class="popuptext" id="usagePopup14">Usage of <b>Log::show_debugging_settings_with_state</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::show_debugging_settings_with_state</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="popuptext" id="usagePopup14">Usage of <b>Log::show_debugging_settings_with_state</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">NO_DEFINED_DA_VALUES</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax"> *</span><span class="identifier-syntax">da</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">the_debugging_aspects</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);</span>
@@ -325,14 +377,15 @@ but weren't.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"  (nothing)\n"</span><span class="plain-syntax">); } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">); }</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::show_debugging_contents</span><button class="popup" onclick="togglePopup('usagePopup15')">...<span class="popuptext" id="usagePopup15">Usage of <b>Log::show_debugging_contents</b>:<br><a href="2-dl.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Log::show_debugging_contents</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="popuptext" id="usagePopup15">Usage of <b>Log::show_debugging_contents</b>:<br><a href="2-dl.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-dl.html#SP7" class="function-link"><span class="function-syntax">Log::aspect_switched_on</span></a><span class="plain-syntax">(</span><span class="constant-syntax">DEBUGGING_LOG_INCLUSIONS_DA</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n\nThat concludes the debugging log from this run.\n"</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"Its contents were as follows -\n\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Included:\n"</span><span class="plain-syntax">); </span><a href="2-dl.html#SP11" class="function-link"><span class="function-syntax">Log::show_debugging_settings_with_state</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Omitted:\n"</span><span class="plain-syntax">); </span><a href="2-dl.html#SP11" class="function-link"><span class="function-syntax">Log::show_debugging_settings_with_state</span></a><span class="plain-syntax">(</span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 2: Memory, Streams and Collections.)</i></li><li><a href="2-mmr.html">Continue with 'Memory'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 

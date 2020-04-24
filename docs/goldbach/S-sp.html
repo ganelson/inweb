@@ -56,18 +56,23 @@ as a sum of two primes. Christian Goldbach asked Euler in 1742 if every even
 number greater than 2 can be written this way. This remains open, though &mdash;
 </p>
 
-<ul class="items"><li>(a) every even number is a sum of at most six primes (Ramaré, 1995), and
-</li><li>(b) every odd number is a sum of at most five (Tao, 2012).
-</li></ul>
+<ul class="items"><li>(a) <p class="inwebparagraph">every even number is a sum of at most six primes (Ramaré, 1995), and
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph">every odd number is a sum of at most five (Tao, 2012).
+</p>
+
 <center><img src="Letter.jpg" height="720"></center>
 <p class="inwebparagraph">Computer verification has been made up to around \(10^{18}\), but by rather better
 methods. We will proceed only to:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">RANGE</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">RANGE</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdio</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 
@@ -75,8 +80,11 @@ methods. We will proceed only to:
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=4; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">RANGE</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">=</span><span class="identifier-syntax">i</span><span class="plain-syntax">+2) </span><span class="comment"> stepping in twos to stay even</span>
 <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Solve Goldbach's conjecture for i</span> <span class="named-paragraph-number">1.1</span>&gt;<span class="character-syntax">;</span>
 <span class="character-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b>This ought to print:
+</pre>
+<p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b>This ought to print:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">goldbach/Tangled/goldbach</span>
@@ -93,10 +101,14 @@ only check in the range \(2 \leq j \leq i/2\) to avoid counting pairs
 twice over (thus \(8 = 3+5 = 5+3\), but that's hardly two different ways).
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Solve Goldbach's conjecture for i</span> <span class="named-paragraph-number">1.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
@@ -104,7 +116,11 @@ twice over (thus \(8 = 3+5 = 5+3\), but that's hardly two different ways).
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="S-tsoe.html#SP2" class="function-link"><span class="function-syntax">isprime</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">j</span><span class="plain-syntax">)) &amp;&amp; (</span><a href="S-tsoe.html#SP2" class="function-link"><span class="function-syntax">isprime</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">-</span><span class="identifier-syntax">j</span><span class="plain-syntax">)))</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">" = %d+%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">j</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">-</span><span class="identifier-syntax">j</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="S-sp.html#SP1">&#167;1</a>.</li></ul><hr class="tocbar">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="S-sp.html#SP1">&#167;1</a>.</li></ul>
+<hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Sections.)</i></li><li><a href="S-tsoe.html">Continue with 'The Sieve of Eratosthenes'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 

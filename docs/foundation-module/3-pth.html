@@ -50,11 +50,15 @@ function togglePopup(material_id) {
 and "filename" to mean a location of a file. For example:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    /Users/rblackmore/Documents/Fireball</span>
 </pre>
 <p class="inwebparagraph">is a pathname, whereas
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    /Users/rblackmore/Documents/Fireball/whoosh.aiff</span>
@@ -72,6 +76,8 @@ describe a directory which doesn't exist on disc.
 <p class="inwebparagraph">A full path is a linked list, but reverse-ordered: thus,
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    /Users/rblackmore/Documents/</span>
 </pre>
@@ -87,6 +93,8 @@ to begin with <span class="extract"><span class="extract-syntax">FOLDER_SEPARATO
 host file system.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">intermediate</span><span class="plain-syntax">;</span>
@@ -94,13 +102,19 @@ host file system.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">known_to_exist</span><span class="plain-syntax">; </span><span class="comment"> corresponds to a directory in the filing system</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">pathname</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure pathname is accessed in 3/fln and here.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Home directory. </b>We get the path to the user's home directory from the environment variable
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure pathname is accessed in 3/fln and here.</li></ul>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Home directory. </b>We get the path to the user's home directory from the environment variable
 <span class="extract"><span class="extract-syntax">HOME</span></span>, if it exists.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">home_path</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::start</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Pathnames::start</b>:<br>Foundation Module - <a href="1-fm.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::start</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Pathnames::start</b>:<br>Foundation Module - <a href="1-fm.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">home</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *) (</span><a href="1-wp.html#SP4" class="function-link"><span class="function-syntax">Platform::getenv</span></a><span class="plain-syntax">(</span><span class="string-syntax">"HOME"</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">home</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">H</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP4" class="function-link"><span class="function-syntax">Str::new_from_locale_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">home</span><span class="plain-syntax">);</span>
@@ -108,14 +122,15 @@ host file system.
 <span class="plain-syntax">        </span><span class="identifier-syntax">home_path</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">known_to_exist</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Installation directory. </b></p>
+</pre>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. Installation directory. </b></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">installation_path</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::set_installation_path</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Pathnames::set_installation_path</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1">&#167;13.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::set_installation_path</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Pathnames::set_installation_path</b>:<br>Command Line Arguments - <a href="3-cla.html#SP13_1">&#167;13.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">installation_path</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::installation_path</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Pathnames::installation_path</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">def</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::installation_path</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Pathnames::installation_path</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">def</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">installation_path</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">installation_path</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">where</span><span class="plain-syntax">[4*</span><span class="constant-syntax">MAX_FILENAME_LENGTH</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">where</span><span class="plain-syntax">[0] = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -138,16 +153,19 @@ host file system.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">def</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">def</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Creation. </b>A subdirectory is made by taking an existing pathname (or possible <span class="extract"><span class="extract-syntax">NULL</span></span>) and
+</pre>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Creation. </b>A subdirectory is made by taking an existing pathname (or possible <span class="extract"><span class="extract-syntax">NULL</span></span>) and
 then going one level deeper, using the supplied name.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::down</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Pathnames::down</b>:<br>Epub Ebooks - <a href="5-ee.html#SP6">&#167;6</a>, <a href="5-ee.html#SP6_2">&#167;6.2</a>&lt;br&gt;Web Structure - <a href="8-ws.html#SP7_3_3_2">&#167;7.3.3.2</a>, <a href="8-ws.html#SP7_2_2_4">&#167;7.2.2.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dir_name</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::down</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>Pathnames::down</b>:<br>Epub Ebooks - <a href="5-ee.html#SP6">&#167;6</a>, <a href="5-ee.html#SP6_2">&#167;6.2</a>&lt;br&gt;Web Structure - <a href="8-ws.html#SP7_3_3_2">&#167;7.3.3.2</a>, <a href="8-ws.html#SP7_2_2_4">&#167;7.2.2.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dir_name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-pth.html#SP4" class="function-link"><span class="function-syntax">Pathnames::primitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">dir_name</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">dir_name</span><span class="plain-syntax">), </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::primitive</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>Pathnames::primitive</b>:<br><a href="3-pth.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">str</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::primitive</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>Pathnames::primitive</b>:<br><a href="3-pth.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">str</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pathname_of_parent</span><span class="plain-syntax"> = </span><span class="identifier-syntax">par</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">known_to_exist</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -158,19 +176,22 @@ then going one level deeper, using the supplied name.
 <span class="plain-syntax">            </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">intermediate</span><span class="plain-syntax">, </span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><a href="4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">str</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">)));</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Text to pathnames. </b>The following takes a text of a name and returns a pathname,
+</pre>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Text to pathnames. </b>The following takes a text of a name and returns a pathname,
 possibly relative to the home directory. Empty directory names are ignored
 except possibly for an initial slash, so for example <span class="extract"><span class="extract-syntax">paris/roubaix</span></span>,
 <span class="extract"><span class="extract-syntax">paris//roubaix</span></span> and <span class="extract"><span class="extract-syntax">paris/roubaix/</span></span> are indistinguishable here, but
 <span class="extract"><span class="extract-syntax">/paris/roubaix</span></span> is different.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::from_text</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Pathnames::from_text</b>:<br><a href="3-pth.html#SP2">&#167;2</a>, <a href="3-pth.html#SP3">&#167;3</a>, Command Line Arguments - <a href="3-cla.html#SP13_1">&#167;13.1</a>, <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a>&lt;br&gt;Filenames - <a href="3-fln.html#SP3">&#167;3</a>&lt;br&gt;Epub Ebooks - <a href="5-ee.html#SP7_4">&#167;7.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">path</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::from_text</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>Pathnames::from_text</b>:<br><a href="3-pth.html#SP2">&#167;2</a>, <a href="3-pth.html#SP3">&#167;3</a>, Command Line Arguments - <a href="3-cla.html#SP13_1">&#167;13.1</a>, <a href="3-cla.html#SP13_1_1">&#167;13.1.1</a>&lt;br&gt;Filenames - <a href="3-fln.html#SP3">&#167;3</a>&lt;br&gt;Epub Ebooks - <a href="5-ee.html#SP7_4">&#167;7.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">path</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text_relative</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">path</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::from_text_relative</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>Pathnames::from_text_relative</b>:<br>Web Modules - <a href="8-wm.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">path</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::from_text_relative</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>Pathnames::from_text_relative</b>:<br>Web Modules - <a href="8-wm.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">path</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><a href="4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::start</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">path</span><span class="plain-syntax">))) &amp;&amp; (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="identifier-syntax">i</span><span class="plain-syntax">++;</span>
@@ -182,27 +203,33 @@ except possibly for an initial slash, so for example <span class="extract"><span
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">pos</span><span class="plain-syntax">) </span><span class="identifier-syntax">at</span><span class="plain-syntax"> = </span><a href="3-pth.html#SP4" class="function-link"><span class="function-syntax">Pathnames::primitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">path</span><span class="plain-syntax">, </span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">at</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Writer. </b>Conversely, by the miracle of depth-first recursion:
+</pre>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Writer. </b>Conversely, by the miracle of depth-first recursion:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::writer</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>Pathnames::writer</b>:<br>Foundation Module - <a href="1-fm.html#SP8_1">&#167;8.1</a>&lt;br&gt;Filenames - <a href="3-fln.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">format_string</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vP</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::writer</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>Pathnames::writer</b>:<br>Foundation Module - <a href="1-fm.html#SP8_1">&#167;8.1</a>&lt;br&gt;Filenames - <a href="3-fln.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">format_string</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vP</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">vP</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">divider</span><span class="plain-syntax"> = </span><span class="constant-syntax">FOLDER_SEPARATOR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">format_string</span><span class="plain-syntax">[0] == </span><span class="character-syntax">'/'</span><span class="plain-syntax">) </span><span class="identifier-syntax">divider</span><span class="plain-syntax"> = </span><span class="character-syntax">'/'</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">) </span><a href="3-pth.html#SP6" class="function-link"><span class="function-syntax">Pathnames::writer_r</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">divider</span><span class="plain-syntax">); </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::writer_r</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Pathnames::writer_r</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">divider</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::writer_r</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>Pathnames::writer_r</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">divider</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">pathname_of_parent</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><a href="3-pth.html#SP6" class="function-link"><span class="function-syntax">Pathnames::writer_r</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pathname_of_parent</span><span class="plain-syntax">, </span><span class="identifier-syntax">divider</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><span class="identifier-syntax">divider</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">intermediate</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Relative pathnames. </b>Occasionally we want to shorten a pathname relative to another one:
+</pre>
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Relative pathnames. </b>Occasionally we want to shorten a pathname relative to another one:
 for example,
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    /Users/rblackmore/Documents/Fireball/tablature</span>
@@ -210,11 +237,15 @@ for example,
 <p class="inwebparagraph">relative to
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    /Users/rblackmore/Documents/</span>
 </pre>
 <p class="inwebparagraph">would be
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Fireball/tablature</span>
@@ -224,8 +255,10 @@ so it's probably not wise to use it with filenames typed in at the command
 line.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::to_text_relative</span><button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>Pathnames::to_text_relative</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::to_text_relative</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="popuptext" id="usagePopup10">Usage of <b>Pathnames::to_text_relative</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">rt</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">rt</span><span class="plain-syntax">, </span><span class="string-syntax">"%p"</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">);</span>
@@ -239,22 +272,25 @@ line.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::up</span><button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>Pathnames::up</b>:<br><a href="3-pth.html#SP8">&#167;8</a>, Web Modules - <a href="8-wm.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::up</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="popuptext" id="usagePopup11">Usage of <b>Pathnames::up</b>:<br><a href="3-pth.html#SP8">&#167;8</a>, Web Modules - <a href="8-wm.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"can't go up from root directory"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pathname_of_parent</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::directory_name</span><button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>Pathnames::directory_name</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Pathnames::directory_name</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="popuptext" id="usagePopup12">Usage of <b>Pathnames::directory_name</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">intermediate</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Relative URLs. </b>Suppose a web page in the directory at <span class="extract"><span class="extract-syntax">from</span></span> wants to link to a page in
+</pre>
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Relative URLs. </b>Suppose a web page in the directory at <span class="extract"><span class="extract-syntax">from</span></span> wants to link to a page in
 the directory <span class="extract"><span class="extract-syntax">to</span></span>. The following composes a minimal-length URL to do so:
 possibly, if they are in fact the same directory, an empty one.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::relative_URL</span><button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>Pathnames::relative_URL</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::relative_URL</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="popuptext" id="usagePopup13">Usage of <b>Pathnames::relative_URL</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">found</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">to</span><span class="plain-syntax">; </span><span class="identifier-syntax">P</span><span class="plain-syntax"> &amp;&amp; (</span><span class="identifier-syntax">found</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">); </span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="3-pth.html#SP7" class="function-link"><span class="function-syntax">Pathnames::up</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">)) {</span>
@@ -284,12 +320,15 @@ possibly, if they are in fact the same directory, an empty one.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_last_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">) != </span><span class="character-syntax">'/'</span><span class="plain-syntax">)) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"/"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Existence in the file system. </b>Just because we have a pathname, it doesn't follow that any directory exists
+</pre>
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9. Existence in the file system. </b>Just because we have a pathname, it doesn't follow that any directory exists
 on the file system with that path.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::create_in_file_system</span><button class="popup" onclick="togglePopup('usagePopup14')">...<span class="popuptext" id="usagePopup14">Usage of <b>Pathnames::create_in_file_system</b>:<br>Epub Ebooks - <a href="5-ee.html#SP6">&#167;6</a>, <a href="5-ee.html#SP6_2">&#167;6.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::create_in_file_system</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="popuptext" id="usagePopup14">Usage of <b>Pathnames::create_in_file_system</b>:<br>Epub Ebooks - <a href="5-ee.html#SP6">&#167;6</a>, <a href="5-ee.html#SP6_2">&#167;6.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">; </span><span class="comment"> the root of the file system always exists</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">known_to_exist</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">transcoded_pathname</span><span class="plain-syntax">[4*</span><span class="constant-syntax">MAX_FILENAME_LENGTH</span><span class="plain-syntax">];</span>
@@ -300,13 +339,16 @@ on the file system with that path.
 <span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">known_to_exist</span><span class="plain-syntax"> = </span><a href="1-wp.html#SP7" class="function-link"><span class="function-syntax">Platform::mkdir</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">transcoded_pathname</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">known_to_exist</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Directory synchronisation. </b>Both pathnames here represent directories which do exist. The function makes
+</pre>
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Directory synchronisation. </b>Both pathnames here represent directories which do exist. The function makes
 the <span class="extract"><span class="extract-syntax">dest</span></span> tree an exact copy of the <span class="extract"><span class="extract-syntax">source</span></span> tree (and therefore deletes
 anything different which was originally in <span class="extract"><span class="extract-syntax">dest</span></span>).
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::rsync</span><button class="popup" onclick="togglePopup('usagePopup15')">...<span class="popuptext" id="usagePopup15">Usage of <b>Pathnames::rsync</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">source</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dest</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Pathnames::rsync</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="popuptext" id="usagePopup15">Usage of <b>Pathnames::rsync</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">source</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dest</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">transcoded_source</span><span class="plain-syntax">[4*</span><span class="constant-syntax">MAX_FILENAME_LENGTH</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="string-syntax">"%p"</span><span class="plain-syntax">, </span><span class="identifier-syntax">source</span><span class="plain-syntax">);</span>
@@ -319,7 +361,8 @@ anything different which was originally in <span class="extract"><span class="ex
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn2</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="1-pp.html#SP14" class="function-link"><span class="function-syntax">Platform::rsync</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">transcoded_source</span><span class="plain-syntax">, </span><span class="identifier-syntax">transcoded_dest</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><a href="3-cla.html">Back to 'Command Line Arguments'</a></li><li><a href="3-fln.html">Continue with 'Filenames'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 

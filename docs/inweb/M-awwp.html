@@ -63,15 +63,22 @@ for websites.
 get to in due course. Inweb looks for patterns in three places in turn:
 </p>
 
-<ul class="items"><li>(a) The location given by the <span class="extract"><span class="extract-syntax">patterns</span></span> command in the current colony file,
+<ul class="items"><li>(a) <p class="inwebparagraph">The location given by the <span class="extract"><span class="extract-syntax">patterns</span></span> command in the current colony file,
 if there is one: see <a href="M-mwiw.html" class="internal">Making Weaves into Websites</a>.
-</li><li>(b) The <span class="extract"><span class="extract-syntax">Patterns</span></span> subdirectory of the current web, if there is a current web,
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph">The <span class="extract"><span class="extract-syntax">Patterns</span></span> subdirectory of the current web, if there is a current web,
 and if it has such a subdirectory.
-</li><li>(c) The set of built-in patterns supplied with Inweb, at <span class="extract"><span class="extract-syntax">inweb/Patterns</span></span>
+</p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph">The set of built-in patterns supplied with Inweb, at <span class="extract"><span class="extract-syntax">inweb/Patterns</span></span>
 in the usual distribution.
-</li></ul>
+</p>
+
 <p class="inwebparagraph">For example, the command
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> Tapestry</span>
@@ -93,6 +100,8 @@ as is any file whose first character is <span class="extract"><span class="Conso
 and say what if anything it is based on. For example, this might be:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    name: Tapestry based on HTML</span>
 </pre>
@@ -108,12 +117,17 @@ to HTML in every respect, so it's not very useful yet.)
 part. Thus, for example,
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    name: HTML</span>
-</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>There are then a handful of other, optional, settings. The following are
+</pre>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>There are then a handful of other, optional, settings. The following are
 all inherited automatically from the pattern we are based on, unless we
 set them ourselves.
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    format: F</span>
@@ -121,6 +135,8 @@ set them ourselves.
 <p class="inwebparagraph">sets the format. At present, this must be <span class="extract"><span class="extract-syntax">HTML</span></span>, <span class="extract"><span class="extract-syntax">plain</span></span> (plain text),
 <span class="extract"><span class="extract-syntax">ePub</span></span>, <span class="extract"><span class="extract-syntax">TeX</span></span>, <span class="extract"><span class="extract-syntax">DVI</span></span>, or <span class="extract"><span class="extract-syntax">PDF</span></span>.
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    number sections: yes</span>
@@ -130,6 +146,8 @@ set them ourselves.
 be number 1, and so on. Default is <span class="extract"><span class="extract-syntax">no</span></span>.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    embed CSS: yes</span>
 <span class="plain-syntax">    embed CSS: no</span>
@@ -138,6 +156,8 @@ be number 1, and so on. Default is <span class="extract"><span class="extract-sy
 rather than to link to them. Default is <span class="extract"><span class="extract-syntax">no</span></span>, and there's no effect on non-HTML
 formats.
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    default range: R</span>
@@ -155,6 +175,8 @@ inherited.
 pattern being defined, not to other patterns based on it.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    tex command: C</span>
 </pre>
@@ -162,6 +184,8 @@ pattern being defined, not to other patterns based on it.
 shell command <span class="extract"><span class="extract-syntax">C</span></span>. Default is <span class="extract"><span class="extract-syntax">tex</span></span>. Similarly for <span class="extract"><span class="extract-syntax">pdftex command: C</span></span>, used
 when we want to make a PDF rather than a DVI.
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    open command: C</span>
@@ -171,6 +195,8 @@ file (i.e., on the user's computer) after it finishes. Default is <span class="e
 which works nicely for MacOS.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    bibliographic data: K = V</span>
 </pre>
@@ -178,9 +204,12 @@ which works nicely for MacOS.
 the key <span class="extract"><span class="extract-syntax">K</span></span> to the value <span class="extract"><span class="extract-syntax">V</span></span>. For example:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    bibliographic data: Booklet Title = A formal grammar for Inform 7</span>
-</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Plugins. </b>Plugins are named bundles of resources which are sometimes added to a weave,
+</pre>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Plugins. </b>Plugins are named bundles of resources which are sometimes added to a weave,
 and sometimes not, depending on its needs; they are placed in the pattern's
 folder, and Inweb has access to the plugins not only for the current pattern,
 but also for any pattern(s) it is based on. Plugins were designed for HTML,
@@ -190,6 +219,8 @@ but there's no reason they shouldn't also be useful for other formats.
 <p class="inwebparagraph">A plugin is identified by name alone, case-insensitively, and that name should
 be a single alphanumeric word. For example, the HTML pattern file says
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    plugin: Base</span>
@@ -202,25 +233,39 @@ plugins, and the ability isn't restricted to HTML alone.
 <p class="inwebparagraph">In addition, the HTML format:
 </p>
 
-<ul class="items"><li>(a) includes <span class="extract"><span class="extract-syntax">MathJax3</span></span> if the woven file needs mathematics notation;
-</li><li>(b) includes <span class="extract"><span class="extract-syntax">Breadcrumbs</span></span> if it has a breadcrumb navigation trail;
-</li><li>(c) includes <span class="extract"><span class="extract-syntax">Carousel</span></span> if it has any image carousels;
-</li><li>(d) includes <span class="extract"><span class="extract-syntax">Popups</span></span> if it has any clickable popups (for example, to show
+<ul class="items"><li>(a) <p class="inwebparagraph">includes <span class="extract"><span class="extract-syntax">MathJax3</span></span> if the woven file needs mathematics notation;
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph">includes <span class="extract"><span class="extract-syntax">Breadcrumbs</span></span> if it has a breadcrumb navigation trail;
+</p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph">includes <span class="extract"><span class="extract-syntax">Carousel</span></span> if it has any image carousels;
+</p>
+
+<ul class="items"><li>(d) <p class="inwebparagraph">includes <span class="extract"><span class="extract-syntax">Popups</span></span> if it has any clickable popups (for example, to show
 function usage);
-</li><li>(e) includes <span class="extract"><span class="extract-syntax">Bigfoot</span></span> if it includes footnotes.
-</li></ul>
+</p>
+
+<ul class="items"><li>(e) <p class="inwebparagraph">includes <span class="extract"><span class="extract-syntax">Bigfoot</span></span> if it includes footnotes.
+</p>
+
 <p class="inwebparagraph">Two of these draw on other open-source projects:
 </p>
 
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">MathJax3</span></span> is an excellent rendering system for mathematics on the web: see
+<ul class="items"><li>(a) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">MathJax3</span></span> is an excellent rendering system for mathematics on the web: see
 <a href="https://docs.mathjax.org/en/latest/index.html" class="external">https://docs.mathjax.org/en/latest/index.html</a>
-</li><li>(b) <span class="extract"><span class="extract-syntax">Bigfoot</span></span> is adapted from a popularly used piece of web coding: see
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">Bigfoot</span></span> is adapted from a popularly used piece of web coding: see
 <a href="https://github.com/lemonmade/bigfoot" class="external">https://github.com/lemonmade/bigfoot</a>
-</li></ul>
+</p>
+
 <p class="inwebparagraph">But if you would like your pattern to use different plugins to handle
 mathematics and footnoting, provide lines like these in your pattern file,
 but with your preferred plugin names:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    mathematics plugin: MathJax3</span>
@@ -244,13 +289,16 @@ gets copied to the weave destination directory, or possibly to the <span class="
 directory specified in the colony file (if there is one). However:
 </p>
 
-<ul class="items"><li>(a) If the format is HTML, and the filename ends <span class="extract"><span class="extract-syntax">.css</span></span>, then a link to the
+<ul class="items"><li>(a) <p class="inwebparagraph">If the format is HTML, and the filename ends <span class="extract"><span class="extract-syntax">.css</span></span>, then a link to the
 CSS file is automatically included in the head of the file. If the pattern
 says to <span class="extract"><span class="extract-syntax">embed CSS</span></span> (see above), then the file is spliced in rather than
 being copied.
-</li><li>(b) If the format is HTML, and the filename ends <span class="extract"><span class="extract-syntax">.js</span></span>, then a link to the
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph">If the format is HTML, and the filename ends <span class="extract"><span class="extract-syntax">.js</span></span>, then a link to the
 Javascript file is automatically included in the head of the file.
-</li></ul>
+</p>
+
 <p class="inwebparagraph">For example, the <span class="extract"><span class="extract-syntax">Breadcrumbs</span></span> plugin contains an image file and a CSS file;
 both are copied across, but a link to the CSS file is also included in the
 woven file needing to use the plugin.
@@ -296,6 +344,8 @@ then you need only write two files: <span class="extract"><span class="extract-s
 the single line
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    name: SnakeSkin based on HTML</span>
 </pre>
@@ -315,17 +365,20 @@ like a pro-forma letter, into which just the details need to be entered.
 Inweb does this in two main circumstances:
 </p>
 
-<ul class="items"><li>(a) For each woven file, for example each HTML page generated in a website,
+<ul class="items"><li>(a) <p class="inwebparagraph">For each woven file, for example each HTML page generated in a website,
 Inweb looks for <span class="extract"><span class="extract-syntax">template-body.html</span></span> (or <span class="extract"><span class="extract-syntax">.tex</span></span>, or <span class="extract"><span class="extract-syntax">.txt</span></span> &mdash; whatever
 file extension is used for files in the current format), and uses that
 to top and tail the weaver's output. Not all formats or patterns need that.
-</li><li>(b) If Inweb is weaving a large number of individual files for sections or
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph">If Inweb is weaving a large number of individual files for sections or
 chapters, it will try also to make an accompanying contents page, though
 it uses the term "index" for this. It does this by looking for the
 template <span class="extract"><span class="extract-syntax">template-index.html</span></span> &mdash; this time, it's always HTML: the idea is
 that whatever file type you're making, you will want an HTML index page
 offering downloads or links to them.
-</li></ul>
+</p>
+
 <p class="inwebparagraph">In fact the same process, called "collation", is also used internally to
 produce navigation sidebars in HTML, and to inject HTML into headers for
 the sake of plugins. But the author of a pattern can't control that, whereas
@@ -334,6 +387,8 @@ she can write her own <span class="extract"><span class="extract-syntax">templat
 
 <p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>For example, here is a template file for making an HTML page:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;</span>
@@ -352,11 +407,15 @@ web being woven. What you see is what you get, except for the placeholders in
 double square brackets:
 </p>
 
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">[[Weave Content]]</span></span> expands to the body of the web page &mdash; the headings,
+<ul class="items"><li>(a) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">[[Weave Content]]</span></span> expands to the body of the web page &mdash; the headings,
 paragraphs and so on.
-</li><li>(b) <span class="extract"><span class="extract-syntax">[[Plugins]]</span></span> expands to any links to CSS or Javascript files needed
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">[[Plugins]]</span></span> expands to any links to CSS or Javascript files needed
 by the plugins being used &mdash; see above.
-</li><li>(c) Any bibliographic datum for the web expands to its value: thus <span class="extract"><span class="extract-syntax">[[Title]]</span></span>,
+</p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph">Any bibliographic datum for the web expands to its value: thus <span class="extract"><span class="extract-syntax">[[Title]]</span></span>,
 <span class="extract"><span class="extract-syntax">[[Author]]</span></span> and so on. Booklet Title is one of these, but the weaver always
 sets it to a sensible title for the current file being woven &mdash; typically the
 name of a section or chapter, if that's what the file will contain. Another
@@ -364,45 +423,49 @@ sometimes useful case to know is <span class="extract"><span class="extract-synt
 in BLOCK CAPITAL LETTERS.
 </p>
 
-</li></ul>
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b>Other placeholders, not used in the example above, include:
 </p>
 
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">[[Template X]]</span></span> expands to an insertion of the template file <span class="extract"><span class="extract-syntax">X</span></span>.
-</li><li>(b) <span class="extract"><span class="extract-syntax">[[Navigation]]</span></span> expands to the navigation sidebar in use when weaving
-a colony of webs &mdash; see <a href="M-mwiw.html" class="internal">Making Weaves into Websites</a> for more, and for
-syntaxes to do with links and URLs.
-</li><li>(c) <span class="extract"><span class="extract-syntax">[[Breadcrumbs]]</span></span> expands to the HTML for the breadcrumb trail.
+<ul class="items"><li>(a) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">[[Template X]]</span></span> expands to an insertion of the template file <span class="extract"><span class="extract-syntax">X</span></span>.
 </p>
 
-</li></ul>
+<ul class="items"><li>(b) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">[[Navigation]]</span></span> expands to the navigation sidebar in use when weaving
+a colony of webs &mdash; see <a href="M-mwiw.html" class="internal">Making Weaves into Websites</a> for more, and for
+syntaxes to do with links and URLs.
+</p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph"><span class="extract"><span class="extract-syntax">[[Breadcrumbs]]</span></span> expands to the HTML for the breadcrumb trail.
+</p>
+
 <p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>The <span class="extract"><span class="extract-syntax">template-index.html</span></span> file has access to additional placeholders
 enabling it to generate contents pages:
 </p>
 
-<ul class="items"><li>(a) One of the following details about the entire-web PDF (see below):
+<ul class="items"><li>(a) <p class="inwebparagraph">One of the following details about the entire-web PDF (see below):
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">[[Complete Leafname]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete PDF Size]]</span>
 </pre>
-<p class="inwebparagraph"></p>
-
-</li></ul>
-<ul class="items"><li>(b) One of the following details about the "current chapter" (again, see below):
+<ul class="items"><li>(b) <p class="inwebparagraph">One of the following details about the "current chapter" (again, see below):
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Leafname]]</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter PDF Size]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Errors]]</span>
 </pre>
-<p class="inwebparagraph"></p>
-
-</li></ul>
-<ul class="items"><li> The leafname is that of the typeset PDF; the extent is a page count;
+<ul class="items"><li> <p class="inwebparagraph">The leafname is that of the typeset PDF; the extent is a page count;
 the errors result is a usually blank report.
-</li><li>(c) One of the following details about the "current section" (again, see below):
 </p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph">One of the following details about the "current section" (again, see below):
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">[[Section Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Leafname]]</span>
@@ -410,16 +473,12 @@ the errors result is a usually blank report.
 <span class="plain-syntax">    </span><span class="function-syntax">[[Section Lines]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Paragraphs]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Mean]]</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[Section Source]]</span>
 </pre>
-<p class="inwebparagraph"></p>
-
-</li></ul>
-<ul class="items"><li> Lines and Paragraphs are counts of the number of each; the Source
+<ul class="items"><li> <p class="inwebparagraph">Lines and Paragraphs are counts of the number of each; the Source
 substitution is the leafname of the original <span class="extract"><span class="extract-syntax">.w</span></span> file. The Mean is the
 average number of lines per paragraph: where this is large, the section
 is rather raw and literate programming is not being used to the full.
 </p>
 
-</li></ul>
 <p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b><span class="extract"><span class="extract-syntax">[[Repeat Chapter]]</span></span> and <span class="extract"><span class="extract-syntax">[[Repeat Section]]</span></span> begin blocks of lines which
 are repeated for each chapter or section: the material to be repeated
 continues to the matching <span class="extract"><span class="extract-syntax">[[End Repeat]</span></span> line. The ``current chapter or
@@ -434,6 +493,8 @@ a repetition, but happens just once, for the named chapter or section.
 <p class="inwebparagraph">For example, the following pattern:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    To take chapter 3 as an example, for instance, we find -</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[Select 3]]</span>
@@ -445,6 +506,8 @@ a repetition, but happens just once, for the named chapter or section.
 <p class="inwebparagraph">weaves a report somewhat like this:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    To take chapter 3 as an example, for instance, we find -</span>
 <span class="plain-syntax">        Section Lexer, 3/lex, 1011 lines.</span>
@@ -453,7 +516,8 @@ a repetition, but happens just once, for the named chapter or section.
 <span class="plain-syntax">        Section Lexical Services, 3/lexs, 606 lines.</span>
 <span class="plain-syntax">        Section Vocabulary, 3/vocab, 338 lines.</span>
 <span class="plain-syntax">        Section Built-In Words, 3/words, 1207 lines.</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><a href="M-mwiw.html">Back to 'Making Weaves into Websites'</a></li><li><a href="M-spl.html">Continue with 'Supporting Programming Languages'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 

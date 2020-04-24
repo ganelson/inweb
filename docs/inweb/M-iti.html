@@ -80,6 +80,8 @@ directory to be the one in which Inweb is stored - that is, not the <span class=
 directory itself, but its parent. Then type one of the following:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> inweb/inweb.mk macos</span>
 
@@ -104,6 +106,8 @@ the default macos unless you need to build for an old version of MacOS.
 <p class="inwebparagraph">You should see some typical make chatter, ending in a reply such as:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    === Platform set to 64-bit MacOS. Now: make -f inweb/inweb.mk initial ===</span>
 </pre>
@@ -115,6 +119,8 @@ included in the Git repository for Inweb, in order to oblige users to choose
 a platform before doing anything else.) Anyway, next do as instructed:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> inweb/inweb.mk initial</span>
 </pre>
@@ -122,6 +128,8 @@ a platform before doing anything else.) Anyway, next do as instructed:
 you with a working copy of the software. You need never run that
 platform-specific command, or make as <span class="extract"><span class="ConsoleText-extract-syntax">initial</span></span>, again: you can simply:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> inweb/inweb.mk</span>
@@ -132,12 +140,16 @@ platform-specific command, or make as <span class="extract"><span class="Console
 <p class="inwebparagraph">To test that all is well:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-identifier-syntax"> -help</span>
 </pre>
 <p class="inwebparagraph">That location is where the compiled tool ended up. Users of, for example,
 the <span class="extract"><span class="ConsoleText-extract-syntax">bash</span></span> shell may want to
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">alias</span><span class="ConsoleText-plain-syntax"> inweb='inweb/Tangled/inweb'</span>
@@ -151,16 +163,23 @@ system. There is no completely foolproof, cross-platform way to know this
 decides by the following set of rules:
 </p>
 
-<ul class="items"><li>(a) If the user, at the command line, specified <span class="extract"><span class="ConsoleText-extract-syntax">-at P</span></span>, for some path
+<ul class="items"><li>(a) <p class="inwebparagraph">If the user, at the command line, specified <span class="extract"><span class="ConsoleText-extract-syntax">-at P</span></span>, for some path
 <span class="extract"><span class="ConsoleText-extract-syntax">P</span></span>, then we use that.
-</li><li>(b) Otherwise, if the host operating system can indeed tell us where the
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph">Otherwise, if the host operating system can indeed tell us where the
 executable is, we use that. This is currently implemented only on MacOS,
 Windows and Linux.
-</li><li>(c) Otherwise, if the environment variable <span class="extract"><span class="ConsoleText-extract-syntax">$INWEB_PATH</span></span> exists and is
+</p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph">Otherwise, if the environment variable <span class="extract"><span class="ConsoleText-extract-syntax">$INWEB_PATH</span></span> exists and is
 non-empty, we use that.
-</li><li>(d) And if all else fails, we assume that the location is <span class="extract"><span class="ConsoleText-extract-syntax">inweb</span></span>, with
+</p>
+
+<ul class="items"><li>(d) <p class="inwebparagraph">And if all else fails, we assume that the location is <span class="extract"><span class="ConsoleText-extract-syntax">inweb</span></span>, with
 respect to the current working directory.
-</li></ul>
+</p>
+
 <p class="inwebparagraph">If you're not sure what Inweb has decided and suspect it may be wrong,
 running Inweb with the <span class="extract"><span class="ConsoleText-extract-syntax">-verbose</span></span> switch will cause it to print its belief
 about its location as it starts up.
@@ -234,12 +253,16 @@ script; it was reimplemented in C for speed in 2011.
 differences:
 </p>
 
-<ul class="items"><li>(a) Many bells and whistles have been removed. Inweb aspires to be as
+<ul class="items"><li>(a) <p class="inwebparagraph">Many bells and whistles have been removed. Inweb aspires to be as
 simple as possible in markup, with as few escape characters as possible.
-</li><li>(b) In Inweb, when writing code for C-like languages, named paragraphs are
+</p>
+
+<ul class="items"><li>(b) <p class="inwebparagraph">In Inweb, when writing code for C-like languages, named paragraphs are
 expanded inside implicit braces. As a result, they behave like compound
 statements, and can be used as loop bodies, or if/else clauses.
-</li><li>(c) Inweb does not follow the disastrous rule of CWEB that every name is
+</p>
+
+<ul class="items"><li>(c) <p class="inwebparagraph">Inweb does not follow the disastrous rule of CWEB that every name is
 equal to every other name of which it is an initial substring, so
 that, say, "Finish" would be considered the same name as "Finish with error".
 This was a rule Knuth adopted to save typing. He habitually wrote
@@ -250,11 +273,12 @@ current page; if this node is an insertion, goto contribute;
 otherwise if this node is not legal breakpoint, goto contribute
 or update_heights; otherwise set pi to the penalty associated
 with this breakpoint". We do not recommend this.
-</li><li>(d) Inweb can be used with much larger programs divided into sections
+</p>
+
+<ul class="items"><li>(d) <p class="inwebparagraph">Inweb can be used with much larger programs divided into sections
 and, if desired, chapters.
 </p>
 
-</li></ul>
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Manual.)</i></li><li><a href="M-wtaw.html">Continue with 'Webs, Tangling and Weaving'</a></li></ul><hr class="tocbar">
 <!--End of weave-->

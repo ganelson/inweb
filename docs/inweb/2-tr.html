@@ -70,6 +70,8 @@ each of which has a list of <span class="extract"><span class="extract-syntax">s
 <p class="inwebparagraph">Here are the semantics for a web:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">web</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">web_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">;</span>
@@ -90,8 +92,14 @@ each of which has a list of <span class="extract"><span class="extract-syntax">s
 
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">web</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure web is accessed in 1/pc, 1/ts, 1/ptt, 2/lc, 2/tp, 2/pn, 3/ta, 3/tc, 3/tw, 3/twot, 3/tt, 4/pl, 4/taf, 4/as, 4/cl, 4/is, 5/fm, 5/ptf, 5/tf, 5/hf, 5/df, 5/wp, 6/mkf, 6/rw, 6/cln and here.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>And for a chapter:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure web is accessed in 1/pc, 1/ts, 1/ptt, 2/lc, 2/tp, 2/pn, 3/ta, 3/tc, 3/tw, 3/twot, 3/tt, 4/pl, 4/taf, 4/as, 4/cl, 4/is, 5/fm, 5/ptf, 5/tf, 5/hf, 5/df, 5/wp, 6/mkf, 6/rw, 6/cln and here.</li></ul>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>And for a chapter:
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">chapter</span><span class="plain-syntax"> {</span>
@@ -104,8 +112,14 @@ each of which has a list of <span class="extract"><span class="extract-syntax">s
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ch_language</span><span class="plain-syntax">; </span><span class="comment"> in which this chapter is written</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">chapter</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure chapter is accessed in 1/pc, 1/ts, 1/ptt, 2/lc, 2/tp, 2/pn, 3/ta, 3/tc, 3/tw, 3/twot, 3/tt, 4/pl, 4/as, 4/is, 5/fm, 5/ptf, 5/tf, 5/hf, 5/df, 6/mkf, 6/rw, 6/cln and here.</li></ul><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>And lastly for a section.
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure chapter is accessed in 1/pc, 1/ts, 1/ptt, 2/lc, 2/tp, 2/pn, 3/ta, 3/tc, 3/tw, 3/twot, 3/tt, 4/pl, 4/as, 4/is, 5/fm, 5/ptf, 5/tf, 5/hf, 5/df, 6/mkf, 6/rw, 6/cln and here.</li></ul>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>And lastly for a section.
 </p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">section</span><span class="plain-syntax"> {</span>
@@ -135,18 +149,24 @@ each of which has a list of <span class="extract"><span class="extract-syntax">s
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">printed_number</span><span class="plain-syntax">; </span><span class="comment"> temporary again: sometimes used in weaving</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">section</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure section is accessed in 1/pc, 1/ts, 1/ptt, 2/lc, 2/tp, 2/pm, 2/tgs, 2/pn, 3/ta, 3/tc, 3/tw, 3/twot, 3/tt, 4/pl, 4/taf, 4/lm, 4/as, 4/is, 5/fm, 5/ptf, 5/tf, 5/hf, 5/df, 6/mkf, 6/rw, 6/cln and here.</li></ul><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The following routine makes the <span class="extract"><span class="extract-syntax">web</span></span>-<span class="extract"><span class="extract-syntax">chapter</span></span>-<span class="extract"><span class="extract-syntax">section</span></span> tree out of a
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure section is accessed in 1/pc, 1/ts, 1/ptt, 2/lc, 2/tp, 2/pm, 2/tgs, 2/pn, 3/ta, 3/tc, 3/tw, 3/twot, 3/tt, 4/pl, 4/taf, 4/lm, 4/as, 4/is, 5/fm, 5/ptf, 5/tf, 5/hf, 5/df, 6/mkf, 6/rw, 6/cln and here.</li></ul>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The following routine makes the <span class="extract"><span class="extract-syntax">web</span></span>-<span class="extract"><span class="extract-syntax">chapter</span></span>-<span class="extract"><span class="extract-syntax">section</span></span> tree out of a
 <span class="extract"><span class="extract-syntax">web_md</span></span>-<span class="extract"><span class="extract-syntax">chapter_md</span></span>-<span class="extract"><span class="extract-syntax">section_md</span></span> tree:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">web_md</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::load_web_md</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Reader::load_web_md</b>:<br>Makefiles - <a href="6-mkf.html#SP2_11_1">&#167;2.11.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alt_F</span><span class="plain-syntax">, </span><span class="reserved-syntax">module_search</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbosely</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">web_md</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::load_web_md</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Reader::load_web_md</b>:<br>Makefiles - <a href="6-mkf.html#SP2_11_1">&#167;2.11.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alt_F</span><span class="plain-syntax">, </span><span class="reserved-syntax">module_search</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbosely</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">including_modules</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="../foundation-module/8-ws.html#SP5" class="function-link"><span class="function-syntax">WebMetadata::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">alt_F</span><span class="plain-syntax">, </span><span class="identifier-syntax">default_inweb_syntax</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">verbosely</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">including_modules</span><span class="plain-syntax">, </span><span class="identifier-syntax">path_to_inweb</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::load_web</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Reader::load_web</b>:<br>Program Control - <a href="1-pc.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alt_F</span><span class="plain-syntax">, </span><span class="reserved-syntax">module_search</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbosely</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::load_web</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Reader::load_web</b>:<br>Program Control - <a href="1-pc.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alt_F</span><span class="plain-syntax">, </span><span class="reserved-syntax">module_search</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbosely</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">including_modules</span><span class="plain-syntax">) {</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax">);</span>
@@ -175,9 +195,15 @@ each of which has a list of <span class="extract"><span class="extract-syntax">s
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Add the imported headers</span> <span class="named-paragraph-number">4.5</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP4_1"></a><b>&#167;4.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP4_1"></a><b>&#167;4.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Write the Inweb Version bibliographic datum</span> <span class="named-paragraph-number">4.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">IB</span><span class="plain-syntax">);</span>
@@ -185,9 +211,18 @@ each of which has a list of <span class="extract"><span class="extract-syntax">s
 <span class="plain-syntax">    </span><span class="reserved-syntax">web_bibliographic_datum</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bd</span><span class="plain-syntax"> = </span><a href="../foundation-module/8-bdfw.html#SP7" class="function-link"><span class="function-syntax">Bibliographic::set_datum</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Inweb Version"</span><span class="plain-syntax">, </span><span class="identifier-syntax">IB</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">bd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">declaration_permitted</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">IB</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP4">&#167;4</a>.</li></ul><p class="inwebparagraph"><a id="SP4_2"></a><b>&#167;4.2.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP4">&#167;4</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP4_2"></a><b>&#167;4.2.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Initialise the rest of the web structure</span> <span class="named-paragraph-number">4.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chapters</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">chapter</span><span class="plain-syntax">);</span>
@@ -203,9 +238,18 @@ each of which has a list of <span class="extract"><span class="extract-syntax">s
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">language_name</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">main_language</span><span class="plain-syntax"> = </span><a href="4-pl.html#SP2" class="function-link"><span class="function-syntax">Languages::find_by_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">language_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">main_target</span><span class="plain-syntax"> = </span><a href="2-tr.html#SP12" class="function-link"><span class="function-syntax">Reader::add_tangle_target</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">main_language</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP4">&#167;4</a>.</li></ul><p class="inwebparagraph"><a id="SP4_3"></a><b>&#167;4.3.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP4">&#167;4</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP4_3"></a><b>&#167;4.3.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Initialise the rest of the chapter structure</span> <span class="named-paragraph-number">4.3</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ch_weave</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -214,9 +258,18 @@ each of which has a list of <span class="extract"><span class="extract-syntax">s
 <span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ch_language</span><span class="plain-syntax"> = </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">main_language</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Cm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ch_language_name</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">ch_language</span><span class="plain-syntax"> = </span><a href="4-pl.html#SP2" class="function-link"><span class="function-syntax">Languages::find_by_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Cm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ch_language_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP4">&#167;4</a>.</li></ul><p class="inwebparagraph"><a id="SP4_4"></a><b>&#167;4.4.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP4">&#167;4</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP4_4"></a><b>&#167;4.4.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Initialise the rest of the section structure</span> <span class="named-paragraph-number">4.4</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_extent</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -245,15 +298,28 @@ each of which has a list of <span class="extract"><span class="extract-syntax">s
 <span class="plain-syntax">    </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tag_with</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Sm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tag_name</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">tag_with</span><span class="plain-syntax"> = </span><a href="2-tgs.html#SP4" class="function-link"><span class="function-syntax">Tags::add_by_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">Sm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tag_name</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP4">&#167;4</a>.</li></ul><p class="inwebparagraph"><a id="SP4_5"></a><b>&#167;4.5.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP4">&#167;4</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP4_5"></a><b>&#167;4.5.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Add the imported headers</span> <span class="named-paragraph-number">4.5</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HF</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">HF</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">header_filenames</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="2-tr.html#SP14" class="function-link"><span class="function-syntax">Reader::add_imported_header</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">HF</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP4">&#167;4</a>.</li></ul><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Web reading. </b>All of that ran very quickly, but now things will slow down. The next
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP4">&#167;4</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Web reading. </b>All of that ran very quickly, but now things will slow down. The next
 function is where the actual contents of a web are read &mdash; which means opening
 each section and reading it line by line. We read the complete literate source
 of the web into memory, which is profligate, but saves time. Most of the lines
@@ -261,8 +327,10 @@ come straight from the source files, but a few chapter heading lines are
 inserted if this is a multi-chapter web.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::read_web</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Reader::read_web</b>:<br>Program Control - <a href="1-pc.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbosely</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::read_web</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Reader::read_web</b>:<br>Program Control - <a href="1-pc.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbosely</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">chapter</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chapters</span><span class="plain-syntax">)</span>
@@ -272,11 +340,14 @@ inserted if this is a multi-chapter web.
 <span class="plain-syntax">                </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">titling_line_to_insert</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">verbosely</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                (</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">single_file</span><span class="plain-syntax">)?</span><span class="identifier-syntax">TRUE:FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Each file, then:
+</pre>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Each file, then:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::read_file</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>Reader::read_file</b>:<br><a href="2-tr.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">titling_line</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::read_file</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>Reader::read_file</b>:<br><a href="2-tr.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">titling_line</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbosely</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">disregard_top</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_chapter</span><span class="plain-syntax"> = </span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">disregard_top</span><span class="plain-syntax">)</span>
@@ -296,9 +367,15 @@ inserted if this is a multi-chapter web.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">verbosely</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Read section: '%S' (%d lines)\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_title</span><span class="plain-syntax">, </span><span class="identifier-syntax">cl</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6_1"></a><b>&#167;6.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP6_1"></a><b>&#167;6.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Insert an implied chapter heading</span> <span class="named-paragraph-number">6.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_chapter</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">titling_line_inserted</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -307,9 +384,18 @@ inserted if this is a multi-chapter web.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="string-syntax">"Chapter Heading"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Accept this as a line belonging to this section and chapter</span> <span class="named-paragraph-number">6.1.2</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP6">&#167;6</a>.</li></ul><p class="inwebparagraph"><a id="SP6_2"></a><b>&#167;6.2.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP6">&#167;6</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP6_2"></a><b>&#167;6.2.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Insert an implied section heading, for a single-file web</span> <span class="named-paragraph-number">6.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
@@ -327,13 +413,19 @@ inserted if this is a multi-chapter web.
 <span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Accept this as a line belonging to this section and chapter</span> <span class="named-paragraph-number">6.1.2</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP6">&#167;6</a>.</li></ul><p class="inwebparagraph"><a id="SP6_1_1"></a><b>&#167;6.1.1.  </b>Non-implied source lines come from here. Note that we assume here that
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP6">&#167;6</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP6_1_1"></a><b>&#167;6.1.1.  </b>Non-implied source lines come from here. Note that we assume here that
 trailing whitespace on a line is not significant in the language being
 tangled for.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::scan_source_line</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>Reader::scan_source_line</b>:<br><a href="2-tr.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::scan_source_line</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>Reader::scan_source_line</b>:<br><a href="2-tr.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">section</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">l</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">) - </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">l</span><span class="plain-syntax">&gt;=0) &amp;&amp; (</span><a href="../foundation-module/4-chr.html#SP2" class="function-link"><span class="function-syntax">Characters::is_space_or_tab</span></a><span class="plain-syntax">(</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">l</span><span class="plain-syntax">))))</span>
@@ -345,9 +437,15 @@ tangled for.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Accept this as a line belonging to this section and chapter</span> <span class="named-paragraph-number">6.1.2</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6_1_2"></a><b>&#167;6.1.2.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"><a id="SP6_1_2"></a><b>&#167;6.1.2.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Accept this as a line belonging to this section and chapter</span> <span class="named-paragraph-number">6.1.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sl</span><span class="plain-syntax"> = </span><a href="2-lc.html#SP2" class="function-link"><span class="function-syntax">Lines::new_source_line_in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
@@ -359,23 +457,30 @@ tangled for.
 
 <span class="plain-syntax">    </span><span class="comment"> we haven't detected paragraph boundaries yet, so:</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_paragraph</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP6_1">&#167;6.1</a>, <a href="2-tr.html#SP6_2">&#167;6.2</a> (four times), <a href="2-tr.html#SP6_1_1">&#167;6.1.1</a>.</li></ul><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Woven and Tangled folders. </b>We abstract these in order to be able to respond well to their not existing:
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="2-tr.html#SP6_1">&#167;6.1</a>, <a href="2-tr.html#SP6_2">&#167;6.2</a> (four times), <a href="2-tr.html#SP6_1_1">&#167;6.1.1</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Woven and Tangled folders. </b>We abstract these in order to be able to respond well to their not existing:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::woven_folder</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>Reader::woven_folder</b>:<br>The Swarm - <a href="1-ts.html#SP2_2">&#167;2.2</a>, <a href="1-ts.html#SP4">&#167;4</a>&lt;br&gt;Patterns - <a href="1-ptt.html#SP7">&#167;7</a>&lt;br&gt;HTML Formats - <a href="5-hf.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::woven_folder</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>Reader::woven_folder</b>:<br>The Swarm - <a href="1-ts.html#SP2_2">&#167;2.2</a>, <a href="1-ts.html#SP4">&#167;4</a>&lt;br&gt;Patterns - <a href="1-ptt.html#SP7">&#167;7</a>&lt;br&gt;HTML Formats - <a href="5-hf.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-pth.html#SP4" class="function-link"><span class="function-syntax">Pathnames::down</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path_to_web</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Woven"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/3-pth.html#SP9" class="function-link"><span class="function-syntax">Pathnames::create_in_file_system</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_path</span></a><span class="plain-syntax">(</span><span class="string-syntax">"unable to create Woven subdirectory"</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::tangled_folder</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>Reader::tangled_folder</b>:<br>Program Control - <a href="1-pc.html#SP7_4_2">&#167;7.4.2</a>&lt;br&gt;The Tangler - <a href="3-tt.html#SP1_2">&#167;1.2</a>&lt;br&gt;InC Support - <a href="4-is.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::tangled_folder</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>Reader::tangled_folder</b>:<br>Program Control - <a href="1-pc.html#SP7_4_2">&#167;7.4.2</a>&lt;br&gt;The Tangler - <a href="3-tt.html#SP1_2">&#167;1.2</a>&lt;br&gt;InC Support - <a href="4-is.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-pth.html#SP4" class="function-link"><span class="function-syntax">Pathnames::down</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">path_to_web</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Tangled"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/3-pth.html#SP9" class="function-link"><span class="function-syntax">Pathnames::create_in_file_system</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_path</span></a><span class="plain-syntax">(</span><span class="string-syntax">"unable to create Tangled subdirectory"</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Looking up chapters and sections. </b>Given a range, which chapter or section does it correspond to? There is no
+</pre>
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Looking up chapters and sections. </b>Given a range, which chapter or section does it correspond to? There is no
 need for this to be at all quick: there are fewer than 1000 sections even
 in large webs, and lookup is performed only a few times.
 </p>
@@ -383,8 +488,10 @@ in large webs, and lookup is performed only a few times.
 <p class="inwebparagraph">Note that range comparison is case sensitive.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">chapter</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::get_chapter_for_range</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>Reader::get_chapter_for_range</b>:<br>The Analyser - <a href="3-ta.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">range</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">chapter</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::get_chapter_for_range</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>Reader::get_chapter_for_range</b>:<br>The Analyser - <a href="3-ta.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">range</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">W</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">chapter</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chapters</span><span class="plain-syntax">)</span>
@@ -393,7 +500,7 @@ in large webs, and lookup is performed only a few times.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::get_section_for_range</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>Reader::get_section_for_range</b>:<br>Program Control - <a href="1-pc.html#SP7_4_2">&#167;7.4.2</a>, <a href="1-pc.html#SP7_4_2_2">&#167;7.4.2.2</a>&lt;br&gt;The Swarm - <a href="1-ts.html#SP2_2_1">&#167;2.2.1</a>&lt;br&gt;The Analyser - <a href="3-ta.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">range</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::get_section_for_range</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>Reader::get_section_for_range</b>:<br>Program Control - <a href="1-pc.html#SP7_4_2">&#167;7.4.2</a>, <a href="1-pc.html#SP7_4_2_2">&#167;7.4.2.2</a>&lt;br&gt;The Swarm - <a href="1-ts.html#SP2_2_1">&#167;2.2.1</a>&lt;br&gt;The Analyser - <a href="3-ta.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">range</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">W</span><span class="plain-syntax">)</span>
@@ -403,11 +510,14 @@ in large webs, and lookup is performed only a few times.
 <span class="plain-syntax">                    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>This clumsy routine is never used in syntax version 2 or later.
+</pre>
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>This clumsy routine is never used in syntax version 2 or later.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::section_by_filename</span><button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>Reader::section_by_filename</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="reserved-syntax">filename</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::section_by_filename</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="popuptext" id="usagePopup10">Usage of <b>Reader::section_by_filename</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="reserved-syntax">filename</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">W</span><span class="plain-syntax">)</span>
@@ -421,14 +531,17 @@ in large webs, and lookup is performed only a few times.
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Ranges and containment. </b>This provides a sort of partial ordering on ranges, testing if the portion
+</pre>
+<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Ranges and containment. </b>This provides a sort of partial ordering on ranges, testing if the portion
 of the web represented by <span class="extract"><span class="extract-syntax">range1</span></span> is contained inside the portion represented
 by <span class="extract"><span class="extract-syntax">range2</span></span>. Note that <span class="extract"><span class="extract-syntax">"0"</span></span> means the entire web, and is what the word <span class="extract"><span class="extract-syntax">all</span></span>
 translates to when it's used on the command line.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::range_within</span><button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>Reader::range_within</b>:<br>Program Control - <a href="1-pc.html#SP7_4_3_1">&#167;7.4.3.1</a>&lt;br&gt;The Swarm - <a href="1-ts.html#SP1">&#167;1</a>, <a href="1-ts.html#SP2_2">&#167;2.2</a>&lt;br&gt;The Weaver - <a href="3-tw.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">range1</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">range2</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::range_within</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="popuptext" id="usagePopup11">Usage of <b>Reader::range_within</b>:<br>Program Control - <a href="1-pc.html#SP7_4_3_1">&#167;7.4.3.1</a>&lt;br&gt;The Swarm - <a href="1-ts.html#SP1">&#167;1</a>, <a href="1-ts.html#SP2_2">&#167;2.2</a>&lt;br&gt;The Weaver - <a href="3-tw.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">range1</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">range2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP22" class="function-link"><span class="function-syntax">Str::eq_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">range2</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"0"</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">range1</span><span class="plain-syntax">, </span><span class="identifier-syntax">range2</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::create_mr</span></a><span class="plain-syntax">();</span>
@@ -438,7 +551,8 @@ translates to when it's used on the command line.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Tangle targets. </b>In Knuth's original conception of literate programming, a web produces
+</pre>
+<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11. Tangle targets. </b>In Knuth's original conception of literate programming, a web produces
 just one piece of tangled output &mdash; the program for compilation. But this
 assumes that the underlying program is so simple that it won't require
 ancillary files, configuration data, and such; and this is often just as
@@ -448,56 +562,69 @@ sections. Each section belongs to exactly one tangle target; by default
 a web contains just one target, which contains all of the sections.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tangle_language</span><span class="plain-syntax">; </span><span class="comment"> common to the entire contents</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> </span><span class="identifier-syntax">symbols</span><span class="plain-syntax">; </span><span class="comment"> a table of identifiable names in this program</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure tangle_target is accessed in 3/ta, 3/tt, 4/as and here.</li></ul><p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure tangle_target is accessed in 3/ta, 3/tt, 4/as and here.</li></ul>
+<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">tangle_target</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::add_tangle_target</span><button class="popup" onclick="togglePopup('usagePopup12')">...<span class="popuptext" id="usagePopup12">Usage of <b>Reader::add_tangle_target</b>:<br><a href="2-tr.html#SP4_2">&#167;4.2</a>, <a href="2-tr.html#SP4_4">&#167;4.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">language</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">tangle_target</span><span class="plain-syntax"> *</span><span class="function-syntax">Reader::add_tangle_target</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="popuptext" id="usagePopup12">Usage of <b>Reader::add_tangle_target</b>:<br><a href="2-tr.html#SP4_2">&#167;4.2</a>, <a href="2-tr.html#SP4_4">&#167;4.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">language</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tt</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tangle_language</span><span class="plain-syntax"> = </span><span class="identifier-syntax">language</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">tt</span><span class="plain-syntax">, </span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tangle_targets</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">symbols</span><span class="plain-syntax">.</span><span class="element-syntax">analysis_hash_initialised</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>And the following provides a way to iterate through the lines in a tangle,
+</pre>
+<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>And the following provides a way to iterate through the lines in a tangle,
 while keeping the variables <span class="extract"><span class="extract-syntax">C</span></span>, <span class="extract"><span class="extract-syntax">S</span></span> and <span class="extract"><span class="extract-syntax">L</span></span> pointing to the current chapter,
 section and line.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="identifier-syntax">LOOP_WITHIN_TANGLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">)</span>
-    <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">chapter</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chapters</span><span class="plain-syntax">)</span>
-    <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">section</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sections</span><span class="plain-syntax">)</span>
-    <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_target</span><span class="plain-syntax"> == </span><span class="identifier-syntax">T</span><span class="plain-syntax">)</span>
-    <span class="plain-syntax">                </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_line</span><span class="plain-syntax">; </span><span class="identifier-syntax">L</span><span class="plain-syntax">; </span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_line</span><span class="plain-syntax">)</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="identifier-syntax">LOOP_WITHIN_TANGLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">chapter</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chapters</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">section</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sections</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_target</span><span class="plain-syntax"> == </span><span class="identifier-syntax">T</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_line</span><span class="plain-syntax">; </span><span class="identifier-syntax">L</span><span class="plain-syntax">; </span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_line</span><span class="plain-syntax">)</span>
 </pre>
 <p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Additional header files. </b>Some C programs, in particular, may need additional header files added to
 any tangle in order for them to compile. (The Inform project uses this to
 get around the lack of some POSIX facilities on Windows.)
 </p>
 
-<pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::add_imported_header</span><button class="popup" onclick="togglePopup('usagePopup13')">...<span class="popuptext" id="usagePopup13">Usage of <b>Reader::add_imported_header</b>:<br><a href="2-tr.html#SP4_5">&#167;4.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HF</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">HF</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">headers</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Extent. </b></p>
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::web_has_one_section</span><button class="popup" onclick="togglePopup('usagePopup14')">...<span class="popuptext" id="usagePopup14">Usage of <b>Reader::web_has_one_section</b>:<br>The Swarm - <a href="1-ts.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::add_imported_header</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="popuptext" id="usagePopup13">Usage of <b>Reader::add_imported_header</b>:<br><a href="2-tr.html#SP4_5">&#167;4.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HF</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">HF</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">headers</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15. Extent. </b></p>
+
+<pre class="displayed-code all-displayed-code">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::web_has_one_section</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="popuptext" id="usagePopup14">Usage of <b>Reader::web_has_one_section</b>:<br>The Swarm - <a href="1-ts.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/8-ws.html#SP9" class="function-link"><span class="function-syntax">WebMetadata::section_count</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">) == </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>This really serves no purpose, but seems to boost morale.
+</pre>
+<p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>This really serves no purpose, but seems to boost morale.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::print_web_statistics</span><button class="popup" onclick="togglePopup('usagePopup15')">...<span class="popuptext" id="usagePopup15">Usage of <b>Reader::print_web_statistics</b>:<br>Program Control - <a href="1-pc.html#SP7_4">&#167;7.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Reader::print_web_statistics</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="popuptext" id="usagePopup15">Usage of <b>Reader::print_web_statistics</b>:<br>Program Control - <a href="1-pc.html#SP7_4">&#167;7.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"web \"%S\": "</span><span class="plain-syntax">, </span><a href="../foundation-module/8-bdfw.html#SP6" class="function-link"><span class="function-syntax">Bibliographic::get_datum</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Title"</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><a href="../foundation-module/8-ws.html#SP9" class="function-link"><span class="function-syntax">WebMetadata::chapter_count</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">s</span><span class="plain-syntax"> = </span><a href="../foundation-module/8-ws.html#SP9" class="function-link"><span class="function-syntax">WebMetadata::section_count</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">);</span>
@@ -509,7 +636,8 @@ get around the lack of some POSIX facilities on Windows.)
 <span class="plain-syntax">        </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">web_extent</span><span class="plain-syntax">, (</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">web_extent</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">)?</span><span class="string-syntax">""</span><span class="plain-syntax">:</span><span class="string-syntax">"s"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Chapter 2: Parsing a Web.)</i></li><li><a href="2-lc.html">Continue with 'Line Categories'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 

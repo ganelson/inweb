@@ -60,13 +60,15 @@ ends. If one end is marked <span class="extract"><span class="extract-syntax">EM
 no sense for an interval to be empty seen from one end but not the other.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">CLOSED_RANGE_END</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">OPEN_RANGE_END</span>
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">INFINITE_RANGE_END</span>
-    <span class="definition-keyword">enum</span> <span class="constant-syntax">EMPTY_RANGE_END</span>
+<pre class="definitions"><span class="definition-keyword">enum</span> <span class="constant-syntax">CLOSED_RANGE_END</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">OPEN_RANGE_END</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">INFINITE_RANGE_END</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">EMPTY_RANGE_END</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">end_type</span><span class="plain-syntax">;</span>
@@ -78,12 +80,18 @@ no sense for an interval to be empty seen from one end but not the other.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> </span><span class="identifier-syntax">upper</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure range_end is private to this section.</li><li>The structure semver_range is private to this section.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>As hinted above, the notation <span class="extract"><span class="extract-syntax">[</span></span> and <span class="extract"><span class="extract-syntax">]</span></span> is used for closed ends, and <span class="extract"><span class="extract-syntax">(</span></span>
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure range_end is private to this section.</li><li>The structure semver_range is private to this section.</li></ul>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>As hinted above, the notation <span class="extract"><span class="extract-syntax">[</span></span> and <span class="extract"><span class="extract-syntax">]</span></span> is used for closed ends, and <span class="extract"><span class="extract-syntax">(</span></span>
 and <span class="extract"><span class="extract-syntax">)</span></span> for open ones.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::write_range</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>VersionNumberRanges::write_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::write_range</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>VersionNumberRanges::write_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no range"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax">(</span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lower</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CLOSED_RANGE_END:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"[%v,"</span><span class="plain-syntax">, &amp;(</span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lower</span><span class="plain-syntax">.</span><span class="element-syntax">end_value</span><span class="plain-syntax">)); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
@@ -97,12 +105,15 @@ and <span class="extract"><span class="extract-syntax">)</span></span> for open 
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">INFINITE_RANGE_END:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"infty)"</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The "allow anything" range runs from minus to plus infinity. Every version
+</pre>
+<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The "allow anything" range runs from minus to plus infinity. Every version
 number lies in this range.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="function-syntax">VersionNumberRanges::any_range</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>VersionNumberRanges::any_range</b>:<br><a href="7-vnr.html#SP4">&#167;4</a>, <a href="7-vnr.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="function-syntax">VersionNumberRanges::any_range</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>VersionNumberRanges::any_range</b>:<br><a href="7-vnr.html#SP4">&#167;4</a>, <a href="7-vnr.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">semver_range</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lower</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax"> = </span><span class="constant-syntax">INFINITE_RANGE_END</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lower</span><span class="plain-syntax">.</span><span class="element-syntax">end_value</span><span class="plain-syntax"> = </span><a href="7-vn.html#SP4" class="function-link"><span class="function-syntax">VersionNumbers::null</span></a><span class="plain-syntax">();</span>
@@ -111,13 +122,14 @@ number lies in this range.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::is_any_range</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>VersionNumberRanges::is_any_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::is_any_range</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>VersionNumberRanges::is_any_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lower</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">INFINITE_RANGE_END</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">upper</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">INFINITE_RANGE_END</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The "compatibility" range for a given version lies at the heart of semver:
+</pre>
+<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>The "compatibility" range for a given version lies at the heart of semver:
 to be compatible with version <span class="extract"><span class="extract-syntax">V</span></span>, version <span class="extract"><span class="extract-syntax">W</span></span> must be of equal or greater
 precedence, and must have the same major version number. For example,
 for <span class="extract"><span class="extract-syntax">2.1.7</span></span> the range will be <span class="extract"><span class="extract-syntax">[2.1.7, 3-A)</span></span>, all versions at least 2.1.7 but
@@ -131,8 +143,10 @@ alphanumeric string gives it lower precendence than all other prerelease
 versions.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="function-syntax">VersionNumberRanges::compatibility_range</span><button class="popup" onclick="togglePopup('usagePopup4')">...<span class="popuptext" id="usagePopup4">Usage of <b>VersionNumberRanges::compatibility_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="function-syntax">VersionNumberRanges::compatibility_range</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>VersionNumberRanges::compatibility_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax"> = </span><a href="7-vnr.html#SP3" class="function-link"><span class="function-syntax">VersionNumberRanges::any_range</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="7-vn.html#SP4" class="function-link"><span class="function-syntax">VersionNumbers::is_null</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">lower</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax"> = </span><span class="constant-syntax">CLOSED_RANGE_END</span><span class="plain-syntax">;</span>
@@ -146,29 +160,35 @@ versions.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>More straightforwardly, these ranges are for anything from V, or up to V,
+</pre>
+<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>More straightforwardly, these ranges are for anything from V, or up to V,
 inclusive:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="function-syntax">VersionNumberRanges::at_least_range</span><button class="popup" onclick="togglePopup('usagePopup5')">...<span class="popuptext" id="usagePopup5">Usage of <b>VersionNumberRanges::at_least_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="function-syntax">VersionNumberRanges::at_least_range</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>VersionNumberRanges::at_least_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax"> = </span><a href="7-vnr.html#SP3" class="function-link"><span class="function-syntax">VersionNumberRanges::any_range</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lower</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax"> = </span><span class="constant-syntax">CLOSED_RANGE_END</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lower</span><span class="plain-syntax">.</span><span class="element-syntax">end_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">V</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="function-syntax">VersionNumberRanges::at_most_range</span><button class="popup" onclick="togglePopup('usagePopup6')">...<span class="popuptext" id="usagePopup6">Usage of <b>VersionNumberRanges::at_most_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="function-syntax">VersionNumberRanges::at_most_range</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>VersionNumberRanges::at_most_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax"> = </span><a href="7-vnr.html#SP3" class="function-link"><span class="function-syntax">VersionNumberRanges::any_range</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">upper</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax"> = </span><span class="constant-syntax">CLOSED_RANGE_END</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">upper</span><span class="plain-syntax">.</span><span class="element-syntax">end_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">V</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Here we test whether V is at least a given end, and then at most:
+</pre>
+<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Here we test whether V is at least a given end, and then at most:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::version_ge_end</span><button class="popup" onclick="togglePopup('usagePopup7')">...<span class="popuptext" id="usagePopup7">Usage of <b>VersionNumberRanges::version_ge_end</b>:<br><a href="7-vnr.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::version_ge_end</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>VersionNumberRanges::version_ge_end</b>:<br><a href="7-vnr.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CLOSED_RANGE_END:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="7-vn.html#SP4" class="function-link"><span class="function-syntax">VersionNumbers::is_null</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -184,7 +204,7 @@ inclusive:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::version_le_end</span><button class="popup" onclick="togglePopup('usagePopup8')">...<span class="popuptext" id="usagePopup8">Usage of <b>VersionNumberRanges::version_le_end</b>:<br><a href="7-vnr.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::version_le_end</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>VersionNumberRanges::version_le_end</b>:<br><a href="7-vnr.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">CLOSED_RANGE_END:</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="7-vn.html#SP4" class="function-link"><span class="function-syntax">VersionNumbers::is_null</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -199,17 +219,21 @@ inclusive:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>This allows a simple way to write:
+</pre>
+<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>This allows a simple way to write:
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::in_range</span><button class="popup" onclick="togglePopup('usagePopup9')">...<span class="popuptext" id="usagePopup9">Usage of <b>VersionNumberRanges::in_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::in_range</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>VersionNumberRanges::in_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="7-vnr.html#SP6" class="function-link"><span class="function-syntax">VersionNumberRanges::version_ge_end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lower</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><a href="7-vnr.html#SP6" class="function-link"><span class="function-syntax">VersionNumberRanges::version_le_end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">upper</span><span class="plain-syntax">))) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>The following decides which end restriction is stricter: it returns 1
+</pre>
+<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>The following decides which end restriction is stricter: it returns 1
 of <span class="extract"><span class="extract-syntax">E1</span></span> is, -1 if <span class="extract"><span class="extract-syntax">E2</span></span> is, and 0 if they are equally onerous.
 </p>
 
@@ -225,8 +249,10 @@ upper end of <span class="extract"><span class="extract-syntax">[..., 4]</span><
 the boundary value is the same, open ends are stricter than closed ends.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::stricter</span><button class="popup" onclick="togglePopup('usagePopup10')">...<span class="popuptext" id="usagePopup10">Usage of <b>VersionNumberRanges::stricter</b>:<br><a href="7-vnr.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> </span><span class="identifier-syntax">E1</span><span class="plain-syntax">, </span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> </span><span class="identifier-syntax">E2</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lower</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::stricter</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="popuptext" id="usagePopup10">Usage of <b>VersionNumberRanges::stricter</b>:<br><a href="7-vnr.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> </span><span class="identifier-syntax">E1</span><span class="plain-syntax">, </span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> </span><span class="identifier-syntax">E2</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lower</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">E1</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">EMPTY_RANGE_END</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">E2</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">EMPTY_RANGE_END</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E1</span><span class="plain-syntax">.</span><span class="identifier-syntax">end_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">EMPTY_RANGE_END</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E2</span><span class="plain-syntax">.</span><span class="identifier-syntax">end_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">EMPTY_RANGE_END</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
@@ -241,7 +267,8 @@ the boundary value is the same, open ends are stricter than closed ends.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E1</span><span class="plain-syntax">.</span><span class="identifier-syntax">end_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">CLOSED_RANGE_END</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> -1;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>And so we finally arrive at the following, which intersects two ranges:
+</pre>
+<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>And so we finally arrive at the following, which intersects two ranges:
 that is, it changes <span class="extract"><span class="extract-syntax">R1</span></span> to the range of versions which lie inside both the
 original <span class="extract"><span class="extract-syntax">R1</span></span> and also <span class="extract"><span class="extract-syntax">R2</span></span>. (This is used by Inbuild when an extension is
 included in two different places in the source text, but with possibly
@@ -249,8 +276,10 @@ different version needs.) The return value is true if an actual change took
 place, and false otherwise.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::intersect_range</span><button class="popup" onclick="togglePopup('usagePopup11')">...<span class="popuptext" id="usagePopup11">Usage of <b>VersionNumberRanges::intersect_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R2</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::intersect_range</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="popuptext" id="usagePopup11">Usage of <b>VersionNumberRanges::intersect_range</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lc</span><span class="plain-syntax"> = </span><a href="7-vnr.html#SP8" class="function-link"><span class="function-syntax">VersionNumberRanges::stricter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lower</span><span class="plain-syntax">, </span><span class="identifier-syntax">R2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lower</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">uc</span><span class="plain-syntax"> = </span><a href="7-vnr.html#SP8" class="function-link"><span class="function-syntax">VersionNumberRanges::stricter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">upper</span><span class="plain-syntax">, </span><span class="identifier-syntax">R2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">upper</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">lc</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">uc</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -268,7 +297,8 @@ place, and false otherwise.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><a href="7-vn.html">Back to 'Version Numbers'</a></li><li><i>(This section ends Chapter 7: Semantic Versioning.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
 

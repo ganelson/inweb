@@ -59,34 +59,44 @@ back at 2 - so it can't efficiently test just, say, the eight-digit numbers
 for primality.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">still_in_sieve</span><span class="plain-syntax">[</span><span class="constant-syntax">RANGE</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">];</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sieve_performed</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
-</pre><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Primality. </b>We provide this as a function which determines whether a number is prime:
+</pre>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Primality. </b>We provide this as a function which determines whether a number is prime:
 </p>
 
+<p class="inwebparagraph"></p>
 
-<pre class="definitions">
-    <span class="definition-keyword">define</span> <span class="constant-syntax">TRUE</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-    <span class="definition-keyword">define</span> <span class="constant-syntax">FALSE</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">TRUE</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">FALSE</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
 </pre>
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">isprime</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>isprime</b>:<br>Summing Primes - <a href="S-sp.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">isprime</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>isprime</b>:<br>Summing Primes - <a href="S-sp.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">RANGE</span><span class="plain-syntax">) { </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"Out of range!\n"</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!</span><span class="identifier-syntax">sieve_performed</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Perform the sieve</span> <span class="named-paragraph-number">2.1</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">still_in_sieve</span><span class="plain-syntax">[</span><span class="identifier-syntax">n</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">}</span>
-</pre><p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b>We save a little time by noting that if a number up to <span class="extract"><span class="extract-syntax">RANGE</span></span> is composite
+</pre>
+<p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b>We save a little time by noting that if a number up to <span class="extract"><span class="extract-syntax">RANGE</span></span> is composite
 then one of its factors must be smaller than the square root of <span class="extract"><span class="extract-syntax">RANGE</span></span>. Thus,
 in a sieve of size 10000, one only needs to remove multiples of 2 up to 100,
 for example.
 </p>
 
+<p class="inwebparagraph"></p>
 
-<p class="macrodefinition"><code class="display">
+<code class="display">
 &lt;<span class="named-paragraph-defn">Perform the sieve</span> <span class="named-paragraph-number">2.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Start with all numbers from 2 upwards in the sieve</span> <span class="named-paragraph-number">2.1.1</span>&gt;<span class="plain-syntax">;</span>
@@ -94,20 +104,42 @@ for example.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">still_in_sieve</span><span class="plain-syntax">[</span><span class="identifier-syntax">n</span><span class="plain-syntax">])</span>
 <span class="plain-syntax">            </span>&lt;<span class="named-paragraph">Shake out multiples of n</span> <span class="named-paragraph-number">2.1.2</span>&gt;<span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sieve_performed</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="S-tsoe.html#SP2">&#167;2</a>.</li></ul><p class="inwebparagraph"><a id="SP2_1_1"></a><b>&#167;2.1.1.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="S-tsoe.html#SP2">&#167;2</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP2_1_1"></a><b>&#167;2.1.1.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Start with all numbers from 2 upwards in the sieve</span> <span class="named-paragraph-number">2.1.1</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">still_in_sieve</span><span class="plain-syntax">[1] = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">=2; </span><span class="identifier-syntax">n</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">RANGE</span><span class="plain-syntax">; </span><span class="identifier-syntax">n</span><span class="plain-syntax">++) </span><span class="identifier-syntax">still_in_sieve</span><span class="plain-syntax">[</span><span class="identifier-syntax">n</span><span class="plain-syntax">] = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="S-tsoe.html#SP2_1">&#167;2.1</a>.</li></ul><p class="inwebparagraph"><a id="SP2_1_2"></a><b>&#167;2.1.2.  </b><code class="display">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="S-tsoe.html#SP2_1">&#167;2.1</a>.</li></ul>
+<p class="inwebparagraph"><a id="SP2_1_2"></a><b>&#167;2.1.2.  </b></p>
+
+<code class="display">
 &lt;<span class="named-paragraph-defn">Shake out multiples of n</span> <span class="named-paragraph-number">2.1.2</span>&gt; =
-</code></p>
+</code>
+</p>
+
+<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">m</span><span class="plain-syntax">= </span><span class="identifier-syntax">n</span><span class="plain-syntax">+</span><span class="identifier-syntax">n</span><span class="plain-syntax">; </span><span class="identifier-syntax">m</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">RANGE</span><span class="plain-syntax">; </span><span class="identifier-syntax">m</span><span class="plain-syntax"> += </span><span class="identifier-syntax">n</span><span class="plain-syntax">) </span><span class="identifier-syntax">still_in_sieve</span><span class="plain-syntax">[</span><span class="identifier-syntax">m</span><span class="plain-syntax">] = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>This code is used in <a href="S-tsoe.html#SP2_1">&#167;2.1</a>.</li></ul><hr class="tocbar">
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>This code is used in <a href="S-tsoe.html#SP2_1">&#167;2.1</a>.</li></ul>
+<hr class="tocbar">
 <ul class="toc"><li><a href="S-sp.html">Back to 'Summing Primes'</a></li><li><i>(This section ends Sections.)</i></li></ul><hr class="tocbar">
 <!--End of weave-->
 

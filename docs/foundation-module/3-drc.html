@@ -47,19 +47,27 @@ function togglePopup(material_id) {
 <p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>All of this abstracts the code already found in the platform definitions.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">scan_directory</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">directory_handle</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">directory_name_written_out</span><span class="plain-syntax">[4*</span><span class="constant-syntax">MAX_FILENAME_LENGTH</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">scan_directory</span><span class="plain-syntax">;</span>
-</pre><ul class="endnotetexts"><li>The structure scan_directory is private to this section.</li></ul><p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The directory name going out has to be transcoded from flat Unicode to
+</pre>
+<p class="inwebparagraph"></p>
+
+<ul class="endnotetexts"><li>The structure scan_directory is private to this section.</li></ul>
+<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>The directory name going out has to be transcoded from flat Unicode to
 whatever the locale encoding is; the filenames coming back have to be
 transcoded the other way.
 </p>
 
+<p class="inwebparagraph"></p>
+
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">scan_directory</span><span class="plain-syntax"> *</span><span class="function-syntax">Directories::open</span><button class="popup" onclick="togglePopup('usagePopup1')">...<span class="popuptext" id="usagePopup1">Usage of <b>Directories::open</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">scan_directory</span><span class="plain-syntax"> *</span><span class="function-syntax">Directories::open</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Directories::open</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">scan_directory</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">scan_directory</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="string-syntax">"%p"</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
@@ -70,7 +78,7 @@ transcoded the other way.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">D</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Directories::next</span><button class="popup" onclick="togglePopup('usagePopup2')">...<span class="popuptext" id="usagePopup2">Usage of <b>Directories::next</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scan_directory</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Directories::next</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Directories::next</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scan_directory</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">leafname</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">leafname_Cs</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_FILENAME_LENGTH</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rv</span><span class="plain-syntax">) {</span>
@@ -82,10 +90,11 @@ transcoded the other way.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Directories::close</span><button class="popup" onclick="togglePopup('usagePopup3')">...<span class="popuptext" id="usagePopup3">Usage of <b>Directories::close</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scan_directory</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Directories::close</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Directories::close</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scan_directory</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="1-wp.html#SP7" class="function-link"><span class="function-syntax">Platform::closedir</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">directory_handle</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
-</pre><hr class="tocbar">
+</pre>
+<hr class="tocbar">
 <ul class="toc"><li><a href="3-shl.html">Back to 'Shell'</a></li><li><a href="3-tm.html">Continue with 'Time'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
 
