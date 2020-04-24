@@ -64,6 +64,7 @@ see //foundation: A Brief Guide to Foundation//.
 @e weave_endnote_node_MT
 @e weave_material_node_MT
 @e weave_figure_node_MT
+@e weave_audio_node_MT
 @e weave_embed_node_MT
 @e weave_pmac_node_MT
 @e weave_vskip_node_MT
@@ -146,6 +147,7 @@ ALLOCATE_INDIVIDUALLY(weave_paragraph_heading_node)
 ALLOCATE_INDIVIDUALLY(weave_endnote_node)
 ALLOCATE_INDIVIDUALLY(weave_material_node)
 ALLOCATE_INDIVIDUALLY(weave_figure_node)
+ALLOCATE_INDIVIDUALLY(weave_audio_node)
 ALLOCATE_INDIVIDUALLY(weave_embed_node)
 ALLOCATE_INDIVIDUALLY(weave_pmac_node)
 ALLOCATE_INDIVIDUALLY(weave_vskip_node)

@@ -476,6 +476,15 @@ correspond. If you really want to monkey with the aspect ratio,
 	= (figure Whatever.jpg at 20 by 100)
 =
 
+@h Audio.
+To include audio samples, place them as MP3 files in the subdirectory |Audio|
+of the web. For example, in the present web,
+= (text as Inweb)
+	= (audio SP014.mp3)
+=
+produces Space Patrol episode 14, from 1953: "Brain Bank And Space Binoculars" --
+= (audio SP014.mp3)
+
 @h Carousels.
 A carousel is a slide-show of (usually but not always) figures; there's a
 set of slides with captions, only one of which is visible at a time.

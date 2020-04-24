@@ -48,6 +48,7 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraph heading@>
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
 	else if (N->type == weave_figure_node_type) @<Render nothing@>
+	else if (N->type == weave_audio_node_type) @<Render nothing@>
 	else if (N->type == weave_material_node_type) @<Render nothing@>
 	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>

@@ -77,6 +77,12 @@ typedef struct weave_figure_node {
 	MEMORY_MANAGEMENT
 } weave_figure_node;
 
+typedef struct weave_audio_node {
+	struct text_stream *audio_name;
+	int w;
+	MEMORY_MANAGEMENT
+} weave_audio_node;
+
 typedef struct weave_material_node {
 	int material_type;
 	int plainly;
@@ -238,6 +244,7 @@ tree_node_type *weave_pagebreak_node_type = NULL;
 tree_node_type *weave_paragraph_heading_node_type = NULL;
 tree_node_type *weave_endnote_node_type = NULL;
 tree_node_type *weave_figure_node_type = NULL;
+tree_node_type *weave_audio_node_type = NULL;
 tree_node_type *weave_material_node_type = NULL;
 tree_node_type *weave_embed_node_type = NULL;
 tree_node_type *weave_pmac_node_type = NULL;
@@ -298,6 +305,8 @@ heterogeneous_tree *WeaveTree::new_tree(weave_order *wv) {
 			Trees::new_node_type(I"endnote", weave_endnote_node_MT, NULL);
 		weave_figure_node_type =
 			Trees::new_node_type(I"figure", weave_figure_node_MT, NULL);
+		weave_audio_node_type =
+			Trees::new_node_type(I"audio", weave_audio_node_MT, NULL);
 		weave_material_node_type =
 			Trees::new_node_type(I"material", weave_material_node_MT, NULL);
 		weave_embed_node_type =
@@ -473,6 +482,15 @@ tree_node *WeaveTree::figure(heterogeneous_tree *tree,
 	C->h = h;
 	return Trees::new_node(tree, weave_figure_node_type,
 		STORE_POINTER_weave_figure_node(C));
+}
+
+tree_node *WeaveTree::audio(heterogeneous_tree *tree, 
+	text_stream *audio_name, int w) {
+	weave_audio_node *C = CREATE(weave_audio_node);
+	C->audio_name = Str::duplicate(audio_name);
+	C->w = w;
+	return Trees::new_node(tree, weave_audio_node_type,
+		STORE_POINTER_weave_audio_node(C));
 }
 
 tree_node *WeaveTree::material(heterogeneous_tree *tree, int material_type, int plainly,

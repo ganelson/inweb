@@ -104,6 +104,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraph heading@>
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
 	else if (N->type == weave_figure_node_type) @<Render figure@>
+	else if (N->type == weave_audio_node_type) @<Render audio clip@>
 	else if (N->type == weave_material_node_type) @<Render material@>
 	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
@@ -246,6 +247,20 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	HTML_OPEN("center");
 	HTML::image_to_dimensions(OUT, RF, C->w, C->h);
 	Patterns::copy_file_into_weave(hrs->wv->weave_web, F, NULL, NULL);
+	HTML_CLOSE("center");
+	WRITE("\n");
+
+@<Render audio clip@> =
+	weave_audio_node *C = RETRIEVE_POINTER_weave_audio_node(N->content);
+	filename *F = Filenames::in(
+		Pathnames::down(hrs->wv->weave_web->md->path_to_web, I"Audio"),
+		C->audio_name);
+	Patterns::copy_file_into_weave(hrs->wv->weave_web, F, NULL, NULL);
+	HTML_OPEN("center");
+	WRITE("<audio controls>\n");
+	WRITE("<source src=\"%S\" type=\"audio/mpeg\">\n", C->audio_name);
+	WRITE("Your browser does not support the audio element.\n");
+	WRITE("</audio>\n");
 	HTML_CLOSE("center");
 	WRITE("\n");
 

@@ -279,6 +279,7 @@ at us; but we don't weave them into the output, that's for sure.
 		if (L->command_code == GRAMMAR_INDEX_CMD)
 			Trees::make_child(WeaveTree::grammar_index(tree), state->ap);
 		if (L->command_code == FIGURE_CMD) @<Weave a figure@>;
+		if (L->command_code == AUDIO_CMD) @<Weave an audio clip@>;
 		if (L->command_code == EMBED_CMD) @<Weave an embed@>;
 		if (L->command_code == CAROUSEL_CMD) @<Weave a carousel@>;
 		if (L->command_code == CAROUSEL_ABOVE_CMD) @<Weave a carousel@>;
@@ -293,6 +294,11 @@ at us; but we don't weave them into the output, that's for sure.
 	int w, h;
 	text_stream *figname = Weaver::dimensions(L->text_operand, &w, &h, L);
 	Trees::make_child(WeaveTree::figure(tree, figname, w, h), state->ap);
+
+@<Weave an audio clip@> =
+	int w, h;
+	text_stream *figname = Weaver::dimensions(L->text_operand, &w, &h, L);
+	Trees::make_child(WeaveTree::audio(tree, figname, w), state->ap);
 
 @<Weave an embed@> =
 	int w, h;
