@@ -33,7 +33,6 @@ typedef struct HTML_render_state {
 	struct colour_scheme *colours;
 	int EPUB_flag;
 	int popup_counter;
-	int last_material_seen;
 	int carousel_number;
 	int slide_number;
 	int slide_of;
@@ -50,7 +49,6 @@ HTML_render_state HTMLFormat::initial_state(text_stream *OUT, weave_order *wv,
 	hrs.wv = wv;
 	hrs.EPUB_flag = EPUB_mode;
 	hrs.popup_counter = 1;
-	hrs.last_material_seen = -1;
 	hrs.carousel_number = 1;
 	hrs.slide_number = -1;
 	hrs.slide_of = -1;
@@ -65,45 +63,44 @@ ePub respectively:
 
 =
 void HTMLFormat::render(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) {
-	HTMLFormat::render_inner(self, OUT, tree, FALSE);
+	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
+	HTML::declare_as_HTML(OUT, FALSE);
+	HTML_render_state hrs = HTMLFormat::initial_state(OUT, C->wv, FALSE, C->wv->weave_to);
+	Trees::traverse_from(tree->root, &HTMLFormat::render_visit, (void *) &hrs, 0);
+	HTML::completed(OUT);
 }
 void HTMLFormat::render_EPUB(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) {
-	HTMLFormat::render_inner(self, OUT, tree, TRUE);
-}
-
-@
-
-=
-void HTMLFormat::render_inner(weave_format *self, text_stream *OUT, heterogeneous_tree *tree, int EPUB_mode) {
 	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
-	HTML::declare_as_HTML(OUT, EPUB_mode);
-	HTML_render_state hrs = HTMLFormat::initial_state(OUT, C->wv, EPUB_mode, C->wv->weave_to);
+	HTML::declare_as_HTML(OUT, TRUE);
+	HTML_render_state hrs = HTMLFormat::initial_state(OUT, C->wv, TRUE, C->wv->weave_to);
 	Trees::traverse_from(tree->root, &HTMLFormat::render_visit, (void *) &hrs, 0);
-	if (EPUB_mode)
-		Epub::note_page(C->wv->weave_web->as_ebook, C->wv->weave_to, C->wv->booklet_title, I"");
+	Epub::note_page(C->wv->weave_web->as_ebook, C->wv->weave_to, C->wv->booklet_title, I"");
 	HTML::completed(OUT);
 }
 
-@h Methods.
-For documentation, see "Weave Fornats".
+@ And in either case, we traverse the weave tree with the following visitor function.
 
 =
 int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	HTML_render_state *hrs = (HTML_render_state *) state;
 	text_stream *OUT = hrs->OUT;
-	if (N->type == weave_document_node_type) @<Render nothing@>
+	if ((N->type == weave_document_node_type) ||
+		(N->type == weave_body_node_type) ||
+		(N->type == weave_chapter_header_node_type) ||
+		(N->type == weave_chapter_footer_node_type) ||
+		(N->type == weave_pagebreak_node_type) ||
+		(N->type == weave_chapter_node_type) ||
+		(N->type == weave_chapter_title_page_node_type) ||
+		(N->type == weave_grammar_index_node_type)) @<Render nothing@>
+
 	else if (N->type == weave_head_node_type) @<Render head@>
-	else if (N->type == weave_body_node_type) @<Render nothing@>
 	else if (N->type == weave_tail_node_type) @<Render tail@>
 	else if (N->type == weave_verbatim_node_type) @<Render verbatim@>
-	else if (N->type == weave_chapter_header_node_type) @<Render nothing@>
-	else if (N->type == weave_chapter_footer_node_type) @<Render nothing@>
 	else if (N->type == weave_section_header_node_type) @<Render header@>
 	else if (N->type == weave_section_footer_node_type) @<Render footer@>
 	else if (N->type == weave_section_purpose_node_type) @<Render purpose@>
 	else if (N->type == weave_subheading_node_type) @<Render subheading@>
 	else if (N->type == weave_bar_node_type) @<Render bar@>
-	else if (N->type == weave_pagebreak_node_type) @<Render pagebreak@>
 	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraph heading@>
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
 	else if (N->type == weave_figure_node_type) @<Render figure@>
@@ -111,7 +108,6 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
-	else if (N->type == weave_chapter_node_type) @<Render nothing@>
 	else if (N->type == weave_section_node_type) @<Render section@>
 	else if (N->type == weave_code_line_node_type) @<Render code line@>
 	else if (N->type == weave_function_usage_node_type) @<Render function usage@>
@@ -119,7 +115,6 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_carousel_slide_node_type) @<Render carousel slide@>
 	else if (N->type == weave_toc_node_type) @<Render toc@>
 	else if (N->type == weave_toc_line_node_type) @<Render toc line@>
-	else if (N->type == weave_chapter_title_page_node_type) @<Render weave_chapter_title_page_node@>
 	else if (N->type == weave_defn_node_type) @<Render defn@>
 	else if (N->type == weave_source_code_node_type) @<Render source code@>
 	else if (N->type == weave_url_node_type) @<Render URL@>
@@ -128,10 +123,10 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_display_line_node_type) @<Render display line@>
 	else if (N->type == weave_function_defn_node_type) @<Render function defn@>
 	else if (N->type == weave_item_node_type) @<Render item@>
-	else if (N->type == weave_grammar_index_node_type) @<Render nothing@>
 	else if (N->type == weave_inline_node_type) @<Render inline@>
 	else if (N->type == weave_locale_node_type) @<Render locale@>
 	else if (N->type == weave_maths_node_type) @<Render maths@>
+
 	else internal_error("unable to render unknown node");
 	return TRUE;
 }
@@ -141,22 +136,24 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	HTML::comment(OUT, C->banner);
 
 @<Render header@> =
-	weave_section_header_node *C = RETRIEVE_POINTER_weave_section_header_node(N->content);
+	weave_section_header_node *C =
+		RETRIEVE_POINTER_weave_section_header_node(N->content);
 	Swarm::ensure_plugin(hrs->wv, I"Breadcrumbs");
 	HTML_OPEN_WITH("ul", "class=\"crumbs\"");
 	Colonies::drop_initial_breadcrumbs(OUT,
 		hrs->wv->weave_to, hrs->wv->breadcrumbs);
 	text_stream *bct = Bibliographic::get_datum(hrs->wv->weave_web->md, I"Title");
-	if (Str::len(Bibliographic::get_datum(hrs->wv->weave_web->md, I"Short Title")) > 0) {
+	if (Str::len(Bibliographic::get_datum(hrs->wv->weave_web->md, I"Short Title")) > 0)
 		bct = Bibliographic::get_datum(hrs->wv->weave_web->md, I"Short Title");
-	}
 	if (hrs->wv->self_contained == FALSE) {
 		Colonies::write_breadcrumb(OUT, bct, I"index.html");
 		if (hrs->wv->weave_web->md->chaptered) {
 			TEMPORARY_TEXT(chapter_link);
-			WRITE_TO(chapter_link, "index.html#%s%S", (hrs->wv->weave_web->as_ebook)?"C":"",
+			WRITE_TO(chapter_link, "index.html#%s%S",
+				(hrs->wv->weave_web->as_ebook)?"C":"",
 				C->sect->owning_chapter->md->ch_range);
-			Colonies::write_breadcrumb(OUT, C->sect->owning_chapter->md->ch_title, chapter_link);
+			Colonies::write_breadcrumb(OUT,
+				C->sect->owning_chapter->md->ch_title, chapter_link);
 			DISCARD_TEXT(chapter_link);
 		}
 		Colonies::write_breadcrumb(OUT, C->sect->md->sect_title, NULL);
@@ -166,15 +163,51 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	HTML_CLOSE("ul");
 
 @<Render footer@> =
-	weave_section_footer_node *C = RETRIEVE_POINTER_weave_section_footer_node(N->content);
-	HTMLFormat::tail(hrs->wv->format, OUT, hrs->wv, C->sect);
+	weave_section_footer_node *C =
+		RETRIEVE_POINTER_weave_section_footer_node(N->content);
+	chapter *Ch = C->sect->owning_chapter;
+	section *S, *last_S = NULL, *prev_S = NULL, *next_S = NULL;
+	LOOP_OVER_LINKED_LIST(S, section, Ch->sections) {
+		if (S == C->sect) prev_S = last_S;
+		if (last_S == C->sect) next_S = S;
+		last_S = S;
+	}
+	if ((prev_S) || (next_S)) {
+		HTML::hr(OUT, "tocbar");
+		HTML_OPEN_WITH("ul", "class=\"toc\"");
+		HTML_OPEN("li");
+		if (prev_S == NULL) WRITE("<i>(This section begins %S.)</i>", Ch->md->ch_title);
+		else {
+			TEMPORARY_TEXT(TEMP);
+			Colonies::section_URL(TEMP, prev_S->md);
+			HTML::begin_link(OUT, TEMP);
+			WRITE("Back to '%S'", prev_S->md->sect_title);
+			HTML::end_link(OUT);
+			DISCARD_TEXT(TEMP);
+		}
+		HTML_CLOSE("li");
+		HTML_OPEN("li");
+		if (next_S == NULL) WRITE("<i>(This section ends %S.)</i>", Ch->md->ch_title);
+		else {
+			TEMPORARY_TEXT(TEMP);
+			Colonies::section_URL(TEMP, next_S->md);
+			HTML::begin_link(OUT, TEMP);
+			WRITE("Continue with '%S'", next_S->md->sect_title);
+			HTML::end_link(OUT);
+			DISCARD_TEXT(TEMP);
+		}
+		HTML_CLOSE("li");
+		HTML_CLOSE("ul");
+		HTML::hr(OUT, "tocbar");
+	}
 
 @<Render tail@> =
 	weave_tail_node *C = RETRIEVE_POINTER_weave_tail_node(N->content);
 	HTML::comment(OUT, C->rennab);
 
 @<Render purpose@> =
-	weave_section_purpose_node *C = RETRIEVE_POINTER_weave_section_purpose_node(N->content);
+	weave_section_purpose_node *C =
+		RETRIEVE_POINTER_weave_section_purpose_node(N->content);
 	HTML_OPEN_WITH("p", "class=\"purpose\"");
 	HTMLFormat::escape_text(OUT, C->purpose);
 	HTML_CLOSE("p"); WRITE("\n");
@@ -188,23 +221,19 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 @<Render bar@> =
 	HTML::hr(OUT, NULL);
 
-@<Render pagebreak@> =
-	;
-
 @<Render paragraph heading@> =
-	weave_paragraph_heading_node *C = RETRIEVE_POINTER_weave_paragraph_heading_node(N->content);
+	weave_paragraph_heading_node *C =
+		RETRIEVE_POINTER_weave_paragraph_heading_node(N->content);
 	paragraph *P = C->para;
 	if (P == NULL) internal_error("no para");
 	if (N->child == NULL) {
-		HTML_OPEN_WITH("p", "class=\"inwebparagraph\"");
-		HTMLFormat::paragraph_number(OUT, P);
-		HTML_CLOSE("p");
+		paragraph *first_in_para = P;
+		@<If no para number yet, render a p just to hold this@>;
 	}
 
 @<Render endnote@> =
 	HTML_OPEN("li");
-	for (tree_node *M = N->child; M; M = M->next)
-		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
+	@<Recurse tne renderer through children nodes@>;
 	HTML_CLOSE("li");
 	return FALSE;
 
@@ -221,99 +250,49 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	WRITE("\n");
 
 @<Render material@> =
-	if (N->child) {
-		paragraph *first_in_para = NULL;
-		if ((N == N->parent->child) && (N->parent->type == weave_paragraph_heading_node_type)) {
-			weave_paragraph_heading_node *C =
-				RETRIEVE_POINTER_weave_paragraph_heading_node(N->parent->content);
-			first_in_para = C->para;
-		}
-		weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
-		switch (C->material_type) {
-			case CODE_MATERIAL:
-				@<Material is not in a p tag@>;
-				if (C->styling) {
-					TEMPORARY_TEXT(csname);
-					WRITE_TO(csname, "%S-Colours", C->styling->language_name);
-					hrs->colours = Swarm::ensure_colour_scheme(hrs->wv,
-						csname, C->styling->language_name);
-					DISCARD_TEXT(csname);
-				}
-				TEMPORARY_TEXT(cl);
-				WRITE_TO(cl, "%S", hrs->colours->prefix);
-				if (C->plainly) WRITE_TO(cl, "undisplayed-code");
-				else WRITE_TO(cl, "displayed-code");
-				WRITE("<pre class=\"%S all-displayed-code\">\n", cl);
-				DISCARD_TEXT(cl);
-				break;
-			case REGULAR_MATERIAL:
-				break;
-			case FOOTNOTES_MATERIAL:
-				@<Material is not in a p tag@>;
-				HTML_OPEN_WITH("ul", "class=\"footnotetexts\"");
-				break;
-			case ENDNOTES_MATERIAL:
-				@<Material is not in a p tag@>;
-				HTML_OPEN_WITH("ul", "class=\"endnotetexts\"");
-				break;
-			case MACRO_MATERIAL:
-				@<Material is not in a p tag@>;
-				HTML_OPEN_WITH("code", "class=\"display\"");
-				WRITE("\n");
-				break;
-			case DEFINITION_MATERIAL:
-				@<Material is not in a p tag@>;
-				HTML_OPEN_WITH("pre", "class=\"definitions\"");
-				break;
-		}
-		if (C->material_type == REGULAR_MATERIAL)
-			@<Render the regular material@>
-		else 
-			for (tree_node *M = N->child; M; M = M->next)
-				Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
-		switch (C->material_type) {
-			case CODE_MATERIAL:
-				HTML_CLOSE("pre"); WRITE("\n");
-				break;
-			case REGULAR_MATERIAL:
-				break;
-			case ENDNOTES_MATERIAL:
-				HTML_CLOSE("ul"); WRITE("\n");
-				break;
-			case FOOTNOTES_MATERIAL:
-				HTML_CLOSE("ul"); WRITE("\n");
-				break;
-			case MACRO_MATERIAL:
-				HTML_CLOSE("code"); WRITE("\n");
-				HTML_CLOSE("p"); WRITE("\n");
-				break;
-			case DEFINITION_MATERIAL:
-				HTML_CLOSE("pre"); WRITE("\n");
-				break;
-		}
-		hrs->last_material_seen = C->material_type;
+	weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
+	paragraph *first_in_para = NULL;
+	if ((N == N->parent->child) &&
+		(N->parent->type == weave_paragraph_heading_node_type)) {
+		weave_paragraph_heading_node *PC =
+			RETRIEVE_POINTER_weave_paragraph_heading_node(N->parent->content);
+		first_in_para = PC->para;
 	}
+	if (C->material_type == COMMENTARY_MATERIAL)
+		@<Deal with a commentary material node@>
+	else if (C->material_type == CODE_MATERIAL)
+		@<Deal with a code material node@>
+	else if (C->material_type == FOOTNOTES_MATERIAL)
+		@<Deal with a footnotes material node@>
+	else if (C->material_type == ENDNOTES_MATERIAL)
+		@<Deal with a endnotes material node@>
+	else if (C->material_type == MACRO_MATERIAL)
+		@<Deal with a macro material node@>
+	else if (C->material_type == DEFINITION_MATERIAL)
+		@<Deal with a definition material node@>;
 	return FALSE;
 
-@<Material is in a p tag@> =
-	HTML_OPEN_WITH("p", "class=\"inwebparagraph\"");
-	if (first_in_para) HTMLFormat::paragraph_number(OUT, first_in_para);
+@<If no para number yet, render a p just to hold this@> =
+	if (first_in_para) {
+		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
+		HTMLFormat::paragraph_number(OUT, first_in_para);
+		HTML_CLOSE("p"); WRITE("\n");
+		first_in_para = NULL;
+	}
 
-@<Material is not in a p tag@> =
-	HTML_OPEN_WITH("p", "class=\"inwebparagraph\"");
-	if (first_in_para) HTMLFormat::paragraph_number(OUT, first_in_para);
-	HTML_CLOSE("p"); WRITE("\n");
-
-@<Render the regular material@> =
+@<Deal with a commentary material node@> =
 	int item_depth = 0;
 	for (tree_node *M = N->child; M; M = M->next) {
 		if (M->type == weave_item_node_type) {
+			@<If no para number yet, render a p just to hold this@>;
 			weave_item_node *C = RETRIEVE_POINTER_weave_item_node(M->content);
 			HTMLFormat::go_to_depth(hrs, item_depth, C->depth);
+			item_depth = C->depth;
 			Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
 			continue;
 		}
 		if (HTMLFormat::interior_material(M)) @<Render a run of interior matter@>;
+		@<If no para number yet, render a p just to hold this@>;
 		if (item_depth > 0) {
 			HTMLFormat::go_to_depth(hrs, item_depth, 0);
 			item_depth = 0;
@@ -327,11 +306,12 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	}
 
 @<Render a run of interior matter@> =
-	if (item_depth == 0)
-		HTML_OPEN_WITH("p", "class=\"inwebparagraph\"");
 	if (first_in_para) {
+		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 		HTMLFormat::paragraph_number(OUT, first_in_para);
 		first_in_para = NULL;
+	} else {
+		if (item_depth == 0) HTML_OPEN_WITH("p", "class=\"commentary\"");
 	}
 	while (M) {
 		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
@@ -340,6 +320,52 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	}
 	if (item_depth == 0) { HTML_CLOSE("p"); WRITE("\n"); }
 	continue;
+
+@<Deal with a code material node@> =
+	@<If no para number yet, render a p just to hold this@>;
+	if (C->styling) {
+		TEMPORARY_TEXT(csname);
+		WRITE_TO(csname, "%S-Colours", C->styling->language_name);
+		hrs->colours = Swarm::ensure_colour_scheme(hrs->wv,
+			csname, C->styling->language_name);
+		DISCARD_TEXT(csname);
+	}
+	TEMPORARY_TEXT(cl);
+	WRITE_TO(cl, "%S", hrs->colours->prefix);
+	if (C->plainly) WRITE_TO(cl, "undisplayed-code");
+	else WRITE_TO(cl, "displayed-code");
+	WRITE("<pre class=\"%S all-displayed-code\">\n", cl);
+	DISCARD_TEXT(cl);
+	@<Recurse tne renderer through children nodes@>;
+	HTML_CLOSE("pre"); WRITE("\n");
+
+@<Deal with a footnotes material node@> =
+	@<If no para number yet, render a p just to hold this@>;
+	HTML_OPEN_WITH("ul", "class=\"footnotetexts\"");
+	@<Recurse tne renderer through children nodes@>;
+	HTML_CLOSE("ul"); WRITE("\n");
+
+@<Deal with a endnotes material node@> =
+	@<If no para number yet, render a p just to hold this@>;
+	HTML_OPEN_WITH("ul", "class=\"endnotetexts\"");
+	@<Recurse tne renderer through children nodes@>;
+	HTML_CLOSE("ul"); WRITE("\n");
+
+@<Deal with a macro material node@> =
+	if (first_in_para) {
+		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
+		HTMLFormat::paragraph_number(OUT, first_in_para);
+	} else {
+		HTML_OPEN_WITH("p", "class=\"commentary\"");
+	}
+	@<Recurse tne renderer through children nodes@>;
+	HTML_CLOSE("p"); WRITE("\n");
+
+@<Deal with a definition material node@> =
+	@<If no para number yet, render a p just to hold this@>;
+	HTML_OPEN_WITH("pre", "class=\"definitions\"");
+	@<Recurse tne renderer through children nodes@>;
+	HTML_CLOSE("pre"); WRITE("\n");
 
 @ This has to embed some Internet-sourced content. |service|
 here is something like |YouTube| or |Soundcloud|, and |ID| is whatever code
@@ -362,14 +388,36 @@ that service uses to identify the video/audio in question.
 		Bibliographic::set_datum(hrs->wv->weave_web->md, I"Content Width", CW);
 		Bibliographic::set_datum(hrs->wv->weave_web->md, I"Content Height", CH);
 		HTML_OPEN("center");
-		Collater::for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern, F, hrs->into_file);
+		Collater::for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern,
+			F, hrs->into_file);
 		HTML_CLOSE("center");
 		WRITE("\n");
 	}
 
 @<Render pmac@> =
 	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
-	HTMLFormat::para_macro(hrs->wv->format, OUT, hrs->wv, C->pmac, C->defn);
+	paragraph *P = C->pmac->defining_paragraph;
+	HTML_OPEN_WITH("span", "class=\"named-paragraph-container\"");
+	if (C->defn == FALSE) {
+		TEMPORARY_TEXT(url);
+		Colonies::paragraph_URL(url, P, hrs->wv->weave_to);
+		HTML::begin_link_with_class(OUT, I"named-paragraph-link", url);
+		DISCARD_TEXT(url);
+	}
+	HTML_OPEN_WITH("span", "class=\"%s\"",
+		(C->defn)?"named-paragraph-defn":"named-paragraph");
+	HTMLFormat::escape_text(OUT, C->pmac->macro_name);
+	HTML_CLOSE("span");
+	HTML_OPEN_WITH("span", "class=\"named-paragraph-number\"");
+	HTMLFormat::escape_text(OUT, P->paragraph_number);
+	HTML_CLOSE("span");
+	HTML_CLOSE("span");
+	if (C->defn) {
+		HTMLFormat::change_colour(OUT, COMMENT_COLOUR, hrs->colours);
+		WRITE(" =");
+		HTMLFormat::change_colour(OUT, -1, hrs->colours);
+	}
+	if (C->defn == FALSE) HTML::end_link(OUT);
 
 @<Render vskip@> =
 	WRITE("\n");
@@ -379,24 +427,37 @@ that service uses to identify the video/audio in question.
 	LOG("It was %d\n", C->allocation_id);
 
 @<Render code line@> =
-	for (tree_node *M = N->child; M; M = M->next)
-		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
+	@<Recurse tne renderer through children nodes@>;
 	WRITE("\n");
 	return FALSE;
 
 @<Render function usage@> =
 	weave_function_usage_node *C = RETRIEVE_POINTER_weave_function_usage_node(N->content);
 	HTML::begin_link_with_class(OUT, I"function-link", C->url);
-	HTMLFormat::change_colour(NULL, OUT, hrs->wv, FUNCTION_COLOUR, FALSE, hrs->colours);
+	HTMLFormat::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
 	WRITE("%S", C->fn->function_name);
-	WRITE("</span>");
+	HTMLFormat::change_colour(OUT, -1, hrs->colours);
 	HTML::end_link(OUT);
 
 @<Render commentary@> =
 	weave_commentary_node *C = RETRIEVE_POINTER_weave_commentary_node(N->content);
-	if (C->in_code) HTML_OPEN_WITH("span", "class=\"comment\"");
-	HTMLFormat::commentary_text(hrs->wv->format, OUT, hrs->wv, C->text);
-	if (C->in_code) HTML_CLOSE("span");
+	if (C->in_code) HTMLFormat::change_colour(OUT, COMMENT_COLOUR, hrs->colours);
+	for (int i=0; i < Str::len(C->text); i++) {
+		if (Str::get_at(C->text, i) == '&') WRITE("&amp;");
+		else if (Str::get_at(C->text, i) == '<') WRITE("&lt;");
+		else if (Str::get_at(C->text, i) == '>') WRITE("&gt;");
+		else if ((i == 0) && (Str::get_at(C->text, i) == '-') &&
+			(Str::get_at(C->text, i+1) == '-') &&
+			((Str::get_at(C->text, i+2) == ' ') || (Str::get_at(C->text, i+2) == 0))) {
+			WRITE("&mdash;"); i++;
+		} else if ((Str::get_at(C->text, i) == ' ') && (Str::get_at(C->text, i+1) == '-') &&
+			(Str::get_at(C->text, i+2) == '-') &&
+			((Str::get_at(C->text, i+3) == ' ') || (Str::get_at(C->text, i+3) == '\n') ||
+			(Str::get_at(C->text, i+3) == 0))) {
+			WRITE(" &mdash;"); i+=2;
+		} else PUT(Str::get_at(C->text, i));
+	}
+	if (C->in_code) HTMLFormat::change_colour(OUT, -1, hrs->colours);
 
 @<Render carousel slide@> =
 	weave_carousel_slide_node *C = RETRIEVE_POINTER_weave_carousel_slide_node(N->content);
@@ -407,8 +468,10 @@ that service uses to identify the video/audio in question.
 	text_stream *slide_count_class = I"carousel-number";
 	switch (C->caption_command) {
 		case CAROUSEL_CMD: caption_class = I"carousel-caption"; break;
-		case CAROUSEL_ABOVE_CMD: caption_class = I"carousel-caption-above"; slide_count_class = I"carousel-number-above"; break;
-		case CAROUSEL_BELOW_CMD: caption_class = I"carousel-caption-below"; slide_count_class = I"carousel-number-below"; break;
+		case CAROUSEL_ABOVE_CMD: caption_class = I"carousel-caption-above";
+			slide_count_class = I"carousel-number-above"; break;
+		case CAROUSEL_BELOW_CMD: caption_class = I"carousel-caption-below";
+			slide_count_class = I"carousel-number-below"; break;
 	}
 	WRITE_TO(carousel_id, "carousel-no-%d", hrs->carousel_number);
 	WRITE_TO(carousel_dots_id, "carousel-dots-no-%d", hrs->carousel_number);
@@ -429,26 +492,36 @@ that service uses to identify the video/audio in question.
 	WRITE(">\n");
 	if (C->caption_command == CAROUSEL_ABOVE_CMD) {
 		@<Place caption here@>;
-		WRITE("<div class=\"%S\">%d / %d</div>\n", slide_count_class, hrs->slide_number, hrs->slide_of);
+		WRITE("<div class=\"%S\">%d / %d</div>\n",
+			slide_count_class, hrs->slide_number, hrs->slide_of);
 	} else {
-		WRITE("<div class=\"%S\">%d / %d</div>\n", slide_count_class, hrs->slide_number, hrs->slide_of);
+		WRITE("<div class=\"%S\">%d / %d</div>\n",
+			slide_count_class, hrs->slide_number, hrs->slide_of);
 	}
 	WRITE("<div class=\"carousel-content\">");
-	for (tree_node *M = N->child; M; M = M->next)
-		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
+	@<Recurse tne renderer through children nodes@>;
 	WRITE("</div>\n");
 	if (C->caption_command != CAROUSEL_ABOVE_CMD) @<Place caption here@>;
 	WRITE("</div>\n");
 	if (hrs->slide_number == hrs->slide_of) {
-		WRITE("<a class=\"carousel-prev-button\" onclick=\"carouselMoveSlide(&quot;%S&quot;, &quot;%S&quot;, -1)\">&#10094;</a>\n", carousel_id, carousel_dots_id);
-		WRITE("<a class=\"carousel-next-button\" onclick=\"carouselMoveSlide(&quot;%S&quot;, &quot;%S&quot;, 1)\">&#10095;</a>\n", carousel_id, carousel_dots_id);
+		WRITE("<a class=\"carousel-prev-button\" ");
+		WRITE("onclick=\"carouselMoveSlide(&quot;%S&quot;, &quot;%S&quot;, -1)\"",
+			carousel_id, carousel_dots_id);
+		WRITE(">&#10094;</a>\n");
+		WRITE("<a class=\"carousel-next-button\" ");
+		WRITE("onclick=\"carouselMoveSlide(&quot;%S&quot;, &quot;%S&quot;, 1)\"",
+			carousel_id, carousel_dots_id);
+		WRITE(">&#10095;</a>\n");
 		WRITE("</div>\n");
 		WRITE("<div class=\"carousel-dots-container\" id=\"%S\">\n", carousel_dots_id);
 		for (int i=1; i<=hrs->slide_of; i++) {
 			if (i == 1)
-				WRITE("<span class=\"carousel-dot carousel-dot-active\" onclick=\"carouselSetSlide(&quot;%S&quot;, &quot;%S&quot;, 0)\"></span>\n", carousel_id, carousel_dots_id);
+				WRITE("<span class=\"carousel-dot carousel-dot-active\" ");
 			else
-				WRITE("<span class=\"carousel-dot\" onclick=\"carouselSetSlide(&quot;%S&quot;, &quot;%S&quot;, %d)\"></span>\n", carousel_id, carousel_dots_id, i-1);
+				WRITE("<span class=\"carousel-dot\" ");
+			WRITE("onclick=\"carouselSetSlide(&quot;%S&quot;, &quot;%S&quot;, %d)\"",
+				carousel_id, carousel_dots_id, i-1);
+			WRITE("></span>\n");
 		}
 		WRITE("</div>\n");
 		hrs->slide_number = -1;
@@ -486,10 +559,6 @@ that service uses to identify the video/audio in question.
 	WRITE(". %S", C->text2);
 	HTML::end_link(OUT);
 
-@<Render weave_chapter_title_page_node@> =
-	weave_chapter_title_page_node *C = RETRIEVE_POINTER_weave_chapter_title_page_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
-
 @<Render defn@> =
 	weave_defn_node *C = RETRIEVE_POINTER_weave_defn_node(N->content);
 	HTML_OPEN_WITH("span", "class=\"definition-keyword\"");
@@ -501,9 +570,21 @@ that service uses to identify the video/audio in question.
 	weave_source_code_node *C = RETRIEVE_POINTER_weave_source_code_node(N->content);
 	int starts = FALSE;
 	if (N == N->parent->child) starts = TRUE;
-	HTMLFormat::source_code(hrs->wv->format, OUT, hrs->wv,
-		C->matter, C->colouring, hrs->colours);
-	
+		int current_colour = -1, colour_wanted = PLAIN_COLOUR;
+	for (int i=0; i < Str::len(C->matter); i++) {
+		colour_wanted = Str::get_at(C->colouring, i);
+		if (colour_wanted != current_colour) {
+			if (current_colour >= 0) HTML_CLOSE("span");
+			HTMLFormat::change_colour(OUT, colour_wanted, hrs->colours);
+			current_colour = colour_wanted;
+		}
+		if (Str::get_at(C->matter, i) == '<') WRITE("&lt;");
+		else if (Str::get_at(C->matter, i) == '>') WRITE("&gt;");
+		else if (Str::get_at(C->matter, i) == '&') WRITE("&amp;");
+		else WRITE("%c", Str::get_at(C->matter, i));
+	}
+	if (current_colour >= 0) HTMLFormat::change_colour(OUT, -1, hrs->colours);
+
 @<Render URL@> =
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
 	HTML::begin_link_with_class(OUT, (C->external)?I"external":I"internal", C->url);
@@ -519,18 +600,21 @@ that service uses to identify the video/audio in question.
 		C->cue_text, C->cue_text, C->cue_text);
 
 @<Render footnote@> =
-	weave_begin_footnote_text_node *C = RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
+	weave_begin_footnote_text_node *C =
+		RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
 	text_stream *fn_plugin_name = hrs->wv->pattern->footnotes_plugin;
 	if (Str::len(fn_plugin_name) > 0)
 		Swarm::ensure_plugin(hrs->wv, fn_plugin_name);
-	WRITE("<li class=\"footnote\" id=\"fn:%S\"><p class=\"inwebfootnote\">", C->cue_text);
-	for (tree_node *M = N->child; M; M = M->next)
-		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
-	WRITE("<a href=\"#fnref:%S\" title=\"return to text\"> &#x21A9;</a></p></li>", C->cue_text);
+	WRITE("<li class=\"footnote\" id=\"fn:%S\"><p class=\"inwebfootnote\">",
+		C->cue_text);
+	@<Recurse tne renderer through children nodes@>;
+	WRITE("<a href=\"#fnref:%S\" title=\"return to text\"> &#x21A9;</a></p></li>",
+		C->cue_text);
 	return FALSE;
 
 @<Render display line@> =
-	weave_display_line_node *C = RETRIEVE_POINTER_weave_display_line_node(N->content);
+	weave_display_line_node *C =
+		RETRIEVE_POINTER_weave_display_line_node(N->content);
 	HTML_OPEN("blockquote"); WRITE("\n"); INDENT;
 	HTML_OPEN("p");
 	HTMLFormat::escape_text(OUT, C->text);
@@ -538,17 +622,21 @@ that service uses to identify the video/audio in question.
 	OUTDENT; HTML_CLOSE("blockquote"); WRITE("\n");
 
 @<Render function defn@> =
-	weave_function_defn_node *C = RETRIEVE_POINTER_weave_function_defn_node(N->content);
+	weave_function_defn_node *C =
+		RETRIEVE_POINTER_weave_function_defn_node(N->content);
 	Swarm::ensure_plugin(hrs->wv, I"Popups");
-	HTMLFormat::change_colour(NULL, OUT, hrs->wv, FUNCTION_COLOUR, FALSE, hrs->colours);
+	HTMLFormat::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
 	WRITE("%S", C->fn->function_name);
 	WRITE("</span>");
-	WRITE("<button class=\"popup\" onclick=\"togglePopup('usagePopup%d')\">", hrs->popup_counter);
+	WRITE("<button class=\"popup\" onclick=\"togglePopup('usagePopup%d')\">",
+		hrs->popup_counter);
+	HTMLFormat::change_colour(OUT, COMMENT_COLOUR, hrs->colours);
+	WRITE("?");
+	HTMLFormat::change_colour(OUT, -1, hrs->colours);
 	WRITE("<span class=\"popuptext\" id=\"usagePopup%d\">Usage of <b>%S</b>:<br>",
 		hrs->popup_counter, C->fn->function_name);
-	for (tree_node *M = N->child; M; M = M->next)
-		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
-	WRITE("</span>");
+	@<Recurse tne renderer through children nodes@>;
+	HTMLFormat::change_colour(OUT, -1, hrs->colours);
 	WRITE("</button>");
 	hrs->popup_counter++;
 	return FALSE;
@@ -564,8 +652,7 @@ that service uses to identify the video/audio in question.
 
 @<Render inline@> =
 	HTML_OPEN_WITH("span", "class=\"extract\"");
-	for (tree_node *M = N->child; M; M = M->next)
-		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);	
+	@<Recurse tne renderer through children nodes@>;
 	HTML_CLOSE("span");
 	return FALSE;
 
@@ -599,7 +686,14 @@ that service uses to identify the video/audio in question.
 @<Render nothing@> =
 	;
 
-@ =
+@<Recurse tne renderer through children nodes@> =
+	for (tree_node *M = N->child; M; M = M->next)
+		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
+
+@ These are the nodes falling under a commentary material node which we will
+amalgamate into a single HTML paragraph:
+
+=
 int HTMLFormat::interior_material(tree_node *N) {
 	if (N->type == weave_commentary_node_type) return TRUE;
 	if (N->type == weave_url_node_type) return TRUE;
@@ -645,142 +739,36 @@ void HTMLFormat::paragraph_number(text_stream *OUT, paragraph *P) {
 }
 
 @ =
-void HTMLFormat::source_code(weave_format *self, text_stream *OUT, weave_order *wv,
-	text_stream *matter, text_stream *colouring, colour_scheme *cs) {
-	int current_colour = -1, colour_wanted = PLAIN_COLOUR;
-	for (int i=0; i < Str::len(matter); i++) {
-		colour_wanted = Str::get_at(colouring, i); @<Adjust code colour as necessary@>;
-		if (Str::get_at(matter, i) == '<') WRITE("&lt;");
-		else if (Str::get_at(matter, i) == '>') WRITE("&gt;");
-		else if (Str::get_at(matter, i) == '&') WRITE("&amp;");
-		else WRITE("%c", Str::get_at(matter, i));
+void HTMLFormat::change_colour(text_stream *OUT, int col, colour_scheme *cs) {
+	if (col == -1) {
+		HTML_CLOSE("span");
+	} else {
+		char *cl = "plain";
+		switch (col) {
+			case DEFINITION_COLOUR: 	cl = "definition-syntax"; break;
+			case FUNCTION_COLOUR: 		cl = "function-syntax"; break;
+			case IDENTIFIER_COLOUR: 	cl = "identifier-syntax"; break;
+			case ELEMENT_COLOUR:		cl = "element-syntax"; break;
+			case RESERVED_COLOUR: 		cl = "reserved-syntax"; break;
+			case STRING_COLOUR: 		cl = "string-syntax"; break;
+			case CHARACTER_COLOUR:      cl = "character-syntax"; break;
+			case CONSTANT_COLOUR: 		cl = "constant-syntax"; break;
+			case PLAIN_COLOUR: 			cl = "plain-syntax"; break;
+			case EXTRACT_COLOUR: 		cl = "extract-syntax"; break;
+			case COMMENT_COLOUR: 		cl = "comment-syntax"; break;
+			default: PRINT("col: %d\n", col); internal_error("bad colour"); break;
+		}
+		HTML_OPEN_WITH("span", "class=\"%S%s\"", cs->prefix, cl);
 	}
-	if (current_colour >= 0) HTML_CLOSE("span");
-	current_colour = -1;
-}
-
-@<Adjust code colour as necessary@> =
-	if (colour_wanted != current_colour) {
-		if (current_colour >= 0) HTML_CLOSE("span");
-		HTMLFormat::change_colour(NULL, OUT, wv, colour_wanted, TRUE, cs);
-		current_colour = colour_wanted;
-	}
-
-@ =
-void HTMLFormat::para_macro(weave_format *self, text_stream *OUT, weave_order *wv,
-	para_macro *pmac, int defn) {
-	paragraph *P = pmac->defining_paragraph;
-	WRITE("&lt;");
-	HTML_OPEN_WITH("span", "class=\"%s\"", (defn)?"named-paragraph-defn":"named-paragraph");
-	WRITE("%S", pmac->macro_name);
-	HTML_CLOSE("span");
-	WRITE(" ");
-	HTML_OPEN_WITH("span", "class=\"named-paragraph-number\"");
-	WRITE("%S", P->paragraph_number);
-	HTML_CLOSE("span");
-	WRITE("&gt;%s", (defn)?" =":"");
 }
 
 @ =
-void HTMLFormat::change_colour(weave_format *self, text_stream *OUT, weave_order *wv,
-	int col, int in_code, colour_scheme *cs) {
-	char *cl = "plain";
-	switch (col) {
-		case DEFINITION_COLOUR: 	cl = "definition-syntax"; break;
-		case FUNCTION_COLOUR: 		cl = "function-syntax"; break;
-		case IDENTIFIER_COLOUR: 	cl = "identifier-syntax"; break;
-		case ELEMENT_COLOUR:		cl = "element-syntax"; break;
-		case RESERVED_COLOUR: 		cl = "reserved-syntax"; break;
-		case STRING_COLOUR: 		cl = "string-syntax"; break;
-		case CHARACTER_COLOUR:      cl = "character-syntax"; break;
-		case CONSTANT_COLOUR: 		cl = "constant-syntax"; break;
-		case PLAIN_COLOUR: 			cl = "plain-syntax"; break;
-		case EXTRACT_COLOUR: 		cl = "extract-syntax"; break;
-		case COMMENT_COLOUR: 		cl = "comment-syntax"; break;
-		default: PRINT("col: %d\n", col); internal_error("bad colour"); break;
-	}
-	HTML_OPEN_WITH("span", "class=\"%S%s\"", cs->prefix, cl);
-}
-
-@ =
-void HTMLFormat::commentary_text(weave_format *self, text_stream *OUT, weave_order *wv,
-	text_stream *id) {
-	for (int i=0; i < Str::len(id); i++) {
-		if (Str::get_at(id, i) == '&') WRITE("&amp;");
-		else if (Str::get_at(id, i) == '<') WRITE("&lt;");
-		else if (Str::get_at(id, i) == '>') WRITE("&gt;");
-		else if ((i == 0) && (Str::get_at(id, i) == '-') &&
-			(Str::get_at(id, i+1) == '-') &&
-			((Str::get_at(id, i+2) == ' ') || (Str::get_at(id, i+2) == 0))) {
-			WRITE("&mdash;"); i++;
-		} else if ((Str::get_at(id, i) == ' ') && (Str::get_at(id, i+1) == '-') &&
-			(Str::get_at(id, i+2) == '-') &&
-			((Str::get_at(id, i+3) == ' ') || (Str::get_at(id, i+3) == '\n') ||
-			(Str::get_at(id, i+3) == 0))) {
-			WRITE(" &mdash;"); i+=2;
-		} else PUT(Str::get_at(id, i));
-	}
-}
-
 void HTMLFormat::escape_text(text_stream *OUT, text_stream *id) {
 	for (int i=0; i < Str::len(id); i++) {
 		if (Str::get_at(id, i) == '&') WRITE("&amp;");
 		else if (Str::get_at(id, i) == '<') WRITE("&lt;");
 		else if (Str::get_at(id, i) == '>') WRITE("&gt;");
 		else PUT(Str::get_at(id, i));
-	}
-}
-
-@ =
-void HTMLFormat::locale(weave_format *self, text_stream *OUT, weave_order *wv,
-	paragraph *par1, paragraph *par2) {
-	TEMPORARY_TEXT(TEMP)
-	Colonies::paragraph_URL(TEMP, par1, wv->weave_to);
-	HTML::begin_link(OUT, TEMP);
-	DISCARD_TEXT(TEMP)
-	WRITE("%s%S",
-		(Str::get_first_char(par1->ornament) == 'S')?"&#167;":"&para;",
-		par1->paragraph_number);
-	if (par2) WRITE("-%S", par2->paragraph_number);
-	HTML::end_link(OUT);
-}
-
-@ =
-void HTMLFormat::tail(weave_format *self, text_stream *OUT, weave_order *wv, section *this_S) {
-	chapter *C = this_S->owning_chapter;
-	section *S, *last_S = NULL, *prev_S = NULL, *next_S = NULL;
-	LOOP_OVER_LINKED_LIST(S, section, C->sections) {
-		if (S == this_S) prev_S = last_S;
-		if (last_S == this_S) next_S = S;
-		last_S = S;
-	}
-	if ((prev_S) || (next_S)) {
-		HTML::hr(OUT, "tocbar");
-		HTML_OPEN_WITH("ul", "class=\"toc\"");
-		HTML_OPEN("li");
-		if (prev_S == NULL) WRITE("<i>(This section begins %S.)</i>", C->md->ch_title);
-		else {
-			TEMPORARY_TEXT(TEMP);
-			Colonies::section_URL(TEMP, prev_S->md);
-			HTML::begin_link(OUT, TEMP);
-			WRITE("Back to '%S'", prev_S->md->sect_title);
-			HTML::end_link(OUT);
-			DISCARD_TEXT(TEMP);
-		}
-		HTML_CLOSE("li");
-		HTML_OPEN("li");
-		if (next_S == NULL) WRITE("<i>(This section ends %S.)</i>", C->md->ch_title);
-		else {
-			TEMPORARY_TEXT(TEMP);
-			Colonies::section_URL(TEMP, next_S->md);
-			HTML::begin_link(OUT, TEMP);
-			WRITE("Continue with '%S'", next_S->md->sect_title);
-			HTML::end_link(OUT);
-			DISCARD_TEXT(TEMP);
-		}
-		HTML_CLOSE("li");
-		HTML_CLOSE("ul");
-		HTML::hr(OUT, "tocbar");
 	}
 }
 

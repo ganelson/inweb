@@ -39,19 +39,17 @@
 
 <ul class="toc"><li><a href="M-wtaw.html#SP1">&#167;1. All-in-one webs</a></li><li><a href="M-wtaw.html#SP4">&#167;4. Multi-section webs</a></li><li><a href="M-wtaw.html#SP7">&#167;7. Tangling</a></li><li><a href="M-wtaw.html#SP10">&#167;10. Weaving</a></li><li><a href="M-wtaw.html#SP13">&#167;13. Weave tags</a></li><li><a href="M-wtaw.html#SP14">&#167;14. Modules</a></li><li><a href="M-wtaw.html#SP17">&#167;17. The section catalogue</a></li><li><a href="M-wtaw.html#SP18">&#167;18. Makefile</a></li><li><a href="M-wtaw.html#SP19">&#167;19. Gitignore</a></li><li><a href="M-wtaw.html#SP20">&#167;20. README files</a></li><li><a href="M-wtaw.html#SP23">&#167;23. Semantic version numbering and build metadata</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. All-in-one webs. </b>A program written for use with Inweb is called a "web". Inweb was primarily
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. All-in-one webs. </b>A program written for use with Inweb is called a "web". Inweb was primarily
 designed for large, multisection webs, but it can also be used in a much
 simpler way on smaller webs. In this documentation we'll call those
 "all-in-one webs", meaning that there is just a single source code file for
 the program.
 </p>
 
-<p class="inwebparagraph">Such a file should be a UTF-8 encoded plain text file with the file
+<p class="commentary">Such a file should be a UTF-8 encoded plain text file with the file
 extension <span class="extract"><span class="extract-syntax">.inweb</span></span>. The following is a "hello world" example, which can
 be found in the Inweb distribution as <span class="extract"><span class="extract-syntax">inweb/Examples/hellow.inweb</span></span>:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="element-syntax">Title</span><span class="plain-syntax">:</span><span class="string-syntax"> hellow</span>
@@ -66,7 +64,7 @@ be found in the Inweb distribution as <span class="extract"><span class="extract
 <span class="plain-syntax">        printf("Hello world!\n");</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>This of course is just a regular C "hello world" program written below
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>This of course is just a regular C "hello world" program written below
 the <span class="extract"><span class="extract-syntax">@ =</span></span> marker, and some metadata written above it. The metadata above
 is called the "contents section": for a larger web, it would expand out
 to something more like a contents page, though here it's more like a
@@ -75,7 +73,7 @@ to the program produced - they are purely descriptive - but the Language
 setting is another matter, as we shall see.
 </p>
 
-<p class="inwebparagraph">The contents end, and the code begins, when the first "paragraph" begins.
+<p class="commentary">The contents end, and the code begins, when the first "paragraph" begins.
 Code in an Inweb web is divided into paragraphs. The core Inform compiler
 currently has 8362 paragraphs, whereas <span class="extract"><span class="extract-syntax">hellow</span></span> has just one. (If you are
 reading this documentation in a web page or a PDF, you will see that it's
@@ -84,45 +82,38 @@ from the <span class="extract"><span class="extract-syntax">inweb</span></span> 
 in column 1 of the web file is what marks a paragraph break.
 </p>
 
-<p class="inwebparagraph">As mentioned earlier, there are two basic things we can do with a web:
+<p class="commentary">As mentioned earlier, there are two basic things we can do with a web:
 tangle, to make a program ready to compile and run; and weave, to make
 a comfortably legible version for human eyes instead. Let's now tangle:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/hellow.inweb</span><span class="ConsoleText-identifier-syntax"> -tangle</span>
 <span class="ConsoleText-plain-syntax">    web "hellow": 1 section(s) : 1 paragraph(s) : 9 line(s)</span>
 <span class="ConsoleText-plain-syntax">    tangling &lt;inweb/Examples/hellow.c&gt; (written in C)</span>
 </pre>
-<p class="inwebparagraph">And <span class="extract"><span class="ConsoleText-extract-syntax">inweb/Examples/hellow.c</span></span> is now a regular C program which can then be
+<p class="commentary">And <span class="extract"><span class="ConsoleText-extract-syntax">inweb/Examples/hellow.c</span></span> is now a regular C program which can then be
 compiled. If we had wanted it to be written somewhere else, or called
 something else, we could have used <span class="extract"><span class="ConsoleText-extract-syntax">-tangle-to F</span></span> to specify a file <span class="extract"><span class="ConsoleText-extract-syntax">F</span></span>
 to create instead.
 </p>
 
-<p class="inwebparagraph">In general, you never need to look at or edit tangled code, but if
+<p class="commentary">In general, you never need to look at or edit tangled code, but if
 we take a look at this one to see what has happened, two things are worth
 noting.
 </p>
 
-<ul class="items"><li>(a) <p class="inwebparagraph">First, the use of the <span class="extract"><span class="ConsoleText-extract-syntax">#line</span></span> C preprocessor feature, which ensures that
+<ul class="items"><li>(a) First, the use of the <span class="extract"><span class="ConsoleText-extract-syntax">#line</span></span> C preprocessor feature, which ensures that
 any compilation errors occurring will be reported at the correct point of
 origin in the original Inweb file, not in the tangled file.
-</p>
-
-<ul class="items"><li>(b) <p class="inwebparagraph">Secondly, notice that the <span class="extract"><span class="ConsoleText-extract-syntax">main</span></span> function has automatically been
+</li><li>(b) Secondly, notice that the <span class="extract"><span class="ConsoleText-extract-syntax">main</span></span> function has automatically been
 predeclared at the top of the file. Because Inweb does this for C programs,
 the programmer can freely call functions defined lower down in the source
 code, without having to write tiresome predeclarations or header files. (As it
 happens, there was no need in the case of <span class="extract"><span class="ConsoleText-extract-syntax">main</span></span>, but nor was there any harm.)
-</p>
-
-<p class="inwebparagraph"></p>
-
+</li></ul>
 <pre class="displayed-code all-displayed-code">
-<span class="plain-syntax">    </span><span class="comment"> Tangled output generated by inweb: do not edit</span>
+<span class="plain-syntax">    </span><span class="comment-syntax"> Tangled output generated by inweb: do not edit</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdio</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">line</span><span class="plain-syntax"> </span><span class="constant-syntax">9</span><span class="plain-syntax"> </span><span class="string-syntax">"inweb/Examples/hellow.inweb"</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax">  </span><span class="identifier-syntax">main</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">argv</span><span class="plain-syntax">[]) ;</span>
@@ -132,26 +123,24 @@ happens, there was no need in the case of <span class="extract"><span class="Con
 <span class="plain-syntax">        </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"Hello world!\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>So much for tangling: we can also weave. <span class="extract"><span class="extract-syntax">hellow</span></span> is so uninteresting
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>So much for tangling: we can also weave. <span class="extract"><span class="extract-syntax">hellow</span></span> is so uninteresting
 to look at that this seems a good point to switch to <span class="extract"><span class="extract-syntax">inweb/Examples/twinprimes.inweb</span></span>,
 a C program to find twin prime numbers. If we weave:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/twinprimes.inweb</span><span class="ConsoleText-identifier-syntax"> -weave</span>
 <span class="ConsoleText-plain-syntax">    web "twinprimes": 1 section(s) : 4 paragraph(s) : 48 line(s)</span>
 <span class="ConsoleText-plain-syntax">    [Complete Program: HTML -&gt; inweb/Examples/twinprimes.html]</span>
 </pre>
-<p class="inwebparagraph">As with tangling, we can override this destination with <span class="extract"><span class="ConsoleText-extract-syntax">-weave-to F</span></span>, telling
+<p class="commentary">As with tangling, we can override this destination with <span class="extract"><span class="ConsoleText-extract-syntax">-weave-to F</span></span>, telling
 Inweb to weave into just a single file (which in this instance it was going
 to do anyway) and call it <span class="extract"><span class="ConsoleText-extract-syntax">F</span></span>; or we can similarly <span class="extract"><span class="ConsoleText-extract-syntax">-weave-into D</span></span>, telling
 Inweb to weave a set of file into the directory <span class="extract"><span class="ConsoleText-extract-syntax">D</span></span>, rather than the usual
 <span class="extract"><span class="ConsoleText-extract-syntax">Woven</span></span> subdirectory of the web in question.
 </p>
 
-<p class="inwebparagraph">By default, <span class="extract"><span class="ConsoleText-extract-syntax">-weave</span></span> makes an HTML representation of the program. (On a larger
+<p class="commentary">By default, <span class="extract"><span class="ConsoleText-extract-syntax">-weave</span></span> makes an HTML representation of the program. (On a larger
 web, with multiple sections, it would make a set of linked pages, but here
 there's just one.) This can then be looked at with a browser such as Chrome or
 Safari. HTML is not the only format we can produce. Inweb performs the weave
@@ -159,38 +148,34 @@ by following a "pattern", and it has several patterns built in, notably <span cl
 <span class="extract"><span class="ConsoleText-extract-syntax">Ebook</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">TeX</span></span>.
 </p>
 
-<p class="inwebparagraph">Running Inweb with <span class="extract"><span class="ConsoleText-extract-syntax">-weave-as P</span></span> tells it to weave with pattern <span class="extract"><span class="ConsoleText-extract-syntax">P</span></span>; the
+<p class="commentary">Running Inweb with <span class="extract"><span class="ConsoleText-extract-syntax">-weave-as P</span></span> tells it to weave with pattern <span class="extract"><span class="ConsoleText-extract-syntax">P</span></span>; the
 plain command <span class="extract"><span class="ConsoleText-extract-syntax">-weave</span></span> is equivalent to <span class="extract"><span class="ConsoleText-extract-syntax">-weave-as HTML</span></span>. The <span class="extract"><span class="ConsoleText-extract-syntax">Ebook</span></span> pattern
 makes an EPUB file suitable for readers such as Apple's Books app, but that
 would be overkill for such a tiny program. Instead:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/twinprimes.inweb</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> TeX</span>
 </pre>
-<p class="inwebparagraph">This will only work if you have the mathematical typesetting system TeX
+<p class="commentary">This will only work if you have the mathematical typesetting system TeX
 installed, and in particular, the <span class="extract"><span class="ConsoleText-extract-syntax">pdftex</span></span> tool. (This comes as part of
 the standard TeXLive distribution, so simply "installing TeX" on your
 platform will probably install <span class="extract"><span class="ConsoleText-extract-syntax">pdftex</span></span> automatically.) Now the response
 is like so:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/twinprimes.inweb</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> TeX</span>
 <span class="ConsoleText-plain-syntax">    web "twinprimes": 1 section(s) : 4 paragraph(s) : 48 line(s)</span>
 <span class="ConsoleText-plain-syntax">    [Complete Program: PDF -&gt; inweb/Examples/twinprimes.tex: 1pp 103K]</span>
 </pre>
-<p class="inwebparagraph">Inweb automatically creates <span class="extract"><span class="ConsoleText-extract-syntax">twinprimes.tex</span></span> and runs it through <span class="extract"><span class="ConsoleText-extract-syntax">pdftex</span></span>
+<p class="commentary">Inweb automatically creates <span class="extract"><span class="ConsoleText-extract-syntax">twinprimes.tex</span></span> and runs it through <span class="extract"><span class="ConsoleText-extract-syntax">pdftex</span></span>
 to produce <span class="extract"><span class="ConsoleText-extract-syntax">twinprimes.pdf</span></span>: it reads over the TeX log file to see how
 many pages that comes to, and reports back. All being well, the <span class="extract"><span class="ConsoleText-extract-syntax">.tex</span></span>
 and <span class="extract"><span class="ConsoleText-extract-syntax">.log</span></span> files are silently removed, leaving just <span class="extract"><span class="ConsoleText-extract-syntax">twinprimes.pdf</span></span> behind.
 </p>
 
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Multi-section webs. </b>The <span class="extract"><span class="ConsoleText-extract-syntax">twinprimes.inweb</span></span> example was a program so small that it could
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Multi-section webs. </b>The <span class="extract"><span class="ConsoleText-extract-syntax">twinprimes.inweb</span></span> example was a program so small that it could
 comfortably fit into one source file, but for really large programs, that
 would be madness. The core Inform compiler, for example, runs to about
 210,000 lines of code, and distributes those across 418 source files
@@ -201,41 +186,38 @@ of material and weave to a standalone essay, describing and implementing
 a single well-defined component of the whole program.
 </p>
 
-<p class="inwebparagraph">In this documentation, we'll call such webs "multi-section".
+<p class="commentary">In this documentation, we'll call such webs "multi-section".
 </p>
 
-<p class="inwebparagraph">A multi-section web is stored as a directory, whose name should be (a
+<p class="commentary">A multi-section web is stored as a directory, whose name should be (a
 short version of) the name of the program. For example, Inweb's own
 source is in a directory called <span class="extract"><span class="ConsoleText-extract-syntax">inweb</span></span>. A web directory is a tidy,
 self-contained area in which the program can be written, compiled and
 used.
 </p>
 
-<p class="inwebparagraph">Inweb expects that a multi-section web will contain at least two source
+<p class="commentary">Inweb expects that a multi-section web will contain at least two source
 files, each of which is a UTF-8 encoded text file with the file extension
 <span class="extract"><span class="ConsoleText-extract-syntax">.w</span></span>. One source file is special, must always be called <span class="extract"><span class="ConsoleText-extract-syntax">Contents.w</span></span>,
 and must be directly stored in the web directory. All other section files
 are stored in subdirectories of the web directory:
 </p>
 
-<ul class="items"><li>(a) <p class="inwebparagraph">If the web is still relatively small, there may only be a few of these,
+<ul class="items"><li>(a) If the web is still relatively small, there may only be a few of these,
 stored in a single subdirectory called <span class="extract"><span class="ConsoleText-extract-syntax">Sections</span></span>.
-</p>
-
-<ul class="items"><li>(b) <p class="inwebparagraph">Alternatively (not additionally), a larger web can use chapter
+</li><li>(b) Alternatively (not additionally), a larger web can use chapter
 subdirectories called <span class="extract"><span class="ConsoleText-extract-syntax">Manual</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">Preliminaries</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">Chapter 1</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">Chapter 2</span></span>, ...,
 <span class="extract"><span class="ConsoleText-extract-syntax">Appendix A</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">Appendix B</span></span>, ...; preliminaries and appendices being optional.
 (There can't be a Chapter 0, though there can be Appendix A, B, C, ..., L.)
-</p>
-
-<p class="inwebparagraph">A multi-section web can contain a variety of other subdirectories as needed.
+</li></ul>
+<p class="commentary">A multi-section web can contain a variety of other subdirectories as needed.
 Two in particular, <span class="extract"><span class="ConsoleText-extract-syntax">Woven</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">Tangled</span></span>, are automatically created by Inweb
 as needed to store the results of tangling and weaving, respectively: they
 are not intended to hold any material of lasting value, and can be emptied
 at any time and regenerated later.
 </p>
 
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Uniquely, the <span class="extract"><span class="ConsoleText-extract-syntax">Contents.w</span></span> section provides neither typeset output nor
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Uniquely, the <span class="extract"><span class="ConsoleText-extract-syntax">Contents.w</span></span> section provides neither typeset output nor
 compiled code: it is instead a roster telling Inweb about the rest of the
 web, and how the other sections are organised. It has a completely different
 syntax from all other sections. (It's essentially a fuller version of the
@@ -243,10 +225,8 @@ top part of an all-in-one web file as demonstrated above, but now it
 occupies the whole file.)
 </p>
 
-<p class="inwebparagraph">The contents section opens with some bibliographic data. For example:
+<p class="commentary">The contents section opens with some bibliographic data. For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="element-syntax">Title</span><span class="plain-syntax">:</span><span class="string-syntax"> inter</span>
@@ -257,29 +237,27 @@ occupies the whole file.)
 <span class="plain-syntax">    </span><span class="element-syntax">Version Number</span><span class="plain-syntax">:</span><span class="string-syntax"> 1</span>
 <span class="plain-syntax">    </span><span class="element-syntax">Version Name</span><span class="plain-syntax">:</span><span class="string-syntax"> Axion</span>
 </pre>
-<p class="inwebparagraph">This is a simply a block of name-value pairs specifying some bibliographic
+<p class="commentary">This is a simply a block of name-value pairs specifying some bibliographic
 details; there is then a skipped line, and the roster of sections begins.
 </p>
 
-<p class="inwebparagraph">Note that the program's <span class="extract"><span class="extract-syntax">Title</span></span> need not be the same as the directory-name
+<p class="commentary">Note that the program's <span class="extract"><span class="extract-syntax">Title</span></span> need not be the same as the directory-name
 for the web, which is useful if the program has a long or file-system-unfriendly
 name. The <span class="extract"><span class="extract-syntax">Purpose</span></span> should be brief enough to fit onto one line. <span class="extract"><span class="extract-syntax">Licence</span></span> can
 also have the US spelling, <span class="extract"><span class="extract-syntax">License</span></span>; Inweb treats these as equivalent.
 Version number and name are, of course, optional.
 </p>
 
-<p class="inwebparagraph">The <span class="extract"><span class="extract-syntax">Language</span></span> is the programming language in which the code is written: much
+<p class="commentary">The <span class="extract"><span class="extract-syntax">Language</span></span> is the programming language in which the code is written: much
 more on that later on, but for now, the important ones are probably <span class="extract"><span class="extract-syntax">C</span></span>, <span class="extract"><span class="extract-syntax">InC</span></span>
 and <span class="extract"><span class="extract-syntax">Plain Text</span></span>.
 </p>
 
-<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>After the header block of details, then, we have the roster of sections.
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>After the header block of details, then, we have the roster of sections.
 This is like a contents page &mdash; the order is the order in which the sections
 are presented on any website, or in any of the larger PDFs woven. For a short,
 unchaptered web, we might have for instance:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Sections</span>
@@ -289,15 +267,13 @@ unchaptered web, we might have for instance:
 <span class="plain-syntax">        HTML and Javascript</span>
 <span class="plain-syntax">        Renderer</span>
 </pre>
-<p class="inwebparagraph">And then Inweb will expect to find, for instance, the section file
+<p class="commentary">And then Inweb will expect to find, for instance, the section file
 <span class="extract"><span class="extract-syntax">Scan Documentation.w</span></span> in the <span class="extract"><span class="extract-syntax">Sections</span></span> directory.
 </p>
 
-<p class="inwebparagraph">A larger web, however, won't have a "Sections" directory. It may have a
+<p class="commentary">A larger web, however, won't have a "Sections" directory. It may have a
 much longer roster, such as:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Preliminaries</span>
@@ -313,10 +289,8 @@ much longer roster, such as:
 <span class="plain-syntax">        Basic Definitions</span>
 <span class="plain-syntax">        Platform-Specific Definitions</span>
 </pre>
-<p class="inwebparagraph">... and so on...
+<p class="commentary">... and so on...
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Appendix A: The Standard Rules (Independent Inform 7)</span>
@@ -326,67 +300,57 @@ much longer roster, such as:
 <span class="plain-syntax">        SR0 - Preamble</span>
 <span class="plain-syntax">        SR1 - Physical World Model</span>
 </pre>
-<p class="inwebparagraph">... and so on. Here the sections appear in directories called Preliminaries,
+<p class="commentary">... and so on. Here the sections appear in directories called Preliminaries,
 Chapter 1, Chapter 2, ..., Appendix A. (There can't be a Chapter 0, though
 there can be Appendix B, C, ..., O; there can also be a Manual chapter, in
 the sense of documentation.)
 </p>
 
-<p class="inwebparagraph">In case of any doubt we can use the following command-line switch to see
+<p class="commentary">In case of any doubt we can use the following command-line switch to see
 how Inweb is actually reading the sections of a web <span class="extract"><span class="extract-syntax">W</span></span>:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -catalogue -verbose</span>
 </pre>
-<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Tangling. </b>At this point, it may be worth experimenting with a second mathematical
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Tangling. </b>At this point, it may be worth experimenting with a second mathematical
 example: <span class="extract"><span class="ConsoleText-extract-syntax">inweb/Examples/goldbach</span></span>, which is to do with a problem in number
 theory called the Goldbach Conjecture. This is a multi-section web, though
 really only for the sake of an example: it's still a very small web.
 </p>
 
-<p class="inwebparagraph">This is once again a C program. Actually building and running this is a
+<p class="commentary">This is once again a C program. Actually building and running this is a
 little trouble, of course, and because there are multiple source files, it's
 not so easy to keep track of whether the program is built up to date.
 So a convenience of Inweb is that it can make makefiles to help with this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -makefile</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach/goldbach.mk</span>
 </pre>
-<p class="inwebparagraph">With this done,
+<p class="commentary">With this done,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach/goldbach.mk</span>
 </pre>
-<p class="inwebparagraph">tangles and then compiles the program as necessary. The tangling part of that
+<p class="commentary">tangles and then compiles the program as necessary. The tangling part of that
 is nothing fancy - as before, it's just
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -tangle</span>
 </pre>
-<p class="inwebparagraph">Assuming all goes well:
+<p class="commentary">Assuming all goes well:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Examples/goldbach/Tangled/goldbach</span>
 </pre>
-<p class="inwebparagraph">should then print out some results.
+<p class="commentary">should then print out some results.
 </p>
 
-<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>It is legal in some circumstances to tangle only part of a web. This is done
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>It is legal in some circumstances to tangle only part of a web. This is done
 by specifying a "range", much as will be seen later with weaving - but
 because it's not normally meaningful to tangle only part of a program, the
 possible ranges are much more restricted. In fact, the only partial tangles
@@ -394,151 +358,126 @@ allowed are for chapters or sections marked in the <span class="extract"><span c
 "Independent". For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Appendix A: The Standard Rules (Independent Inform 7)</span>
 </pre>
-<p class="inwebparagraph">declares that Appendix A is a sort of sidekick program, written in the
+<p class="commentary">declares that Appendix A is a sort of sidekick program, written in the
 language "Inform 7". As a result, it won't be included in a regular <span class="extract"><span class="extract-syntax">-tangle</span></span>,
 and to obtain it we have to:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inform7</span><span class="ConsoleText-identifier-syntax"> -tangle</span><span class="ConsoleText-plain-syntax"> A</span>
 </pre>
-<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>In some C programs, it's useful to require that a header file be added to
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>In some C programs, it's useful to require that a header file be added to
 a tangle. This can be done by adding:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Header: H</span>
 </pre>
-<p class="inwebparagraph">to the contents page of a web. The heacer file <span class="extract"><span class="extract-syntax">H</span></span> in question should then
+<p class="commentary">to the contents page of a web. The heacer file <span class="extract"><span class="extract-syntax">H</span></span> in question should then
 be stored in the web's <span class="extract"><span class="extract-syntax">Headers</span></span> subdirectory. (At one time, the Foundation
 module used this to bring in a Windows-only header file.)
 </p>
 
-<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10. Weaving. </b>As with all-in-one webs, the commands for weaving are like so:
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Weaving. </b>As with all-in-one webs, the commands for weaving are like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave</span>
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> TeX</span>
 </pre>
-<p class="inwebparagraph">This will produce single HTML or PDF files of the woven form of the whole
+<p class="commentary">This will produce single HTML or PDF files of the woven form of the whole
 program. (Note that the PDF file now has a cover page: on a web with just
 a single section, this wouldn't happen.) But with a growing web, that can
 be cumbersome.
 </p>
 
-<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>After setting <span class="extract"><span class="ConsoleText-extract-syntax">-weave</span></span> or <span class="extract"><span class="ConsoleText-extract-syntax">-weave-as</span></span>, we can also optionally choose a
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>After setting <span class="extract"><span class="ConsoleText-extract-syntax">-weave</span></span> or <span class="extract"><span class="ConsoleText-extract-syntax">-weave-as</span></span>, we can also optionally choose a
 range. The default range is <span class="extract"><span class="ConsoleText-extract-syntax">all</span></span>, so up to now we have implicitly
 been running weaves like these:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave</span><span class="ConsoleText-plain-syntax"> all</span>
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> TeX all</span>
 </pre>
-<p class="inwebparagraph">The opposite extreme from <span class="extract"><span class="ConsoleText-extract-syntax">all</span></span> is <span class="extract"><span class="ConsoleText-extract-syntax">sections</span></span>. This still weaves the entire
+<p class="commentary">The opposite extreme from <span class="extract"><span class="ConsoleText-extract-syntax">all</span></span> is <span class="extract"><span class="ConsoleText-extract-syntax">sections</span></span>. This still weaves the entire
 web, but now cuts it up into individual files, one for each section. For
 example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave</span><span class="ConsoleText-plain-syntax"> sections</span>
 </pre>
-<p class="inwebparagraph">makes a miniature website; files include some CSS, and:
+<p class="commentary">makes a miniature website; files include some CSS, and:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    inweb/Examples/goldbach/Woven/index.html</span>
 <span class="plain-syntax">    inweb/Examples/goldbach/Woven/S-tgc.html</span>
 <span class="plain-syntax">    inweb/Examples/goldbach/Woven/S-tsoe.html</span>
 </pre>
-<p class="inwebparagraph">Those abbreviated names <span class="extract"><span class="extract-syntax">S-tgc</span></span> and <span class="extract"><span class="extract-syntax">S-tsoe</span></span> are cut down from the full
+<p class="commentary">Those abbreviated names <span class="extract"><span class="extract-syntax">S-tgc</span></span> and <span class="extract"><span class="extract-syntax">S-tsoe</span></span> are cut down from the full
 names of the sections involved, "The Goldbach Conjecture" and "The Sieve
 of Eratosthenes". Similarly,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> TeX sections</span>
 </pre>
-<p class="inwebparagraph">creates the files:
+<p class="commentary">creates the files:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    inweb/Examples/goldbach/Woven/index.html</span>
 <span class="plain-syntax">    inweb/Examples/goldbach/Woven/S-tgc.pdf</span>
 <span class="plain-syntax">    inweb/Examples/goldbach/Woven/S-tsoe.pdf</span>
 </pre>
-<p class="inwebparagraph">The index file here is a table of contents offering links to the PDFs.
+<p class="commentary">The index file here is a table of contents offering links to the PDFs.
 </p>
 
-<p class="inwebparagraph">An intermediate level of granularity is the range <span class="extract"><span class="extract-syntax">chapters</span></span>, which makes
+<p class="commentary">An intermediate level of granularity is the range <span class="extract"><span class="extract-syntax">chapters</span></span>, which makes
 sense only for chaptered webs, and puts each chapter into its own file.
 </p>
 
-<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>Ranges can also be used to weave only part of a web:
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Ranges can also be used to weave only part of a web:
 </p>
 
-<ul class="items"><li>(a) <p class="inwebparagraph">In a chaptered web, chapters are abbreviated to just their numbers: for
+<ul class="items"><li>(a) In a chaptered web, chapters are abbreviated to just their numbers: for
 example, the range <span class="extract"><span class="extract-syntax">2</span></span> means "just Chapter 2". The Preliminaries alone is <span class="extract"><span class="extract-syntax">P</span></span>;
 the Manual, <span class="extract"><span class="extract-syntax">M</span></span>. Appendix A, B, C are <span class="extract"><span class="extract-syntax">A</span></span>, <span class="extract"><span class="extract-syntax">B</span></span>, <span class="extract"><span class="extract-syntax">C</span></span> and so on. (This is why
 Appendices can only run up to L.)
-</p>
-
-<ul class="items"><li>(b) <p class="inwebparagraph">In an unchaptered web, <span class="extract"><span class="extract-syntax">S</span></span> means "all the sections". This is almost but not
+</li><li>(b) In an unchaptered web, <span class="extract"><span class="extract-syntax">S</span></span> means "all the sections". This is almost but not
 quite the same as <span class="extract"><span class="extract-syntax">all</span></span>: the cover sheet (a sort of title page) is omitted.
-</p>
-
-<ul class="items"><li>(c) <p class="inwebparagraph">The abbreviation for a section makes a range of just that section. For
+</li><li>(c) The abbreviation for a section makes a range of just that section. For
 example, <span class="extract"><span class="extract-syntax">S/tgc</span></span> and <span class="extract"><span class="extract-syntax">S/tsoe</span></span> in the Goldbach web example, or <span class="extract"><span class="extract-syntax">2/ec</span></span> for
 the "Enumerated Constants" section of Chapter 2 of Inweb itself. Note that
 running Inweb with <span class="extract"><span class="extract-syntax">-catalogue</span></span> shows all the sections of a web, and their
 abbreviations. If it's a nuisance that these section ranges are hard to
 predict, run with <span class="extract"><span class="extract-syntax">-sequential</span></span> to have them simply be <span class="extract"><span class="extract-syntax">X/s1</span></span>, <span class="extract"><span class="extract-syntax">X/s2</span></span>, ...,
 within each chapter, where <span class="extract"><span class="extract-syntax">X</span></span> is the chapter range.
-</p>
-
-<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Weave tags. </b>An alternative to a range is to specify a tag. Rather than weaving contiguous
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Weave tags. </b>An alternative to a range is to specify a tag. Rather than weaving contiguous
 pieces of the web, this collates together all those paragraphs with a given
 tag. The result is a booklet of extracts.
 </p>
 
-<p class="inwebparagraph">Most paragraphs are never tagged. A tag is simply a word; paragraphs can have
+<p class="commentary">Most paragraphs are never tagged. A tag is simply a word; paragraphs can have
 multiple tags, but for each individual tags they either have it or don't.
 A very few tags are automatically applied by Inweb:
 </p>
 
-<p class="inwebparagraph">If the program is for a C-like language, Inweb automatically tags any
+<p class="commentary">If the program is for a C-like language, Inweb automatically tags any
 paragraph containing a <span class="extract"><span class="extract-syntax">typedef struct</span></span> with the tag <span class="extract"><span class="extract-syntax">Structures</span></span>. So,
 for example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb</span><span class="ConsoleText-identifier-syntax"> -weave-tag</span><span class="ConsoleText-plain-syntax"> Structures</span>
 </pre>
-<p class="inwebparagraph">weaves just the structure definitions culled from a much larger web; this
+<p class="commentary">weaves just the structure definitions culled from a much larger web; this
 can make a convenient reference. Similarly, any paragraph containing an
 illustration is automatically tagged <span class="extract"><span class="ConsoleText-extract-syntax">Figures</span></span>, and any paragraph in an
 <span class="extract"><span class="ConsoleText-extract-syntax">InC</span></span> web which defines Preform grammar is automatically tagged <span class="extract"><span class="ConsoleText-extract-syntax">Preform</span></span>.
@@ -546,60 +485,54 @@ illustration is automatically tagged <span class="extract"><span class="ConsoleT
 syntax of the language.)
 </p>
 
-<p class="inwebparagraph">All other tags must be typed by hand. If the line introducing a paragraph
+<p class="commentary">All other tags must be typed by hand. If the line introducing a paragraph
 is marked at the end with <span class="extract"><span class="ConsoleText-extract-syntax">^"Fun"</span></span>, then that paragraph will be tagged
 as <span class="extract"><span class="ConsoleText-extract-syntax">Fun</span></span>, and so on. Paragraphs can have multiple tags:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> ^"Algorithms" ^"History"</span>
 <span class="plain-syntax">    The original version of the program used an in-place insertion sort, but</span>
 <span class="plain-syntax">    ...</span>
 </pre>
-<p class="inwebparagraph">A tag can optionally supply a caption. For example:
+<p class="commentary">A tag can optionally supply a caption. For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> ^"Algorithms: Sorting rulebooks"</span>
 <span class="plain-syntax">    The original version of the program used an in-place insertion sort, but</span>
 <span class="plain-syntax">    ...</span>
 </pre>
-<p class="inwebparagraph">Here the tag is just <span class="extract"><span class="extract-syntax">Algorithms</span></span>, but when a <span class="extract"><span class="extract-syntax">-weave-to Algorithms</span></span> is
+<p class="commentary">Here the tag is just <span class="extract"><span class="extract-syntax">Algorithms</span></span>, but when a <span class="extract"><span class="extract-syntax">-weave-to Algorithms</span></span> is
 performed, the caption text "Sorting rulebooks" will be used in a subheading
 in the resulting booklet.
 </p>
 
-<p class="inwebparagraph">Beyond that, an entire section can be tagged from the <span class="extract"><span class="extract-syntax">Contents.w</span></span> page.
+<p class="commentary">Beyond that, an entire section can be tagged from the <span class="extract"><span class="extract-syntax">Contents.w</span></span> page.
 For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Sections</span>
 <span class="plain-syntax">        The Goldbach Conjecture</span>
 <span class="plain-syntax">        The Sieve of Eratosthenes ^"Greek"</span>
 </pre>
-<p class="inwebparagraph">tags every paragraph in the section "The Sieve of Eratosthenes" with the
+<p class="commentary">tags every paragraph in the section "The Sieve of Eratosthenes" with the
 tag <span class="extract"><span class="extract-syntax">Greek</span></span>. In this instance, a caption is not allowed.
 </p>
 
-<p class="inwebparagraph">Note that if we <span class="extract"><span class="extract-syntax">-weave-to</span></span> a tag which does not exist - or rather, which no
+<p class="commentary">Note that if we <span class="extract"><span class="extract-syntax">-weave-to</span></span> a tag which does not exist - or rather, which no
 paragraph in the range has - then rather than producing an empty document,
 Inweb will halt with an "empty weave request" error.
 </p>
 
-<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Modules. </b>Up to now, the webs described have all been self-contained: one web makes
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Modules. </b>Up to now, the webs described have all been self-contained: one web makes
 one program, and contains the code in its entirety. But Inweb also supports
 "modules". A module is simply a web which provides a compoment of a program
 but is not a program in its own right.
 </p>
 
-<p class="inwebparagraph">For example, all of the Inform tools (including Inweb itself) make use of
+<p class="commentary">For example, all of the Inform tools (including Inweb itself) make use of
 a module called <span class="extract"><span class="extract-syntax">foundation</span></span>, which is written in InC and provides
 facilities for managing memory, manipulating strings, filenames, and so on.
 On the other hand, the Inform project also includes a module called <span class="extract"><span class="extract-syntax">inter</span></span>
@@ -608,13 +541,11 @@ also called <span class="extract"><span class="extract-syntax">inter</span></spa
 some of which are used only by itself.
 </p>
 
-<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>It makes little sense to tangle a module on its own. Instead, a web which
+<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>It makes little sense to tangle a module on its own. Instead, a web which
 wishes to use a module needs to declare this on its <span class="extract"><span class="extract-syntax">Contents.w</span></span> page. This
 is done with a list of "imports", after the metadata but before the list
 of sections. For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Import: foundation</span>
@@ -622,141 +553,113 @@ of sections. For example,
 <span class="plain-syntax">    Chapter 1</span>
 <span class="plain-syntax">        Startup</span>
 </pre>
-<p class="inwebparagraph">...and so on. When this new web is tangled, the module's code will tangled
+<p class="commentary">...and so on. When this new web is tangled, the module's code will tangled
 into it. Any functions or variables defined in the module will thus be
 available to the new web.
 </p>
 
-<p class="inwebparagraph">However, it makes perfectly good sense to weave a module. For example:
+<p class="commentary">However, it makes perfectly good sense to weave a module. For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/foundation-module</span><span class="ConsoleText-identifier-syntax"> -weave</span><span class="ConsoleText-plain-syntax"> sections</span>
 </pre>
-<p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>That's everything there is to say about modules, except where Inweb looks
+<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>That's everything there is to say about modules, except where Inweb looks
 to find them. When it reads a request from a web <span class="extract"><span class="ConsoleText-extract-syntax">W</span></span> to import a module <span class="extract"><span class="ConsoleText-extract-syntax">M</span></span>,
 it looks for a web directory called <span class="extract"><span class="ConsoleText-extract-syntax">M-module</span></span> (note the hyphen). For
 example, <span class="extract"><span class="ConsoleText-extract-syntax">Import: fruit</span></span> would look for the directory <span class="extract"><span class="ConsoleText-extract-syntax">fruit-module</span></span>. Inweb
 tries the following locations, in sequence, until it finds it:
 </p>
 
-<ul class="items"><li>(1) <p class="inwebparagraph">Directly inside <span class="extract"><span class="ConsoleText-extract-syntax">W</span></span>.
+<ul class="items"><li>(1) Directly inside <span class="extract"><span class="ConsoleText-extract-syntax">W</span></span>.
+</li><li>(2) In the directory containing <span class="extract"><span class="ConsoleText-extract-syntax">W</span></span> (i.e., one directory higher up).
+</li><li>(3) Directly inside Inweb's own web directory.
+</li><li>(4) In the directory specified by <span class="extract"><span class="ConsoleText-extract-syntax">-import-from D</span></span> at the command line, if any.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. The section catalogue. </b>Inweb can do a handful of other things. One is to list the contents of a web:
 </p>
 
-<ul class="items"><li>(2) <p class="inwebparagraph">In the directory containing <span class="extract"><span class="ConsoleText-extract-syntax">W</span></span> (i.e., one directory higher up).
-</p>
-
-<ul class="items"><li>(3) <p class="inwebparagraph">Directly inside Inweb's own web directory.
-</p>
-
-<ul class="items"><li>(4) <p class="inwebparagraph">In the directory specified by <span class="extract"><span class="ConsoleText-extract-syntax">-import-from D</span></span> at the command line, if any.
-</p>
-
-<p class="inwebparagraph"><a id="SP17"></a><b>&#167;17. The section catalogue. </b>Inweb can do a handful of other things. One is to list the contents of a web:
-</p>
-
-<ul class="items"><li>(a) <p class="inwebparagraph"><span class="extract"><span class="ConsoleText-extract-syntax">-catalogue</span></span> (or <span class="extract"><span class="ConsoleText-extract-syntax">-catalog</span></span>) lists the sections in the web.
-</p>
-
-<ul class="items"><li>(b) <p class="inwebparagraph"><span class="extract"><span class="ConsoleText-extract-syntax">-structures</span></span> lists the sections, and all of the structure definitions
+<ul class="items"><li>(a) <span class="extract"><span class="ConsoleText-extract-syntax">-catalogue</span></span> (or <span class="extract"><span class="ConsoleText-extract-syntax">-catalog</span></span>) lists the sections in the web.
+</li><li>(b) <span class="extract"><span class="ConsoleText-extract-syntax">-structures</span></span> lists the sections, and all of the structure definitions
 made in them (for C-like languages).
-</p>
-
-<ul class="items"><li>(c) <p class="inwebparagraph"><span class="extract"><span class="ConsoleText-extract-syntax">-functions</span></span> lists the sections, with all structure definitions and also
+</li><li>(c) <span class="extract"><span class="ConsoleText-extract-syntax">-functions</span></span> lists the sections, with all structure definitions and also
 all function definitions.
-</p>
-
-<p class="inwebparagraph">In addition, for debugging purposes, <span class="extract"><span class="ConsoleText-extract-syntax">-scan</span></span> shows how Inweb is parsing lines
+</li></ul>
+<p class="commentary">In addition, for debugging purposes, <span class="extract"><span class="ConsoleText-extract-syntax">-scan</span></span> shows how Inweb is parsing lines
 of source code in the web, and <span class="extract"><span class="ConsoleText-extract-syntax">-verbose</span></span> makes it generally print out more
 descriptive output.
 </p>
 
-<p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Makefile. </b>As mentioned earlier, Inweb can construct a suitable makefile for a web:
+<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Makefile. </b>As mentioned earlier, Inweb can construct a suitable makefile for a web:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -makefile</span><span class="ConsoleText-plain-syntax"> M</span>
 </pre>
-<p class="inwebparagraph">creates a makefile for the web <span class="extract"><span class="ConsoleText-extract-syntax">W</span></span> and stores it in <span class="extract"><span class="ConsoleText-extract-syntax">M</span></span>. For example,
+<p class="commentary">creates a makefile for the web <span class="extract"><span class="ConsoleText-extract-syntax">W</span></span> and stores it in <span class="extract"><span class="ConsoleText-extract-syntax">M</span></span>. For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb</span><span class="ConsoleText-identifier-syntax"> -makefile</span><span class="ConsoleText-plain-syntax"> inweb/inweb.mk</span>
 </pre>
-<p class="inwebparagraph">The makefile is constructed using a prototype file called a "makescript".
+<p class="commentary">The makefile is constructed using a prototype file called a "makescript".
 Ordinarily the script used will be the one stored in
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    W/makescript.txt</span>
 </pre>
-<p class="inwebparagraph">or, if no such file exists, the default one stored in Inweb:
+<p class="commentary">or, if no such file exists, the default one stored in Inweb:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    inweb/Materials/makescript.txt</span>
 </pre>
-<p class="inwebparagraph">but this can be changed by using <span class="extract"><span class="extract-syntax">-prototype S</span></span>, which tells Inweb to use
+<p class="commentary">but this can be changed by using <span class="extract"><span class="extract-syntax">-prototype S</span></span>, which tells Inweb to use
 <span class="extract"><span class="extract-syntax">S</span></span> as the script. If a <span class="extract"><span class="extract-syntax">-prototype</span></span> is given, then there's no need to
 specify any one web for Inweb to use: this allows Inweb to construct more
 elaborate makefiles for multi-web projects. (This is how the main makefile
 for the Inform project is constructed.)
 </p>
 
-<p class="inwebparagraph">To see how makescripts work, it's easiest simply to look at the default one.
+<p class="commentary">To see how makescripts work, it's easiest simply to look at the default one.
 </p>
 
-<p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Gitignore. </b>A similar convenience exists for users who want to use the git source control
+<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Gitignore. </b>A similar convenience exists for users who want to use the git source control
 tool with a web: for example, uploading it to Github.
 </p>
 
-<p class="inwebparagraph">The files produced by weaving or tangling a web are not significant and should
+<p class="commentary">The files produced by weaving or tangling a web are not significant and should
 probably not be subject to source control: they should be "ignored", in git
 terminology. This means writing a special file called <span class="extract"><span class="extract-syntax">.gitignore</span></span> which
 specifies the files to be ignored. The following does so for a web <span class="extract"><span class="extract-syntax">W</span></span>:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -gitignore</span><span class="ConsoleText-plain-syntax"> W/.gitignore</span>
 </pre>
-<p class="inwebparagraph">Once again, Inweb does this by working from a script, this time called
+<p class="commentary">Once again, Inweb does this by working from a script, this time called
 <span class="extract"><span class="ConsoleText-extract-syntax">gitignorescript.txt</span></span>.
 </p>
 
-<p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. README files. </b>Repositories at Github customarily have <span class="extract"><span class="ConsoleText-extract-syntax">README.mk</span></span> files, in Markdown
+<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. README files. </b>Repositories at Github customarily have <span class="extract"><span class="ConsoleText-extract-syntax">README.mk</span></span> files, in Markdown
 syntax, explaining what they are. These of course should probably include
 current version numbers, and it's a pain keeping that up to date. For
 really complicated repositories, containing multiple webs, some automation
 is essential, and once again Inweb can oblige.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -write-me</span><span class="ConsoleText-plain-syntax"> W/README.mk</span>
 </pre>
-<p class="inwebparagraph">expands a script called <span class="extract"><span class="ConsoleText-extract-syntax">READMEscript.txt</span></span> into <span class="extract"><span class="ConsoleText-extract-syntax">README.mk</span></span>. Alternatively,
+<p class="commentary">expands a script called <span class="extract"><span class="ConsoleText-extract-syntax">READMEscript.txt</span></span> into <span class="extract"><span class="ConsoleText-extract-syntax">README.mk</span></span>. Alternatively,
 the script can be specified explicitly:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -prototype</span><span class="ConsoleText-plain-syntax"> MySpecialThang.txt</span><span class="ConsoleText-identifier-syntax"> -write-me</span><span class="ConsoleText-plain-syntax"> W/README.mk</span>
 </pre>
-<p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b>Everything in the script is copied over verbatim except where the <span class="extract"><span class="ConsoleText-extract-syntax">@</span></span> character
+<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>Everything in the script is copied over verbatim except where the <span class="extract"><span class="ConsoleText-extract-syntax">@</span></span> character
 is used, which was chosen because it isn't significant in Github's form of
 Markdown. <span class="extract"><span class="ConsoleText-extract-syntax">@name(args)</span></span> is like a function call (or, in more traditional
 language, a macro): it expands out to something depending on the arguments.
@@ -766,96 +669,83 @@ commas or brackets, they can be put into single quotes: <span class="extract"><s
 two arguments, <span class="extract"><span class="ConsoleText-extract-syntax">4</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">,</span></span>.) Three functions are built in:
 </p>
 
-<ul class="items"><li>(a) <p class="inwebparagraph"><span class="extract"><span class="ConsoleText-extract-syntax">@version(A)</span></span> expands to the version number of <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span>, which is normally the
+<ul class="items"><li>(a) <span class="extract"><span class="ConsoleText-extract-syntax">@version(A)</span></span> expands to the version number of <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span>, which is normally the
 path to a web; it then produces the value of the <span class="extract"><span class="ConsoleText-extract-syntax">[[Version Number]]</span></span> for
 that web. But <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span> can also be the filename of an Inform extension, provided
 that it ends in <span class="extract"><span class="ConsoleText-extract-syntax">.i7x</span></span>, or a few other Inform-specific things for which
 Inweb is able to deduce a version number.
-</p>
-
-<ul class="items"><li>(b) <p class="inwebparagraph"><span class="extract"><span class="ConsoleText-extract-syntax">@purpose(A)</span></span> is the same, but for the <span class="extract"><span class="ConsoleText-extract-syntax">[[Purpose]]</span></span> of a web. It's
+</li><li>(b) <span class="extract"><span class="ConsoleText-extract-syntax">@purpose(A)</span></span> is the same, but for the <span class="extract"><span class="ConsoleText-extract-syntax">[[Purpose]]</span></span> of a web. It's
 blank for everything else.
-</p>
-
-<ul class="items"><li>(c) <p class="inwebparagraph"><span class="extract"><span class="ConsoleText-extract-syntax">@var(A,D)</span></span> is more general, and reads the bibliographic datum <span class="extract"><span class="ConsoleText-extract-syntax">D</span></span> from
+</li><li>(c) <span class="extract"><span class="ConsoleText-extract-syntax">@var(A,D)</span></span> is more general, and reads the bibliographic datum <span class="extract"><span class="ConsoleText-extract-syntax">D</span></span> from
 the web indicated by <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span>. In fact, <span class="extract"><span class="ConsoleText-extract-syntax">@version(A)</span></span> is an abbreviation for
 <span class="extract"><span class="ConsoleText-extract-syntax">@var(A,Version Number)</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">@purpose(A)</span></span> for <span class="extract"><span class="ConsoleText-extract-syntax">@var(A,Purpose)</span></span>, so this
 is really the only one needed.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>It is also possible to define new functions. For example:
 </p>
-
-<p class="inwebparagraph"><a id="SP22"></a><b>&#167;22.  </b>It is also possible to define new functions. For example:
-</p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    @define book(title, path, topic)</span>
 <span class="plain-syntax">    * @title - @topic. Ebook in Indoc format, stored at path @path.</span>
 <span class="plain-syntax">    @end</span>
 </pre>
-<p class="inwebparagraph">The definition lies between <span class="extract"><span class="extract-syntax">@define</span></span> and <span class="extract"><span class="extract-syntax">@end</span></span> commands. This one takes
+<p class="commentary">The definition lies between <span class="extract"><span class="extract-syntax">@define</span></span> and <span class="extract"><span class="extract-syntax">@end</span></span> commands. This one takes
 three parameters, and inside the definition, their values can be referred
 to as <span class="extract"><span class="extract-syntax">@title</span></span>, <span class="extract"><span class="extract-syntax">@path</span></span> and <span class="extract"><span class="extract-syntax">@topic</span></span>. Functions are free to use other
 functions:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    @define primary(program, language)</span>
 <span class="plain-syntax">    * @program - @purpose(@program) - __@version(@program)__</span>
 <span class="plain-syntax">    @end</span>
 </pre>
-<p class="inwebparagraph">However, each function needs to have been defined before any line on which
+<p class="commentary">However, each function needs to have been defined before any line on which
 it is actually expanded. A definition of one function <span class="extract"><span class="extract-syntax">A</span></span> can refer to another
 function <span class="extract"><span class="extract-syntax">B</span></span> not yet defined; but any actual use of <span class="extract"><span class="extract-syntax">A</span></span> must be made after
 both <span class="extract"><span class="extract-syntax">A</span></span> and <span class="extract"><span class="extract-syntax">B</span></span> have been defined. So, basically, declare before use.
 </p>
 
-<p class="inwebparagraph"><a id="SP23"></a><b>&#167;23. Semantic version numbering and build metadata. </b>When Inweb reads in a web, it also looks for a file called <span class="extract"><span class="extract-syntax">build.txt</span></span> in
+<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Semantic version numbering and build metadata. </b>When Inweb reads in a web, it also looks for a file called <span class="extract"><span class="extract-syntax">build.txt</span></span> in
 the web's directory; if that isn't there, it looks for the same file in the
 current working directory; if that's not there either, never mind.
 </p>
 
-<p class="inwebparagraph">Such a file contains up to three text fields, all optional:
+<p class="commentary">Such a file contains up to three text fields, all optional:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Prerelease: alpha.1</span>
 <span class="plain-syntax">    Build Date: 23 March 2020</span>
 <span class="plain-syntax">    Build Number: 6Q26</span>
 </pre>
-<p class="inwebparagraph">The bibliographic variables <span class="extract"><span class="extract-syntax">Prerelease</span></span> and so on are then set from this
+<p class="commentary">The bibliographic variables <span class="extract"><span class="extract-syntax">Prerelease</span></span> and so on are then set from this
 file. (They can equally well be set by the Contents section of the web, and
 if so then that takes priority.)
 </p>
 
-<p class="inwebparagraph">The Prerelease and Build Number, if given, are used in combination with the
+<p class="commentary">The Prerelease and Build Number, if given, are used in combination with the
 Version Number (set in the Contents) to produce the semantic version number,
 or semver, for the web. For example, if the Contents included:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Version Number: 6.2.12</span>
 </pre>
-<p class="inwebparagraph">then the semver would be <span class="extract"><span class="extract-syntax">6.2.12-alpha.1+6Q26</span></span>. This is accessible within
+<p class="commentary">then the semver would be <span class="extract"><span class="extract-syntax">6.2.12-alpha.1+6Q26</span></span>. This is accessible within
 the web as the variable <span class="extract"><span class="extract-syntax">Semantic Version Number</span></span>.
 </p>
 
-<p class="inwebparagraph">For more on semvers, see: <a href="https://semver.org" class="external">https://semver.org</a>
+<p class="commentary">For more on semvers, see: <a href="https://semver.org" class="external">https://semver.org</a>
 </p>
 
-<p class="inwebparagraph"><a id="SP24"></a><b>&#167;24.  </b>A special advancing mechanism exists to update build numbers and dates.
+<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>A special advancing mechanism exists to update build numbers and dates.
 Running Inweb with <span class="extract"><span class="extract-syntax">-advance-build W</span></span> checks the build date for web <span class="extract"><span class="extract-syntax">W</span></span>:
 if it differs from today, then it is changed to today, and the build code
 is advanced by one.
 </p>
 
-<p class="inwebparagraph">Running <span class="extract"><span class="extract-syntax">-advance-build-file B</span></span> does this for a stand-alone build file <span class="extract"><span class="extract-syntax">B</span></span>,
+<p class="commentary">Running <span class="extract"><span class="extract-syntax">-advance-build-file B</span></span> does this for a stand-alone build file <span class="extract"><span class="extract-syntax">B</span></span>,
 without need of a web.
 </p>
 

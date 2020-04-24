@@ -46,17 +46,15 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-tt.html#SP1">&#167;1. The Master Tangler</a></li><li><a href="3-tt.html#SP3">&#167;3. The Code Tangler</a></li><li><a href="3-tt.html#SP4">&#167;4. Prinary target</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. The Master Tangler. </b>Here's what has happened so far, on a <span class="extract"><span class="extract-syntax">-tangle</span></span> run of Inweb: on any
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. The Master Tangler. </b>Here's what has happened so far, on a <span class="extract"><span class="extract-syntax">-tangle</span></span> run of Inweb: on any
 other sort of run, of course, we would never be in this section of code.
 The web was read completely into memory, and then fully parsed, with all
 of the arrays and hashes populated. Program Control then sent us straight
 here for the tangling to begin...
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tangler::tangle</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Tangler::tangle</b>:<br>Program Control - <a href="1-pc.html#SP7_4_2">&#167;7.4.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax"> *</span><span class="identifier-syntax">target</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dest_file</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tangler::tangle</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <b>Tangler::tangle</b>:<br>Program Control - <a href="1-pc.html#SP7_4_2">&#167;7.4.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax"> *</span><span class="identifier-syntax">target</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dest_file</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lang</span><span class="plain-syntax"> = </span><span class="identifier-syntax">target</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tangle_language</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"  tangling &lt;%/f&gt; (written in %S)\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">dest_file</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">language_name</span><span class="plain-syntax">);</span>
 
@@ -64,18 +62,16 @@ here for the tangling to begin...
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = &amp;</span><span class="identifier-syntax">TO_struct</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">STREAM_OPEN_TO_FILE</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">dest_file</span><span class="plain-syntax">, </span><span class="constant-syntax">ISO_ENC</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"unable to write tangled file"</span><span class="plain-syntax">, </span><span class="identifier-syntax">dest_file</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Perform the actual tangle</span> <span class="named-paragraph-number">1.1</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="3-tt.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Perform the actual tangle</span><span class="named-paragraph-number">1.1</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Tangle any imported headers</span> <span class="named-paragraph-number">1.2</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="3-tt.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Tangle any imported headers</span><span class="named-paragraph-number">1.2</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="4-lm.html#SP21" class="function-link"><span class="function-syntax">LanguageMethods::additional_tangling</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">target</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP1_1"></a><b>&#167;1.1.  </b>All of the sections are tangled together into one big file, the structure
+<p class="commentary firstcommentary"><a id="SP1_1"></a><b>&#167;1.1.  </b>All of the sections are tangled together into one big file, the structure
 of which can be seen below.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="definitions"><span class="definition-keyword">define</span> <span class="identifier-syntax">LOOP_OVER_PARAGRAPHS</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">chapter</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chapters</span><span class="plain-syntax">)</span>
@@ -83,17 +79,11 @@ of which can be seen below.
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_target</span><span class="plain-syntax"> == </span><span class="identifier-syntax">T</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">paragraphs</span><span class="plain-syntax">)</span>
 </pre>
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Perform the actual tangle</span> <span class="named-paragraph-number">1.1</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Perform the actual tangle</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="plain-syntax">    </span><span class="comment"> (a) The shebang line, a header for scripting languages, and other heading matter</span>
+<span class="plain-syntax">    </span><span class="comment-syntax"> (a) The shebang line, a header for scripting languages, and other heading matter</span>
 <span class="plain-syntax">    </span><a href="4-lm.html#SP7" class="function-link"><span class="function-syntax">LanguageMethods::shebang</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">target</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="4-lm.html#SP8" class="function-link"><span class="function-syntax">LanguageMethods::disclaimer</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">target</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="4-lm.html#SP9" class="function-link"><span class="function-syntax">LanguageMethods::additional_early_matter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">target</span><span class="plain-syntax">);</span>
@@ -102,40 +92,32 @@ of which can be seen below.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">placed_very_early</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">defines_macro</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><a href="3-tt.html#SP2" class="function-link"><span class="function-syntax">Tangler::tangle_paragraph</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="comment"> (b) Results of </span><span class="extract"><span class="extract-syntax">@d</span></span><span class="comment"> declarations</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Tangle all the constant definitions in section order</span> <span class="named-paragraph-number">1.1.1</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="comment-syntax"> (b) Results of </span><span class="extract"><span class="extract-syntax">@d</span></span><span class="comment-syntax"> declarations</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="3-tt.html#SP1_1_1" class="named-paragraph-link"><span class="named-paragraph">Tangle all the constant definitions in section order</span><span class="named-paragraph-number">1.1.1</span></span></a><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment"> (c) Miscellaneous automated C predeclarations</span>
+<span class="plain-syntax">    </span><span class="comment-syntax"> (c) Miscellaneous automated C predeclarations</span>
 <span class="plain-syntax">    </span><a href="4-lm.html#SP11" class="function-link"><span class="function-syntax">LanguageMethods::additional_predeclarations</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="comment"> (d) Above-the-bar code from all of the sections (global variables, and such)</span>
+<span class="plain-syntax">    </span><span class="comment-syntax"> (d) Above-the-bar code from all of the sections (global variables, and such)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_PARAGRAPHS</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">target</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">placed_early</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">defines_macro</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><a href="3-tt.html#SP2" class="function-link"><span class="function-syntax">Tangler::tangle_paragraph</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="comment"> (e) Below-the-bar code: the bulk of the program itself</span>
+<span class="plain-syntax">    </span><span class="comment-syntax"> (e) Below-the-bar code: the bulk of the program itself</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_PARAGRAPHS</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">target</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">placed_early</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">placed_very_early</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">defines_macro</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><a href="3-tt.html#SP2" class="function-link"><span class="function-syntax">Tangler::tangle_paragraph</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="comment"> (f) Opposite of the shebang: a footer</span>
+<span class="plain-syntax">    </span><span class="comment-syntax"> (f) Opposite of the shebang: a footer</span>
 <span class="plain-syntax">    </span><a href="4-lm.html#SP20" class="function-link"><span class="function-syntax">LanguageMethods::gnabehs</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="3-tt.html#SP1">&#167;1</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP1_1_1"></a><b>&#167;1.1.1.  </b>This is the result of all those <span class="extract"><span class="extract-syntax">@d</span></span> definitions; note that these sometimes
+<p class="commentary firstcommentary"><a id="SP1_1_1"></a><b>&#167;1.1.1.  </b>This is the result of all those <span class="extract"><span class="extract-syntax">@d</span></span> definitions; note that these sometimes
 extend across multiple lines.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Tangle all the constant definitions in section order</span> <span class="named-paragraph-number">1.1.1</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Tangle all the constant definitions in section order</span><span class="named-paragraph-number">1.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
@@ -143,27 +125,19 @@ extend across multiple lines.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_WITHIN_TANGLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">target</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">category</span><span class="plain-syntax"> == </span><span class="constant-syntax">BEGIN_DEFINITION_LCAT</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">default_defn</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                </span>&lt;<span class="named-paragraph">Define the constant</span> <span class="named-paragraph-number">1.1.1.1</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container"><a href="3-tt.html#SP1_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Define the constant</span><span class="named-paragraph-number">1.1.1.1</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_WITHIN_TANGLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">target</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">category</span><span class="plain-syntax"> == </span><span class="constant-syntax">BEGIN_DEFINITION_LCAT</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">default_defn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">                </span><a href="4-lm.html#SP17" class="function-link"><span class="function-syntax">LanguageMethods::open_ifdef</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text_operand</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span>&lt;<span class="named-paragraph">Define the constant</span> <span class="named-paragraph-number">1.1.1.1</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container"><a href="3-tt.html#SP1_1_1_1" class="named-paragraph-link"><span class="named-paragraph">Define the constant</span><span class="named-paragraph-number">1.1.1.1</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><a href="4-lm.html#SP17" class="function-link"><span class="function-syntax">LanguageMethods::close_ifdef</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text_operand</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">    </span><a href="2-ec.html#SP4" class="function-link"><span class="function-syntax">Enumerations::define_extents</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">target</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="3-tt.html#SP1_1">&#167;1.1</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP1_1_1_1"></a><b>&#167;1.1.1.1.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Define the constant</span> <span class="named-paragraph-number">1.1.1.1</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP1_1_1_1"></a><b>&#167;1.1.1.1.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Define the constant</span><span class="named-paragraph-number">1.1.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">owning_paragraph</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><a href="1-pc.html#SP8" class="function-link"><span class="function-syntax">Main::error_in_web</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"misplaced definition"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
@@ -178,67 +152,49 @@ extend across multiple lines.
 <span class="plain-syntax">    </span><a href="4-lm.html#SP10" class="function-link"><span class="function-syntax">LanguageMethods::end_definition</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">owning_paragraph</span><span class="plain-syntax">) </span><a href="2-tgs.html#SP7" class="function-link"><span class="function-syntax">Tags::close_ifdefs</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_paragraph</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="3-tt.html#SP1_1_1">&#167;1.1.1</a> (twice).</li></ul>
-<p class="inwebparagraph"><a id="SP1_2"></a><b>&#167;1.2.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Tangle any imported headers</span> <span class="named-paragraph-number">1.2</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP1_2"></a><b>&#167;1.2.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Tangle any imported headers</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">headers</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/3-shl.html#SP3" class="function-link"><span class="function-syntax">Shell::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><a href="2-tr.html#SP7" class="function-link"><span class="function-syntax">Reader::tangled_folder</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">), </span><span class="string-syntax">""</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="3-tt.html#SP1">&#167;1</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>So here is the main tangler for a single paragraph. We basically expect to
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>So here is the main tangler for a single paragraph. We basically expect to
 act only on <span class="extract"><span class="extract-syntax">CODE_BODY_LCAT</span></span> lines (those containing actual code), unless
 something quirky has been done to support a language feature.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tangler::tangle_paragraph</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Tangler::tangle_paragraph</b>:<br><a href="3-tt.html#SP1_1">&#167;1.1</a>, <a href="3-tt.html#SP3_1">&#167;3.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tangler::tangle_paragraph</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <b>Tangler::tangle_paragraph</b>:<br><a href="3-tt.html#SP1_1">&#167;1.1</a>, <a href="3-tt.html#SP3_1">&#167;3.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="2-tgs.html#SP7" class="function-link"><span class="function-syntax">Tags::open_ifdefs</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">contiguous</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_line_in_paragraph</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        ((</span><span class="identifier-syntax">L</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_paragraph</span><span class="plain-syntax"> == </span><span class="identifier-syntax">P</span><span class="plain-syntax">)); </span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_line</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-lm.html#SP14" class="function-link"><span class="function-syntax">LanguageMethods::will_insert_in_tangle</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">under_section</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_language</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span>&lt;<span class="named-paragraph">Insert line marker if necessary to show the origin of this code</span> <span class="named-paragraph-number">2.1</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container"><a href="3-tt.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">Insert line marker if necessary to show the origin of this code</span><span class="named-paragraph-number">2.1</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><a href="4-lm.html#SP14" class="function-link"><span class="function-syntax">LanguageMethods::insert_in_tangle</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">under_section</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_language</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">category</span><span class="plain-syntax"> != </span><span class="constant-syntax">CODE_BODY_LCAT</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">suppress_tangling</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">contiguous</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">            </span>&lt;<span class="named-paragraph">Insert line marker if necessary to show the origin of this code</span> <span class="named-paragraph-number">2.1</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container"><a href="3-tt.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">Insert line marker if necessary to show the origin of this code</span><span class="named-paragraph-number">2.1</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><a href="3-tt.html#SP3" class="function-link"><span class="function-syntax">Tangler::tangle_line</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">under_section</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">); </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="2-tgs.html#SP7" class="function-link"><span class="function-syntax">Tags::close_ifdefs</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b>The tangled file is, as the term suggests, a tangle, with lines coming
+<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>The tangled file is, as the term suggests, a tangle, with lines coming
 from many different origins. Some programming languages (C, for instance)
 support a notation to tell the compiler that code has come from somewhere
 else; if so, here's where we use it.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Insert line marker if necessary to show the origin of this code</span> <span class="named-paragraph-number">2.1</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Insert line marker if necessary to show the origin of this code</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">contiguous</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) {</span>
@@ -246,39 +202,33 @@ else; if so, here's where we use it.
 <span class="plain-syntax">        </span><a href="4-lm.html#SP15" class="function-link"><span class="function-syntax">LanguageMethods::insert_line_marker</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">under_section</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_language</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="3-tt.html#SP2">&#167;2</a> (twice).</li></ul>
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3. The Code Tangler. </b>All of the final tangled code passes through the following routine.
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. The Code Tangler. </b>All of the final tangled code passes through the following routine.
 Almost all of the time, it simply prints <span class="extract"><span class="extract-syntax">original</span></span> verbatim to the file <span class="extract"><span class="extract-syntax">OUT</span></span>.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tangler::tangle_line</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Tangler::tangle_line</b>:<br><a href="3-tt.html#SP2">&#167;2</a>, <a href="3-tt.html#SP3_1">&#167;3.1</a>, <a href="3-tt.html#SP3_2">&#167;3.2</a>, ACME Support - <a href="4-as.html#SP3">&#167;3</a>&lt;br&gt;C-Like Languages - <a href="4-cl.html#SP5">&#167;5</a>&lt;br&gt;InC Support - <a href="4-is.html#SP9_1_2_1">&#167;9.1.2.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">original</span><span class="plain-syntax">, </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tangler::tangle_line</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <b>Tangler::tangle_line</b>:<br><a href="3-tt.html#SP2">&#167;2</a>, <a href="3-tt.html#SP3_1">&#167;3.1</a>, <a href="3-tt.html#SP3_2">&#167;3.2</a>, ACME Support - <a href="4-as.html#SP3">&#167;3</a>&lt;br&gt;C-Like Languages - <a href="4-cl.html#SP5">&#167;5</a>&lt;br&gt;InC Support - <a href="4-is.html#SP9_1_2_1">&#167;9.1.2.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">original</span><span class="plain-syntax">, </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mlen</span><span class="plain-syntax">, </span><span class="identifier-syntax">slen</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">mpos</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP3" class="function-link"><span class="function-syntax">Regexp::find_expansion</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">original</span><span class="plain-syntax">, </span><span class="character-syntax">'@'</span><span class="plain-syntax">, </span><span class="character-syntax">'&lt;'</span><span class="plain-syntax">, </span><span class="character-syntax">'@'</span><span class="plain-syntax">, </span><span class="character-syntax">'&gt;'</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">mlen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">spos</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-pm.html#SP3" class="function-link"><span class="function-syntax">Regexp::find_expansion</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">original</span><span class="plain-syntax">, </span><span class="character-syntax">'['</span><span class="plain-syntax">, </span><span class="character-syntax">'['</span><span class="plain-syntax">, </span><span class="character-syntax">']'</span><span class="plain-syntax">, </span><span class="character-syntax">']'</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">slen</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">mpos</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; ((</span><span class="identifier-syntax">spos</span><span class="plain-syntax"> == -1) || (</span><span class="identifier-syntax">mpos</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">spos</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><a href="4-lm.html#SP12" class="function-link"><span class="function-syntax">LanguageMethods::allow_expansion</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_language</span><span class="plain-syntax">, </span><span class="identifier-syntax">original</span><span class="plain-syntax">)))</span>
-<span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Expand a paragraph macro</span> <span class="named-paragraph-number">3.1</span>&gt;
+<span class="plain-syntax">        </span><span class="named-paragraph-container"><a href="3-tt.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Expand a paragraph macro</span><span class="named-paragraph-number">3.1</span></span></a>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">spos</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Expand a double-square command</span> <span class="named-paragraph-number">3.2</span>&gt;
+<span class="plain-syntax">        </span><span class="named-paragraph-container"><a href="3-tt.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">Expand a double-square command</span><span class="named-paragraph-number">3.2</span></span></a>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
-<span class="plain-syntax">        </span><a href="4-lm.html#SP19" class="function-link"><span class="function-syntax">LanguageMethods::tangle_line</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_language</span><span class="plain-syntax">, </span><span class="identifier-syntax">original</span><span class="plain-syntax">); </span><span class="comment"> this is usually what happens</span>
+<span class="plain-syntax">        </span><a href="4-lm.html#SP19" class="function-link"><span class="function-syntax">LanguageMethods::tangle_line</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_language</span><span class="plain-syntax">, </span><span class="identifier-syntax">original</span><span class="plain-syntax">); </span><span class="comment-syntax"> this is usually what happens</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP3_1"></a><b>&#167;3.1.  </b>The first form of escape is a paragraph macro in the middle of code. For
+<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b>The first form of escape is a paragraph macro in the middle of code. For
 example, we handle
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    if (banana_count == 0) @&lt;Yes, we have no bananas@&gt;;</span>
 </pre>
-<p class="inwebparagraph">by calling the lower-level tangler on <span class="extract"><span class="extract-syntax">if (banana_count == 0) </span></span> (a substring
+<p class="commentary">by calling the lower-level tangler on <span class="extract"><span class="extract-syntax">if (banana_count == 0) </span></span> (a substring
 which we know can't involve any macros, since we are detecting macros from
 left to right, and this is to the left of the one we found); then by tangling
 the definition of "Yes, we have no bananas"; then by calling the upper-level
@@ -286,21 +236,15 @@ code tangler on <span class="extract"><span class="extract-syntax">;</span></spa
 but in principle it could contain further macros.)
 </p>
 
-<p class="inwebparagraph">Note that when we've expanded "Yes, we have no bananas" we have certainly
+<p class="commentary">Note that when we've expanded "Yes, we have no bananas" we have certainly
 placed code into the tangled file from a different location; that will insert
 a <span class="extract"><span class="extract-syntax">#line</span></span> marker for the definition location; and we don't want the eventual
 C compiler to think that the code which follows is also from that location.
 So we insert a fresh line marker.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Expand a paragraph macro</span> <span class="named-paragraph-number">3.1</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Expand a paragraph macro</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">temp</span><span class="plain-syntax">);</span>
@@ -319,7 +263,7 @@ So we insert a fresh line marker.
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><a href="1-pc.html#SP8" class="function-link"><span class="function-syntax">Main::error_in_web</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"unknown macro"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="constant-syntax">STDERR</span><span class="plain-syntax">, </span><span class="string-syntax">"Macro is '%S'\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">temp</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><a href="4-lm.html#SP18" class="function-link"><span class="function-syntax">LanguageMethods::comment</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">temp</span><span class="plain-syntax">); </span><span class="comment"> recover by putting macro name in comment</span>
+<span class="plain-syntax">        </span><a href="4-lm.html#SP18" class="function-link"><span class="function-syntax">LanguageMethods::comment</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="identifier-syntax">temp</span><span class="plain-syntax">); </span><span class="comment-syntax"> recover by putting macro name in comment</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">rest</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::substr</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rest</span><span class="plain-syntax">, </span><a href="../foundation-module/4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">original</span><span class="plain-syntax">, </span><span class="identifier-syntax">mpos</span><span class="plain-syntax"> + </span><span class="identifier-syntax">mlen</span><span class="plain-syntax">), </span><a href="../foundation-module/4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">original</span><span class="plain-syntax">));</span>
@@ -327,42 +271,30 @@ So we insert a fresh line marker.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">rest</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">temp</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="3-tt.html#SP3">&#167;3</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP3_2"></a><b>&#167;3.2.  </b>This is a similar matter, except that it expands bibliographic data:
+<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2.  </b>This is a similar matter, except that it expands bibliographic data:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    printf("This is build [[Build Number]].\n");</span>
 </pre>
-<p class="inwebparagraph">takes the bibliographic data for "Build Number" (as set on the web's contents
+<p class="commentary">takes the bibliographic data for "Build Number" (as set on the web's contents
 page) and substitutes that, so that we end up with (say)
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"This is build 5Q47.\n"</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph">In some languages there are also special expansions (for example, in
+<p class="commentary">In some languages there are also special expansions (for example, in
 InC <span class="extract"><span class="extract-syntax">[[nonterminals]]</span></span> has a special meaning).
 </p>
 
-<p class="inwebparagraph">If the text in double-squares isn't recognised, that's not an error: it simply
+<p class="commentary">If the text in double-squares isn't recognised, that's not an error: it simply
 passes straight through. So <span class="extract"><span class="extract-syntax">[[water]]</span></span> becomes just <span class="extract"><span class="extract-syntax">[[water]]</span></span>.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Expand a double-square command</span> <span class="named-paragraph-number">3.2</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Expand a double-square command</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_web</span><span class="plain-syntax">;</span>
@@ -386,16 +318,12 @@ passes straight through. So <span class="extract"><span class="extract-syntax">[
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">rest</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">temp</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="3-tt.html#SP3">&#167;3</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Prinary target. </b>The first target in a web is always the one for the main program.
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Prinary target. </b>The first target in a web is always the one for the main program.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">tangle_target</span><span class="plain-syntax"> *</span><span class="function-syntax">Tangler::primary_target</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>Tangler::primary_target</b>:<br>Program Control - <a href="1-pc.html#SP7_4_2">&#167;7.4.2</a>&lt;br&gt;The Analyser - <a href="3-ta.html#SP4">&#167;4</a>, <a href="3-ta.html#SP4_1">&#167;4.1</a>&lt;br&gt;ACME Support - <a href="4-as.html#SP4">&#167;4</a>, <a href="4-as.html#SP5">&#167;5</a>&lt;br&gt;C-Like Languages - <a href="4-cl.html#SP2_1">&#167;2.1</a>, <a href="4-cl.html#SP3">&#167;3</a>, <a href="4-cl.html#SP6_1">&#167;6.1</a>, <a href="4-cl.html#SP6_4">&#167;6.4</a>&lt;br&gt;InC Support - <a href="4-is.html#SP3">&#167;3</a>, <a href="4-is.html#SP6">&#167;6</a>, <a href="4-is.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">tangle_target</span><span class="plain-syntax"> *</span><span class="function-syntax">Tangler::primary_target</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <b>Tangler::primary_target</b>:<br>Program Control - <a href="1-pc.html#SP7_4_2">&#167;7.4.2</a>&lt;br&gt;The Analyser - <a href="3-ta.html#SP4">&#167;4</a>, <a href="3-ta.html#SP4_1">&#167;4.1</a>&lt;br&gt;ACME Support - <a href="4-as.html#SP4">&#167;4</a>, <a href="4-as.html#SP5">&#167;5</a>&lt;br&gt;C-Like Languages - <a href="4-cl.html#SP2_1">&#167;2.1</a>, <a href="4-cl.html#SP3">&#167;3</a>, <a href="4-cl.html#SP6_1">&#167;6.1</a>, <a href="4-cl.html#SP6_4">&#167;6.4</a>&lt;br&gt;InC Support - <a href="4-is.html#SP3">&#167;3</a>, <a href="4-is.html#SP6">&#167;6</a>, <a href="4-is.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">W</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no such web"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FIRST_IN_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tangle_targets</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>

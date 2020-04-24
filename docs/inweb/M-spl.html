@@ -38,14 +38,14 @@
 
 <ul class="toc"><li><a href="M-spl.html#SP1">&#167;1. Introduction</a></li><li><a href="M-spl.html#SP4">&#167;4. Structure of language definitions</a></li><li><a href="M-spl.html#SP5">&#167;5. Properties</a></li><li><a href="M-spl.html#SP16">&#167;16. Functions and types</a></li><li><a href="M-spl.html#SP17">&#167;17. Secret Features</a></li><li><a href="M-spl.html#SP18">&#167;18. Keywords</a></li><li><a href="M-spl.html#SP19">&#167;19. Syntax colouring program</a></li><li><a href="M-spl.html#SP23">&#167;23. The six splits</a></li><li><a href="M-spl.html#SP24">&#167;24. The seven ways rules can apply</a></li><li><a href="M-spl.html#SP26">&#167;26. The three ways rules can take effect</a></li><li><a href="M-spl.html#SP27">&#167;27. The worm, Ouroboros</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Introduction. </b>To a very large extent, Inweb works the same way regardless of what language
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Introduction. </b>To a very large extent, Inweb works the same way regardless of what language
 its webs are using, and that is deliberate. On the other hand, when a web
 is woven, it will look much nicer with syntax-colouring, and that clearly
 can't be done without at least a surface understanding of what programs in
 the language mean.
 </p>
 
-<p class="inwebparagraph">The Contents section of each web specifies its language with a line like
+<p class="commentary">The Contents section of each web specifies its language with a line like
 <span class="extract"><span class="extract-syntax">Language: C</span></span>. This language name has to be one which Inweb knows, or, more
 exactly, one for which it can find a "language definition file". These are
 stored in the <span class="extract"><span class="extract-syntax">Languages</span></span> subdirectory of the <span class="extract"><span class="extract-syntax">inweb</span></span> distribution, and if a
@@ -53,8 +53,6 @@ language is called <span class="extract"><span class="extract-syntax">L</span></
 currently available to Inweb by using <span class="extract"><span class="extract-syntax">-show-languages</span></span>. At present, a newly
 installed Inweb replies like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="undisplayed-code all-displayed-code">
 <span class="plain-syntax">Inweb can see the following programming language definitions:</span>
@@ -78,7 +76,7 @@ installed Inweb replies like so:
 <span class="plain-syntax">Perl: The scripting language Perl 5</span>
 <span class="plain-syntax">Plain Text: For text files which are not programs</span>
 </pre>
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>So what if you want to write a literate program in a language not on that
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>So what if you want to write a literate program in a language not on that
 list? One option is to give the language as <span class="extract"><span class="extract-syntax">None</span></span>. (Note that this is
 different from simply not declaring a language &mdash; if your web doesn't say
 what language it is, Inweb assumes C.) <span class="extract"><span class="extract-syntax">None</span></span> is fine for tangling, though
@@ -89,19 +87,19 @@ extension <span class="extract"><span class="extract-syntax">.txt</span></span>,
 colouring.
 </p>
 
-<p class="inwebparagraph">An even more extreme option is <span class="extract"><span class="extract-syntax">Plain Text</span></span>, which has no syntax colouring
+<p class="commentary">An even more extreme option is <span class="extract"><span class="extract-syntax">Plain Text</span></span>, which has no syntax colouring
 at all. (But this could still be useful if what you want is to produce an
 annotated explanation of some complicated configuration file in plain text.)
 </p>
 
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>In fact, though, it's easy to make new language definitions, and if you're
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>In fact, though, it's easy to make new language definitions, and if you're
 spending any serious effort on a web of a program in an unsupported language
 then it's probably worth making one. Contributions of these to the Inweb
 open source project are welcome, and then this effort might also benefit others.
 This section of the manual is about how to do it.
 </p>
 
-<p class="inwebparagraph">Once you have written a definition, use <span class="extract"><span class="extract-syntax">-read-language L</span></span> at the command
+<p class="commentary">Once you have written a definition, use <span class="extract"><span class="extract-syntax">-read-language L</span></span> at the command
 line, where <span class="extract"><span class="extract-syntax">L</span></span> is the file defining it. If you have many custom languages,
 <span class="extract"><span class="extract-syntax">-read-languages D</span></span> reads all of the definitions in a directory <span class="extract"><span class="extract-syntax">D</span></span>. Or, if
 the language in question is really quite specific to a single web, you can
@@ -109,64 +107,57 @@ make a <span class="extract"><span class="extract-syntax">Dialects</span></span>
 after all, a local language.)
 </p>
 
-<p class="inwebparagraph">For testing purposes, running with <span class="extract"><span class="extract-syntax">-test-language F -test-language-on G</span></span>
+<p class="commentary">For testing purposes, running with <span class="extract"><span class="extract-syntax">-test-language F -test-language-on G</span></span>
 reads in a file <span class="extract"><span class="extract-syntax">G</span></span> of code, and syntax-colours it according to the rules
 for the language defined in the file <span class="extract"><span class="extract-syntax">F</span></span>, then prints a plain-text diagram
 of the results. (This can then be tested with Intest test cases, as indeed
 Inweb does itself.)
 </p>
 
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Structure of language definitions. </b>Each language is defined by a single ILDF file. ("Inweb Language Definition
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Structure of language definitions. </b>Each language is defined by a single ILDF file. ("Inweb Language Definition
 Format".) In this section, we'll call it the ILD.
 </p>
 
-<p class="inwebparagraph">The ILD is a plain text file, which is read in line by line. Leading and
+<p class="commentary">The ILD is a plain text file, which is read in line by line. Leading and
 trailing whitespace on each line is ignored; blank lines are ignored; and
 so are comments, which are lines beginning with a <span class="extract"><span class="extract-syntax">#</span></span> character.
 </p>
 
-<p class="inwebparagraph">The ILD contains three sorts of thing:
+<p class="commentary">The ILD contains three sorts of thing:
 </p>
 
-<ul class="items"><li>(a) <p class="inwebparagraph">Properties, set by lines in the form <span class="extract"><span class="extract-syntax">Name: "C++"</span></span>.
-</p>
-
-<ul class="items"><li>(b) <p class="inwebparagraph">Keywords, set by lines in the form <span class="extract"><span class="extract-syntax">keyword int</span></span>.
-</p>
-
-<ul class="items"><li>(c) <p class="inwebparagraph">A colouring program, introduced by <span class="extract"><span class="extract-syntax">colouring {</span></span> and continuing until the
+<ul class="items"><li>(a) Properties, set by lines in the form <span class="extract"><span class="extract-syntax">Name: "C++"</span></span>.
+</li><li>(b) Keywords, set by lines in the form <span class="extract"><span class="extract-syntax">keyword int</span></span>.
+</li><li>(c) A colouring program, introduced by <span class="extract"><span class="extract-syntax">colouring {</span></span> and continuing until the
 last block of it is closed with a <span class="extract"><span class="extract-syntax">}</span></span>.
-</p>
-
-<p class="inwebparagraph">Everything in an ILD is optional, so a minimal ILD is in principle empty. In
+</li></ul>
+<p class="commentary">Everything in an ILD is optional, so a minimal ILD is in principle empty. In
 practice, though, every ILD should open like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"C"</span>
 <span class="plain-syntax">Details: </span><span class="string-syntax">"The C programming language"</span>
 <span class="plain-syntax">Extension: </span><span class="string-syntax">".c"</span>
 </pre>
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Properties. </b>Inevitably, there's a miscellaneous shopping list of these, but let's start
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Properties. </b>Inevitably, there's a miscellaneous shopping list of these, but let's start
 with the semi-compulsory ones.
 </p>
 
-<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">Name</span></span>. This is the one used by webs in their <span class="extract"><span class="extract-syntax">Language: "X"</span></span> lines, and should
+<p class="commentary"><span class="extract"><span class="extract-syntax">Name</span></span>. This is the one used by webs in their <span class="extract"><span class="extract-syntax">Language: "X"</span></span> lines, and should
 match the ILD's own filename: wherever it is stored, the ILD for langauge <span class="extract"><span class="extract-syntax">X</span></span>
 should be filenamed <span class="extract"><span class="extract-syntax">X.ildf</span></span>.
 </p>
 
-<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">Details</span></span> These are used only by <span class="extract"><span class="extract-syntax">-show-languages</span></span>.
+<p class="commentary"><span class="extract"><span class="extract-syntax">Details</span></span> These are used only by <span class="extract"><span class="extract-syntax">-show-languages</span></span>.
 </p>
 
-<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">Extension</span></span>. The default file extension used when a web in this format is
+<p class="commentary"><span class="extract"><span class="extract-syntax">Extension</span></span>. The default file extension used when a web in this format is
 tangled. Thus, a web for a C program called <span class="extract"><span class="extract-syntax">something</span></span> will normally tangle
 to a file called <span class="extract"><span class="extract-syntax">something.c</span></span>.
 </p>
 
-<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Most programming languages contain comments. In some, like Perl, a comment
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Most programming languages contain comments. In some, like Perl, a comment
 begins with a triggering notation (in Perl's case, <span class="extract"><span class="extract-syntax">#</span></span>) occurring outside of
 quoted material; and it continues to the end of its line. We'll call that a
 "line comment". There are also languages where comments must be the only
@@ -176,43 +167,39 @@ line comments". In others, like Inform 7, a comment begins with one notation
 those "multiline comments".
 </p>
 
-<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">Line Comment</span></span> is the notation for line comments, and <span class="extract"><span class="extract-syntax">Whole Line Comment</span></span> is
+<p class="commentary"><span class="extract"><span class="extract-syntax">Line Comment</span></span> is the notation for line comments, and <span class="extract"><span class="extract-syntax">Whole Line Comment</span></span> is
 the notation for whole line comments.
 </p>
 
-<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">Multiline Comment Open</span></span> and <span class="extract"><span class="extract-syntax">Multiline Comment Close</span></span>, which should exist
+<p class="commentary"><span class="extract"><span class="extract-syntax">Multiline Comment Open</span></span> and <span class="extract"><span class="extract-syntax">Multiline Comment Close</span></span>, which should exist
 as a pair or not at all, is the notation for multiline comments.
 </p>
 
-<p class="inwebparagraph">For example, C defines:
+<p class="commentary">For example, C defines:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Multiline Comment Open: </span><span class="string-syntax">"/*"</span>
 <span class="plain-syntax">    Multiline Comment Close: </span><span class="string-syntax">"*/"</span>
 <span class="plain-syntax">    Line Comment: </span><span class="string-syntax">"//"</span>
 </pre>
-<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>As noted, comments occur only outside of string or character literals. We
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>As noted, comments occur only outside of string or character literals. We
 can give notations for these as follows:
 </p>
 
-<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">String Literal</span></span> must be a single character, and marks both start and end.
+<p class="commentary"><span class="extract"><span class="extract-syntax">String Literal</span></span> must be a single character, and marks both start and end.
 </p>
 
-<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">String Literal Escape</span></span> is the escape character within a string literal to
+<p class="commentary"><span class="extract"><span class="extract-syntax">String Literal Escape</span></span> is the escape character within a string literal to
 express an instance of the <span class="extract"><span class="extract-syntax">String Literal</span></span> character without ending it.
 </p>
 
-<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">Character Literal</span></span> and <span class="extract"><span class="extract-syntax">Character Literal Escape</span></span> are the same thing for
+<p class="commentary"><span class="extract"><span class="extract-syntax">Character Literal</span></span> and <span class="extract"><span class="extract-syntax">Character Literal Escape</span></span> are the same thing for
 character literals.
 </p>
 
-<p class="inwebparagraph">Here, C defines:
+<p class="commentary">Here, C defines:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    String Literal: </span><span class="string-syntax">"\""</span>
@@ -220,88 +207,76 @@ character literals.
 <span class="plain-syntax">    Character Literal: </span><span class="string-syntax">"'"</span>
 <span class="plain-syntax">    Character Literal Escape: </span><span class="string-syntax">"\\"</span>
 </pre>
-<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>Next, numeric literals, like <span class="extract"><span class="extract-syntax">0xFE45</span></span> in C, or <span class="extract"><span class="extract-syntax">$$10011110</span></span> in Inform 6.
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Next, numeric literals, like <span class="extract"><span class="extract-syntax">0xFE45</span></span> in C, or <span class="extract"><span class="extract-syntax">$$10011110</span></span> in Inform 6.
 It's assumed that every language allows non-negative decimal numbers.
 </p>
 
-<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">Binary Literal Prefix</span></span>, <span class="extract"><span class="extract-syntax">Octal Literal Prefix</span></span>, and <span class="extract"><span class="extract-syntax">Hexadecimal Literal Prefix</span></span>
+<p class="commentary"><span class="extract"><span class="extract-syntax">Binary Literal Prefix</span></span>, <span class="extract"><span class="extract-syntax">Octal Literal Prefix</span></span>, and <span class="extract"><span class="extract-syntax">Hexadecimal Literal Prefix</span></span>
 are notations for non-decimal numbers, if they exist.
 </p>
 
-<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">Negative Literal Prefix</span></span> allows negative decimals: this is usually <span class="extract"><span class="extract-syntax">-</span></span> if set.
+<p class="commentary"><span class="extract"><span class="extract-syntax">Negative Literal Prefix</span></span> allows negative decimals: this is usually <span class="extract"><span class="extract-syntax">-</span></span> if set.
 </p>
 
-<p class="inwebparagraph">Here, C has:
+<p class="commentary">Here, C has:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Hexadecimal Literal Prefix: </span><span class="string-syntax">"0x"</span>
 <span class="plain-syntax">    Binary Literal Prefix: </span><span class="string-syntax">"0b"</span>
 <span class="plain-syntax">    Negative Literal Prefix: </span><span class="string-syntax">"-"</span>
 </pre>
-<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b><span class="extract"><span class="extract-syntax">Shebang</span></span> is used only in tangling, and is a probably short text added at
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b><span class="extract"><span class="extract-syntax">Shebang</span></span> is used only in tangling, and is a probably short text added at
 the very beginning of a tangled program. This is useful for scripting languages
 in Unix, where the opening line must be a "shebang" indicating their language.
 For example, Perl defines:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Shebang: </span><span class="string-syntax">"#!/usr/bin/perl\n\n"</span>
 </pre>
-<p class="inwebparagraph">Most languages do not have a shebang.
+<p class="commentary">Most languages do not have a shebang.
 </p>
 
-<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>In order for C compilers to report C syntax errors on the correct line,
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>In order for C compilers to report C syntax errors on the correct line,
 despite rearranging by automatic tools, C conventionally recognises the
 preprocessor directive <span class="extract"><span class="extract-syntax">#line</span></span> to tell it that a contiguous extract follows
 from the given file. Quite a few languages support notations like this,
 which most users never use.
 </p>
 
-<p class="inwebparagraph">When tangling, Inweb is just such a rearranging tool, and it inserts line
+<p class="commentary">When tangling, Inweb is just such a rearranging tool, and it inserts line
 markers automatically for languages which support them: <span class="extract"><span class="extract-syntax">Line Marker</span></span> specifies
 that this language does, and gives the notation. For example, C provides:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Line Marker: </span><span class="string-syntax">"#line %d \"%f\"\n"</span>
 </pre>
-<p class="inwebparagraph">Here <span class="extract"><span class="extract-syntax">%d</span></span> expands to the line number, and <span class="extract"><span class="extract-syntax">%f</span></span> the filename, of origin.
+<p class="commentary">Here <span class="extract"><span class="extract-syntax">%d</span></span> expands to the line number, and <span class="extract"><span class="extract-syntax">%f</span></span> the filename, of origin.
 </p>
 
-<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>When a named paragraph is used in code, and the tangler is "expanding" it
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>When a named paragraph is used in code, and the tangler is "expanding" it
 to its contents, it can optionally place some material before and after the
 matter added. This material is in <span class="extract"><span class="extract-syntax">Before Named Paragraph Expansion</span></span> and
 <span class="extract"><span class="extract-syntax">After Named Paragraph Expansion</span></span>, which are by default empty.
 </p>
 
-<p class="inwebparagraph">For C and all similar languages, we recommend this:
+<p class="commentary">For C and all similar languages, we recommend this:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Before Named Paragraph Expansion: </span><span class="string-syntax">"\n{\n"</span>
 <span class="plain-syntax">    After Named Paragraph Expansion: </span><span class="string-syntax">"}\n"</span>
 </pre>
-<p class="inwebparagraph">The effect of this is to ensure that code such as:
+<p class="commentary">The effect of this is to ensure that code such as:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    if (x == y) @&lt;Do something dramatic@&gt;;</span>
 </pre>
-<p class="inwebparagraph">tangles to something like this:
+<p class="commentary">tangles to something like this:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    if (x == y)</span>
@@ -309,52 +284,46 @@ matter added. This material is in <span class="extract"><span class="extract-syn
 <span class="plain-syntax">    ...</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph">so that any variables defined inside "Do something dramatic" have limited
+<p class="commentary">so that any variables defined inside "Do something dramatic" have limited
 scope, and so that multi-line macros are treated as a single statement by <span class="extract"><span class="extract-syntax">if</span></span>,
 <span class="extract"><span class="extract-syntax">while</span></span> and so on.
 </p>
 
-<p class="inwebparagraph">(The new-line before the opening brace is not for aesthetic purposes; we never
+<p class="commentary">(The new-line before the opening brace is not for aesthetic purposes; we never
 care much about the aesthetics of tangled C code, which is not for human eyes.
 It's in case of any problems arising with line comments.)
 </p>
 
-<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12.  </b>When the author of a web makes definitions with <span class="extract"><span class="extract-syntax">@d</span></span> or <span class="extract"><span class="extract-syntax">@e</span></span>, Inweb will
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>When the author of a web makes definitions with <span class="extract"><span class="extract-syntax">@d</span></span> or <span class="extract"><span class="extract-syntax">@e</span></span>, Inweb will
 need to tangle those into valid constant definitions in the language concerned.
 It can only do so if the language provides a notation for that.
 </p>
 
-<p class="inwebparagraph"><span class="extract"><span class="extract-syntax">Start Definition</span></span> begins; <span class="extract"><span class="extract-syntax">Prolong Definition</span></span>, if given, shows how to
+<p class="commentary"><span class="extract"><span class="extract-syntax">Start Definition</span></span> begins; <span class="extract"><span class="extract-syntax">Prolong Definition</span></span>, if given, shows how to
 continue a multiline definition (if they are allowed); and <span class="extract"><span class="extract-syntax">End Definition</span></span>,
 if given, places any ending notation. For example, Inform 6 defines:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Start Definition: </span><span class="string-syntax">"Constant %S =\s"</span>
 <span class="plain-syntax">    End Definition: </span><span class="string-syntax">";\n"</span>
 </pre>
-<p class="inwebparagraph">where <span class="extract"><span class="extract-syntax">%S</span></span> expands to the name of the term to be defined. Thus, we might tangle
+<p class="commentary">where <span class="extract"><span class="extract-syntax">%S</span></span> expands to the name of the term to be defined. Thus, we might tangle
 out to:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Constant TAXICAB = 1729;\n</span>
 </pre>
-<p class="inwebparagraph">Inweb ignores all definitions unless one of these three properties is given.
+<p class="commentary">Inweb ignores all definitions unless one of these three properties is given.
 </p>
 
-<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13.  </b>Inweb needs a notation for conditional compilation in order to handle some
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Inweb needs a notation for conditional compilation in order to handle some
 of its advanced features for tangling tagged material: the Inform project
 makes use of this to handle code dependent on the operating system in use.
 If the language supports it, the notation is in <span class="extract"><span class="extract-syntax">Start Ifdef</span></span> and <span class="extract"><span class="extract-syntax">End Ifdef</span></span>,
 and in <span class="extract"><span class="extract-syntax">Start Ifndef</span></span> and <span class="extract"><span class="extract-syntax">End Ifndef</span></span>. For example, Inform 6 has:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Start Ifdef: </span><span class="string-syntax">"#ifdef %S;\n"</span>
@@ -362,22 +331,22 @@ and in <span class="extract"><span class="extract-syntax">Start Ifndef</span></s
 <span class="plain-syntax">    Start Ifndef: </span><span class="string-syntax">"#ifndef %S;\n"</span>
 <span class="plain-syntax">    End Ifndef: </span><span class="string-syntax">"#endif; ! %S\n"</span>
 </pre>
-<p class="inwebparagraph">which is a subtly different notation from the C one. Again, <span class="extract"><span class="extract-syntax">%S</span></span> expands to
+<p class="commentary">which is a subtly different notation from the C one. Again, <span class="extract"><span class="extract-syntax">%S</span></span> expands to
 the name of the term we are conditionally compiling on.
 </p>
 
-<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14.  </b><span class="extract"><span class="extract-syntax">Supports Namespaces</span></span> must be either <span class="extract"><span class="extract-syntax">true</span></span> or <span class="extract"><span class="extract-syntax">false</span></span>, and is by default
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b><span class="extract"><span class="extract-syntax">Supports Namespaces</span></span> must be either <span class="extract"><span class="extract-syntax">true</span></span> or <span class="extract"><span class="extract-syntax">false</span></span>, and is by default
 <span class="extract"><span class="extract-syntax">false</span></span>. If set, then the language allows identifier names to include
 dividers with the notation <span class="extract"><span class="extract-syntax">::</span></span>; section headings can declare that all of
 their code belongs to a single namespace; and any functions detected in that
 code must have a name using that namespace.
 </p>
 
-<p class="inwebparagraph">This is a rudimentary way to provide namespaces to languages not otherwise
+<p class="commentary">This is a rudimentary way to provide namespaces to languages not otherwise
 having them: InC uses it to extend C.
 </p>
 
-<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b><span class="extract"><span class="extract-syntax">Suppress Disclaimer</span></span> is again <span class="extract"><span class="extract-syntax">true</span></span> or <span class="extract"><span class="extract-syntax">false</span></span>, and by default <span class="extract"><span class="extract-syntax">false</span></span>.
+<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b><span class="extract"><span class="extract-syntax">Suppress Disclaimer</span></span> is again <span class="extract"><span class="extract-syntax">true</span></span> or <span class="extract"><span class="extract-syntax">false</span></span>, and by default <span class="extract"><span class="extract-syntax">false</span></span>.
 The disclaimer is a comment placed into a tangle declaring that the file
 has been auto-generated by Inweb and shouldn't be edited. (The comment
 only appears in comment notation has been declared for the language: so
@@ -385,148 +354,130 @@ e.g., the Plain Text ILD doesn't need to be told to <span class="extract"><span 
 since it cannot tangle comments anyway.)
 </p>
 
-<p class="inwebparagraph"><a id="SP16"></a><b>&#167;16. Functions and types. </b>Inweb provides a few extra features for languages where there are meaningful
+<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Functions and types. </b>Inweb provides a few extra features for languages where there are meaningful
 functions and/or types: in particular, it cross-references declarations with
 their usages. If the language doesn't tell Inweb how to do this, then (with
 the exception of C-like languages, see below) functions and types will not
 be detected.
 </p>
 
-<p class="inwebparagraph">For example, in a hypothetical language we might write:
+<p class="commentary">For example, in a hypothetical language we might write:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Function Declaration Notation: </span><span class="function-syntax">/fun \.([A-Za-z_][A-Za-z0-9_]*) =.*/</span>
 </pre>
-<p class="inwebparagraph">and this will then match lines like
+<p class="commentary">and this will then match lines like
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    fun seekHigherAuthority = ...</span>
 </pre>
-<p class="inwebparagraph">and read them as function declarations. The function name matches the bracketed
+<p class="commentary">and read them as function declarations. The function name matches the bracketed
 part of the regular expression, and in this case is <span class="extract"><span class="extract-syntax">seekHigherAuthority</span></span>.
 Similarly for
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Type Declaration Notation: </span><span class="function-syntax">/struct \.([A-Za-z_][A-Za-z0-9_]*) =.*/</span>
 </pre>
-<p class="inwebparagraph"><a id="SP17"></a><b>&#167;17. Secret Features. </b>It is not quite true that everything a language can do is defined by the ILD.
+<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Secret Features. </b>It is not quite true that everything a language can do is defined by the ILD.
 Additional features are provided to C-like languages to unravel their functions
 and <span class="extract"><span class="extract-syntax">typedef</span></span>s. At present, these are hard-wired into Inweb, and it will take
 further thought to work out how to express them in LDFs.
 </p>
 
-<p class="inwebparagraph">The property <span class="extract"><span class="extract-syntax">C-Like</span></span>, by default <span class="extract"><span class="extract-syntax">false</span></span>, enables these features.
+<p class="commentary">The property <span class="extract"><span class="extract-syntax">C-Like</span></span>, by default <span class="extract"><span class="extract-syntax">false</span></span>, enables these features.
 </p>
 
-<p class="inwebparagraph">(In addition, a language whose name is <span class="extract"><span class="extract-syntax">InC</span></span> gets still more features, but
+<p class="commentary">(In addition, a language whose name is <span class="extract"><span class="extract-syntax">InC</span></span> gets still more features, but
 those are not so much a failing of ILDF as because Inweb is itself a sort of
 compiler for <span class="extract"><span class="extract-syntax">InC</span></span> &mdash; see elsewhere in this manual.)
 </p>
 
-<p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Keywords. </b>Syntax colouring is greatly helped by knowing that certain identifier names
+<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Keywords. </b>Syntax colouring is greatly helped by knowing that certain identifier names
 are special: for example, <span class="extract"><span class="extract-syntax">void</span></span> is special in C. These are often called
 "reserved words", in that they can't be used as variable or function names
 in the language in question. For C, then, we include the line:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">keyword</span><span class="plain-syntax"> </span><span class="string-syntax">void</span>
 </pre>
-<p class="inwebparagraph">Keywords can be declared in a number of categories, which are identified by
+<p class="commentary">Keywords can be declared in a number of categories, which are identified by
 colour name: the default is <span class="extract"><span class="extract-syntax">!reserved</span></span>, the colour for reserved words. But
 for example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">keyword</span><span class="plain-syntax"> </span><span class="string-syntax">isdigit</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="element-syntax">!function</span>
 </pre>
-<p class="inwebparagraph">makes a keyword of colour <span class="extract"><span class="extract-syntax">!function</span></span>.
+<p class="commentary">makes a keyword of colour <span class="extract"><span class="extract-syntax">!function</span></span>.
 </p>
 
-<p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Syntax colouring program. </b>That leads nicely into how syntax colouring is done.
+<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Syntax colouring program. </b>That leads nicely into how syntax colouring is done.
 </p>
 
-<p class="inwebparagraph">ILDs have no control over what colours or typefaces are used: that's all
+<p class="commentary">ILDs have no control over what colours or typefaces are used: that's all
 controllable, but is done by changing the weave pattern. So we can't colour
 a word "green": instead we colour it semantically, from the following
 palette of possibilities:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="element-syntax">!character</span><span class="plain-syntax">  </span><span class="element-syntax">!comment</span><span class="plain-syntax">     </span><span class="element-syntax">!constant</span><span class="plain-syntax">  </span><span class="element-syntax">!definition</span><span class="plain-syntax">  </span><span class="element-syntax">!element</span><span class="plain-syntax">  </span><span class="element-syntax">!extract</span>
 <span class="element-syntax">!function</span><span class="plain-syntax">   </span><span class="element-syntax">!identifier</span><span class="plain-syntax">  </span><span class="element-syntax">!plain</span><span class="plain-syntax">     </span><span class="element-syntax">!reserved</span><span class="plain-syntax">    </span><span class="element-syntax">!string</span>
 </pre>
-<p class="inwebparagraph">Each character has its own colour. At the start of the process, every
+<p class="commentary">Each character has its own colour. At the start of the process, every
 character is <span class="extract"><span class="extract-syntax">!plain</span></span>.
 </p>
 
-<p class="inwebparagraph"><a id="SP20"></a><b>&#167;20.  </b>At the first stage, Inweb uses the language's comment syntax to work out
+<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>At the first stage, Inweb uses the language's comment syntax to work out
 what part of the code is commentary, and what part is "live". Only the live
 part goes forward into stage two. All comment material is coloured <span class="extract"><span class="extract-syntax">!comment</span></span>.
 </p>
 
-<p class="inwebparagraph">At the second stage, Inweb uses the syntax for literals. Character literals
+<p class="commentary">At the second stage, Inweb uses the syntax for literals. Character literals
 are painted in <span class="extract"><span class="extract-syntax">!character</span></span>, string literals in <span class="extract"><span class="extract-syntax">!string</span></span>, identifiers in
 <span class="extract"><span class="extract-syntax">!identifier</span></span>, and numeric literals as <span class="extract"><span class="extract-syntax">!constant</span></span>.
 </p>
 
-<p class="inwebparagraph">At the third stage, Inweb runs the colouring program for the language (if
+<p class="commentary">At the third stage, Inweb runs the colouring program for the language (if
 one is provided): it has the opportunity to apply some polish. Note that this
 runs only on the live material; it cannot affect the commented-out matter.
 </p>
 
-<p class="inwebparagraph">When a colouring program begins running, then, everything is coloured in
+<p class="commentary">When a colouring program begins running, then, everything is coloured in
 one of the following: <span class="extract"><span class="extract-syntax">!character</span></span>, <span class="extract"><span class="extract-syntax">!string</span></span>, <span class="extract"><span class="extract-syntax">!identifier</span></span>, <span class="extract"><span class="extract-syntax">!constant</span></span>,
 and <span class="extract"><span class="extract-syntax">!plain</span></span>.
 </p>
 
-<p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b>A colouring program begins with <span class="extract"><span class="extract-syntax">colouring {</span></span> and ends with <span class="extract"><span class="extract-syntax">}</span></span>. The
+<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>A colouring program begins with <span class="extract"><span class="extract-syntax">colouring {</span></span> and ends with <span class="extract"><span class="extract-syntax">}</span></span>. The
 empty program is legal but does nothing:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">The material between the braces is called a "block". Each block runs on a
+<p class="commentary">The material between the braces is called a "block". Each block runs on a
 given stretch of contiguous text, called the "snippet". For the outermost
 block, that's a line of source code. Blocks normally contain one or more
 "rules":
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="string-syntax">marble</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!function</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">Rules take the form of "if X, then Y", and the <span class="extract"><span class="extract-syntax">=&gt;</span></span> divides the X from the Y.
+<p class="commentary">Rules take the form of "if X, then Y", and the <span class="extract"><span class="extract-syntax">=&gt;</span></span> divides the X from the Y.
 This one says that if the snippet consists of the word "marble", then colour
 it <span class="extract"><span class="extract-syntax">!function</span></span>. Of course this is not very useful, since it would only catch
 lines containing only that one word. So we really want to narrow in on smaller
 snippets. This, for example, applies its rule to each individual character
 in turn:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
@@ -535,37 +486,32 @@ in turn:
 <span class="plain-syntax">        </span><span class="reserved-syntax">}</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP22"></a><b>&#167;22.  </b>In the above examples, <span class="extract"><span class="extract-syntax">K</span></span> and <span class="extract"><span class="extract-syntax">marble</span></span> appeared without quotation marks,
+<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22.  </b>In the above examples, <span class="extract"><span class="extract-syntax">K</span></span> and <span class="extract"><span class="extract-syntax">marble</span></span> appeared without quotation marks,
 but they were only allowed to do that because (a) they were single words,
 </p>
 
-<ul class="items"><li>(b) <p class="inwebparagraph">those words had no other meaning, and (c) they didn't contain any
+<ul class="items"><li>(b) those words had no other meaning, and (c) they didn't contain any
 awkward characters. For any more complicated texts, always use quotation
 marks. For example, in
-</p>
-
-<p class="inwebparagraph"></p>
-
+</li></ul>
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="string-syntax">"=&gt;"</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!reserved</span>
 </pre>
-<p class="inwebparagraph">the <span class="extract"><span class="extract-syntax">=&gt;</span></span> in quotes is just text, whereas the one outside quotes is being
+<p class="commentary">the <span class="extract"><span class="extract-syntax">=&gt;</span></span> in quotes is just text, whereas the one outside quotes is being
 used to divide a rule.
 </p>
 
-<p class="inwebparagraph">If you need a literal double quote inside the double-quotes, use <span class="extract"><span class="extract-syntax">\"</span></span>; and
+<p class="commentary">If you need a literal double quote inside the double-quotes, use <span class="extract"><span class="extract-syntax">\"</span></span>; and
 use <span class="extract"><span class="extract-syntax">\\</span></span> for a literal backslash. For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="string-syntax">"\\\""</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!reserved</span>
 </pre>
-<p class="inwebparagraph">actually matches the text <span class="extract"><span class="extract-syntax">\"</span></span>.
+<p class="commentary">actually matches the text <span class="extract"><span class="extract-syntax">\"</span></span>.
 </p>
 
-<p class="inwebparagraph"><a id="SP23"></a><b>&#167;23. The six splits. </b><span class="extract"><span class="extract-syntax">characters</span></span> is an example of a "split", which splits up the original snippet
+<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. The six splits. </b><span class="extract"><span class="extract-syntax">characters</span></span> is an example of a "split", which splits up the original snippet
 of text &mdash; say, the line <span class="extract"><span class="extract-syntax">let K = 2</span></span> &mdash; into smaller, non-overlapping snippets
 &mdash; in this case, nine of them: <span class="extract"><span class="extract-syntax">l</span></span>, <span class="extract"><span class="extract-syntax">e</span></span>, <span class="extract"><span class="extract-syntax">t</span></span>, <span class="extract"><span class="extract-syntax"> </span></span>, <span class="extract"><span class="extract-syntax">K</span></span>, <span class="extract"><span class="extract-syntax"> </span></span>, <span class="extract"><span class="extract-syntax">=</span></span>, <span class="extract"><span class="extract-syntax"> </span></span>, and <span class="extract"><span class="extract-syntax">2</span></span>.
 Every split is followed by a block of rules, which is applied to each of the
@@ -574,21 +520,19 @@ R1, R2, ..., then R1 is applied to each piece first, then R2 to each piece,
 and so on.
 </p>
 
-<p class="inwebparagraph">There are several different ways to split, all of them written in the
+<p class="commentary">There are several different ways to split, all of them written in the
 plural, to emphasize that they work on what are usually multiple things.
 Rules, on the other hand, are written in the singular. Splits are not allowed
 to be followed by <span class="extract"><span class="extract-syntax">=&gt;</span></span>: they always begin a block.
 </p>
 
-<p class="inwebparagraph">1. <span class="extract"><span class="extract-syntax">characters</span></span> splits the snippet into each of its characters.
+<p class="commentary">1. <span class="extract"><span class="extract-syntax">characters</span></span> splits the snippet into each of its characters.
 </p>
 
-<p class="inwebparagraph">2. <span class="extract"><span class="extract-syntax">characters in T</span></span> splits the snippet into each of its characters which
+<p class="commentary">2. <span class="extract"><span class="extract-syntax">characters in T</span></span> splits the snippet into each of its characters which
 lie inside the text <span class="extract"><span class="extract-syntax">T</span></span>. For example, here is a not very useful ILD for
 plain text in which all vowels are in red:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"VowelsExample"</span>
@@ -599,10 +543,8 @@ plain text in which all vowels are in red:
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 <span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">Given the text:
+<p class="commentary">Given the text:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">A noir, E blanc, I rouge, U vert, O bleu : voyelles,</span>
@@ -610,10 +552,8 @@ plain text in which all vowels are in red:
 <span class="plain-syntax">A, noir corset velu des mouches éclatantes</span>
 <span class="plain-syntax">Qui bombinent autour des puanteurs cruelles,</span>
 </pre>
-<p class="inwebparagraph">this produces:
+<p class="commentary">this produces:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="function-syntax">A</span><span class="plain-syntax"> n</span><span class="function-syntax">oi</span><span class="plain-syntax">r, </span><span class="function-syntax">E</span><span class="plain-syntax"> bl</span><span class="function-syntax">a</span><span class="plain-syntax">nc, </span><span class="function-syntax">I</span><span class="plain-syntax"> r</span><span class="function-syntax">ou</span><span class="plain-syntax">g</span><span class="function-syntax">e</span><span class="plain-syntax">, </span><span class="function-syntax">U</span><span class="plain-syntax"> v</span><span class="function-syntax">e</span><span class="plain-syntax">rt, </span><span class="function-syntax">O</span><span class="plain-syntax"> bl</span><span class="function-syntax">eu</span><span class="plain-syntax"> : v</span><span class="function-syntax">o</span><span class="plain-syntax">y</span><span class="function-syntax">e</span><span class="plain-syntax">ll</span><span class="function-syntax">e</span><span class="plain-syntax">s,</span>
@@ -621,11 +561,9 @@ plain text in which all vowels are in red:
 <span class="function-syntax">A</span><span class="plain-syntax">, n</span><span class="function-syntax">oi</span><span class="plain-syntax">r c</span><span class="function-syntax">o</span><span class="plain-syntax">rs</span><span class="function-syntax">e</span><span class="plain-syntax">t v</span><span class="function-syntax">e</span><span class="plain-syntax">l</span><span class="function-syntax">u</span><span class="plain-syntax"> d</span><span class="function-syntax">e</span><span class="plain-syntax">s m</span><span class="function-syntax">ou</span><span class="plain-syntax">ch</span><span class="function-syntax">e</span><span class="plain-syntax">s écl</span><span class="function-syntax">a</span><span class="plain-syntax">t</span><span class="function-syntax">a</span><span class="plain-syntax">nt</span><span class="function-syntax">e</span><span class="plain-syntax">s</span>
 <span class="plain-syntax">Q</span><span class="function-syntax">ui</span><span class="plain-syntax"> b</span><span class="function-syntax">o</span><span class="plain-syntax">mb</span><span class="function-syntax">i</span><span class="plain-syntax">n</span><span class="function-syntax">e</span><span class="plain-syntax">nt </span><span class="function-syntax">au</span><span class="plain-syntax">t</span><span class="function-syntax">ou</span><span class="plain-syntax">r d</span><span class="function-syntax">e</span><span class="plain-syntax">s p</span><span class="function-syntax">ua</span><span class="plain-syntax">nt</span><span class="function-syntax">eu</span><span class="plain-syntax">rs cr</span><span class="function-syntax">ue</span><span class="plain-syntax">ll</span><span class="function-syntax">e</span><span class="plain-syntax">s,</span>
 </pre>
-<p class="inwebparagraph">3. The split <span class="extract"><span class="extract-syntax">instances of X</span></span> narrows in on each usage of the text <span class="extract"><span class="extract-syntax">X</span></span> inside
+<p class="commentary">3. The split <span class="extract"><span class="extract-syntax">instances of X</span></span> narrows in on each usage of the text <span class="extract"><span class="extract-syntax">X</span></span> inside
 the snippet. For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"LineageExample"</span>
@@ -636,34 +574,28 @@ the snippet. For example,
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 <span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">acts on the text:
+<p class="commentary">acts on the text:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Jacob first appears in the Book of Genesis, the son of Isaac and Rebecca, the</span>
 <span class="plain-syntax">grandson of Abraham, Sarah and Bethuel, the nephew of Ishmael.</span>
 </pre>
-<p class="inwebparagraph">to produce:
+<p class="commentary">to produce:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Jacob first appears in the Book of Genesis, the </span><span class="function-syntax">son</span><span class="plain-syntax"> of Isaac and Rebecca, the</span>
 <span class="plain-syntax">grand</span><span class="function-syntax">son</span><span class="plain-syntax"> of Abraham, Sarah and Bethuel, the nephew of Ishmael.</span>
 </pre>
-<p class="inwebparagraph">Note that it never runs in an overlapping way: the snippet <span class="extract"><span class="extract-syntax">===</span></span> would be
+<p class="commentary">Note that it never runs in an overlapping way: the snippet <span class="extract"><span class="extract-syntax">===</span></span> would be
 considered as having only one instance of <span class="extract"><span class="extract-syntax">==</span></span> (the first two characters),
 while <span class="extract"><span class="extract-syntax">====</span></span> would have two.
 </p>
 
-<p class="inwebparagraph">4. The split <span class="extract"><span class="extract-syntax">runs of C</span></span>, where <span class="extract"><span class="extract-syntax">C</span></span> describes a colour, splits the snippet
+<p class="commentary">4. The split <span class="extract"><span class="extract-syntax">runs of C</span></span>, where <span class="extract"><span class="extract-syntax">C</span></span> describes a colour, splits the snippet
 into non-overlapping contiguous pieces which have that colour. For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"RunningExample"</span>
@@ -677,32 +609,26 @@ into non-overlapping contiguous pieces which have that colour. For example:
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 <span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">acts on:
+<p class="commentary">acts on:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Napoleon Bonaparte (1769-1821) took 167 scientists to Egypt in 1798,</span>
 <span class="plain-syntax">who published their so-called Memoirs over the period 1798-1801.</span>
 </pre>
-<p class="inwebparagraph">to produce:
+<p class="commentary">to produce:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Napoleon Bonaparte (</span><span class="function-syntax">1769-1821</span><span class="plain-syntax">) took </span><span class="function-syntax">167</span><span class="plain-syntax"> scientists to Egypt in </span><span class="function-syntax">1798</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">who published their so-called Memoirs over the period </span><span class="function-syntax">1798-1801</span><span class="plain-syntax">.</span>
 </pre>
-<p class="inwebparagraph">Here the hyphens in number ranges have been coloured, but not the hyphen
+<p class="commentary">Here the hyphens in number ranges have been coloured, but not the hyphen
 in "so-called".
 </p>
 
-<p class="inwebparagraph">A more computer-science sort of example would be:
+<p class="commentary">A more computer-science sort of example would be:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"StdioExample"</span>
@@ -713,38 +639,32 @@ in "so-called".
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 <span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">which acts on:
+<p class="commentary">which acts on:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">if (x == 1) printf("Hello!");</span>
 </pre>
-<p class="inwebparagraph">to produce:
+<p class="commentary">to produce:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="identifier-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="function-syntax">printf</span><span class="plain-syntax">("</span><span class="identifier-syntax">Hello</span><span class="plain-syntax">!");</span>
 </pre>
-<p class="inwebparagraph">The split divides the line up into three runs, and the inner block runs three
+<p class="commentary">The split divides the line up into three runs, and the inner block runs three
 times: on <span class="extract"><span class="extract-syntax">if</span></span>, then <span class="extract"><span class="extract-syntax">x</span></span>, then <span class="extract"><span class="extract-syntax">printf</span></span>. Only the third time has any effect.
 </p>
 
-<p class="inwebparagraph">As a special form, <span class="extract"><span class="extract-syntax">runs of unquoted</span></span> means "runs of characters not painted
+<p class="commentary">As a special form, <span class="extract"><span class="extract-syntax">runs of unquoted</span></span> means "runs of characters not painted
 either with <span class="extract"><span class="extract-syntax">!string</span></span> or <span class="extract"><span class="extract-syntax">!character</span></span>". This is special because <span class="extract"><span class="extract-syntax">unquoted</span></span> is
 not a colour.
 </p>
 
-<p class="inwebparagraph">5. The split <span class="extract"><span class="extract-syntax">matches of /E/</span></span>, where <span class="extract"><span class="extract-syntax">/E/</span></span> is a regular expression (see below),
+<p class="commentary">5. The split <span class="extract"><span class="extract-syntax">matches of /E/</span></span>, where <span class="extract"><span class="extract-syntax">/E/</span></span> is a regular expression (see below),
 splits the snippet up into non-overlapping pieces which match it: possibly
 none at all, of course, in which case the block of rules is never used.
 This is easier to demonstrate than explain:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"AssemblageExample"</span>
@@ -754,10 +674,8 @@ This is easier to demonstrate than explain:
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 <span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">which acts on:
+<p class="commentary">which acts on:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">        JSR .initialise</span>
@@ -766,10 +684,8 @@ This is easier to demonstrate than explain:
 <span class="plain-syntax">    .initialise</span>
 <span class="plain-syntax">        TAX</span>
 </pre>
-<p class="inwebparagraph">to produce:
+<p class="commentary">to produce:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">        </span><span class="identifier-syntax">JSR</span><span class="plain-syntax"> </span><span class="function-syntax">.initialise</span>
@@ -778,13 +694,11 @@ This is easier to demonstrate than explain:
 <span class="plain-syntax">    </span><span class="function-syntax">.initialise</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TAX</span>
 </pre>
-<p class="inwebparagraph">6. Lastly, the split <span class="extract"><span class="extract-syntax">brackets in /E/</span></span> matches the snippet against the
+<p class="commentary">6. Lastly, the split <span class="extract"><span class="extract-syntax">brackets in /E/</span></span> matches the snippet against the
 regular expression <span class="extract"><span class="extract-syntax">E</span></span>, and then runs the rules on each bracketed
 subexpression in turn. (If there is no match, or there are no bracketed
 terms in <span class="extract"><span class="extract-syntax">E</span></span>, nothing happens.)
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"EquationsExample"</span>
@@ -795,10 +709,8 @@ terms in <span class="extract"><span class="extract-syntax">E</span></span>, not
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 <span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">acts on:
+<p class="commentary">acts on:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    A = 2716</span>
@@ -806,10 +718,8 @@ terms in <span class="extract"><span class="extract-syntax">E</span></span>, not
 <span class="plain-syntax">    C =715 + B</span>
 <span class="plain-syntax">    D &lt; 14</span>
 </pre>
-<p class="inwebparagraph">to produce:
+<p class="commentary">to produce:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">A</span><span class="plain-syntax"> = </span><span class="function-syntax">2716</span>
@@ -817,41 +727,35 @@ terms in <span class="extract"><span class="extract-syntax">E</span></span>, not
 <span class="plain-syntax">    </span><span class="function-syntax">C</span><span class="plain-syntax"> =</span><span class="function-syntax">715</span><span class="plain-syntax"> + B</span>
 <span class="plain-syntax">    D &lt; 14</span>
 </pre>
-<p class="inwebparagraph">What happens here is that the expression has two bracketed terms, one for
+<p class="commentary">What happens here is that the expression has two bracketed terms, one for
 the letter, one for the number; the rule is run first on the letter, then
 on the number, and both are turned to <span class="extract"><span class="extract-syntax">!function</span></span>.
 </p>
 
-<p class="inwebparagraph"><a id="SP24"></a><b>&#167;24. The seven ways rules can apply. </b>Rules are the lines with a <span class="extract"><span class="extract-syntax">=&gt;</span></span> in. As noted, they take the form "if X, then
+<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24. The seven ways rules can apply. </b>Rules are the lines with a <span class="extract"><span class="extract-syntax">=&gt;</span></span> in. As noted, they take the form "if X, then
 Y". The following are the possibilities for X, the condition.
 </p>
 
-<p class="inwebparagraph">1. The easiest thing is to give nothing at all, and then the rule always
+<p class="commentary">1. The easiest thing is to give nothing at all, and then the rule always
 applies. For example, this somewhat nihilistic program gets rid of colouring
 entirely:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!plain</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">2. If X is a piece of literal text, the rule applies when the snippet is
+<p class="commentary">2. If X is a piece of literal text, the rule applies when the snippet is
 exactly that text. For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="string-syntax">printf</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!function</span>
 </pre>
-<p class="inwebparagraph">3. X can require the whole snippet to be of a particular colour, by writing
+<p class="commentary">3. X can require the whole snippet to be of a particular colour, by writing
 <span class="extract"><span class="extract-syntax">coloured C</span></span>. For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
@@ -860,74 +764,64 @@ exactly that text. For example,
 <span class="plain-syntax">        </span><span class="reserved-syntax">}</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">removes the syntax colouring on character literals.
+<p class="commentary">removes the syntax colouring on character literals.
 </p>
 
-<p class="inwebparagraph">4. X can require the snippet to be one of the language's known keywords, as
+<p class="commentary">4. X can require the snippet to be one of the language's known keywords, as
 declared earlier in the ILD by a <span class="extract"><span class="extract-syntax">keyword</span></span> command. The syntax here is
 <span class="extract"><span class="extract-syntax">keyword of C</span></span>, where <span class="extract"><span class="extract-syntax">C</span></span> is a colour. For example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">keyword</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span>
 </pre>
-<p class="inwebparagraph">says: if the snippet is a keyword declared as being of colour <span class="extract"><span class="extract-syntax">!element</span></span>,
+<p class="commentary">says: if the snippet is a keyword declared as being of colour <span class="extract"><span class="extract-syntax">!element</span></span>,
 then actually colour it that way. (This is much faster than making many
 comparison rules in a row, one for each keyword in the language; Inweb has
 put all of the registered keywords into a hash table for rapid lookup.)
 </p>
 
-<p class="inwebparagraph">5. X can look at a little context before or after the snippet, testing it
+<p class="commentary">5. X can look at a little context before or after the snippet, testing it
 with one of the following: <span class="extract"><span class="extract-syntax">prefix P</span></span>, <span class="extract"><span class="extract-syntax">spaced prefix P</span></span>,
 <span class="extract"><span class="extract-syntax">optionally spaced prefix P</span></span>. These qualifiers have to do with whether white
 space must appear after <span class="extract"><span class="extract-syntax">P</span></span> and before the snippet. For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">runs</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="element-syntax">!identifier</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">prefix</span><span class="plain-syntax"> </span><span class="reserved-syntax">optionally</span><span class="plain-syntax"> </span><span class="reserved-syntax">spaced</span><span class="plain-syntax"> -&gt; </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">means that any identifier occurring after a <span class="extract"><span class="extract-syntax">-&gt;</span></span> token will be coloured
+<p class="commentary">means that any identifier occurring after a <span class="extract"><span class="extract-syntax">-&gt;</span></span> token will be coloured
 as <span class="extract"><span class="extract-syntax">!element</span></span>. Similarly for <span class="extract"><span class="extract-syntax">suffix</span></span>.
 </p>
 
-<p class="inwebparagraph">6. X can test the snippet against a regular expression, with <span class="extract"><span class="extract-syntax">matching /E/</span></span>.
+<p class="commentary">6. X can test the snippet against a regular expression, with <span class="extract"><span class="extract-syntax">matching /E/</span></span>.
 For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">runs</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="element-syntax">!identifier</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">matching</span><span class="plain-syntax"> </span><span class="function-syntax">/.*x.*/</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">...turns any identifier containing a lower-case <span class="extract"><span class="extract-syntax">x</span></span> into <span class="extract"><span class="extract-syntax">!element</span></span> colour.
+<p class="commentary">...turns any identifier containing a lower-case <span class="extract"><span class="extract-syntax">x</span></span> into <span class="extract"><span class="extract-syntax">!element</span></span> colour.
 Note that <span class="extract"><span class="extract-syntax">matching /x/</span></span> would not have worked, because our regular expression
 is required to match the entire snippet, not just somewhere inside.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">characters</span><span class="plain-syntax"> </span><span class="reserved-syntax">in</span><span class="plain-syntax"> </span><span class="string-syntax">"0123456789"</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">matching</span><span class="plain-syntax"> </span><span class="function-syntax">/\d\d\d\d/</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">...colours all four-digit numbers, but no others.
+<p class="commentary">...colours all four-digit numbers, but no others.
 </p>
 
-<p class="inwebparagraph">7. Whenever a split takes place, Inweb keeps count of how many pieces there are,
+<p class="commentary">7. Whenever a split takes place, Inweb keeps count of how many pieces there are,
 and different rules can apply to differently numbered pieces. The notation
 is <span class="extract"><span class="extract-syntax">number N</span></span>, where <span class="extract"><span class="extract-syntax">N</span></span> is the number, counting from 1. For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"ThirdExample"</span>
@@ -938,10 +832,8 @@ is <span class="extract"><span class="extract-syntax">number N</span></span>, wh
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 <span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">acts on:
+<p class="commentary">acts on:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">With how sad steps, O Moon, thou climb'st the skies!</span>
@@ -959,10 +851,8 @@ is <span class="extract"><span class="extract-syntax">number N</span></span>, wh
 <span class="plain-syntax">Those lovers scorn whom that love doth possess?</span>
 <span class="plain-syntax">Do they call virtue there ungratefulness?</span>
 </pre>
-<p class="inwebparagraph">to produce:
+<p class="commentary">to produce:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">With how </span><span class="function-syntax">sad</span><span class="plain-syntax"> steps, O Moon, thou climb'st the skies!</span>
@@ -980,15 +870,13 @@ is <span class="extract"><span class="extract-syntax">number N</span></span>, wh
 <span class="plain-syntax">Those lovers </span><span class="function-syntax">scorn</span><span class="plain-syntax"> whom that love doth possess?</span>
 <span class="plain-syntax">Do they </span><span class="function-syntax">call</span><span class="plain-syntax"> virtue there ungratefulness?</span>
 </pre>
-<p class="inwebparagraph">We can also cycle through a set of possibilities with <span class="extract"><span class="extract-syntax">number N of M</span></span>,
+<p class="commentary">We can also cycle through a set of possibilities with <span class="extract"><span class="extract-syntax">number N of M</span></span>,
 where this time the count runs 1, 2, ..., <span class="extract"><span class="extract-syntax">M</span></span>, 1, 2, ..., <span class="extract"><span class="extract-syntax">M</span></span>, 1, ... and
 so on. Thus <span class="extract"><span class="extract-syntax">number 1 of 3</span></span> would work on the 1st, 4th, 7th, ... times;
 <span class="extract"><span class="extract-syntax">number 2 of 3</span></span> on the 2nd, 5th, 8th, ...; <span class="extract"><span class="extract-syntax">number 3 of 3</span></span> on the 3rd, 6th,
 9th, and so on. This, for example, paints the output from the painting
 algorithm in Inweb:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"PainterOutput"</span>
@@ -1011,11 +899,9 @@ algorithm in Inweb:
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 <span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">since alternate lines are plain, for the original text, and then coloured,
+<p class="commentary">since alternate lines are plain, for the original text, and then coloured,
 to highlight the colours given to the characters in the original. Thus:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    int x = 55; /* a magic number */</span>
@@ -1023,10 +909,8 @@ to highlight the colours given to the characters in the original. Thus:
 <span class="plain-syntax">    Imaginary::function(x, beta);</span>
 <span class="plain-syntax">    fffffffffffffffffffpippiiiipp</span>
 </pre>
-<p class="inwebparagraph">becomes
+<p class="commentary">becomes
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    int x = 55; /* a magic number */</span>
@@ -1034,26 +918,22 @@ to highlight the colours given to the characters in the original. Thus:
 <span class="plain-syntax">    Imaginary::function(x, beta);</span>
 <span class="plain-syntax">    </span><span class="function-syntax">fffffffffffffffffff</span><span class="plain-syntax">p</span><span class="identifier-syntax">i</span><span class="plain-syntax">pp</span><span class="identifier-syntax">iiii</span><span class="plain-syntax">pp</span>
 </pre>
-<p class="inwebparagraph"><a id="SP25"></a><b>&#167;25.  </b>Any condition can be reversed by preceding it with <span class="extract"><span class="extract-syntax">not</span></span>. For example,
+<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>Any condition can be reversed by preceding it with <span class="extract"><span class="extract-syntax">not</span></span>. For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">not</span><span class="plain-syntax"> </span><span class="reserved-syntax">coloured</span><span class="plain-syntax"> </span><span class="element-syntax">!string</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!plain</span>
 </pre>
-<p class="inwebparagraph"><a id="SP26"></a><b>&#167;26. The three ways rules can take effect. </b>Now let's look at the conclusion Y of a rule. Here the possibilities are
+<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26. The three ways rules can take effect. </b>Now let's look at the conclusion Y of a rule. Here the possibilities are
 simpler:
 </p>
 
-<p class="inwebparagraph">1. If Y is the name of a colour, the snippet is painted in that colour.
+<p class="commentary">1. If Y is the name of a colour, the snippet is painted in that colour.
 </p>
 
-<p class="inwebparagraph">2. If Y is an open brace <span class="extract"><span class="extract-syntax">{</span></span>, then it introduces a block of rules which are
+<p class="commentary">2. If Y is an open brace <span class="extract"><span class="extract-syntax">{</span></span>, then it introduces a block of rules which are
 applied to the snippet only if this rule has matched. For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">keyword</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
@@ -1061,20 +941,18 @@ applied to the snippet only if this rule has matched. For example,
 <span class="plain-syntax">        </span><span class="reserved-syntax">optionally</span><span class="plain-syntax"> </span><span class="reserved-syntax">spaced</span><span class="plain-syntax"> </span><span class="reserved-syntax">prefix</span><span class="plain-syntax"> -&gt; </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">means that if the original condition <span class="extract"><span class="extract-syntax">keyword !element</span></span> applies, then two
+<p class="commentary">means that if the original condition <span class="extract"><span class="extract-syntax">keyword !element</span></span> applies, then two
 further rules are applied.
 </p>
 
-<p class="inwebparagraph">By default, the colour is applied to the snippet. For prefix or suffix
+<p class="commentary">By default, the colour is applied to the snippet. For prefix or suffix
 rules (see above), it can also be applied to the prefix or suffix: use
 the notation <span class="extract"><span class="extract-syntax">=&gt; C on both</span></span> or <span class="extract"><span class="extract-syntax">=&gt; C on suffix</span></span> or <span class="extract"><span class="extract-syntax">=&gt; C on prefix</span></span>.
 </p>
 
-<p class="inwebparagraph">3. If Y is the word <span class="extract"><span class="extract-syntax">debug</span></span>, then the current snippet and its colouring
+<p class="commentary">3. If Y is the word <span class="extract"><span class="extract-syntax">debug</span></span>, then the current snippet and its colouring
 are printed out on the command line. Thus:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
@@ -1083,15 +961,13 @@ are printed out on the command line. Thus:
 <span class="plain-syntax">        </span><span class="reserved-syntax">}</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 </pre>
-<p class="inwebparagraph">The rule <span class="extract"><span class="extract-syntax">=&gt; debug</span></span> is unconditional, and will print whenever it's reached.
+<p class="commentary">The rule <span class="extract"><span class="extract-syntax">=&gt; debug</span></span> is unconditional, and will print whenever it's reached.
 </p>
 
-<p class="inwebparagraph"><a id="SP27"></a><b>&#167;27. The worm, Ouroboros. </b>Inweb Language Definition Format is a kind of language in itself, and in
+<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27. The worm, Ouroboros. </b>Inweb Language Definition Format is a kind of language in itself, and in
 fact Inweb is supplied with an ILD for ILDF itself, which Inweb used to
 syntax-colour the examples above. Here it is, as syntax-coloured by itself:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"ILDF"</span>
@@ -1102,7 +978,7 @@ syntax-colour the examples above. Here it is, as syntax-coloured by itself:
 <span class="plain-syntax">String Literal: </span><span class="string-syntax">"\""</span>
 <span class="plain-syntax">String Literal Escape: </span><span class="string-syntax">"\\"</span>
 
-<span class="comment">Regular expressions are handled here as if character literals</span>
+<span class="comment-syntax">Regular expressions are handled here as if character literals</span>
 <span class="plain-syntax">Character Literal: </span><span class="string-syntax">"/"</span>
 <span class="plain-syntax">Character Literal Escape: </span><span class="string-syntax">"\\"</span>
 
@@ -1147,15 +1023,15 @@ syntax-colour the examples above. Here it is, as syntax-coloured by itself:
 <span class="plain-syntax">        </span><span class="reserved-syntax">}</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">characters</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
-<span class="plain-syntax">        </span><span class="comment">Anything left of these colours will be unquoted strings, so...</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">Anything left of these colours will be unquoted strings, so...</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">coloured</span><span class="plain-syntax"> </span><span class="element-syntax">!constant</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!string</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">coloured</span><span class="plain-syntax"> </span><span class="element-syntax">!identifier</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!string</span>
-<span class="plain-syntax">        </span><span class="comment">Regular expressions, now coloured !character, are more like functions</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">Regular expressions, now coloured !character, are more like functions</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">coloured</span><span class="plain-syntax"> </span><span class="element-syntax">!character</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!function</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
-<span class="plain-syntax">    </span><span class="comment">Detect Property: Value lines, not being fooled by a colon inside quotes</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">Detect Property: Value lines, not being fooled by a colon inside quotes</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">brackets</span><span class="plain-syntax"> </span><span class="reserved-syntax">in</span><span class="plain-syntax"> </span><span class="function-syntax">/\s*([A-Z][^"]*):.*/</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
-<span class="plain-syntax">        </span><span class="comment">Uncolour only the bracketed part, i.e., the Property part</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">Uncolour only the bracketed part, i.e., the Property part</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!plain</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 <span class="reserved-syntax">}</span>

@@ -46,63 +46,53 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="4-tf.html#SP1">&#167;1. Text files</a></li><li><a href="4-tf.html#SP2">&#167;2. Text file positions</a></li><li><a href="4-tf.html#SP5">&#167;5. Text file scanner</a></li><li><a href="4-tf.html#SP8">&#167;8. Reading UTF-8 files</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Text files. </b>Foundation was written mainly to support command-line tools which, of their
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Text files. </b>Foundation was written mainly to support command-line tools which, of their
 nature, deal with a lot of text files: source code of programs, configuration
 files, HTML, XML and so on. The main aim of this section is to provide a
 standard way to read in and iterate through lines of a text file.
 </p>
 
-<p class="inwebparagraph">First, though, here is a perhaps clumsy but effective way to test if a
+<p class="commentary">First, though, here is a perhaps clumsy but effective way to test if a
 file actually exists on disc at a given filename:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::exists</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>TextFiles::exists</b>:<br>Web Structure - <a href="8-ws.html#SP7_2_2_4">&#167;7.2.2.4</a>, <a href="8-ws.html#SP8">&#167;8</a>&lt;br&gt;Build Files - <a href="8-bf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::exists</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <b>TextFiles::exists</b>:<br>Web Structure - <a href="8-ws.html#SP7_2_2_4">&#167;7.2.2.4</a>, <a href="8-ws.html#SP8">&#167;8</a>&lt;br&gt;Build Files - <a href="8-bf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HANDLE</span><span class="plain-syntax"> = </span><a href="3-fln.html#SP10" class="function-link"><span class="function-syntax">Filenames::fopen</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="string-syntax">"rb"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">HANDLE</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">fclose</span><span class="plain-syntax">(</span><span class="identifier-syntax">HANDLE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Text file positions. </b>Here's how we record a position in a text file:
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Text file positions. </b>Here's how we record a position in a text file:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text_file_filename</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">handle_when_open</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">unicode_file_buffer</span><span class="plain-syntax"> </span><span class="identifier-syntax">ufb</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">line_count</span><span class="plain-syntax">; </span><span class="comment"> counting from 1</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">line_count</span><span class="plain-syntax">; </span><span class="comment-syntax"> counting from 1</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">line_position</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">skip_terminator</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">actively_scanning</span><span class="plain-syntax">; </span><span class="comment"> whether we are still interested in the rest of the file</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">actively_scanning</span><span class="plain-syntax">; </span><span class="comment-syntax"> whether we are still interested in the rest of the file</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax">;</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>The structure text_file_position is accessed in 3/em, 3/cla, 8/ws and here.</li></ul>
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>For access:
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>For access:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::get_line_count</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>TextFiles::get_line_count</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::get_line_count</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <b>TextFiles::get_line_count</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tfp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">line_count</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>And this is for a real nowhere man:
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>And this is for a real nowhere man:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::nowhere</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>TextFiles::nowhere</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::nowhere</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <b>TextFiles::nowhere</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">text_file_filename</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">line_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -112,42 +102,34 @@ file actually exists on disc at a given filename:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::at</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>TextFiles::at</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">line</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::at</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <b>TextFiles::at</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">line</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">tfp</span><span class="plain-syntax"> = </span><a href="4-tf.html#SP4" class="function-link"><span class="function-syntax">TextFiles::nowhere</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">text_file_filename</span><span class="plain-syntax"> = </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">line_count</span><span class="plain-syntax"> = </span><span class="identifier-syntax">line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Text file scanner. </b>We read lines in, delimited by any of the standard line-ending characters,
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Text file scanner. </b>We read lines in, delimited by any of the standard line-ending characters,
 and send them one at a time to a function called <span class="extract"><span class="extract-syntax">iterator</span></span>. Throughout,
 we preserve a pointer called <span class="extract"><span class="extract-syntax">state</span></span> to some object being used by the
 client.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::read</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>TextFiles::read</b>:<br>Command Line Arguments - <a href="3-cla.html#SP11">&#167;11</a>&lt;br&gt;HTML - <a href="5-htm.html#SP10">&#167;10</a>&lt;br&gt;Web Structure - <a href="8-ws.html#SP6">&#167;6</a>&lt;br&gt;Build Files - <a href="8-bf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">escape_oddities</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">message</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">serious</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::read</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <b>TextFiles::read</b>:<br>Command Line Arguments - <a href="3-cla.html#SP11">&#167;11</a>&lt;br&gt;HTML - <a href="5-htm.html#SP10">&#167;10</a>&lt;br&gt;Web Structure - <a href="8-ws.html#SP6">&#167;6</a>&lt;br&gt;Build Files - <a href="8-bf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">escape_oddities</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">message</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">serious</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (</span><span class="identifier-syntax">iterator</span><span class="plain-syntax">)(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *),</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">start_at</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">ufb</span><span class="plain-syntax"> = </span><a href="4-tf.html#SP8" class="function-link"><span class="function-syntax">TextFiles::create_ufb</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Open the text file</span> <span class="named-paragraph-number">5.1</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Set the initial position, seeking it in the file if need be</span> <span class="named-paragraph-number">5.2</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Read in lines and send them one by one to the iterator</span> <span class="named-paragraph-number">5.3</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="4-tf.html#SP5_1" class="named-paragraph-link"><span class="named-paragraph">Open the text file</span><span class="named-paragraph-number">5.1</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="4-tf.html#SP5_2" class="named-paragraph-link"><span class="named-paragraph">Set the initial position, seeking it in the file if need be</span><span class="named-paragraph-number">5.2</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="4-tf.html#SP5_3" class="named-paragraph-link"><span class="named-paragraph">Read in lines and send them one by one to the iterator</span><span class="named-paragraph-number">5.3</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">fclose</span><span class="plain-syntax">(</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">handle_when_open</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">line_count</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP5_1"></a><b>&#167;5.1.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Open the text file</span> <span class="named-paragraph-number">5.1</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Open the text file</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">handle_when_open</span><span class="plain-syntax"> = </span><a href="3-fln.html#SP10" class="function-link"><span class="function-syntax">Filenames::fopen</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="string-syntax">"rb"</span><span class="plain-syntax">);</span>
@@ -157,23 +139,15 @@ client.
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { </span><a href="3-em.html#SP7" class="function-link"><span class="function-syntax">Errors::with_file</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">message</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="4-tf.html#SP5">&#167;5</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP5_2"></a><b>&#167;5.2.  </b>The ANSI definition of <span class="extract"><span class="extract-syntax">ftell</span></span> and <span class="extract"><span class="extract-syntax">fseek</span></span> says that, with text files, the
+<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b>The ANSI definition of <span class="extract"><span class="extract-syntax">ftell</span></span> and <span class="extract"><span class="extract-syntax">fseek</span></span> says that, with text files, the
 only definite position value is 0 &mdash; meaning the beginning of the file &mdash; and
 this is what we initialise <span class="extract"><span class="extract-syntax">line_position</span></span> to. We must otherwise only write
 values returned by <span class="extract"><span class="extract-syntax">ftell</span></span> into this field.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Set the initial position, seeking it in the file if need be</span> <span class="named-paragraph-number">5.2</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Set the initial position, seeking it in the file if need be</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">start_at</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
@@ -191,21 +165,13 @@ values returned by <span class="extract"><span class="extract-syntax">ftell</spa
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">actively_scanning</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">text_file_filename</span><span class="plain-syntax"> = </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="4-tf.html#SP5">&#167;5</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP5_3"></a><b>&#167;5.3.  </b>We aim to get this right whether the lines are terminated by <span class="extract"><span class="extract-syntax">0A</span></span>, <span class="extract"><span class="extract-syntax">0D</span></span>,
+<p class="commentary firstcommentary"><a id="SP5_3"></a><b>&#167;5.3.  </b>We aim to get this right whether the lines are terminated by <span class="extract"><span class="extract-syntax">0A</span></span>, <span class="extract"><span class="extract-syntax">0D</span></span>,
 <span class="extract"><span class="extract-syntax">0A 0D</span></span> or <span class="extract"><span class="extract-syntax">0D 0A</span></span>. The final line is not required to be terminated.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Read in lines and send them one by one to the iterator</span> <span class="named-paragraph-number">5.3</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Read in lines and send them one by one to the iterator</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
@@ -215,62 +181,46 @@ values returned by <span class="extract"><span class="extract-syntax">ftell</spa
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="identifier-syntax">EOF</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'\x0a'</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'\x0d'</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><a href="4-sm.html#SP14" class="function-link"><span class="function-syntax">Str::put_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> != </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">skip_terminator</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">                </span>&lt;<span class="named-paragraph">Feed the completed line to the iterator routine</span> <span class="named-paragraph-number">5.3.1</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container"><a href="4-tf.html#SP5_3_1" class="named-paragraph-link"><span class="named-paragraph">Feed the completed line to the iterator routine</span><span class="named-paragraph-number">5.3.1</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'\x0a'</span><span class="plain-syntax">) </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">skip_terminator</span><span class="plain-syntax"> = </span><span class="character-syntax">'\x0d'</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'\x0d'</span><span class="plain-syntax">) </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">skip_terminator</span><span class="plain-syntax"> = </span><span class="character-syntax">'\x0a'</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">skip_terminator</span><span class="plain-syntax"> = </span><span class="character-syntax">'X'</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span>&lt;<span class="named-paragraph">Update the text file position</span> <span class="named-paragraph-number">5.3.2</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container"><a href="4-tf.html#SP5_3_2" class="named-paragraph-link"><span class="named-paragraph">Update the text file position</span><span class="named-paragraph-number">5.3.2</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">            </span><a href="4-sm.html#SP14" class="function-link"><span class="function-syntax">Str::put_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">++, (</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax">) </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">actively_scanning</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Feed the completed line to the iterator routine</span> <span class="named-paragraph-number">5.3.1</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container"><a href="4-tf.html#SP5_3_1" class="named-paragraph-link"><span class="named-paragraph">Feed the completed line to the iterator routine</span><span class="named-paragraph-number">5.3.1</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="4-tf.html#SP5">&#167;5</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP5_3_1"></a><b>&#167;5.3.1.  </b>We update the line counter only when a line is actually sent:
+<p class="commentary firstcommentary"><a id="SP5_3_1"></a><b>&#167;5.3.1.  </b>We update the line counter only when a line is actually sent:
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Feed the completed line to the iterator routine</span> <span class="named-paragraph-number">5.3.1</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Feed the completed line to the iterator routine</span><span class="named-paragraph-number">5.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">iterator</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="identifier-syntax">state</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">line_count</span><span class="plain-syntax">++;</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="4-tf.html#SP5_3">&#167;5.3</a> (twice).</li></ul>
-<p class="inwebparagraph"><a id="SP5_3_2"></a><b>&#167;5.3.2.  </b>But we update the text file position after every apparent line terminator.
+<p class="commentary firstcommentary"><a id="SP5_3_2"></a><b>&#167;5.3.2.  </b>But we update the text file position after every apparent line terminator.
 This is because we might otherwise, on a Windows text file, end up with an
 <span class="extract"><span class="extract-syntax">ftell</span></span> position in between the <span class="extract"><span class="extract-syntax">CR</span></span> and the <span class="extract"><span class="extract-syntax">LF</span></span>; if we resume at that point,
 later on, we'll then have an off-by-one error in the line numbering in the
 resumption as compared to during the original pass.
 </p>
 
-<p class="inwebparagraph">Properly speaking, <span class="extract"><span class="extract-syntax">ftell</span></span> returns a long <span class="extract"><span class="extract-syntax">int</span></span>, not an <span class="extract"><span class="extract-syntax">int</span></span>, but on a
+<p class="commentary">Properly speaking, <span class="extract"><span class="extract-syntax">ftell</span></span> returns a long <span class="extract"><span class="extract-syntax">int</span></span>, not an <span class="extract"><span class="extract-syntax">int</span></span>, but on a
 32-bit-or-more integer machine, this gives us room for files to run to 2GB.
 Text files seldom come that large.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Update the text file position</span> <span class="named-paragraph-number">5.3.2</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Update the text file position</span><span class="named-paragraph-number">5.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">line_position</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">int</span><span class="plain-syntax">) (</span><span class="identifier-syntax">ftell</span><span class="plain-syntax">(</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">.</span><span class="element-syntax">handle_when_open</span><span class="plain-syntax">));</span>
@@ -281,13 +231,11 @@ Text files seldom come that large.
 <span class="plain-syntax">            </span><a href="3-em.html#SP7" class="function-link"><span class="function-syntax">Errors::with_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"unable to determine position in file"</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="4-tf.html#SP5_3">&#167;5.3</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::read_line</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>TextFiles::read_line</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">escape_oddities</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::read_line</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <b>TextFiles::read_line</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">escape_oddities</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="character-syntax">' '</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> != </span><span class="identifier-syntax">EOF</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">actively_scanning</span><span class="plain-syntax">)) {</span>
@@ -307,18 +255,16 @@ Text files seldom come that large.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">actively_scanning</span><span class="plain-syntax">)) </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">line_count</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b>The routine being iterated can indicate that it has had enough by
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The routine being iterated can indicate that it has had enough by
 calling the following:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::lose_interest</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>TextFiles::lose_interest</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::lose_interest</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <b>TextFiles::lose_interest</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">actively_scanning</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8. Reading UTF-8 files. </b>The following routine reads a sequence of Unicode characters from a UTF-8
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Reading UTF-8 files. </b>The following routine reads a sequence of Unicode characters from a UTF-8
 encoded file, but returns them as a sequence of ISO Latin-1 characters, a
 trick it can only pull off by escaping non-ISO characters. This is done by
 taking character number <span class="extract"><span class="extract-syntax">N</span></span> and feeding it out, one character at a time, as
@@ -327,13 +273,13 @@ file like this will be being read at a time, and the routine will be
 repeatedly called until <span class="extract"><span class="extract-syntax">EOF</span></span> or a line division.
 </p>
 
-<p class="inwebparagraph">Strictly speaking, we transmit not as ISO Latin-1 but as that subset of ISO
+<p class="commentary">Strictly speaking, we transmit not as ISO Latin-1 but as that subset of ISO
 which have corresponding (different) codes in the ZSCII character set. This
 excludes some typewriter symbols and a handful of letterforms, as we shall
 see.
 </p>
 
-<p class="inwebparagraph">There are two exceptions: <span class="extract"><span class="extract-syntax">TextFiles::utf8_fgetc</span></span> can also return the usual C
+<p class="commentary">There are two exceptions: <span class="extract"><span class="extract-syntax">TextFiles::utf8_fgetc</span></span> can also return the usual C
 end-of-file pseudo-character <span class="extract"><span class="extract-syntax">EOF</span></span>, and it can also return the Unicode BOM
 (byte-ordering marker) pseudo-character, which is legal at the start of a
 file and which is automatically prepended by some text editors and
@@ -343,21 +289,19 @@ check the return value for <span class="extract"><span class="extract-syntax">EO
 might be at the start of the file being read.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">unicode_file_buffer</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">unicode_feed_buffer</span><span class="plain-syntax">[32]; </span><span class="comment"> holds a single escape such as "[unicode 3106]"</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ufb_counter</span><span class="plain-syntax">; </span><span class="comment"> position in the unicode feed buffer</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">unicode_feed_buffer</span><span class="plain-syntax">[32]; </span><span class="comment-syntax"> holds a single escape such as "[unicode 3106]"</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ufb_counter</span><span class="plain-syntax">; </span><span class="comment-syntax"> position in the unicode feed buffer</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">unicode_file_buffer</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">unicode_file_buffer</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::create_ufb</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>TextFiles::create_ufb</b>:<br><a href="4-tf.html#SP5">&#167;5</a>, Streams - <a href="2-str.html#SP28_2">&#167;28.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">unicode_file_buffer</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::create_ufb</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <b>TextFiles::create_ufb</b>:<br><a href="4-tf.html#SP5">&#167;5</a>, Streams - <a href="2-str.html#SP28_2">&#167;28.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">unicode_file_buffer</span><span class="plain-syntax"> </span><span class="identifier-syntax">ufb</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ufb</span><span class="plain-syntax">.</span><span class="element-syntax">ufb_counter</span><span class="plain-syntax"> = -1;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ufb</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::utf8_fgetc</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>TextFiles::utf8_fgetc</b>:<br><a href="4-tf.html#SP5_3">&#167;5.3</a>, <a href="4-tf.html#SP6">&#167;6</a>, Streams - <a href="2-str.html#SP28_2">&#167;28.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">or_from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">escape_oddities</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::utf8_fgetc</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <b>TextFiles::utf8_fgetc</b>:<br><a href="4-tf.html#SP5_3">&#167;5.3</a>, <a href="4-tf.html#SP6">&#167;6</a>, Streams - <a href="2-str.html#SP28_2">&#167;28.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">or_from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">escape_oddities</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">unicode_file_buffer</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ufb</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EOF</span><span class="plain-syntax">, </span><span class="identifier-syntax">conts</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">ufb</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">ufb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ufb_counter</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">)) {</span>
@@ -365,14 +309,14 @@ might be at the start of the file being read.
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ufb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">unicode_feed_buffer</span><span class="plain-syntax">[</span><span class="identifier-syntax">ufb</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ufb_counter</span><span class="plain-syntax">++];</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">from</span><span class="plain-syntax">) </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">fgetc</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">); </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">or_from</span><span class="plain-syntax">) </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = ((</span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax">) *((*</span><span class="identifier-syntax">or_from</span><span class="plain-syntax">)++));</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="identifier-syntax">EOF</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">; </span><span class="comment"> ruling out EOF leaves a genuine byte from the file</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">0x80</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">; </span><span class="comment"> in all other cases, a UTF-8 continuation sequence begins</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="identifier-syntax">EOF</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">; </span><span class="comment-syntax"> ruling out EOF leaves a genuine byte from the file</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">0x80</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">; </span><span class="comment-syntax"> in all other cases, a UTF-8 continuation sequence begins</span>
 
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Unpack one to five continuation bytes to obtain the Unicode character code</span> <span class="named-paragraph-number">8.1</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Return non-ASCII codes in the intersection of ISO Latin-1 and ZSCII as literals</span> <span class="named-paragraph-number">8.2</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">escape_oddities</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Return Unicode fancy equivalents as simpler literals</span> <span class="named-paragraph-number">8.3</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="4-tf.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Unpack one to five continuation bytes to obtain the Unicode character code</span><span class="named-paragraph-number">8.1</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="4-tf.html#SP8_2" class="named-paragraph-link"><span class="named-paragraph">Return non-ASCII codes in the intersection of ISO Latin-1 and ZSCII as literals</span><span class="named-paragraph-number">8.2</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">escape_oddities</span><span class="plain-syntax">) </span><span class="named-paragraph-container"><a href="4-tf.html#SP8_3" class="named-paragraph-link"><span class="named-paragraph">Return Unicode fancy equivalents as simpler literals</span><span class="named-paragraph-number">8.3</span></span></a><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0xFEFF</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">; </span><span class="comment"> the Unicode BOM non-character</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0xFEFF</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">; </span><span class="comment-syntax"> the Unicode BOM non-character</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">escape_oddities</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ufb</span><span class="plain-syntax">) {</span>
@@ -383,24 +327,16 @@ might be at the start of the file being read.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="character-syntax">'?'</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>The structure unicode_file_buffer is private to this section.</li></ul>
-<p class="inwebparagraph"><a id="SP8_1"></a><b>&#167;8.1.  </b>Not every byte sequence is legal in a UTF-8 file: if we find a malformed
+<p class="commentary firstcommentary"><a id="SP8_1"></a><b>&#167;8.1.  </b>Not every byte sequence is legal in a UTF-8 file: if we find a malformed
 continuation, we process it as a question mark rather than throwing a
 fatal error (which is pretty well the only alternative here). The user
 is likely to see problem messages later on which arise from the question
 marks, and that will have to do.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Unpack one to five continuation bytes to obtain the Unicode character code</span> <span class="named-paragraph-number">8.1</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Unpack one to five continuation bytes to obtain the Unicode character code</span><span class="named-paragraph-number">8.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">0xC0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="character-syntax">'?'</span><span class="plain-syntax">; /* </span><span class="identifier-syntax">malformed</span><span class="plain-syntax"> </span><span class="identifier-syntax">UTF</span><span class="plain-syntax">-8 */</span>
@@ -418,10 +354,8 @@ marks, and that will have to do.
 <span class="plain-syntax">        </span><span class="identifier-syntax">conts</span><span class="plain-syntax">--;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="4-tf.html#SP8">&#167;8</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP8_2"></a><b>&#167;8.2.  </b>For the ZSCII character set, see "The Inform 6 Designer's Manual", or
+<p class="commentary firstcommentary"><a id="SP8_2"></a><b>&#167;8.2.  </b>For the ZSCII character set, see "The Inform 6 Designer's Manual", or
 "The Z-Machine Standards Document". It offers a range of west European
 accented letters which almost, but not quite, matches those on offer in
 ISO Latin-1 &mdash; it omits for example Icelandic lower case eth. (ZSCII was
@@ -431,47 +365,33 @@ rather than Douglas Adams, they might have filled this gap. As it was,
 "eth" never occurred in any of their works.)
 </p>
 
-<p class="inwebparagraph">We let the multiplication sign <span class="extract"><span class="extract-syntax">0xd7</span></span> through even though ZSCII doesn't
+<p class="commentary">We let the multiplication sign <span class="extract"><span class="extract-syntax">0xd7</span></span> through even though ZSCII doesn't
 support it, but convert it to an "x": this is so that we can parse numbers
 in scientific notation.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Return non-ASCII codes in the intersection of ISO Latin-1 and ZSCII as literals</span> <span class="named-paragraph-number">8.2</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Return non-ASCII codes in the intersection of ISO Latin-1 and ZSCII as literals</span><span class="named-paragraph-number">8.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0xa1</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0xa3</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0xbf</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">; </span><span class="comment"> pound sign, inverted ! and ?</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0xa1</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0xa3</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0xbf</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">; </span><span class="comment-syntax"> pound sign, inverted ! and ?</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0xd7</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="character-syntax">'x'</span><span class="plain-syntax">; /* </span><span class="identifier-syntax">convert</span><span class="plain-syntax"> </span><span class="identifier-syntax">multiplication</span><span class="plain-syntax"> </span><span class="identifier-syntax">sign</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">lower</span><span class="plain-syntax"> </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="string-syntax">"x"</span><span class="plain-syntax"> */</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0xc0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">0xff</span><span class="plain-syntax">)) { </span><span class="comment"> accented West European letters, but...</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> != </span><span class="constant-syntax">0xd0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> != </span><span class="constant-syntax">0xf0</span><span class="plain-syntax">) &amp;&amp; </span><span class="comment"> not Icelandic eths</span>
-<span class="plain-syntax">            (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> != </span><span class="constant-syntax">0xde</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> != </span><span class="constant-syntax">0xfe</span><span class="plain-syntax">) &amp;&amp; </span><span class="comment"> nor Icelandic thorns</span>
-<span class="plain-syntax">            (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> != </span><span class="constant-syntax">0xf7</span><span class="plain-syntax">)) </span><span class="comment"> nor division signs</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0xc0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">0xff</span><span class="plain-syntax">)) { </span><span class="comment-syntax"> accented West European letters, but...</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> != </span><span class="constant-syntax">0xd0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> != </span><span class="constant-syntax">0xf0</span><span class="plain-syntax">) &amp;&amp; </span><span class="comment-syntax"> not Icelandic eths</span>
+<span class="plain-syntax">            (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> != </span><span class="constant-syntax">0xde</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> != </span><span class="constant-syntax">0xfe</span><span class="plain-syntax">) &amp;&amp; </span><span class="comment-syntax"> nor Icelandic thorns</span>
+<span class="plain-syntax">            (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> != </span><span class="constant-syntax">0xf7</span><span class="plain-syntax">)) </span><span class="comment-syntax"> nor division signs</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="4-tf.html#SP8">&#167;8</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP8_3"></a><b>&#167;8.3.  </b>We err on the safe side, accepting em-rules and non-breaking spaces, etc.,
+<p class="commentary firstcommentary"><a id="SP8_3"></a><b>&#167;8.3.  </b>We err on the safe side, accepting em-rules and non-breaking spaces, etc.,
 where we would normally expect hyphens and ordinary spaces: this is intended
 for the benefit of users with helpful word-processors which autocorrect
 hyphens into em-rules when they are flanked by spaces, and so on.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Return Unicode fancy equivalents as simpler literals</span> <span class="named-paragraph-number">8.3</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Return Unicode fancy equivalents as simpler literals</span><span class="named-paragraph-number">8.3</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="constant-syntax">0x85</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="character-syntax">'\x0d'</span><span class="plain-syntax">; /* </span><span class="identifier-syntax">NEL</span><span class="plain-syntax">, </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="string-syntax">"next line"</span><span class="plain-syntax"> */</span>
@@ -482,8 +402,6 @@ hyphens into em-rules when they are flanked by spaces, and so on.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0x201c</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">0x201d</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="character-syntax">'"'</span><span class="plain-syntax">; /* </span><span class="identifier-syntax">smart</span><span class="plain-syntax"> </span><span class="reserved-syntax">double</span><span class="plain-syntax"> </span><span class="identifier-syntax">quotes</span><span class="plain-syntax"> */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0x2028</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">0x2029</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="character-syntax">'\x0d'</span><span class="plain-syntax">; /* </span><span class="identifier-syntax">fancy</span><span class="plain-syntax"> </span><span class="identifier-syntax">newlines</span><span class="plain-syntax"> */</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="4-tf.html#SP8">&#167;8</a>.</li></ul>
 <hr class="tocbar">
 <ul class="toc"><li><a href="4-sm.html">Back to 'String Manipulation'</a></li><li><a href="4-taa.html">Continue with 'Tries and Avinues'</a></li></ul><hr class="tocbar">

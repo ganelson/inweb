@@ -46,7 +46,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="5-ee.html#SP1">&#167;1. Ebooks</a></li><li><a href="5-ee.html#SP5">&#167;5. Creation</a></li><li><a href="5-ee.html#SP6">&#167;6. Construction</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Ebooks. </b>Constructing an ePub file (essentially a zipped folder of HTML with some
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Ebooks. </b>Constructing an ePub file (essentially a zipped folder of HTML with some
 metadata attached) is simple enough, but the details are finicky. The
 HTML pages need to be fully XHTML compliant, which is quite a strict
 requirement, and we can't help with that here. But we can at least sort
@@ -54,49 +54,43 @@ out the directory structure and the rather complicated indexing and
 contents files also required.
 </p>
 
-<p class="inwebparagraph">See Liza Daly's invaluable tutorial "Build a digital book with EPUB" to
+<p class="commentary">See Liza Daly's invaluable tutorial "Build a digital book with EPUB" to
 explicate all of this.
 </p>
 
-<p class="inwebparagraph">While under construction, any single ebook is represented by an instance
+<p class="commentary">While under construction, any single ebook is represented by an instance
 of the following structure. Conceptually, we will organise it as a series
 of "volumes" (possibly only one), each of which is a series of "chapters"
 (possibly only one). The actual content is a series of "pages", which are
 essentially individual HTML files, plus some images.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">metadata_list</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">ebook_datum</span></span><span class="comment">: DCMI-standard bibliographic data</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prefix</span><span class="plain-syntax">; </span><span class="comment"> to apply to the page leafnames</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CSS_file_throughout</span><span class="plain-syntax">; </span><span class="comment"> where to find a CSS file to be used for all volumes</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">metadata_list</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">ebook_datum</span></span><span class="comment-syntax">: DCMI-standard bibliographic data</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prefix</span><span class="plain-syntax">; </span><span class="comment-syntax"> to apply to the page leafnames</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CSS_file_throughout</span><span class="plain-syntax">; </span><span class="comment-syntax"> where to find a CSS file to be used for all volumes</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">eventual_epub</span><span class="plain-syntax">; </span><span class="comment"> filename of the final </span><span class="extract"><span class="extract-syntax">*.epub</span></span><span class="comment"> to be made</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">holder</span><span class="plain-syntax">; </span><span class="comment"> directory to put the ingredients into</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OEBPS_path</span><span class="plain-syntax">; </span><span class="comment"> subdirectory which mysteriously has to be called </span><span class="extract"><span class="extract-syntax">OEBPS</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">eventual_epub</span><span class="plain-syntax">; </span><span class="comment-syntax"> filename of the final </span><span class="extract"><span class="extract-syntax">*.epub</span></span><span class="comment-syntax"> to be made</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">holder</span><span class="plain-syntax">; </span><span class="comment-syntax"> directory to put the ingredients into</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OEBPS_path</span><span class="plain-syntax">; </span><span class="comment-syntax"> subdirectory which mysteriously has to be called </span><span class="extract"><span class="extract-syntax">OEBPS</span></span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ebook_volume_list</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">ebook_volume</span></span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_volume</span><span class="plain-syntax">; </span><span class="comment"> the one to which chapters are now being added</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ebook_volume_list</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">ebook_volume</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_volume</span><span class="plain-syntax">; </span><span class="comment-syntax"> the one to which chapters are now being added</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ebook_chapter_list</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">ebook_chapter</span></span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_chapter</span><span class="plain-syntax">; </span><span class="comment"> the one to which pages are now being added</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ebook_chapter_list</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">ebook_chapter</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_chapter</span><span class="plain-syntax">; </span><span class="comment-syntax"> the one to which pages are now being added</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ebook_page_list</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">book_page</span></span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ebook_image_list</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">ebook_image</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ebook_page_list</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">book_page</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ebook_image_list</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">ebook_image</span></span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ebook</span><span class="plain-syntax">;</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>The structure ebook is private to this section.</li></ul>
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>DCMI, or "Dublin Core", metadata is a standard set of key-value pairs used to
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>DCMI, or "Dublin Core", metadata is a standard set of key-value pairs used to
 identify ebooks; we need to maintain a small dictionary, and so small that a
 list is entirely sufficient.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_datum</span><span class="plain-syntax"> {</span>
@@ -105,39 +99,31 @@ list is entirely sufficient.
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ebook_datum</span><span class="plain-syntax">;</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>The structure ebook_datum is accessed in 2/dct, 8/bdfw and here.</li></ul>
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>As noted above, we use the following to stratify the book:
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>As noted above, we use the following to stratify the book:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">volume_title</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">volume_starts</span><span class="plain-syntax">; </span><span class="comment"> on which page the volume starts</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CSS_file</span><span class="plain-syntax">; </span><span class="comment"> where to find the CSS file to be included</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">volume_starts</span><span class="plain-syntax">; </span><span class="comment-syntax"> on which page the volume starts</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CSS_file</span><span class="plain-syntax">; </span><span class="comment-syntax"> where to find the CSS file to be included</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">chapter_title</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_volume</span><span class="plain-syntax">; </span><span class="comment"> to which volume this chapter belongs</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">chapter_starts</span><span class="plain-syntax">; </span><span class="comment"> on which page the chapter starts</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ebook_mark_list</span><span class="plain-syntax">; </span><span class="comment"> of </span><span class="extract"><span class="extract-syntax">ebook_mark</span></span><span class="comment">: for when multiple navigable points exist within this</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_volume</span><span class="plain-syntax">; </span><span class="comment-syntax"> to which volume this chapter belongs</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">chapter_starts</span><span class="plain-syntax">; </span><span class="comment-syntax"> on which page the chapter starts</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ebook_mark_list</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">ebook_mark</span></span><span class="comment-syntax">: for when multiple navigable points exist within this</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">start_URL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax">;</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>The structure ebook_volume is private to this section.</li><li>The structure ebook_chapter is private to this section.</li></ul>
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Now for the actual resources which will end up in the EPUB. Here are the
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Now for the actual resources which will end up in the EPUB. Here are the
 pages:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> {</span>
@@ -145,12 +131,12 @@ pages:
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">page_type</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">page_ID</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">relative_URL</span><span class="plain-syntax">; </span><span class="comment"> eventual URL of this page within the ebook</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">relative_URL</span><span class="plain-syntax">; </span><span class="comment-syntax"> eventual URL of this page within the ebook</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_volume</span><span class="plain-syntax">; </span><span class="comment"> to which volume this page belongs</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_chapter</span><span class="plain-syntax">; </span><span class="comment"> to which chapter this page belongs</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_volume</span><span class="plain-syntax">; </span><span class="comment-syntax"> to which volume this page belongs</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_chapter</span><span class="plain-syntax">; </span><span class="comment-syntax"> to which chapter this page belongs</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">nav_entry_written</span><span class="plain-syntax">; </span><span class="comment"> keep track of what we've written to the navigation tree</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">nav_entry_written</span><span class="plain-syntax">; </span><span class="comment-syntax"> keep track of what we've written to the navigation tree</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax">;</span>
 
@@ -162,17 +148,15 @@ pages:
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_image</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">image_ID</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">relative_URL</span><span class="plain-syntax">; </span><span class="comment"> eventual URL of this image within the ebook</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">relative_URL</span><span class="plain-syntax">; </span><span class="comment-syntax"> eventual URL of this image within the ebook</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ebook_image</span><span class="plain-syntax">;</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>The structure ebook_page is private to this section.</li><li>The structure ebook_mark is private to this section.</li><li>The structure ebook_image is private to this section.</li></ul>
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5. Creation. </b></p>
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Creation. </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Epub::new</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prefix</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <b>Epub::new</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prefix</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">metadata_list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">ebook_datum</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">OEBPS_path</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -188,15 +172,15 @@ pages:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">B</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Epub::use_CSS_throughout</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Epub::use_CSS_throughout</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Epub::use_CSS_throughout</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <b>Epub::use_CSS_throughout</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">CSS_file_throughout</span><span class="plain-syntax"> = </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Epub::use_CSS</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Epub::use_CSS</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Epub::use_CSS</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <b>Epub::use_CSS</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">CSS_file</span><span class="plain-syntax"> = </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::attach_metadata</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>Epub::attach_metadata</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::attach_metadata</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <b>Epub::attach_metadata</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_datum</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="reserved-syntax">ebook_datum</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">metadata_list</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP22" class="function-link"><span class="function-syntax">Str::eq_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">key</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">)) {</span>
@@ -210,7 +194,7 @@ pages:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">D</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">value</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::get_metadata</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>Epub::get_metadata</b>:<br><a href="5-ee.html#SP6">&#167;6</a>, <a href="5-ee.html#SP6_3">&#167;6.3</a>, <a href="5-ee.html#SP7_1">&#167;7.1</a>, <a href="5-ee.html#SP7_3_1">&#167;7.3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::get_metadata</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <b>Epub::get_metadata</b>:<br><a href="5-ee.html#SP6">&#167;6</a>, <a href="5-ee.html#SP6_3">&#167;6.3</a>, <a href="5-ee.html#SP7_1">&#167;7.1</a>, <a href="5-ee.html#SP7_3_1">&#167;7.3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_datum</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="reserved-syntax">ebook_datum</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">metadata_list</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP22" class="function-link"><span class="function-syntax">Str::eq_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">key</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">))</span>
@@ -218,13 +202,13 @@ pages:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::ensure_metadata</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>Epub::ensure_metadata</b>:<br><a href="5-ee.html#SP7_1">&#167;7.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::ensure_metadata</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <b>Epub::ensure_metadata</b>:<br><a href="5-ee.html#SP7_1">&#167;7.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><a href="5-ee.html#SP5" class="function-link"><span class="function-syntax">Epub::get_metadata</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><a href="5-ee.html#SP5" class="function-link"><span class="function-syntax">Epub::attach_metadata</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::note_page</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>Epub::note_page</b>:<br><a href="5-ee.html#SP6_3">&#167;6.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">type</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::note_page</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <b>Epub::note_page</b>:<br><a href="5-ee.html#SP6_3">&#167;6.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">type</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">relative_URL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nav_entry_written</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -244,7 +228,7 @@ pages:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Epub::note_image</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>Epub::note_image</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Epub::note_image</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <b>Epub::note_image</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_image</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">ebook_image</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">relative_URL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">image_ID</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP2" class="function-link"><span class="function-syntax">Str::new</span></a><span class="plain-syntax">();</span>
@@ -252,7 +236,7 @@ pages:
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="reserved-syntax">ebook_image</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ebook_image_list</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">ebook_volume</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::starts_volume</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>Epub::starts_volume</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">ebook_volume</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::starts_volume</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <b>Epub::starts_volume</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">volume_starts</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">in_volume</span><span class="plain-syntax"> = </span><span class="identifier-syntax">V</span><span class="plain-syntax">;</span>
@@ -263,7 +247,7 @@ pages:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::starts_chapter</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="popuptext" id="usagePopup10">Usage of <b>Epub::starts_chapter</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">URL</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::starts_chapter</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <b>Epub::starts_chapter</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">URL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chapter_starts</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">in_volume</span><span class="plain-syntax"> = </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">current_volume</span><span class="plain-syntax">;</span>
@@ -276,22 +260,20 @@ pages:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Epub::set_mark_in_chapter</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="popuptext" id="usagePopup11">Usage of <b>Epub::set_mark_in_chapter</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">URL</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Epub::set_mark_in_chapter</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <b>Epub::set_mark_in_chapter</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">URL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_mark</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">ebook_mark</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">mark_text</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">mark_URL</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">URL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">M</span><span class="plain-syntax">, </span><span class="reserved-syntax">ebook_mark</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ebook_mark_list</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Construction. </b>Note that if the client wants to use a cover image, it must also "note" this
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Construction. </b>Note that if the client wants to use a cover image, it must also "note" this
 image separately. (This is a little inconvenient, but indoc wants to do it
 that way.)
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::begin_construction</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="popuptext" id="usagePopup12">Usage of <b>Epub::begin_construction</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cover_image</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Epub::begin_construction</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <b>Epub::begin_construction</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cover_image</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-pth.html#SP9" class="function-link"><span class="function-syntax">Pathnames::create_in_file_system</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
@@ -303,23 +285,17 @@ that way.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-pth.html#SP9" class="function-link"><span class="function-syntax">Pathnames::create_in_file_system</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Holder</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">holder</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Holder</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Write the EPUB mimetype file</span> <span class="named-paragraph-number">6.1</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Write the EPUB meta-inf directory</span> <span class="named-paragraph-number">6.2</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP6_1" class="named-paragraph-link"><span class="named-paragraph">Write the EPUB mimetype file</span><span class="named-paragraph-number">6.1</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP6_2" class="named-paragraph-link"><span class="named-paragraph">Write the EPUB meta-inf directory</span><span class="named-paragraph-number">6.2</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OEBPS</span><span class="plain-syntax"> = </span><a href="3-pth.html#SP4" class="function-link"><span class="function-syntax">Pathnames::down</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Holder</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"OEBPS"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-pth.html#SP9" class="function-link"><span class="function-syntax">Pathnames::create_in_file_system</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OEBPS</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cover_image</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Make the cover image page</span> <span class="named-paragraph-number">6.3</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cover_image</span><span class="plain-syntax">) </span><span class="named-paragraph-container"><a href="5-ee.html#SP6_3" class="named-paragraph-link"><span class="named-paragraph">Make the cover image page</span><span class="named-paragraph-number">6.3</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">OEBPS_path</span><span class="plain-syntax"> = </span><span class="identifier-syntax">OEBPS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">OEBPS</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP6_1"></a><b>&#167;6.1.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Write the EPUB mimetype file</span> <span class="named-paragraph-number">6.1</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Write the EPUB mimetype file</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Mimetype</span><span class="plain-syntax"> = </span><a href="3-fln.html#SP2" class="function-link"><span class="function-syntax">Filenames::in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Holder</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"mimetype"</span><span class="plain-syntax">);</span>
@@ -327,20 +303,12 @@ that way.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">STREAM_OPEN_TO_FILE</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">Mimetype</span><span class="plain-syntax">, </span><span class="constant-syntax">ISO_ENC</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"unable to open mimetype file for output: %f"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Mimetype</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"application/epub+zip"</span><span class="plain-syntax">); </span><span class="comment"> EPUB requires there be no newline here</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"application/epub+zip"</span><span class="plain-syntax">); </span><span class="comment-syntax"> EPUB requires there be no newline here</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP6">&#167;6</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP6_2"></a><b>&#167;6.2.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Write the EPUB meta-inf directory</span> <span class="named-paragraph-number">6.2</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP6_2"></a><b>&#167;6.2.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Write the EPUB meta-inf directory</span><span class="named-paragraph-number">6.2</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">META_INF</span><span class="plain-syntax"> = </span><a href="3-pth.html#SP4" class="function-link"><span class="function-syntax">Pathnames::down</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Holder</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"META-INF"</span><span class="plain-syntax">);</span>
@@ -362,24 +330,16 @@ that way.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/container&gt;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP6">&#167;6</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP6_3"></a><b>&#167;6.3.  </b>It's a much-lamented fact that EPUB 2, at any rate, has no standard way
+<p class="commentary firstcommentary"><a id="SP6_3"></a><b>&#167;6.3.  </b>It's a much-lamented fact that EPUB 2, at any rate, has no standard way
 to define cover images, and different readers behave slightly differently.
 But the following seems to work with iTunes 9.1 and later, and therefore
 on Apple devices. (See Keith Fahlgren's post "Best practices in ePub cover
 images" at the ThreePress Consulting blog.)
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Make the cover image page</span> <span class="named-paragraph-number">6.3</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Make the cover image page</span><span class="named-paragraph-number">6.3</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cover</span><span class="plain-syntax"> = </span><a href="3-fln.html#SP2" class="function-link"><span class="function-syntax">Filenames::in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OEBPS</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"cover.html"</span><span class="plain-syntax">);</span>
@@ -408,27 +368,19 @@ images" at the ThreePress Consulting blog.)
 <span class="plain-syntax">    </span><a href="5-htm.html#SP5" class="function-link"><span class="function-syntax">HTML::completed</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP6">&#167;6</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Epub::end_construction</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="popuptext" id="usagePopup13">Usage of <b>Epub::end_construction</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Attach default metadata</span> <span class="named-paragraph-number">7.1</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Write the EPUB OPF file</span> <span class="named-paragraph-number">7.2</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Write the EPUB NCX file</span> <span class="named-paragraph-number">7.3</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Zip the EPUB</span> <span class="named-paragraph-number">7.4</span>&gt;<span class="plain-syntax">;</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Epub::end_construction</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <b>Epub::end_construction</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph">Attach default metadata</span><span class="named-paragraph-number">7.1</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_2" class="named-paragraph-link"><span class="named-paragraph">Write the EPUB OPF file</span><span class="named-paragraph-number">7.2</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3" class="named-paragraph-link"><span class="named-paragraph">Write the EPUB NCX file</span><span class="named-paragraph-number">7.3</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_4" class="named-paragraph-link"><span class="named-paragraph">Zip the EPUB</span><span class="named-paragraph-number">7.4</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP7_1"></a><b>&#167;7.1.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Attach default metadata</span> <span class="named-paragraph-number">7.1</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Attach default metadata</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">datestamp</span><span class="plain-syntax"> = </span><a href="5-ee.html#SP5" class="function-link"><span class="function-syntax">Epub::ensure_metadata</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"date"</span><span class="plain-syntax">);</span>
@@ -450,17 +402,9 @@ images" at the ThreePress Consulting blog.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lang</span><span class="plain-syntax"> = </span><a href="5-ee.html#SP5" class="function-link"><span class="function-syntax">Epub::ensure_metadata</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"language"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lang</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">lang</span><span class="plain-syntax">, </span><span class="string-syntax">"en-UK"</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7">&#167;7</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_2"></a><b>&#167;7.2.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Write the EPUB OPF file</span> <span class="named-paragraph-number">7.2</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_2"></a><b>&#167;7.2.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Write the EPUB OPF file</span><span class="named-paragraph-number">7.2</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">content</span><span class="plain-syntax"> = </span><a href="3-fln.html#SP2" class="function-link"><span class="function-syntax">Filenames::in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">OEBPS_path</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"content.opf"</span><span class="plain-syntax">);</span>
@@ -473,29 +417,21 @@ images" at the ThreePress Consulting blog.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;package xmlns=\"http://www.idpf.org/2007/opf\"\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"unique-identifier=\"bookid\" version=\"2.0\"&gt;\n"</span><span class="plain-syntax">); </span><span class="constant-syntax">INDENT</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Write the OPF metadata</span> <span class="named-paragraph-number">7.2.1</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Write the OPF manifest</span> <span class="named-paragraph-number">7.2.2</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Write the OPF spine</span> <span class="named-paragraph-number">7.2.3</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Write the OPF guide</span> <span class="named-paragraph-number">7.2.4</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_2_1" class="named-paragraph-link"><span class="named-paragraph">Write the OPF metadata</span><span class="named-paragraph-number">7.2.1</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_2_2" class="named-paragraph-link"><span class="named-paragraph">Write the OPF manifest</span><span class="named-paragraph-number">7.2.2</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_2_3" class="named-paragraph-link"><span class="named-paragraph">Write the OPF spine</span><span class="named-paragraph-number">7.2.3</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_2_4" class="named-paragraph-link"><span class="named-paragraph">Write the OPF guide</span><span class="named-paragraph-number">7.2.4</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">; </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/package&gt;\n"</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7">&#167;7</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_2_1"></a><b>&#167;7.2.1.  </b>The metadata here conforms to the Dublin Core Metadata Initiative (ebook_datum).
+<p class="commentary firstcommentary"><a id="SP7_2_1"></a><b>&#167;7.2.1.  </b>The metadata here conforms to the Dublin Core Metadata Initiative (ebook_datum).
 (Other default values are set in the configuration file.)
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Write the OPF metadata</span> <span class="named-paragraph-number">7.2.1</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Write the OPF metadata</span><span class="named-paragraph-number">7.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;metadata&gt;\n"</span><span class="plain-syntax">); </span><span class="constant-syntax">INDENT</span><span class="plain-syntax">;</span>
@@ -509,37 +445,21 @@ images" at the ThreePress Consulting blog.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;meta name=\"cover\" content=\"cover-image\" /&gt;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">; </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/metadata&gt;\n"</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_2">&#167;7.2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_2_2"></a><b>&#167;7.2.2.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Write the OPF manifest</span> <span class="named-paragraph-number">7.2.2</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_2_2"></a><b>&#167;7.2.2.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Write the OPF manifest</span><span class="named-paragraph-number">7.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;manifest&gt;\n"</span><span class="plain-syntax">); </span><span class="constant-syntax">INDENT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;item id=\"ncx\" href=\"toc.ncx\" media-type=\"application/x-dtbncx+xml\"/&gt;\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Manifest the CSS files</span> <span class="named-paragraph-number">7.2.2.1</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Manifest the XHTML files</span> <span class="named-paragraph-number">7.2.2.2</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Manifest the images</span> <span class="named-paragraph-number">7.2.2.3</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_2_2_1" class="named-paragraph-link"><span class="named-paragraph">Manifest the CSS files</span><span class="named-paragraph-number">7.2.2.1</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_2_2_2" class="named-paragraph-link"><span class="named-paragraph">Manifest the XHTML files</span><span class="named-paragraph-number">7.2.2.2</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_2_2_3" class="named-paragraph-link"><span class="named-paragraph">Manifest the images</span><span class="named-paragraph-number">7.2.2.3</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">; </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/manifest&gt;\n"</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_2">&#167;7.2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_2_2_1"></a><b>&#167;7.2.2.1.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Manifest the CSS files</span> <span class="named-paragraph-number">7.2.2.1</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_2_2_1"></a><b>&#167;7.2.2.1.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Manifest the CSS files</span><span class="named-paragraph-number">7.2.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cssc</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
@@ -552,17 +472,9 @@ images" at the ThreePress Consulting blog.)
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;item id=\"css%d\" href=\"%S\" media-type=\"text/css\"/&gt;\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">cssc</span><span class="plain-syntax">++, </span><a href="3-fln.html#SP7" class="function-link"><span class="function-syntax">Filenames::get_leafname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">CSS_file</span><span class="plain-syntax">));</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_2_2">&#167;7.2.2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_2_2_2"></a><b>&#167;7.2.2.2.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Manifest the XHTML files</span> <span class="named-paragraph-number">7.2.2.2</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_2_2_2"></a><b>&#167;7.2.2.2.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Manifest the XHTML files</span><span class="named-paragraph-number">7.2.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
@@ -570,17 +482,9 @@ images" at the ThreePress Consulting blog.)
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;item id=\"%S\" href=\"%S\" media-type=\"application/xhtml+xml\"/&gt;\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">page_ID</span><span class="plain-syntax">, </span><a href="3-fln.html#SP7" class="function-link"><span class="function-syntax">Filenames::get_leafname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">relative_URL</span><span class="plain-syntax">));</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_2_2">&#167;7.2.2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_2_2_3"></a><b>&#167;7.2.2.3.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Manifest the images</span> <span class="named-paragraph-number">7.2.2.3</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_2_2_3"></a><b>&#167;7.2.2.3.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Manifest the images</span><span class="named-paragraph-number">7.2.2.3</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_image</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
@@ -597,17 +501,9 @@ images" at the ThreePress Consulting blog.)
 <span class="plain-syntax">            </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">image_ID</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">relative_URL</span><span class="plain-syntax">, </span><span class="identifier-syntax">image_type</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_2_2">&#167;7.2.2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_2_3"></a><b>&#167;7.2.3.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Write the OPF spine</span> <span class="named-paragraph-number">7.2.3</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_2_3"></a><b>&#167;7.2.3.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Write the OPF spine</span><span class="named-paragraph-number">7.2.3</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;spine toc=\"ncx\"&gt;\n"</span><span class="plain-syntax">); </span><span class="constant-syntax">INDENT</span><span class="plain-syntax">;</span>
@@ -619,17 +515,9 @@ images" at the ThreePress Consulting blog.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">; </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/spine&gt;\n"</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_2">&#167;7.2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_2_4"></a><b>&#167;7.2.4.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Write the OPF guide</span> <span class="named-paragraph-number">7.2.4</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_2_4"></a><b>&#167;7.2.4.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Write the OPF guide</span><span class="named-paragraph-number">7.2.4</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;guide&gt;\n"</span><span class="plain-syntax">); </span><span class="constant-syntax">INDENT</span><span class="plain-syntax">;</span>
@@ -642,22 +530,14 @@ images" at the ThreePress Consulting blog.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">; </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/guide&gt;\n"</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_2">&#167;7.2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_3"></a><b>&#167;7.3.  </b>The NCX duplicates some of what's in the OPF file, for historical reasons;
+<p class="commentary firstcommentary"><a id="SP7_3"></a><b>&#167;7.3.  </b>The NCX duplicates some of what's in the OPF file, for historical reasons;
 it's left over from an earlier standard used by book-readers for visually
 impaired people.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Write the EPUB NCX file</span> <span class="named-paragraph-number">7.3</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Write the EPUB NCX file</span><span class="named-paragraph-number">7.3</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">toc</span><span class="plain-syntax"> = </span><a href="3-fln.html#SP2" class="function-link"><span class="function-syntax">Filenames::in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">OEBPS_path</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"toc.ncx"</span><span class="plain-syntax">);</span>
@@ -671,27 +551,19 @@ impaired people.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"	\"http://www.daisy.org/z3986/2005/ncx-2005-1.dtd\"&gt;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;ncx xmlns=\"http://www.daisy.org/z3986/2005/ncx/\" version=\"2005-1\"&gt;\n"</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="comment"> there are surely at least sections</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">depth</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">; </span><span class="comment-syntax"> there are surely at least sections</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-llas.html#SP6" class="function-link"><span class="function-syntax">LinkedLists::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ebook_chapter_list</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">depth</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-llas.html#SP6" class="function-link"><span class="function-syntax">LinkedLists::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ebook_volume_list</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">depth</span><span class="plain-syntax"> = </span><span class="constant-syntax">3</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Write the NCX metadata</span> <span class="named-paragraph-number">7.3.1</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Write the NCX navigation map</span> <span class="named-paragraph-number">7.3.2</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_1" class="named-paragraph-link"><span class="named-paragraph">Write the NCX metadata</span><span class="named-paragraph-number">7.3.1</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2" class="named-paragraph-link"><span class="named-paragraph">Write the NCX navigation map</span><span class="named-paragraph-number">7.3.2</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/ncx&gt;\n"</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7">&#167;7</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_3_1"></a><b>&#167;7.3.1.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Write the NCX metadata</span> <span class="named-paragraph-number">7.3.1</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_3_1"></a><b>&#167;7.3.1.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Write the NCX metadata</span><span class="named-paragraph-number">7.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;head&gt;\n"</span><span class="plain-syntax">); </span><span class="constant-syntax">INDENT</span><span class="plain-syntax">;</span>
@@ -704,48 +576,32 @@ impaired people.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;text&gt;%S&lt;/text&gt;\n"</span><span class="plain-syntax">, </span><a href="5-ee.html#SP5" class="function-link"><span class="function-syntax">Epub::get_metadata</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"title"</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">; </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/docTitle&gt;\n"</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_3">&#167;7.3</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_3_2"></a><b>&#167;7.3.2.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Write the NCX navigation map</span> <span class="named-paragraph-number">7.3.2</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_3_2"></a><b>&#167;7.3.2.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Write the NCX navigation map</span><span class="named-paragraph-number">7.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;navMap&gt;\n"</span><span class="plain-syntax">); </span><span class="constant-syntax">INDENT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">navpoint_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">navmap_depth</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">phase</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Include the non-section pages in this phase</span> <span class="named-paragraph-number">7.3.2.1</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_1" class="named-paragraph-link"><span class="named-paragraph">Include the non-section pages in this phase</span><span class="named-paragraph-number">7.3.2.1</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ebook_volume_list</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Begin navPoint</span> <span class="named-paragraph-number">7.3.2.3</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_3" class="named-paragraph-link"><span class="named-paragraph">Begin navPoint</span><span class="named-paragraph-number">7.3.2.3</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;navLabel&gt;&lt;text&gt;%S&lt;/text&gt;&lt;/navLabel&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">volume_title</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;content src=\"%S\"/&gt;\n"</span><span class="plain-syntax">, </span><a href="3-fln.html#SP7" class="function-link"><span class="function-syntax">Filenames::get_leafname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">volume_starts</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">relative_URL</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Include the chapters and sections in this volume</span> <span class="named-paragraph-number">7.3.2.2</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span>&lt;<span class="named-paragraph">End navPoint</span> <span class="named-paragraph-number">7.3.2.4</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_2" class="named-paragraph-link"><span class="named-paragraph">Include the chapters and sections in this volume</span><span class="named-paragraph-number">7.3.2.2</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_4" class="named-paragraph-link"><span class="named-paragraph">End navPoint</span><span class="named-paragraph-number">7.3.2.4</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">phase</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Include the non-section pages in this phase</span> <span class="named-paragraph-number">7.3.2.1</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_1" class="named-paragraph-link"><span class="named-paragraph">Include the non-section pages in this phase</span><span class="named-paragraph-number">7.3.2.1</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">; </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/navMap&gt;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">navmap_depth</span><span class="plain-syntax"> != </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"navMap numbering unbalanced"</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_3">&#167;7.3</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_3_2_1"></a><b>&#167;7.3.2.1.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Include the non-section pages in this phase</span> <span class="named-paragraph-number">7.3.2.1</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_3_2_1"></a><b>&#167;7.3.2.1.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Include the non-section pages in this phase</span><span class="named-paragraph-number">7.3.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
@@ -755,99 +611,67 @@ impaired people.
 <span class="plain-syntax">            (</span><a href="4-sm.html#SP22" class="function-link"><span class="function-syntax">Str::eq_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">page_ID</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"index"</span><span class="plain-syntax">)))</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">in_phase</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">in_phase</span><span class="plain-syntax"> == </span><span class="identifier-syntax">phase</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nav_entry_written</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span>&lt;<span class="named-paragraph">Begin navPoint</span> <span class="named-paragraph-number">7.3.2.3</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_3" class="named-paragraph-link"><span class="named-paragraph">Begin navPoint</span><span class="named-paragraph-number">7.3.2.3</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;navLabel&gt;&lt;text&gt;%S&lt;/text&gt;&lt;/navLabel&gt; &lt;content src=\"%S\"/&gt;\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">page_title</span><span class="plain-syntax">, </span><a href="3-fln.html#SP7" class="function-link"><span class="function-syntax">Filenames::get_leafname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">relative_URL</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">            </span>&lt;<span class="named-paragraph">End navPoint</span> <span class="named-paragraph-number">7.3.2.4</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_4" class="named-paragraph-link"><span class="named-paragraph">End navPoint</span><span class="named-paragraph-number">7.3.2.4</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_3_2">&#167;7.3.2</a> (twice).</li></ul>
-<p class="inwebparagraph"><a id="SP7_3_2_2"></a><b>&#167;7.3.2.2.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Include the chapters and sections in this volume</span> <span class="named-paragraph-number">7.3.2.2</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_3_2_2"></a><b>&#167;7.3.2.2.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Include the chapters and sections in this volume</span><span class="named-paragraph-number">7.3.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ebook_chapter_list</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">in_volume</span><span class="plain-syntax"> == </span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span>&lt;<span class="named-paragraph">Begin navPoint</span> <span class="named-paragraph-number">7.3.2.3</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_3" class="named-paragraph-link"><span class="named-paragraph">Begin navPoint</span><span class="named-paragraph-number">7.3.2.3</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;navLabel&gt;&lt;text&gt;%S&lt;/text&gt;&lt;/navLabel&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chapter_title</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;content src=\"%S\"/&gt;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">start_URL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ebook_mark_list</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                </span>&lt;<span class="named-paragraph">Include the marks in this chapter</span> <span class="named-paragraph-number">7.3.2.2.2</span>&gt;
+<span class="plain-syntax">                </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_2_2" class="named-paragraph-link"><span class="named-paragraph">Include the marks in this chapter</span><span class="named-paragraph-number">7.3.2.2.2</span></span></a>
 <span class="plain-syntax">            </span><span class="reserved-syntax">else</span>
-<span class="plain-syntax">                </span>&lt;<span class="named-paragraph">Include the sections in this chapter</span> <span class="named-paragraph-number">7.3.2.2.1</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_2_1" class="named-paragraph-link"><span class="named-paragraph">Include the sections in this chapter</span><span class="named-paragraph-number">7.3.2.2.1</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ebook_page_list</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">in_chapter</span><span class="plain-syntax"> == </span><span class="identifier-syntax">C</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nav_entry_written</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span>&lt;<span class="named-paragraph">End navPoint</span> <span class="named-paragraph-number">7.3.2.4</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_4" class="named-paragraph-link"><span class="named-paragraph">End navPoint</span><span class="named-paragraph-number">7.3.2.4</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_3_2">&#167;7.3.2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_3_2_2_1"></a><b>&#167;7.3.2.2.1.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Include the sections in this chapter</span> <span class="named-paragraph-number">7.3.2.2.1</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_3_2_2_1"></a><b>&#167;7.3.2.2.1.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Include the sections in this chapter</span><span class="named-paragraph-number">7.3.2.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ebook_page_list</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">in_chapter</span><span class="plain-syntax"> == </span><span class="identifier-syntax">C</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nav_entry_written</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span>&lt;<span class="named-paragraph">Begin navPoint</span> <span class="named-paragraph-number">7.3.2.3</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_3" class="named-paragraph-link"><span class="named-paragraph">Begin navPoint</span><span class="named-paragraph-number">7.3.2.3</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;navLabel&gt;&lt;text&gt;%S&lt;/text&gt;&lt;/navLabel&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">page_title</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;content src=\"%S\"/&gt;\n"</span><span class="plain-syntax">, </span><a href="3-fln.html#SP7" class="function-link"><span class="function-syntax">Filenames::get_leafname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">relative_URL</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">            </span>&lt;<span class="named-paragraph">End navPoint</span> <span class="named-paragraph-number">7.3.2.4</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_4" class="named-paragraph-link"><span class="named-paragraph">End navPoint</span><span class="named-paragraph-number">7.3.2.4</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">nav_entry_written</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_3_2_2">&#167;7.3.2.2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_3_2_2_2"></a><b>&#167;7.3.2.2.2.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Include the marks in this chapter</span> <span class="named-paragraph-number">7.3.2.2.2</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_3_2_2_2"></a><b>&#167;7.3.2.2.2.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Include the marks in this chapter</span><span class="named-paragraph-number">7.3.2.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">ebook_mark</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">M</span><span class="plain-syntax">, </span><span class="reserved-syntax">ebook_mark</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ebook_mark_list</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span>&lt;<span class="named-paragraph">Begin navPoint</span> <span class="named-paragraph-number">7.3.2.3</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_3" class="named-paragraph-link"><span class="named-paragraph">Begin navPoint</span><span class="named-paragraph-number">7.3.2.3</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;navLabel&gt;&lt;text&gt;%S&lt;/text&gt;&lt;/navLabel&gt;"</span><span class="plain-syntax">, </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">mark_text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;content src=\"%S\"/&gt;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">mark_URL</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span>&lt;<span class="named-paragraph">End navPoint</span> <span class="named-paragraph-number">7.3.2.4</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_3_2_4" class="named-paragraph-link"><span class="named-paragraph">End navPoint</span><span class="named-paragraph-number">7.3.2.4</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_3_2_2">&#167;7.3.2.2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_3_2_3"></a><b>&#167;7.3.2.3.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Begin navPoint</span> <span class="named-paragraph-number">7.3.2.3</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_3_2_3"></a><b>&#167;7.3.2.3.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Begin navPoint</span><span class="named-paragraph-number">7.3.2.3</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;navPoint id=\"navpoint-%d\" playOrder=\"%d\"&gt;\n"</span><span class="plain-syntax">,</span>
@@ -855,53 +679,29 @@ impaired people.
 <span class="plain-syntax">    </span><span class="identifier-syntax">navpoint_count</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">navmap_depth</span><span class="plain-syntax">++; </span><span class="constant-syntax">INDENT</span><span class="plain-syntax">;</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_3_2">&#167;7.3.2</a>, <a href="5-ee.html#SP7_3_2_1">&#167;7.3.2.1</a>, <a href="5-ee.html#SP7_3_2_2">&#167;7.3.2.2</a>, <a href="5-ee.html#SP7_3_2_2_1">&#167;7.3.2.2.1</a>, <a href="5-ee.html#SP7_3_2_2_2">&#167;7.3.2.2.2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_3_2_4"></a><b>&#167;7.3.2.4.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">End navPoint</span> <span class="named-paragraph-number">7.3.2.4</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_3_2_4"></a><b>&#167;7.3.2.4.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">End navPoint</span><span class="named-paragraph-number">7.3.2.4</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">navmap_depth</span><span class="plain-syntax">--;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">navmap_depth</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"navMap numbering awry"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">; </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;/navPoint&gt;\n"</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_3_2">&#167;7.3.2</a>, <a href="5-ee.html#SP7_3_2_1">&#167;7.3.2.1</a>, <a href="5-ee.html#SP7_3_2_2">&#167;7.3.2.2</a>, <a href="5-ee.html#SP7_3_2_2_1">&#167;7.3.2.2.1</a>, <a href="5-ee.html#SP7_3_2_2_2">&#167;7.3.2.2.2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_4"></a><b>&#167;7.4.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Zip the EPUB</span> <span class="named-paragraph-number">7.4</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_4"></a><b>&#167;7.4.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Zip the EPUB</span><span class="named-paragraph-number">7.4</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">up</span><span class="plain-syntax"> = </span><a href="3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">".."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ePub_relative</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">        </span><a href="3-fln.html#SP2" class="function-link"><span class="function-syntax">Filenames::in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">up</span><span class="plain-syntax">, </span><a href="3-fln.html#SP7" class="function-link"><span class="function-syntax">Filenames::get_leafname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">eventual_epub</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Issue first zip instruction</span> <span class="named-paragraph-number">7.4.1</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Issue second zip instruction</span> <span class="named-paragraph-number">7.4.2</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_4_1" class="named-paragraph-link"><span class="named-paragraph">Issue first zip instruction</span><span class="named-paragraph-number">7.4.1</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="5-ee.html#SP7_4_2" class="named-paragraph-link"><span class="named-paragraph">Issue second zip instruction</span><span class="named-paragraph-number">7.4.2</span></span></a><span class="plain-syntax">;</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7">&#167;7</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_4_1"></a><b>&#167;7.4.1.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Issue first zip instruction</span> <span class="named-paragraph-number">7.4.1</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_4_1"></a><b>&#167;7.4.1.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Issue first zip instruction</span><span class="named-paragraph-number">7.4.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">)</span>
@@ -913,17 +713,9 @@ impaired people.
 <span class="plain-syntax">    </span><a href="3-shl.html#SP5" class="function-link"><span class="function-syntax">Shell::run</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">)</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_4">&#167;7.4</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7_4_2"></a><b>&#167;7.4.2.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Issue second zip instruction</span> <span class="named-paragraph-number">7.4.2</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP7_4_2"></a><b>&#167;7.4.2.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Issue second zip instruction</span><span class="named-paragraph-number">7.4.2</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">)</span>
@@ -935,8 +727,6 @@ impaired people.
 <span class="plain-syntax">    </span><a href="3-shl.html#SP5" class="function-link"><span class="function-syntax">Shell::run</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMMAND</span><span class="plain-syntax">)</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="5-ee.html#SP7_4">&#167;7.4</a>.</li></ul>
 <hr class="tocbar">
 <ul class="toc"><li><a href="5-htm.html">Back to 'HTML'</a></li><li><i>(This section ends Chapter 5: Generating Websites.)</i></li></ul><hr class="tocbar">

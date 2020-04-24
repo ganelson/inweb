@@ -18,14 +18,21 @@ span.definition-keyword { color:#801010; font-weight:bold; }
 
 /* These are for the angle-bracketed paragraph names: */
 
-span.named-paragraph, span.named-paragraph-defn { color: #000000; font-weight: bold; }
-span.named-paragraph-number { color: #000000; font-size: 80%; }
+span.named-paragraph, span.named-paragraph-defn { color: #000000; font-size: 90%; }
+span.named-paragraph-number { color: #000000; font-size: 70%; font-style:italic; }
+span.named-paragraph-container {
+	background: #ececf8; border: 1px solid #888888;
+}
+a.named-paragraph-link:link, a.named-paragraph-link:visited {
+	text-decoration: none;
+}
+a.named-paragraph-link:active, a.named-paragraph-link:hover {
+	background: #c8c8e8;
+}
 
 /* This is the box into which multi-line stretches of code are put: */
 
 pre.displayed-code {
 	background: #f8f8f8;
-	border-width: 1px;
-	border-style: solid solid solid solid;
-	border-color: #cccccc;
+	border: 1px solid #cccccc;
 }

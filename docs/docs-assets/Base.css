@@ -1,9 +1,19 @@
 /* This is a CSS file for pages woven by the literate programming tool inweb */
 
-
 span.named-paragraph, span.named-paragraph-defn, span.named-paragraph-number {
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
 	text-decoration: none;
+}
+span.named-paragraph-number {
+	padding-left: 8px;
+}
+span.named-paragraph-container {
+	font-family: Monaco, monospace;
+/*	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif; */
+	border-radius: 6px;
+	padding-top: 1px; 
+	padding-left: 8px; 
+	padding-right: 8px; 
+	padding-bottom: 1px; 
 }
 
 /* Now some generalities: */
@@ -20,10 +30,6 @@ body {
 
 a.function-link:link, a.function-link:visited {
 	text-decoration: black solid underline;
-/*	text-decoration-line: underline;
-	text-decoration-style: dotted;
-	text-decoration-color: #000;
-*/
 }
 a.function-link:active, a.function-link:hover {
 	font-weight: 700
@@ -58,14 +64,23 @@ p {
 	clear: both;
 }
 
-/* Where an inweb paragraph begins: */
+/* Each commentary (HTML) paragraph is styled with: */
 
-p.inwebparagraph {
+p.commentary {
 	width: 60em;
 	line-height: 150%;
-	padding-top: 15px;
+	padding-top: 0px;
 	padding-bottom: 5px;
 }
+
+/* And the first in its (Inweb) paragraph, the one with the number up front,
+is also styled with: */
+
+p.firstcommentary {
+	padding-top: 15px;
+}
+
+
 
 /* For the text of a footnote: */
 
@@ -380,26 +395,3 @@ main {
     height: auto !important;
     height: 100%
 }
-/* 
-#logo {
-    text-indent: -9999px;
-    height: 48px;
-    width: 100%;
-    margin-top: 20px;
-    margin-bottom: 0.5em;
-    padding-bottom: 10px
-}
-
-#logo a {
-    display: block;
-    width: 190px;
-    height: 48px;
-    background-image: url("/assets/images/swift.svg");
-    background-repeat: no-repeat;
-    background-size: 190px 48px;
-    background-position-x: -8px
-}
-
-*/
-
-

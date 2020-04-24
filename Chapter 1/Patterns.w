@@ -269,7 +269,7 @@ void Patterns::transform_CSS(text_stream *line, text_file_position *tfp, void *X
 		WRITE("%S%S%S", mr.exp[0], cft->trans, mr.exp[1]);
 		Str::clear(spanned); Str::copy(spanned, mr.exp[2]);
 	}
-	WRITE("%S\n", spanned);
+	WRITE("%S", spanned);
 	DISCARD_TEXT(spanned);
 	Regexp::dispose_of(&mr);
 }

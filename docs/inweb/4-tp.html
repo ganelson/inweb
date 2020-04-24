@@ -46,7 +46,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="4-tp.html#SP7">&#167;7. Painting a file</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1.  </b>This is a very simple syntax colouring algorithm. The work is done by the
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>This is a very simple syntax colouring algorithm. The work is done by the
 function <span class="extract"><span class="extract-syntax">Painter::syntax_colour</span></span>, which can in principle be applied to texts
 of any length. But it's usually convenient to run it on a long file one line
 at a time, so that it is called repeatedly. The variable <span class="extract"><span class="extract-syntax">colouring_state</span></span>
@@ -54,47 +54,39 @@ remembers where we were at the end of the previous line, so that we can pick
 up again later at the start of the next.
 </p>
 
-<p class="inwebparagraph">Because of that, we need to call the following before we begin a run of calls
+<p class="commentary">Because of that, we need to call the following before we begin a run of calls
 to <span class="extract"><span class="extract-syntax">Painter::syntax_colour</span></span>:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">painter_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::reset_syntax_colouring</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="popuptext" id="usagePopup1">Usage of <b>Painter::reset_syntax_colouring</b>:<br><a href="4-tp.html#SP7">&#167;7</a>, The Weaver - <a href="3-tw.html#SP2_7_2_3_2_6">&#167;2.7.2.3.2.6</a>&lt;br&gt;ACME Support - <a href="4-as.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::reset_syntax_colouring</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <b>Painter::reset_syntax_colouring</b>:<br><a href="4-tp.html#SP7">&#167;7</a>, The Weaver - <a href="3-tw.html#SP2_7_2_3_2_6">&#167;2.7.2.3.2.6</a>&lt;br&gt;ACME Support - <a href="4-as.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">colouring_state</span><span class="plain-syntax"> = </span><span class="constant-syntax">PLAIN_COLOUR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">painter_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2.  </b>As we begin, the text to colour is in <span class="extract"><span class="extract-syntax">matter</span></span>, while <span class="extract"><span class="extract-syntax">colouring</span></span> is an
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>As we begin, the text to colour is in <span class="extract"><span class="extract-syntax">matter</span></span>, while <span class="extract"><span class="extract-syntax">colouring</span></span> is an
 equal-length text where each character represents the colour of its
 corresponding character in <span class="extract"><span class="extract-syntax">matter</span></span>. For example, we might start as:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    int x = 55;</span>
 <span class="plain-syntax">    ppppppppppp</span>
 </pre>
-<p class="inwebparagraph">with every character having <span class="extract"><span class="extract-syntax">PLAIN_COLOUR</span></span>, but end up with:
+<p class="commentary">with every character having <span class="extract"><span class="extract-syntax">PLAIN_COLOUR</span></span>, but end up with:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    int x = 55;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rrr</span><span class="plain-syntax">p</span><span class="identifier-syntax">i</span><span class="plain-syntax">ppp</span><span class="constant-syntax">nn</span><span class="plain-syntax">p</span>
 </pre>
-<p class="inwebparagraph">We get to that by using a language's rules on literals, and then executing
+<p class="commentary">We get to that by using a language's rules on literals, and then executing
 its colouring program.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::syntax_colour</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="popuptext" id="usagePopup2">Usage of <b>Painter::syntax_colour</b>:<br><a href="4-tp.html#SP7">&#167;7</a>, ACME Support - <a href="4-as.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::syntax_colour</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <b>Painter::syntax_colour</b>:<br><a href="4-tp.html#SP7">&#167;7</a>, ACME Support - <a href="4-as.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">with_comments</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">matter</span><span class="plain-syntax">) - </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">with_comments</span><span class="plain-syntax">) {</span>
@@ -114,21 +106,15 @@ its colouring program.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::syntax_colour_inner</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="popuptext" id="usagePopup3">Usage of <b>Painter::syntax_colour_inner</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::syntax_colour_inner</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <b>Painter::syntax_colour_inner</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Spot identifiers, literal text and character constants</span> <span class="named-paragraph-number">2.1</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Spot literal numerical constants</span> <span class="named-paragraph-number">2.2</span>&gt;<span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span>&lt;<span class="named-paragraph">Now run the colouring program</span> <span class="named-paragraph-number">2.4</span>&gt;<span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="4-tp.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">Spot identifiers, literal text and character constants</span><span class="named-paragraph-number">2.1</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="4-tp.html#SP2_2" class="named-paragraph-link"><span class="named-paragraph">Spot literal numerical constants</span><span class="named-paragraph-number">2.2</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="4-tp.html#SP2_4" class="named-paragraph-link"><span class="named-paragraph">Now run the colouring program</span><span class="named-paragraph-number">2.4</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP2_1"></a><b>&#167;2.1.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Spot identifiers, literal text and character constants</span> <span class="named-paragraph-number">2.1</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Spot identifiers, literal text and character constants</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">squote</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_first_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">character_literal</span><span class="plain-syntax">);</span>
@@ -173,17 +159,9 @@ its colouring program.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="4-tp.html#SP2">&#167;2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP2_2"></a><b>&#167;2.2.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Spot literal numerical constants</span> <span class="named-paragraph-number">2.2</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Spot literal numerical constants</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">base</span><span class="plain-syntax"> = -1, </span><span class="identifier-syntax">dec_possible</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -241,19 +219,15 @@ its colouring program.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="4-tp.html#SP2">&#167;2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP2_3"></a><b>&#167;2.3.  </b>For the moment, we always adopt the C rules on identifiers: they have to
+<p class="commentary firstcommentary"><a id="SP2_3"></a><b>&#167;2.3.  </b>For the moment, we always adopt the C rules on identifiers: they have to
 begin with an underscore or letter, then continue with underscores or
 alphanumeric characters, except that if the language allows it then they
 can contain a <span class="extract"><span class="extract-syntax">::</span></span> namespace divider.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::identifier_at</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="popuptext" id="usagePopup4">Usage of <b>Painter::identifier_at</b>:<br><a href="4-tp.html#SP2_1">&#167;2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::identifier_at</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <b>Painter::identifier_at</b>:<br><a href="4-tp.html#SP2_1">&#167;2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">i</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">-1) == </span><span class="constant-syntax">IDENTIFIER_COLOUR</span><span class="plain-syntax">)) {</span>
@@ -273,36 +247,26 @@ can contain a <span class="extract"><span class="extract-syntax">::</span></span
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP2_4"></a><b>&#167;2.4.  </b>With those preliminaries out of the way, the language's colouring program
+<p class="commentary firstcommentary"><a id="SP2_4"></a><b>&#167;2.4.  </b>With those preliminaries out of the way, the language's colouring program
 takes over.
 </p>
 
-<p class="inwebparagraph"></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Now run the colouring program</span> <span class="named-paragraph-number">2.4</span>&gt; =
-</code>
+<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Now run the colouring program</span><span class="named-paragraph-number">2.4</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">program</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="4-tp.html#SP3" class="function-link"><span class="function-syntax">Painter::execute</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">program</span><span class="plain-syntax">, </span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">painter_count</span><span class="plain-syntax">++);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="4-tp.html#SP2">&#167;2</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>The run-type for a block determines what the rules in it apply to: the
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The run-type for a block determines what the rules in it apply to: the
 whole snippet of text, or each character on its own, or each run of characters
 of a given sort. Note that we work width-first, as it were: we complete each
 rule across the whole snippet before moving on to the next.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::execute</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="popuptext" id="usagePopup5">Usage of <b>Painter::execute</b>:<br><a href="4-tp.html#SP2_4">&#167;2.4</a>, <a href="4-tp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax"> *</span><span class="identifier-syntax">block</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::execute</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <b>Painter::execute</b>:<br><a href="4-tp.html#SP2_4">&#167;2.4</a>, <a href="4-tp.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax"> *</span><span class="identifier-syntax">block</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">block</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no block"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">colouring_at_start</span><span class="plain-syntax">);</span>
@@ -380,34 +344,28 @@ rule across the whole snippet before moving on to the next.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">colouring_at_start</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Rules have the form: if X, then Y.
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Rules have the form: if X, then Y.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::execute_rule</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="popuptext" id="usagePopup6">Usage of <b>Painter::execute_rule</b>:<br><a href="4-tp.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::execute_rule</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <b>Painter::execute_rule</b>:<br><a href="4-tp.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-tp.html#SP5" class="function-link"><span class="function-syntax">Painter::satisfies</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">) == </span><span class="identifier-syntax">rule</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sense</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="4-tp.html#SP6" class="function-link"><span class="function-syntax">Painter::follow</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Here we test the "if X":
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Here we test the "if X":
 </p>
 
-<p class="inwebparagraph"></p>
-
-<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">prefix P</span></span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">spaced prefix P</span></span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">optionally spaced prefix P</span></span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">suffix P</span></span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">spaced suffix P</span></span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span><span class="plain-syntax"> </span><span class="comment"> for </span><span class="extract"><span class="extract-syntax">optionally spaced suffix P</span></span>
+<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">prefix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">spaced prefix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">optionally spaced prefix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">suffix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">spaced suffix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span><span class="plain-syntax"> </span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">optionally spaced suffix P</span></span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::satisfies</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="popuptext" id="usagePopup7">Usage of <b>Painter::satisfies</b>:<br><a href="4-tp.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::satisfies</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <b>Painter::satisfies</b>:<br><a href="4-tp.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rule</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">number</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rule</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">number_of</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
@@ -468,17 +426,15 @@ rule across the whole snippet before moving on to the next.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>And here we carry out the "then Y":
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>And here we carry out the "then Y":
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::follow</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="popuptext" id="usagePopup8">Usage of <b>Painter::follow</b>:<br><a href="4-tp.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::follow</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <b>Painter::follow</b>:<br><a href="4-tp.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rule</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">execute_block</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="4-tp.html#SP3" class="function-link"><span class="function-syntax">Painter::execute</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="identifier-syntax">rule</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">execute_block</span><span class="plain-syntax">, </span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rule</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">debug</span><span class="plain-syntax">) </span>&lt;<span class="named-paragraph">Print some debugging text</span> <span class="named-paragraph-number">6.1</span>&gt;
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rule</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">debug</span><span class="plain-syntax">) </span><span class="named-paragraph-container"><a href="4-tp.html#SP6_1" class="named-paragraph-link"><span class="named-paragraph">Print some debugging text</span><span class="named-paragraph-number">6.1</span></span></a>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rule</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">set_to_colour</span><span class="plain-syntax"> != </span><span class="constant-syntax">NOT_A_COLOUR</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=</span><span class="identifier-syntax">from</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">to</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
@@ -489,14 +445,8 @@ rule across the whole snippet before moving on to the next.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="inwebparagraph"><a id="SP6_1"></a><b>&#167;6.1.  </b></p>
-
-<code class="display">
-&lt;<span class="named-paragraph-defn">Print some debugging text</span> <span class="named-paragraph-number">6.1</span>&gt; =
-</code>
+<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Print some debugging text</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"[%d, %d] text: "</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">);</span>
@@ -507,13 +457,11 @@ rule across the whole snippet before moving on to the next.
 <span class="plain-syntax">        </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">, </span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
-<p class="inwebparagraph"></p>
-
 <ul class="endnotetexts"><li>This code is used in <a href="4-tp.html#SP6">&#167;6</a>.</li></ul>
-<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Painting a file. </b></p>
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Painting a file. </b></p>
 
 <pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="function-syntax">Painter::lines</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="popuptext" id="usagePopup9">Usage of <b>Painter::lines</b>:<br>The Parser - <a href="2-tp.html#SP1_1_7_7_2">&#167;1.1.7.7.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="function-syntax">Painter::lines</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <b>Painter::lines</b>:<br>The Parser - <a href="2-tp.html#SP1_1_7_7_2">&#167;1.1.7.7.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/4-tf.html#SP5" class="function-link"><span class="function-syntax">TextFiles::read</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="string-syntax">"unable to read file of textual extract"</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        &amp;</span><a href="4-tp.html#SP7" class="function-link"><span class="function-syntax">Painter::text_file_helper</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
@@ -535,12 +483,12 @@ rule across the whole snippet before moving on to the next.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::text_file_helper</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="popuptext" id="usagePopup10">Usage of <b>Painter::text_file_helper</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::text_file_helper</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <b>Painter::text_file_helper</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">), </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::colour_file</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="popuptext" id="usagePopup11">Usage of <b>Painter::colour_file</b>:<br>Program Control - <a href="1-pc.html#SP7_3">&#167;7.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">coloured</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::colour_file</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <b>Painter::colour_file</b>:<br>Program Control - <a href="1-pc.html#SP7_3">&#167;7.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">coloured</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><a href="4-tp.html#SP7" class="function-link"><span class="function-syntax">Painter::lines</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pl</span><span class="plain-syntax">) </span><a href="4-tp.html#SP1" class="function-link"><span class="function-syntax">Painter::reset_syntax_colouring</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>

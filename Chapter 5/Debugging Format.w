@@ -273,7 +273,7 @@ void Debugging::show_para(text_stream *OUT, paragraph *P) {
 
 void Debugging::show_mat(text_stream *OUT, int m) {
 	switch (m) {
-		case REGULAR_MATERIAL: WRITE("discussion"); break;
+		case COMMENTARY_MATERIAL: WRITE("discussion"); break;
 		case MACRO_MATERIAL: WRITE("paragraph macro"); break;
 		case DEFINITION_MATERIAL: WRITE("definition"); break;
 		case CODE_MATERIAL: WRITE("code"); break;

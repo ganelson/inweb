@@ -59,74 +59,62 @@ MathJax = {
 
 <ul class="toc"><li><a href="M-htwaw.html#SP1">&#167;1. The title of a section</a></li><li><a href="M-htwaw.html#SP2">&#167;2. Paragraphing</a></li><li><a href="M-htwaw.html#SP6">&#167;6. Conditional compilation</a></li><li><a href="M-htwaw.html#SP7">&#167;7. Commentary</a></li><li><a href="M-htwaw.html#SP12">&#167;12. Code samples and other extraneous matter</a></li><li><a href="M-htwaw.html#SP13">&#167;13. Links</a></li><li><a href="M-htwaw.html#SP14">&#167;14. Cross-references</a></li><li><a href="M-htwaw.html#SP18">&#167;18. Figures</a></li><li><a href="M-htwaw.html#SP19">&#167;19. Carousels</a></li><li><a href="M-htwaw.html#SP20">&#167;20. Embedded video</a></li><li><a href="M-htwaw.html#SP22">&#167;22. Mathematics notation</a></li><li><a href="M-htwaw.html#SP23">&#167;23. Footnotes</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. The title of a section. </b>In any section file, there will be a few lines at the top which occur before
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. The title of a section. </b>In any section file, there will be a few lines at the top which occur before
 the first paragraph of code begins. (The first paragraph begins on the first
 line which starts with an <span class="extract"><span class="extract-syntax">@</span></span> character.)
 </p>
 
-<p class="inwebparagraph">The first line should be the title of the section, followed by a full stop.
+<p class="commentary">The first line should be the title of the section, followed by a full stop.
 For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    The Sieve of Eratosthenes.</span>
 </pre>
-<p class="inwebparagraph">A section title must contain only filename-safe characters, and it's probably
+<p class="commentary">A section title must contain only filename-safe characters, and it's probably
 wise to make them filename-safe on all platforms: so don't include either
 kind of slash, or a colon, and in general go easy on punctuation marks.
 </p>
 
-<p class="inwebparagraph">Optionally, a section heading can also specify its own range abbreviation,
+<p class="commentary">Optionally, a section heading can also specify its own range abbreviation,
 which must be given in round brackets and followed by a colon:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    (S/sieve): The Sieve of Eratosthenes.</span>
 </pre>
-<p class="inwebparagraph">If this is not done (and usually it is not), Inweb will construct a range
+<p class="commentary">If this is not done (and usually it is not), Inweb will construct a range
 abbreviation itself: in this case, it comes up with <span class="extract"><span class="extract-syntax">S/tsoe</span></span>.
 </p>
 
-<p class="inwebparagraph">Subsequent lines of text are then taken as the optional description of the
+<p class="commentary">Subsequent lines of text are then taken as the optional description of the
 purpose of the code in this section. (This is used on contents pages.) For
 example:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    A fairly fast way to determine if small numbers are prime, given storage.</span>
 </pre>
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Paragraphing. </b>A standard paragraph is introduced with an <span class="extract"><span class="extract-syntax">@</span></span> command, which must place
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Paragraphing. </b>A standard paragraph is introduced with an <span class="extract"><span class="extract-syntax">@</span></span> command, which must place
 that magic character in the first column of the line:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> This is some comment at the start of a new paragraph, which...</span>
 </pre>
-<p class="inwebparagraph">A fancier paragraph with a subheading attached is introduced using the
+<p class="commentary">A fancier paragraph with a subheading attached is introduced using the
 <span class="extract"><span class="extract-syntax">@h</span></span> or <span class="extract"><span class="extract-syntax">@heading</span></span> command instead. (This is simply a long and short version
 of the same command.) The text of the subheading then follows, up to the
 first full stop.
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@heading</span><span class="plain-syntax"> Reflections on the method.</span>
 </pre>
-<p class="inwebparagraph">Paragraphs can contain three ingredients, all optional, but if given then
+<p class="commentary">Paragraphs can contain three ingredients, all optional, but if given then
 given in this order: comment, definitions, and code. The following
 example shows all three being used:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@h</span><span class="plain-syntax"> Primality.</span>
@@ -145,23 +133,19 @@ example shows all three being used:
 <span class="plain-syntax">        return TRUE;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>Definitions are made using one of three commands: <span class="extract"><span class="extract-syntax">@d</span></span> or <span class="extract"><span class="extract-syntax">@define</span></span>; or
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Definitions are made using one of three commands: <span class="extract"><span class="extract-syntax">@d</span></span> or <span class="extract"><span class="extract-syntax">@define</span></span>; or
 <span class="extract"><span class="extract-syntax">@e</span></span> or <span class="extract"><span class="extract-syntax">@enum</span></span>; or <span class="extract"><span class="extract-syntax">@default</span></span>, which is rarely used and has no abbreviation.
 These create new constants in the program, with the values given: they are
 the equivalent of a <span class="extract"><span class="extract-syntax">#define</span></span> directive in C. <span class="extract"><span class="extract-syntax">@define</span></span> is the simpler form.
 For example,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@define</span><span class="plain-syntax"> ENIGMATIC_NUMBER 90125</span>
 </pre>
-<p class="inwebparagraph">sets <span class="extract"><span class="extract-syntax">ENIGMATIC_NUMBER</span></span> to 90125. Unlike in the C preprocessor, multi-line
+<p class="commentary">sets <span class="extract"><span class="extract-syntax">ENIGMATIC_NUMBER</span></span> to 90125. Unlike in the C preprocessor, multi-line
 definitions are automatically handled, so for example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> The following macro defines a function:</span>
@@ -176,140 +160,120 @@ definitions are automatically handled, so for example:
 <span class="plain-syntax">        printf("The banana has an eat-by date of %d.", consume_by_banana(&amp;my_banana));</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph">In fact, a definition continues until the next definition, or until the code
+<p class="commentary">In fact, a definition continues until the next definition, or until the code
 part of the paragraph begins, or until the paragraph ends, whichever comes
 first.
 </p>
 
-<p class="inwebparagraph">Enumerations with <span class="extract"><span class="extract-syntax">@enum</span></span> are a convenience to define enumerated constants.
+<p class="commentary">Enumerations with <span class="extract"><span class="extract-syntax">@enum</span></span> are a convenience to define enumerated constants.
 For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@enum</span><span class="plain-syntax"> JANUARY_MNTH from 0</span>
 <span class="plain-syntax">    </span><span class="function-syntax">@enum</span><span class="plain-syntax"> FEBRUARY_MNTH</span>
 <span class="plain-syntax">    </span><span class="function-syntax">@enum</span><span class="plain-syntax"> MARCH_MNTH</span>
 </pre>
-<p class="inwebparagraph">and so on, is equivalent to
+<p class="commentary">and so on, is equivalent to
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@define</span><span class="plain-syntax"> JANUARY_MNTH 0</span>
 <span class="plain-syntax">    </span><span class="function-syntax">@define</span><span class="plain-syntax"> FEBRUARY_MNTH 1</span>
 <span class="plain-syntax">    </span><span class="function-syntax">@define</span><span class="plain-syntax"> MARCH_MNTH 2</span>
 </pre>
-<p class="inwebparagraph">What happens is that <span class="extract"><span class="extract-syntax">@enum</span></span> looks at the tail of the name, from the last
+<p class="commentary">What happens is that <span class="extract"><span class="extract-syntax">@enum</span></span> looks at the tail of the name, from the last
 underscore to the end: in this case, <span class="extract"><span class="extract-syntax">_MNTH</span></span>. The first time an enumerated
 value is asked for with this tail, <span class="extract"><span class="extract-syntax">from</span></span> is used to specify the lowest
 number to be used - in the above case, months begin counting from 0. With
 each subsequent <span class="extract"><span class="extract-syntax">_MNTH</span></span> request, <span class="extract"><span class="extract-syntax">@enum</span></span> allocates the next unused value.
 </p>
 
-<p class="inwebparagraph">All symbols defined with <span class="extract"><span class="extract-syntax">@define</span></span> or <span class="extract"><span class="extract-syntax">@enum</span></span> are global, and can be used
+<p class="commentary">All symbols defined with <span class="extract"><span class="extract-syntax">@define</span></span> or <span class="extract"><span class="extract-syntax">@enum</span></span> are global, and can be used
 from anywhere in the web, including in sections or paragraphs earlier than
 the ones in which they are defined. (The tangler automatically arranges code
 as necessary to make this work.)
 </p>
 
-<p class="inwebparagraph">A symbol defined with <span class="extract"><span class="extract-syntax">@default</span></span> has the given value only if some other use
+<p class="commentary">A symbol defined with <span class="extract"><span class="extract-syntax">@default</span></span> has the given value only if some other use
 of <span class="extract"><span class="extract-syntax">@d</span></span> or <span class="extract"><span class="extract-syntax">@e</span></span> in the web has not already defined it. For example, if the
 web contains:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@default</span><span class="plain-syntax"> MAX_HEADROOM 100</span>
 <span class="plain-syntax">    </span><span class="function-syntax">@d</span><span class="plain-syntax"> MAX_HEADROOM 99</span>
 </pre>
-<p class="inwebparagraph">or
+<p class="commentary">or
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@d</span><span class="plain-syntax"> MAX_HEADROOM 99</span>
 <span class="plain-syntax">    </span><span class="function-syntax">@default</span><span class="plain-syntax"> MAX_HEADROOM 100</span>
 </pre>
-<p class="inwebparagraph">then the value is 99, but if only
+<p class="commentary">then the value is 99, but if only
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@default</span><span class="plain-syntax"> MAX_HEADROOM 100</span>
 </pre>
-<p class="inwebparagraph">then the value is 100.
+<p class="commentary">then the value is 100.
 </p>
 
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4.  </b>Finally, a paragraph can contain code. This is introduced with an equals
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Finally, a paragraph can contain code. This is introduced with an equals
 sign: in some sense, the value of the paragraph is the code it contains.
 In many paragraphs, as in the example above, the divider is just
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    =</span>
 </pre>
-<p class="inwebparagraph">and this means that the rest of the paragraph is part of the program.
+<p class="commentary">and this means that the rest of the paragraph is part of the program.
 Ordinarily, this must appear in column 1, but a special abbreviation is
 allowed for paragraphs with no comment and no definitions:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@ =</span>
 </pre>
-<p class="inwebparagraph">This is exactly equivalent to:
+<p class="commentary">This is exactly equivalent to:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span>
 
 <span class="plain-syntax">    =</span>
 </pre>
-<p class="inwebparagraph">We can tell the tangler to place the code early in the tangled program,
+<p class="commentary">We can tell the tangler to place the code early in the tangled program,
 rather than at its natural place in the sequence, by annotating
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (early code)</span>
 </pre>
-<p class="inwebparagraph">instead of just <span class="extract"><span class="extract-syntax">=</span></span>. (This is occasionally useful where, for example, it's
+<p class="commentary">instead of just <span class="extract"><span class="extract-syntax">=</span></span>. (This is occasionally useful where, for example, it's
 necessary to create global variables which will be referred to in other
 sections of code.) The more extreme <span class="extract"><span class="extract-syntax">= (very early code)</span></span> can be used in C
 for complicated header file inclusions, but should be kept to an absolute
 minimum, if only for clarity.
 </p>
 
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>One last feature, but it's the most important. Some code extracts are
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>One last feature, but it's the most important. Some code extracts are
 given names, in angle brackets. If so, then the paragraph is the definition
 of that extract. For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@&lt;Dramatic finale@&gt; =</span>
 <span class="plain-syntax">        printf("I'm ruined! Ruined, I say!\n");</span>
 <span class="plain-syntax">        exit(1);</span>
 </pre>
-<p class="inwebparagraph">Notice that the equals sign is still there: it's just that the chunk of code
+<p class="commentary">Notice that the equals sign is still there: it's just that the chunk of code
 is given a name, written inside <span class="extract"><span class="extract-syntax">@&lt;</span></span> and <span class="extract"><span class="extract-syntax">@&gt;</span></span> "brackets". (This notation
 goes all the way back to Knuth's original WEB.)
 </p>
 
-<p class="inwebparagraph">What does the tangler do with this? It doesn't place the code as the next
+<p class="commentary">What does the tangler do with this? It doesn't place the code as the next
 item in the program. Instead, it expands any mention of <span class="extract"><span class="extract-syntax">@&lt;Dramatic finale@&gt;</span></span>
 elsewhere in the section with this block of code. It can be expanded as
 many times as necessary, but only within the same section. Another section
@@ -317,12 +281,10 @@ would be quite free to define its own <span class="extract"><span class="extract
 not be able to see this one.
 </p>
 
-<p class="inwebparagraph">Why is this important? One of the points of literate programming is to
+<p class="commentary">Why is this important? One of the points of literate programming is to
 subdivide the program on conceptual lines, even within single functions.
 For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@&lt;Perform the sieve@&gt; =</span>
@@ -332,59 +294,51 @@ For example:
 <span class="plain-syntax">                </span><span class="function-syntax">@&lt;Shake out multiples of n@&gt;</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        sieve_performed = TRUE;</span>
 </pre>
-<p class="inwebparagraph">This is easier to understand than writing the function all in one go, and
+<p class="commentary">This is easier to understand than writing the function all in one go, and
 more practicable than breaking it up into smaller functions.
 </p>
 
-<p class="inwebparagraph">Named paragraphs behave, in some ways, like macro definitions, and those
+<p class="commentary">Named paragraphs behave, in some ways, like macro definitions, and those
 have a bad name nowadays - probably fairly. But Inweb makes them much
 safer to use than traditional macros, because it tangles them into code
 blocks, not just into runs of statements. A variable defined inside a
 named paragraph has, as its scope, just that paragraph. And this:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">            if (still_in_sieve[n])</span>
 <span class="plain-syntax">                </span><span class="function-syntax">@&lt;Shake out multiples of n@&gt;</span><span class="plain-syntax">;</span>
 </pre>
-<p class="inwebparagraph">works safely because <span class="extract"><span class="extract-syntax">@&lt;Shake out multiples of n@&gt;</span></span> is, thanks to being a
+<p class="commentary">works safely because <span class="extract"><span class="extract-syntax">@&lt;Shake out multiples of n@&gt;</span></span> is, thanks to being a
 code block, semantically a single statement.
 </p>
 
-<p class="inwebparagraph">Finally, note that if there are no commentary or definitions attached to
+<p class="commentary">Finally, note that if there are no commentary or definitions attached to
 the paragraph then it's not necessary to type the initial <span class="extract"><span class="extract-syntax">@</span></span>. That is,
 this:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span>
 
 <span class="plain-syntax">    </span><span class="function-syntax">@&lt;Prepare to exit@&gt; =</span>
 </pre>
-<p class="inwebparagraph">...is not necessary, and it's sufficient to type just:
+<p class="commentary">...is not necessary, and it's sufficient to type just:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@&lt;Prepare to exit@&gt; =</span>
 </pre>
-<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6. Conditional compilation. </b>In some languages, especially C, it's very hard to write a program which will
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Conditional compilation. </b>In some languages, especially C, it's very hard to write a program which will
 run on multiple operating systems without some use of conditional compilation:
 that is, putting some code or definitions inside <span class="extract"><span class="extract-syntax">#ifdef</span></span> clauses or the like.
 </p>
 
-<p class="inwebparagraph">Inweb can't alter this sad fact of life, but it can make the process tidier.
+<p class="commentary">Inweb can't alter this sad fact of life, but it can make the process tidier.
 If a paragraph has the tag <span class="extract"><span class="extract-syntax">^"ifdef-SYMBOL"</span></span>, then any material in it will
 be tangled in such a way that it takes effect only if <span class="extract"><span class="extract-syntax">SYMBOL</span></span> is defined.
 For example, in a C-language web with the paragraph:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@h</span><span class="plain-syntax"> Windows stuff. ^"ifdef-PLATFORM_WINDOWS"</span>
@@ -395,36 +349,34 @@ For example, in a C-language web with the paragraph:
 <span class="plain-syntax">        ...</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="inwebparagraph">...the definition of <span class="extract"><span class="extract-syntax">THREADS_AVAILABLE</span></span> and the function <span class="extract"><span class="extract-syntax">start_threads</span></span>
+<p class="commentary">...the definition of <span class="extract"><span class="extract-syntax">THREADS_AVAILABLE</span></span> and the function <span class="extract"><span class="extract-syntax">start_threads</span></span>
 would be made only inside a <span class="extract"><span class="extract-syntax">#ifdef PLATFORM_WINDOWS</span></span> clause; the same would
 happen for any typedefs or <span class="extract"><span class="extract-syntax">#include</span></span>s made.
 </p>
 
-<p class="inwebparagraph">Similarly, tagging a paragraph <span class="extract"><span class="extract-syntax">^"ifndef-SYMBOL"</span></span> causes it to have effect
+<p class="commentary">Similarly, tagging a paragraph <span class="extract"><span class="extract-syntax">^"ifndef-SYMBOL"</span></span> causes it to have effect
 only if <span class="extract"><span class="extract-syntax">SYMBOL</span></span> is undefined. A paragraph can have any number of such
 conditions applied to it, and if so then all of the conditions must be met.
 </p>
 
-<p class="inwebparagraph">Note that since tags can be applied to entire sections of a web, at the
+<p class="commentary">Note that since tags can be applied to entire sections of a web, at the
 Contents listing, it's straightforward to give, say, two versions of a
 section file, one with effect on MacOS, one with effect on Windows.
 </p>
 
-<p class="inwebparagraph"><a id="SP7"></a><b>&#167;7. Commentary. </b>The comment part of a paragraph is ignored by the tangler, and appears only
+<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Commentary. </b>The comment part of a paragraph is ignored by the tangler, and appears only
 in weaves. For the most part, the text is simply copied over verbatim: but
 Inweb quietly tries to improve the appearance of what it copies, and a
 few special notations are allowed, to help with this.
 </p>
 
-<p class="inwebparagraph"><a id="SP8"></a><b>&#167;8.  </b>A doubled hyphen becomes an em-rule; double-quotation marks automatically
+<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>A doubled hyphen becomes an em-rule; double-quotation marks automatically
 smarten (in TeX format, at least).
 </p>
 
-<p class="inwebparagraph"><a id="SP9"></a><b>&#167;9.  </b>Lines beginning with what look like bracketed list numbers or letters are
+<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Lines beginning with what look like bracketed list numbers or letters are
 set as such, running on into little indented paragraphs. Thus
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    (a) Intellectual property has the shelf life of a banana. (Bill Gates)</span>
@@ -432,148 +384,121 @@ set as such, running on into little indented paragraphs. Thus
 <span class="plain-syntax">    (c) Harvard takes perfectly good plums as students, and turns them into</span>
 <span class="plain-syntax">    prunes. (Frank Lloyd Wright)</span>
 </pre>
-<p class="inwebparagraph">will be typeset thus:
+<p class="commentary">will be typeset thus:
 </p>
 
-<ul class="items"><li>(a) <p class="inwebparagraph">Intellectual property has the shelf life of a banana. (Bill Gates)
-</p>
-
-<ul class="items"><li>(b) <p class="inwebparagraph">He is the very pineapple of politeness! (Richard Brinsley Sheridan)
-</p>
-
-<ul class="items"><li>(c) <p class="inwebparagraph">Harvard takes perfectly good plums as students, and turns them into
+<ul class="items"><li>(a) Intellectual property has the shelf life of a banana. (Bill Gates)
+</li><li>(b) He is the very pineapple of politeness! (Richard Brinsley Sheridan)
+</li><li>(c) Harvard takes perfectly good plums as students, and turns them into
 prunes. (Frank Lloyd Wright)
-</p>
-
-<p class="inwebparagraph">A line which begins <span class="extract"><span class="extract-syntax">(...)</span></span> will be treated as a continuation of indented
+</li></ul>
+<p class="commentary">A line which begins <span class="extract"><span class="extract-syntax">(...)</span></span> will be treated as a continuation of indented
 matter (following on from some break-off such as a source quotation).
 A line which begins <span class="extract"><span class="extract-syntax">(-X)</span></span> will be treated as if it were <span class="extract"><span class="extract-syntax">(X)</span></span>, but
 indented one tab stop further in, like so:
 </p>
 
-<ul class="items"><li>(c) <p class="inwebparagraph">Harvard blah, blah, blah. (Frank Lloyd Wright)
-</p>
-
-<ul class="items"><ul class="items"><li>(d) <p class="inwebparagraph">Pick a song and sing a yellow nectarine. (Scott Weiland)
-</p>
-
-<p class="inwebparagraph"><a id="SP10"></a><b>&#167;10.  </b>Text placed between vertical strokes will be set in a fixed-space, code
+<ul class="items"><li>(c) Harvard blah, blah, blah. (Frank Lloyd Wright)
+<ul class="items"><li>(d) Pick a song and sing a yellow nectarine. (Scott Weiland)
+</li></ul>
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Text placed between vertical strokes will be set in a fixed-space, code
 style font, <span class="extract"><span class="extract-syntax">thus</span></span>. This paragraph appears in the web you are reading thus:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Text placed between vertical strokes will be set in a fixed-space, code</span>
 <span class="plain-syntax">    style font, |thus|. This paragraph appears in the web you are reading thus:</span>
 </pre>
-<p class="inwebparagraph">This notation may be inconvenient if you need the vertical stroke character
+<p class="commentary">This notation may be inconvenient if you need the vertical stroke character
 for something else, especially as the notation is used both in code comments
 and in paragraph commentary. But both notations can be configured in the
 Contents page of a web, thus:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="element-syntax">Code In Code Comments Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> Off</span>
 <span class="element-syntax">Code In Commentary Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> %%</span>
 </pre>
-<p class="inwebparagraph">This example would turn off the feature in code comments, but allow it in
+<p class="commentary">This example would turn off the feature in code comments, but allow it in
 paragraph commentary; we would then need to write...
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Text placed between vertical strokes will be set in a fixed-space, code</span>
 <span class="plain-syntax">    style font, %%thus%%. This paragraph appears in the web you are reading thus:</span>
 </pre>
-<p class="inwebparagraph"><a id="SP11"></a><b>&#167;11.  </b>A line written thus:
+<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>A line written thus:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    &gt;&gt; The monkey carries the blue scarf.</span>
 </pre>
-<p class="inwebparagraph">is typeset as an extract of text thus:
+<p class="commentary">is typeset as an extract of text thus:
 </p>
 
 <blockquote>
     <p>The monkey carries the blue scarf.</p>
 </blockquote>
 
-<p class="inwebparagraph">(This is a feature used for Inform 7 "code" samples, those being essentially
+<p class="commentary">(This is a feature used for Inform 7 "code" samples, those being essentially
 natural language text.)
 </p>
 
-<p class="inwebparagraph"><a id="SP12"></a><b>&#167;12. Code samples and other extraneous matter. </b>When is code not code? When it's an extract of text being displayed for
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Code samples and other extraneous matter. </b>When is code not code? When it's an extract of text being displayed for
 documentation reasons, is the answer. We can include this like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (text)</span>
 <span class="plain-syntax">    Here is my sample bit of text.</span>
 <span class="plain-syntax">    = (undisplayed text)</span>
 </pre>
-<p class="inwebparagraph">This is assumed to be plain text, and is syntax-coloured (or rather, not)
+<p class="commentary">This is assumed to be plain text, and is syntax-coloured (or rather, not)
 as such, but otherwise it's woven as code. Using the word <span class="extract"><span class="extract-syntax">undisplayed</span></span>
 before <span class="extract"><span class="extract-syntax">text</span></span> tells Inweb to do so less showily, on HTML weaves:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (undisplayed text)</span>
 </pre>
-<p class="inwebparagraph">Sometimes, though, we do want syntax colouring. If in fact it is a
+<p class="commentary">Sometimes, though, we do want syntax colouring. If in fact it is a
 hypothetical piece of code from the program &mdash; for example, a demonstration of
 an API, but for reading and not to be compiled &mdash; we can instead write:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (text as code)</span>
 </pre>
-<p class="inwebparagraph">and the text will then be treated visually exactly as the surrounding
+<p class="commentary">and the text will then be treated visually exactly as the surrounding
 program is. If, on the other hand, it's a sample piece of code from a
 different language altogether, we can specify which:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (text as ACME)</span>
 </pre>
-<p class="inwebparagraph">This will then be syntax-coloured following the rules for ACME (or any
+<p class="commentary">This will then be syntax-coloured following the rules for ACME (or any
 other language supported by Inweb).
 </p>
 
-<p class="inwebparagraph">Note that if your web is written in, for example, C, then these are
+<p class="commentary">Note that if your web is written in, for example, C, then these are
 subtly different:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (text as C)</span>
 <span class="plain-syntax">    = (text as code)</span>
 </pre>
-<p class="inwebparagraph">The difference is that syntax-colouring in the first case doesn't know
+<p class="commentary">The difference is that syntax-colouring in the first case doesn't know
 the names of any surrounding functions or data structures; in the second
 case, it knows the names of all those in your program.
 </p>
 
-<p class="inwebparagraph">Samples of code are, uniquely, allowed to end mid-way in a paragraph (unlike
+<p class="commentary">Samples of code are, uniquely, allowed to end mid-way in a paragraph (unlike
 real code): placing a <span class="extract"><span class="extract-syntax">=</span></span> on the left margin allows the commentary to resume.
 For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (text as ACME)</span>
@@ -581,185 +506,152 @@ For example,
 <span class="plain-syntax">    =</span>
 <span class="plain-syntax">    ...which is essential in order to restore the state of</span>
 </pre>
-<p class="inwebparagraph"><a id="SP13"></a><b>&#167;13. Links. </b>URLs in the web are automatically recognised and a weave to HTML will
+<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Links. </b>URLs in the web are automatically recognised and a weave to HTML will
 make them into links. For example:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    For further reading, see: https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships</span>
 </pre>
-<p class="inwebparagraph">For further reading, see: <a href="https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships" class="external">https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships</a>
+<p class="commentary">For further reading, see: <a href="https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships" class="external">https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships</a>
 </p>
 
-<p class="inwebparagraph">Note that URLs are considered to continue to the next white space, so don't
+<p class="commentary">Note that URLs are considered to continue to the next white space, so don't
 end them with full stops or commas.
 </p>
 
-<p class="inwebparagraph">URLs will also be recognised in any text extract marked as <span class="extract"><span class="extract-syntax">hyperlinked</span></span>.
+<p class="commentary">URLs will also be recognised in any text extract marked as <span class="extract"><span class="extract-syntax">hyperlinked</span></span>.
 For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Compare: https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes</span>
 </pre>
-<p class="inwebparagraph">produces:
+<p class="commentary">produces:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Compare: </span><a href="https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes" class="external">https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes</a>
 </pre>
-<p class="inwebparagraph"><a id="SP14"></a><b>&#167;14. Cross-references. </b>These are like links, but internal. These are normally written within <span class="extract"><span class="extract-syntax">//</span></span>
+<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Cross-references. </b>These are like links, but internal. These are normally written within <span class="extract"><span class="extract-syntax">//</span></span>
 signs and are only available in the commentary of a web. They allow us to
 place cross-references like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    To see how cross-references are implemented, see //Format Methods//,</span>
 <span class="plain-syntax">    or more generally the whole of //Chapter 5//; to decipher the text,</span>
 <span class="plain-syntax">    Inweb uses code from //foundation// at //foundation: Web Modules//.</span>
 </pre>
-<p class="inwebparagraph">To see how cross-references are implemented, see <a href="5-fm.html" class="internal">Format Methods</a>,
+<p class="commentary">To see how cross-references are implemented, see <a href="5-fm.html" class="internal">Format Methods</a>,
 or more generally the whole of <a href="5-wt.html" class="internal">Chapter 5: Formats</a>; to decipher the text,
 Inweb uses code from <a href="../foundation-module/index.html" class="internal">foundation</a> at <a href="../foundation-module/8-wm.html" class="internal">Web Modules (in foundation)</a>.
 </p>
 
-<p class="inwebparagraph">What happened in that last sentence is that Inweb noticed the following:
+<p class="commentary">What happened in that last sentence is that Inweb noticed the following:
 </p>
 
-<ul class="items"><li>(a) <p class="inwebparagraph">"Format Methods" is the name of a section of code in the Inweb web;
-</p>
-
-<ul class="items"><li>(b) <p class="inwebparagraph">The web also has a "Chapter 5";
-</p>
-
-<ul class="items"><li>(c) <p class="inwebparagraph">It uses a module called "foundation";
-</p>
-
-<ul class="items"><li>(d) <p class="inwebparagraph">And that module has a section called "Web Modules".
-</p>
-
-<p class="inwebparagraph">Inweb then made links accordingly. Chapters, which can be referred to either
+<ul class="items"><li>(a) "Format Methods" is the name of a section of code in the Inweb web;
+</li><li>(b) The web also has a "Chapter 5";
+</li><li>(c) It uses a module called "foundation";
+</li><li>(d) And that module has a section called "Web Modules".
+</li></ul>
+<p class="commentary">Inweb then made links accordingly. Chapters, which can be referred to either
 numerically, link to the first section in them; modules likewise. Errors are
 thrown if these references to sections are in any way ambiguous. They are not
 case sensitive.
 </p>
 
-<p class="inwebparagraph"><a id="SP15"></a><b>&#167;15.  </b>Sometimes we want to make a link without literally showing the destination.
+<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>Sometimes we want to make a link without literally showing the destination.
 This is simple: for example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    First //the program has to configure itself -&gt; Configuration//, then...</span>
 </pre>
-<p class="inwebparagraph">produces: "First <a href="1-cnf.html" class="internal">the program has to configure itself</a>,
+<p class="commentary">produces: "First <a href="1-cnf.html" class="internal">the program has to configure itself</a>,
 then..."; the text "the program has to configure itself" links to <a href="1-cnf.html" class="internal">Configuration</a>.
 </p>
 
-<p class="inwebparagraph"><a id="SP16"></a><b>&#167;16.  </b>It's also possible to reference function names and type names, provided that
+<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>It's also possible to reference function names and type names, provided that
 the language definition supports these (see <a href="M-spl.html" class="internal">Supporting Programming Languages</a>):
 this is certainly the case for C-like languages. For example,
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Individual lines of a web are stored in //source_line// structures,</span>
 <span class="plain-syntax">    and mostly created by //Reader::read_file//.</span>
 </pre>
-<p class="inwebparagraph">produces: Individual lines of a web are stored in <a href="2-lc.html#SP1" class="internal">source_line</a> structures,
+<p class="commentary">produces: Individual lines of a web are stored in <a href="2-lc.html#SP1" class="internal">source_line</a> structures,
 and mostly created by <a href="2-tr.html#SP6" class="internal">Reader::read_file</a>. And that should link to the
 structure definition and function of these names inside the Inweb program.
 </p>
 
-<p class="inwebparagraph">Lastly, cross-references can even be made to webs quite separate from the
+<p class="commentary">Lastly, cross-references can even be made to webs quite separate from the
 current one, but this requires the use of a Colony file.
 See <a href="M-mwiw.html" class="internal">Making Weaves into Websites</a>.
 </p>
 
-<p class="inwebparagraph"><a id="SP17"></a><b>&#167;17.  </b>Cross-references also work inside text extracts marked as <span class="extract"><span class="extract-syntax">hyperlinked</span></span>.
+<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>Cross-references also work inside text extracts marked as <span class="extract"><span class="extract-syntax">hyperlinked</span></span>.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (hyperlinked text)</span>
 <span class="plain-syntax">        See the //Manual// for more on this.</span>
 <span class="plain-syntax">    =</span>
 </pre>
-<p class="inwebparagraph">produces:
+<p class="commentary">produces:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    See the </span><a href="M-iti.html" class="internal">Manual</a><span class="plain-syntax"> for more on this.</span>
 </pre>
-<p class="inwebparagraph">This notation may be inconvenient if you need <span class="extract"><span class="extract-syntax">//</span></span> for something else, but it
+<p class="commentary">This notation may be inconvenient if you need <span class="extract"><span class="extract-syntax">//</span></span> for something else, but it
 can be configured in the Contents page of a web, say like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="element-syntax">Cross-References Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> &amp;&amp;&amp;</span>
 </pre>
-<p class="inwebparagraph">It's also possible to disable cross-referencing entirely with:
+<p class="commentary">It's also possible to disable cross-referencing entirely with:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="element-syntax">Cross-References Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> Off</span>
 </pre>
-<p class="inwebparagraph"><a id="SP18"></a><b>&#167;18. Figures. </b>Images to be included in weaves of a web are called "Figures", as they
+<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18. Figures. </b>Images to be included in weaves of a web are called "Figures", as they
 would be in a printed book. These images should ideally be in PNG, JPG or PDF
 format and placed in a subdirectory of the web called <span class="extract"><span class="extract-syntax">Figures</span></span>: for instance,
 the weaver would seek <span class="extract"><span class="extract-syntax">Fig_2_3.pdf</span></span> at pathname <span class="extract"><span class="extract-syntax">Figures/Fig_2_3.pdf</span></span>.
 </p>
 
-<p class="inwebparagraph">To embed an image, we write like so:
+<p class="commentary">To embed an image, we write like so:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (figure mars.jpg)</span>
 </pre>
-<p class="inwebparagraph">With results like so:
+<p class="commentary">With results like so:
 </p>
 
 <center><img src="mars.jpg"></center>
-<p class="inwebparagraph">Inweb also has some limited ability to control the dimensions of an image:
+<p class="commentary">Inweb also has some limited ability to control the dimensions of an image:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (figure Whatever.jpg at width 500)</span>
 <span class="plain-syntax">    = (figure Something.jpg at height 2cm)</span>
 </pre>
-<p class="inwebparagraph">Dimensions given in cm are scaled at 72 times dimensions given without a
+<p class="commentary">Dimensions given in cm are scaled at 72 times dimensions given without a
 measurement; in practice, rendering to TeX produces roughly the number of
 centimeters asked for, and rendering to HTML makes the image width or height
 correspond. If you really want to monkey with the aspect ratio,
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (figure Whatever.jpg at 20 by 100)</span>
 </pre>
-<p class="inwebparagraph"><a id="SP19"></a><b>&#167;19. Carousels. </b>A carousel is a slide-show of (usually but not always) figures; there's a
+<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Carousels. </b>A carousel is a slide-show of (usually but not always) figures; there's a
 set of slides with captions, only one of which is visible at a time.
 </p>
 
@@ -798,8 +690,6 @@ set of slides with captions, only one of which is visible at a time.
 <span class="carousel-dot" onclick="carouselSetSlide(&quot;carousel-no-1&quot;, &quot;carousel-dots-no-1&quot;, 3)"></span>
 </div>
 That carousel was produced by:
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (carousel "Royal Albert Hall, London: King Crimson's 50th Anniversary Concert")</span>
 <span class="plain-syntax">    = (figure rah.jpg)</span>
@@ -811,7 +701,7 @@ That carousel was produced by:
 <span class="plain-syntax">    = (figure venice.jpg)</span>
 <span class="plain-syntax">    = (carousel end)</span>
 </pre>
-<p class="inwebparagraph">That carousel contained only figures, but almost any material can go into the
+<p class="commentary">That carousel contained only figures, but almost any material can go into the
 slides, paragraph breaks excepted. For example:
 </p>
 
@@ -819,9 +709,7 @@ slides, paragraph breaks excepted. For example:
 <div class="carousel-slide fading-slide" style="display: block;">
 <div class="carousel-caption-above">Stage 1 - Raw tree</div>
 <div class="carousel-number-above">1 / 3</div>
-<div class="carousel-content"><p class="inwebparagraph"></p>
-
-<pre class="displayed-code all-displayed-code">
+<div class="carousel-content"><pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">ROOT</span><span class="plain-syntax"> ---&gt; </span><span class="function-syntax">DOCUMENT</span>
 </pre>
 </div>
@@ -829,9 +717,7 @@ slides, paragraph breaks excepted. For example:
 <div class="carousel-slide fading-slide" style="display: none;">
 <div class="carousel-caption-above">Stage 2 - Developed tree</div>
 <div class="carousel-number-above">2 / 3</div>
-<div class="carousel-content"><p class="inwebparagraph"></p>
-
-<pre class="displayed-code all-displayed-code">
+<div class="carousel-content"><pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">ROOT</span><span class="plain-syntax"> ---&gt; </span><span class="function-syntax">DOCUMENT</span>
 <span class="plain-syntax">                |</span>
 <span class="plain-syntax">              </span><span class="function-syntax">NODE</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">  ---  </span><span class="function-syntax">NODE</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">  ---  </span><span class="function-syntax">NODE</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">  --- ...</span>
@@ -841,9 +727,7 @@ slides, paragraph breaks excepted. For example:
 <div class="carousel-slide fading-slide" style="display: none;">
 <div class="carousel-caption-above">Stage 3 - Completed tree</div>
 <div class="carousel-number-above">3 / 3</div>
-<div class="carousel-content"><p class="inwebparagraph"></p>
-
-<pre class="displayed-code all-displayed-code">
+<div class="carousel-content"><pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="function-syntax">ROOT</span><span class="plain-syntax"> ---&gt; </span><span class="function-syntax">DOCUMENT</span>
 <span class="plain-syntax">                |</span>
 <span class="plain-syntax">              </span><span class="function-syntax">NODE</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">  ---  </span><span class="function-syntax">NODE</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">  ---  </span><span class="function-syntax">NODE</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">  --- ...</span>
@@ -862,16 +746,12 @@ slides, paragraph breaks excepted. For example:
 </div>
 This carousel has differently placed captions, too: that's because the
 slide lines were typed as:
-<p class="inwebparagraph"></p>
-
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (carousel "Stage 2 - Developed tree" above)</span>
 </pre>
-<p class="inwebparagraph">and the like. By default, a caption overlaps slightly with the content; but
+<p class="commentary">and the like. By default, a caption overlaps slightly with the content; but
 it can also be <span class="extract"><span class="extract-syntax">above</span></span> or <span class="extract"><span class="extract-syntax">below</span></span>. A slide can also have no caption at all:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (carousel)</span>
@@ -880,72 +760,64 @@ it can also be <span class="extract"><span class="extract-syntax">above</span></
 <span class="plain-syntax">    = (figure furtive.jpg)</span>
 <span class="plain-syntax">    = (carousel end)</span>
 </pre>
-<p class="inwebparagraph"><a id="SP20"></a><b>&#167;20. Embedded video. </b>This makes sense only for some HTML-like weave formats, but we can also
+<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Embedded video. </b>This makes sense only for some HTML-like weave formats, but we can also
 cause videos to be embedded:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (embedded YouTube video GR3aImy7dWw)</span>
 </pre>
-<p class="inwebparagraph">With results like so:
+<p class="commentary">With results like so:
 </p>
 
 <center><iframe width="720" height="405" src="https://www.youtube.com/embed/GR3aImy7dWw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 </center>
-<p class="inwebparagraph">The YouTube ID number <span class="extract"><span class="extract-syntax">GR3aImy7dWw</span></span> can be read from its Share URL, which in
+<p class="commentary">The YouTube ID number <span class="extract"><span class="extract-syntax">GR3aImy7dWw</span></span> can be read from its Share URL, which in
 this case was <span class="extract"><span class="extract-syntax">https://youtu.be/GR3aImy7dWw</span></span>.
 </p>
 
-<p class="inwebparagraph">Similarly for Vimeo:
+<p class="commentary">Similarly for Vimeo:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (embedded Vimeo video 204519)</span>
 </pre>
-<p class="inwebparagraph">With results like so:
+<p class="commentary">With results like so:
 </p>
 
 <center><iframe src="https://player.vimeo.com/video/204519" width="720" height="405" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 </center>
-<p class="inwebparagraph">For audio, you may like to try SoundCloud:
+<p class="commentary">For audio, you may like to try SoundCloud:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (embedded SoundCloud audio 42803139)</span>
 </pre>
-<p class="inwebparagraph">With results like so:
+<p class="commentary">With results like so:
 </p>
 
 <center><iframe width="100%" height="405" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/42803139&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
 </center>
-<p class="inwebparagraph"><a id="SP21"></a><b>&#167;21.  </b>Adding width and height is straightforward; by default the dimensions are
+<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21.  </b>Adding width and height is straightforward; by default the dimensions are
 720 by 405.
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    = (embedded Vimeo video 204519 at 400 by 300)</span>
 <span class="plain-syntax">    = (embedded SoundCloud audio 42803139 at height 200)</span>
 </pre>
-<p class="inwebparagraph">The latter sets just the height (of the displayed waveform, that is &mdash;
+<p class="commentary">The latter sets just the height (of the displayed waveform, that is &mdash;
 arguably music has width and not height, but SoundCloud thinks otherwise).
 </p>
 
-<p class="inwebparagraph"><a id="SP22"></a><b>&#167;22. Mathematics notation. </b>Literate programming is a good technique to justify code which hangs on
+<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Mathematics notation. </b>Literate programming is a good technique to justify code which hangs on
 unobvious pieces of mathematics or computer science, and which must therefore
 be explained carefully. Formulae or equations are a real convenience for that.
 </p>
 
-<p class="inwebparagraph">For example, it's known that the average running time of Euclid's GCD
+<p class="commentary">For example, it's known that the average running time of Euclid's GCD
 algorithm on \(a\) and numbers coprime to \(a\) is:
 $$ \tau (a)={\frac {12}{\pi ^{2}}}\ln 2\ln a+C+O(a^{-1/6-\varepsilon }) $$
 where \(C\) is Porter's constant,
@@ -954,10 +826,8 @@ which involves evaluating Euler's constant \(\gamma\) and the first derivative
 of the Riemann zeta function \(\zeta'(z)\) at \(z=2\).
 </p>
 
-<p class="inwebparagraph">That passage was achieved by typing this as the Inweb source:
+<p class="commentary">That passage was achieved by typing this as the Inweb source:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    For example, it's known that the average running time of Euclid's GCD</span>
@@ -968,36 +838,30 @@ of the Riemann zeta function \(\zeta'(z)\) at \(z=2\).
 <span class="plain-syntax">    which involves evaluating Euler's constant $\gamma$ and the first derivative</span>
 <span class="plain-syntax">    of the Riemann zeta function $\zeta'(z)$ at $z=2$.</span>
 </pre>
-<p class="inwebparagraph">Mathematical formulae is typed in TeX notation between dollar signs,
+<p class="commentary">Mathematical formulae is typed in TeX notation between dollar signs,
 as usual for TeX formulae. If those notations are inconvenient, they can be
 changed. The defaults are:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="element-syntax">TeX Mathematics Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> $</span>
 <span class="plain-syntax">    </span><span class="element-syntax">TeX Mathematics Displayed Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> $$</span>
 </pre>
-<p class="inwebparagraph">Changing these to <span class="extract"><span class="extract-syntax">None</span></span> causes Inweb to disregard mathematics entirely, and
+<p class="commentary">Changing these to <span class="extract"><span class="extract-syntax">None</span></span> causes Inweb to disregard mathematics entirely, and
 treat it as any other text would be treated.
 </p>
 
-<p class="inwebparagraph"><a id="SP23"></a><b>&#167;23. Footnotes. </b>Not everyone likes footnotes,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> but sometimes they're a tidy way to make
+<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Footnotes. </b>Not everyone likes footnotes,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> but sometimes they're a tidy way to make
 references.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
 </p>
-
-<p class="inwebparagraph"></p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> But see Anthony Grafton, "The Footnote: A Curious History" (Harvard
 University Press, 1999).
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> For example, to cite Donald Knuth, "Evaluation of Porter's constant",
 Computers &amp; Mathematics with Applications, 2, 137-39 (1976).
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="inwebparagraph"><a id="SP24"></a><b>&#167;24.  </b>The content of that sentence was typed as follows:
+<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b>The content of that sentence was typed as follows:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    Not everyone likes footnotes,[1] but sometimes they're a tidy way to make</span>
@@ -1008,36 +872,32 @@ Computers &amp; Mathematics with Applications, 2, 137-39 (1976).
 <span class="plain-syntax">    </span><span class="identifier-syntax">[2]</span><span class="plain-syntax"> For example, to cite Donald Knuth, "Evaluation of Porter's constant",</span>
 <span class="plain-syntax">    Computers &amp; Mathematics with Applications, 2, 137-39 (1976).</span>
 </pre>
-<p class="inwebparagraph">Note that footnotes should be numbered upwards from 1 in each individual
+<p class="commentary">Note that footnotes should be numbered upwards from 1 in each individual
 paragraph; Inweb automatically renumbers them for each woven section, but
 we don't have to worry about that when typing.
 </p>
 
-<p class="inwebparagraph">If you're reading this as a web page (with Javascript on), then you should
+<p class="commentary">If you're reading this as a web page (with Javascript on), then you should
 have seen clickable footnote blobs, which reveal the text. If Javascript is
 off, there's a more conventionally textual presentation.
 </p>
 
-<p class="inwebparagraph">Once again, notation may be an issue, and so it's controllable. By default,
+<p class="commentary">Once again, notation may be an issue, and so it's controllable. By default,
 we have:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="element-syntax">Footnote Begins Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> [</span>
 <span class="plain-syntax">    </span><span class="element-syntax">Footnote Ends Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> ]</span>
 </pre>
-<p class="inwebparagraph">but if you need squares for something else in your commentary, then perhaps:
+<p class="commentary">but if you need squares for something else in your commentary, then perhaps:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="displayed-code all-displayed-code">
 <span class="plain-syntax">    </span><span class="element-syntax">Footnote Begins Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> [fn</span>
 <span class="plain-syntax">    </span><span class="element-syntax">Footnote Ends Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> ]</span>
 </pre>
-<p class="inwebparagraph">would be sensible. The "cue" between these notations is required to be a
+<p class="commentary">would be sensible. The "cue" between these notations is required to be a
 string of digits; each must occur just once in its section; and each must
 have a text and a cue which match up correctly.
 </p>

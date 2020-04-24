@@ -39,48 +39,46 @@
 
 <ul class="toc"><li><a href="M-iti.html#SP1">&#167;1. Introduction</a></li><li><a href="M-iti.html#SP2">&#167;2. Installation</a></li><li><a href="M-iti.html#SP4">&#167;4. Historical note</a></li></ul><hr class="tocbar">
 
-<p class="inwebparagraph"><a id="SP1"></a><b>&#167;1. Introduction. </b>Inweb is a modern system for literate programming written for the Inform
+<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Introduction. </b>Inweb is a modern system for literate programming written for the Inform
 programming language project.
 </p>
 
-<p class="inwebparagraph">This means that it is a preprocessor and organiser of source code. It reads in
+<p class="commentary">This means that it is a preprocessor and organiser of source code. It reads in
 a "web", an expression of a program which mixes code with heavy quantities of
 commentary. Inweb can do two basic things: "weave" the web into a booklet or
 website for human readers, or "tangle" it into code ready for a compiler.
 </p>
 
-<p class="inwebparagraph">Inweb is modern in that it can handle large webs efficiently, with no upper
+<p class="commentary">Inweb is modern in that it can handle large webs efficiently, with no upper
 limit on size; it can weave to modern formats such as PDF files, Epub ebooks
 and CSS-styled websites, and it expects that webs will likely be put under
 source control at Github or some similar site. These are all technologies
 which did not exist when the first wave of LP tools were written, around 1980.
 </p>
 
-<p class="inwebparagraph">Inweb also aspires to offer as simple a syntax as it can, consistent with
+<p class="commentary">Inweb also aspires to offer as simple a syntax as it can, consistent with
 being powerful enough for real-world use. Behind the scenes, though, more
 is going on, and Inweb also provides conveniences which remove
 the need (in a self-contained project) to write header files, or in general
 to predeclare functions or structures.
 </p>
 
-<p class="inwebparagraph"><a id="SP2"></a><b>&#167;2. Installation. </b>Inweb is itself written as a web. The documentation you are currently
+<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Installation. </b>Inweb is itself written as a web. The documentation you are currently
 reading is part of that web, and if you're reading it as an HTML file or
 an ebook then you're looking at the woven form.
 </p>
 
-<p class="inwebparagraph">While small webs can be written as single files, Inweb is not a small web,
+<p class="commentary">While small webs can be written as single files, Inweb is not a small web,
 so it occupies a directory called <span class="extract"><span class="extract-syntax">inweb</span></span>. This is what you see if you pull
 the project from GitHub, for example.
 </p>
 
-<p class="inwebparagraph">There is clearly a circularity here. To compile Inweb, you must first run
+<p class="commentary">There is clearly a circularity here. To compile Inweb, you must first run
 Inweb to tangle it. But if you already had Inweb, you wouldn't need to compile
 it. Here's what to do. From a command-line prompt, set the current working
 directory to be the one in which Inweb is stored - that is, not the <span class="extract"><span class="extract-syntax">inweb</span></span>
 directory itself, but its parent. Then type one of the following:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> inweb/inweb.mk macos</span>
@@ -95,7 +93,7 @@ directory itself, but its parent. Then type one of the following:
 
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> inweb/inweb.mk android</span>
 </pre>
-<p class="inwebparagraph">Unix is for any generic version of Unix, non-Linux, non-MacOS: Solaris, for
+<p class="commentary">Unix is for any generic version of Unix, non-Linux, non-MacOS: Solaris, for
 example. Android support is currently disabled (though only because its
 build settings are currently missing from the inweb distribution). The
 older macos32 platform won't build with the MacOS SDK from 10.14 onwards,
@@ -103,15 +101,13 @@ and in any case 32-bit executables won't run from 10.15 onwards: so use
 the default macos unless you need to build for an old version of MacOS.
 </p>
 
-<p class="inwebparagraph">You should see some typical make chatter, ending in a reply such as:
+<p class="commentary">You should see some typical make chatter, ending in a reply such as:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    === Platform set to 64-bit MacOS. Now: make -f inweb/inweb.mk initial ===</span>
 </pre>
-<p class="inwebparagraph">(All that happened, in fact, was that a platform-specific file of make
+<p class="commentary">(All that happened, in fact, was that a platform-specific file of make
 settings &mdash; what compilers to use, what options, and so on &mdash; was copied
 over to become the file <span class="extract"><span class="ConsoleText-extract-syntax">inweb/platform-settings.mk</span></span>. This is a file which
 is necessary for Inweb to be fully used, but which is intentionally not
@@ -119,80 +115,65 @@ included in the Git repository for Inweb, in order to oblige users to choose
 a platform before doing anything else.) Anyway, next do as instructed:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> inweb/inweb.mk initial</span>
 </pre>
-<p class="inwebparagraph">With that done, make should go on to compile the Inweb executable, leaving
+<p class="commentary">With that done, make should go on to compile the Inweb executable, leaving
 you with a working copy of the software. You need never run that
 platform-specific command, or make as <span class="extract"><span class="ConsoleText-extract-syntax">initial</span></span>, again: you can simply:
 </p>
 
-<p class="inwebparagraph"></p>
-
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> inweb/inweb.mk</span>
 </pre>
-<p class="inwebparagraph">if you want to alter and recompile Inweb.
+<p class="commentary">if you want to alter and recompile Inweb.
 </p>
 
-<p class="inwebparagraph">To test that all is well:
+<p class="commentary">To test that all is well:
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-identifier-syntax"> -help</span>
 </pre>
-<p class="inwebparagraph">That location is where the compiled tool ended up. Users of, for example,
+<p class="commentary">That location is where the compiled tool ended up. Users of, for example,
 the <span class="extract"><span class="ConsoleText-extract-syntax">bash</span></span> shell may want to
 </p>
-
-<p class="inwebparagraph"></p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">alias</span><span class="ConsoleText-plain-syntax"> inweb='inweb/Tangled/inweb'</span>
 </pre>
-<p class="inwebparagraph">to save a little typing, but in this documentation we always spell it out.
+<p class="commentary">to save a little typing, but in this documentation we always spell it out.
 </p>
 
-<p class="inwebparagraph"><a id="SP3"></a><b>&#167;3.  </b>When it runs, Inweb needs to know where it is installed in the file
+<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>When it runs, Inweb needs to know where it is installed in the file
 system. There is no completely foolproof, cross-platform way to know this
 (on some Unixes, a program cannot determine its own location), so Inweb
 decides by the following set of rules:
 </p>
 
-<ul class="items"><li>(a) <p class="inwebparagraph">If the user, at the command line, specified <span class="extract"><span class="ConsoleText-extract-syntax">-at P</span></span>, for some path
+<ul class="items"><li>(a) If the user, at the command line, specified <span class="extract"><span class="ConsoleText-extract-syntax">-at P</span></span>, for some path
 <span class="extract"><span class="ConsoleText-extract-syntax">P</span></span>, then we use that.
-</p>
-
-<ul class="items"><li>(b) <p class="inwebparagraph">Otherwise, if the host operating system can indeed tell us where the
+</li><li>(b) Otherwise, if the host operating system can indeed tell us where the
 executable is, we use that. This is currently implemented only on MacOS,
 Windows and Linux.
-</p>
-
-<ul class="items"><li>(c) <p class="inwebparagraph">Otherwise, if the environment variable <span class="extract"><span class="ConsoleText-extract-syntax">$INWEB_PATH</span></span> exists and is
+</li><li>(c) Otherwise, if the environment variable <span class="extract"><span class="ConsoleText-extract-syntax">$INWEB_PATH</span></span> exists and is
 non-empty, we use that.
-</p>
-
-<ul class="items"><li>(d) <p class="inwebparagraph">And if all else fails, we assume that the location is <span class="extract"><span class="ConsoleText-extract-syntax">inweb</span></span>, with
+</li><li>(d) And if all else fails, we assume that the location is <span class="extract"><span class="ConsoleText-extract-syntax">inweb</span></span>, with
 respect to the current working directory.
-</p>
-
-<p class="inwebparagraph">If you're not sure what Inweb has decided and suspect it may be wrong,
+</li></ul>
+<p class="commentary">If you're not sure what Inweb has decided and suspect it may be wrong,
 running Inweb with the <span class="extract"><span class="ConsoleText-extract-syntax">-verbose</span></span> switch will cause it to print its belief
 about its location as it starts up.
 </p>
 
-<p class="inwebparagraph"><a id="SP4"></a><b>&#167;4. Historical note. </b>Literate programming is a doctrine invented by Donald Knuth in the early
+<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Historical note. </b>Literate programming is a doctrine invented by Donald Knuth in the early
 1980s: the best reference remains Knuth's 1992 book of the same name, though
 it is an anthology of much earlier material. The terms web, tangle and weave
 all go back to Knuth's work in the late 1970s, well before Tim Berners-Lee
 coined the term "world wide web" in 1989.
 </p>
 
-<p class="inwebparagraph">Literate programming was a rebuttal, or response, to the then-new doctrine of
+<p class="commentary">Literate programming was a rebuttal, or response, to the then-new doctrine of
 "structured programming", and to burgeoning work on programming correctness.
 Many far-sighted, or alarmist, warnings were being issued around the turn of
 the 1980s. "An unreliable programming language generating unreliable programs
@@ -201,20 +182,20 @@ unsafe cars, toxic pesticides, or accidents at nuclear power stations" (Tony
 Hoare).
 </p>
 
-<p class="inwebparagraph">Where one response was to attempt mechanical verification that programs were
+<p class="commentary">Where one response was to attempt mechanical verification that programs were
 correct &mdash; a "neat" approach, in the AI jargon of the day &mdash; Knuth instead
 opted for a methodology whereby programs had to be carefully explained and
 published &mdash; a "scruffy" approach.
 </p>
 
-<p class="inwebparagraph"><a id="SP5"></a><b>&#167;5.  </b>Knuth notably used LP to write the TeX and Metafont typesetting software,
+<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Knuth notably used LP to write the TeX and Metafont typesetting software,
 around 1978-84. His original LP programs "weave" and "tangle" were coded in
 a Stanford dialect of Pascal, but in collaboration with Silvio Levy he later
 ported them to C as "cweave" and "ctangle". These are collectively called CWEB.
 (Inweb, unlike CWEB, is a single program doing both.)
 </p>
 
-<p class="inwebparagraph">A second wave of LP tools appeared in the 1990s, after the publication of
+<p class="commentary">A second wave of LP tools appeared in the 1990s, after the publication of
 Knuth's book, and the arrival of Berners-Lee's sort of web: most notably
 Norman Ramsey's Noweb (1994) and Ross Williams's Funnelweb (1999). Also,
 LP ideas are found in a number of pedagogical tools (especially for teaching
@@ -222,13 +203,13 @@ functional programming). It is safe to say, though, that no LP tool has
 become standard.
 </p>
 
-<p class="inwebparagraph">In part this is because LP is not much practiced, but it is also because,
+<p class="commentary">In part this is because LP is not much practiced, but it is also because,
 as Christopher Wyk perceptively observed (CACM 33.3, 1990), "no one has yet
 volunteered to write a program using another's system for literate
 programming".
 </p>
 
-<p class="inwebparagraph">For over a year, though, the Inform project did try to use CWEB. It proved
+<p class="commentary">For over a year, though, the Inform project did try to use CWEB. It proved
 inadequate for a number of reasons. It was too closely tied to TeX (as the
 only weave format); it was, syntactically, rooted in the computing paradigms
 of the 1970s, when nothing was WYSIWYG and the escape character was king; and
@@ -243,26 +224,22 @@ webs, an obscure off-by-one line counting error in ctangle also caused
 difficulty.
 </p>
 
-<p class="inwebparagraph">I struggled on for a while with a fork of CWEB, hoping to modernise it, but
+<p class="commentary">I struggled on for a while with a fork of CWEB, hoping to modernise it, but
 finally concluded that its problems were too deep-seated. Inweb uses none of
 its code, but most of its best ideas. Around 2004, Inweb began as a Perl
 script; it was reimplemented in C for speed in 2011.
 </p>
 
-<p class="inwebparagraph"><a id="SP6"></a><b>&#167;6.  </b>Those who have used CWEB or similar tools may wish to note four important
+<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Those who have used CWEB or similar tools may wish to note four important
 differences:
 </p>
 
-<ul class="items"><li>(a) <p class="inwebparagraph">Many bells and whistles have been removed. Inweb aspires to be as
+<ul class="items"><li>(a) Many bells and whistles have been removed. Inweb aspires to be as
 simple as possible in markup, with as few escape characters as possible.
-</p>
-
-<ul class="items"><li>(b) <p class="inwebparagraph">In Inweb, when writing code for C-like languages, named paragraphs are
+</li><li>(b) In Inweb, when writing code for C-like languages, named paragraphs are
 expanded inside implicit braces. As a result, they behave like compound
 statements, and can be used as loop bodies, or if/else clauses.
-</p>
-
-<ul class="items"><li>(c) <p class="inwebparagraph">Inweb does not follow the disastrous rule of CWEB that every name is
+</li><li>(c) Inweb does not follow the disastrous rule of CWEB that every name is
 equal to every other name of which it is an initial substring, so
 that, say, "Finish" would be considered the same name as "Finish with error".
 This was a rule Knuth adopted to save typing. He habitually wrote
@@ -273,12 +250,9 @@ current page; if this node is an insertion, goto contribute;
 otherwise if this node is not legal breakpoint, goto contribute
 or update_heights; otherwise set pi to the penalty associated
 with this breakpoint". We do not recommend this.
-</p>
-
-<ul class="items"><li>(d) <p class="inwebparagraph">Inweb can be used with much larger programs divided into sections
+</li><li>(d) Inweb can be used with much larger programs divided into sections
 and, if desired, chapters.
-</p>
-
+</li></ul>
 <hr class="tocbar">
 <ul class="toc"><li><i>(This section begins Manual.)</i></li><li><a href="M-wtaw.html">Continue with 'Webs, Tangling and Weaving'</a></li></ul><hr class="tocbar">
 <!--End of weave-->
