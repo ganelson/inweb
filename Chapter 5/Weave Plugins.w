@@ -120,8 +120,16 @@ void WeavePlugins::include_plugin(OUTPUT_STREAM, web *W, weave_plugin *wp,
 								} else {
 									@<Use shell scripting to copy the file over@>;
 								}
+								DISCARD_TEXT(ext);
 							} else {
-								@<Use shell scripting to copy the file over@>;
+								TEMPORARY_TEXT(ext);
+								Filenames::write_extension(ext, F);
+								if (Str::eq_insensitive(ext, I".tex")) {
+									WeavePlugins::include_TeX_macros(OUT, W, F, leafname, NULL, pattern, from);
+								} else {
+									@<Use shell scripting to copy the file over@>;
+								}
+								DISCARD_TEXT(ext);
 							}
 						}
 						finds++;
@@ -193,4 +201,13 @@ void WeavePlugins::include_CSS_file(OUTPUT_STREAM, web *W, filename *F, text_str
 			Epub::note_image(W->as_ebook, rel);
 		}
 	}
+}
+
+void WeavePlugins::include_TeX_macros(OUTPUT_STREAM, web *W, filename *F, text_stream *css,
+	text_stream *trans, weave_pattern *pattern, filename *from) {
+	css_file_transformation cft;
+	cft.OUT = OUT;
+	cft.trans = NULL;
+	TextFiles::read(F, FALSE, "can't open TeX file", TRUE,
+	Patterns::transform_CSS, NULL, (void *) &cft);
 }

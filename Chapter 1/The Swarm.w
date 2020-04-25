@@ -202,8 +202,7 @@ colour_scheme *Swarm::ensure_colour_scheme(weave_order *wv, text_stream *name,
 	if (cs == NULL) {
 		if (Str::eq(name, I"Colours")) {
 			TEMPORARY_TEXT(err);
-			WRITE_TO(err, "No CSS file for the colour scheme '%S' can be found",
-				name);
+			WRITE_TO(err, "No CSS file for the colour scheme '%S' can be found", name);
 			Main::error_in_web(err, NULL);
 		} else {
 			return Swarm::ensure_colour_scheme(wv, I"Colours", I"");

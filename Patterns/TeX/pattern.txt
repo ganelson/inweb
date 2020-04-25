@@ -1,0 +1,3 @@
+name: TeX
+format: TeX
+plugin: Base

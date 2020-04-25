@@ -1,0 +1,375 @@
+\def\weavesectionsss#1#2#3#4#5{\vfill\eject\noindent{\titlefont #2}\mark{#3}\vskip 0.5in\par\noindent\titlepage}
+\def\weavesectionss#1#2#3#4#5{\vfill\eject\noindent{\stitlefont #2\hfill #5}\mark{#3}\bigskip\par\noindent\titlepage}
+\def\weavesections#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #4#1. #2.}\mark{#3}\quad}
+\def\weavesection#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #4#1.}\mark{#3}\quad}
+\def\tweavesections#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #5.#4#1. #2.}\quad}
+\def\tweavesection#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #5.#4#1.}\quad}
+\def\nsweavesections#1#2#3#4#5{\noindent{\bf #4#1. #2.}\mark{#3}\quad}
+\def\nsweavesection#1#2#3#4#5{\noindent{\bf #4#1.}\mark{#3}\quad}
+
+\raggedbottom
+
+\nopagenumbers
+\newif\iftitle
+\def\titlepage{\global\titletrue}
+\headline={\iftitle\hfil\global\titlefalse\else\tenrm\hfil{\sourcefont \firstmark\qquad\the\pageno}\fi}
+
+\titlepage
+
+\def\quotesource#1{\medskip{\narrower\noindent{\sourcefont #1}\par}\smallskip}
+\def\cast#1#2{{#1}$\;\rightarrow\;${#2}}
+\def\comp#1#2{{#1}$\;\sim\;${#2}}
+\def\al{$\alpha$}
+\def\be{$\beta$}
+\def\nonterminal#1{$\langle${\xreffont\pdfliteral direct{1 1 0 0 k}#1\special{PDF:0 g}}$\rangle$}
+\def\fixed#1{{\bf #1}}
+\def\from{\par\qquad\quad$\leftarrow$\quad}
+\def\continuation{\par\qquad\quad\phantom{$\leftarrow$}\quad}
+
+\font\tentex=cmtex10
+\font\sourcefont=cmss10
+\font\xreffont=cmss9
+\hyphenchar\xreffont=-1
+\font\usagefont=cmss8
+
+\font\inchhigh=cminch
+\font\sinchhigh=cminch at 60pt
+\font\titlefont=cmss10 at 24pt
+\font\stitlefont=cmss10 at 20pt
+\font\sstitlefont=cmss10 at 20pt
+\font\ssstitlefont=cmr10 at 12pt
+
+\font\ninerm=cmr9
+\font\eightrm=cmr8
+\font\sixrm=cmr6
+
+\font\ninei=cmmi9
+\font\eighti=cmmi8
+\font\sixi=cmmi6
+\skewchar\ninei='177 \skewchar\eighti='177 \skewchar\sixi='177
+
+\font\ninesy=cmsy9
+\font\eightsy=cmsy8
+\font\sixsy=cmsy6
+\skewchar\ninesy='60 \skewchar\eightsy='60 \skewchar\sixsy='60
+
+\font\sevenss=cmss10 at 7pt
+\font\eightss=cmssq8
+
+\font\eightssi=cmssqi8
+
+\font\ninebf=cmbx9
+\font\eightbf=cmbx8
+\font\sixbf=cmbx6
+
+\font\ninett=cmtt9
+\font\eighttt=cmtt8
+
+\hyphenchar\tentt=-1 % inhibit hyphenation in typewriter type
+\hyphenchar\ninett=-1
+\hyphenchar\eighttt=-1
+
+\font\ninesl=cmsl9
+\font\eightsl=cmsl8
+
+\font\nineit=cmti9
+\font\eightit=cmti8
+
+\font\tenu=cmu10 % unslanted text italic
+\font\magnifiedfiverm=cmr5 at 10pt
+\font\manual=manfnt % font used for the METAFONT logo, etc.
+\font\cmman=cmman % font used for miscellaneous Computer Modern variations
+
+\newskip\ttglue
+\def\tenpoint{\def\rm{\fam0\tenrm}%
+  \textfont0=\tenrm \scriptfont0=\sevenrm \scriptscriptfont0=\fiverm
+  \textfont1=\teni \scriptfont1=\seveni \scriptscriptfont1=\fivei
+  \textfont2=\tensy \scriptfont2=\sevensy \scriptscriptfont2=\fivesy
+  \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+  \def\it{\fam\itfam\tenit}%
+  \textfont\itfam=\tenit
+  \def\sl{\fam\slfam\tensl}%
+  \textfont\slfam=\tensl
+  \def\bf{\fam\bffam\tenbf}%
+  \textfont\bffam=\tenbf \scriptfont\bffam=\sevenbf
+   \scriptscriptfont\bffam=\fivebf
+  \def\tt{\fam\ttfam\tentt}%
+  \textfont\ttfam=\tentt
+  \tt \ttglue=.5em plus.25em minus.15em
+  \normalbaselineskip=12pt
+  \def\MF{{\manual META}\-{\manual FONT}}%
+  \let\sc=\eightrm
+  \let\big=\tenbig
+  \setbox\strutbox=\hbox{\vrule height8.5pt depth3.5pt width\z@}%
+  \normalbaselines\rm}
+
+\def\ninepoint{\def\rm{\fam0\ninerm}%
+  \textfont0=\ninerm \scriptfont0=\sixrm \scriptscriptfont0=\fiverm
+  \textfont1=\ninei \scriptfont1=\sixi \scriptscriptfont1=\fivei
+  \textfont2=\ninesy \scriptfont2=\sixsy \scriptscriptfont2=\fivesy
+  \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+  \def\it{\fam\itfam\nineit}%
+  \textfont\itfam=\nineit
+  \def\sl{\fam\slfam\ninesl}%
+  \textfont\slfam=\ninesl
+  \def\bf{\fam\bffam\ninebf}%
+  \textfont\bffam=\ninebf \scriptfont\bffam=\sixbf
+   \scriptscriptfont\bffam=\fivebf
+  \def\tt{\fam\ttfam\ninett}%
+  \textfont\ttfam=\ninett
+  \tt \ttglue=.5em plus.25em minus.15em
+  \normalbaselineskip=11pt
+  \def\MF{{\manual hijk}\-{\manual lmnj}}%
+  \let\sc=\sevenrm
+  \let\big=\ninebig
+  \setbox\strutbox=\hbox{\vrule height8pt depth3pt width\z@}%
+  \normalbaselines\rm}
+
+\def\ttninepoint{\def\rm{\fam0\ninerm}%
+  \textfont0=\ninerm \scriptfont0=\sixrm \scriptscriptfont0=\fiverm
+  \textfont1=\ninei \scriptfont1=\sixi \scriptscriptfont1=\fivei
+  \textfont2=\ninesy \scriptfont2=\sixsy \scriptscriptfont2=\fivesy
+  \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+  \def\it{\fam\itfam\nineit}%
+  \textfont\itfam=\nineit
+  \def\sl{\fam\slfam\ninesl}%
+  \textfont\slfam=\ninesl
+  \def\bf{\fam\bffam\ninebf}%
+  \textfont\bffam=\ninebf \scriptfont\bffam=\sixbf
+   \scriptscriptfont\bffam=\fivebf
+  \def\tt{\fam\ttfam\ninett}%
+  \textfont\ttfam=\ninett
+  \normalbaselineskip=11pt
+  \normalbaselines\rm}
+
+\def\eightpoint{\def\rm{\fam0\eightrm}%
+  \textfont0=\eightrm \scriptfont0=\sixrm \scriptscriptfont0=\fiverm
+  \textfont1=\eighti \scriptfont1=\sixi \scriptscriptfont1=\fivei
+  \textfont2=\eightsy \scriptfont2=\sixsy \scriptscriptfont2=\fivesy
+  \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+  \def\it{\fam\itfam\eightit}%
+  \textfont\itfam=\eightit
+  \def\sl{\fam\slfam\eightsl}%
+  \textfont\slfam=\eightsl
+  \def\bf{\fam\bffam\eightbf}%
+  \textfont\bffam=\eightbf \scriptfont\bffam=\sixbf
+   \scriptscriptfont\bffam=\fivebf
+  \def\tt{\fam\ttfam\eighttt}%
+  \textfont\ttfam=\eighttt
+  \tt \ttglue=.5em plus.25em minus.15em
+  \normalbaselineskip=9pt
+  \def\MF{{\manual opqr}\-{\manual stuq}}%
+  \let\sc=\sixrm
+  \let\big=\eightbig
+  \setbox\strutbox=\hbox{\vrule height7pt depth2pt width\z@}%
+  \normalbaselines\rm}
+
+\def\tenmath{\tenpoint\fam-1 } % use after $ in ninepoint sections
+\def\tenbig#1{{\hbox{$\left#1\vbox to8.5pt{}\right.\n@space$}}}
+\def\ninebig#1{{\hbox{$\textfont0=\tenrm\textfont2=\tensy
+  \left#1\vbox to7.25pt{}\right.\n@space$}}}
+\def\eightbig#1{{\hbox{$\textfont0=\ninerm\textfont2=\ninesy
+  \left#1\vbox to6.5pt{}\right.\n@space$}}}
+
+\catcode`@=11 % borrow the private macros of PLAIN (with care)
+
+\def\|{\leavevmode\hbox{\tt\char`\|}} % vertical line
+
+% macros for verbatim scanning
+\chardef\other=12
+\def\ttverbatim{\begingroup\ttninepoint\frenchspacing
+  \catcode`\\=\other
+  \catcode`\{=\other
+  \catcode`\}=\other
+  \catcode`\$=\other
+  \catcode`\&=\other
+  \catcode`\#=\other
+  \catcode`\%=\other
+  \catcode`\~=\other
+  \catcode`\_=\other
+  \catcode`\^=\other
+  \obeyspaces \obeylines \tt}
+
+\outer\def\begintt{$$\let\par=\endgraf \ttverbatim \parskip=\z@
+  \catcode`\|=0 \rightskip-5pc \ttfinish}
+{\catcode`\|=0 |catcode`|\=\other % | is temporary escape character
+  |obeylines % end of line is active
+  |gdef|ttfinish#1^^M#2\endtt{#1|vbox{#2}|endgroup|tenpoint$$}}
+
+\catcode`\|=\active
+{\obeylines \gdef|{\ttverbatim \spaceskip\ttglue \let^^M=\  \let|=\endgroup}}
+
+% macros for syntax rules (again, not in Appendix E)
+\def\[#1]{\silenttrue\xref|#1|\thinspace{\tt#1}\thinspace} % keyword in syntax
+\def\beginsyntax{\endgraf\nobreak\medskip
+  \begingroup \catcode`<=13 \catcode`[=13
+  \let\par=\endsyntaxline \obeylines}
+\def\endsyntaxline{\futurelet\next\syntaxswitch}
+\def\syntaxswitch{\ifx\next\<\let\next=\syntaxrule
+  \else\ifx\next\endsyntax\let\next=\endgroup
+  \else\let\next=\continuerule\fi\fi \next}
+\def\continuerule{\hfil\break\indent\qquad}
+\def\endsyntax{\medbreak\noindent}
+{\catcode`<=13 \catcode`[=13
+  \global\let<=\< \global\let[=\[
+  \gdef\syntaxrule<#1>{\endgraf\indent\silentfalse\xref\<#1>}}
+\def\is{\ $\longrightarrow$ }
+\def\alt{\ $\vert$ }
+
+% macros to demarcate lines quoted from TeX source files
+\def\beginlines{\par\begingroup\nobreak\medskip\parindent\z@ \obeylines
+\nobreak \everypar{\strut}}
+\def\endlines{\endgroup\medbreak\noindent}
+
+
+\phantom{A}
+\vskip 0.5in
+\noindent{{\sinchhigh\noindent THE GOLDBACH CONJECTURE}}
+\vskip 0.5in
+\noindent{{\titlefont Complete Program}}
+\vskip 0.3in
+\noindent{{\stitlefont Graham Nelson}}
+\vskip 0.3in
+
+% Weave of 'Complete Program' generated by Inweb
+\weavesectionsss{}{Sections}{Sections\quad$\P$}{\P}{S/sp}%
+\weavesectionss{}{Summing Primes}{Summing Primes\quad$\P$}{\P}{}%
+\smallskip\par\noindent{\it Here we verify the conjecture for small numbers.}\smallskip\noindent
+\weavesection{1}{Dunno}{\quad$\S$1}{\S}{S/sp}%
+On 7 June 1742, Christian Goldbach wrote a letter from Moscow to Leonhard
+Euler in Berlin making ``eine conjecture hazardiren'' that every even number
+greater than $2$ can be written as a sum of two primes.[1] Euler did not
+know if this was true, and nor does anyone else.
+Goldbach, a professor at St Petersburg and tutor to Tsar Peter II, wrote in
+several languages in an elegant cursive script, and was much valued as a
+letter-writer, though his reputation stands less high today.[2] All the same,
+the general belief now is that primes are just plentiful enough, and just
+evenly-enough spread, for Goldbach to be right. It is known that:
+\item{(a)}every even number is a sum of at most six primes (Ramaré, 1995), and
+\item{(b)}every odd number is a sum of at most five (Tao, 2012).
+
+
+[1] ``Greater than 2'' is our later proviso: Goldbach needed no such exception
+because he considered 1 a prime number, as was normal then, and was sometimes
+said as late as the early twentieth century.
+
+[2] Goldbach, almost exactly a contemporary of Voltaire, was a good citizen
+of the great age of Enlightenment letter-writing. He and Euler exchanged
+scholarly letters for over thirty years, not something Euler would have
+kept up with a duffer. Goldbach was also not, as is sometimes said, a lawyer.
+See: http://mathshistory.st-andrews.ac.uk/Biographies/Goldbach.html
+An edited transcription of the letter is at: http://eulerarchive.maa.org//correspondence/letters/OO0765.pdf
+\weavesection{2}{Dunno}{\quad$\S$2}{\S}{S/sp}%
+Computer verification has been made up to around $10^{18}$, but by rather
+better methods than the one we use here. We will only go up to:
+
+\beginlines
+\smallskip\par\noindent ||{\ninebf define} |RANGE|\special{PDF:0 g}| 100|\special{PDF:0 g}||
+\endlines
+\beginlines
+\smallskip\par\noindent |#include|\special{PDF:0 g}| <stdio|\special{PDF:0 g}|.h|\special{PDF:0 g}|>|
+\smallskip
+\smallskip\par\noindent |int|\special{PDF:0 g}| |\pdfliteral direct{0 1 1 0 k}|main|\special{PDF:0 g}|(int|\special{PDF:0 g}| argc|\special{PDF:0 g}|, char|\special{PDF:0 g}| *argv|\special{PDF:0 g}|[]) {|
+\smallskip\par\noindent |    for|\special{PDF:0 g}| (int|\special{PDF:0 g}| i|\special{PDF:0 g}|=4; i|\special{PDF:0 g}|<RANGE|\special{PDF:0 g}|; i|\special{PDF:0 g}|=i|\special{PDF:0 g}|+2)  |\hfill{\ttninepoint\it  stepping in twos to stay even}||
+\smallskip\par\noindent |        |\pdfstartlink attr{/C [0.9 0 0] /Border [0 0 0]} goto num 100 $\langle${\xreffont\pdfliteral direct{1 1 0 0 k}Solve Goldbach's conjecture for i {\sevenss 2.1}}\special{PDF:0 g}$\rangle$ \pdfendlink|;|\special{PDF:0 g}||
+\smallskip\par\noindent |}|\special{PDF:0 g}||
+\endlines
+\weavesection{2.1}{Dunno}{\quad$\S$2.1}{\S}{S/sp}%
+This ought to print:
+
+\beginlines
+\smallskip\par\noindent |    $|\special{PDF:0 g}| |\pdfliteral direct{0 1 1 0 k}|goldbach/Tangled/goldbach|\special{PDF:0 g}||
+\smallskip\par\noindent |    4 = 2+2|
+\smallskip\par\noindent |    6 = 3+3|
+\smallskip\par\noindent |    8 = 3+5|
+\smallskip\par\noindent |    10 = 3+7 = 5+5|
+\smallskip\par\noindent |    12 = 5+7|
+\smallskip\par\noindent |    14 = 3+11 = 7+7|
+\smallskip\par\noindent |    ...|
+\endlines
+We'll print each different pair of primes adding up to $i$. We
+only check in the range $2 \leq j \leq i/2$ to avoid counting pairs
+twice over (thus $8 = 3+5 = 5+3$, but that's hardly two different ways).
+
+\smallskip\par\noindent ||\pdfdest num 100 fit $\langle${\xreffont\pdfliteral direct{1 1 0 0 k}Solve Goldbach's conjecture for i {\sevenss 2.1}}\special{PDF:0 g}$\rangle$ $\equiv$||
+
+\beginlines
+\smallskip\par\noindent |    printf|\special{PDF:0 g}|("%d"|\special{PDF:0 g}|, i|\special{PDF:0 g}|);|
+\smallskip\par\noindent |    for|\special{PDF:0 g}| (int|\special{PDF:0 g}| j|\special{PDF:0 g}|=2; j|\special{PDF:0 g}|<=i|\special{PDF:0 g}|/2; j|\special{PDF:0 g}|++)|
+\smallskip\par\noindent |        if|\special{PDF:0 g}| ((isprime(j|\special{PDF:0 g}|)) && (isprime(i|\special{PDF:0 g}|-j|\special{PDF:0 g}|)))|
+\smallskip\par\noindent |            printf|\special{PDF:0 g}|(" = %d+%d"|\special{PDF:0 g}|, j|\special{PDF:0 g}|, i|\special{PDF:0 g}|-j|\special{PDF:0 g}|);|
+\smallskip\par\noindent |    printf|\special{PDF:0 g}|("\n"|\special{PDF:0 g}|);|
+\endlines
+\par\noindent\penalty10000
+{\usagefont This code is used in $\S$2.}\smallskip
+\weavesectionss{}{The Sieve of Eratosthenes}{The Sieve of Eratosthenes\quad$\P$}{\P}{}%
+\smallskip\par\noindent{\it A fairly fast way to determine if small numbers are prime, given storage.}\smallskip\noindent
+\medskip\hrule\smallskip\par\noindent{\usagefont S1~Storage; S2~Primality}\par\medskip\hrule\bigskip
+\weavesection{1}{Dunno}{\quad$\S$1}{\S}{S/tsoe}%
+This technique, still essentially the best sieve for finding prime
+numbers, is attributed to Eratosthenes of Cyrene and dates from the 200s BC.
+Since composite numbers are exactly those numbers which are multiples of
+something, the idea is to remove everything which is a multiple: whatever
+is left, must be prime.
+\smallskip\par\noindent%
+This is very fast (and can be done more quickly than the implementation
+below), but (a) uses storage to hold the sieve, and (b) has to start right
+back at 2 - so it can't efficiently test just, say, the eight-digit numbers
+for primality.
+
+\beginlines
+\smallskip\par\noindent |int|\special{PDF:0 g}| still_in_sieve|\special{PDF:0 g}|[RANGE|\special{PDF:0 g}| + 1|\special{PDF:0 g}|];|
+\smallskip\par\noindent |int|\special{PDF:0 g}| sieve_performed|\special{PDF:0 g}| = FALSE|\special{PDF:0 g}|;|
+\endlines
+\weavesection{2}{Dunno}{\quad$\S$2}{\S}{S/tsoe}%
+We provide this as a function which determines whether a number is prime:
+
+\beginlines
+\smallskip\par\noindent ||{\ninebf define} |TRUE|\special{PDF:0 g}| 1|\special{PDF:0 g}||
+\smallskip\par\noindent ||{\ninebf define} |FALSE|\special{PDF:0 g}| 0|\special{PDF:0 g}||
+\endlines
+\beginlines
+\smallskip\par\noindent |int|\special{PDF:0 g}| |\pdfliteral direct{0 1 1 0 k}|isprime|\special{PDF:0 g}|(int|\special{PDF:0 g}| n|\special{PDF:0 g}|) {|
+\smallskip\par\noindent |    if|\special{PDF:0 g}| (n|\special{PDF:0 g}| <= 1|\special{PDF:0 g}|) return|\special{PDF:0 g}| FALSE|\special{PDF:0 g}|;|
+\smallskip\par\noindent |    if|\special{PDF:0 g}| (n|\special{PDF:0 g}| > RANGE|\special{PDF:0 g}|) { printf|\special{PDF:0 g}|("Out of range!\n"|\special{PDF:0 g}|); return|\special{PDF:0 g}| FALSE|\special{PDF:0 g}|; }|
+\smallskip\par\noindent |    if|\special{PDF:0 g}| (!sieve_performed|\special{PDF:0 g}|) |\pdfstartlink attr{/C [0.9 0 0] /Border [0 0 0]} goto num 101 $\langle${\xreffont\pdfliteral direct{1 1 0 0 k}Perform the sieve {\sevenss 2.1}}\special{PDF:0 g}$\rangle$ \pdfendlink|;|
+\smallskip\par\noindent |    return|\special{PDF:0 g}| still_in_sieve|\special{PDF:0 g}|[n|\special{PDF:0 g}|];|
+\smallskip\par\noindent |}|
+\endlines
+\weavesection{2.1}{Dunno}{\quad$\S$2.1}{\S}{S/tsoe}%
+We save a little time by noting that if a number up to ||\special{PDF:0 g}|RANGE|\special{PDF:0 g}|| is composite
+then one of its factors must be smaller than the square root of ||\special{PDF:0 g}|RANGE|\special{PDF:0 g}||. Thus,
+in a sieve of size 10000, one only needs to remove multiples of 2 up to 100,
+for example.
+
+\smallskip\par\noindent ||\pdfdest num 101 fit $\langle${\xreffont\pdfliteral direct{1 1 0 0 k}Perform the sieve {\sevenss 2.1}}\special{PDF:0 g}$\rangle$ $\equiv$||
+
+\beginlines
+\smallskip\par\noindent |    |\pdfstartlink attr{/C [0.9 0 0] /Border [0 0 0]} goto num 102 $\langle${\xreffont\pdfliteral direct{1 1 0 0 k}Start with all numbers from 2 upwards in the sieve {\sevenss 2.1.1}}\special{PDF:0 g}$\rangle$ \pdfendlink|;|
+\smallskip\par\noindent |    for|\special{PDF:0 g}| (int|\special{PDF:0 g}| n|\special{PDF:0 g}|=2; n|\special{PDF:0 g}|*n|\special{PDF:0 g}| <= RANGE|\special{PDF:0 g}|; n|\special{PDF:0 g}|++)|
+\smallskip\par\noindent |        if|\special{PDF:0 g}| (still_in_sieve|\special{PDF:0 g}|[n|\special{PDF:0 g}|])|
+\smallskip\par\noindent |            |\pdfstartlink attr{/C [0.9 0 0] /Border [0 0 0]} goto num 103 $\langle${\xreffont\pdfliteral direct{1 1 0 0 k}Shake out multiples of n {\sevenss 2.1.2}}\special{PDF:0 g}$\rangle$ \pdfendlink|;|
+\smallskip\par\noindent |    sieve_performed|\special{PDF:0 g}| = TRUE|\special{PDF:0 g}|;|
+\endlines
+\par\noindent\penalty10000
+{\usagefont This code is used in $\S$2.}\smallskip
+\weavesection{2.1.1}{Dunno}{\quad$\S$2.1.1}{\S}{S/tsoe}%
+\smallskip\par\noindent ||\pdfdest num 102 fit $\langle${\xreffont\pdfliteral direct{1 1 0 0 k}Start with all numbers from 2 upwards in the sieve {\sevenss 2.1.1}}\special{PDF:0 g}$\rangle$ $\equiv$||
+
+\beginlines
+\smallskip\par\noindent |    still_in_sieve|\special{PDF:0 g}|[1] = FALSE|\special{PDF:0 g}|;|
+\smallskip\par\noindent |    for|\special{PDF:0 g}| (int|\special{PDF:0 g}| n|\special{PDF:0 g}|=2; n|\special{PDF:0 g}| <= RANGE|\special{PDF:0 g}|; n|\special{PDF:0 g}|++) still_in_sieve|\special{PDF:0 g}|[n|\special{PDF:0 g}|] = TRUE|\special{PDF:0 g}|;|
+\endlines
+\par\noindent\penalty10000
+{\usagefont This code is used in $\S$2.1.}\smallskip
+\weavesection{2.1.2}{Dunno}{\quad$\S$2.1.2}{\S}{S/tsoe}%
+\smallskip\par\noindent ||\pdfdest num 103 fit $\langle${\xreffont\pdfliteral direct{1 1 0 0 k}Shake out multiples of n {\sevenss 2.1.2}}\special{PDF:0 g}$\rangle$ $\equiv$||
+
+\beginlines
+\smallskip\par\noindent |    for|\special{PDF:0 g}| (int|\special{PDF:0 g}| m|\special{PDF:0 g}|= n|\special{PDF:0 g}|+n|\special{PDF:0 g}|; m|\special{PDF:0 g}| <= RANGE|\special{PDF:0 g}|; m|\special{PDF:0 g}| += n|\special{PDF:0 g}|) still_in_sieve|\special{PDF:0 g}|[m|\special{PDF:0 g}|] = FALSE|\special{PDF:0 g}|;|
+\endlines
+\par\noindent\penalty10000
+{\usagefont This code is used in $\S$2.1.}\smallskip
+% End of weave
+\end
+

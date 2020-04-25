@@ -142,6 +142,9 @@ pages:
 	rm -f $(ME)/docs/foundation-test/*.html
 	$(INWEB) -colony $(COLONY) -member overview -weave
 	$(INWEB) -colony $(COLONY) -member goldbach -weave
+	$(INWEB) -colony $(COLONY) inweb/Examples/goldbach all -weave-as Plain -weave-to inweb/docs/goldbach/goldbach.txt
+	$(INWEB) -colony $(COLONY) inweb/Examples/goldbach all -weave-as TestingInweb -weave-to inweb/docs/goldbach/goldbach-test.txt
+	$(INWEB) -colony $(COLONY) inweb/Examples/goldbach all -weave-as TeX -weave-to inweb/docs/goldbach/goldbach.tex
 	$(INWEB) -colony $(COLONY) -member twinprimes -weave
 	$(INWEB) -colony $(COLONY) -member eastertide -weave
 	$(INWEB) -colony $(COLONY) -member inweb -weave

@@ -36,7 +36,6 @@ void TeX::create(void) {
 @<Make this format basically TeX@> =
 	METHOD_ADD(wf, CHAPTER_TP_FOR_MTID, TeX::chapter_title_page);
 	METHOD_ADD(wf, PREFORM_DOCUMENT_FOR_MTID, TeX::preform_document);
-	METHOD_ADD(wf, POST_PROCESS_SUBSTITUTE_POS_MTID, TeX::post_process_substitute);
 
 @h Methods.
 For documentation, see "Weave Fornats".
@@ -122,7 +121,6 @@ int TeX::render_visit(tree_node *N, void *state, int L) {
 @<Render head@> =
 	weave_head_node *C = RETRIEVE_POINTER_weave_head_node(N->content);
 	WRITE("%% %S\n", C->banner);
-	@<Incorporate suitable TeX macro definitions into the woven output@>;
 
 @<Render tail@> =
 	weave_tail_node *C = RETRIEVE_POINTER_weave_tail_node(N->content);
@@ -161,8 +159,7 @@ int TeX::render_visit(tree_node *N, void *state, int L) {
 @<Render endnote@> =
 	WRITE("\\par\\noindent\\penalty10000\n");
 	WRITE("{\\usagefont ");
-	for (tree_node *M = N->child; M; M = M->next)
-		Trees::traverse_from(M, &TeX::render_visit, (void *) trs, L+1);
+	@<Recurse tne renderer through children nodes@>;
 	WRITE("}\\smallskip\n");
 	return FALSE;
 
@@ -189,17 +186,52 @@ to a given width, into the text at the current position.
 	}
 
 @<Render material@> =
-	if (N->child) {
-		weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
-		if ((C->material_type != COMMENTARY_MATERIAL) && (C->material_type != ENDNOTES_MATERIAL))
-			WRITE("\\beginlines\n");
-		for (tree_node *M = N->child; M; M = M->next)
-			Trees::traverse_from(M, &TeX::render_visit, (void *) trs, L+1);
-		if ((C->material_type != COMMENTARY_MATERIAL) && (C->material_type != ENDNOTES_MATERIAL))
-			WRITE("\\endlines\n");
+	weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
+	paragraph *first_in_para = NULL;
+	if ((N == N->parent->child) &&
+		(N->parent->type == weave_paragraph_heading_node_type)) {
+		weave_paragraph_heading_node *PC =
+			RETRIEVE_POINTER_weave_paragraph_heading_node(N->parent->content);
+		first_in_para = PC->para;
 	}
+	if (C->material_type == COMMENTARY_MATERIAL)
+		@<Deal with a commentary material node@>
+	else if (C->material_type == CODE_MATERIAL)
+		@<Deal with a code material node@>
+	else if (C->material_type == FOOTNOTES_MATERIAL)
+		@<Deal with a footnotes material node@>
+	else if (C->material_type == ENDNOTES_MATERIAL)
+		@<Deal with a endnotes material node@>
+	else if (C->material_type == MACRO_MATERIAL)
+		@<Deal with a macro material node@>
+	else if (C->material_type == DEFINITION_MATERIAL)
+		@<Deal with a definition material node@>;
 	return FALSE;
-	
+
+@<Deal with a commentary material node@> =
+	@<Recurse tne renderer through children nodes@>;
+	WRITE("\n");
+
+@<Deal with a code material node@> =
+	WRITE("\\beginlines\n");
+	@<Recurse tne renderer through children nodes@>;
+	WRITE("\\endlines\n");
+
+@<Deal with a footnotes material node@> =
+	@<Recurse tne renderer through children nodes@>;
+
+@<Deal with a endnotes material node@> =
+	@<Recurse tne renderer through children nodes@>;
+
+@<Deal with a macro material node@> =
+	@<Recurse tne renderer through children nodes@>;
+	WRITE("\n");
+
+@<Deal with a definition material node@> =
+	WRITE("\\beginlines\n");
+	@<Recurse tne renderer through children nodes@>;
+	WRITE("\\endlines\n");
+
 @<Render verbatim@> =
 	weave_verbatim_node *C = RETRIEVE_POINTER_weave_verbatim_node(N->content);
 	WRITE("%S", C->content);
@@ -229,8 +261,9 @@ to a given width, into the text at the current position.
 	LOG("It was %d\n", C->allocation_id);
 
 @<Render code line@> =
-	for (tree_node *M = N->child; M; M = M->next)
-		Trees::traverse_from(M, &TeX::render_visit, (void *) trs, L+1);
+	WRITE("\\smallskip\\par\\noindent ");
+	WRITE("|");
+	@<Recurse tne renderer through children nodes@>;
 	WRITE("|");
 	WRITE("\n");
 	return FALSE;
@@ -238,17 +271,18 @@ to a given width, into the text at the current position.
 @<Render function usage@> =
 	weave_function_usage_node *C = RETRIEVE_POINTER_weave_function_usage_node(N->content);
 	WRITE("%S", C->fn->function_name);
+	return FALSE;
 
 @<Render commentary@> =
 	weave_commentary_node *C = RETRIEVE_POINTER_weave_commentary_node(N->content);
-	if (C->in_code) WRITE(" \\hfill{\\ttninepoint\\it ");
+	if (C->in_code) WRITE(" |\\hfill{\\ttninepoint\\it ");
 	TeX::commentary_text(NULL, OUT, trs->wv, C->text);
-	if (C->in_code) WRITE("}");
+	if (C->in_code) WRITE("}|");
 
 @<Render toc@> =
 	WRITE("\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont ");
 	for (tree_node *M = N->child; M; M = M->next) {
-		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) trs, L+1);
+		Trees::traverse_from(M, &TeX::render_visit, (void *) trs, L+1);
 		if (M->next) WRITE("; ");
 	}
 	WRITE("}\\par\\medskip\\hrule\\bigskip\n");
@@ -264,7 +298,7 @@ to a given width, into the text at the current position.
 
 @<Render defn@> =
 	weave_defn_node *C = RETRIEVE_POINTER_weave_defn_node(N->content);
-	WRITE("{\\ninebf %S} ", C->keyword);
+	WRITE("|{\\ninebf %S} |", C->keyword);
 
 @<Render source code@> =
 	weave_source_code_node *C = RETRIEVE_POINTER_weave_source_code_node(N->content);
@@ -282,8 +316,7 @@ to a given width, into the text at the current position.
 	WRITE("[%S]", C->cue_text);
 
 @<Render footnote text@> =
-	weave_begin_footnote_text_node *C = RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
+	WRITE("\n");
 
 @<Render display line@> =
 	weave_display_line_node *C = RETRIEVE_POINTER_weave_display_line_node(N->content);
@@ -291,8 +324,10 @@ to a given width, into the text at the current position.
 
 @<Render function defn@> =
 	weave_function_defn_node *C = RETRIEVE_POINTER_weave_function_defn_node(N->content);
+	TeX::change_colour_PDF(OUT, FUNCTION_COLOUR, TRUE);
 	WRITE("%S", C->fn->function_name);
-	return TRUE;
+	TeX::change_colour_PDF(OUT, PLAIN_COLOUR, TRUE);
+	return FALSE;
 
 @<Render item@> =
 	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
@@ -309,8 +344,7 @@ to a given width, into the text at the current position.
 
 @<Render inline@> =
 	WRITE("|");
-	for (tree_node *M = N->child; M; M = M->next)
-		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) trs, L+1);
+	@<Recurse tne renderer through children nodes@>;
 	WRITE("|");
 	return FALSE;
 
@@ -325,30 +359,11 @@ to a given width, into the text at the current position.
 	WRITE("%S", C->content);
 	if (C->displayed) WRITE("$$"); else WRITE("$");
 
-@ We don't use TeX's |\input| mechanism for macros because it is so prone to
-failures when searching directories (especially those with spaces in the
-names) and then locking TeX into a repeated prompt for help from |stdin|
-which is rather hard to escape from.
-
-Instead we paste the entire text of our macros file into the woven TeX:
-
-@<Incorporate suitable TeX macro definitions into the woven output@> =
-	filename *Macros = Patterns::obtain_filename(trs->wv->pattern, I"inweb-macros.tex");
-	FILE *MACROS = Filenames::fopen(Macros, "r");
-	if (MACROS == NULL) Errors::fatal_with_file("can't open file of TeX macros", Macros);
-	while (TRUE) {
-		int c = fgetc(MACROS);
-		if (c == EOF) break;
-		PUT(c);
-	}
-	fclose(MACROS);
+@<Recurse tne renderer through children nodes@> =
+	for (tree_node *M = N->child; M; M = M->next)
+		Trees::traverse_from(M, &TeX::render_visit, (void *) trs, L+1);
 
 @ =
-int TeX::preserve_math_mode(weave_format *self, weave_order *wv,
-	text_stream *matter, text_stream *id) {
-	return TRUE;
-}
-
 int TeX::yes(weave_format *self, weave_order *wv) {
 	return TRUE;
 }
@@ -501,11 +516,6 @@ mode once again:
 =
 void TeX::source_code(weave_format *self, text_stream *OUT, weave_order *wv,
 	text_stream *matter, text_stream *colouring, int starts) {
-	WRITE("\\smallskip\\par\\noindent");
-	if (starts) {
-		@<Weave a suitable horizontal advance for that many tab stops@>;
-		WRITE("|");
-	}
 	int current_colour = PLAIN_COLOUR, colour_wanted = PLAIN_COLOUR;
 	for (int i=0; i < Str::len(matter); i++) {
 		colour_wanted = Str::get_at(colouring, i); @<Adjust code colour as necessary@>;
@@ -524,19 +534,12 @@ messy alignment system:
 
 @<Adjust code colour as necessary@> =
 	if (colour_wanted != current_colour) {
-		TeX::change_colour_PDF(NULL, OUT, wv, colour_wanted, TRUE);
+		TeX::change_colour_PDF(OUT, colour_wanted, TRUE);
 		current_colour = colour_wanted;
 	}
 
 @ =
-void TeX::inline_code(weave_format *self, text_stream *OUT, weave_order *wv,
-	int enter) {
-	WRITE("|");
-}
-
-@ =
-void TeX::change_colour_PDF(weave_format *self, text_stream *OUT, weave_order *wv,
-	int col, int in_code) {
+void TeX::change_colour_PDF(text_stream *OUT, int col, int in_code) {
 	char *inout = "";
 	if (in_code) inout = "|";
 	switch (col) {
@@ -561,28 +564,28 @@ or DVI, only the middle one is.
 =
 void TeX::para_macro_PDF_1(weave_format *self, text_stream *OUT, weave_order *wv,
 	para_macro *pmac, int defn) {
+}
+void TeX::para_macro(weave_format *self, text_stream *OUT, weave_order *wv,
+	para_macro *pmac, int defn) {
 	if (defn)
 		WRITE("|\\pdfdest num %d fit ",
 			pmac->allocation_id + 100);
 	else
 		WRITE("|\\pdfstartlink attr{/C [0.9 0 0] /Border [0 0 0]} goto num %d ",
 			pmac->allocation_id + 100);
-}
-void TeX::para_macro(weave_format *self, text_stream *OUT, weave_order *wv,
-	para_macro *pmac, int defn) {
 	WRITE("$\\langle${\\xreffont");
-	TeX::change_colour_PDF(NULL, OUT, wv, DEFINITION_COLOUR, FALSE);
+	TeX::change_colour_PDF(OUT, DEFINITION_COLOUR, FALSE);
 	WRITE("%S ", pmac->macro_name);
 	WRITE("{\\sevenss %S}}", pmac->defining_paragraph->paragraph_number);
-	TeX::change_colour_PDF(NULL, OUT, wv, PLAIN_COLOUR, FALSE);
+	TeX::change_colour_PDF(OUT, PLAIN_COLOUR, FALSE);
 	WRITE("$\\rangle$ ");
-}
-void TeX::para_macro_PDF_2(weave_format *self, text_stream *OUT, weave_order *wv,
-	para_macro *pmac, int defn) {
 	if (defn)
 		WRITE("$\\equiv$|");
 	else
 		WRITE("\\pdfendlink|");
+}
+void TeX::para_macro_PDF_2(weave_format *self, text_stream *OUT, weave_order *wv,
+	para_macro *pmac, int defn) {
 }
 
 @ =

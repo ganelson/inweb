@@ -33,14 +33,14 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 	PlainText_render_state *prs = (PlainText_render_state *) state;
 	text_stream *OUT = prs->OUT;
 	if (N->type == weave_document_node_type) @<Render nothing@>
-	else if (N->type == weave_head_node_type) @<Render head@>
+	else if (N->type == weave_head_node_type) @<Render nothing@>
 	else if (N->type == weave_body_node_type) @<Render nothing@>
-	else if (N->type == weave_tail_node_type) @<Render tail@>
+	else if (N->type == weave_tail_node_type) @<Render nothing@>
 	else if (N->type == weave_verbatim_node_type) @<Render verbatim@>
 	else if (N->type == weave_chapter_header_node_type) @<Render chapter header@>
 	else if (N->type == weave_chapter_footer_node_type) @<Render nothing@>
 	else if (N->type == weave_section_header_node_type) @<Render header@>
-	else if (N->type == weave_section_footer_node_type) @<Render nothing@>
+	else if (N->type == weave_section_footer_node_type) @<Render footer@>
 	else if (N->type == weave_section_purpose_node_type) @<Render purpose@>
 	else if (N->type == weave_subheading_node_type) @<Render subheading@>
 	else if (N->type == weave_bar_node_type) @<Render bar@>
@@ -60,8 +60,8 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_function_usage_node_type) @<Render function usage@>
 	else if (N->type == weave_commentary_node_type) @<Render commentary@>
 	else if (N->type == weave_carousel_slide_node_type) @<Render nothing@>
-	else if (N->type == weave_toc_node_type) @<Render toc@>
-	else if (N->type == weave_toc_line_node_type) @<Render toc line@>
+	else if (N->type == weave_toc_node_type) @<Render nothing@>
+	else if (N->type == weave_toc_line_node_type) @<Render nothing@>
 	else if (N->type == weave_chapter_title_page_node_type) @<Render weave_chapter_title_page_node@>
 	else if (N->type == weave_defn_node_type) @<Render defn@>
 	else if (N->type == weave_source_code_node_type) @<Render source code@>
@@ -79,29 +79,29 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 	return TRUE;
 }
 
-@<Render head@> =
-	weave_head_node *C = RETRIEVE_POINTER_weave_head_node(N->content);
-	WRITE("[%S]\n", C->banner);
-
-@<Render tail@> =
-	weave_tail_node *C = RETRIEVE_POINTER_weave_tail_node(N->content);
-	WRITE("[%S]\n", C->rennab);
-
 @<Render chapter header@> =
 	weave_chapter_header_node *C = RETRIEVE_POINTER_weave_chapter_header_node(N->content);
 	WRITE("%S\n\n", C->chap->md->ch_title);
+	section *S;
+	LOOP_OVER_LINKED_LIST(S, section, C->chap->sections)
+		WRITE("  %S\n    %S\n",
+			S->md->sect_title, S->sect_purpose);
+	WRITE("\n");
 
 @<Render header@> =
 	weave_section_header_node *C = RETRIEVE_POINTER_weave_section_header_node(N->content);
 	WRITE("%S\n\n", C->sect->md->sect_title);
 
+@<Render footer@> =
+	WRITE("\n\n");
+
 @<Render purpose@> =
 	weave_section_purpose_node *C = RETRIEVE_POINTER_weave_section_purpose_node(N->content);
-	PlainText::subheading(prs->wv->format, OUT, prs->wv, 2, C->purpose, NULL);
+	WRITE("%S\n\n", C->purpose);
 
 @<Render subheading@> =
 	weave_subheading_node *C = RETRIEVE_POINTER_weave_subheading_node(N->content);
-	PlainText::subheading(prs->wv->format, OUT, prs->wv, 1, C->text, NULL);
+	WRITE("%S\n\n", C->text);
 
 @<Render bar@> =
 	WRITE("\n----------------------------------------------------------------------\n\n");
@@ -115,11 +115,14 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 @<Render paragraph heading@> =
 	weave_paragraph_heading_node *C = RETRIEVE_POINTER_weave_paragraph_heading_node(N->content);
 	WRITE("\n");
-	PlainText::locale(prs->wv->format, OUT, prs->wv, C->para, NULL);
-	WRITE(". %S    ", C->para->heading_text);
+	WRITE("%S%S", C->para->ornament, C->para->paragraph_number);
+	if (Str::len(C->para->heading_text) > 0) WRITE(" %S", C->para->heading_text);
+	WRITE(".  ");
 
 @<Render endnote@> =
+	@<Recurse tne renderer through children nodes@>;
 	WRITE("\n");
+	return FALSE;
 
 @<Render verbatim@> =
 	weave_verbatim_node *C = RETRIEVE_POINTER_weave_verbatim_node(N->content);
@@ -134,7 +137,9 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 
 @<Render pmac@> =
 	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
-	PlainText::para_macro(prs->wv->format, OUT, prs->wv, C->pmac, C->defn);
+	WRITE("<%S (%S)>%s",
+		C->pmac->macro_name, C->pmac->defining_paragraph->paragraph_number,
+		(C->defn)?" =":"");
 
 @<Render vskip@> =
 	WRITE("\n");
@@ -152,26 +157,13 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 @<Render function usage@> =
 	weave_function_usage_node *C = RETRIEVE_POINTER_weave_function_usage_node(N->content);
 	WRITE("%S", C->fn->function_name);
+	return FALSE;
 
 @<Render commentary@> =
 	weave_commentary_node *C = RETRIEVE_POINTER_weave_commentary_node(N->content);
 	if (C->in_code) WRITE(" /* ");
-	PlainText::commentary_text(prs->wv->format, OUT, prs->wv, C->text);
+	WRITE("%S", C->text);
 	if (C->in_code) WRITE(" */ ");
-
-@<Render toc@> =
-	weave_toc_node *C = RETRIEVE_POINTER_weave_toc_node(N->content);
-	WRITE("%S.", C->text1);
-	for (tree_node *M = N->child; M; M = M->next) {
-		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) prs, L+1);
-		if (M->next) WRITE("; ");
-	}
-	WRITE("\n\n");
-	return FALSE;
-
-@<Render toc line@> =
-	weave_toc_line_node *C = RETRIEVE_POINTER_weave_toc_line_node(N->content);
-	WRITE("%S %S", C->text1, C->text2);
 
 @<Render weave_chapter_title_page_node@> =
 	weave_chapter_title_page_node *C = RETRIEVE_POINTER_weave_chapter_title_page_node(N->content);
@@ -194,8 +186,7 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 	WRITE("[%S]", C->cue_text);
 
 @<Render footnote text@> =
-	weave_begin_footnote_text_node *C = RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
+	WRITE("\n");
 
 @<Render display line@> =
 	weave_display_line_node *C = RETRIEVE_POINTER_weave_display_line_node(N->content);
@@ -208,8 +199,8 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 
 @<Render item@> =
 	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
-	if (C->depth == 1) WRITE("%-4s  ", C->label);
-	else WRITE("%-8s  ", C->label);
+	for (int i=1; i<C->depth; i++) WRITE("  ");
+	WRITE("(%S) ", C->label);
 
 @<Render locale@> =
 	weave_locale_node *C = RETRIEVE_POINTER_weave_locale_node(N->content);
@@ -222,23 +213,9 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 	WRITE("%S", C->content);
 	if (C->displayed) WRITE("\n\n");
 
-@ =
-void PlainText::subheading(weave_format *self, text_stream *OUT, weave_order *wv,
-	int level, text_stream *comment, text_stream *head) {
-	WRITE("%S:\n", comment);
-	if ((level == 2) && (head)) WRITE("%S\n\n", head);
-}
-
-@ =
-void PlainText::toc(weave_format *self, text_stream *OUT, weave_order *wv, int stage,
-	text_stream *text1, text_stream *text2, paragraph *P) {
-	switch (stage) {
-		case 1: WRITE("%S.", text1); break;
-		case 2: WRITE("; "); break;
-		case 3: WRITE("%S %S", text1, text2); break;
-		case 4: WRITE("\n\n"); break;
-	}
-}
+@<Recurse tne renderer through children nodes@> =
+	for (tree_node *M = N->child; M; M = M->next)
+		Trees::traverse_from(M, &PlainText::render_visit, (void *) prs, L+1);
 
 @ =
 void PlainText::chapter_title_page(weave_format *self, text_stream *OUT,
@@ -248,37 +225,4 @@ void PlainText::chapter_title_page(weave_format *self, text_stream *OUT,
 	LOOP_OVER_LINKED_LIST(S, section, C->sections)
 		WRITE("    %S: %S\n        %S\n",
 			S->md->sect_range, S->md->sect_title, S->sect_purpose);
-}
-
-@ =
-void PlainText::para_macro(weave_format *self, text_stream *OUT, weave_order *wv,
-	para_macro *pmac, int defn) {
-	WRITE("<%S (%S)>%s",
-		pmac->macro_name, pmac->defining_paragraph->paragraph_number,
-		(defn)?" =":"");
-}
-
-@ =
-void PlainText::blank_line(weave_format *self, text_stream *OUT, weave_order *wv,
-	int in_comment) {
-	WRITE("\n");
-}
-
-@ =
-void PlainText::endnote(weave_format *self, text_stream *OUT, weave_order *wv,
-	int end) {
-	WRITE("\n");
-}
-
-@ =
-void PlainText::commentary_text(weave_format *self, text_stream *OUT,
-	weave_order *wv, text_stream *id) {
-	WRITE("%S", id);
-}
-
-@ =
-void PlainText::locale(weave_format *self, text_stream *OUT, weave_order *wv,
-	paragraph *par1, paragraph *par2) {
-	WRITE("%S%S", par1->ornament, par1->paragraph_number);
-	if (par2) WRITE("-%S", par2->paragraph_number);
 }
