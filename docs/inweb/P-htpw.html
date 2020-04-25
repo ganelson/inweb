@@ -7,6 +7,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
@@ -16,7 +18,7 @@
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-assets/Octagram.png" width=72 height=72">
@@ -141,7 +143,7 @@ a four-level hierarchy on top of the more basic three-level hierarchy produced
 by <a href="../foundation-module/index.html" class="internal">foundation</a>:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="function-syntax">INWEB</span><span class="plain-syntax">        </span><a href="2-tr.html#SP1" class="internal">web</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP2" class="internal">chapter</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP3" class="internal">section</a><span class="plain-syntax">     ----&gt;   </span><a href="2-lc.html#SP1" class="internal">source_line</a>
 <span class="plain-syntax">              |                |                  |</span>
 <span class="function-syntax">FOUNDATION</span><span class="plain-syntax">   </span><a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP3" class="internal">chapter_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP4" class="internal">section_md</a>
@@ -156,7 +158,7 @@ Running Inweb with the <span class="extract"><span class="extract-syntax">-scan<
 for example:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">web "The Twin Primes Conjecture": 1 section : 3 paragraphs : 55 lines</span>
 <span class="plain-syntax">Scan of source lines for '0'</span>
 <span class="plain-syntax">0000001  SECTION_HEADING.....  Main.</span>
@@ -240,7 +242,7 @@ the footnote texts, and works out their proper numbering; each becomes a
 we now have something like this:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="function-syntax">INWEB</span><span class="plain-syntax">        </span><a href="2-tr.html#SP1" class="internal">web</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP2" class="internal">chapter</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tr.html#SP3" class="internal">section</a><span class="plain-syntax">     ----&gt;  </span><a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">paragraph</a><span class="plain-syntax">  ----&gt; </span><a href="2-lc.html#SP1" class="internal">source_line</a>
 <span class="plain-syntax">              |                |                  |               </span><a href="2-pm.html#SP1" class="internal">para_macro</a>
 <span class="function-syntax">FOUNDATION</span><span class="plain-syntax">   </span><a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP3" class="internal">chapter_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP4" class="internal">section_md</a>
@@ -260,7 +262,7 @@ that's done at weaving time instead.
 A line at the top like
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">Language</span><span class="plain-syntax">:</span><span class="string-syntax"> C</span>
 </pre>
 <p class="commentary">results in the text "C" being stored in the bibliographic datum <span class="extract"><span class="extract-syntax">"Language"</span></span>,
@@ -274,7 +276,7 @@ calling <a href="4-pl.html#SP2" class="internal">Languages::find_by_name</a>, an
 finds extract lines like
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    = (text as ACME)</span>
 </pre>
 <p class="commentary">to say that a passage of text must be syntax-coloured like the ACME language.
@@ -377,7 +379,7 @@ notation, footnote cues, function calls, and so on.
 the weave tree. For example:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">document weave order 0</span>
 <span class="plain-syntax">  head banner &lt;Weave of 'Complete Program' generated by Inweb&gt;</span>
 <span class="plain-syntax">  body</span>
@@ -596,7 +598,7 @@ from the bibliographic data for a web, and so on &mdash; to produce a final file
 For example, a simple use of the collater is to work through the template:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    &lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;</span>
 <span class="plain-syntax">    &lt;html&gt;</span>
 <span class="plain-syntax">        &lt;head&gt;</span>

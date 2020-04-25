@@ -7,12 +7,14 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-assets/Octagram.png" width=72 height=72">
@@ -73,7 +75,7 @@ in the usual distribution.
 <p class="commentary">For example, the command
 </p>
 
-<pre class="ConsoleText-displayed-code all-displayed-code">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> Tapestry</span>
 </pre>
 <p class="commentary">didn't set a colony file, so (a) doesn't apply. Inweb first tries
@@ -93,7 +95,7 @@ as is any file whose first character is <span class="extract"><span class="Conso
 and say what if anything it is based on. For example, this might be:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    name: Tapestry based on HTML</span>
 </pre>
 <p class="commentary">That is the only compulsory content; with that one line in one file, the
@@ -108,7 +110,7 @@ to HTML in every respect, so it's not very useful yet.)
 part. Thus, for example,
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    name: HTML</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>There are then a handful of other, optional, settings. The following are
@@ -116,14 +118,14 @@ all inherited automatically from the pattern we are based on, unless we
 set them ourselves.
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    format: F</span>
 </pre>
 <p class="commentary">sets the format. At present, this must be <span class="extract"><span class="extract-syntax">HTML</span></span>, <span class="extract"><span class="extract-syntax">plain</span></span> (plain text),
 <span class="extract"><span class="extract-syntax">ePub</span></span>, <span class="extract"><span class="extract-syntax">TeX</span></span>, <span class="extract"><span class="extract-syntax">DVI</span></span>, or <span class="extract"><span class="extract-syntax">PDF</span></span>.
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    number sections: yes</span>
 <span class="plain-syntax">    number sections: no</span>
 </pre>
@@ -131,7 +133,7 @@ set them ourselves.
 be number 1, and so on. Default is <span class="extract"><span class="extract-syntax">no</span></span>.
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    embed CSS: yes</span>
 <span class="plain-syntax">    embed CSS: no</span>
 </pre>
@@ -140,7 +142,7 @@ rather than to link to them. Default is <span class="extract"><span class="extra
 formats.
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    default range: R</span>
 </pre>
 <p class="commentary">tells the weaver to assume the range <span class="extract"><span class="extract-syntax">R</span></span>, if the user tries to weave a
@@ -156,7 +158,7 @@ inherited.
 pattern being defined, not to other patterns based on it.
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    tex command: C</span>
 </pre>
 <p class="commentary">tells the weaver that the TeX typesetting system should be invoked with the
@@ -164,7 +166,7 @@ shell command <span class="extract"><span class="extract-syntax">C</span></span>
 when we want to make a PDF rather than a DVI.
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    open command: C</span>
 </pre>
 <p class="commentary">tells the weaver to use the shell command <span class="extract"><span class="extract-syntax">C</span></span> if it wants to open the woven
@@ -172,14 +174,14 @@ file (i.e., on the user's computer) after it finishes. Default is <span class="e
 which works nicely for MacOS.
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    bibliographic data: K = V</span>
 </pre>
 <p class="commentary">tells the weaver to override the bibliographic data on any web it weaves, setting
 the key <span class="extract"><span class="extract-syntax">K</span></span> to the value <span class="extract"><span class="extract-syntax">V</span></span>. For example:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    bibliographic data: Booklet Title = A formal grammar for Inform 7</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Plugins. </b>Plugins are named bundles of resources which are sometimes added to a weave,
@@ -193,7 +195,7 @@ but there's no reason they shouldn't also be useful for other formats.
 be a single alphanumeric word. For example, the HTML pattern file says
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    plugin: Base</span>
 </pre>
 <p class="commentary">and this ensures that every file woven by this pattern, or any pattern based
@@ -224,7 +226,7 @@ mathematics and footnoting, provide lines like these in your pattern file,
 but with your preferred plugin names:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    mathematics plugin: MathJax3</span>
 <span class="plain-syntax">    footnotes plugin: Bigfoot</span>
 </pre>
@@ -237,7 +239,30 @@ have mathematics in a footnote when <span class="extract"><span class="extract-s
 to tinker with. If you want <span class="extract"><span class="extract-syntax">Carousel</span></span> to have rather different CSS effects,
 for example, make your own copy of <span class="extract"><span class="extract-syntax">Carousel</span></span> (copying it from the one in
 the Inweb distribution at <span class="extract"><span class="extract-syntax">inweb/Patterns/HTML/Carousel</span></span>) and place it in your
-own pattern. Your version will prevail over the built-in one.
+own pattern. Files in your version will prevail over files in the built-in one.
+</p>
+
+<p class="commentary">As a simple example, suppose you want a pattern just like <span class="extract"><span class="extract-syntax">GitHubPages</span></span> but
+which uses monospaced fonts throughout, for commentary as well as code. The
+pattern file can just be:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    name: MonoGitHub based on GitHubPages</span>
+</pre>
+<p class="commentary">Then create just one subdirectory of <span class="extract"><span class="extract-syntax">MonoGitHub</span></span>, called <span class="extract"><span class="extract-syntax">Base</span></span>, and create
+a single file in that called <span class="extract"><span class="extract-syntax">Fonts.css</span></span>, reading:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    .code-font { font-family: monospace; }</span>
+<span class="plain-syntax">    .commentary-font { font-family: monospace; }</span>
+</pre>
+<p class="commentary">And that should work nicely. What happens here is that when pages are woven
+with <span class="extract"><span class="extract-syntax">MonoGitHub</span></span>, they use this custom <span class="extract"><span class="extract-syntax">Fonts.css</span></span> instead of the one in
+the <span class="extract"><span class="extract-syntax">Base</span></span> plugin from <span class="extract"><span class="extract-syntax">HTML</span></span>. (<span class="extract"><span class="extract-syntax">MonoGitHub</span></span> is based on <span class="extract"><span class="extract-syntax">GitHubPages</span></span>, but
+that in turn is based on <span class="extract"><span class="extract-syntax">HTML</span></span>.) All the other files of <span class="extract"><span class="extract-syntax">Base</span></span> remain as
+they were, and there's no need to provide duplicates here.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>So what's in a plugin? There's not much to it. Every file in a plugin, whose
@@ -298,7 +323,7 @@ then you need only write two files: <span class="extract"><span class="extract-s
 the single line
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    name: SnakeSkin based on HTML</span>
 </pre>
 <p class="commentary">(or perhaps based on <span class="extract"><span class="extract-syntax">GitHubPages</span></span>, if you want to host there); and then
@@ -337,7 +362,7 @@ she can write her own <span class="extract"><span class="extract-syntax">templat
 <p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>For example, here is a template file for making an HTML page:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;</span>
 <span class="plain-syntax">&lt;html&gt;</span>
 <span class="plain-syntax">    &lt;head&gt;</span>
@@ -380,12 +405,12 @@ enabling it to generate contents pages:
 
 <ul class="items"><li>(a) One of the following details about the entire-web PDF (see below):
 </li></ul>
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">[[Complete Leafname]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete PDF Size]]</span>
 </pre>
 <ul class="items"><li>(b) One of the following details about the "current chapter" (again, see below):
 </li></ul>
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Leafname]]</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter PDF Size]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Errors]]</span>
 </pre>
@@ -393,7 +418,7 @@ enabling it to generate contents pages:
 the errors result is a usually blank report.
 </li><li>(c) One of the following details about the "current section" (again, see below):
 </li></ul>
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">[[Section Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Leafname]]</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[Section Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section PDF Size]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Errors]]</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[Section Lines]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Paragraphs]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Mean]]</span>
@@ -418,7 +443,7 @@ a repetition, but happens just once, for the named chapter or section.
 <p class="commentary">For example, the following pattern:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    To take chapter 3 as an example, for instance, we find -</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[Select 3]]</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[Repeat Section]]</span>
@@ -429,7 +454,7 @@ a repetition, but happens just once, for the named chapter or section.
 <p class="commentary">weaves a report somewhat like this:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    To take chapter 3 as an example, for instance, we find -</span>
 <span class="plain-syntax">        Section Lexer, 3/lex, 1011 lines.</span>
 <span class="plain-syntax">        Section Read Source Text, 3/read, 394 lines.</span>

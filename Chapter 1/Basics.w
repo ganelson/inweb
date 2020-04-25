@@ -59,6 +59,7 @@ see //foundation: A Brief Guide to Foundation//.
 @e weave_section_purpose_node_MT
 @e weave_subheading_node_MT
 @e weave_bar_node_MT
+@e weave_linebreak_node_MT
 @e weave_pagebreak_node_MT
 @e weave_paragraph_heading_node_MT
 @e weave_endnote_node_MT
@@ -142,6 +143,7 @@ ALLOCATE_INDIVIDUALLY(weave_verbatim_node)
 ALLOCATE_INDIVIDUALLY(weave_section_purpose_node)
 ALLOCATE_INDIVIDUALLY(weave_subheading_node)
 ALLOCATE_INDIVIDUALLY(weave_bar_node)
+ALLOCATE_INDIVIDUALLY(weave_linebreak_node)
 ALLOCATE_INDIVIDUALLY(weave_pagebreak_node)
 ALLOCATE_INDIVIDUALLY(weave_paragraph_heading_node)
 ALLOCATE_INDIVIDUALLY(weave_endnote_node)

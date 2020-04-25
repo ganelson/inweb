@@ -7,6 +7,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
@@ -19,7 +21,7 @@ function togglePopup(material_id) {
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-assets/Octagram.png" width=72 height=72">
@@ -49,7 +51,7 @@ function togglePopup(material_id) {
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>We store these like so:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">para_macro</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">macro_name</span><span class="plain-syntax">; </span><span class="comment-syntax"> usually long, like "Create a paragraph macro here"</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">defining_paragraph</span><span class="plain-syntax">; </span><span class="comment-syntax"> as printed in small type after the name in any usage</span>
@@ -63,8 +65,8 @@ function togglePopup(material_id) {
 the usage of these is always a single section.
 </p>
 
-<pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">para_macro</span><span class="plain-syntax"> *</span><span class="function-syntax">Macros::create</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <b>Macros::create</b>:<br>The Parser - <a href="2-tp.html#SP1_1_7_4">&#167;1.1.7.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">para_macro</span><span class="plain-syntax"> *</span><span class="function-syntax">Macros::create</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Macros::create</span></span>:<br>The Parser - <a href="2-tp.html#SP1_1_7_4">&#167;1.1.7.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">para_macro</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pmac</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">para_macro</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">pmac</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">macro_name</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">pmac</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">defining_paragraph</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
@@ -81,8 +83,8 @@ you can use the same macro name twice in different sections; and lookup is
 much faster.
 </p>
 
-<pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">para_macro</span><span class="plain-syntax"> *</span><span class="function-syntax">Macros::find_by_name</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <b>Macros::find_by_name</b>:<br>Paragraph Numbering - <a href="2-pn.html#SP1_1">&#167;1.1</a>&lt;br&gt;The Weaver - <a href="3-tw.html#SP2_7_2_3_2_6">&#167;2.7.2.3.2.6</a>&lt;br&gt;The Tangler - <a href="3-tt.html#SP3_1">&#167;3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">scope</span><span class="plain-syntax">) {</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">para_macro</span><span class="plain-syntax"> *</span><span class="function-syntax">Macros::find_by_name</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Macros::find_by_name</span></span>:<br>Paragraph Numbering - <a href="2-pn.html#SP1_1">&#167;1.1</a><br>The Weaver - <a href="3-tw.html#SP2_7_2_3_2_6">&#167;2.7.2.3.2.6</a><br>The Tangler - <a href="3-tt.html#SP3_1">&#167;3.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">scope</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">para_macro</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pmac</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">pmac</span><span class="plain-syntax">, </span><span class="reserved-syntax">para_macro</span><span class="plain-syntax">, </span><span class="identifier-syntax">scope</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">macros</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">pmac</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">macro_name</span><span class="plain-syntax">))</span>

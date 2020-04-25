@@ -7,6 +7,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
@@ -19,7 +21,7 @@ function togglePopup(material_id) {
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-assets/Octagram.png" width=72 height=72">
@@ -65,8 +67,8 @@ actual image: this can have many forms, but in all cases tells us the
 height and width.
 </p>
 
-<pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">ImageFiles::get_JPEG_dimensions</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <b>ImageFiles::get_JPEG_dimensions</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">JPEG_file</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">width</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">height</span><span class="plain-syntax">) {</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">ImageFiles::get_JPEG_dimensions</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">ImageFiles::get_JPEG_dimensions</span></span>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">JPEG_file</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">width</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">height</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sig</span><span class="plain-syntax">, </span><span class="identifier-syntax">length</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">marker</span><span class="plain-syntax">;</span>
 
@@ -118,8 +120,8 @@ need to scan the IHDR chunk, of which the pixel width and height are the
 first two words (section 11.2.2).
 </p>
 
-<pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">ImageFiles::get_PNG_dimensions</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <b>ImageFiles::get_PNG_dimensions</b>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">PNG_file</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">width</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">height</span><span class="plain-syntax">) {</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">ImageFiles::get_PNG_dimensions</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">ImageFiles::get_PNG_dimensions</span></span>:<br>none</span></button><span class="plain-syntax">(</span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">PNG_file</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">width</span><span class="plain-syntax">, </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">height</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sig1</span><span class="plain-syntax">, </span><span class="identifier-syntax">sig2</span><span class="plain-syntax">, </span><span class="identifier-syntax">length</span><span class="plain-syntax">, </span><span class="identifier-syntax">type</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax"> Check PNG signature</span>

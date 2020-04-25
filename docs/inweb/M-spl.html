@@ -7,11 +7,13 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-assets/Octagram.png" width=72 height=72">
@@ -54,7 +56,7 @@ currently available to Inweb by using <span class="extract"><span class="extract
 installed Inweb replies like so:
 </p>
 
-<pre class="undisplayed-code all-displayed-code">
+<pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">Inweb can see the following programming language definitions:</span>
 
 <span class="plain-syntax">ACME: The ACME assembly language for 6502 and related CPUs</span>
@@ -135,7 +137,7 @@ last block of it is closed with a <span class="extract"><span class="extract-syn
 practice, though, every ILD should open like so:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"C"</span>
 <span class="plain-syntax">Details: </span><span class="string-syntax">"The C programming language"</span>
 <span class="plain-syntax">Extension: </span><span class="string-syntax">".c"</span>
@@ -178,7 +180,7 @@ as a pair or not at all, is the notation for multiline comments.
 <p class="commentary">For example, C defines:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Multiline Comment Open: </span><span class="string-syntax">"/*"</span>
 <span class="plain-syntax">    Multiline Comment Close: </span><span class="string-syntax">"*/"</span>
 <span class="plain-syntax">    Line Comment: </span><span class="string-syntax">"//"</span>
@@ -201,7 +203,7 @@ character literals.
 <p class="commentary">Here, C defines:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    String Literal: </span><span class="string-syntax">"\""</span>
 <span class="plain-syntax">    String Literal Escape: </span><span class="string-syntax">"\\"</span>
 <span class="plain-syntax">    Character Literal: </span><span class="string-syntax">"'"</span>
@@ -221,7 +223,7 @@ are notations for non-decimal numbers, if they exist.
 <p class="commentary">Here, C has:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Hexadecimal Literal Prefix: </span><span class="string-syntax">"0x"</span>
 <span class="plain-syntax">    Binary Literal Prefix: </span><span class="string-syntax">"0b"</span>
 <span class="plain-syntax">    Negative Literal Prefix: </span><span class="string-syntax">"-"</span>
@@ -232,7 +234,7 @@ in Unix, where the opening line must be a "shebang" indicating their language.
 For example, Perl defines:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Shebang: </span><span class="string-syntax">"#!/usr/bin/perl\n\n"</span>
 </pre>
 <p class="commentary">Most languages do not have a shebang.
@@ -250,7 +252,7 @@ markers automatically for languages which support them: <span class="extract"><s
 that this language does, and gives the notation. For example, C provides:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Line Marker: </span><span class="string-syntax">"#line %d \"%f\"\n"</span>
 </pre>
 <p class="commentary">Here <span class="extract"><span class="extract-syntax">%d</span></span> expands to the line number, and <span class="extract"><span class="extract-syntax">%f</span></span> the filename, of origin.
@@ -265,20 +267,20 @@ matter added. This material is in <span class="extract"><span class="extract-syn
 <p class="commentary">For C and all similar languages, we recommend this:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Before Named Paragraph Expansion: </span><span class="string-syntax">"\n{\n"</span>
 <span class="plain-syntax">    After Named Paragraph Expansion: </span><span class="string-syntax">"}\n"</span>
 </pre>
 <p class="commentary">The effect of this is to ensure that code such as:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    if (x == y) @&lt;Do something dramatic@&gt;;</span>
 </pre>
 <p class="commentary">tangles to something like this:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    if (x == y)</span>
 <span class="plain-syntax">    {</span>
 <span class="plain-syntax">    ...</span>
@@ -304,7 +306,7 @@ continue a multiline definition (if they are allowed); and <span class="extract"
 if given, places any ending notation. For example, Inform 6 defines:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Start Definition: </span><span class="string-syntax">"Constant %S =\s"</span>
 <span class="plain-syntax">    End Definition: </span><span class="string-syntax">";\n"</span>
 </pre>
@@ -312,7 +314,7 @@ if given, places any ending notation. For example, Inform 6 defines:
 out to:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Constant TAXICAB = 1729;\n</span>
 </pre>
 <p class="commentary">Inweb ignores all definitions unless one of these three properties is given.
@@ -325,7 +327,7 @@ If the language supports it, the notation is in <span class="extract"><span clas
 and in <span class="extract"><span class="extract-syntax">Start Ifndef</span></span> and <span class="extract"><span class="extract-syntax">End Ifndef</span></span>. For example, Inform 6 has:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Start Ifdef: </span><span class="string-syntax">"#ifdef %S;\n"</span>
 <span class="plain-syntax">    End Ifdef: </span><span class="string-syntax">"#endif; ! %S\n"</span>
 <span class="plain-syntax">    Start Ifndef: </span><span class="string-syntax">"#ifndef %S;\n"</span>
@@ -364,13 +366,13 @@ be detected.
 <p class="commentary">For example, in a hypothetical language we might write:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Function Declaration Notation: </span><span class="function-syntax">/fun \.([A-Za-z_][A-Za-z0-9_]*) =.*/</span>
 </pre>
 <p class="commentary">and this will then match lines like
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    fun seekHigherAuthority = ...</span>
 </pre>
 <p class="commentary">and read them as function declarations. The function name matches the bracketed
@@ -378,7 +380,7 @@ part of the regular expression, and in this case is <span class="extract"><span 
 Similarly for
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Type Declaration Notation: </span><span class="function-syntax">/struct \.([A-Za-z_][A-Za-z0-9_]*) =.*/</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Secret Features. </b>It is not quite true that everything a language can do is defined by the ILD.
@@ -401,7 +403,7 @@ are special: for example, <span class="extract"><span class="extract-syntax">voi
 in the language in question. For C, then, we include the line:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">keyword</span><span class="plain-syntax"> </span><span class="string-syntax">void</span>
 </pre>
 <p class="commentary">Keywords can be declared in a number of categories, which are identified by
@@ -409,7 +411,7 @@ colour name: the default is <span class="extract"><span class="extract-syntax">!
 for example:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">keyword</span><span class="plain-syntax"> </span><span class="string-syntax">isdigit</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="element-syntax">!function</span>
 </pre>
 <p class="commentary">makes a keyword of colour <span class="extract"><span class="extract-syntax">!function</span></span>.
@@ -424,7 +426,7 @@ a word "green": instead we colour it semantically, from the following
 palette of possibilities:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="element-syntax">!character</span><span class="plain-syntax">  </span><span class="element-syntax">!comment</span><span class="plain-syntax">     </span><span class="element-syntax">!constant</span><span class="plain-syntax">  </span><span class="element-syntax">!definition</span><span class="plain-syntax">  </span><span class="element-syntax">!element</span><span class="plain-syntax">  </span><span class="element-syntax">!extract</span>
 <span class="element-syntax">!function</span><span class="plain-syntax">   </span><span class="element-syntax">!identifier</span><span class="plain-syntax">  </span><span class="element-syntax">!plain</span><span class="plain-syntax">     </span><span class="element-syntax">!reserved</span><span class="plain-syntax">    </span><span class="element-syntax">!string</span>
 </pre>
@@ -456,7 +458,7 @@ and <span class="extract"><span class="extract-syntax">!plain</span></span>.
 empty program is legal but does nothing:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
 </pre>
@@ -466,7 +468,7 @@ block, that's a line of source code. Blocks normally contain one or more
 "rules":
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="string-syntax">marble</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!function</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
@@ -479,7 +481,7 @@ snippets. This, for example, applies its rule to each individual character
 in turn:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">characters</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">            </span><span class="string-syntax">K</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!identifier</span>
@@ -494,7 +496,7 @@ but they were only allowed to do that because (a) they were single words,
 awkward characters. For any more complicated texts, always use quotation
 marks. For example, in
 </li></ul>
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="string-syntax">"=&gt;"</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!reserved</span>
 </pre>
 <p class="commentary">the <span class="extract"><span class="extract-syntax">=&gt;</span></span> in quotes is just text, whereas the one outside quotes is being
@@ -505,7 +507,7 @@ used to divide a rule.
 use <span class="extract"><span class="extract-syntax">\\</span></span> for a literal backslash. For example:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="string-syntax">"\\\""</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!reserved</span>
 </pre>
 <p class="commentary">actually matches the text <span class="extract"><span class="extract-syntax">\"</span></span>.
@@ -534,7 +536,7 @@ lie inside the text <span class="extract"><span class="extract-syntax">T</span><
 plain text in which all vowels are in red:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"VowelsExample"</span>
 <span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!plain</span>
@@ -546,7 +548,7 @@ plain text in which all vowels are in red:
 <p class="commentary">Given the text:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">A noir, E blanc, I rouge, U vert, O bleu : voyelles,</span>
 <span class="plain-syntax">Je dirai quelque jour vos naissances latentes :</span>
 <span class="plain-syntax">A, noir corset velu des mouches éclatantes</span>
@@ -555,7 +557,7 @@ plain text in which all vowels are in red:
 <p class="commentary">this produces:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="function-syntax">A</span><span class="plain-syntax"> n</span><span class="function-syntax">oi</span><span class="plain-syntax">r, </span><span class="function-syntax">E</span><span class="plain-syntax"> bl</span><span class="function-syntax">a</span><span class="plain-syntax">nc, </span><span class="function-syntax">I</span><span class="plain-syntax"> r</span><span class="function-syntax">ou</span><span class="plain-syntax">g</span><span class="function-syntax">e</span><span class="plain-syntax">, </span><span class="function-syntax">U</span><span class="plain-syntax"> v</span><span class="function-syntax">e</span><span class="plain-syntax">rt, </span><span class="function-syntax">O</span><span class="plain-syntax"> bl</span><span class="function-syntax">eu</span><span class="plain-syntax"> : v</span><span class="function-syntax">o</span><span class="plain-syntax">y</span><span class="function-syntax">e</span><span class="plain-syntax">ll</span><span class="function-syntax">e</span><span class="plain-syntax">s,</span>
 <span class="plain-syntax">J</span><span class="function-syntax">e</span><span class="plain-syntax"> d</span><span class="function-syntax">i</span><span class="plain-syntax">r</span><span class="function-syntax">ai</span><span class="plain-syntax"> q</span><span class="function-syntax">ue</span><span class="plain-syntax">lq</span><span class="function-syntax">ue</span><span class="plain-syntax"> j</span><span class="function-syntax">ou</span><span class="plain-syntax">r v</span><span class="function-syntax">o</span><span class="plain-syntax">s n</span><span class="function-syntax">ai</span><span class="plain-syntax">ss</span><span class="function-syntax">a</span><span class="plain-syntax">nc</span><span class="function-syntax">e</span><span class="plain-syntax">s l</span><span class="function-syntax">a</span><span class="plain-syntax">t</span><span class="function-syntax">e</span><span class="plain-syntax">nt</span><span class="function-syntax">e</span><span class="plain-syntax">s :</span>
 <span class="function-syntax">A</span><span class="plain-syntax">, n</span><span class="function-syntax">oi</span><span class="plain-syntax">r c</span><span class="function-syntax">o</span><span class="plain-syntax">rs</span><span class="function-syntax">e</span><span class="plain-syntax">t v</span><span class="function-syntax">e</span><span class="plain-syntax">l</span><span class="function-syntax">u</span><span class="plain-syntax"> d</span><span class="function-syntax">e</span><span class="plain-syntax">s m</span><span class="function-syntax">ou</span><span class="plain-syntax">ch</span><span class="function-syntax">e</span><span class="plain-syntax">s écl</span><span class="function-syntax">a</span><span class="plain-syntax">t</span><span class="function-syntax">a</span><span class="plain-syntax">nt</span><span class="function-syntax">e</span><span class="plain-syntax">s</span>
@@ -565,7 +567,7 @@ plain text in which all vowels are in red:
 the snippet. For example,
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"LineageExample"</span>
 <span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!plain</span>
@@ -577,14 +579,14 @@ the snippet. For example,
 <p class="commentary">acts on the text:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Jacob first appears in the Book of Genesis, the son of Isaac and Rebecca, the</span>
 <span class="plain-syntax">grandson of Abraham, Sarah and Bethuel, the nephew of Ishmael.</span>
 </pre>
 <p class="commentary">to produce:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Jacob first appears in the Book of Genesis, the </span><span class="function-syntax">son</span><span class="plain-syntax"> of Isaac and Rebecca, the</span>
 <span class="plain-syntax">grand</span><span class="function-syntax">son</span><span class="plain-syntax"> of Abraham, Sarah and Bethuel, the nephew of Ishmael.</span>
 </pre>
@@ -597,7 +599,7 @@ while <span class="extract"><span class="extract-syntax">====</span></span> woul
 into non-overlapping contiguous pieces which have that colour. For example:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"RunningExample"</span>
 <span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!plain</span>
@@ -612,14 +614,14 @@ into non-overlapping contiguous pieces which have that colour. For example:
 <p class="commentary">acts on:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Napoleon Bonaparte (1769-1821) took 167 scientists to Egypt in 1798,</span>
 <span class="plain-syntax">who published their so-called Memoirs over the period 1798-1801.</span>
 </pre>
 <p class="commentary">to produce:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Napoleon Bonaparte (</span><span class="function-syntax">1769-1821</span><span class="plain-syntax">) took </span><span class="function-syntax">167</span><span class="plain-syntax"> scientists to Egypt in </span><span class="function-syntax">1798</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">who published their so-called Memoirs over the period </span><span class="function-syntax">1798-1801</span><span class="plain-syntax">.</span>
 </pre>
@@ -630,7 +632,7 @@ in "so-called".
 <p class="commentary">A more computer-science sort of example would be:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"StdioExample"</span>
 <span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">runs</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="element-syntax">!identifier</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
@@ -642,13 +644,13 @@ in "so-called".
 <p class="commentary">which acts on:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">if (x == 1) printf("Hello!");</span>
 </pre>
 <p class="commentary">to produce:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> == </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="function-syntax">printf</span><span class="plain-syntax">("</span><span class="identifier-syntax">Hello</span><span class="plain-syntax">!");</span>
 </pre>
 <p class="commentary">The split divides the line up into three runs, and the inner block runs three
@@ -666,7 +668,7 @@ none at all, of course, in which case the block of rules is never used.
 This is easier to demonstrate than explain:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"AssemblageExample"</span>
 <span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">matches</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="function-syntax">/\.[A-Za-z_][A-Za-z_0-9]*/</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
@@ -677,7 +679,7 @@ This is easier to demonstrate than explain:
 <p class="commentary">which acts on:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">        JSR .initialise</span>
 <span class="plain-syntax">        LDR A, #.data</span>
 <span class="plain-syntax">        RTS</span>
@@ -687,7 +689,7 @@ This is easier to demonstrate than explain:
 <p class="commentary">to produce:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">        </span><span class="identifier-syntax">JSR</span><span class="plain-syntax"> </span><span class="function-syntax">.initialise</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LDR</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">, #</span><span class="function-syntax">.data</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">RTS</span>
@@ -700,7 +702,7 @@ subexpression in turn. (If there is no match, or there are no bracketed
 terms in <span class="extract"><span class="extract-syntax">E</span></span>, nothing happens.)
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"EquationsExample"</span>
 <span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!plain</span>
@@ -712,7 +714,7 @@ terms in <span class="extract"><span class="extract-syntax">E</span></span>, not
 <p class="commentary">acts on:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    A = 2716</span>
 <span class="plain-syntax">    B=3</span>
 <span class="plain-syntax">    C =715 + B</span>
@@ -721,7 +723,7 @@ terms in <span class="extract"><span class="extract-syntax">E</span></span>, not
 <p class="commentary">to produce:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">A</span><span class="plain-syntax"> = </span><span class="function-syntax">2716</span>
 <span class="plain-syntax">    </span><span class="function-syntax">B</span><span class="plain-syntax">=</span><span class="function-syntax">3</span>
 <span class="plain-syntax">    </span><span class="function-syntax">C</span><span class="plain-syntax"> =</span><span class="function-syntax">715</span><span class="plain-syntax"> + B</span>
@@ -741,7 +743,7 @@ applies. For example, this somewhat nihilistic program gets rid of colouring
 entirely:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!plain</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
@@ -750,14 +752,14 @@ entirely:
 exactly that text. For example,
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="string-syntax">printf</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!function</span>
 </pre>
 <p class="commentary">3. X can require the whole snippet to be of a particular colour, by writing
 <span class="extract"><span class="extract-syntax">coloured C</span></span>. For example:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">characters</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">coloured</span><span class="plain-syntax"> </span><span class="element-syntax">!character</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!plain</span>
@@ -772,7 +774,7 @@ declared earlier in the ILD by a <span class="extract"><span class="extract-synt
 <span class="extract"><span class="extract-syntax">keyword of C</span></span>, where <span class="extract"><span class="extract-syntax">C</span></span> is a colour. For example:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">keyword</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span>
 </pre>
 <p class="commentary">says: if the snippet is a keyword declared as being of colour <span class="extract"><span class="extract-syntax">!element</span></span>,
@@ -787,7 +789,7 @@ with one of the following: <span class="extract"><span class="extract-syntax">pr
 space must appear after <span class="extract"><span class="extract-syntax">P</span></span> and before the snippet. For example,
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">runs</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="element-syntax">!identifier</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">prefix</span><span class="plain-syntax"> </span><span class="reserved-syntax">optionally</span><span class="plain-syntax"> </span><span class="reserved-syntax">spaced</span><span class="plain-syntax"> -&gt; </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
@@ -800,7 +802,7 @@ as <span class="extract"><span class="extract-syntax">!element</span></span>. Si
 For example:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">runs</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="element-syntax">!identifier</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">matching</span><span class="plain-syntax"> </span><span class="function-syntax">/.*x.*/</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
@@ -810,7 +812,7 @@ Note that <span class="extract"><span class="extract-syntax">matching /x/</span>
 is required to match the entire snippet, not just somewhere inside.
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">characters</span><span class="plain-syntax"> </span><span class="reserved-syntax">in</span><span class="plain-syntax"> </span><span class="string-syntax">"0123456789"</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">matching</span><span class="plain-syntax"> </span><span class="function-syntax">/\d\d\d\d/</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">}</span>
@@ -823,7 +825,7 @@ and different rules can apply to differently numbered pieces. The notation
 is <span class="extract"><span class="extract-syntax">number N</span></span>, where <span class="extract"><span class="extract-syntax">N</span></span> is the number, counting from 1. For example,
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"ThirdExample"</span>
 <span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!plain</span>
@@ -835,7 +837,7 @@ is <span class="extract"><span class="extract-syntax">number N</span></span>, wh
 <p class="commentary">acts on:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">With how sad steps, O Moon, thou climb'st the skies!</span>
 <span class="plain-syntax">How silently, and with how wan a face!</span>
 <span class="plain-syntax">What, may it be that even in heav'nly place</span>
@@ -854,7 +856,7 @@ is <span class="extract"><span class="extract-syntax">number N</span></span>, wh
 <p class="commentary">to produce:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">With how </span><span class="function-syntax">sad</span><span class="plain-syntax"> steps, O Moon, thou climb'st the skies!</span>
 <span class="plain-syntax">How silently, </span><span class="function-syntax">and</span><span class="plain-syntax"> with how wan a face!</span>
 <span class="plain-syntax">What, may </span><span class="function-syntax">it</span><span class="plain-syntax"> be that even in heav'nly place</span>
@@ -878,7 +880,7 @@ so on. Thus <span class="extract"><span class="extract-syntax">number 1 of 3</sp
 algorithm in Inweb:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"PainterOutput"</span>
 <span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">    </span><span class="string-syntax">number</span><span class="plain-syntax"> </span><span class="string-syntax">1</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="string-syntax">2</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!plain</span>
@@ -903,7 +905,7 @@ algorithm in Inweb:
 to highlight the colours given to the characters in the original. Thus:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    int x = 55; /* a magic number */</span>
 <span class="plain-syntax">    rrrpipppnnpp!!!!!!!!!!!!!!!!!!!!</span>
 <span class="plain-syntax">    Imaginary::function(x, beta);</span>
@@ -912,7 +914,7 @@ to highlight the colours given to the characters in the original. Thus:
 <p class="commentary">becomes
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    int x = 55; /* a magic number */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rrr</span><span class="plain-syntax">p</span><span class="identifier-syntax">i</span><span class="plain-syntax">ppp</span><span class="constant-syntax">nn</span><span class="plain-syntax">pp</span><span class="comment-syntax">!!!!!!!!!!!!!!!!!!!!</span>
 <span class="plain-syntax">    Imaginary::function(x, beta);</span>
@@ -921,7 +923,7 @@ to highlight the colours given to the characters in the original. Thus:
 <p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b>Any condition can be reversed by preceding it with <span class="extract"><span class="extract-syntax">not</span></span>. For example,
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">not</span><span class="plain-syntax"> </span><span class="reserved-syntax">coloured</span><span class="plain-syntax"> </span><span class="element-syntax">!string</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!plain</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26. The three ways rules can take effect. </b>Now let's look at the conclusion Y of a rule. Here the possibilities are
@@ -935,7 +937,7 @@ simpler:
 applied to the snippet only if this rule has matched. For example,
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">keyword</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span><span class="plain-syntax"> </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">optionally</span><span class="plain-syntax"> </span><span class="reserved-syntax">spaced</span><span class="plain-syntax"> </span><span class="reserved-syntax">prefix</span><span class="plain-syntax"> . </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">optionally</span><span class="plain-syntax"> </span><span class="reserved-syntax">spaced</span><span class="plain-syntax"> </span><span class="reserved-syntax">prefix</span><span class="plain-syntax"> -&gt; </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="element-syntax">!element</span>
@@ -954,7 +956,7 @@ the notation <span class="extract"><span class="extract-syntax">=&gt; C on both<
 are printed out on the command line. Thus:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">colouring</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">matches</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="function-syntax">/\d\S+/</span><span class="plain-syntax"> </span><span class="reserved-syntax">{</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">=&gt;</span><span class="plain-syntax"> </span><span class="reserved-syntax">debug</span>
@@ -969,7 +971,7 @@ fact Inweb is supplied with an ILD for ILDF itself, which Inweb used to
 syntax-colour the examples above. Here it is, as syntax-coloured by itself:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Name: </span><span class="string-syntax">"ILDF"</span>
 <span class="plain-syntax">Details: </span><span class="string-syntax">"The Inweb Language Definition File format"</span>
 <span class="plain-syntax">Extension: </span><span class="string-syntax">".ildf"</span>

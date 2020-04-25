@@ -7,6 +7,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 MathJax = {
@@ -31,7 +33,7 @@ MathJax = {
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-assets/Octagram.png" width=72 height=72">
@@ -87,20 +89,20 @@ An edited transcription of the letter is at: <a href="http://eulerarchive.maa.or
 better methods than the one we use here. We will only go up to:
 </p>
 
-<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">RANGE</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">RANGE</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span>
 </pre>
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdio</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
 
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">main</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">argv</span><span class="plain-syntax">[]) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=4; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">RANGE</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">=</span><span class="identifier-syntax">i</span><span class="plain-syntax">+2) </span><span class="comment-syntax"> stepping in twos to stay even</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container"><a href="S-sp.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">Solve Goldbach's conjecture for i</span><span class="named-paragraph-number">2.1</span></span></a><span class="character-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="S-sp.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">Solve Goldbach's conjecture for i</span><span class="named-paragraph-number">2.1</span></span></a><span class="character-syntax">;</span>
 <span class="character-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>This ought to print:
 </p>
 
-<pre class="ConsoleText-displayed-code all-displayed-code">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">goldbach/Tangled/goldbach</span>
 <span class="ConsoleText-plain-syntax">    4 = 2+2</span>
 <span class="ConsoleText-plain-syntax">    6 = 3+3</span>
@@ -115,10 +117,10 @@ only check in the range \(2 \leq j \leq i/2\) to avoid counting pairs
 twice over (thus \(8 = 3+5 = 5+3\), but that's hardly two different ways).
 </p>
 
-<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Solve Goldbach's conjecture for i</span><span class="named-paragraph-number">2.1</span></span><span class="ConsoleText-comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Solve Goldbach's conjecture for i</span><span class="named-paragraph-number">2.1</span></span><span class="ConsoleText-comment-syntax"> =</span>
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"%d"</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax">=2; </span><span class="identifier-syntax">j</span><span class="plain-syntax">&lt;=</span><span class="identifier-syntax">i</span><span class="plain-syntax">/2; </span><span class="identifier-syntax">j</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="S-tsoe.html#SP2" class="function-link"><span class="function-syntax">isprime</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">j</span><span class="plain-syntax">)) &amp;&amp; (</span><a href="S-tsoe.html#SP2" class="function-link"><span class="function-syntax">isprime</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">i</span><span class="plain-syntax">-</span><span class="identifier-syntax">j</span><span class="plain-syntax">)))</span>

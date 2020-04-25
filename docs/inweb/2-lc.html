@@ -7,6 +7,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
@@ -19,7 +21,7 @@ function togglePopup(material_id) {
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-assets/Octagram.png" width=72 height=72">
@@ -60,7 +62,7 @@ is so tidily divisible into lines, we can usefully make each source line
 correspond to one of these:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">; </span><span class="comment-syntax"> the text as read in</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text_operand</span><span class="plain-syntax">; </span><span class="comment-syntax"> meaning depends on category</span>
@@ -89,8 +91,8 @@ correspond to one of these:
 <ul class="endnotetexts"><li>The structure source_line is accessed in 1/pc, 2/tr, 2/tp, 2/pm, 2/ec, 2/pn, 3/ta, 3/tw, 3/twot, 3/tt, 4/taf, 4/lm, 4/as, 4/cl, 4/is, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df, 6/cln and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
 
-<pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="function-syntax">Lines::new_source_line_in</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <b>Lines::new_source_line_in</b>:<br>The Reader - <a href="2-tr.html#SP6_1_2">&#167;6.1.2</a>&lt;br&gt;The Parser - <a href="2-tp.html#SP1_1_6_1">&#167;1.1.6.1</a>, <a href="2-tp.html#SP1_1_7_7_2">&#167;1.1.7.7.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">,</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="function-syntax">Lines::new_source_line_in</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Lines::new_source_line_in</span></span>:<br>The Reader - <a href="2-tr.html#SP6_1_2">&#167;6.1.2</a><br>The Parser - <a href="2-tp.html#SP1_1_6_1">&#167;1.1.6.1</a>, <a href="2-tp.html#SP1_1_7_7_2">&#167;1.1.7.7.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">source_line</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
@@ -128,7 +130,7 @@ version 1 syntax; version 2 removed the need for <span class="extract"><span cla
 <span class="extract"><span class="extract-syntax">INTERFACE_BODY_LCAT</span></span>, and <span class="extract"><span class="extract-syntax">INTERFACE_LCAT</span></span>.
 </p>
 
-<pre class="definitions"><span class="definition-keyword">enum</span> <span class="constant-syntax">NO_LCAT</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="comment-syntax"> (used when none has been set as yet)</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">NO_LCAT</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="comment-syntax"> (used when none has been set as yet)</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">BAR_LCAT</span><span class="plain-syntax">                </span><span class="comment-syntax"> a bar line </span><span class="extract"><span class="extract-syntax">@---------------</span></span><span class="comment-syntax">...</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">BEGIN_CODE_LCAT</span><span class="plain-syntax">         </span><span class="comment-syntax"> an </span><span class="extract"><span class="extract-syntax">@c</span></span><span class="comment-syntax">, </span><span class="extract"><span class="extract-syntax">@e</span></span><span class="comment-syntax"> or </span><span class="extract"><span class="extract-syntax">@x</span></span><span class="comment-syntax"> line below which is code, early code or extract</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">BEGIN_DEFINITION_LCAT</span><span class="plain-syntax">   </span><span class="comment-syntax"> an </span><span class="extract"><span class="extract-syntax">@d</span></span><span class="comment-syntax"> definition: TO is term, TO2 is this line's part of defn</span>
@@ -159,8 +161,8 @@ version 1 syntax; version 2 removed the need for <span class="extract"><span cla
 of Inweb:
 </p>
 
-<pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="function-syntax">Lines::category_name</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <b>Lines::category_name</b>:<br>The Analyser - <a href="3-ta.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cat</span><span class="plain-syntax">) {</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="function-syntax">Lines::category_name</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Lines::category_name</span></span>:<br>The Analyser - <a href="3-ta.html#SP1_1">&#167;1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cat</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cat</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NO_LCAT:</span><span class="plain-syntax"> </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="string-syntax">"(uncategorised)"</span><span class="plain-syntax">;</span>
 
@@ -197,7 +199,7 @@ of Inweb:
 some of these fell into disuse in version 2 syntax.
 </p>
 
-<pre class="definitions"><span class="definition-keyword">enum</span> <span class="constant-syntax">NO_CMD</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">NO_CMD</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">PAGEBREAK_CMD</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">GRAMMAR_INDEX_CMD</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">FIGURE_CMD</span>

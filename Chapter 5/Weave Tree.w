@@ -60,6 +60,10 @@ typedef struct weave_pagebreak_node {
 	MEMORY_MANAGEMENT
 } weave_pagebreak_node;
 
+typedef struct weave_linebreak_node {
+	MEMORY_MANAGEMENT
+} weave_linebreak_node;
+
 typedef struct weave_paragraph_heading_node {
 	struct paragraph *para;
 	int no_skip;
@@ -241,6 +245,7 @@ tree_node_type *weave_verbatim_node_type = NULL;
 tree_node_type *weave_subheading_node_type = NULL;
 tree_node_type *weave_bar_node_type = NULL;
 tree_node_type *weave_pagebreak_node_type = NULL;
+tree_node_type *weave_linebreak_node_type = NULL;
 tree_node_type *weave_paragraph_heading_node_type = NULL;
 tree_node_type *weave_endnote_node_type = NULL;
 tree_node_type *weave_figure_node_type = NULL;
@@ -299,6 +304,8 @@ heterogeneous_tree *WeaveTree::new_tree(weave_order *wv) {
 			Trees::new_node_type(I"bar", weave_bar_node_MT, NULL);
 		weave_pagebreak_node_type =
 			Trees::new_node_type(I"pagebreak", weave_pagebreak_node_MT, NULL);
+		weave_linebreak_node_type =
+			Trees::new_node_type(I"linebreak", weave_linebreak_node_MT, NULL);
 		weave_paragraph_heading_node_type =
 			Trees::new_node_type(I"paragraph", weave_paragraph_heading_node_MT, NULL);
 		weave_endnote_node_type =
@@ -452,6 +459,12 @@ tree_node *WeaveTree::pagebreak(heterogeneous_tree *tree) {
 	weave_pagebreak_node *C = CREATE(weave_pagebreak_node);
 	return Trees::new_node(tree, weave_pagebreak_node_type,
 		STORE_POINTER_weave_pagebreak_node(C));
+}
+
+tree_node *WeaveTree::linebreak(heterogeneous_tree *tree) {
+	weave_linebreak_node *C = CREATE(weave_linebreak_node);
+	return Trees::new_node(tree, weave_linebreak_node_type,
+		STORE_POINTER_weave_linebreak_node(C));
 }
 
 tree_node *WeaveTree::bar(heterogeneous_tree *tree) {

@@ -127,6 +127,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_inline_node_type) @<Render inline@>
 	else if (N->type == weave_locale_node_type) @<Render locale@>
 	else if (N->type == weave_maths_node_type) @<Render maths@>
+	else if (N->type == weave_linebreak_node_type) @<Render linebreak@>
 
 	else internal_error("unable to render unknown node");
 	return TRUE;
@@ -349,7 +350,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	WRITE_TO(cl, "%S", hrs->colours->prefix);
 	if (C->plainly) WRITE_TO(cl, "undisplayed-code");
 	else WRITE_TO(cl, "displayed-code");
-	WRITE("<pre class=\"%S all-displayed-code\">\n", cl);
+	WRITE("<pre class=\"%S all-displayed-code code-font\">\n", cl);
 	DISCARD_TEXT(cl);
 	@<Recurse tne renderer through children nodes@>;
 	HTML_CLOSE("pre"); WRITE("\n");
@@ -378,7 +379,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 
 @<Deal with a definition material node@> =
 	@<If no para number yet, render a p just to hold this@>;
-	HTML_OPEN_WITH("pre", "class=\"definitions\"");
+	HTML_OPEN_WITH("pre", "class=\"definitions code-font\"");
 	@<Recurse tne renderer through children nodes@>;
 	HTML_CLOSE("pre"); WRITE("\n");
 
@@ -412,7 +413,7 @@ that service uses to identify the video/audio in question.
 @<Render pmac@> =
 	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
 	paragraph *P = C->pmac->defining_paragraph;
-	HTML_OPEN_WITH("span", "class=\"named-paragraph-container\"");
+	HTML_OPEN_WITH("span", "class=\"named-paragraph-container code-font\"");
 	if (C->defn == FALSE) {
 		TEMPORARY_TEXT(url);
 		Colonies::paragraph_URL(url, P, hrs->wv->weave_to);
@@ -648,8 +649,13 @@ that service uses to identify the video/audio in question.
 	HTMLFormat::change_colour(OUT, COMMENT_COLOUR, hrs->colours);
 	WRITE("?");
 	HTMLFormat::change_colour(OUT, -1, hrs->colours);
-	WRITE("<span class=\"popuptext\" id=\"usagePopup%d\">Usage of <b>%S</b>:<br>",
-		hrs->popup_counter, C->fn->function_name);
+	WRITE("<span class=\"popuptext\" id=\"usagePopup%d\">Usage of ", hrs->popup_counter);
+	HTML_OPEN_WITH("span", "class=\"code-font\"");
+	HTMLFormat::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
+	WRITE("%S", C->fn->function_name);
+	HTMLFormat::change_colour(OUT, -1, hrs->colours);
+	HTML_CLOSE("span");
+	WRITE(":<br>"); 
 	@<Recurse tne renderer through children nodes@>;
 	HTMLFormat::change_colour(OUT, -1, hrs->colours);
 	WRITE("</button>");
@@ -697,6 +703,9 @@ that service uses to identify the video/audio in question.
 		HTMLFormat::escape_text(OUT, C->content);
 		if (C->displayed) WRITE("$$"); else WRITE("\\)");
 	}
+	
+@<Render linebreak@> =
+	WRITE("<br>");
 
 @<Render nothing@> =
 	;

@@ -7,12 +7,14 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-assets/Octagram.png" width=72 height=72">
@@ -50,7 +52,7 @@ We suppose that the current working directory is one up from this, and contains
 the installation of <span class="extract"><span class="extract-syntax">inweb</span></span> as well as <span class="extract"><span class="extract-syntax">example</span></span>. Then:
 </p>
 
-<pre class="ConsoleText-displayed-code all-displayed-code">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
 <span class="ConsoleText-plain-syntax">    inweb   example</span>
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> example</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> GitHubPages</span><span class="ConsoleText-identifier-syntax"> -weave-into</span><span class="ConsoleText-plain-syntax"> example/docs</span>
@@ -74,7 +76,7 @@ at <span class="extract"><span class="ConsoleText-extract-syntax">example/beth</
 in the repository, but let's say at <span class="extract"><span class="ConsoleText-extract-syntax">example/colony.txt</span></span>:
 </p>
 
-<pre class="ConsoleText-displayed-code all-displayed-code">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    pattern: GitHubPages</span>
 <span class="ConsoleText-plain-syntax">    web: "aleph" at "example/aleph" in "example/docs/aleph"</span>
 <span class="ConsoleText-plain-syntax">    web: "beth" at "example/beth" in "example/docs/beth"</span>
@@ -83,13 +85,13 @@ in the repository, but let's say at <span class="extract"><span class="ConsoleTe
 now write, for example,
 </p>
 
-<pre class="ConsoleText-displayed-code all-displayed-code">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-identifier-syntax"> -colony</span><span class="ConsoleText-plain-syntax"> example/colony.txt</span><span class="ConsoleText-identifier-syntax"> -member</span><span class="ConsoleText-plain-syntax"> beth</span><span class="ConsoleText-identifier-syntax"> -weave</span>
 </pre>
 <p class="commentary">and this is equivalent to
 </p>
 
-<pre class="ConsoleText-displayed-code all-displayed-code">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> example/beth</span><span class="ConsoleText-identifier-syntax"> -weave -weave-into</span><span class="ConsoleText-plain-syntax"> example/docs/beth</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> GitHubPages</span>
 </pre>
 <p class="commentary">The idea is that <span class="extract"><span class="ConsoleText-extract-syntax">-member M</span></span> chooses <span class="extract"><span class="ConsoleText-extract-syntax">M</span></span> as the current web, and automatically
@@ -103,7 +105,7 @@ is conventionally the directory above the actual web, and that's why the
 file needs to say:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    home: inweb/docs</span>
 </pre>
 <p class="commentary">This overrides the default setting (just <span class="extract"><span class="extract-syntax">docs</span></span>), and is the path to the
@@ -115,7 +117,7 @@ web to the weave of another, even when they are independent programs. For
 example, a section of code in <span class="extract"><span class="extract-syntax">beth</span></span> could say:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Handling file system problems is more of a job for //aleph// than</span>
 <span class="plain-syntax">    for us, so we'll just proceed. (See //aleph: Error Recovery//.)</span>
 </pre>
@@ -125,7 +127,7 @@ To demonstrate that right here, see <a href="../goldbach/S-tsoe.html" class="int
 That last sentence was typed as:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    To demonstrate that right here, see //goldbach: The Sieve of Eratosthenes//.</span>
 </pre>
 <p class="commentary">Cross-references to other webs or modules in the same colony can be to chapters
@@ -138,7 +140,7 @@ every web in the colony into memory, which would slow it down too much.
 for the Inweb repository:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">home: inweb/docs</span>
 <span class="plain-syntax">assets: inweb/docs/docs-assets</span>
 
@@ -220,7 +222,7 @@ one which generates the sidebar visible to the left of the pages on the
 Inweb <span class="extract"><span class="extract-syntax">docs</span></span> site:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">&lt;h1&gt;[[Link "overview"]]</span>
 <span class="plain-syntax">&lt;img src="[[Docs]]docs-assets/Octagram.png" width=72 height=72"&gt;</span>
 <span class="plain-syntax">&lt;/a&gt;&lt;/h1&gt;</span>
@@ -249,7 +251,7 @@ more general, and makes the text <span class="extract"><span class="extract-synt
 recognised by beginning with <span class="extract"><span class="extract-syntax">http</span></span>, or else a web cross-reference. Thus:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    [[Item "innards" -&gt; //inweb: Programming Languages//]]</span>
 </pre>
 <p class="commentary">would make a menu item called "innards" leading to a section in Chapter 4
@@ -260,7 +262,7 @@ of the Inweb source.
 example:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    [[Item "&lt;github.png&gt; github" -&gt; https://github.com/ganelson/intest]]</span>
 </pre>
 <p class="commentary">This icon should be in the <span class="extract"><span class="extract-syntax">docs</span></span> home of the repository. Note that the
@@ -272,14 +274,14 @@ that one's guaranteed to be present.
 breadcrumbs above each page: for example,
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Beth &gt; Chapter 4 &gt; File Organisation</span>
 </pre>
 <p class="commentary">That may be sufficient in itself. However, it's possible to add extra
 crumbs to the left. Suppose we want:
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Home &gt; Beth &gt; Chapter 4 &gt; File Organisation</span>
 </pre>
 <p class="commentary">where Home is a link to <span class="extract"><span class="extract-syntax">example/docs/index.html</span></span>. One way is to run Inweb
@@ -287,19 +289,19 @@ with <span class="extract"><span class="extract-syntax">-breadcrumb 'Home:index.
 file, as
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    breadcrumbs: "Home: index.html"</span>
 </pre>
 <p class="commentary">We can add more than one, by, e.g., <span class="extract"><span class="extract-syntax">-breadcrumb 'Home:index.html' -breadcrumb 'Webs: webs.html'</span></span>.
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    breadcrumbs: "Home: index.html" &gt; "Webs: webs.html"</span>
 </pre>
 <p class="commentary">The links after the colon can also be Inweb cross-references, so, for example,
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    breadcrumbs: "Overview: //overview//"</span>
 </pre>
 <p class="commentary">makes a link to the web/module called <span class="extract"><span class="extract-syntax">overview</span></span> in the colony file.

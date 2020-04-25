@@ -168,7 +168,25 @@ have mathematics in a footnote when |Bigfoot| is in use.
 to tinker with. If you want |Carousel| to have rather different CSS effects,
 for example, make your own copy of |Carousel| (copying it from the one in
 the Inweb distribution at |inweb/Patterns/HTML/Carousel|) and place it in your
-own pattern. Your version will prevail over the built-in one.
+own pattern. Files in your version will prevail over files in the built-in one.
+
+As a simple example, suppose you want a pattern just like |GitHubPages| but
+which uses monospaced fonts throughout, for commentary as well as code. The
+pattern file can just be:
+= (text as Inweb)
+	name: MonoGitHub based on GitHubPages
+=
+Then create just one subdirectory of |MonoGitHub|, called |Base|, and create
+a single file in that called |Fonts.css|, reading:
+= (text)
+	.code-font { font-family: monospace; }
+	.commentary-font { font-family: monospace; }
+=
+And that should work nicely. What happens here is that when pages are woven
+with |MonoGitHub|, they use this custom |Fonts.css| instead of the one in
+the |Base| plugin from |HTML|. (|MonoGitHub| is based on |GitHubPages|, but
+that in turn is based on |HTML|.) All the other files of |Base| remain as
+they were, and there's no need to provide duplicates here.
 
 @ So what's in a plugin? There's not much to it. Every file in a plugin, whose
 name does not begin with a |.|, is copied into the weave: that means it either

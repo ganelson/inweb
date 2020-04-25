@@ -7,11 +7,13 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-assets/Octagram.png" width=72 height=72">
@@ -39,13 +41,13 @@
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>Every program using <a href="../foundation-module/index.html" class="internal">foundation</a> must define this:
 </p>
 
-<pre class="definitions"><span class="definition-keyword">define</span> <span class="constant-syntax">PROGRAM_NAME</span><span class="plain-syntax"> </span><span class="string-syntax">"inweb"</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROGRAM_NAME</span><span class="plain-syntax"> </span><span class="string-syntax">"inweb"</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>We need to itemise the structures we'll want to allocate. For explanations,
 see <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </p>
 
-<pre class="definitions"><span class="definition-keyword">enum</span> <span class="constant-syntax">breadcrumb_request_MT</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">breadcrumb_request_MT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">chapter_MT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">colony_MT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">colony_member_MT</span>
@@ -93,6 +95,7 @@ see <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide t
 <span class="definition-keyword">enum</span> <span class="constant-syntax">weave_section_purpose_node_MT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">weave_subheading_node_MT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">weave_bar_node_MT</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">weave_linebreak_node_MT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">weave_pagebreak_node_MT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">weave_paragraph_heading_node_MT</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">weave_endnote_node_MT</span>
@@ -127,7 +130,7 @@ see <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide t
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>And then expand the following macros, all defined in <a href="../foundation-module/2-mmr.html" class="internal">Memory (in foundation)</a>.
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">ALLOCATE_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">source_line</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">chapter</span><span class="plain-syntax">)</span>
@@ -177,6 +180,7 @@ see <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide t
 <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_section_purpose_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_subheading_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_bar_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_linebreak_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pagebreak_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_paragraph_heading_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_endnote_node</span><span class="plain-syntax">)</span>

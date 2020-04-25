@@ -7,6 +7,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
@@ -19,7 +21,7 @@ function togglePopup(material_id) {
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-assets/Octagram.png" width=72 height=72">
@@ -60,22 +62,22 @@ is something we scan for on a weave, but not on a tangle; that's fine, though,
 because tangled code doesn't need to know its own paragraph numbers.
 </p>
 
-<pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Numbering::number_web</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <b>Numbering::number_web</b>:<br>Program Control - <a href="1-pc.html#SP7_4_3">&#167;7.4.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Numbering::number_web</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Numbering::number_web</span></span>:<br>Program Control - <a href="1-pc.html#SP7_4_3">&#167;7.4.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">chapter</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chapters</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">section</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sections</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container"><a href="2-pn.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Scan this section to see where paragraph macros are used</span><span class="named-paragraph-number">1.1</span></span></a><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container"><a href="2-pn.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Work out paragraph numbers within this section</span><span class="named-paragraph-number">1.2</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-pn.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Scan this section to see where paragraph macros are used</span><span class="named-paragraph-number">1.1</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-pn.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Work out paragraph numbers within this section</span><span class="named-paragraph-number">1.2</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP1_1"></a><b>&#167;1.1.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Scan this section to see where paragraph macros are used</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_1"></a><b>&#167;1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Scan this section to see where paragraph macros are used</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_line</span><span class="plain-syntax">; </span><span class="identifier-syntax">L</span><span class="plain-syntax">; </span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_line</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text</span><span class="plain-syntax">);</span>
@@ -89,7 +91,7 @@ because tangled code doesn't need to know its own paragraph numbers.
 <span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::substr</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><a href="../foundation-module/4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">original_p</span><span class="plain-syntax">, </span><span class="identifier-syntax">mpos</span><span class="plain-syntax"> + </span><span class="identifier-syntax">mlen</span><span class="plain-syntax">), </span><a href="../foundation-module/4-sm.html#SP10" class="function-link"><span class="function-syntax">Str::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">original_p</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">original_p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">para_macro</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pmac</span><span class="plain-syntax"> = </span><a href="2-pm.html#SP3" class="function-link"><span class="function-syntax">Macros::find_by_name</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">found_macro</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pmac</span><span class="plain-syntax">) </span><span class="named-paragraph-container"><a href="2-pn.html#SP1_1_2" class="named-paragraph-link"><span class="named-paragraph">Add a record that the macro is used in this paragraph</span><span class="named-paragraph-number">1.1.2</span></span></a><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pmac</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-pn.html#SP1_1_2" class="named-paragraph-link"><span class="named-paragraph">Add a record that the macro is used in this paragraph</span><span class="named-paragraph-number">1.1.2</span></span></a><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">found_macro</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
@@ -108,7 +110,7 @@ be 1.1.1. Instead this one will be 1.1.1, to place it into the natural
 lexicographic sequence.
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">macro_usage</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">used_in_paragraph</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">multiplicity</span><span class="plain-syntax">; </span><span class="comment-syntax"> for example, 2 if it's used twice in this paragraph</span>
@@ -116,10 +118,10 @@ lexicographic sequence.
 <span class="plain-syntax">} </span><span class="reserved-syntax">macro_usage</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure macro_usage is accessed in 3/tw and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_2"></a><b>&#167;1.1.2.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Add a record that the macro is used in this paragraph</span><span class="named-paragraph-number">1.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_1_2"></a><b>&#167;1.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add a record that the macro is used in this paragraph</span><span class="named-paragraph-number">1.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">macro_usage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mu</span><span class="plain-syntax">, *</span><span class="identifier-syntax">last</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">mu</span><span class="plain-syntax">, </span><span class="reserved-syntax">macro_usage</span><span class="plain-syntax">, </span><span class="identifier-syntax">pmac</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">macro_usages</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">last</span><span class="plain-syntax"> = </span><span class="identifier-syntax">mu</span><span class="plain-syntax">;</span>
@@ -141,21 +143,21 @@ paragraph where the macro is first used; it's then a matter of filling in
 other nodes a bit speculatively.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Work out paragraph numbers within this section</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out paragraph numbers within this section</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
-<pre class="displayed-code all-displayed-code">
-<span class="plain-syntax">    </span><span class="named-paragraph-container"><a href="2-pn.html#SP1_2_1" class="named-paragraph-link"><span class="named-paragraph">The parent of a macro definition is the place where it's first used</span><span class="named-paragraph-number">1.2.1</span></span></a><span class="character-syntax">;</span>
-<span class="character-syntax">    </span><span class="named-paragraph-container"><a href="2-pn.html#SP1_2_2" class="named-paragraph-link"><span class="named-paragraph">Otherwise share the parent of a following paragraph, provided it precedes us</span><span class="named-paragraph-number">1.2.2</span></span></a><span class="character-syntax">;</span>
-<span class="character-syntax">    </span><span class="named-paragraph-container"><a href="2-pn.html#SP1_2_3" class="named-paragraph-link"><span class="named-paragraph">Create paragraph number texts</span><span class="named-paragraph-number">1.2.3</span></span></a><span class="character-syntax">;</span>
-<span class="character-syntax">    </span><span class="named-paragraph-container"><a href="2-pn.html#SP1_2_4" class="named-paragraph-link"><span class="named-paragraph">Number the still parent-less paragraphs consecutively from 1</span><span class="named-paragraph-number">1.2.4</span></span></a><span class="character-syntax">;</span>
-<span class="character-syntax">    </span><span class="named-paragraph-container"><a href="2-pn.html#SP1_2_5" class="named-paragraph-link"><span class="named-paragraph">Recursively derive the numbers of parented paragraphs from those of their parents</span><span class="named-paragraph-number">1.2.5</span></span></a><span class="character-syntax">;</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-pn.html#SP1_2_1" class="named-paragraph-link"><span class="named-paragraph">The parent of a macro definition is the place where it's first used</span><span class="named-paragraph-number">1.2.1</span></span></a><span class="character-syntax">;</span>
+<span class="character-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-pn.html#SP1_2_2" class="named-paragraph-link"><span class="named-paragraph">Otherwise share the parent of a following paragraph, provided it precedes us</span><span class="named-paragraph-number">1.2.2</span></span></a><span class="character-syntax">;</span>
+<span class="character-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-pn.html#SP1_2_3" class="named-paragraph-link"><span class="named-paragraph">Create paragraph number texts</span><span class="named-paragraph-number">1.2.3</span></span></a><span class="character-syntax">;</span>
+<span class="character-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-pn.html#SP1_2_4" class="named-paragraph-link"><span class="named-paragraph">Number the still parent-less paragraphs consecutively from 1</span><span class="named-paragraph-number">1.2.4</span></span></a><span class="character-syntax">;</span>
+<span class="character-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-pn.html#SP1_2_5" class="named-paragraph-link"><span class="named-paragraph">Recursively derive the numbers of parented paragraphs from those of their parents</span><span class="named-paragraph-number">1.2.5</span></span></a><span class="character-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pn.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2_1"></a><b>&#167;1.2.1.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">The parent of a macro definition is the place where it's first used</span><span class="named-paragraph-number">1.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_2_1"></a><b>&#167;1.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The parent of a macro definition is the place where it's first used</span><span class="named-paragraph-number">1.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">paragraphs</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">defines_macro</span><span class="plain-syntax">) {</span>
@@ -165,10 +167,10 @@ other nodes a bit speculatively.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pn.html#SP1_2">&#167;1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2_2"></a><b>&#167;1.2.2.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Otherwise share the parent of a following paragraph, provided it precedes us</span><span class="named-paragraph-number">1.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_2_2"></a><b>&#167;1.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Otherwise share the parent of a following paragraph, provided it precedes us</span><span class="named-paragraph-number">1.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">paragraphs</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parent_paragraph</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
@@ -182,10 +184,10 @@ other nodes a bit speculatively.
 <span class="plain-syntax">            }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pn.html#SP1_2">&#167;1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2_3"></a><b>&#167;1.2.3.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Create paragraph number texts</span><span class="named-paragraph-number">1.2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_2_3"></a><b>&#167;1.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create paragraph number texts</span><span class="named-paragraph-number">1.2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">paragraphs</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">paragraph_number</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP2" class="function-link"><span class="function-syntax">Str::new</span></a><span class="plain-syntax">();</span>
@@ -196,10 +198,10 @@ numbered 1, 2, 3, ..., and then children are numbered with suffixes .1, .2, .3,
 ..., under their parents.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container"><span class="named-paragraph-defn">Number the still parent-less paragraphs consecutively from 1</span><span class="named-paragraph-number">1.2.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Number the still parent-less paragraphs consecutively from 1</span><span class="named-paragraph-number">1.2.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">top_level</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">paragraphs</span><span class="plain-syntax">)</span>
@@ -210,10 +212,10 @@ numbered 1, 2, 3, ..., and then children are numbered with suffixes .1, .2, .3,
 <span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">paragraph_number</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pn.html#SP1_2">&#167;1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2_5"></a><b>&#167;1.2.5.  </b><span class="named-paragraph-container"><span class="named-paragraph-defn">Recursively derive the numbers of parented paragraphs from those of their parents</span><span class="named-paragraph-number">1.2.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_2_5"></a><b>&#167;1.2.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Recursively derive the numbers of parented paragraphs from those of their parents</span><span class="named-paragraph-number">1.2.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
-<pre class="displayed-code all-displayed-code">
+<pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">paragraphs</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="2-pn.html#SP2" class="function-link"><span class="function-syntax">Numbering::settle_paragraph_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
@@ -225,8 +227,8 @@ in the middle of a wider description. But better to keep it in the sequence
 chosen by the author, so 2 it is.
 </p>
 
-<pre class="displayed-code all-displayed-code">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Numbering::settle_paragraph_number</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <b>Numbering::settle_paragraph_number</b>:<br><a href="2-pn.html#SP1_2_5">&#167;1.2.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Numbering::settle_paragraph_number</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Numbering::settle_paragraph_number</span></span>:<br><a href="2-pn.html#SP1_2_5">&#167;1.2.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">paragraph_number</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">paragraph_number</span><span class="plain-syntax">, </span><span class="string-syntax">"X"</span><span class="plain-syntax">); </span><span class="comment-syntax"> to prevent malformed sections hanging this</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">parent_paragraph</span><span class="plain-syntax">) </span><a href="2-pn.html#SP2" class="function-link"><span class="function-syntax">Numbering::settle_paragraph_number</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parent_paragraph</span><span class="plain-syntax">);</span>

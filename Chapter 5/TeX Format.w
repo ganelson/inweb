@@ -85,6 +85,7 @@ int TeX::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_subheading_node_type) @<Render subheading@>
 	else if (N->type == weave_bar_node_type) @<Render bar@>
 	else if (N->type == weave_pagebreak_node_type) @<Render pagebreak@>
+	else if (N->type == weave_linebreak_node_type) @<Render linebreak@>
 	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraph heading@>
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
 	else if (N->type == weave_figure_node_type) @<Render figure@>
@@ -149,6 +150,9 @@ int TeX::render_visit(tree_node *N, void *state, int L) {
 
 @<Render pagebreak@> =
 	WRITE("\\vfill\\eject\n");
+
+@<Render linebreak@> =
+	WRITE("\n");
 
 @<Render paragraph heading@> =
 	weave_paragraph_heading_node *C = RETRIEVE_POINTER_weave_paragraph_heading_node(N->content);

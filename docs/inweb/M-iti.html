@@ -7,12 +7,14 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
-	<body>
+	<body class="commentary-font">
 		<nav role="navigation">
 		<h1><a href="../index.html">
 <img src="../docs-assets/Octagram.png" width=72 height=72">
@@ -80,7 +82,7 @@ directory to be the one in which Inweb is stored - that is, not the <span class=
 directory itself, but its parent. Then type one of the following:
 </p>
 
-<pre class="ConsoleText-displayed-code all-displayed-code">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> inweb/inweb.mk macos</span>
 
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> inweb/inweb.mk macos32</span>
@@ -104,7 +106,7 @@ the default macos unless you need to build for an old version of MacOS.
 <p class="commentary">You should see some typical make chatter, ending in a reply such as:
 </p>
 
-<pre class="ConsoleText-displayed-code all-displayed-code">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    === Platform set to 64-bit MacOS. Now: make -f inweb/inweb.mk initial ===</span>
 </pre>
 <p class="commentary">(All that happened, in fact, was that a platform-specific file of make
@@ -115,7 +117,7 @@ included in the Git repository for Inweb, in order to oblige users to choose
 a platform before doing anything else.) Anyway, next do as instructed:
 </p>
 
-<pre class="ConsoleText-displayed-code all-displayed-code">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> inweb/inweb.mk initial</span>
 </pre>
 <p class="commentary">With that done, make should go on to compile the Inweb executable, leaving
@@ -123,7 +125,7 @@ you with a working copy of the software. You need never run that
 platform-specific command, or make as <span class="extract"><span class="ConsoleText-extract-syntax">initial</span></span>, again: you can simply:
 </p>
 
-<pre class="ConsoleText-displayed-code all-displayed-code">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">make</span><span class="ConsoleText-identifier-syntax"> -f</span><span class="ConsoleText-plain-syntax"> inweb/inweb.mk</span>
 </pre>
 <p class="commentary">if you want to alter and recompile Inweb.
@@ -132,14 +134,14 @@ platform-specific command, or make as <span class="extract"><span class="Console
 <p class="commentary">To test that all is well:
 </p>
 
-<pre class="ConsoleText-displayed-code all-displayed-code">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-identifier-syntax"> -help</span>
 </pre>
 <p class="commentary">That location is where the compiled tool ended up. Users of, for example,
 the <span class="extract"><span class="ConsoleText-extract-syntax">bash</span></span> shell may want to
 </p>
 
-<pre class="ConsoleText-displayed-code all-displayed-code">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">alias</span><span class="ConsoleText-plain-syntax"> inweb='inweb/Tangled/inweb'</span>
 </pre>
 <p class="commentary">to save a little typing, but in this documentation we always spell it out.
