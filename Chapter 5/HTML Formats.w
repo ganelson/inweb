@@ -640,26 +640,32 @@ that service uses to identify the video/audio in question.
 @<Render function defn@> =
 	weave_function_defn_node *C =
 		RETRIEVE_POINTER_weave_function_defn_node(N->content);
-	Swarm::ensure_plugin(hrs->wv, I"Popups");
-	HTMLFormat::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
-	WRITE("%S", C->fn->function_name);
-	WRITE("</span>");
-	WRITE("<button class=\"popup\" onclick=\"togglePopup('usagePopup%d')\">",
-		hrs->popup_counter);
-	HTMLFormat::change_colour(OUT, COMMENT_COLOUR, hrs->colours);
-	WRITE("?");
-	HTMLFormat::change_colour(OUT, -1, hrs->colours);
-	WRITE("<span class=\"popuptext\" id=\"usagePopup%d\">Usage of ", hrs->popup_counter);
-	HTML_OPEN_WITH("span", "class=\"code-font\"");
-	HTMLFormat::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
-	WRITE("%S", C->fn->function_name);
-	HTMLFormat::change_colour(OUT, -1, hrs->colours);
-	HTML_CLOSE("span");
-	WRITE(":<br>"); 
-	@<Recurse tne renderer through children nodes@>;
-	HTMLFormat::change_colour(OUT, -1, hrs->colours);
-	WRITE("</button>");
-	hrs->popup_counter++;
+	if (Functions::used_elsewhere(C->fn)) {
+		Swarm::ensure_plugin(hrs->wv, I"Popups");
+		HTMLFormat::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
+		WRITE("%S", C->fn->function_name);
+		WRITE("</span>");
+		WRITE("<button class=\"popup\" onclick=\"togglePopup('usagePopup%d')\">",
+			hrs->popup_counter);
+		HTMLFormat::change_colour(OUT, COMMENT_COLOUR, hrs->colours);
+		WRITE("?");
+		HTMLFormat::change_colour(OUT, -1, hrs->colours);
+		WRITE("<span class=\"popuptext\" id=\"usagePopup%d\">Usage of ", hrs->popup_counter);
+		HTML_OPEN_WITH("span", "class=\"code-font\"");
+		HTMLFormat::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
+		WRITE("%S", C->fn->function_name);
+		HTMLFormat::change_colour(OUT, -1, hrs->colours);
+		HTML_CLOSE("span");
+		WRITE(":<br>"); 
+		@<Recurse tne renderer through children nodes@>;
+		HTMLFormat::change_colour(OUT, -1, hrs->colours);
+		WRITE("</button>");
+		hrs->popup_counter++;
+	} else {
+		HTMLFormat::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
+		WRITE("%S", C->fn->function_name);
+		HTMLFormat::change_colour(OUT, -1, hrs->colours);
+	}
 	return FALSE;
 
 @<Render item@> =

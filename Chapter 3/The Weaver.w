@@ -713,9 +713,6 @@ void Weaver::show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 				else TextWeaver::commentary_text(tree, ap, I", ");
 			} else {
 				Trees::make_child(WeaveTree::linebreak(tree), ap);
-//				if (last_cited_in != P->under_section)
-//					Trees::make_child(WeaveTree::linebreak(tree), ap);
-//				else TextWeaver::commentary_text(tree, ap, I", ");
 			}
 		}
 		TextWeaver::commentary_text(tree, ap, hteu->usage_recorded_at->under_section->md->sect_title);

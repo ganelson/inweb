@@ -1,6 +1,6 @@
 Title: Eastertide
 Author: Graham Nelson
-Purpose: A short one example of using the Foundation library to write a command-line tool: in this case, for calculating the dates of Easter.
+Purpose: An example of using Foundation to write a simple command-line tool: in this case, for calculating the dates of Easter.
 Language: InC
 
 Import: foundation

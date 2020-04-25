@@ -185,6 +185,26 @@ part of the function structure. We'll need it when predeclaring the function.
 	}
 	Regexp::dispose_of(&mr);
 
+@ "Elsewhere" here means "in a paragraph of code other than the one in which the
+function's definition appears".
+
+=
+int Functions::used_elsewhere(language_function *fn) {
+	paragraph *P = fn->function_header_at->owning_paragraph;
+	hash_table_entry *hte =
+		Analyser::find_hash_entry_for_section(fn->function_header_at->owning_section,
+			fn->function_name, FALSE);
+	hash_table_entry_usage *hteu = NULL;
+	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
+		if ((P != hteu->usage_recorded_at) &&
+			(P->under_section == hteu->usage_recorded_at->under_section))
+			return TRUE;
+	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
+		if (P->under_section != hteu->usage_recorded_at->under_section)
+			return TRUE;
+	return FALSE;
+}
+
 @h Cataloguing.
 This implements the additional information in the |-structures| and |-functions|
 forms of section catalogue.

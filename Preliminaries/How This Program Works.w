@@ -272,10 +272,10 @@ Thus, the object representing "the C programming language" can in principle
 choose any semantic colouring that it likes. In practice, if (as is usual) it
 assigns no particular code to this, what instead happens is that the generic
 handler function in //ACME Support// takes on the task.[1] This runs the
-colouring program in the language's definition file, by calling an algorithm
-called //The Painter//. Colouring programs are, in effect, a mini-language
-of their own, which is compiled by //Programming Languages// and then run
-in a low-level interpreter by //The Painter//.
+colouring program in the language's definition file. Colouring programs are,
+in effect, a mini-language of their own, which is compiled by
+//Programming Languages// and then run in a low-level interpreter by
+//The Painter//.
 
 [1] "ACME" is used here in the sense of "generic".
 
