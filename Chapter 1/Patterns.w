@@ -20,9 +20,8 @@ typedef struct weave_pattern {
 	struct text_stream *mathematics_plugin; /* name only, not a |weave_pattern *| */
 	struct text_stream *footnotes_plugin; /* name only, not a |weave_pattern *| */
 
-	struct text_stream *tex_command; /* shell command to use for |tex| */
-	struct text_stream *pdftex_command; /* shell command to use for |pdftex| */
-	struct text_stream *open_command; /* shell command to use for |open| */
+	struct text_stream *initial_extension; /* filename extension, that is */
+	struct linked_list *post_commands; /* of |text_stream| */
 
 	int embed_CSS; /* embed CSS directly into any HTML files made? */
 	int show_abbrevs; /* show section range abbreviations in the weave? */
@@ -60,9 +59,8 @@ weave_pattern *Patterns::find(web *W, text_stream *name) {
 	wp->footnotes_plugin = NULL;
 	wp->mathematics_plugin = NULL;
 	wp->default_range = Str::duplicate(I"0");
-	wp->tex_command = Str::duplicate(I"tex");
-	wp->pdftex_command = Str::duplicate(I"pdftex");
-	wp->open_command = Str::duplicate(I"open");
+	wp->initial_extension = NULL;
+	wp->post_commands = NEW_LINKED_LIST(text_stream);
 	wp->commands = 0;
 	wp->name_command_given = FALSE;
 
@@ -148,16 +146,14 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 			wp->number_sections = Patterns::yes_or_no(value, tfp);
 		} else if (Str::eq_insensitive(key, I"default range")) {
 			wp->default_range = Str::duplicate(value);
+		} else if (Str::eq_insensitive(key, I"initial extension")) {
+			wp->initial_extension = Str::duplicate(value);
 		} else if (Str::eq_insensitive(key, I"mathematics plugin")) {
 			wp->mathematics_plugin = Patterns::plugin_name(value, tfp);
 		} else if (Str::eq_insensitive(key, I"footnotes plugin")) {
 			wp->footnotes_plugin = Patterns::plugin_name(value, tfp);
-		} else if (Str::eq_insensitive(key, I"TeX command")) {
-			wp->tex_command = Str::duplicate(value);
-		} else if (Str::eq_insensitive(key, I"PDFTeX command")) {
-			wp->pdftex_command = Str::duplicate(value);
-		} else if (Str::eq_insensitive(key, I"open command")) {
-			wp->open_command = Str::duplicate(value);
+		} else if (Str::eq_insensitive(key, I"command")) {
+			ADD_TO_LINKED_LIST(Str::duplicate(value), text_stream, wp->post_commands);
 		} else if (Str::eq_insensitive(key, I"bibliographic data")) {
 			match_results mr2 = Regexp::create_mr();
 			if (Regexp::match(&mr2, value, L"(%c+?) = (%c+)")) {
@@ -193,6 +189,47 @@ text_stream *Patterns::plugin_name(text_stream *arg, text_file_position *tfp) {
 	}
 	Regexp::dispose_of(&mr);
 	return Str::duplicate(arg);
+}
+
+@h Post-processing.
+In effect, a pattern can hold a shell script to run after each weave (subset)
+completes.
+
+=
+void Patterns::post_process(weave_pattern *pattern, weave_order *wv, int verbosely) {
+	text_stream *T;
+	LOOP_OVER_LINKED_LIST(T, text_stream, pattern->post_commands) {
+		filename *last_F = NULL;
+		TEMPORARY_TEXT(cmd);
+		for (int i=0; i<Str::len(T); i++) {
+			if (Str::includes_at(T, i, I"WOVENPATH")) {
+				Shell::quote_path(cmd, Filenames::up(wv->weave_to));
+				i += 8;
+			} else if (Str::includes_at(T, i, I"WOVEN")) {
+				filename *W = wv->weave_to;
+				i += 5;
+				if (Str::get_at(T, i) == '.') {
+					i++;
+					TEMPORARY_TEXT(ext);
+					while (Characters::isalpha(Str::get_at(T, i)))
+						PUT_TO(ext,Str::get_at(T, i++));
+					W = Filenames::set_extension(W, ext);
+					DISCARD_TEXT(ext);
+				}
+				Shell::quote_file(cmd, W);
+				last_F = W;
+				i--;
+			} else PUT_TO(cmd, Str::get_at(T, i));
+		}
+		if ((Str::includes_at(cmd, 0, I"PROCESS ")) && (last_F)) {
+			RunningTeX::post_process_weave(wv, last_F);
+		} else {
+			if (verbosely) PRINT("(%S)\n", cmd);
+			int rv = Shell::run(cmd);
+			if (rv != 0) Errors::fatal("post-processing command failed");
+		}
+		DISCARD_TEXT(cmd);
+	}
 }
 
 @h Obtaining files.

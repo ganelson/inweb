@@ -141,11 +141,9 @@ int Formats::preform_document(OUTPUT_STREAM, weave_order *wv, web *W,
 }
 	
 @h Post-processing.
-Consider what happens when Inweb makes a PDF, via TeX. The initial weave is
-to a TeX file; it's then "post-processing" which will turn this into a PDF.
-The following method calls allow such two-stage formats to function; in
-this case, it would be the PDF format which provides the necessary methods
-to turn TeX into PDF. The important method is this one:
+Post-processing is now largely done by commands in the pattern file, rather
+than here, but we retain method calls to enable formats to do some idiosyncratic
+post-processing.
 
 @e POST_PROCESS_POS_MTID
 
@@ -156,34 +154,20 @@ void Formats::post_process_weave(weave_order *wv, int open_afterwards) {
 }
 
 @ Optionally, a fancy report can be printed out, to describe what has been
-done:
+done. Support for TeX console reporting is hard-wired here because it's
+handled by //Patterns::post_process// directly.
 
 @e POST_PROCESS_REPORT_POS_MTID
 
 =
 VMETHOD_TYPE(POST_PROCESS_REPORT_POS_MTID, weave_format *wf, weave_order *wv)
 void Formats::report_on_post_processing(weave_order *wv) {
+	RunningTeX::report_on_post_processing(wv);
 	VMETHOD_CALL(wv->format, POST_PROCESS_REPORT_POS_MTID, wv);
 }
 
-@ After post-processing, an index file is sometimes needed. For example, if a
-big web is woven to a swarm of PDFs, one for each section, then we also want
-to make an index page in HTML which provides annotated links to those PDFs.
-
-@e INDEX_PDFS_POS_MTID
-
-=
-IMETHOD_TYPE(INDEX_PDFS_POS_MTID, weave_format *wf)
-int Formats::index_pdfs(text_stream *format) {
-	weave_format *wf = Formats::find_by_name(format);
-	if (wf == NULL) return FALSE;
-	int rv = FALSE;
-	IMETHOD_CALLV(rv, wf, INDEX_PDFS_POS_MTID);
-	return rv;
-}
-
-@ And in that index file, we may want to substitute in values for placeholder
-text like |[[PDF Size]]| in the template file. This is the |detail|.
+@ For the sake of index files, we may want to substitute in values for
+placeholder text in the template file.
 
 @e POST_PROCESS_SUBSTITUTE_POS_MTID
 
@@ -192,7 +176,7 @@ IMETHOD_TYPE(POST_PROCESS_SUBSTITUTE_POS_MTID, weave_format *wf, text_stream *OU
 	weave_order *wv, text_stream *detail, weave_pattern *pattern)
 int Formats::substitute_post_processing_data(OUTPUT_STREAM, weave_order *wv,
 	text_stream *detail, weave_pattern *pattern) {
-	int rv = FALSE;
+	int rv = RunningTeX::substitute_post_processing_data(OUT, wv, detail);
 	IMETHOD_CALL(rv, wv->format, POST_PROCESS_SUBSTITUTE_POS_MTID, OUT, wv, detail, pattern);
 	return rv;
 }

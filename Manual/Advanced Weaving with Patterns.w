@@ -97,22 +97,8 @@ sets this to |sections|, causing a swarm of individual HTML files to be produced
 Lastly, there are commands to do with plugins, covered below, which are also
 inherited.
 
-@ And there are a few settings which are not inherited: they apply only to the
-pattern being defined, not to other patterns based on it.
-
-= (text as Inweb)
-	tex command: C
-=
-tells the weaver that the TeX typesetting system should be invoked with the
-shell command |C|. Default is |tex|. Similarly for |pdftex command: C|, used
-when we want to make a PDF rather than a DVI.
-
-= (text as Inweb)
-	open command: C
-=
-tells the weaver to use the shell command |C| if it wants to open the woven
-file (i.e., on the user's computer) after it finishes. Default is |open|,
-which works nicely for MacOS.
+@ Bibliographic data can also be set, but this applies only to the current
+pattern, and is not inherited from any patterns it is based on.
 
 = (text as Inweb)
 	bibliographic data: K = V
@@ -122,6 +108,28 @@ the key |K| to the value |V|. For example:
 = (text as Inweb)
 	bibliographic data: Booklet Title = A formal grammar for Inform 7
 =
+
+@ It can be useful to do some post-processing after each woven file is made.
+For an example, see the |PDFTeX| pattern, which simply uses the |TeX| pattern
+to make a TeX file, and then runs it through the |pdftex| command-line tool.
+This is done by giving the necessary commands in the pattern file:
+= (text as Inweb)
+	name: PDFTeX based on TeX
+	initial extension: .tex
+	command: pdftex -output-directory=WOVENPATH -interaction=scrollmode WOVEN.tex
+	command: rm WOVEN.tex
+	command: rm WOVEN.log
+=
+Here |WOVEN| expands to the filename of the file which has just been woven,
+but stripped of its filename extension.
+
+Note also the "initial extension" setting. The point of this is that if the
+user calls Inweb setting |-weave-to Whatever.pdf|, this pattern setting causes
+Inweb first to weave |Whatever.tex|; the post-processing commands will then
+make |Whatever.pdf| as expected.
+
+As soon as any command in the list fails, Inweb halts with an error. To see
+the exact shell commands being issued, run Inweb with |-verbose|.
 
 @h Plugins.
 Plugins are named bundles of resources which are sometimes added to a weave,

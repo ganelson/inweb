@@ -19,7 +19,7 @@ weave_order *swarm_leader = NULL; /* the most inclusive one we weave */
 
 void Swarm::weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag,
 	weave_pattern *pattern, filename *to, pathname *into,
-	linked_list *breadcrumbs, filename *navigation) {
+	linked_list *breadcrumbs, filename *navigation, int verbosely) {
 	swarm_leader = NULL;
 	chapter *C;
 	section *S;
@@ -29,7 +29,7 @@ void Swarm::weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag,
 				if ((W->md->chaptered == TRUE) && (Reader::range_within(C->md->ch_range, range))) {
 					C->ch_weave = Swarm::weave_subset(W,
 						C->md->ch_range, FALSE, tag, pattern, to, into,
-						breadcrumbs, navigation);
+						breadcrumbs, navigation, verbosely);
 					if (Str::len(range) > 0) swarm_leader = C->ch_weave;
 				}
 			if (swarm_mode == SWARM_SECTIONS_SWM)
@@ -37,7 +37,7 @@ void Swarm::weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag,
 					if (Reader::range_within(S->md->sect_range, range))
 						S->sect_weave = Swarm::weave_subset(W,
 							S->md->sect_range, FALSE, tag, pattern, to, into,
-							breadcrumbs, navigation);
+							breadcrumbs, navigation, verbosely);
 		}
 
 	Swarm::weave_index_templates(W, range, pattern, into, navigation, breadcrumbs);
@@ -50,14 +50,15 @@ the call comes from Program Control).
 =
 weave_order *Swarm::weave_subset(web *W, text_stream *range, int open_afterwards,
 	theme_tag *tag, weave_pattern *pattern, filename *to, pathname *into,
-	linked_list *breadcrumbs, filename *navigation) {
+	linked_list *breadcrumbs, filename *navigation, int verbosely) {
 	weave_order *wv = NULL;
 	if (no_inweb_errors == 0) {
 		Analyser::analyse_code(W);
 		@<Compile a set of instructions for the weaver@>;
 		if (Weaver::weave(wv) == 0) /* i.e., the number of lines woven was zero */
 			Errors::fatal("empty weave request");
-		Formats::post_process_weave(wv, open_afterwards); /* e.g., run through TeX */
+		Patterns::post_process(wv->pattern, wv, verbosely);
+		Formats::post_process_weave(wv, open_afterwards);
 		@<Report on the outcome of the weave to the console@>;
 	}
 	return wv;
@@ -128,6 +129,8 @@ typedef struct weave_order {
 		wv->weave_to = to;
 		wv->self_contained = TRUE;
 	} else wv->weave_to = Filenames::in(H, leafname);
+	if (Str::len(pattern->initial_extension) > 0)
+		wv->weave_to = Filenames::set_extension(wv->weave_to, pattern->initial_extension);
 	DISCARD_TEXT(leafname);
 
 @ From the range and the theme, we work out the weave title, the leafname,

@@ -147,16 +147,16 @@ void Filenames::write_extension(OUTPUT_STREAM, filename *F) {
 	}
 }
 
-filename *Filenames::set_extension(filename *F, char *extension) {
+filename *Filenames::set_extension(filename *F, text_stream *extension) {
 	TEMPORARY_TEXT(NEWLEAF);
 	LOOP_THROUGH_TEXT(pos, F->leafname) {
 		wchar_t c = Str::get(pos);
 		if (c == '.') break;
 		PUT_TO(NEWLEAF, c);
 	}
-	if (extension) {
-		if (extension[0] == '.') extension++;
-		if (extension[0]) WRITE_TO(NEWLEAF, ".%s", extension);
+	if (Str::len(extension) > 0) {
+		if (Str::get_first_char(extension) != '.') WRITE_TO(NEWLEAF, ".");
+		WRITE_TO(NEWLEAF, "%S", extension);
 	}
 	filename *N = Filenames::in(F->pathname_of_location, NEWLEAF);
 	DISCARD_TEXT(NEWLEAF);

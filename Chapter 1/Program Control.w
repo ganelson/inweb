@@ -245,18 +245,13 @@ which for many small webs will be the entire thing.
 	if (r != SWARM_OFF_SWM) ins->swarm_mode = r;
 	@<Assign section numbers for printing purposes@>;
 	if (ins->swarm_mode == SWARM_OFF_SWM) {
-		int shall_we_open = ins->open_pdf_switch;
-		if (shall_we_open == NOT_APPLICABLE) { /* i.e., if it wasn't set at the command line */
-			if (Str::len(pattern->open_command) > 0) shall_we_open = TRUE;
-			else shall_we_open = FALSE;
-		}
-		Swarm::weave_subset(W, ins->chosen_range, shall_we_open, tag, pattern,
+		Swarm::weave_subset(W, ins->chosen_range, FALSE, tag, pattern,
 			ins->weave_to_setting, ins->weave_into_setting,
-			ins->breadcrumb_setting, ins->navigation_setting);
+			ins->breadcrumb_setting, ins->navigation_setting, ins->verbose_switch);
 	} else {
 		Swarm::weave(W, ins->chosen_range, ins->swarm_mode, tag, pattern,
 			ins->weave_to_setting, ins->weave_into_setting,
-			ins->breadcrumb_setting, ins->navigation_setting);
+			ins->breadcrumb_setting, ins->navigation_setting, ins->verbose_switch);
 	}
 	Formats::end_weaving(W, pattern);
 

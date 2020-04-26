@@ -19,20 +19,11 @@ of the page properly. (In practice we get this here by having code lines which
 are too wide to display.)
 
 @ =
-void RunningTeX::post_process_weave(weave_order *wv, int open_afterwards, int to_DVI) {
-	filename *console_filename = Filenames::set_extension(wv->weave_to, "console");
-	filename *log_filename = Filenames::set_extension(wv->weave_to, "log");
-	filename *pdf_filename = Filenames::set_extension(wv->weave_to, "pdf");
-
+void RunningTeX::post_process_weave(weave_order *wv, filename *CF) {
 	tex_results *res = CREATE(tex_results);
 	@<Initialise the TeX results@>;
-	wv->post_processing_results = (void *) res;
-
-	@<Call TeX and transcribe its output into a console file@>;
+	wv->post_processing_results = res;	
 	@<Read back the console file and parse it for error messages@>;
-	@<Remove the now redundant TeX, console and log files, to reduce clutter@>;
-
-	if (open_afterwards) @<Try to open the PDF file in the host operating system@>;
 }
 
 @ We're going to have to read in a console file of TeX output to work out
@@ -53,57 +44,16 @@ typedef struct tex_results {
 	res->tex_error_count = 0;
 	res->page_count = 0;
 	res->pdf_size = 0;
-	res->PDF_filename = pdf_filename;
-
-@<Call TeX and transcribe its output into a console file@> =
-	TEMPORARY_TEXT(TEMP)
-	filename *tex_rel = Filenames::without_path(wv->weave_to);
-	filename *console_rel = Filenames::without_path(console_filename);
-
-	Shell::plain(TEMP, "cd ");
-	Shell::quote_path(TEMP, Filenames::up(wv->weave_to));
-	Shell::plain(TEMP, "; ");
-
-	text_stream *tool = wv->pattern->pdftex_command;
-	if (to_DVI) tool = wv->pattern->tex_command;
-	WRITE_TO(TEMP, "%S", tool);
-	Shell::plain(TEMP, " -interaction=scrollmode ");
-	Shell::quote_file(TEMP, tex_rel);
-	Shell::plain(TEMP, ">");
-	Shell::quote_file(TEMP, console_rel);
-	Shell::run(TEMP);
-	DISCARD_TEXT(TEMP)
+	res->PDF_filename = Filenames::set_extension(CF, I".pdf");
 
 @ TeX helpfully reports the size and page count of what it produces, and
 we're not too proud to scrape that information out of the console file, besides
 the error messages (which begin with an exclamation mark in column 1).
 
 @<Read back the console file and parse it for error messages@> =
-	TextFiles::read(console_filename, FALSE,
+	TextFiles::read(CF, FALSE,
 		"can't open console file", TRUE, RunningTeX::scan_console_line, NULL,
 		(void *) res);
-
-@ The log file we never wanted, but TeX produced it anyway; it's really a
-verbose form of its console output. Now it can go. So can the console file
-and even the TeX source, since that was mechanically generated from the
-web, and so is of no lasting value. The one exception is that we keep the
-console file in the event of serious errors, since otherwise it's impossible
-for the user to find out what those errors were.
-
-@<Remove the now redundant TeX, console and log files, to reduce clutter@> =
-	if (res->tex_error_count == 0) {
-		Shell::rm(console_filename);
-		Shell::rm(log_filename);
-		Shell::rm(wv->weave_to);
-	}
-
-@ We often want to see the PDF immediately, so:
-
-@<Try to open the PDF file in the host operating system@> =
-	if (Str::len(wv->pattern->open_command) == 0)
-		Errors::fatal("no way to open PDF (see pattern.txt file)");
-	else
-		Shell::apply_S(wv->pattern->open_command, pdf_filename);
 
 @ =
 void RunningTeX::scan_console_line(text_stream *line, text_file_position *tfp,

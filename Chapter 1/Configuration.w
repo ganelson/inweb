@@ -24,7 +24,6 @@ typedef struct inweb_instructions {
 	int functions_switch; /* |-functions|: print catalogue of functions within sections */
 	int structures_switch; /* |-structures|: print catalogue of structures within sections */
 	int advance_switch; /* |-advance-build|: advance build file for web */
-	int open_pdf_switch; /* |-open-pdf|: open any woven PDF in the OS once it is made */
 	int scan_switch; /* |-scan|: simply show the syntactic scan of the source */
 	struct filename *weave_to_setting; /* |-weave-to X|: the pathname X, if supplied */
 	struct pathname *weave_into_setting; /* |-weave-into X|: the pathname X, if supplied */
@@ -81,7 +80,6 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.functions_switch = FALSE;
 	args.structures_switch = FALSE;
 	args.advance_switch = FALSE;
-	args.open_pdf_switch = NOT_APPLICABLE;
 	args.scan_switch = FALSE;
 	args.verbose_switch = FALSE;
 	args.chosen_web = NULL;
@@ -322,9 +320,6 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
 		case WEAVE_TO_CLSW:
 			args->weave_to_setting = Filenames::from_text(arg);
-			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
-		case OPEN_CLSW:
-			args->open_pdf_switch = TRUE;
 			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
 		case WEAVE_AS_CLSW:
 			args->weave_pattern = Str::duplicate(arg);

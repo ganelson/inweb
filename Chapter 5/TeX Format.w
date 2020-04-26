@@ -15,25 +15,18 @@ void TeX::create(void) {
 @<Create TeX format@> =
 	weave_format *wf = Formats::create_weave_format(I"TeX", I".tex");
 	METHOD_ADD(wf, RENDER_FOR_MTID, TeX::render_TeX);
-	@<Make this format basically TeX@>;
+	METHOD_ADD(wf, CHAPTER_TP_FOR_MTID, TeX::chapter_title_page);
+	METHOD_ADD(wf, PREFORM_DOCUMENT_FOR_MTID, TeX::preform_document);
 
 @<Create DVI format@> =
 	weave_format *wf = Formats::create_weave_format(I"DVI", I".tex");
 	METHOD_ADD(wf, RENDER_FOR_MTID, TeX::render_DVI);
-	@<Make this format basically TeX@>;
-	METHOD_ADD(wf, POST_PROCESS_POS_MTID, TeX::post_process_DVI);
-	METHOD_ADD(wf, POST_PROCESS_POS_MTID, TeX::post_process_report);
-	METHOD_ADD(wf, POST_PROCESS_SUBSTITUTE_POS_MTID, TeX::post_process_substitute);
+	METHOD_ADD(wf, CHAPTER_TP_FOR_MTID, TeX::chapter_title_page);
+	METHOD_ADD(wf, PREFORM_DOCUMENT_FOR_MTID, TeX::preform_document);
 
 @<Create PDF format@> =
 	weave_format *wf = Formats::create_weave_format(I"PDF", I".tex");
 	METHOD_ADD(wf, RENDER_FOR_MTID, TeX::render_PDF);
-	@<Make this format basically TeX@>;
-	METHOD_ADD(wf, POST_PROCESS_POS_MTID, TeX::post_process_PDF);
-	METHOD_ADD(wf, POST_PROCESS_SUBSTITUTE_POS_MTID, TeX::post_process_substitute);
-	METHOD_ADD(wf, INDEX_PDFS_POS_MTID, TeX::yes);
-
-@<Make this format basically TeX@> =
 	METHOD_ADD(wf, CHAPTER_TP_FOR_MTID, TeX::chapter_title_page);
 	METHOD_ADD(wf, PREFORM_DOCUMENT_FOR_MTID, TeX::preform_document);
 
@@ -129,7 +122,8 @@ int TeX::render_visit(tree_node *N, void *state, int L) {
 
 @<Render chapter header@> =
 	weave_chapter_header_node *C = RETRIEVE_POINTER_weave_chapter_header_node(N->content);
-	TeX::paragraph_heading(trs->wv->format, OUT, trs->wv, FIRST_IN_LINKED_LIST(section, C->chap->sections), NULL, C->chap->md->ch_title, 3, FALSE);
+	if (Str::ne(C->chap->md->ch_range, I"S"))
+		TeX::paragraph_heading(trs->wv->format, OUT, trs->wv, FIRST_IN_LINKED_LIST(section, C->chap->sections), NULL, C->chap->md->ch_title, 3, FALSE);
 
 @<Render header@> =
 	weave_section_header_node *C = RETRIEVE_POINTER_weave_section_header_node(N->content);
@@ -715,14 +709,6 @@ int TeX::preform_document(weave_format *self, text_stream *OUT, web *W, weave_or
 @h Post-processing.
 
 =
-void TeX::post_process_PDF(weave_format *self, weave_order *wv, int open) {
-	RunningTeX::post_process_weave(wv, open, FALSE);
-}
-void TeX::post_process_DVI(weave_format *self, weave_order *wv, int open) {
-	RunningTeX::post_process_weave(wv, open, TRUE);
-}
-
-@ =
 void TeX::post_process_report(weave_format *self, weave_order *wv) {
 	RunningTeX::report_on_post_processing(wv);
 }
