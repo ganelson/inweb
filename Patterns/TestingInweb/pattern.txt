@@ -1,3 +1,3 @@
 name: TestingInweb
-format: Debugging
+format: TestingInweb
 default range: sections

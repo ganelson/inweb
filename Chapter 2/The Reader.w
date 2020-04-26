@@ -94,17 +94,17 @@ typedef struct section {
 |web_md|-|chapter_md|-|section_md| tree:
 
 =
-web_md *Reader::load_web_md(pathname *P, filename *alt_F, module_search *I, int verbosely,
+web_md *Reader::load_web_md(pathname *P, filename *alt_F, module_search *I,
 	int including_modules) {
-	return WebMetadata::get(P, alt_F, default_inweb_syntax, I, verbosely,
+	return WebMetadata::get(P, alt_F, default_inweb_syntax, I, verbose_mode,
 		including_modules, path_to_inweb);
 }
 
-web *Reader::load_web(pathname *P, filename *alt_F, module_search *I, int verbosely,
+web *Reader::load_web(pathname *P, filename *alt_F, module_search *I,
 	int including_modules) {
 
 	web *W = CREATE(web);
-	W->md = Reader::load_web_md(P, alt_F, I, verbosely, including_modules);
+	W->md = Reader::load_web_md(P, alt_F, I, including_modules);
 	tangle_target *main_target = NULL;
 
 	@<Write the Inweb Version bibliographic datum@>;
@@ -202,14 +202,14 @@ come straight from the source files, but a few chapter heading lines are
 inserted if this is a multi-chapter web.
 
 =
-void Reader::read_web(web *W, int verbosely) {
+void Reader::read_web(web *W) {
 	chapter *C;
 	section *S;
 	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
 		LOOP_OVER_LINKED_LIST(S, section, C->sections)
 			Reader::read_file(W, C,
 				S->md->source_file_for_section,
-				S->md->titling_line_to_insert, S, verbosely,
+				S->md->titling_line_to_insert, S,
 				(W->md->single_file)?TRUE:FALSE);
 }
 
@@ -217,7 +217,7 @@ void Reader::read_web(web *W, int verbosely) {
 
 =
 void Reader::read_file(web *W, chapter *C, filename *F, text_stream *titling_line,
-	section *S, int verbosely, int disregard_top) {
+	section *S, int disregard_top) {
 	S->owning_chapter = C;
 	if (disregard_top)
 		S->paused_until_at = TRUE;
@@ -233,8 +233,7 @@ void Reader::read_file(web *W, chapter *C, filename *F, text_stream *titling_lin
 
 	int cl = TextFiles::read(F, FALSE, "can't open section file", TRUE,
 		Reader::scan_source_line, NULL, (void *) S);
-	if (verbosely)
-		PRINT("Read section: '%S' (%d lines)\n", S->md->sect_title, cl);
+	if (verbose_mode) PRINT("Read section: '%S' (%d lines)\n", S->md->sect_title, cl);
 }
 
 @<Insert an implied chapter heading@> =

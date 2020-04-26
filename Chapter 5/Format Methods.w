@@ -97,7 +97,7 @@ void Formats::render(text_stream *OUT, heterogeneous_tree *tree, filename *into)
 	weave_format *wf = C->wv->format;
 	TEMPORARY_TEXT(template);
 	WRITE_TO(template, "template-body%S", wf->woven_extension);
-	filename *F = Patterns::obtain_filename(C->wv->pattern, template);
+	filename *F = Patterns::find_template(C->wv->pattern, template);
 	TEMPORARY_TEXT(interior);
 	VMETHOD_CALL(wf, RENDER_FOR_MTID, interior, tree);
 	Bibliographic::set_datum(C->wv->weave_web->md, I"Weave Content", interior);

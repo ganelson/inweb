@@ -186,7 +186,7 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", mr.exp[0], mr.exp[0], mr.exp[1]);
 	WRITE("%SX = $(%SWEB)/Tangled/%S\n", mr.exp[0], mr.exp[0], mr.exp[1]);
 	MS->last_line_was_blank = FALSE;
-	web_md *Wm = Reader::load_web_md(Pathnames::from_text(mr.exp[2]), NULL, MS->search_path, FALSE, TRUE);
+	web_md *Wm = Reader::load_web_md(Pathnames::from_text(mr.exp[2]), NULL, MS->search_path, TRUE);
 	Wm->as_module->module_name = Str::duplicate(mr.exp[0]);
 	Wm->as_module->module_tag = Str::duplicate(mr.exp[3]);
 	Wm->as_module->origin_marker = marker;

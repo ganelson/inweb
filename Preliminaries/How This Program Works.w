@@ -300,9 +300,9 @@ Renderers should make requests for weave plugins or colour schemes if, and
 only if, the need arises: for example, the HTML renderer requests the plugin
 |Carousel| only if an image carousel is actually called for. Requests are
 made by calling //Swarm::ensure_plugin// or //Swarm::ensure_colour_scheme//,
-and see also the underlying code at //Weave Plugins//. (We want our HTML to
-run as little JavaScript as necessary at load time, which is why we don't
-just give every weave every possible facility.)
+and see also the underlying code at //Assets, Plugins and Colour Schemes//.
+(We want our HTML to run as little JavaScript as necessary at load time, which
+is why we don't just give every weave every possible facility.)
 
 The most complex issue for HTML rendering is working out the URLs for links:
 for example, when weaving the text you are currently reading, Inweb has to

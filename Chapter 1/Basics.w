@@ -10,6 +10,7 @@ module.
 @ We need to itemise the structures we'll want to allocate. For explanations,
 see //foundation: A Brief Guide to Foundation//.
 
+@e asset_rule_MT
 @e breadcrumb_request_MT
 @e chapter_MT
 @e colony_MT
@@ -95,6 +96,7 @@ see //foundation: A Brief Guide to Foundation//.
 
 =
 ALLOCATE_IN_ARRAYS(source_line, 1000)
+ALLOCATE_INDIVIDUALLY(asset_rule)
 ALLOCATE_INDIVIDUALLY(breadcrumb_request)
 ALLOCATE_INDIVIDUALLY(chapter)
 ALLOCATE_INDIVIDUALLY(colony)

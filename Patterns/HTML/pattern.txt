@@ -4,3 +4,9 @@ default range: sections
 plugin: Base
 mathematics plugin: MathJax3
 footnotes plugin: Bigfoot
+assets: .html collate
+assets: .js copy
+assets: .js prefix = <script src="URL"></script>
+assets: .css copy
+assets: .css prefix = <link href="URL" rel="stylesheet" rev="stylesheet" type="text/css">
+assets: .css transform names

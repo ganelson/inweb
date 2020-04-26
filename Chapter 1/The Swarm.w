@@ -19,7 +19,7 @@ weave_order *swarm_leader = NULL; /* the most inclusive one we weave */
 
 void Swarm::weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag,
 	weave_pattern *pattern, filename *to, pathname *into,
-	linked_list *breadcrumbs, filename *navigation, int verbosely) {
+	linked_list *breadcrumbs, filename *navigation) {
 	swarm_leader = NULL;
 	chapter *C;
 	section *S;
@@ -29,7 +29,7 @@ void Swarm::weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag,
 				if ((W->md->chaptered == TRUE) && (Reader::range_within(C->md->ch_range, range))) {
 					C->ch_weave = Swarm::weave_subset(W,
 						C->md->ch_range, FALSE, tag, pattern, to, into,
-						breadcrumbs, navigation, verbosely);
+						breadcrumbs, navigation);
 					if (Str::len(range) > 0) swarm_leader = C->ch_weave;
 				}
 			if (swarm_mode == SWARM_SECTIONS_SWM)
@@ -37,7 +37,7 @@ void Swarm::weave(web *W, text_stream *range, int swarm_mode, theme_tag *tag,
 					if (Reader::range_within(S->md->sect_range, range))
 						S->sect_weave = Swarm::weave_subset(W,
 							S->md->sect_range, FALSE, tag, pattern, to, into,
-							breadcrumbs, navigation, verbosely);
+							breadcrumbs, navigation);
 		}
 
 	Swarm::weave_index_templates(W, range, pattern, into, navigation, breadcrumbs);
@@ -50,14 +50,14 @@ the call comes from Program Control).
 =
 weave_order *Swarm::weave_subset(web *W, text_stream *range, int open_afterwards,
 	theme_tag *tag, weave_pattern *pattern, filename *to, pathname *into,
-	linked_list *breadcrumbs, filename *navigation, int verbosely) {
+	linked_list *breadcrumbs, filename *navigation) {
 	weave_order *wv = NULL;
 	if (no_inweb_errors == 0) {
 		Analyser::analyse_code(W);
 		@<Compile a set of instructions for the weaver@>;
 		if (Weaver::weave(wv) == 0) /* i.e., the number of lines woven was zero */
 			Errors::fatal("empty weave request");
-		Patterns::post_process(wv->pattern, wv, verbosely);
+		Patterns::post_process(wv->pattern, wv);
 		Formats::post_process_weave(wv, open_afterwards);
 		@<Report on the outcome of the weave to the console@>;
 	}
@@ -191,7 +191,7 @@ void Swarm::ensure_plugin(weave_order *wv, text_stream *name) {
 	LOOP_OVER_LINKED_LIST(existing, weave_plugin, wv->plugins)
 		if (Str::eq_insensitive(name, existing->plugin_name))
 			return;
-	weave_plugin *wp = WeavePlugins::new(name);
+	weave_plugin *wp = Assets::new(name);
 	ADD_TO_LINKED_LIST(wp, weave_plugin, wv->plugins);
 }
 
@@ -201,7 +201,7 @@ colour_scheme *Swarm::ensure_colour_scheme(weave_order *wv, text_stream *name,
 	LOOP_OVER_LINKED_LIST(existing, colour_scheme, wv->colour_schemes)
 		if (Str::eq_insensitive(name, existing->scheme_name))
 			return existing;
-	colour_scheme *cs = WeavePlugins::find_colour_scheme(wv->pattern, name, pre);
+	colour_scheme *cs = Assets::find_colour_scheme(wv->pattern, name, pre);
 	if (cs == NULL) {
 		if (Str::eq(name, I"Colours")) {
 			TEMPORARY_TEXT(err);
@@ -218,10 +218,10 @@ colour_scheme *Swarm::ensure_colour_scheme(weave_order *wv, text_stream *name,
 void Swarm::include_plugins(OUTPUT_STREAM, web *W, weave_order *wv, filename *from) {
 	weave_plugin *wp;
 	LOOP_OVER_LINKED_LIST(wp, weave_plugin, wv->plugins)
-		WeavePlugins::include_plugin(OUT, W, wp, wv->pattern, from);
+		Assets::include_plugin(OUT, W, wp, wv->pattern, from);
 	colour_scheme *cs;
 	LOOP_OVER_LINKED_LIST(cs, colour_scheme, wv->colour_schemes)
-		WeavePlugins::include_colour_scheme(OUT, W, cs, wv->pattern, from);
+		Assets::include_colour_scheme(OUT, W, cs, wv->pattern, from);
 }
 
 @ After every swarm, we rebuild the index:
@@ -231,7 +231,7 @@ void Swarm::weave_index_templates(web *W, text_stream *range, weave_pattern *pat
 	pathname *into, filename *nav, linked_list *crumbs) {
 	if (!(Bibliographic::data_exists(W->md, I"Version Number")))
 		Bibliographic::set_datum(W->md, I"Version Number", I" ");
-	filename *INF = Patterns::obtain_filename(pattern, I"template-index.html");
+	filename *INF = Patterns::find_template(pattern, I"template-index.html");
 	if (INF) {
 		pathname *H = W->redirect_weaves_to;
 		if (H == NULL) H = Reader::woven_folder(W);

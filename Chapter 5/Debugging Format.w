@@ -7,7 +7,7 @@ useful only for testing the weaver.
 
 =
 void Debugging::create(void) {
-	weave_format *wf = Formats::create_weave_format(I"debugging", I".txt");
+	weave_format *wf = Formats::create_weave_format(I"TestingInweb", I".txt");
 	METHOD_ADD(wf, RENDER_FOR_MTID, Debugging::render);
 }
 

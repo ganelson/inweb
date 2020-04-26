@@ -108,7 +108,6 @@ void Collater::temp_line(text_stream *line, text_file_position *tfp, void *v_ies
 
 =
 void Collater::process(text_stream *OUT, collater_state *cls) {
-	STREAM_INDENT(STDOUT);
 	int lpos = 0; /* This is our program counter: a line number in the template */
 	while (lpos < cls->no_tlines) {
 		match_results mr = Regexp::create_mr();
@@ -122,7 +121,6 @@ void Collater::process(text_stream *OUT, collater_state *cls) {
 	}
 	if (cls->inside_navigation_submenu) WRITE("</ul>");
 	cls->inside_navigation_submenu = FALSE;
-	STREAM_OUTDENT(STDOUT);
 }
 
 @<Make any necessary substitutions to turn tl into final output@> =
@@ -139,9 +137,7 @@ void Collater::process(text_stream *OUT, collater_state *cls) {
 		DISCARD_TEXT(command);
 	}
 	@<Skip line if inside an empty loop@>;
-	STREAM_INDENT(STDOUT);
 	@<Make substitutions of square-bracketed variables in line@>;
-	STREAM_OUTDENT(STDOUT);
 
 @h The repeat stack and loops.
 This is used only for debugging:
@@ -415,16 +411,9 @@ this will recursively call The Collater, in fact.
 	Colonies::drop_initial_breadcrumbs(substituted, cls->into_file,
 		cls->crumbs);
 
-@ |[[Plugins]]| here expands to material needed by any plugins required
-by the weave cls->nav_pattern itself; it doesn't include optional extras for a
-specific page because, of course, The Collater is used for cover sheets and
-not pages. (Except for navigation purposes, and navigation files should never
-use this.)
-
 @<Substitute Plugins@> =
-	WeavePlugins::begin_inclusions();
-	Patterns::include_plugins(OUT, cls->for_web, cls->nav_pattern, cls->into_file);
-	if (cls->wv) Swarm::include_plugins(OUT, cls->for_web, cls->wv, cls->into_file);
+	Assets::include_relevant_plugins(OUT, cls->nav_pattern, cls->for_web,
+		cls->wv, cls->into_file);
 
 @ A list of all modules in the current web.
 

@@ -56,6 +56,7 @@ pathname *path_to_inweb_patterns = NULL; /* where built-in patterns are stored *
 
 =
 int no_inweb_errors = 0;
+int verbose_mode = FALSE;
 
 @h Main routine.
 
@@ -63,9 +64,10 @@ int no_inweb_errors = 0;
 int main(int argc, char **argv) {
 	@<Initialise inweb@>;
 	inweb_instructions args = Configuration::read(argc, argv);
+	verbose_mode = args.verbose_switch;
 	fundamental_mode = args.inweb_mode;
 	path_to_inweb = Pathnames::installation_path("INWEB_PATH", I"inweb");
-	if (args.verbose_switch) PRINT("Installation path is %p\n", path_to_inweb);
+	if (verbose_mode) PRINT("Installation path is %p\n", path_to_inweb);
 	path_to_inweb_patterns = Pathnames::down(path_to_inweb, I"Patterns");
 	path_to_inweb_materials = Pathnames::down(path_to_inweb, I"Materials");
 
@@ -91,10 +93,9 @@ void Main::follow_instructions(inweb_instructions *ins) {
 	web *W = NULL;
 	if ((ins->chosen_web) || (ins->chosen_file)) {
 		W = Reader::load_web(ins->chosen_web, ins->chosen_file,
-			WebModules::make_search_path(ins->import_setting), ins->verbose_switch,
-			TRUE);
+			WebModules::make_search_path(ins->import_setting), TRUE);
 		W->redirect_weaves_to = ins->weave_into_setting;
-		Reader::read_web(W, ins->verbose_switch);
+		Reader::read_web(W);
 		Parser::parse_web(W, ins->inweb_mode);
 	}
 	if (no_inweb_errors == 0) {
@@ -247,11 +248,11 @@ which for many small webs will be the entire thing.
 	if (ins->swarm_mode == SWARM_OFF_SWM) {
 		Swarm::weave_subset(W, ins->chosen_range, FALSE, tag, pattern,
 			ins->weave_to_setting, ins->weave_into_setting,
-			ins->breadcrumb_setting, ins->navigation_setting, ins->verbose_switch);
+			ins->breadcrumb_setting, ins->navigation_setting);
 	} else {
 		Swarm::weave(W, ins->chosen_range, ins->swarm_mode, tag, pattern,
 			ins->weave_to_setting, ins->weave_into_setting,
-			ins->breadcrumb_setting, ins->navigation_setting, ins->verbose_switch);
+			ins->breadcrumb_setting, ins->navigation_setting);
 	}
 	Formats::end_weaving(W, pattern);
 

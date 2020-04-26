@@ -5,7 +5,7 @@ Extension: ".w"
 colouring {
 	=> !plain
 	# Detect Property: Value lines, not being fooled by a colon inside quotes
-	brackets in /\s*([A-Z][^"]*):(.*)/ {
+	brackets in /\s*([A-Za-z][^"]*):(.*)/ {
 		number 1 => !element
 		number 2 => !string
 	}

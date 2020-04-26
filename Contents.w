@@ -29,6 +29,7 @@ Chapter 1: Top Level
 	Configuration
 	The Swarm
 	Patterns
+	Assets, Plugins and Colour Schemes
 
 Chapter 2: Parsing a Web
 "Reading in the entire text of the web, parsing its structure and looking for
@@ -70,7 +71,6 @@ Chapter 5: Formats
 	TeX Format
 	HTML Formats
 	Debugging Format
-	Weave Plugins
 	TeX Utilities
 
 Chapter 6: Extras

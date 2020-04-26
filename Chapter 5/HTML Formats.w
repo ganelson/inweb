@@ -36,6 +36,7 @@ typedef struct HTML_render_state {
 	int carousel_number;
 	int slide_number;
 	int slide_of;
+	struct asset_rule *copy_rule;
 } HTML_render_state;
 
 @ The initial state is as follows:
@@ -52,6 +53,7 @@ HTML_render_state HTMLFormat::initial_state(text_stream *OUT, weave_order *wv,
 	hrs.carousel_number = 1;
 	hrs.slide_number = -1;
 	hrs.slide_of = -1;
+	hrs.copy_rule = Assets::new_rule(NULL, I"", I"private copy", NULL);
 
 	Swarm::ensure_plugin(wv, I"Base");
 	hrs.colours = Swarm::ensure_colour_scheme(wv, I"Colours", I"");
@@ -247,7 +249,8 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	filename *RF = Filenames::from_text(C->figname);
 	HTML_OPEN("center");
 	HTML::image_to_dimensions(OUT, RF, C->w, C->h);
-	Patterns::copy_file_into_weave(hrs->wv->weave_web, F, NULL, NULL);
+	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
+		hrs->wv->pattern, hrs->wv->weave_to);
 	HTML_CLOSE("center");
 	WRITE("\n");
 
@@ -256,7 +259,8 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	filename *F = Filenames::in(
 		Pathnames::down(hrs->wv->weave_web->md->path_to_web, I"Audio"),
 		C->audio_name);
-	Patterns::copy_file_into_weave(hrs->wv->weave_web, F, NULL, NULL);
+	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
+		hrs->wv->pattern, hrs->wv->weave_to);
 	HTML_OPEN("center");
 	WRITE("<audio controls>\n");
 	WRITE("<source src=\"%S\" type=\"audio/mpeg\">\n", C->audio_name);
@@ -395,7 +399,7 @@ that service uses to identify the video/audio in question.
 	if (C->h > 0) { Str::clear(CH); WRITE_TO(CH, "%d", C->h); }
 	TEMPORARY_TEXT(embed_leaf);
 	WRITE_TO(embed_leaf, "%S.html", C->service);
-	filename *F = Patterns::find_asset(hrs->wv->pattern, I"Embedding", embed_leaf);
+	filename *F = Patterns::find_file_in_subdirectory(hrs->wv->pattern, I"Embedding", embed_leaf);
 	DISCARD_TEXT(embed_leaf);
 	if (F == NULL) {
 		Main::error_in_web(I"This is not a supported service", hrs->wv->current_weave_line);
@@ -809,7 +813,7 @@ int HTMLFormat::begin_weaving_EPUB(weave_format *wf, web *W, weave_pattern *patt
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "%S", Bibliographic::get_datum(W->md, I"Title"));
 	W->as_ebook = Epub::new(T, "P");
-	filename *CSS = Patterns::find_asset(pattern, I"Base", I"Base.css");
+	filename *CSS = Patterns::find_file_in_subdirectory(pattern, I"Base", I"Base.css");
 	Epub::use_CSS_throughout(W->as_ebook, CSS);
 	Epub::attach_metadata(W->as_ebook, L"identifier", T);
 	DISCARD_TEXT(T)

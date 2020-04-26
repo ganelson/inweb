@@ -70,7 +70,7 @@ set them ourselves.
 	format: F
 =
 sets the format. At present, this must be |HTML|, |plain| (plain text),
-|ePub|, |TeX|, |DVI|, or |PDF|.
+|ePub|, |TeX|, or |TestingInweb|.
 
 = (text as Inweb)
 	number sections: yes
@@ -78,14 +78,6 @@ sets the format. At present, this must be |HTML|, |plain| (plain text),
 =
 causes the weaver to apply numbers to section headings: the first included will
 be number 1, and so on. Default is |no|.
-
-= (text as Inweb)
-	embed CSS: yes
-	embed CSS: no
-=
-causes the weaver to embed copies of CSS files into each HTML file it creates,
-rather than to link to them. Default is |no|, and there's no effect on non-HTML
-formats.
 
 = (text as Inweb)
 	default range: R
@@ -131,7 +123,7 @@ make |Whatever.pdf| as expected.
 As soon as any command in the list fails, Inweb halts with an error. To see
 the exact shell commands being issued, run Inweb with |-verbose|.
 
-@h Plugins.
+@h Plugins and assets.
 Plugins are named bundles of resources which are sometimes added to a weave,
 and sometimes not, depending on its needs; they are placed in the pattern's
 folder, and Inweb has access to the plugins not only for the current pattern,
@@ -172,8 +164,20 @@ but with your preferred plugin names:
 presently tread on the |MathJax3| plugin, so right now it's not possible to
 have mathematics in a footnote when |Bigfoot| is in use.
 
-@ It's also possible to supply your own version of any plugin you would like
-to tinker with. If you want |Carousel| to have rather different CSS effects,
+@ So what's in a plugin? A plugin is simply a set of "assets", which are
+individual files stored in the plugin's directory. A typical asset might be
+a CSS file to help making web pages, or a file of TeX macros to help
+typeset a PDF.
+
+Plugin inclusion happens like this:
+(a) for each file Inweb weaves, it includes only the plugins it needs;
+(b) if it needs |X|, Inweb includes every asset -- meaning, every file whose
+name does not begin with a |.| -- from the |X| subdirectory of the pattern,
+or from the |X| subdirectory of any pattern it is based on;
+(c) but it never includes the same-named asset twice.
+
+@ This means it's possible to supply your own version of any plugin you would
+like to tinker with. If you want |Carousel| to have rather different CSS effects,
 for example, make your own copy of |Carousel| (copying it from the one in
 the Inweb distribution at |inweb/Patterns/HTML/Carousel|) and place it in your
 own pattern. Files in your version will prevail over files in the built-in one.
@@ -196,20 +200,58 @@ the |Base| plugin from |HTML|. (|MonoGitHub| is based on |GitHubPages|, but
 that in turn is based on |HTML|.) All the other files of |Base| remain as
 they were, and there's no need to provide duplicates here.
 
-@ So what's in a plugin? There's not much to it. Every file in a plugin, whose
-name does not begin with a |.|, is copied into the weave: that means it either
-gets copied to the weave destination directory, or possibly to the |assets|
-directory specified in the colony file (if there is one). However:
-(a) If the format is HTML, and the filename ends |.css|, then a link to the
-CSS file is automatically included in the head of the file. If the pattern
-says to |embed CSS| (see above), then the file is spliced in rather than
-being copied.
-(b) If the format is HTML, and the filename ends |.js|, then a link to the
-Javascript file is automatically included in the head of the file.
+@ But wait, there's more. How is an asset actually "included"? The pattern
+gets to decide this, based on the file-type of the asset, as expressed by
+its filename extension. For example, the TeX pattern says:
+= (text)
+	assets: .tex embed
+=
+This admittedly cryptic line tells Inweb that when it includes plugins for
+this pattern, any assets ending |.tex| should be "embedded", rather than
+copied. There are four things it can do:
+(1) |copy|. This is the default, and means that the file is simply copied
+into the weave directory, or into the |assets| directory specified in the
+colony file, if the user gave one with |-colony|.
+(2) |private copy|. The same, but this is never put into the shared |assets|
+directory: it's always copied alongside the woven files for the web.
+(3) |embed|. The file is not copied. Instead, its entire contents are
+pasted into the woven file itself, when the |[[Plugins]]| placeholder in
+the template is expanded (see below). Do not use this for binary files.
+(4) |collate|. The file is not copied. Instead, its entire contents are
+pasted into the woven file itself, when the |[[Plugins]]| placeholder in
+the template is expanded (see below); but this is done as a further collation,
+not a simple transcription, so any placeholders found in the file will
+themselves be expanded. Do not use this for binary files.
 
-For example, the |Breadcrumbs| plugin contains an image file and a CSS file;
-both are copied across, but a link to the CSS file is also included in the
-woven file needing to use the plugin.
+@ In addition, the pattern can specify that some text referring to the
+asset file should be put into the woven file. For example, an HTML pattern
+might say this:
+= (text as Inweb)
+	assets: .js copy
+	assets: .js prefix = <script src="URL"></script>
+	assets: .css copy
+	assets: .css prefix = <link href="URL" rel="stylesheet" rev="stylesheet" type="text/css">
+	assets: .css transform names
+=
+With that done, any Javascript or CSS files in its plugins will be copied over,
+but links to them will be placed into the header of the HTML file being woven.
+(The text |URL|, in a prefix or suffix, expands to the relative URL from the
+path being woven to the asset file.)
+
+The unique command "transform names", which should be used only for CSS,
+enables the colour-scheme renaming business described below.
+
+An alternative scheme would be to embed all CSS and Javascript, thus producing
+a stand-alone HTML file. This could be achieved by:
+= (text as Inweb)
+	assets: .js embed
+	assets: .js prefix = <script>
+	assets: .js suffix = </script>
+	assets: .css embed
+	assets: .css prefix = <style type="text/css">
+	assets: .css suffix = </style>
+	assets: .css transform names
+=
 
 @h Embeddings.
 Patterns with the HTML format may also want to provide "embeddings". These
