@@ -71,7 +71,7 @@ Chapter 5: Formats
 	HTML Formats
 	Debugging Format
 	Weave Plugins
-	Running Through TeX
+	TeX Utilities
 
 Chapter 6: Extras
 "Additional features for turning webs into open-source projects."

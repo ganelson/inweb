@@ -222,7 +222,7 @@ void Patterns::post_process(weave_pattern *pattern, weave_order *wv, int verbose
 			} else PUT_TO(cmd, Str::get_at(T, i));
 		}
 		if ((Str::includes_at(cmd, 0, I"PROCESS ")) && (last_F)) {
-			RunningTeX::post_process_weave(wv, last_F);
+			TeXUtilities::post_process_weave(wv, last_F);
 		} else {
 			if (verbosely) PRINT("(%S)\n", cmd);
 			int rv = Shell::run(cmd);

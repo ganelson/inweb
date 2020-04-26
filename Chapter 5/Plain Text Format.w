@@ -9,7 +9,6 @@ interesting, but ought to be available.
 void PlainText::create(void) {
 	weave_format *wf = Formats::create_weave_format(I"plain", I".txt");
 	METHOD_ADD(wf, RENDER_FOR_MTID, PlainText::render);
-	METHOD_ADD(wf, CHAPTER_TP_FOR_MTID, PlainText::chapter_title_page);
 }
 
 @h Methods.
@@ -32,13 +31,24 @@ void PlainText::render(weave_format *self, text_stream *OUT, heterogeneous_tree 
 int PlainText::render_visit(tree_node *N, void *state, int L) {
 	PlainText_render_state *prs = (PlainText_render_state *) state;
 	text_stream *OUT = prs->OUT;
-	if (N->type == weave_document_node_type) @<Render nothing@>
-	else if (N->type == weave_head_node_type) @<Render nothing@>
-	else if (N->type == weave_body_node_type) @<Render nothing@>
-	else if (N->type == weave_tail_node_type) @<Render nothing@>
+	if ((N->type == weave_document_node_type) ||
+		(N->type == weave_head_node_type) ||
+		(N->type == weave_body_node_type) ||
+		(N->type == weave_tail_node_type) ||
+		(N->type == weave_chapter_title_page_node_type) ||
+		(N->type == weave_chapter_footer_node_type) ||
+		(N->type == weave_figure_node_type) ||
+		(N->type == weave_audio_node_type) ||
+		(N->type == weave_material_node_type) ||
+		(N->type == weave_chapter_node_type) ||
+		(N->type == weave_carousel_slide_node_type) ||
+		(N->type == weave_toc_node_type) ||
+		(N->type == weave_toc_line_node_type) ||
+		(N->type == weave_grammar_index_node_type) ||
+		(N->type == weave_inline_node_type)) @<Render nothing@>
+
 	else if (N->type == weave_verbatim_node_type) @<Render verbatim@>
 	else if (N->type == weave_chapter_header_node_type) @<Render chapter header@>
-	else if (N->type == weave_chapter_footer_node_type) @<Render nothing@>
 	else if (N->type == weave_section_header_node_type) @<Render header@>
 	else if (N->type == weave_section_footer_node_type) @<Render footer@>
 	else if (N->type == weave_section_purpose_node_type) @<Render purpose@>
@@ -48,21 +58,13 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_linebreak_node_type) @<Render linebreak@>
 	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraph heading@>
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
-	else if (N->type == weave_figure_node_type) @<Render nothing@>
-	else if (N->type == weave_audio_node_type) @<Render nothing@>
-	else if (N->type == weave_material_node_type) @<Render nothing@>
 	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
-	else if (N->type == weave_chapter_node_type) @<Render nothing@>
 	else if (N->type == weave_section_node_type) @<Render section@>
 	else if (N->type == weave_code_line_node_type) @<Render code line@>
 	else if (N->type == weave_function_usage_node_type) @<Render function usage@>
 	else if (N->type == weave_commentary_node_type) @<Render commentary@>
-	else if (N->type == weave_carousel_slide_node_type) @<Render nothing@>
-	else if (N->type == weave_toc_node_type) @<Render nothing@>
-	else if (N->type == weave_toc_line_node_type) @<Render nothing@>
-	else if (N->type == weave_chapter_title_page_node_type) @<Render weave_chapter_title_page_node@>
 	else if (N->type == weave_defn_node_type) @<Render defn@>
 	else if (N->type == weave_source_code_node_type) @<Render source code@>
 	else if (N->type == weave_url_node_type) @<Render URL@>
@@ -71,10 +73,9 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_display_line_node_type) @<Render display line@>
 	else if (N->type == weave_function_defn_node_type) @<Render function defn@>
 	else if (N->type == weave_item_node_type) @<Render item@>
-	else if (N->type == weave_grammar_index_node_type) @<Render nothing@>
-	else if (N->type == weave_inline_node_type) @<Render nothing@>
 	else if (N->type == weave_locale_node_type) @<Render locale@>
 	else if (N->type == weave_maths_node_type) @<Render maths@>
+
 	else internal_error("unable to render unknown node");
 	return TRUE;
 }
@@ -165,10 +166,6 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 	WRITE("%S", C->text);
 	if (C->in_code) WRITE(" */ ");
 
-@<Render weave_chapter_title_page_node@> =
-	weave_chapter_title_page_node *C = RETRIEVE_POINTER_weave_chapter_title_page_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
-
 @<Render defn@> =
 	weave_defn_node *C = RETRIEVE_POINTER_weave_defn_node(N->content);
 	WRITE("%S ", C->keyword);
@@ -216,13 +213,3 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 @<Recurse tne renderer through children nodes@> =
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees::traverse_from(M, &PlainText::render_visit, (void *) prs, L+1);
-
-@ =
-void PlainText::chapter_title_page(weave_format *self, text_stream *OUT,
-	weave_order *wv, chapter *C) {
-	WRITE("%S\n\n", C->md->rubric);
-	section *S;
-	LOOP_OVER_LINKED_LIST(S, section, C->sections)
-		WRITE("    %S: %S\n        %S\n",
-			S->md->sect_range, S->md->sect_title, S->sect_purpose);
-}

@@ -107,19 +107,6 @@ void Formats::render(text_stream *OUT, heterogeneous_tree *tree, filename *into)
 	DISCARD_TEXT(template);
 }
 
-@ When whole chapters are wovem, or all-in-one weaves include multiple
-chapters, the format can add a table of chapter contents, or some similar
-interstitial material. This is how:
-
-@e CHAPTER_TP_FOR_MTID
-
-=
-VMETHOD_TYPE(CHAPTER_TP_FOR_MTID, weave_format *wf, text_stream *OUT, weave_order *wv, chapter *C)
-void Formats::chapter_title_page(OUTPUT_STREAM, weave_order *wv, chapter *C) {
-	weave_format *wf = wv->format;
-	VMETHOD_CALL(wf, CHAPTER_TP_FOR_MTID, OUT, wv, C);
-}
-
 @ The weaver has special typographical support for the stand-alone Inform
 document of Preform grammar, and this is the hook for it. Most formats
 should ignore it.
@@ -162,7 +149,7 @@ handled by //Patterns::post_process// directly.
 =
 VMETHOD_TYPE(POST_PROCESS_REPORT_POS_MTID, weave_format *wf, weave_order *wv)
 void Formats::report_on_post_processing(weave_order *wv) {
-	RunningTeX::report_on_post_processing(wv);
+	TeXUtilities::report_on_post_processing(wv);
 	VMETHOD_CALL(wv->format, POST_PROCESS_REPORT_POS_MTID, wv);
 }
 
@@ -176,7 +163,7 @@ IMETHOD_TYPE(POST_PROCESS_SUBSTITUTE_POS_MTID, weave_format *wf, text_stream *OU
 	weave_order *wv, text_stream *detail, weave_pattern *pattern)
 int Formats::substitute_post_processing_data(OUTPUT_STREAM, weave_order *wv,
 	text_stream *detail, weave_pattern *pattern) {
-	int rv = RunningTeX::substitute_post_processing_data(OUT, wv, detail);
+	int rv = TeXUtilities::substitute_post_processing_data(OUT, wv, detail);
 	IMETHOD_CALL(rv, wv->format, POST_PROCESS_SUBSTITUTE_POS_MTID, OUT, wv, detail, pattern);
 	return rv;
 }

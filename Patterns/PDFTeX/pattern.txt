@@ -4,5 +4,3 @@ command: pdftex -output-directory=WOVENPATH -interaction=scrollmode WOVEN.tex >W
 command: PROCESS WOVEN.log
 command: rm WOVEN.log
 command: rm WOVEN.console
-command: bbedit WOVEN.tex
-command: open WOVEN.pdf

@@ -700,7 +700,7 @@ that service uses to identify the video/audio in question.
 	text_stream *plugin_name = hrs->wv->pattern->mathematics_plugin;
 	if (Str::len(plugin_name) == 0) {
 		TEMPORARY_TEXT(R);
-		TeX::remove_math_mode(R, C->content);
+		TeXUtilities::remove_math_mode(R, C->content);
 		HTMLFormat::escape_text(OUT, R);
 		DISCARD_TEXT(R);
 	} else {
