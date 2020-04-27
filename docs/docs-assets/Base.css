@@ -77,6 +77,12 @@ p.firstcommentary {
 	padding-top: 15px;
 }
 
+/* For centred images and the like */
+
+p.center_p {
+	text-align: center;
+}
+
 /* For the text of a footnote: */
 
 p.inwebfootnote {
@@ -211,17 +217,17 @@ p.endnote a:hover, p.endnote a:focus {
 p.heading {
 	margin-top: 2px;
 	margin-bottom: 2px;
-	font-size: 20
+	font-size: 20px
 }
 p.chapter {
-	font-size: 14
+	font-size: 14px
 }
 p.tight {
-	font-size: 12
+	font-size: 12px
 }
 p.tightin {
 	padding-left: 25px;
-	font-size: 12
+	font-size: 12px
 }
 .chapterlist li {
 	padding-top: 8px;

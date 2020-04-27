@@ -22,6 +22,7 @@ typedef struct weave_pattern {
 
 	struct text_stream *initial_extension; /* filename extension, that is */
 	struct linked_list *post_commands; /* of |text_stream| */
+	struct linked_list *blocked_templates; /* of |text_stream| */
 
 	struct linked_list *asset_rules; /* of |asset_rule| */
 	int show_abbrevs; /* show section range abbreviations in the weave? */
@@ -61,6 +62,7 @@ weave_pattern *Patterns::find(web *W, text_stream *name) {
 	wp->default_range = Str::duplicate(I"0");
 	wp->initial_extension = NULL;
 	wp->post_commands = NEW_LINKED_LIST(text_stream);
+	wp->blocked_templates = NEW_LINKED_LIST(text_stream);
 	wp->commands = 0;
 	wp->name_command_given = FALSE;
 
@@ -149,6 +151,8 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 			wp->mathematics_plugin = Patterns::plugin_name(value, tfp);
 		} else if (Str::eq_insensitive(key, I"footnotes plugin")) {
 			wp->footnotes_plugin = Patterns::plugin_name(value, tfp);
+		} else if (Str::eq_insensitive(key, I"block template")) {
+			ADD_TO_LINKED_LIST(Str::duplicate(value), text_stream, wp->blocked_templates);
 		} else if (Str::eq_insensitive(key, I"command")) {
 			ADD_TO_LINKED_LIST(Str::duplicate(value), text_stream, wp->post_commands);
 		} else if (Str::eq_insensitive(key, I"bibliographic data")) {
@@ -247,6 +251,10 @@ from each other then this routine will lock up into an infinite loop.
 =
 filename *Patterns::find_template(weave_pattern *pattern, text_stream *leafname) {
 	for (weave_pattern *wp = pattern; wp; wp = wp->based_on) {
+		text_stream *T;
+		LOOP_OVER_LINKED_LIST(T, text_stream, pattern->blocked_templates)
+			if (Str::eq_insensitive(T, leafname))
+				return NULL;
 		filename *F = Filenames::in(wp->pattern_location, leafname);
 		if (TextFiles::exists(F)) return F;
 	}

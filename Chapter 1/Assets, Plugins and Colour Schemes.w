@@ -304,10 +304,10 @@ void Assets::include_asset(OUTPUT_STREAM, asset_rule *R, web *W, filename *F,
 	Assets::transform(OUT, F, trans);
 
 @<Copy asset@> =
-	if (verbose_mode) PRINT("Copy asset %f\n", F);
 	pathname *H = W->redirect_weaves_to;
 	if (H == NULL) H = Reader::woven_folder(W);
 	if ((AP) && (R->method != PRIVATE_COPY_ASSET_METHOD)) H = AP;
+	if (verbose_mode) PRINT("Copy asset %f -> %p\n", F, H);
 	if (Str::len(trans) > 0) {
 		text_stream css_S;
 		filename *G = Filenames::in(H, Filenames::get_leafname(F));

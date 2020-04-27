@@ -140,31 +140,33 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	HTML::comment(OUT, C->banner);
 
 @<Render header@> =
-	weave_section_header_node *C =
-		RETRIEVE_POINTER_weave_section_header_node(N->content);
-	Swarm::ensure_plugin(hrs->wv, I"Breadcrumbs");
-	HTML_OPEN_WITH("ul", "class=\"crumbs\"");
-	Colonies::drop_initial_breadcrumbs(OUT,
-		hrs->wv->weave_to, hrs->wv->breadcrumbs);
-	text_stream *bct = Bibliographic::get_datum(hrs->wv->weave_web->md, I"Title");
-	if (Str::len(Bibliographic::get_datum(hrs->wv->weave_web->md, I"Short Title")) > 0)
-		bct = Bibliographic::get_datum(hrs->wv->weave_web->md, I"Short Title");
-	if (hrs->wv->self_contained == FALSE) {
-		Colonies::write_breadcrumb(OUT, bct, I"index.html");
-		if (hrs->wv->weave_web->md->chaptered) {
-			TEMPORARY_TEXT(chapter_link);
-			WRITE_TO(chapter_link, "index.html#%s%S",
-				(hrs->wv->weave_web->as_ebook)?"C":"",
-				C->sect->owning_chapter->md->ch_range);
-			Colonies::write_breadcrumb(OUT,
-				C->sect->owning_chapter->md->ch_title, chapter_link);
-			DISCARD_TEXT(chapter_link);
+	if (hrs->EPUB_flag == FALSE) {
+		weave_section_header_node *C =
+			RETRIEVE_POINTER_weave_section_header_node(N->content);
+		Swarm::ensure_plugin(hrs->wv, I"Breadcrumbs");
+		HTML_OPEN_WITH("ul", "class=\"crumbs\"");
+		Colonies::drop_initial_breadcrumbs(OUT,
+			hrs->wv->weave_to, hrs->wv->breadcrumbs);
+		text_stream *bct = Bibliographic::get_datum(hrs->wv->weave_web->md, I"Title");
+		if (Str::len(Bibliographic::get_datum(hrs->wv->weave_web->md, I"Short Title")) > 0)
+			bct = Bibliographic::get_datum(hrs->wv->weave_web->md, I"Short Title");
+		if (hrs->wv->self_contained == FALSE) {
+			Colonies::write_breadcrumb(OUT, bct, I"index.html");
+			if (hrs->wv->weave_web->md->chaptered) {
+				TEMPORARY_TEXT(chapter_link);
+				WRITE_TO(chapter_link, "index.html#%s%S",
+					(hrs->wv->weave_web->as_ebook)?"C":"",
+					C->sect->owning_chapter->md->ch_range);
+				Colonies::write_breadcrumb(OUT,
+					C->sect->owning_chapter->md->ch_title, chapter_link);
+				DISCARD_TEXT(chapter_link);
+			}
+			Colonies::write_breadcrumb(OUT, C->sect->md->sect_title, NULL);
+		} else {
+			Colonies::write_breadcrumb(OUT, bct, NULL);
 		}
-		Colonies::write_breadcrumb(OUT, C->sect->md->sect_title, NULL);
-	} else {
-		Colonies::write_breadcrumb(OUT, bct, NULL);
+		HTML_CLOSE("ul");
 	}
-	HTML_CLOSE("ul");
 
 @<Render footer@> =
 	weave_section_footer_node *C =
@@ -237,7 +239,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 
 @<Render endnote@> =
 	HTML_OPEN("li");
-	@<Recurse tne renderer through children nodes@>;
+	@<Recurse the renderer through children nodes@>;
 	HTML_CLOSE("li");
 	return FALSE;
 
@@ -247,11 +249,11 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 		Pathnames::down(hrs->wv->weave_web->md->path_to_web, I"Figures"),
 		C->figname);
 	filename *RF = Filenames::from_text(C->figname);
-	HTML_OPEN("center");
+	HTML_OPEN_WITH("p", "class=\"center-p\"");
 	HTML::image_to_dimensions(OUT, RF, C->w, C->h);
 	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
 		hrs->wv->pattern, hrs->wv->weave_to);
-	HTML_CLOSE("center");
+	HTML_CLOSE("p");
 	WRITE("\n");
 
 @<Render audio clip@> =
@@ -261,12 +263,12 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 		C->audio_name);
 	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
 		hrs->wv->pattern, hrs->wv->weave_to);
-	HTML_OPEN("center");
+	HTML_OPEN_WITH("p", "class=\"center-p\"");
 	WRITE("<audio controls>\n");
 	WRITE("<source src=\"%S\" type=\"audio/mpeg\">\n", C->audio_name);
 	WRITE("Your browser does not support the audio element.\n");
 	WRITE("</audio>\n");
-	HTML_CLOSE("center");
+	HTML_CLOSE("p");
 	WRITE("\n");
 
 @<Render material@> =
@@ -356,19 +358,19 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	else WRITE_TO(cl, "displayed-code");
 	WRITE("<pre class=\"%S all-displayed-code code-font\">\n", cl);
 	DISCARD_TEXT(cl);
-	@<Recurse tne renderer through children nodes@>;
+	@<Recurse the renderer through children nodes@>;
 	HTML_CLOSE("pre"); WRITE("\n");
 
 @<Deal with a footnotes material node@> =
 	@<If no para number yet, render a p just to hold this@>;
 	HTML_OPEN_WITH("ul", "class=\"footnotetexts\"");
-	@<Recurse tne renderer through children nodes@>;
+	@<Recurse the renderer through children nodes@>;
 	HTML_CLOSE("ul"); WRITE("\n");
 
 @<Deal with a endnotes material node@> =
 	@<If no para number yet, render a p just to hold this@>;
 	HTML_OPEN_WITH("ul", "class=\"endnotetexts\"");
-	@<Recurse tne renderer through children nodes@>;
+	@<Recurse the renderer through children nodes@>;
 	HTML_CLOSE("ul"); WRITE("\n");
 
 @<Deal with a macro material node@> =
@@ -378,13 +380,13 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	} else {
 		HTML_OPEN_WITH("p", "class=\"commentary\"");
 	}
-	@<Recurse tne renderer through children nodes@>;
+	@<Recurse the renderer through children nodes@>;
 	HTML_CLOSE("p"); WRITE("\n");
 
 @<Deal with a definition material node@> =
 	@<If no para number yet, render a p just to hold this@>;
 	HTML_OPEN_WITH("pre", "class=\"definitions code-font\"");
-	@<Recurse tne renderer through children nodes@>;
+	@<Recurse the renderer through children nodes@>;
 	HTML_CLOSE("pre"); WRITE("\n");
 
 @ This has to embed some Internet-sourced content. |service|
@@ -407,10 +409,10 @@ that service uses to identify the video/audio in question.
 		Bibliographic::set_datum(hrs->wv->weave_web->md, I"Content ID", C->ID);
 		Bibliographic::set_datum(hrs->wv->weave_web->md, I"Content Width", CW);
 		Bibliographic::set_datum(hrs->wv->weave_web->md, I"Content Height", CH);
-		HTML_OPEN("center");
+		HTML_OPEN_WITH("p", "class=\"center-p\"");
 		Collater::for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern,
 			F, hrs->into_file);
-		HTML_CLOSE("center");
+		HTML_CLOSE("p");
 		WRITE("\n");
 	}
 
@@ -431,13 +433,13 @@ that service uses to identify the video/audio in question.
 	HTML_OPEN_WITH("span", "class=\"named-paragraph-number\"");
 	HTMLFormat::escape_text(OUT, P->paragraph_number);
 	HTML_CLOSE("span");
+	if (C->defn == FALSE) HTML::end_link(OUT);
 	HTML_CLOSE("span");
 	if (C->defn) {
 		HTMLFormat::change_colour(OUT, COMMENT_COLOUR, hrs->colours);
 		WRITE(" =");
 		HTMLFormat::change_colour(OUT, -1, hrs->colours);
 	}
-	if (C->defn == FALSE) HTML::end_link(OUT);
 
 @<Render vskip@> =
 	WRITE("\n");
@@ -447,7 +449,7 @@ that service uses to identify the video/audio in question.
 	LOG("It was %d\n", C->allocation_id);
 
 @<Render code line@> =
-	@<Recurse tne renderer through children nodes@>;
+	@<Recurse the renderer through children nodes@>;
 	WRITE("\n");
 	return FALSE;
 
@@ -519,7 +521,7 @@ that service uses to identify the video/audio in question.
 			slide_count_class, hrs->slide_number, hrs->slide_of);
 	}
 	WRITE("<div class=\"carousel-content\">");
-	@<Recurse tne renderer through children nodes@>;
+	@<Recurse the renderer through children nodes@>;
 	WRITE("</div>\n");
 	if (C->caption_command != CAROUSEL_ABOVE_CMD) @<Place caption here@>;
 	WRITE("</div>\n");
@@ -616,20 +618,34 @@ that service uses to identify the video/audio in question.
 	text_stream *fn_plugin_name = hrs->wv->pattern->footnotes_plugin;
 	if (Str::len(fn_plugin_name) > 0)
 		Swarm::ensure_plugin(hrs->wv, fn_plugin_name);
-	WRITE("<sup id=\"fnref:%S\"><a href=\"#fn:%S\" rel=\"footnote\">%S</a></sup>",
-		C->cue_text, C->cue_text, C->cue_text);
+	if (hrs->EPUB_flag) {
+		if (N->parent->type != weave_begin_footnote_text_node_type)
+			WRITE("<a id=\"fnref%S\"></a>", C->cue_text);
+		WRITE("<sup><a href=\"#fn%S\" rel=\"footnote\">%S</a></sup>",
+			C->cue_text, C->cue_text);
+	} else
+		WRITE("<sup id=\"fnref:%S\"><a href=\"#fn:%S\" rel=\"footnote\">%S</a></sup>",
+			C->cue_text, C->cue_text, C->cue_text);
 
 @<Render footnote@> =
 	weave_begin_footnote_text_node *C =
 		RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
 	text_stream *fn_plugin_name = hrs->wv->pattern->footnotes_plugin;
-	if (Str::len(fn_plugin_name) > 0)
+	if ((Str::len(fn_plugin_name) > 0) && (hrs->EPUB_flag == FALSE))
 		Swarm::ensure_plugin(hrs->wv, fn_plugin_name);
-	WRITE("<li class=\"footnote\" id=\"fn:%S\"><p class=\"inwebfootnote\">",
-		C->cue_text);
-	@<Recurse tne renderer through children nodes@>;
-	WRITE("<a href=\"#fnref:%S\" title=\"return to text\"> &#x21A9;</a></p></li>",
-		C->cue_text);
+	if (hrs->EPUB_flag)
+		WRITE("<li class=\"footnote\" id=\"fn%S\"><p class=\"inwebfootnote\">",
+			C->cue_text);
+	else
+		WRITE("<li class=\"footnote\" id=\"fn:%S\"><p class=\"inwebfootnote\">",
+			C->cue_text);
+	@<Recurse the renderer through children nodes@>;
+	if (hrs->EPUB_flag)
+		WRITE("<a href=\"#fnref%S\"> (return to text)</a></p></li>",
+			C->cue_text);
+	else
+		WRITE("<a href=\"#fnref:%S\" title=\"return to text\"> &#x21A9;</a></p></li>",
+			C->cue_text);
 	return FALSE;
 
 @<Render display line@> =
@@ -644,7 +660,7 @@ that service uses to identify the video/audio in question.
 @<Render function defn@> =
 	weave_function_defn_node *C =
 		RETRIEVE_POINTER_weave_function_defn_node(N->content);
-	if (Functions::used_elsewhere(C->fn)) {
+	if ((Functions::used_elsewhere(C->fn)) && (hrs->EPUB_flag == FALSE)) {
 		Swarm::ensure_plugin(hrs->wv, I"Popups");
 		HTMLFormat::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
 		WRITE("%S", C->fn->function_name);
@@ -660,8 +676,8 @@ that service uses to identify the video/audio in question.
 		WRITE("%S", C->fn->function_name);
 		HTMLFormat::change_colour(OUT, -1, hrs->colours);
 		HTML_CLOSE("span");
-		WRITE(":<br>"); 
-		@<Recurse tne renderer through children nodes@>;
+		WRITE(":<br/>"); 
+		@<Recurse the renderer through children nodes@>;
 		HTMLFormat::change_colour(OUT, -1, hrs->colours);
 		WRITE("</button>");
 		hrs->popup_counter++;
@@ -683,7 +699,7 @@ that service uses to identify the video/audio in question.
 
 @<Render inline@> =
 	HTML_OPEN_WITH("span", "class=\"extract\"");
-	@<Recurse tne renderer through children nodes@>;
+	@<Recurse the renderer through children nodes@>;
 	HTML_CLOSE("span");
 	return FALSE;
 
@@ -702,7 +718,7 @@ that service uses to identify the video/audio in question.
 @<Render maths@> =
 	weave_maths_node *C = RETRIEVE_POINTER_weave_maths_node(N->content);
 	text_stream *plugin_name = hrs->wv->pattern->mathematics_plugin;
-	if (Str::len(plugin_name) == 0) {
+	if ((Str::len(plugin_name) == 0) || (hrs->EPUB_flag)) {
 		TEMPORARY_TEXT(R);
 		TeXUtilities::remove_math_mode(R, C->content);
 		HTMLFormat::escape_text(OUT, R);
@@ -715,12 +731,12 @@ that service uses to identify the video/audio in question.
 	}
 	
 @<Render linebreak@> =
-	WRITE("<br>");
+	WRITE("<br/>");
 
 @<Render nothing@> =
 	;
 
-@<Recurse tne renderer through children nodes@> =
+@<Recurse the renderer through children nodes@> =
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees::traverse_from(M, &HTMLFormat::render_visit, (void *) hrs, L+1);
 
