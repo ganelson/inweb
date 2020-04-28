@@ -39,6 +39,7 @@ int PlainText::render_visit(tree_node *N, void *state, int L) {
 		(N->type == weave_chapter_footer_node_type) ||
 		(N->type == weave_figure_node_type) ||
 		(N->type == weave_audio_node_type) ||
+		(N->type == weave_video_node_type) ||
 		(N->type == weave_material_node_type) ||
 		(N->type == weave_chapter_node_type) ||
 		(N->type == weave_carousel_slide_node_type) ||

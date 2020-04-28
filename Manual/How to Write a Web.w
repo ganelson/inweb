@@ -476,15 +476,6 @@ correspond. If you really want to monkey with the aspect ratio,
 	= (figure Whatever.jpg at 20 by 100)
 =
 
-@h Audio.
-To include audio samples, place them as MP3 files in the subdirectory |Audio|
-of the web. For example, in the present web,
-= (text as Inweb)
-	= (audio SP014.mp3)
-=
-produces Space Patrol episode 14, from 1953: "Brain Bank And Space Binoculars" --
-= (audio SP014.mp3)
-
 @h Carousels.
 A carousel is a slide-show of (usually but not always) figures; there's a
 set of slides with captions, only one of which is visible at a time.
@@ -545,9 +536,24 @@ it can also be |above| or |below|. A slide can also have no caption at all:
 	= (carousel end)
 =
 
-@h Embedded video.
-This makes sense only for some HTML-like weave formats, but we can also
-cause videos to be embedded:
+@h Video and audio.
+To include audio samples, place them as MP3 files in the subdirectory |Audio|
+of the web. For example, in the present web,
+= (text as Inweb)
+	= (audio SP014.mp3)
+=
+produces Space Patrol episode 14, from 1953: "Brain Bank And Space Binoculars" --
+= (audio SP014.mp3)
+Similarly,
+= (text as Inweb)
+	= (video DW014.mp4)
+=
+produces Doctor Who episode 14, from 1963: "The Roof of the World". Still, video
+takes up space, so for economy's sake a demonstration is omitted from this manual.
+
+@h Embedded video and audio.
+One way to get around such space limitations is to embed players for video or
+audio hosted on some external service. For example:
 = (text as Inweb)
 	= (embedded YouTube video GR3aImy7dWw)
 =
