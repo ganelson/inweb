@@ -1635,7 +1635,7 @@ typedef struct section {
 	int printed_number; /* temporary again: sometimes used in weaving */
 	MEMORY_MANAGEMENT
 } section;
-#line 248 "inweb/Chapter 3/The Analyser.w"
+#line 253 "inweb/Chapter 3/The Analyser.w"
 typedef struct hash_table {
 	struct linked_list *analysis_hash[HASH_TAB_SIZE]; /* of |hash_table_entry| */
 	int analysis_hash_initialised; /* when we start up, array's contents are undefined */
@@ -1738,7 +1738,7 @@ typedef struct macro_usage {
 	int multiplicity; /* for example, 2 if it's used twice in this paragraph */
 	MEMORY_MANAGEMENT
 } macro_usage;
-#line 256 "inweb/Chapter 3/The Analyser.w"
+#line 261 "inweb/Chapter 3/The Analyser.w"
 typedef struct hash_table_entry {
 	text_stream *hash_key;
 	int reserved_word; /* in the language currently being woven, that is */
@@ -1747,7 +1747,7 @@ typedef struct hash_table_entry {
 	struct language_function *as_function; /* for function names only */
 	MEMORY_MANAGEMENT
 } hash_table_entry;
-#line 354 "inweb/Chapter 3/The Analyser.w"
+#line 359 "inweb/Chapter 3/The Analyser.w"
 typedef struct hash_table_entry_usage {
 	struct paragraph *usage_recorded_at;
 	int form_of_usage; /* bitmap of the |*_USAGE| constants defined above */
@@ -3661,31 +3661,31 @@ void  Analyser__catalogue_the_sections(web *W, text_stream *range, int form) ;
 void  Analyser__analyse_code(web *W) ;
 #line 183 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__analyse_as_code(web *W, source_line *L, text_stream *text, int mask, int transf) ;
-#line 225 "inweb/Chapter 3/The Analyser.w"
+#line 230 "inweb/Chapter 3/The Analyser.w"
 int  Analyser__hash_code_from_word(text_stream *text) ;
-#line 271 "inweb/Chapter 3/The Analyser.w"
+#line 276 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry * Analyser__find_hash_entry(hash_table *HT, text_stream *text, int create) ;
-#line 296 "inweb/Chapter 3/The Analyser.w"
+#line 301 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry * Analyser__find_hash_entry_for_section(section *S, text_stream *text, 	int create) ;
-#line 304 "inweb/Chapter 3/The Analyser.w"
+#line 309 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry * Analyser__mark_reserved_word(hash_table *HT, text_stream *p, int e) ;
-#line 312 "inweb/Chapter 3/The Analyser.w"
+#line 317 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__mark_reserved_word_for_section(section *S, text_stream *p, int e) ;
-#line 316 "inweb/Chapter 3/The Analyser.w"
+#line 321 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry * Analyser__mark_reserved_word_at_line(source_line *L, text_stream *p, int e) ;
-#line 324 "inweb/Chapter 3/The Analyser.w"
+#line 329 "inweb/Chapter 3/The Analyser.w"
 int  Analyser__is_reserved_word(hash_table *HT, text_stream *p, int e) ;
-#line 330 "inweb/Chapter 3/The Analyser.w"
+#line 335 "inweb/Chapter 3/The Analyser.w"
 int  Analyser__is_reserved_word_for_section(section *S, text_stream *p, int e) ;
-#line 334 "inweb/Chapter 3/The Analyser.w"
+#line 339 "inweb/Chapter 3/The Analyser.w"
 source_line * Analyser__get_defn_line(section *S, text_stream *p, int e) ;
-#line 340 "inweb/Chapter 3/The Analyser.w"
+#line 345 "inweb/Chapter 3/The Analyser.w"
 language_function * Analyser__get_function(section *S, text_stream *p, int e) ;
-#line 363 "inweb/Chapter 3/The Analyser.w"
+#line 368 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__analyse_find(web *W, source_line *L, text_stream *identifier, int u) ;
-#line 385 "inweb/Chapter 3/The Analyser.w"
+#line 390 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__write_makefile(web *W, filename *F, module_search *I) ;
-#line 392 "inweb/Chapter 3/The Analyser.w"
+#line 397 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__write_gitignore(web *W, filename *F) ;
 #line 19 "inweb/Chapter 3/The Collater.w"
 void  Collater__for_web_and_pattern(text_stream *OUT, web *W, 	weave_pattern *pattern, filename *F, filename *into) ;
@@ -18168,31 +18168,60 @@ void Analyser__analyse_as_code(web *W, source_line *L, text_stream *text, int ma
 			((Str__get_at(text, i) == '-') && (Str__get_at(text, i+1) != '>'))) {
 			if (start_at == -1) start_at = i;
 		} else {
-			if (start_at != -1) {
-				int u = MISC_USAGE;
-				if (element_follows) u = ELEMENT_ACCESS_USAGE;
-				else if (Str__get_at(text, i) == '(') u = FCALL_USAGE;
-				else if ((Str__get_at(text, i) == '>') && (start_at > 0) && (Str__get_at(text, start_at-1) == '<'))
-					u = PREFORM_IN_CODE_USAGE;
-				if (u & mask) {
-					if (transf) u = transf;
-					TEMPORARY_TEXT(identifier_found);
-					for (int j = 0; start_at + j < i; j++)
-						PUT_TO(identifier_found, Str__get_at(text, start_at + j));
-					Analyser__analyse_find(W, L, identifier_found, u);
-					DISCARD_TEXT(identifier_found);
-				}
-				start_at = -1; element_follows = FALSE;
-			}
+			if (start_at != -1) 
+{
+#line 204 "inweb/Chapter 3/The Analyser.w"
+	int u = MISC_USAGE;
+	if (element_follows) u = ELEMENT_ACCESS_USAGE;
+	else if (Str__get_at(text, i) == '(') u = FCALL_USAGE;
+	else if ((Str__get_at(text, i) == '>') && (start_at > 0) && (Str__get_at(text, start_at-1) == '<'))
+		u = PREFORM_IN_CODE_USAGE;
+	if (u & mask) {
+		if (transf) u = transf;
+		TEMPORARY_TEXT(identifier_found);
+		for (int j = 0; start_at + j < i; j++)
+			PUT_TO(identifier_found, Str__get_at(text, start_at + j));
+		Analyser__analyse_find(W, L, identifier_found, u);
+		DISCARD_TEXT(identifier_found);
+	}
+	start_at = -1; element_follows = FALSE;
+
+}
+#line 190 "inweb/Chapter 3/The Analyser.w"
+;
 			if (Str__get_at(text, i) == '.') element_follows = TRUE;
 			else if ((Str__get_at(text, i) == '-') && (Str__get_at(text, i+1) == '>')) {
 				element_follows = TRUE; i++;
 			} else element_follows = FALSE;
 		}
 	}
+	if (start_at != -1) {
+		int i = Str__len(text);
+		
+{
+#line 204 "inweb/Chapter 3/The Analyser.w"
+	int u = MISC_USAGE;
+	if (element_follows) u = ELEMENT_ACCESS_USAGE;
+	else if (Str__get_at(text, i) == '(') u = FCALL_USAGE;
+	else if ((Str__get_at(text, i) == '>') && (start_at > 0) && (Str__get_at(text, start_at-1) == '<'))
+		u = PREFORM_IN_CODE_USAGE;
+	if (u & mask) {
+		if (transf) u = transf;
+		TEMPORARY_TEXT(identifier_found);
+		for (int j = 0; start_at + j < i; j++)
+			PUT_TO(identifier_found, Str__get_at(text, start_at + j));
+		Analyser__analyse_find(W, L, identifier_found, u);
+		DISCARD_TEXT(identifier_found);
+	}
+	start_at = -1; element_follows = FALSE;
+
+}
+#line 199 "inweb/Chapter 3/The Analyser.w"
+;
+	}
 }
 
-#line 225 "inweb/Chapter 3/The Analyser.w"
+#line 230 "inweb/Chapter 3/The Analyser.w"
 int Analyser__hash_code_from_word(text_stream *text) {
     unsigned int hash_code = 0;
     string_position p = Str__start(text);
@@ -18213,11 +18242,11 @@ int Analyser__hash_code_from_word(text_stream *text) {
     return (int) (1+(hash_code % (HASH_TAB_SIZE-1))); /* result of X 30011, plus 1 */
 }
 
-#line 252 "inweb/Chapter 3/The Analyser.w"
+#line 257 "inweb/Chapter 3/The Analyser.w"
 
-#line 264 "inweb/Chapter 3/The Analyser.w"
+#line 269 "inweb/Chapter 3/The Analyser.w"
 
-#line 271 "inweb/Chapter 3/The Analyser.w"
+#line 276 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry *Analyser__find_hash_entry(hash_table *HT, text_stream *text, int create) {
 	int h = Analyser__hash_code_from_word(text);
 	if (h == NUMBER_HASH) return NULL;
@@ -18248,7 +18277,7 @@ hash_table_entry *Analyser__find_hash_entry_for_section(section *S, text_stream 
 	return Analyser__find_hash_entry(&(S->sect_target->symbols), text, create);
 }
 
-#line 304 "inweb/Chapter 3/The Analyser.w"
+#line 309 "inweb/Chapter 3/The Analyser.w"
 hash_table_entry *Analyser__mark_reserved_word(hash_table *HT, text_stream *p, int e) {
 	hash_table_entry *hte = Analyser__find_hash_entry(HT, p, TRUE);
 	hte->reserved_word |= (1 << e);
@@ -18291,9 +18320,9 @@ language_function *Analyser__get_function(section *S, text_stream *p, int e) {
 	return NULL;
 }
 
-#line 359 "inweb/Chapter 3/The Analyser.w"
+#line 364 "inweb/Chapter 3/The Analyser.w"
 
-#line 363 "inweb/Chapter 3/The Analyser.w"
+#line 368 "inweb/Chapter 3/The Analyser.w"
 void Analyser__analyse_find(web *W, source_line *L, text_stream *identifier, int u) {
 	hash_table_entry *hte =
 		Analyser__find_hash_entry_for_section(L->owning_section, identifier, FALSE);
@@ -18311,7 +18340,7 @@ void Analyser__analyse_find(web *W, source_line *L, text_stream *identifier, int
 	hteu->form_of_usage |= u;
 }
 
-#line 385 "inweb/Chapter 3/The Analyser.w"
+#line 390 "inweb/Chapter 3/The Analyser.w"
 void Analyser__write_makefile(web *W, filename *F, module_search *I) {
 	filename *prototype = Filenames__in(W->md->path_to_web, TL_IS_215);
 	if (!(TextFiles__exists(prototype)))

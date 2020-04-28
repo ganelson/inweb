@@ -187,29 +187,34 @@ void Analyser::analyse_as_code(web *W, source_line *L, text_stream *text, int ma
 			((Str::get_at(text, i) == '-') && (Str::get_at(text, i+1) != '>'))) {
 			if (start_at == -1) start_at = i;
 		} else {
-			if (start_at != -1) {
-				int u = MISC_USAGE;
-				if (element_follows) u = ELEMENT_ACCESS_USAGE;
-				else if (Str::get_at(text, i) == '(') u = FCALL_USAGE;
-				else if ((Str::get_at(text, i) == '>') && (start_at > 0) && (Str::get_at(text, start_at-1) == '<'))
-					u = PREFORM_IN_CODE_USAGE;
-				if (u & mask) {
-					if (transf) u = transf;
-					TEMPORARY_TEXT(identifier_found);
-					for (int j = 0; start_at + j < i; j++)
-						PUT_TO(identifier_found, Str::get_at(text, start_at + j));
-					Analyser::analyse_find(W, L, identifier_found, u);
-					DISCARD_TEXT(identifier_found);
-				}
-				start_at = -1; element_follows = FALSE;
-			}
+			if (start_at != -1) @<Found an identifier@>;
 			if (Str::get_at(text, i) == '.') element_follows = TRUE;
 			else if ((Str::get_at(text, i) == '-') && (Str::get_at(text, i+1) == '>')) {
 				element_follows = TRUE; i++;
 			} else element_follows = FALSE;
 		}
 	}
+	if (start_at != -1) {
+		int i = Str::len(text);
+		@<Found an identifier@>;
+	}
 }
+
+@<Found an identifier@> =
+	int u = MISC_USAGE;
+	if (element_follows) u = ELEMENT_ACCESS_USAGE;
+	else if (Str::get_at(text, i) == '(') u = FCALL_USAGE;
+	else if ((Str::get_at(text, i) == '>') && (start_at > 0) && (Str::get_at(text, start_at-1) == '<'))
+		u = PREFORM_IN_CODE_USAGE;
+	if (u & mask) {
+		if (transf) u = transf;
+		TEMPORARY_TEXT(identifier_found);
+		for (int j = 0; start_at + j < i; j++)
+			PUT_TO(identifier_found, Str::get_at(text, start_at + j));
+		Analyser::analyse_find(W, L, identifier_found, u);
+		DISCARD_TEXT(identifier_found);
+	}
+	start_at = -1; element_follows = FALSE;
 
 @h The identifier hash table.
 We clearly need rapid access to a large symbols table, and we store this as
