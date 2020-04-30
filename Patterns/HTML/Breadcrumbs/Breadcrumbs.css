@@ -1,14 +1,22 @@
+div.breadcrumbs {
+	position: -webkit-sticky; /* Safari */
+	top: 0;
+	position: sticky;
+	background: #fff;
+	padding-bottom: 4px;
+}
+
 .crumbs {
 	border:1px solid #dedede;
-	height:3.45em;
+	height:2.95em;
 }
 
 .crumbs li {
 	float:left;
-	line-height:2.3em;
-	padding-left:.75em;
-	color:#333;
-	font-size: 1.5em;
+	line-height: 2.3em;
+	padding-left: .75em;
+	color: #333;
+	font-size: 1.3em;
 }
 
 .crumbs li a {

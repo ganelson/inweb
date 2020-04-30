@@ -145,6 +145,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 		weave_section_header_node *C =
 			RETRIEVE_POINTER_weave_section_header_node(N->content);
 		Swarm::ensure_plugin(hrs->wv, I"Breadcrumbs");
+		HTML_OPEN_WITH("div", "class=\"breadcrumbs\"");
 		HTML_OPEN_WITH("ul", "class=\"crumbs\"");
 		Colonies::drop_initial_breadcrumbs(OUT,
 			hrs->wv->weave_to, hrs->wv->breadcrumbs);
@@ -167,45 +168,112 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 			Colonies::write_breadcrumb(OUT, bct, NULL);
 		}
 		HTML_CLOSE("ul");
+		HTML_CLOSE("div");
 	}
 
 @<Render footer@> =
 	weave_section_footer_node *C =
 		RETRIEVE_POINTER_weave_section_footer_node(N->content);
-	chapter *Ch = C->sect->owning_chapter;
-	section *S, *last_S = NULL, *prev_S = NULL, *next_S = NULL;
-	LOOP_OVER_LINKED_LIST(S, section, Ch->sections) {
-		if (S == C->sect) prev_S = last_S;
-		if (last_S == C->sect) next_S = S;
-		last_S = S;
+	int count = 0;
+	chapter *Ch;
+	section *next_S = NULL, *prev_S = NULL, *last = NULL;
+	LOOP_OVER_LINKED_LIST(Ch, chapter, hrs->wv->weave_web->chapters) {
+		if (Ch->md->imported == FALSE) {
+			section *S;
+			LOOP_OVER_LINKED_LIST(S, section, Ch->sections) {
+				count ++;
+				if (S == C->sect) prev_S = last;
+				if (last == C->sect) next_S = S;
+				last = S;
+			}
+		}
 	}
-	if ((prev_S) || (next_S)) {
-		HTML::hr(OUT, "tocbar");
-		HTML_OPEN_WITH("ul", "class=\"toc\"");
-		HTML_OPEN("li");
-		if (prev_S == NULL) WRITE("<i>(This section begins %S.)</i>", Ch->md->ch_title);
-		else {
-			TEMPORARY_TEXT(TEMP);
-			Colonies::section_URL(TEMP, prev_S->md);
-			HTML::begin_link(OUT, TEMP);
-			WRITE("Back to '%S'", prev_S->md->sect_title);
-			HTML::end_link(OUT);
-			DISCARD_TEXT(TEMP);
+	if (count >= 2) {
+		HTML_OPEN_WITH("nav", "role=\"progress\"");
+		HTML_OPEN_WITH("div", "class=\"progresscontainer\"");
+		HTML_OPEN_WITH("ul", "class=\"progressbar\"");
+		@<Insert previous arrow@>;
+		chapter *Ch;
+		LOOP_OVER_LINKED_LIST(Ch, chapter, hrs->wv->weave_web->chapters) {
+			if (Ch->md->imported == FALSE) {
+				if (Str::ne(Ch->md->ch_range, I"S")) {
+					if (Ch == C->sect->owning_chapter) {
+						HTML_OPEN_WITH("li", "class=\"progresscurrentchapter\"");
+					} else {
+						HTML_OPEN_WITH("li", "class=\"progresschapter\"");
+					}
+					TEMPORARY_TEXT(TEMP);
+					section *S = FIRST_IN_LINKED_LIST(section, Ch->sections);
+					Colonies::section_URL(TEMP, S->md);
+					if (Ch != C->sect->owning_chapter) {
+						HTML::begin_link(OUT, TEMP);
+					}
+					WRITE("%S", Ch->md->ch_range);
+					if (Ch != C->sect->owning_chapter) {
+						HTML::end_link(OUT);
+					}
+					DISCARD_TEXT(TEMP);
+					HTML_CLOSE("li");
+				}
+				if (Ch == C->sect->owning_chapter) {
+					section *S;
+					LOOP_OVER_LINKED_LIST(S, section, Ch->sections) {
+						TEMPORARY_TEXT(label);
+						int on = FALSE;
+						LOOP_THROUGH_TEXT(pos, S->md->sect_range) {
+							if (Str::get(pos) == '/') on = TRUE;
+							else if (on) PUT_TO(label, Str::get(pos));
+						}
+						if (Str::eq(Bibliographic::get_datum(hrs->wv->weave_web->md,
+							I"Sequential Section Ranges"), I"On"))
+							Str::delete_first_character(label);
+						if (S == C->sect) {
+							HTML_OPEN_WITH("li", "class=\"progresscurrent\"");
+							WRITE("%S", label);
+							HTML_CLOSE("li");
+						} else {
+							HTML_OPEN_WITH("li", "class=\"progresssection\"");
+							TEMPORARY_TEXT(TEMP);
+							Colonies::section_URL(TEMP, S->md);
+							HTML::begin_link(OUT, TEMP);
+							WRITE("%S", label);
+							HTML::end_link(OUT);
+							DISCARD_TEXT(TEMP);
+							HTML_CLOSE("li");		
+						}
+						DISCARD_TEXT(label);
+					}
+				}
+			}
 		}
-		HTML_CLOSE("li");
-		HTML_OPEN("li");
-		if (next_S == NULL) WRITE("<i>(This section ends %S.)</i>", Ch->md->ch_title);
-		else {
-			TEMPORARY_TEXT(TEMP);
-			Colonies::section_URL(TEMP, next_S->md);
-			HTML::begin_link(OUT, TEMP);
-			WRITE("Continue with '%S'", next_S->md->sect_title);
-			HTML::end_link(OUT);
-			DISCARD_TEXT(TEMP);
-		}
-		HTML_CLOSE("li");
+		@<Insert next arrow@>;
 		HTML_CLOSE("ul");
-		HTML::hr(OUT, "tocbar");
+		HTML_CLOSE("div");
+		HTML_CLOSE("nav");
+	}
+
+@<Insert previous arrow@> =
+	if (prev_S) {
+		HTML_OPEN_WITH("li", "class=\"progressprev\"");
+		TEMPORARY_TEXT(TEMP);
+		Colonies::section_URL(TEMP, prev_S->md);
+		HTML::begin_link(OUT, TEMP);
+		WRITE("&#10094;");
+		HTML::end_link(OUT);
+		DISCARD_TEXT(TEMP);
+		HTML_CLOSE("li");
+	}
+
+@<Insert next arrow@> =
+	if (next_S) {
+		HTML_OPEN_WITH("li", "class=\"progressnext\"");
+		TEMPORARY_TEXT(TEMP);
+		Colonies::section_URL(TEMP, next_S->md);
+		HTML::begin_link(OUT, TEMP);
+		WRITE("&#10095;");
+		HTML::end_link(OUT);
+		DISCARD_TEXT(TEMP);
+		HTML_CLOSE("li");
 	}
 
 @<Render tail@> =
