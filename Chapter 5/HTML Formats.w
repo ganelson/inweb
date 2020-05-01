@@ -253,28 +253,26 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	}
 
 @<Insert previous arrow@> =
-	if (prev_S) {
-		HTML_OPEN_WITH("li", "class=\"progressprev\"");
-		TEMPORARY_TEXT(TEMP);
-		Colonies::section_URL(TEMP, prev_S->md);
-		HTML::begin_link(OUT, TEMP);
-		WRITE("&#10094;");
-		HTML::end_link(OUT);
-		DISCARD_TEXT(TEMP);
-		HTML_CLOSE("li");
-	}
+	if (prev_S) HTML_OPEN_WITH("li", "class=\"progressprev\"")
+	else HTML_OPEN_WITH("li", "class=\"progressprevoff\"");
+	TEMPORARY_TEXT(TEMP);
+	if (prev_S) Colonies::section_URL(TEMP, prev_S->md);
+	if (prev_S) HTML::begin_link(OUT, TEMP);
+	WRITE("&#10094;");
+	if (prev_S) HTML::end_link(OUT);
+	DISCARD_TEXT(TEMP);
+	HTML_CLOSE("li");
 
 @<Insert next arrow@> =
-	if (next_S) {
-		HTML_OPEN_WITH("li", "class=\"progressnext\"");
-		TEMPORARY_TEXT(TEMP);
-		Colonies::section_URL(TEMP, next_S->md);
-		HTML::begin_link(OUT, TEMP);
-		WRITE("&#10095;");
-		HTML::end_link(OUT);
-		DISCARD_TEXT(TEMP);
-		HTML_CLOSE("li");
-	}
+	if (next_S) HTML_OPEN_WITH("li", "class=\"progressnext\"")
+	else HTML_OPEN_WITH("li", "class=\"progressnextoff\"");
+	TEMPORARY_TEXT(TEMP);
+	if (next_S) Colonies::section_URL(TEMP, next_S->md);
+	if (next_S) HTML::begin_link(OUT, TEMP);
+	WRITE("&#10095;");
+	if (next_S) HTML::end_link(OUT);
+	DISCARD_TEXT(TEMP);
+	HTML_CLOSE("li");
 
 @<Render tail@> =
 	weave_tail_node *C = RETRIEVE_POINTER_weave_tail_node(N->content);
