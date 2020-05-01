@@ -3735,13 +3735,15 @@ void  TextWeaver__commentary_text(heterogeneous_tree *tree, tree_node *ap, text_
 void  TextWeaver__comment_text_in_code(heterogeneous_tree *tree, tree_node *ap, text_stream *matter) ;
 #line 19 "inweb/Chapter 3/The Weaver of Text.w"
 void  TextWeaver__commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stream *matter, 	int within, int in_code) ;
-#line 182 "inweb/Chapter 3/The Weaver of Text.w"
+#line 200 "inweb/Chapter 3/The Weaver of Text.w"
+int  TextWeaver__boundary_character(int before, wchar_t c) ;
+#line 210 "inweb/Chapter 3/The Weaver of Text.w"
 void  TextWeaver__commentary_fragment(heterogeneous_tree *tree, tree_node *ap, 	text_stream *fragment, int in_code) ;
-#line 188 "inweb/Chapter 3/The Weaver of Text.w"
+#line 216 "inweb/Chapter 3/The Weaver of Text.w"
 void  TextWeaver__inline_code_fragment(heterogeneous_tree *tree, tree_node *ap, text_stream *fragment) ;
-#line 201 "inweb/Chapter 3/The Weaver of Text.w"
+#line 229 "inweb/Chapter 3/The Weaver of Text.w"
 void  TextWeaver__source_code(heterogeneous_tree *tree, tree_node *ap, 	text_stream *matter, text_stream *colouring, int linked) ;
-#line 305 "inweb/Chapter 3/The Weaver of Text.w"
+#line 334 "inweb/Chapter 3/The Weaver of Text.w"
 void  TextWeaver__source_code_piece(heterogeneous_tree *tree, tree_node *ap, 	text_stream *matter, text_stream *colouring, int from, int to) ;
 #line 14 "inweb/Chapter 3/The Tangler.w"
 void  Tangler__tangle(web *W, tangle_target *target, filename *dest_file) ;
@@ -4240,18 +4242,18 @@ pathname * Colonies__assets_path(void) ;
 #line 284 "inweb/Chapter 6/Colonies.w"
 pathname * Colonies__patterns_path(void) ;
 #line 310 "inweb/Chapter 6/Colonies.w"
-int  Colonies__resolve_reference_in_weave(text_stream *url, text_stream *title, 	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L) ;
-#line 325 "inweb/Chapter 6/Colonies.w"
-int  Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *title, 	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L) ;
-#line 440 "inweb/Chapter 6/Colonies.w"
+int  Colonies__resolve_reference_in_weave(text_stream *url, text_stream *title, 	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L, int *ext) ;
+#line 327 "inweb/Chapter 6/Colonies.w"
+int  Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *title, 	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L, int *ext) ;
+#line 454 "inweb/Chapter 6/Colonies.w"
 void  Colonies__link_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) ;
-#line 449 "inweb/Chapter 6/Colonies.w"
+#line 463 "inweb/Chapter 6/Colonies.w"
 void  Colonies__reference_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) ;
-#line 460 "inweb/Chapter 6/Colonies.w"
+#line 474 "inweb/Chapter 6/Colonies.w"
 void  Colonies__section_URL(OUTPUT_STREAM, section_md *Sm) ;
-#line 470 "inweb/Chapter 6/Colonies.w"
+#line 484 "inweb/Chapter 6/Colonies.w"
 void  Colonies__paragraph_URL(OUTPUT_STREAM, paragraph *P, filename *from) ;
-#line 491 "inweb/Chapter 6/Colonies.w"
+#line 505 "inweb/Chapter 6/Colonies.w"
 void  Colonies__paragraph_anchor(OUTPUT_STREAM, paragraph *P) ;
 void register_tangled_nonterminals(void);
 text_stream *TL_IS_0 = NULL;
@@ -20058,7 +20060,7 @@ void TextWeaver__commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 		(in_code)?(TL_IS_257):(TL_IS_258));
 	if (Str__ne(code_in_comments_notation, TL_IS_259)) 
 {
-#line 52 "inweb/Chapter 3/The Weaver of Text.w"
+#line 51 "inweb/Chapter 3/The Weaver of Text.w"
 	for (int i=0; i < Str__len(matter); i++) {
 		if (Str__get_at(matter, i) == '\\') i += Str__len(code_in_comments_notation) - 1;
 		else if (Str__includes_at(matter, i, code_in_comments_notation)) {
@@ -20079,9 +20081,140 @@ void TextWeaver__commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 #line 26 "inweb/Chapter 3/The Weaver of Text.w"
 ;
 
-	if (within == FALSE) 
+	int display_flag = TRUE;
+	text_stream *tex_notation = Bibliographic__get_datum(wv->weave_web->md,
+		TL_IS_260);
+	if (Str__ne(tex_notation, TL_IS_261)) 
 {
-#line 69 "inweb/Chapter 3/The Weaver of Text.w"
+#line 99 "inweb/Chapter 3/The Weaver of Text.w"
+	int N = Str__len(tex_notation);
+	for (int i=0; i < Str__len(matter); i++) {
+		if ((within == FALSE) && (Str__includes_at(matter, i, tex_notation))) {
+			int j = i + N;
+			while (j < Str__len(matter)) {
+				if (Str__includes_at(matter, j, tex_notation)) {
+					int allow = FALSE;
+					TEMPORARY_TEXT(before);
+					TEMPORARY_TEXT(maths);
+					TEMPORARY_TEXT(after);
+					Str__substr(before, Str__start(matter), Str__at(matter, i));
+					Str__substr(maths, Str__at(matter, i + N), Str__at(matter, j));
+					Str__substr(after, Str__at(matter, j + N), Str__end(matter));
+					TextWeaver__commentary_r(tree, ap, before, within, in_code);
+					Trees__make_child(WeaveTree__mathematics(tree, maths, display_flag), ap);
+					TextWeaver__commentary_r(tree, ap, after, within, in_code);
+					allow = TRUE;
+					DISCARD_TEXT(before);
+					DISCARD_TEXT(maths);
+					DISCARD_TEXT(after);
+					if (allow) return;
+				}
+				j++;
+			}
+		}
+	}
+
+}
+#line 31 "inweb/Chapter 3/The Weaver of Text.w"
+;
+	display_flag = FALSE;
+	tex_notation = Bibliographic__get_datum(wv->weave_web->md,
+		TL_IS_262);
+	if (Str__ne(tex_notation, TL_IS_263)) 
+{
+#line 99 "inweb/Chapter 3/The Weaver of Text.w"
+	int N = Str__len(tex_notation);
+	for (int i=0; i < Str__len(matter); i++) {
+		if ((within == FALSE) && (Str__includes_at(matter, i, tex_notation))) {
+			int j = i + N;
+			while (j < Str__len(matter)) {
+				if (Str__includes_at(matter, j, tex_notation)) {
+					int allow = FALSE;
+					TEMPORARY_TEXT(before);
+					TEMPORARY_TEXT(maths);
+					TEMPORARY_TEXT(after);
+					Str__substr(before, Str__start(matter), Str__at(matter, i));
+					Str__substr(maths, Str__at(matter, i + N), Str__at(matter, j));
+					Str__substr(after, Str__at(matter, j + N), Str__end(matter));
+					TextWeaver__commentary_r(tree, ap, before, within, in_code);
+					Trees__make_child(WeaveTree__mathematics(tree, maths, display_flag), ap);
+					TextWeaver__commentary_r(tree, ap, after, within, in_code);
+					allow = TRUE;
+					DISCARD_TEXT(before);
+					DISCARD_TEXT(maths);
+					DISCARD_TEXT(after);
+					if (allow) return;
+				}
+				j++;
+			}
+		}
+	}
+
+}
+#line 35 "inweb/Chapter 3/The Weaver of Text.w"
+;
+
+	text_stream *xref_notation = Bibliographic__get_datum(wv->weave_web->md,
+		TL_IS_264);
+	if (Str__ne(xref_notation, TL_IS_265)) 
+{
+#line 150 "inweb/Chapter 3/The Weaver of Text.w"
+	int N = Str__len(xref_notation);
+	for (int i=0; i < Str__len(matter); i++) {
+		if ((within == FALSE) && (Str__includes_at(matter, i, xref_notation)) &&
+			((i == 0) || (TextWeaver__boundary_character(TRUE,
+				Str__get_at(matter, i-1))))) {
+			int j = i + N+1;
+			while (j < Str__len(matter)) {
+				if ((Str__includes_at(matter, j, xref_notation)) &&
+					(TextWeaver__boundary_character(FALSE,
+						Str__get_at(matter, j+Str__len(xref_notation))))) {
+					int allow = FALSE;
+					TEMPORARY_TEXT(before);
+					TEMPORARY_TEXT(reference);
+					TEMPORARY_TEXT(after);
+					Str__substr(before, Str__start(matter), Str__at(matter, i));
+					Str__substr(reference, Str__at(matter, i + N), Str__at(matter, j));
+					Str__substr(after, Str__at(matter, j + N), Str__end(matter));
+					
+{
+#line 179 "inweb/Chapter 3/The Weaver of Text.w"
+	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(title);
+	int ext = FALSE;
+	if (Colonies__resolve_reference_in_weave(url, title, wv->weave_to, reference,
+		wv->weave_web->md, wv->current_weave_line, &ext)) {
+		TextWeaver__commentary_r(tree, ap, before, within, in_code);
+		Trees__make_child(WeaveTree__url(tree, url, title, ext), ap);
+		TextWeaver__commentary_r(tree, ap, after, within, in_code);
+		allow = TRUE;
+	}
+	DISCARD_TEXT(url);
+	DISCARD_TEXT(title);
+
+}
+#line 167 "inweb/Chapter 3/The Weaver of Text.w"
+;
+					DISCARD_TEXT(before);
+					DISCARD_TEXT(reference);
+					DISCARD_TEXT(after);
+					if (allow) return;
+				}
+				j++;
+			}
+		}
+	}
+
+}
+#line 39 "inweb/Chapter 3/The Weaver of Text.w"
+;
+
+	if (within) {
+		TextWeaver__inline_code_fragment(tree, ap, matter);
+	} else {
+		
+{
+#line 68 "inweb/Chapter 3/The Weaver of Text.w"
 	for (int i=0; i < Str__len(matter); i++) {
 		if ((Str__includes_at(matter, i, TL_IS_266)) ||
 				(Str__includes_at(matter, i, TL_IS_267))) {
@@ -20091,6 +20224,15 @@ void TextWeaver__commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 			Str__substr(after, Str__at(matter, i), Str__end(matter));
 			match_results mr = Regexp__create_mr();
 			if (Regexp__match(&mr, after, L"(https*://%C+)(%c*)")) {
+				while (TextWeaver__boundary_character(FALSE, Str__get_last_char(mr.exp[0]))) {
+					wchar_t c = Str__get_last_char(mr.exp[0]);
+					Str__delete_last_character(mr.exp[0]);
+					TEMPORARY_TEXT(longer);
+					WRITE_TO(longer, "%c%S", c, mr.exp[1]);
+					Str__clear(mr.exp[1]);
+					Str__copy(mr.exp[1], longer);
+					DISCARD_TEXT(longer);
+				}
 				TextWeaver__commentary_r(tree, ap, before, within, in_code);
 				Trees__make_child(WeaveTree__url(tree, mr.exp[0], mr.exp[0], TRUE), ap);
 				TextWeaver__commentary_r(tree, ap, mr.exp[1], within, in_code);
@@ -20104,138 +20246,11 @@ void TextWeaver__commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 	}
 
 }
-#line 28 "inweb/Chapter 3/The Weaver of Text.w"
+#line 44 "inweb/Chapter 3/The Weaver of Text.w"
 ;
-
-	int display_flag = TRUE;
-	text_stream *tex_notation = Bibliographic__get_datum(wv->weave_web->md,
-		TL_IS_260);
-	if (Str__ne(tex_notation, TL_IS_261)) 
-{
-#line 91 "inweb/Chapter 3/The Weaver of Text.w"
-	int N = Str__len(tex_notation);
-	for (int i=0; i < Str__len(matter); i++) {
-		if ((within == FALSE) && (Str__includes_at(matter, i, tex_notation))) {
-			int j = i + N;
-			while (j < Str__len(matter)) {
-				if (Str__includes_at(matter, j, tex_notation)) {
-					int allow = FALSE;
-					TEMPORARY_TEXT(before);
-					TEMPORARY_TEXT(maths);
-					TEMPORARY_TEXT(after);
-					Str__substr(before, Str__start(matter), Str__at(matter, i));
-					Str__substr(maths, Str__at(matter, i + N), Str__at(matter, j));
-					Str__substr(after, Str__at(matter, j + N), Str__end(matter));
-					TextWeaver__commentary_r(tree, ap, before, within, in_code);
-					Trees__make_child(WeaveTree__mathematics(tree, maths, display_flag), ap);
-					TextWeaver__commentary_r(tree, ap, after, within, in_code);
-					allow = TRUE;
-					DISCARD_TEXT(before);
-					DISCARD_TEXT(maths);
-					DISCARD_TEXT(after);
-					if (allow) return;
-				}
-				j++;
-			}
-		}
-	}
-
-}
-#line 33 "inweb/Chapter 3/The Weaver of Text.w"
-;
-	display_flag = FALSE;
-	tex_notation = Bibliographic__get_datum(wv->weave_web->md,
-		TL_IS_262);
-	if (Str__ne(tex_notation, TL_IS_263)) 
-{
-#line 91 "inweb/Chapter 3/The Weaver of Text.w"
-	int N = Str__len(tex_notation);
-	for (int i=0; i < Str__len(matter); i++) {
-		if ((within == FALSE) && (Str__includes_at(matter, i, tex_notation))) {
-			int j = i + N;
-			while (j < Str__len(matter)) {
-				if (Str__includes_at(matter, j, tex_notation)) {
-					int allow = FALSE;
-					TEMPORARY_TEXT(before);
-					TEMPORARY_TEXT(maths);
-					TEMPORARY_TEXT(after);
-					Str__substr(before, Str__start(matter), Str__at(matter, i));
-					Str__substr(maths, Str__at(matter, i + N), Str__at(matter, j));
-					Str__substr(after, Str__at(matter, j + N), Str__end(matter));
-					TextWeaver__commentary_r(tree, ap, before, within, in_code);
-					Trees__make_child(WeaveTree__mathematics(tree, maths, display_flag), ap);
-					TextWeaver__commentary_r(tree, ap, after, within, in_code);
-					allow = TRUE;
-					DISCARD_TEXT(before);
-					DISCARD_TEXT(maths);
-					DISCARD_TEXT(after);
-					if (allow) return;
-				}
-				j++;
-			}
-		}
-	}
-
-}
-#line 37 "inweb/Chapter 3/The Weaver of Text.w"
-;
-
-	text_stream *xref_notation = Bibliographic__get_datum(wv->weave_web->md,
-		TL_IS_264);
-	if (Str__ne(xref_notation, TL_IS_265)) 
-{
-#line 142 "inweb/Chapter 3/The Weaver of Text.w"
-	int N = Str__len(xref_notation);
-	for (int i=0; i < Str__len(matter); i++) {
-		if ((within == FALSE) && (Str__includes_at(matter, i, xref_notation))) {
-			int j = i + N+1;
-			while (j < Str__len(matter)) {
-				if (Str__includes_at(matter, j, xref_notation)) {
-					int allow = FALSE;
-					TEMPORARY_TEXT(before);
-					TEMPORARY_TEXT(reference);
-					TEMPORARY_TEXT(after);
-					Str__substr(before, Str__start(matter), Str__at(matter, i));
-					Str__substr(reference, Str__at(matter, i + N), Str__at(matter, j));
-					Str__substr(after, Str__at(matter, j + N), Str__end(matter));
-					
-{
-#line 167 "inweb/Chapter 3/The Weaver of Text.w"
-	TEMPORARY_TEXT(url);
-	TEMPORARY_TEXT(title);
-	if (Colonies__resolve_reference_in_weave(url, title, wv->weave_to, reference,
-		wv->weave_web->md, wv->current_weave_line)) {
-		TextWeaver__commentary_r(tree, ap, before, within, in_code);
-		Trees__make_child(WeaveTree__url(tree, url, title, FALSE), ap);
-		TextWeaver__commentary_r(tree, ap, after, within, in_code);
-		allow = TRUE;
-	}
-	DISCARD_TEXT(url);
-	DISCARD_TEXT(title);
-
-}
-#line 155 "inweb/Chapter 3/The Weaver of Text.w"
-;
-					DISCARD_TEXT(before);
-					DISCARD_TEXT(reference);
-					DISCARD_TEXT(after);
-					if (allow) return;
-				}
-				j++;
-			}
-		}
-	}
-
-}
-#line 41 "inweb/Chapter 3/The Weaver of Text.w"
-;
-
-	if (within) {
-		TextWeaver__inline_code_fragment(tree, ap, matter);
-	} else {
 		
 {
-#line 119 "inweb/Chapter 3/The Weaver of Text.w"
+#line 127 "inweb/Chapter 3/The Weaver of Text.w"
 	TEMPORARY_TEXT(before);
 	TEMPORARY_TEXT(cue);
 	TEMPORARY_TEXT(after);
@@ -20259,13 +20274,23 @@ void TextWeaver__commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 	if (allow) return;
 
 }
-#line 46 "inweb/Chapter 3/The Weaver of Text.w"
+#line 45 "inweb/Chapter 3/The Weaver of Text.w"
 ;
 		TextWeaver__commentary_fragment(tree, ap, matter, in_code);
 	}
 }
 
-#line 182 "inweb/Chapter 3/The Weaver of Text.w"
+#line 200 "inweb/Chapter 3/The Weaver of Text.w"
+int TextWeaver__boundary_character(int before, wchar_t c) {
+	if (c == 0) return TRUE;
+	if (Characters__is_whitespace(c)) return TRUE;
+	if ((c == '.') || (c == ',') || (c == '!') || (c == '?') || (c == ';') ||
+		(c == '(')|| (c == ')')) return TRUE;
+	if ((before == FALSE) && (c == ':')) return TRUE;
+	return FALSE;
+}
+
+#line 210 "inweb/Chapter 3/The Weaver of Text.w"
 void TextWeaver__commentary_fragment(heterogeneous_tree *tree, tree_node *ap,
 	text_stream *fragment, int in_code) {
 	if (Str__len(fragment) > 0)
@@ -20282,7 +20307,7 @@ void TextWeaver__inline_code_fragment(heterogeneous_tree *tree, tree_node *ap, t
 	Trees__make_child(SC, I);
 }
 
-#line 201 "inweb/Chapter 3/The Weaver of Text.w"
+#line 229 "inweb/Chapter 3/The Weaver of Text.w"
 void TextWeaver__source_code(heterogeneous_tree *tree, tree_node *ap,
 	text_stream *matter, text_stream *colouring, int linked) {
 	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
@@ -20293,7 +20318,7 @@ void TextWeaver__source_code(heterogeneous_tree *tree, tree_node *ap,
 		if (linked) {
 			
 {
-#line 233 "inweb/Chapter 3/The Weaver of Text.w"
+#line 261 "inweb/Chapter 3/The Weaver of Text.w"
 	if ((Str__includes_at(matter, i, TL_IS_271)) ||
 		(Str__includes_at(matter, i, TL_IS_272))) {
 		TEMPORARY_TEXT(after);
@@ -20310,14 +20335,14 @@ void TextWeaver__source_code(heterogeneous_tree *tree, tree_node *ap,
 	}
 
 }
-#line 209 "inweb/Chapter 3/The Weaver of Text.w"
+#line 237 "inweb/Chapter 3/The Weaver of Text.w"
 ;
 			text_stream *xref_notation = Bibliographic__get_datum(wv->weave_web->md,
 				TL_IS_269);
 			if (Str__ne(xref_notation, TL_IS_270))
 				
 {
-#line 249 "inweb/Chapter 3/The Weaver of Text.w"
+#line 277 "inweb/Chapter 3/The Weaver of Text.w"
 	int N = Str__len(xref_notation);
 	if ((Str__includes_at(matter, i, xref_notation))) {
 		int j = i + N+1;
@@ -20327,12 +20352,13 @@ void TextWeaver__source_code(heterogeneous_tree *tree, tree_node *ap,
 				Str__substr(reference, Str__at(matter, i + N), Str__at(matter, j));
 				
 {
-#line 265 "inweb/Chapter 3/The Weaver of Text.w"
+#line 293 "inweb/Chapter 3/The Weaver of Text.w"
 	TEMPORARY_TEXT(url);
 	TEMPORARY_TEXT(title);
+	int ext = FALSE;
 	if (Colonies__resolve_reference_in_weave(url, title, wv->weave_to, reference,
-		wv->weave_web->md, wv->current_weave_line)) {
-		tree_node *U = WeaveTree__url(tree, url, title, FALSE);
+		wv->weave_web->md, wv->current_weave_line, &ext)) {
+		tree_node *U = WeaveTree__url(tree, url, title, ext);
 		TextWeaver__source_code_piece(tree, ap, matter, colouring, from, i);
 		Trees__make_child(U, ap);
 		i = j + N;
@@ -20342,7 +20368,7 @@ void TextWeaver__source_code(heterogeneous_tree *tree, tree_node *ap,
 	DISCARD_TEXT(title);
 
 }
-#line 256 "inweb/Chapter 3/The Weaver of Text.w"
+#line 284 "inweb/Chapter 3/The Weaver of Text.w"
 ;
 				DISCARD_TEXT(reference);
 				break;
@@ -20352,7 +20378,7 @@ void TextWeaver__source_code(heterogeneous_tree *tree, tree_node *ap,
 	}
 
 }
-#line 213 "inweb/Chapter 3/The Weaver of Text.w"
+#line 241 "inweb/Chapter 3/The Weaver of Text.w"
 ;
 		}
 		if ((Str__get_at(colouring, i) == FUNCTION_COLOUR) &&
@@ -20365,7 +20391,7 @@ void TextWeaver__source_code(heterogeneous_tree *tree, tree_node *ap,
 				wv->current_weave_line->owning_section, fname, FUNCTION_COLOUR))
 				
 {
-#line 279 "inweb/Chapter 3/The Weaver of Text.w"
+#line 308 "inweb/Chapter 3/The Weaver of Text.w"
 	language_function *fn = Analyser__get_function(
 		wv->current_weave_line->owning_section, fname, FUNCTION_COLOUR);
 	if (fn) {
@@ -20392,7 +20418,7 @@ void TextWeaver__source_code(heterogeneous_tree *tree, tree_node *ap,
 	}
 
 }
-#line 223 "inweb/Chapter 3/The Weaver of Text.w"
+#line 251 "inweb/Chapter 3/The Weaver of Text.w"
 ;
 			DISCARD_TEXT(fname);
 		}
@@ -20402,7 +20428,7 @@ void TextWeaver__source_code(heterogeneous_tree *tree, tree_node *ap,
 		TextWeaver__source_code_piece(tree, ap, matter, colouring, from, Str__len(matter));
 }
 
-#line 305 "inweb/Chapter 3/The Weaver of Text.w"
+#line 334 "inweb/Chapter 3/The Weaver of Text.w"
 void TextWeaver__source_code_piece(heterogeneous_tree *tree, tree_node *ap,
 	text_stream *matter, text_stream *colouring, int from, int to) {
 	if (to > from) {
@@ -28712,22 +28738,24 @@ pathname *Colonies__patterns_path(void) {
 
 #line 310 "inweb/Chapter 6/Colonies.w"
 int Colonies__resolve_reference_in_weave(text_stream *url, text_stream *title,
-	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L) {
+	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L, int *ext) {
 	int r = 0;
+	if (ext) *ext = FALSE;
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, text, L"(%c+?) -> (%c+)")) {
 		r = Colonies__resolve_reference_in_weave_inner(url, NULL,
-			for_HTML_file, mr.exp[1], Wm, L);
+			for_HTML_file, mr.exp[1], Wm, L, ext);
 		WRITE_TO(title, "%S", mr.exp[0]);
 	} else {
 		r = Colonies__resolve_reference_in_weave_inner(url, title,
-			for_HTML_file, text, Wm, L);
+			for_HTML_file, text, Wm, L, ext);
 	}
 	Regexp__dispose_of(&mr);
 	return r;
 }
+
 int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *title,
-	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L) {
+	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L, int *ext) {
 	module *from_M = (Wm)?(Wm->as_module):NULL;
 	module *search_M = from_M;
 	colony_member *search_CM = NULL;
@@ -28735,7 +28763,23 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 
 	
 {
-#line 362 "inweb/Chapter 6/Colonies.w"
+#line 365 "inweb/Chapter 6/Colonies.w"
+	match_results mr = Regexp__create_mr();
+	if (Regexp__match(&mr, text, L"https*://%c*")) {
+		WRITE_TO(url, "%S", text);
+		WRITE_TO(title, "%S", text);
+		Regexp__dispose_of(&mr);
+		if (ext) *ext = TRUE;
+		return TRUE;
+	}
+	Regexp__dispose_of(&mr);
+
+}
+#line 334 "inweb/Chapter 6/Colonies.w"
+;
+	
+{
+#line 376 "inweb/Chapter 6/Colonies.w"
 	search_CM = Colonies__find(text);
 	if (search_CM) {
 		module *found_M = Colonies__as_module(search_CM, L, Wm);
@@ -28744,11 +28788,11 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 		WRITE_TO(title, "%S", search_CM->name);
 		
 {
-#line 409 "inweb/Chapter 6/Colonies.w"
+#line 423 "inweb/Chapter 6/Colonies.w"
 	if (found_M == NULL) internal_error("could not locate M");
 	if (search_CM) 
 {
-#line 415 "inweb/Chapter 6/Colonies.w"
+#line 429 "inweb/Chapter 6/Colonies.w"
 	pathname *from = Filenames__up(for_HTML_file);
 	pathname *to = search_CM->weave_path;
 	Pathnames__relative_URL(url, from, to);
@@ -28758,11 +28802,11 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 		WRITE_TO(title, " (in %S)", search_CM->name);
 
 }
-#line 410 "inweb/Chapter 6/Colonies.w"
+#line 424 "inweb/Chapter 6/Colonies.w"
 
 	else 
 {
-#line 428 "inweb/Chapter 6/Colonies.w"
+#line 442 "inweb/Chapter 6/Colonies.w"
 	if (found_M == from_M) {
 		Colonies__section_URL(url, found_Sm);
 	} else {
@@ -28773,21 +28817,21 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	}
 
 }
-#line 411 "inweb/Chapter 6/Colonies.w"
+#line 425 "inweb/Chapter 6/Colonies.w"
 ;
 	return TRUE;
 
 }
-#line 368 "inweb/Chapter 6/Colonies.w"
+#line 382 "inweb/Chapter 6/Colonies.w"
 ;
 	}
 
 }
-#line 332 "inweb/Chapter 6/Colonies.w"
+#line 335 "inweb/Chapter 6/Colonies.w"
 ;
 	
 {
-#line 372 "inweb/Chapter 6/Colonies.w"
+#line 386 "inweb/Chapter 6/Colonies.w"
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, text, L"(%c*?): (%c*)")) {
 		search_CM = Colonies__find(mr.exp[0]);
@@ -28803,7 +28847,7 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	Regexp__dispose_of(&mr);
 
 }
-#line 333 "inweb/Chapter 6/Colonies.w"
+#line 336 "inweb/Chapter 6/Colonies.w"
 ;
 
 	module *found_M = NULL;
@@ -28815,7 +28859,7 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 		if ((L) && (external == FALSE)) {
 			
 {
-#line 387 "inweb/Chapter 6/Colonies.w"
+#line 401 "inweb/Chapter 6/Colonies.w"
 	language_function *fn;
 	LOOP_OVER(fn, language_function) {
 		if (Str__eq_insensitive(fn->function_name, text)) {
@@ -28827,11 +28871,11 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	}
 
 }
-#line 342 "inweb/Chapter 6/Colonies.w"
+#line 345 "inweb/Chapter 6/Colonies.w"
 ;
 			
 {
-#line 398 "inweb/Chapter 6/Colonies.w"
+#line 412 "inweb/Chapter 6/Colonies.w"
 	language_type *str;
 	LOOP_OVER(str, language_type) {
 		if (Str__eq_insensitive(str->structure_name, text)) {
@@ -28843,7 +28887,7 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	}
 
 }
-#line 343 "inweb/Chapter 6/Colonies.w"
+#line 346 "inweb/Chapter 6/Colonies.w"
 ;
 		}
 		TEMPORARY_TEXT(err);
@@ -28859,11 +28903,11 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	} else {
 		
 {
-#line 409 "inweb/Chapter 6/Colonies.w"
+#line 423 "inweb/Chapter 6/Colonies.w"
 	if (found_M == NULL) internal_error("could not locate M");
 	if (search_CM) 
 {
-#line 415 "inweb/Chapter 6/Colonies.w"
+#line 429 "inweb/Chapter 6/Colonies.w"
 	pathname *from = Filenames__up(for_HTML_file);
 	pathname *to = search_CM->weave_path;
 	Pathnames__relative_URL(url, from, to);
@@ -28873,11 +28917,11 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 		WRITE_TO(title, " (in %S)", search_CM->name);
 
 }
-#line 410 "inweb/Chapter 6/Colonies.w"
+#line 424 "inweb/Chapter 6/Colonies.w"
 
 	else 
 {
-#line 428 "inweb/Chapter 6/Colonies.w"
+#line 442 "inweb/Chapter 6/Colonies.w"
 	if (found_M == from_M) {
 		Colonies__section_URL(url, found_Sm);
 	} else {
@@ -28888,18 +28932,18 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	}
 
 }
-#line 411 "inweb/Chapter 6/Colonies.w"
+#line 425 "inweb/Chapter 6/Colonies.w"
 ;
 	return TRUE;
 
 }
-#line 356 "inweb/Chapter 6/Colonies.w"
+#line 359 "inweb/Chapter 6/Colonies.w"
 ;
 		return TRUE;
 	}
 }
 
-#line 440 "inweb/Chapter 6/Colonies.w"
+#line 454 "inweb/Chapter 6/Colonies.w"
 void Colonies__link_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, link_text, L" *//(%c+)// *"))
@@ -28912,7 +28956,7 @@ void Colonies__link_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
 void Colonies__reference_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
 	TEMPORARY_TEXT(title);
 	TEMPORARY_TEXT(url);
-	if (Colonies__resolve_reference_in_weave(url, title, F, link_text, NULL, NULL))
+	if (Colonies__resolve_reference_in_weave(url, title, F, link_text, NULL, NULL, NULL))
 		WRITE("%S", url);
 	else
 		PRINT("Warning: unable to resolve reference '%S' in navigation\n", link_text);

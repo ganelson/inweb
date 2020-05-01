@@ -365,25 +365,27 @@ For example,
 URLs in the web are automatically recognised and a weave to HTML will
 make them into links. For example:
 = (text)
-	For further reading, see: https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships
+	For further reading, see: https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships.
 =
-For further reading, see: https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships
+For further reading, see: https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships.
 
-Note that URLs are considered to continue to the next white space, so don't
-end them with full stops or commas.
+Note that URLs are considered to continue to the next white space, except
+that any final full stops, question or exclamation marks, commas, brackets,
+semicolons, or colons are disregarded. (This is why the above sentence ended
+with a full stop and yet the full stop wasn't part of the reference URL.)
 
 URLs will also be recognised in any text extract marked as |hyperlinked|.
 For example,
 = (text)
-	Compare: https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes
+	Compare: https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes!
 =
 produces:
 = (hyperlinked text)
-	Compare: https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes
+	Compare: https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes!
 =
 
 @h Cross-references.
-These are like links, but internal. These are normally written within |//|
+These are like links, but are internal. These are normally written within |//|
 signs and are only available in the commentary of a web. They allow us to
 place cross-references like so:
 = (text)
@@ -413,6 +415,12 @@ This is simple: for example,
 =
 produces: "First //the program has to configure itself -> Configuration//,
 then..."; the text "the program has to configure itself" links to //Configuration//.
+This is especially useful if the destination is given as an explicit URL, which
+is also allowed:
+= (text)
+	See //this biographical note -> http://mathshistory.st-andrews.ac.uk/Biographies/Gauss.html//.
+=
+See //this biographical note -> http://mathshistory.st-andrews.ac.uk/Biographies/Gauss.html//.
 
 @ It's also possible to reference function names and type names, provided that
 the language definition supports these (see //Supporting Programming Languages//):
@@ -440,7 +448,11 @@ produces:
 	See the //Manual// for more on this.
 =
 
-This notation may be inconvenient if you need |//| for something else, but it
+@ Cross-references must begin after white space, or a punctuation mark (other
+than a colon), and must end to be followed by more white space or another
+punctuation mark (this time allowing a colon). In practice, that reduces
+the risk of misunderstanding a |//| occurring in the commentary for some
+other reason. All the same, you might want a different notation, so this
 can be configured in the Contents page of a web, say like so:
 = (text as Inweb)
 Cross-References Notation: &&&

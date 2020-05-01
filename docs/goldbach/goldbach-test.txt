@@ -42,7 +42,7 @@ document weave order 0
               commentary <kept up with a duffer. Goldbach was also not, as is sometimes said, a lawyer.\n>
               commentary <See: >
               url content <http://mathshistory.st-andrews.ac.uk/Biographies/Goldbach.html> url <http://mathshistory.st-andrews.ac.uk/Biographies/Goldbach.html>
-              commentary <\n>
+              commentary <.\n>
               commentary <An edited transcription of the letter is at: >
               url content <http://eulerarchive.maa.org//correspondence/letters/OO0765.pdf> url <http://eulerarchive.maa.org//correspondence/letters/OO0765.pdf>
               commentary <\n>

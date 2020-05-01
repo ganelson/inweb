@@ -308,27 +308,30 @@ is where the reference is made from.
 
 =
 int Colonies::resolve_reference_in_weave(text_stream *url, text_stream *title,
-	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L) {
+	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L, int *ext) {
 	int r = 0;
+	if (ext) *ext = FALSE;
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, text, L"(%c+?) -> (%c+)")) {
 		r = Colonies::resolve_reference_in_weave_inner(url, NULL,
-			for_HTML_file, mr.exp[1], Wm, L);
+			for_HTML_file, mr.exp[1], Wm, L, ext);
 		WRITE_TO(title, "%S", mr.exp[0]);
 	} else {
 		r = Colonies::resolve_reference_in_weave_inner(url, title,
-			for_HTML_file, text, Wm, L);
+			for_HTML_file, text, Wm, L, ext);
 	}
 	Regexp::dispose_of(&mr);
 	return r;
 }
+
 int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *title,
-	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L) {
+	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L, int *ext) {
 	module *from_M = (Wm)?(Wm->as_module):NULL;
 	module *search_M = from_M;
 	colony_member *search_CM = NULL;
 	int external = FALSE;
 	
+	@<Is it an explicit URL?@>;
 	@<Is it the name of a member of our colony?@>;
 	@<If it contains a colon, does this indicate a section in a colony member?@>;
 
@@ -357,6 +360,17 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 		return TRUE;
 	}
 }
+
+@<Is it an explicit URL?@> =
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, text, L"https*://%c*")) {
+		WRITE_TO(url, "%S", text);
+		WRITE_TO(title, "%S", text);
+		Regexp::dispose_of(&mr);
+		if (ext) *ext = TRUE;
+		return TRUE;
+	}
+	Regexp::dispose_of(&mr);
 
 @<Is it the name of a member of our colony?@> =	
 	search_CM = Colonies::find(text);
@@ -449,7 +463,7 @@ void Colonies::link_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
 void Colonies::reference_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
 	TEMPORARY_TEXT(title);
 	TEMPORARY_TEXT(url);
-	if (Colonies::resolve_reference_in_weave(url, title, F, link_text, NULL, NULL))
+	if (Colonies::resolve_reference_in_weave(url, title, F, link_text, NULL, NULL, NULL))
 		WRITE("%S", url);
 	else
 		PRINT("Warning: unable to resolve reference '%S' in navigation\n", link_text);

@@ -24,7 +24,7 @@ said as late as the early twentieth century.
 of the great age of Enlightenment letter-writing. He and Euler exchanged
 scholarly letters for over thirty years, not something Euler would have
 kept up with a duffer. Goldbach was also not, as is sometimes said, a lawyer.
-See: http://mathshistory.st-andrews.ac.uk/Biographies/Goldbach.html
+See: http://mathshistory.st-andrews.ac.uk/Biographies/Goldbach.html.
 An edited transcription of the letter is at: http://eulerarchive.maa.org//correspondence/letters/OO0765.pdf
 
 @ Computer verification has been made up to around $10^{18}$, but by rather
