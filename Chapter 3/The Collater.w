@@ -89,7 +89,19 @@ collater_state Collater::initial_state(web *W, text_stream *range,
 	if (W) {
 		module *M;
 		LOOP_OVER_LINKED_LIST(M, module, W->md->as_module->dependencies) {
-			ADD_TO_LINKED_LIST(M, module, cls.modules);
+			text_stream *owner = Collater::module_owner(M, W);
+			if (Str::len(owner) == 0)
+				ADD_TO_LINKED_LIST(M, module, cls.modules);
+		}
+		LOOP_OVER_LINKED_LIST(M, module, W->md->as_module->dependencies) {
+			text_stream *owner = Collater::module_owner(M, W);
+			if ((Str::len(owner) > 0) && (Str::ne_insensitive(owner, I"inweb")))
+				ADD_TO_LINKED_LIST(M, module, cls.modules);
+		}
+		LOOP_OVER_LINKED_LIST(M, module, W->md->as_module->dependencies) {
+			text_stream *owner = Collater::module_owner(M, W);
+			if ((Str::len(owner) > 0) && (Str::eq_insensitive(owner, I"inweb")))
+				ADD_TO_LINKED_LIST(M, module, cls.modules);
 		}
 	}
 	@<Read in the source file containing the contents page template@>;
@@ -573,7 +585,9 @@ this will recursively call The Collater, in fact.
 
 @<Substitute a detail about the currently selected Module@> =
 	if (Str::eq_wide_string(detail, L"Title")) {
-		Str::copy(substituted, M->module_name);
+		text_stream *owner = Collater::module_owner(M, cls->for_web);
+		if (Str::len(owner) > 0) WRITE_TO(substituted, "%S/", owner);
+		WRITE_TO(substituted, "%S", M->module_name);
 	} else if (Str::eq_wide_string(detail, L"Page")) {
 		if (Colonies::find(M->module_name))
 			Colonies::reference_URL(substituted, M->module_name, cls->into_file);
@@ -723,3 +737,17 @@ navigation purposes.
 		WRITE_TO(substituted, "%S\" height=18> ", icon_text);
 	}
 	WRITE_TO(substituted, "%S", item_name);
+
+@ This is a utility for finding the owner of a module, returning |NULL| (the
+empty text) if it appears to belong to the current web |W|.
+
+=
+text_stream *Collater::module_owner(module *M, web *W) {
+	text_stream *owner =
+		Pathnames::directory_name(Pathnames::up(M->module_location));
+	text_stream *me = NULL;
+	if ((W) && (W->md->path_to_web))
+		me = Pathnames::directory_name(W->md->path_to_web);
+	if (Str::ne_insensitive(me, owner)) return owner;
+	return NULL;
+}

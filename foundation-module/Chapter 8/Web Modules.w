@@ -107,7 +107,8 @@ module *WebModules::find(web_md *WS, module_search *ms, text_stream *name, pathn
 and a dependency created from the web's |(main)| module to this one.
 
 @<Accept this directory as the module@> =
-	module *M = WebModules::new(name, P, READING_WEB_MOM);
+	pathname *Q = Pathnames::from_text(name);
+	module *M = WebModules::new(Pathnames::directory_name(Q), P, READING_WEB_MOM);
 	WebModules::dependency(WS->as_module, M);
 	return M;
 

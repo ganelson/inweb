@@ -436,7 +436,7 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 
 @ In the absence of a colony file, Inweb can really only guess, and the
 guess it makes is that modules of the current web will be woven alongside
-the main one, and suffixed by |-module|.
+the main one.
 
 @<The section is not in a known colony member@> =
 	if (found_M == from_M) {
