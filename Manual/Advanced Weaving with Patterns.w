@@ -348,11 +348,10 @@ sometimes useful case to know is |[[Capitalized Title]]|, which is the title
 in BLOCK CAPITAL LETTERS.
 
 @ Other placeholders, not used in the example above, include:
-(a) |[[Template X]]| expands to an insertion of the template file |X|.
-(b) |[[Navigation]]| expands to the navigation sidebar in use when weaving
+(a) |[[Navigation]]| expands to the navigation sidebar in use when weaving
 a colony of webs -- see //Making Weaves into Websites// for more, and for
 syntaxes to do with links and URLs.
-(c) |[[Breadcrumbs]]| expands to the HTML for the breadcrumb trail.
+(b) |[[Breadcrumbs]]| expands to the HTML for the breadcrumb trail.
 
 @ The |template-index.html| file has access to additional placeholders
 enabling it to generate contents pages:
@@ -383,9 +382,19 @@ is rather raw and literate programming is not being used to the full.
 
 @ |[[Repeat Chapter]]| and |[[Repeat Section]]| begin blocks of lines which
 are repeated for each chapter or section: the material to be repeated
-continues to the matching |[[End Repeat]| line. The ``current chapter or
-section'' mentioned above is the one selected in the current innermost
+continues to the matching |[[End Repeat]| line. The "current chapter or
+section" mentioned above is the one selected in the current innermost
 loop of that description.
+
+|[[Repeat Module]]|, similarly, begins a repeat through the imported
+modules of the current web. (The main module, containing the actual material
+of the current web, does not count.) Within such a loop,
+= (text as Inweb)
+	[[Module Title]]  [[Module Purpose]]  [[Module Page]]
+=
+can all be used to refer to the current module. |[[Module Page]]| expands
+to the relative URL of the module's own woven HTML form, provided that
+the module is listed as a member of the current colony file.
 
 |[[Select ...]]| and |[[End Select]| form a block which behaves like
 a repetition, but happens just once, for the named chapter or section.
@@ -409,3 +418,22 @@ weaves a report somewhat like this:
 	    Section Vocabulary, 3/vocab, 338 lines.
 	    Section Built-In Words, 3/words, 1207 lines.
 =
+
+@ Finally, there is very limited support for conditionals with
+|[[If CONDITION]]|, an optional |Else|, and a compulsory |Endif|.
+Very few conditions are in fact allowed:
+
+|[[If Chapters]]| tests whether the current web is divided into chapters,
+the alternative being that all the sections are in a notional chapter just
+called |Sections|.
+
+|[[If Modules]]| tests whether the current web imports any modules.
+
+|[[If Chapter Purpose]]|, inside a |[[Repeat Chapter]]|, tests whether the
+current chapter has a (non-empty) purpose text. Similarly for |[[If Section Purpose]]|
+and |[[If Module Purpose]].
+
+|[[If Module Page]]|, inside a |[[Repeat Module]]|, tests whether the module
+appears (under its own name, i.e., not by a different name) as a member in
+the colony file, if there is one. In effect, this can be used to test whether
+it is safe to make a link to the module's own woven pages using |[[Module Page]]|.

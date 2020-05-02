@@ -458,11 +458,10 @@ in BLOCK CAPITAL LETTERS.
 <p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>Other placeholders, not used in the example above, include:
 </p>
 
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">[[Template X]]</span></span> expands to an insertion of the template file <span class="extract"><span class="extract-syntax">X</span></span>.
-</li><li>(b) <span class="extract"><span class="extract-syntax">[[Navigation]]</span></span> expands to the navigation sidebar in use when weaving
+<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">[[Navigation]]</span></span> expands to the navigation sidebar in use when weaving
 a colony of webs &mdash; see <a href="M-mwiw.html" class="internal">Making Weaves into Websites</a> for more, and for
 syntaxes to do with links and URLs.
-</li><li>(c) <span class="extract"><span class="extract-syntax">[[Breadcrumbs]]</span></span> expands to the HTML for the breadcrumb trail.
+</li><li>(b) <span class="extract"><span class="extract-syntax">[[Breadcrumbs]]</span></span> expands to the HTML for the breadcrumb trail.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>The <span class="extract"><span class="extract-syntax">template-index.html</span></span> file has access to additional placeholders
 enabling it to generate contents pages:
@@ -496,9 +495,22 @@ is rather raw and literate programming is not being used to the full.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19.  </b><span class="extract"><span class="extract-syntax">[[Repeat Chapter]]</span></span> and <span class="extract"><span class="extract-syntax">[[Repeat Section]]</span></span> begin blocks of lines which
 are repeated for each chapter or section: the material to be repeated
-continues to the matching <span class="extract"><span class="extract-syntax">[[End Repeat]</span></span> line. The ``current chapter or
-section'' mentioned above is the one selected in the current innermost
+continues to the matching <span class="extract"><span class="extract-syntax">[[End Repeat]</span></span> line. The "current chapter or
+section" mentioned above is the one selected in the current innermost
 loop of that description.
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">[[Repeat Module]]</span></span>, similarly, begins a repeat through the imported
+modules of the current web. (The main module, containing the actual material
+of the current web, does not count.) Within such a loop,
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="function-syntax">[[Module Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Module Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Module Page]]</span>
+</pre>
+<p class="commentary">can all be used to refer to the current module. <span class="extract"><span class="extract-syntax">[[Module Page]]</span></span> expands
+to the relative URL of the module's own woven HTML form, provided that
+the module is listed as a member of the current colony file.
 </p>
 
 <p class="commentary"><span class="extract"><span class="extract-syntax">[[Select ...]]</span></span> and <span class="extract"><span class="extract-syntax">[[End Select]</span></span> form a block which behaves like
@@ -528,6 +540,30 @@ a repetition, but happens just once, for the named chapter or section.
 <span class="plain-syntax">        Section Vocabulary, 3/vocab, 338 lines.</span>
 <span class="plain-syntax">        Section Built-In Words, 3/words, 1207 lines.</span>
 </pre>
+<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20.  </b>Finally, there is very limited support for conditionals with
+<span class="extract"><span class="extract-syntax">[[If CONDITION]]</span></span>, an optional <span class="extract"><span class="extract-syntax">Else</span></span>, and a compulsory <span class="extract"><span class="extract-syntax">Endif</span></span>.
+Very few conditions are in fact allowed:
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">[[If Chapters]]</span></span> tests whether the current web is divided into chapters,
+the alternative being that all the sections are in a notional chapter just
+called <span class="extract"><span class="extract-syntax">Sections</span></span>.
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">[[If Modules]]</span></span> tests whether the current web imports any modules.
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">[[If Chapter Purpose]]</span></span>, inside a <span class="extract"><span class="extract-syntax">[[Repeat Chapter]]</span></span>, tests whether the
+current chapter has a (non-empty) purpose text. Similarly for <span class="extract"><span class="extract-syntax">[[If Section Purpose]]</span></span>
+and <span class="extract"><span class="extract-syntax">[[If Module Purpose]].
+</span></span></p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">[[If Module Page]]</span></span>, inside a <span class="extract"><span class="extract-syntax">[[Repeat Module]]</span></span>, tests whether the module
+appears (under its own name, i.e., not by a different name) as a member in
+the colony file, if there is one. In effect, this can be used to test whether
+it is safe to make a link to the module's own woven pages using <span class="extract"><span class="extract-syntax">[[Module Page]]</span></span>.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-mwiw.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-iti.html">iti</a></li><li class="progresssection"><a href="M-wtaw.html">wtaw</a></li><li class="progresssection"><a href="M-htwaw.html">htwaw</a></li><li class="progresssection"><a href="M-mwiw.html">mwiw</a></li><li class="progresscurrent">awwp</li><li class="progresssection"><a href="M-spl.html">spl</a></li><li class="progresssection"><a href="M-tid.html">tid</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-tr.html">2</a></li><li class="progresschapter"><a href="3-ta.html">3</a></li><li class="progresschapter"><a href="4-pl.html">4</a></li><li class="progresschapter"><a href="5-wt.html">5</a></li><li class="progresschapter"><a href="6-mkf.html">6</a></li><li class="progressnext"><a href="M-spl.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

@@ -53,7 +53,7 @@ typedef struct collater_state {
 	struct linked_list_item *repeat_stack_variable[CI_STACK_CAPACITY];
 	struct linked_list_item *repeat_stack_threshold[CI_STACK_CAPACITY];
 	int repeat_stack_startpos[CI_STACK_CAPACITY];
-	int stack_pointer; /* And this is our stack pointer for tracking of loops */
+	int sp; /* And this is our stack pointer for tracking of loops */
 	struct text_stream *restrict_to_range;
 	struct weave_pattern *nav_pattern;
 	struct filename *nav_file;
@@ -76,7 +76,7 @@ collater_state Collater::initial_state(web *W, text_stream *range,
 	collater_state cls;
 	cls.no_tlines = 0;
 	cls.restrict_to_range = Str::duplicate(range);
-	cls.stack_pointer = 0;
+	cls.sp = 0;
 	cls.inside_navigation_submenu = FALSE;
 	cls.for_web = W;
 	cls.nav_pattern = pattern;
@@ -155,7 +155,7 @@ This is used only for debugging:
 
 @<Print line and contents of repeat stack@> =
 	PRINT("%04d: %S\nStack:", lpos-1, tl);
-	for (int j=0; j<cls->stack_pointer; j++) {
+	for (int j=0; j<cls->sp; j++) {
 		if (cls->repeat_stack_level[j] == CHAPTER_LEVEL)
 			PRINT(" %d: %S/%S",
 				j, ((chapter *)
@@ -210,6 +210,23 @@ chapter as its value during the sole iteration.
 		} else if (Str::eq(condition, I"Modules")) {
 			if (LinkedLists::len(cls->modules) > 0)
 				level = IF_TRUE_LEVEL;
+		} else if (Str::eq(condition, I"Module Page")) {
+			module *M = CONTENT_IN_ITEM(
+				Collater::heading_topmost_on_stack(cls, MODULE_LEVEL), module);
+			if ((M) && (Colonies::find(M->module_name)))
+				level = IF_TRUE_LEVEL;
+		} else if (Str::eq(condition, I"Module Purpose")) {
+			module *M = CONTENT_IN_ITEM(
+				Collater::heading_topmost_on_stack(cls, MODULE_LEVEL), module);
+			if (M) {
+				TEMPORARY_TEXT(url);
+				TEMPORARY_TEXT(purpose);
+				WRITE_TO(url, "%p", M->module_location);
+				Readme::write_var(purpose, url, I"Purpose");
+				if (Str::len(purpose) > 0) level = IF_TRUE_LEVEL;
+				DISCARD_TEXT(url);		
+				DISCARD_TEXT(purpose);		
+			}
 		} else if (Str::eq(condition, I"Chapter Purpose")) {
 			chapter *C = CONTENT_IN_ITEM(
 				Collater::heading_topmost_on_stack(cls, CHAPTER_LEVEL), chapter);
@@ -229,19 +246,19 @@ chapter as its value during the sole iteration.
 
 @<Deal with an Else command@> =
 	if (Regexp::match(&mr, command, L"Else")) {
-		if (cls->stack_pointer <= 0) {
+		if (cls->sp <= 0) {
 			Errors::at_position("Else without If",
 				cls->errors_at, lpos);
 			goto CYCLE;
 		}
-		switch (cls->repeat_stack_level[cls->stack_pointer-1]) {
+		switch (cls->repeat_stack_level[cls->sp-1]) {
 			case SECTION_LEVEL:
 			case CHAPTER_LEVEL:
 				Errors::at_position("Else not matched with If",
 					cls->errors_at, lpos);
 				break;
-			case IF_TRUE_LEVEL: cls->repeat_stack_level[cls->stack_pointer-1] = IF_FALSE_LEVEL; break;
-			case IF_FALSE_LEVEL: cls->repeat_stack_level[cls->stack_pointer-1] = IF_TRUE_LEVEL; break;
+			case IF_TRUE_LEVEL: cls->repeat_stack_level[cls->sp-1] = IF_FALSE_LEVEL; break;
+			case IF_FALSE_LEVEL: cls->repeat_stack_level[cls->sp-1] = IF_TRUE_LEVEL; break;
 		}
 		Regexp::dispose_of(&mr);
 		goto CYCLE;
@@ -306,12 +323,12 @@ chapter as its value during the sole iteration.
 	if (Regexp::match(&mr, command, L"End Select")) end_form = 2;
 	if (Regexp::match(&mr, command, L"End If")) end_form = 3;
 	if (end_form > 0) {
-		if (cls->stack_pointer <= 0) {
+		if (cls->sp <= 0) {
 			Errors::at_position("stack underflow on contents template",
 				cls->errors_at, lpos);
 			goto CYCLE;
 		}
-		switch (cls->repeat_stack_level[cls->stack_pointer-1]) {
+		switch (cls->repeat_stack_level[cls->sp-1]) {
 			case MODULE_LEVEL:
 			case CHAPTER_LEVEL:
 			case SECTION_LEVEL:
@@ -330,7 +347,7 @@ chapter as its value during the sole iteration.
 				}
 				break;
 		}
-		switch (cls->repeat_stack_level[cls->stack_pointer-1]) {
+		switch (cls->repeat_stack_level[cls->sp-1]) {
 			case MODULE_LEVEL: @<End a module repeat@>; break;
 			case CHAPTER_LEVEL: @<End a chapter repeat@>; break;
 			case SECTION_LEVEL: @<End a section repeat@>; break;
@@ -341,34 +358,34 @@ chapter as its value during the sole iteration.
 	}
 
 @<End a module repeat@> =
-	linked_list_item *CI = cls->repeat_stack_variable[cls->stack_pointer-1];
-	if (CI == cls->repeat_stack_threshold[cls->stack_pointer-1])
+	linked_list_item *CI = cls->repeat_stack_variable[cls->sp-1];
+	if (CI == cls->repeat_stack_threshold[cls->sp-1])
 		Collater::end_CI_loop(cls);
 	else {
-		cls->repeat_stack_variable[cls->stack_pointer-1] =
+		cls->repeat_stack_variable[cls->sp-1] =
 			NEXT_ITEM_IN_LINKED_LIST(CI, chapter);
-		lpos = cls->repeat_stack_startpos[cls->stack_pointer-1]; /* Back round loop */
+		lpos = cls->repeat_stack_startpos[cls->sp-1]; /* Back round loop */
 	}
 
 @<End a chapter repeat@> =
-	linked_list_item *CI = cls->repeat_stack_variable[cls->stack_pointer-1];
-	if (CI == cls->repeat_stack_threshold[cls->stack_pointer-1])
+	linked_list_item *CI = cls->repeat_stack_variable[cls->sp-1];
+	if (CI == cls->repeat_stack_threshold[cls->sp-1])
 		Collater::end_CI_loop(cls);
 	else {
-		cls->repeat_stack_variable[cls->stack_pointer-1] =
+		cls->repeat_stack_variable[cls->sp-1] =
 			NEXT_ITEM_IN_LINKED_LIST(CI, chapter);
-		lpos = cls->repeat_stack_startpos[cls->stack_pointer-1]; /* Back round loop */
+		lpos = cls->repeat_stack_startpos[cls->sp-1]; /* Back round loop */
 	}
 
 @<End a section repeat@> =
-	linked_list_item *SI = cls->repeat_stack_variable[cls->stack_pointer-1];
-	if ((SI == cls->repeat_stack_threshold[cls->stack_pointer-1]) ||
+	linked_list_item *SI = cls->repeat_stack_variable[cls->sp-1];
+	if ((SI == cls->repeat_stack_threshold[cls->sp-1]) ||
 		(NEXT_ITEM_IN_LINKED_LIST(SI, section) == NULL))
 		Collater::end_CI_loop(cls);
 	else {
-		cls->repeat_stack_variable[cls->stack_pointer-1] =
+		cls->repeat_stack_variable[cls->sp-1] =
 			NEXT_ITEM_IN_LINKED_LIST(SI, section);
-		lpos = cls->repeat_stack_startpos[cls->stack_pointer-1]; /* Back round loop */
+		lpos = cls->repeat_stack_startpos[cls->sp-1]; /* Back round loop */
 	}
 
 @<End an If@> =
@@ -377,21 +394,32 @@ chapter as its value during the sole iteration.
 @ It can happen that a section loop, at least, is empty:
 
 @<Skip line if inside an empty loop@> =
-	for (int rstl = cls->stack_pointer-1; rstl >= 0; rstl--)
-		if (cls->repeat_stack_level[cls->stack_pointer-1] == SECTION_LEVEL) {
-			linked_list_item *SI = cls->repeat_stack_threshold[cls->stack_pointer-1];
+	for (int rstl = cls->sp-1; rstl >= 0; rstl--)
+		if (cls->repeat_stack_level[cls->sp-1] == SECTION_LEVEL) {
+			linked_list_item *SI = cls->repeat_stack_threshold[cls->sp-1];
 			if (NEXT_ITEM_IN_LINKED_LIST(SI, section) ==
-				cls->repeat_stack_variable[cls->stack_pointer-1])
+				cls->repeat_stack_variable[cls->sp-1])
 				goto CYCLE;
 		}
 
 @<Skip line if inside a failed conditional@> =
-	for (int j=cls->stack_pointer-1; j>=0; j--)
+	for (int j=cls->sp-1; j>=0; j--)
 		if (cls->repeat_stack_level[j] == IF_FALSE_LEVEL)
 			goto CYCLE;
 
 @ If called with the non-conditional levels, the following function returns
 the topmost item. It's never called for |IF_TRUE_LEVEL| or |IF_FALSE_LEVEL|.
+
+=
+linked_list_item *Collater::heading_topmost_on_stack(collater_state *cls, int level) {
+	for (int rstl = cls->sp-1; rstl >= 0; rstl--)
+		if (cls->repeat_stack_level[rstl] == level)
+			return cls->repeat_stack_variable[rstl];
+	return NULL;
+}
+
+@ This is the function for starting a loop or code block, which stacks up the
+details, and similarly for ending it by popping them again:
 
 @d MODULE_LEVEL 1
 @d CHAPTER_LEVEL 2
@@ -400,29 +428,18 @@ the topmost item. It's never called for |IF_TRUE_LEVEL| or |IF_FALSE_LEVEL|.
 @d IF_FALSE_LEVEL 5
 
 =
-linked_list_item *Collater::heading_topmost_on_stack(collater_state *cls, int level) {
-	for (int rstl = cls->stack_pointer-1; rstl >= 0; rstl--)
-		if (cls->repeat_stack_level[rstl] == level)
-			return cls->repeat_stack_variable[rstl];
-	return NULL;
-}
-
-@ This is the code for starting a loop, which stacks up the details, and
-similarly for ending it by popping them again:
-
-=
 void Collater::start_CI_loop(collater_state *cls, int level,
 	linked_list_item *from, linked_list_item *to, int pos) {
-	if (cls->stack_pointer < CI_STACK_CAPACITY) {
-		cls->repeat_stack_level[cls->stack_pointer] = level;
-		cls->repeat_stack_variable[cls->stack_pointer] = from;
-		cls->repeat_stack_threshold[cls->stack_pointer] = to;
-		cls->repeat_stack_startpos[cls->stack_pointer++] = pos;
+	if (cls->sp < CI_STACK_CAPACITY) {
+		cls->repeat_stack_level[cls->sp] = level;
+		cls->repeat_stack_variable[cls->sp] = from;
+		cls->repeat_stack_threshold[cls->sp] = to;
+		cls->repeat_stack_startpos[cls->sp++] = pos;
 	}
 }
 
 void Collater::end_CI_loop(collater_state *cls) {
-	cls->stack_pointer--;
+	cls->sp--;
 }
 
 @h Variable substitutions.
@@ -455,8 +472,6 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 			@<Substitute Breadcrumbs@>;
 		} else if (Str::eq_wide_string(varname, L"Plugins")) {
 			@<Substitute Plugins@>;
-		} else if (Regexp::match(&mr, varname, L"Modules")) {
-			@<Substitute Modules@>;
 		} else if (Regexp::match(&mr, varname, L"Complete (%c+)")) {
 			text_stream *detail = mr.exp[0];
 			@<Substitute a detail about the complete PDF@>;
@@ -538,11 +553,6 @@ this will recursively call The Collater, in fact.
 	Assets::include_relevant_plugins(OUT, cls->nav_pattern, cls->for_web,
 		cls->wv, cls->into_file);
 
-@ A list of all modules in the current web.
-
-@<Substitute Modules@> =
-	Collater::list_module(substituted, cls->for_web->md->as_module, FALSE);
-
 @ We store little about the complete-web-in-one-file PDF:
 
 @<Substitute a detail about the complete PDF@> =
@@ -565,8 +575,8 @@ this will recursively call The Collater, in fact.
 	if (Str::eq_wide_string(detail, L"Title")) {
 		Str::copy(substituted, M->module_name);
 	} else if (Str::eq_wide_string(detail, L"Page")) {
-		section_md *Sm = FIRST_IN_LINKED_LIST(section_md, M->sections_md);
-		Colonies::section_URL(substituted, Sm);
+		if (Colonies::find(M->module_name))
+			Colonies::reference_URL(substituted, M->module_name, cls->into_file);
 	} else if (Str::eq_wide_string(detail, L"Purpose")) {
 		TEMPORARY_TEXT(url);
 		WRITE_TO(url, "%p", M->module_location);
@@ -713,18 +723,3 @@ navigation purposes.
 		WRITE_TO(substituted, "%S\" height=18> ", icon_text);
 	}
 	WRITE_TO(substituted, "%S", item_name);
-
-@ =
-void Collater::list_module(OUTPUT_STREAM, module *M, int list_this) {
-	if (list_this) {
-		WRITE("<li><p>%S - ", M->module_name);
-		TEMPORARY_TEXT(url);
-		WRITE_TO(url, "%p", M->module_location);
-		Readme::write_var(OUT, url, I"Purpose");
-		DISCARD_TEXT(url);
-		WRITE("</p></li>");
-	}
-	module *N;
-	LOOP_OVER_LINKED_LIST(N, module, M->dependencies)
-		Collater::list_module(OUT, N, TRUE);
-}

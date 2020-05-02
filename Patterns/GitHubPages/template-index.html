@@ -35,10 +35,10 @@
 			</ul>
 [[Else]]
 	[[Repeat Chapter]]
-			<ul class="sectionlist">
+			<ul class="chapterlist">
 		[[Repeat Section]]
 				<li>
-					<p class="sectionentry"><a href="[[Section Page]]">
+					<p class="chapterentry"><a href="[[Section Page]]">
 					<spon class="sectiontitle">[[Section Title]]</span></a> -
 					<span class="sectionpurpose">[[Section Purpose]]</span></p>
 				</li>
@@ -52,8 +52,13 @@
 		<ul class="chapterlist">
 		[[Repeat Module]]
 			<li>
-				<p class="chapterentry"><a href="[[Module Page]]"><spon class="sectiontitle">[[Module Title]]</span></a> -
-					<span class="sectionpurpose">[[Module Purpose]]</span></p>
+				<p class="chapterentry">
+			[[If Module Page]]
+					<a href="[[Module Page]]"><spon class="sectiontitle">[[Module Title]]</span></a>
+			[[Else]]
+					<spon class="sectiontitle">[[Module Title]]</span>
+			[[End If]]
+					- <span class="sectionpurpose">[[Module Purpose]]</span></p>
 			</li>
 		[[End Repeat]]
 		</ul>
