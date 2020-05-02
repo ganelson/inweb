@@ -6,6 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
+<link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
@@ -37,216 +38,263 @@
 		<ul class="crumbs"><li><a href="../index.html">Home</a></li><li><b>foundation</b></li></ul>
 		<p class="purpose">A library of common code used by all of the Inform tools. This is version 1.</p>
 		<hr>
-		<ul class="chapterlist">
-			<li>
-				<p><a name="P"></a><spon class="chaptertitle">Preliminaries</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="P-abgtf.html"><spon class="sectiontitle">A Brief Guide to Foundation</span></a> -
-						<span class="purpose">Notes on getting started with the Foundation library.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="1"></a><spon class="chaptertitle">Chapter 1: Setting Up</span></p>
-				<p><span class="purpose">Absolute basics.</span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="1-fm.html"><spon class="sectiontitle">Foundation Module</span></a> -
-						<span class="purpose">Starting up and shutting down.</span></p>
-					</li>
-					<li>
-						<p><a href="1-pp.html"><spon class="sectiontitle">POSIX Platforms</span></a> -
-						<span class="purpose">A version of our operating system interface suitable for POSIX-compliant operating systems.</span></p>
-					</li>
-					<li>
-						<p><a href="1-wp.html"><spon class="sectiontitle">Windows Platform</span></a> -
-						<span class="purpose">A version of our operating system interface suitable for Microsoft Windows.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="2"></a><spon class="chaptertitle">Chapter 2: Memory, Streams and Collections</span></p>
-				<p><span class="purpose">Creating objects in memory, and forming lists, hashes, and text streams.</span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="2-dl.html"><spon class="sectiontitle">Debugging Log</span></a> -
-						<span class="purpose">To write to the debugging log, a plain text file which traces what we're doing, in order to assist those lost souls debugging it.</span></p>
-					</li>
-					<li>
-						<p><a href="2-mmr.html"><spon class="sectiontitle">Memory</span></a> -
-						<span class="purpose">To allocate memory suitable for the dynamic creation of objects of different sizes, placing some larger objects automatically into doubly linked lists and assigning each a unique allocation ID number.</span></p>
-					</li>
-					<li>
-						<p><a href="2-str.html"><spon class="sectiontitle">Streams</span></a> -
-						<span class="purpose">Support for writing structured textual output, perhaps to the screen, to a file, or to a flexible-sized wide string.</span></p>
-					</li>
-					<li>
-						<p><a href="2-wal.html"><spon class="sectiontitle">Writers and Loggers</span></a> -
-						<span class="purpose">Formatted text output to streams.</span></p>
-					</li>
-					<li>
-						<p><a href="2-mth.html"><spon class="sectiontitle">Methods</span></a> -
-						<span class="purpose">General support for something approximating method calls.</span></p>
-					</li>
-					<li>
-						<p><a href="2-llas.html"><spon class="sectiontitle">Linked Lists and Stacks</span></a> -
-						<span class="purpose">A simple implementation for single-linked lists of objects allocated by Foundation's memory manager, and for last-in-first-out stacks of same.</span></p>
-					</li>
-					<li>
-						<p><a href="2-dct.html"><spon class="sectiontitle">Dictionaries</span></a> -
-						<span class="purpose">A simple implementation for a flexible-sized dictionary of key-value pairs.</span></p>
-					</li>
-					<li>
-						<p><a href="2-trs.html"><spon class="sectiontitle">Trees</span></a> -
-						<span class="purpose">To provide heterogeneous tree structures, where a node can be any structure known to the Foundation memory manager.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="3"></a><spon class="chaptertitle">Chapter 3: The Operating System</span></p>
-				<p><span class="purpose">Dealing with the host operating system.</span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="3-em.html"><spon class="sectiontitle">Error Messages</span></a> -
-						<span class="purpose">A basic system for command-line tool error messages.</span></p>
-					</li>
-					<li>
-						<p><a href="3-cla.html"><spon class="sectiontitle">Command Line Arguments</span></a> -
-						<span class="purpose">To parse the command line arguments with which inweb was called, and to handle any errors it needs to issue.</span></p>
-					</li>
-					<li>
-						<p><a href="3-pth.html"><spon class="sectiontitle">Pathnames</span></a> -
-						<span class="purpose">Locations of hypothetical or real directories in the filing system.</span></p>
-					</li>
-					<li>
-						<p><a href="3-fln.html"><spon class="sectiontitle">Filenames</span></a> -
-						<span class="purpose">Names of hypothetical or real files in the filing system.</span></p>
-					</li>
-					<li>
-						<p><a href="3-cf.html"><spon class="sectiontitle">Case-Insensitive Filenames</span></a> -
-						<span class="purpose">On some of the Unix-derived file systems on which Inform runs, filenames are case-sensitive, so that FISH and fish might be different files. This makes extension files, installed by the user, prone to being missed. The code in this section provides a routine to carry out file opening as if filenames are case-insensitive, and is used only for extensions.</span></p>
-					</li>
-					<li>
-						<p><a href="3-shl.html"><spon class="sectiontitle">Shell</span></a> -
-						<span class="purpose">Sending commands to the shell, on Unix-like platforms, or simulating this on Windows.</span></p>
-					</li>
-					<li>
-						<p><a href="3-drc.html"><spon class="sectiontitle">Directories</span></a> -
-						<span class="purpose">Scanning directories on the host filing system.</span></p>
-					</li>
-					<li>
-						<p><a href="3-tm.html"><spon class="sectiontitle">Time</span></a> -
-						<span class="purpose">Managing how we record and use the current time and date.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="4"></a><spon class="chaptertitle">Chapter 4: Text Handling</span></p>
-				<p><span class="purpose">Reading, writing and parsing text.</span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="4-chr.html"><spon class="sectiontitle">Characters</span></a> -
-						<span class="purpose">Individual characters.</span></p>
-					</li>
-					<li>
-						<p><a href="4-cst.html"><spon class="sectiontitle">C Strings</span></a> -
-						<span class="purpose">A minimal library for handling C-style strings.</span></p>
-					</li>
-					<li>
-						<p><a href="4-ws.html"><spon class="sectiontitle">Wide Strings</span></a> -
-						<span class="purpose">A minimal library for handling wide C strings.</span></p>
-					</li>
-					<li>
-						<p><a href="4-sm.html"><spon class="sectiontitle">String Manipulation</span></a> -
-						<span class="purpose">Convenient routines for manipulating strings of text.</span></p>
-					</li>
-					<li>
-						<p><a href="4-tf.html"><spon class="sectiontitle">Text Files</span></a> -
-						<span class="purpose">To read text files of whatever flavour, one line at a time.</span></p>
-					</li>
-					<li>
-						<p><a href="4-taa.html"><spon class="sectiontitle">Tries and Avinues</span></a> -
-						<span class="purpose">To examine heads and tails of text, to see how it may inflect.</span></p>
-					</li>
-					<li>
-						<p><a href="4-pm.html"><spon class="sectiontitle">Pattern Matching</span></a> -
-						<span class="purpose">To provide a limited regular-expression parser.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="5"></a><spon class="chaptertitle">Chapter 5: Generating Websites</span></p>
-				<p><span class="purpose">For making individual web pages, or gathering them into mini-sites or ebooks.</span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="5-htm.html"><spon class="sectiontitle">HTML</span></a> -
-						<span class="purpose">Utility functions for writing HTML.</span></p>
-					</li>
-					<li>
-						<p><a href="5-ee.html"><spon class="sectiontitle">Epub Ebooks</span></a> -
-						<span class="purpose">To provide for wrapping up sets of HTML files into ePub ebooks.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="6"></a><spon class="chaptertitle">Chapter 6: Media</span></p>
-				<p><span class="purpose">Examining image and sound files.</span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="6-bf.html"><spon class="sectiontitle">Binary Files</span></a> -
-						<span class="purpose">Routines for reading raw data from binary files.</span></p>
-					</li>
-					<li>
-						<p><a href="6-id.html"><spon class="sectiontitle">Image Dimensions</span></a> -
-						<span class="purpose">These utility routines look at the headers of JPEG and PNG files to find the pixel dimensions of any images supplied by the user for cover art and figures.</span></p>
-					</li>
-					<li>
-						<p><a href="6-sd.html"><spon class="sectiontitle">Sound Durations</span></a> -
-						<span class="purpose">These utility routines look at the headers of AIFF, OGG Vorbis or MIDI files to find the durations, and verify that they are what they purport to be.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="7"></a><spon class="chaptertitle">Chapter 7: Semantic Versioning</span></p>
-				<p><span class="purpose">For reading, storing and comparing standard semantic version numbers.</span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="7-vn.html"><spon class="sectiontitle">Version Numbers</span></a> -
-						<span class="purpose">Semantic version numbers such as 3.7.1.</span></p>
-					</li>
-					<li>
-						<p><a href="7-vnr.html"><spon class="sectiontitle">Version Number Ranges</span></a> -
-						<span class="purpose">Ranges of acceptable version numbers.</span></p>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<p><a name="8"></a><spon class="chaptertitle">Chapter 8: Literate Programming</span></p>
-				<p><span class="purpose"></span></p>
-				<ul class="sectionlist">
-					<li>
-						<p><a href="8-ws.html"><spon class="sectiontitle">Web Structure</span></a> -
-						<span class="purpose">To read the structure of a literate programming web from a path in the file system.</span></p>
-					</li>
-					<li>
-						<p><a href="8-bdfw.html"><spon class="sectiontitle">Bibliographic Data for Webs</span></a> -
-						<span class="purpose">To manage key-value pairs of bibliographic data, metadata if you like, associated with a given web.</span></p>
-					</li>
-					<li>
-						<p><a href="8-wm.html"><spon class="sectiontitle">Web Modules</span></a> -
-						<span class="purpose">To search for included modules, and track dependencies between them.</span></p>
-					</li>
-					<li>
-						<p><a href="8-bf.html"><spon class="sectiontitle">Build Files</span></a> -
-						<span class="purpose">Manages the build metadata for an inweb project.</span></p>
-					</li>
-				</ul>
-			</li>
-		</ul>
+		<div class="contentspage">
+			<ul class="chapterlist">
+				<li>
+					<p class="chapterentry"><a name="P"></a>
+						<span class="chaptertitle">Preliminaries</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="P-abgtf.html">
+								<spon class="sectiontitle">A Brief Guide to Foundation</span></a> -
+							<span class="sectionpurpose">Notes on getting started with the Foundation library.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="1"></a>
+						<span class="chaptertitle">Chapter 1: Setting Up</span></p>
+					<p class="chapterpurpose">Absolute basics.</p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="1-fm.html">
+								<spon class="sectiontitle">Foundation Module</span></a> -
+							<span class="sectionpurpose">Starting up and shutting down.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-pp.html">
+								<spon class="sectiontitle">POSIX Platforms</span></a> -
+							<span class="sectionpurpose">A version of our operating system interface suitable for POSIX-compliant operating systems.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="1-wp.html">
+								<spon class="sectiontitle">Windows Platform</span></a> -
+							<span class="sectionpurpose">A version of our operating system interface suitable for Microsoft Windows.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="2"></a>
+						<span class="chaptertitle">Chapter 2: Memory, Streams and Collections</span></p>
+					<p class="chapterpurpose">Creating objects in memory, and forming lists, hashes, and text streams.</p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="2-dl.html">
+								<spon class="sectiontitle">Debugging Log</span></a> -
+							<span class="sectionpurpose">To write to the debugging log, a plain text file which traces what we're doing, in order to assist those lost souls debugging it.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-mmr.html">
+								<spon class="sectiontitle">Memory</span></a> -
+							<span class="sectionpurpose">To allocate memory suitable for the dynamic creation of objects of different sizes, placing some larger objects automatically into doubly linked lists and assigning each a unique allocation ID number.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-str.html">
+								<spon class="sectiontitle">Streams</span></a> -
+							<span class="sectionpurpose">Support for writing structured textual output, perhaps to the screen, to a file, or to a flexible-sized wide string.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-wal.html">
+								<spon class="sectiontitle">Writers and Loggers</span></a> -
+							<span class="sectionpurpose">Formatted text output to streams.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-mth.html">
+								<spon class="sectiontitle">Methods</span></a> -
+							<span class="sectionpurpose">General support for something approximating method calls.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-llas.html">
+								<spon class="sectiontitle">Linked Lists and Stacks</span></a> -
+							<span class="sectionpurpose">A simple implementation for single-linked lists of objects allocated by Foundation's memory manager, and for last-in-first-out stacks of same.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-dct.html">
+								<spon class="sectiontitle">Dictionaries</span></a> -
+							<span class="sectionpurpose">A simple implementation for a flexible-sized dictionary of key-value pairs.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="2-trs.html">
+								<spon class="sectiontitle">Trees</span></a> -
+							<span class="sectionpurpose">To provide heterogeneous tree structures, where a node can be any structure known to the Foundation memory manager.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="3"></a>
+						<span class="chaptertitle">Chapter 3: The Operating System</span></p>
+					<p class="chapterpurpose">Dealing with the host operating system.</p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="3-em.html">
+								<spon class="sectiontitle">Error Messages</span></a> -
+							<span class="sectionpurpose">A basic system for command-line tool error messages.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-cla.html">
+								<spon class="sectiontitle">Command Line Arguments</span></a> -
+							<span class="sectionpurpose">To parse the command line arguments with which inweb was called, and to handle any errors it needs to issue.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-pth.html">
+								<spon class="sectiontitle">Pathnames</span></a> -
+							<span class="sectionpurpose">Locations of hypothetical or real directories in the filing system.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-fln.html">
+								<spon class="sectiontitle">Filenames</span></a> -
+							<span class="sectionpurpose">Names of hypothetical or real files in the filing system.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-cf.html">
+								<spon class="sectiontitle">Case-Insensitive Filenames</span></a> -
+							<span class="sectionpurpose">On some of the Unix-derived file systems on which Inform runs, filenames are case-sensitive, so that FISH and fish might be different files. This makes extension files, installed by the user, prone to being missed. The code in this section provides a routine to carry out file opening as if filenames are case-insensitive, and is used only for extensions.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-shl.html">
+								<spon class="sectiontitle">Shell</span></a> -
+							<span class="sectionpurpose">Sending commands to the shell, on Unix-like platforms, or simulating this on Windows.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-drc.html">
+								<spon class="sectiontitle">Directories</span></a> -
+							<span class="sectionpurpose">Scanning directories on the host filing system.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-tm.html">
+								<spon class="sectiontitle">Time</span></a> -
+							<span class="sectionpurpose">Managing how we record and use the current time and date.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="4"></a>
+						<span class="chaptertitle">Chapter 4: Text Handling</span></p>
+					<p class="chapterpurpose">Reading, writing and parsing text.</p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="4-chr.html">
+								<spon class="sectiontitle">Characters</span></a> -
+							<span class="sectionpurpose">Individual characters.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-cst.html">
+								<spon class="sectiontitle">C Strings</span></a> -
+							<span class="sectionpurpose">A minimal library for handling C-style strings.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-ws.html">
+								<spon class="sectiontitle">Wide Strings</span></a> -
+							<span class="sectionpurpose">A minimal library for handling wide C strings.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-sm.html">
+								<spon class="sectiontitle">String Manipulation</span></a> -
+							<span class="sectionpurpose">Convenient routines for manipulating strings of text.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-tf.html">
+								<spon class="sectiontitle">Text Files</span></a> -
+							<span class="sectionpurpose">To read text files of whatever flavour, one line at a time.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-taa.html">
+								<spon class="sectiontitle">Tries and Avinues</span></a> -
+							<span class="sectionpurpose">To examine heads and tails of text, to see how it may inflect.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-pm.html">
+								<spon class="sectiontitle">Pattern Matching</span></a> -
+							<span class="sectionpurpose">To provide a limited regular-expression parser.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="5"></a>
+						<span class="chaptertitle">Chapter 5: Generating Websites</span></p>
+					<p class="chapterpurpose">For making individual web pages, or gathering them into mini-sites or ebooks.</p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="5-htm.html">
+								<spon class="sectiontitle">HTML</span></a> -
+							<span class="sectionpurpose">Utility functions for writing HTML.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="5-ee.html">
+								<spon class="sectiontitle">Epub Ebooks</span></a> -
+							<span class="sectionpurpose">To provide for wrapping up sets of HTML files into ePub ebooks.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="6"></a>
+						<span class="chaptertitle">Chapter 6: Media</span></p>
+					<p class="chapterpurpose">Examining image and sound files.</p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="6-bf.html">
+								<spon class="sectiontitle">Binary Files</span></a> -
+							<span class="sectionpurpose">Routines for reading raw data from binary files.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="6-id.html">
+								<spon class="sectiontitle">Image Dimensions</span></a> -
+							<span class="sectionpurpose">These utility routines look at the headers of JPEG and PNG files to find the pixel dimensions of any images supplied by the user for cover art and figures.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="6-sd.html">
+								<spon class="sectiontitle">Sound Durations</span></a> -
+							<span class="sectionpurpose">These utility routines look at the headers of AIFF, OGG Vorbis or MIDI files to find the durations, and verify that they are what they purport to be.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="7"></a>
+						<span class="chaptertitle">Chapter 7: Semantic Versioning</span></p>
+					<p class="chapterpurpose">For reading, storing and comparing standard semantic version numbers.</p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="7-vn.html">
+								<spon class="sectiontitle">Version Numbers</span></a> -
+							<span class="sectionpurpose">Semantic version numbers such as 3.7.1.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="7-vnr.html">
+								<spon class="sectiontitle">Version Number Ranges</span></a> -
+							<span class="sectionpurpose">Ranges of acceptable version numbers.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="8"></a>
+						<span class="chaptertitle">Chapter 8: Literate Programming</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="8-ws.html">
+								<spon class="sectiontitle">Web Structure</span></a> -
+							<span class="sectionpurpose">To read the structure of a literate programming web from a path in the file system.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="8-bdfw.html">
+								<spon class="sectiontitle">Bibliographic Data for Webs</span></a> -
+							<span class="sectionpurpose">To manage key-value pairs of bibliographic data, metadata if you like, associated with a given web.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="8-wm.html">
+								<spon class="sectiontitle">Web Modules</span></a> -
+							<span class="sectionpurpose">To search for included modules, and track dependencies between them.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="8-bf.html">
+								<spon class="sectiontitle">Build Files</span></a> -
+							<span class="sectionpurpose">Manages the build metadata for an inweb project.</span></p>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
 		<hr>
-		
+		<p class="purpose">Powered by <a href="https://github.com/ganelson/inweb">Inweb</a>.</p>
 		</main>
 	</body>
 </html>
