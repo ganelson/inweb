@@ -1,6 +1,6 @@
 Title: foundation
 Author: Graham Nelson
-Purpose: A library of common code used by all of the Inform tools.
+Purpose: A library of utility functions for command-line tools.
 Language: InC
 Licence: Artistic License 2.0
 

@@ -87,26 +87,23 @@ collater_state Collater::initial_state(web *W, text_stream *range,
 	cls.into_file = into;
 	cls.modules = NEW_LINKED_LIST(module);
 	if (W) {
-		module *M;
-		LOOP_OVER_LINKED_LIST(M, module, W->md->as_module->dependencies) {
-			text_stream *owner = Collater::module_owner(M, W);
-			if (Str::len(owner) == 0)
-				ADD_TO_LINKED_LIST(M, module, cls.modules);
-		}
-		LOOP_OVER_LINKED_LIST(M, module, W->md->as_module->dependencies) {
-			text_stream *owner = Collater::module_owner(M, W);
-			if ((Str::len(owner) > 0) && (Str::ne_insensitive(owner, I"inweb")))
-				ADD_TO_LINKED_LIST(M, module, cls.modules);
-		}
-		LOOP_OVER_LINKED_LIST(M, module, W->md->as_module->dependencies) {
-			text_stream *owner = Collater::module_owner(M, W);
-			if ((Str::len(owner) > 0) && (Str::eq_insensitive(owner, I"inweb")))
-				ADD_TO_LINKED_LIST(M, module, cls.modules);
-		}
+		int c = LinkedLists::len(W->md->as_module->dependencies);
+		if (c > 0) @<Form the list of imported modules@>;
 	}
 	@<Read in the source file containing the contents page template@>;
 	return cls;
 }
+
+@<Form the list of imported modules@> =
+	module **module_array = 
+		Memory::calloc(c, sizeof(module *), CLS_SORTING_MREASON);
+	module *M; int d=0;
+	LOOP_OVER_LINKED_LIST(M, module, W->md->as_module->dependencies)
+		module_array[d++] = M;
+	Collater::sort_web(W);
+	qsort(module_array, (size_t) c, sizeof(module *), Collater::sort_comparison);
+	for (int d=0; d<c; d++) ADD_TO_LINKED_LIST(module_array[d], module, cls.modules);
+	Memory::I7_free(module_array, CLS_SORTING_MREASON, c*((int) sizeof(module *)));
 
 @<Read in the source file containing the contents page template@> =
 	TextFiles::read(template_filename, FALSE,
@@ -742,7 +739,7 @@ navigation purposes.
 empty text) if it appears to belong to the current web |W|.
 
 =
-text_stream *Collater::module_owner(module *M, web *W) {
+text_stream *Collater::module_owner(const module *M, web *W) {
 	text_stream *owner =
 		Pathnames::directory_name(Pathnames::up(M->module_location));
 	text_stream *me = NULL;
@@ -750,4 +747,37 @@ text_stream *Collater::module_owner(module *M, web *W) {
 		me = Pathnames::directory_name(W->md->path_to_web);
 	if (Str::ne_insensitive(me, owner)) return owner;
 	return NULL;
+}
+
+@ This enables us to sort them. The empty owner (i.e., the current web) comes
+top, then all other owners, in alphabetical order, and then last of all Inweb,
+so that //foundation// will always be at the bottom.
+
+=
+web *sorting_web = NULL;
+void Collater::sort_web(web *W) {
+	sorting_web = W;
+}
+int Collater::sort_comparison(const void *ent1, const void *ent2) {
+	const module *M1 = *((const module **) ent1);
+	const module *M2 = *((const module **) ent2);
+	text_stream *O1 = Collater::module_owner(M1, sorting_web);
+	text_stream *O2 = Collater::module_owner(M2, sorting_web);
+	int r = Collater::cmp_owners(O1, O2);
+	if (r != 0) return r;
+	return Str::cmp_insensitive(M1->module_name, M2->module_name);
+}
+
+int Collater::cmp_owners(text_stream *O1, text_stream *O2) {
+	if (Str::len(O1) == 0) {
+		if (Str::len(O2) > 0) return -1;
+		return 0;
+	}
+	if (Str::len(O2) == 0) return 1;
+	if (Str::eq_insensitive(O1, I"inweb")) {
+		if (Str::eq_insensitive(O2, I"inweb") == FALSE) return 1;
+		return 0;
+	}
+	if (Str::eq_insensitive(O2, I"inweb")) return -1;
+	return Str::cmp_insensitive(O1, O2);
 }
