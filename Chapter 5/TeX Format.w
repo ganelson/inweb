@@ -58,6 +58,7 @@ int TeX::render_visit(tree_node *N, void *state, int L) {
 		(N->type == weave_section_footer_node_type) ||
 		(N->type == weave_audio_node_type) ||
 		(N->type == weave_video_node_type) ||
+		(N->type == weave_download_node_type) ||
 		(N->type == weave_chapter_node_type) ||
 		(N->type == weave_carousel_slide_node_type) ||
 		(N->type == weave_begin_footnote_text_node_type)) @<Render nothing@>

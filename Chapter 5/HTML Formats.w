@@ -108,6 +108,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_figure_node_type) @<Render figure@>
 	else if (N->type == weave_audio_node_type) @<Render audio clip@>
 	else if (N->type == weave_video_node_type) @<Render video clip@>
+	else if (N->type == weave_download_node_type) @<Render download@>
 	else if (N->type == weave_material_node_type) @<Render material@>
 	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
@@ -357,6 +358,25 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	WRITE("<source src=\"%S\" type=\"video/mp4\">\n", C->video_name);
 	WRITE("Your browser does not support the video tag.\n");
 	WRITE("</video>\n");
+	HTML_CLOSE("p");
+	WRITE("\n");
+
+@<Render download@> =
+	weave_download_node *C = RETRIEVE_POINTER_weave_download_node(N->content);
+	filename *F = Filenames::in(
+		Pathnames::down(hrs->wv->weave_web->md->path_to_web, I"Downloads"),
+		C->download_name);
+	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
+		hrs->wv->pattern, hrs->wv->weave_to);
+	HTML_OPEN_WITH("p", "class=\"center-p\"");
+	WRITE("Download: ");
+	TEMPORARY_TEXT(url);
+	Pathnames::relative_URL(url, Filenames::up(hrs->wv->weave_to), Filenames::up(F));
+	WRITE_TO(url, "%S", Filenames::get_leafname(F));
+	HTML::begin_download_link(OUT, url);
+	WRITE("%S", C->download_name);
+	HTML::end_link(OUT);
+	DISCARD_TEXT(url);
 	HTML_CLOSE("p");
 	WRITE("\n");
 

@@ -34,6 +34,7 @@ Which is really the point.
 = (carousel end)
 
 So there, really!
+= (download alice.crt)
 
 @
 

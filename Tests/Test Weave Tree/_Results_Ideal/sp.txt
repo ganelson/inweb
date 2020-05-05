@@ -59,6 +59,7 @@ document weave order 0
             figure <img3.jpg> -1 by -1
           vskip (in comment)
           commentary <So there, really!\n>
+          download <alice.crt>
         paragraph P3
           material definition
             code line

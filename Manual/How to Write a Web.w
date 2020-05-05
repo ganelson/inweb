@@ -598,6 +598,17 @@ With results like so:
 The latter sets just the height (of the displayed waveform, that is --
 arguably music has width and not height, but SoundCloud thinks otherwise).
 
+@h Downloads.
+Occasional small downloads may be useful as a way to present examples to
+try with a program being documented. These are very simple:
+= (text as Inweb)
+	= (download alice.crt)
+=
+produces:
+= (download alice.crt)
+The file to download, in this case |alice.crt|, must be placed in a |Downloads|
+subdirectory of the web.
+
 @h Mathematics notation.
 Literate programming is a good technique to justify code which hangs on
 unobvious pieces of mathematics or computer science, and which must therefore

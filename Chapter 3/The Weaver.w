@@ -281,6 +281,7 @@ at us; but we don't weave them into the output, that's for sure.
 		if (L->command_code == FIGURE_CMD) @<Weave a figure@>;
 		if (L->command_code == AUDIO_CMD) @<Weave an audio clip@>;
 		if (L->command_code == VIDEO_CMD) @<Weave a video clip@>;
+		if (L->command_code == DOWNLOAD_CMD) @<Weave a download@>;
 		if (L->command_code == EMBED_CMD) @<Weave an embed@>;
 		if (L->command_code == CAROUSEL_CMD) @<Weave a carousel@>;
 		if (L->command_code == CAROUSEL_ABOVE_CMD) @<Weave a carousel@>;
@@ -305,6 +306,9 @@ at us; but we don't weave them into the output, that's for sure.
 	int w, h;
 	text_stream *figname = Weaver::dimensions(L->text_operand, &w, &h, L);
 	Trees::make_child(WeaveTree::video(tree, figname, w, h), state->ap);
+
+@<Weave a download@> =
+	Trees::make_child(WeaveTree::download(tree, L->text_operand), state->ap);
 
 @<Weave an embed@> =
 	int w, h;

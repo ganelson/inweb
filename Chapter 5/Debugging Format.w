@@ -52,6 +52,7 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_figure_node_type) @<Render figure@>
 	else if (N->type == weave_audio_node_type) @<Render audio clip@>
 	else if (N->type == weave_video_node_type) @<Render video clip@>
+	else if (N->type == weave_download_node_type) @<Render download@>
 	else if (N->type == weave_material_node_type) @<Render material@>
 	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
@@ -153,6 +154,10 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 @<Render video clip@> =
 	weave_video_node *C = RETRIEVE_POINTER_weave_video_node(N->content);
 	WRITE(" <%S> %d", C->video_name, C->w);
+
+@<Render download@> =
+	weave_download_node *C = RETRIEVE_POINTER_weave_download_node(N->content);
+	WRITE(" <%S>", C->download_name);
 
 @<Render material@> =
 	weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);

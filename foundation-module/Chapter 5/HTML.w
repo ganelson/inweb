@@ -367,6 +367,10 @@ void HTML::begin_link(OUTPUT_STREAM, text_stream *to) {
 	HTML_OPEN_WITH("a", "href=\"%S\"", to);
 }
 
+void HTML::begin_download_link(OUTPUT_STREAM, text_stream *to) {
+	HTML_OPEN_WITH("a", "href=\"%S\" download", to);
+}
+
 void HTML::begin_link_with_class(OUTPUT_STREAM, text_stream *cl, text_stream *to) {
 	HTML::begin_link_with_class_onclick(OUT, cl, to, NULL);
 }
