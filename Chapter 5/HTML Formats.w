@@ -395,10 +395,15 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 @<Describe the file size@> =
 	WRITE_TO(size, " (");
 	if (Str::len(C->filetype) > 0) WRITE_TO(size, "%S, ", C->filetype);
-	if (N < 1024) WRITE_TO(size, "%d byte%s", N, (N!=1)?"s":"");
-	else if (N < 1024*1024) WRITE_TO(size, "%dkB", N/1024);
-	else if (N < 1024*1024*1024) WRITE_TO(size, "%dMB", N/1024/1024);
-	else WRITE_TO(size, "%dGB", N/1024/1024/1024);
+	int x = 0, y = 0;
+	text_stream *unit = I" byte"; x = N; y = 0;
+	if (N > 1) { unit = I" bytes"; }
+	if (N >= 1024) { unit = I"kB"; x = 10*N/1024; y = x%10; x = x/10; }
+	if (N >= 1024*1024) { unit = I"MB"; x = 10*N/1024/1024; y = x%10; x = x/10; }
+	if (N >= 1024*1024*1024) { unit = I"GB"; x = 10*N/1024/1024/1024; y = x%10; x = x/10; }
+	WRITE_TO(size, "%d", x);
+	if (y > 0) WRITE_TO(size, ".%d", y);
+	WRITE_TO(size, "%S", unit);
 	WRITE_TO(size, ")");
 
 @<Render material@> =
