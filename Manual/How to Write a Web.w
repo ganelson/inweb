@@ -602,12 +602,13 @@ arguably music has width and not height, but SoundCloud thinks otherwise).
 Occasional small downloads may be useful as a way to present examples to
 try with a program being documented. These are very simple:
 = (text as Inweb)
-	= (download alice.crt)
+	= (download alice.crt "certificate file")
 =
 produces:
-= (download alice.crt)
+= (download alice.crt "certificate file")
 The file to download, in this case |alice.crt|, must be placed in a |Downloads|
-subdirectory of the web.
+subdirectory of the web. The explanatory text -- usually just an indication
+of what sort of file this is -- is optional.
 
 @h Mathematics notation.
 Literate programming is a good technique to justify code which hangs on

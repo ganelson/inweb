@@ -308,7 +308,8 @@ at us; but we don't weave them into the output, that's for sure.
 	Trees::make_child(WeaveTree::video(tree, figname, w, h), state->ap);
 
 @<Weave a download@> =
-	Trees::make_child(WeaveTree::download(tree, L->text_operand), state->ap);
+	Trees::make_child(WeaveTree::download(tree, L->text_operand, L->text_operand2),
+		state->ap);
 
 @<Weave an embed@> =
 	int w, h;

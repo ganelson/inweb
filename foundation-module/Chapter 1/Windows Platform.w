@@ -221,9 +221,9 @@ size_t Platform::get_thread_stack_size(pthread_attr_t* pa) {
 	return 0;
 }
 
-@h Timestamp.
+@h Timestamp and file size.
 There are implementations of the C standard library where |time_t| has
-super-weird behaviour, but on almost POSIX systems, time 0 corresponds to
+super-weird behaviour, but on almost all POSIX systems, time 0 corresponds to
 midnight on 1 January 1970. All we really need is that the "never" value
 is one which is earlier than any possible timestamp on the files we'll
 be dealing with.
@@ -237,6 +237,12 @@ time_t Platform::timestamp(char *transcoded_filename) {
 	struct stat filestat;
 	if (stat(transcoded_pathname, &filestat) != -1) return filestat.st_mtime;
 	return Platform::never_time();
+}
+
+off_t Platform::size(char *transcoded_filename) {
+	struct stat filestat;
+	if (stat(transcoded_filename, &filestat) != -1) return filestat.st_size;
+	return (off_t) 0;
 }
 
 @h Mutexes.

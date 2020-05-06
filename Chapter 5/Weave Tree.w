@@ -96,6 +96,7 @@ typedef struct weave_video_node {
 
 typedef struct weave_download_node {
 	struct text_stream *download_name;
+	struct text_stream *filetype;
 	MEMORY_MANAGEMENT
 } weave_download_node;
 
@@ -534,9 +535,10 @@ tree_node *WeaveTree::video(heterogeneous_tree *tree,
 }
 
 tree_node *WeaveTree::download(heterogeneous_tree *tree, 
-	text_stream *download_name) {
+	text_stream *download_name, text_stream *filetype) {
 	weave_download_node *C = CREATE(weave_download_node);
 	C->download_name = Str::duplicate(download_name);
+	C->filetype = Str::duplicate(filetype);
 	return Trees::new_node(tree, weave_download_node_type,
 		STORE_POINTER_weave_download_node(C));
 }

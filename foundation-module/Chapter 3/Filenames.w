@@ -260,7 +260,7 @@ int Filenames::eq(filename *F1, filename *F2) {
 	return rv;
 }
 
-@h Timestamps.
+@h Timestamps and sizes.
 
 =
 time_t Filenames::timestamp(filename *F) {
@@ -269,6 +269,16 @@ time_t Filenames::timestamp(filename *F) {
 	WRITE_TO(FN, "%f", F);
 	Str::copy_to_locale_string(transcoded_pathname, FN, 4*MAX_FILENAME_LENGTH);
 	time_t t = Platform::timestamp(transcoded_pathname);
+	DISCARD_TEXT(FN);
+	return t;
+}
+
+int Filenames::size(filename *F) {
+	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
+	TEMPORARY_TEXT(FN);
+	WRITE_TO(FN, "%f", F);
+	Str::copy_to_locale_string(transcoded_pathname, FN, 4*MAX_FILENAME_LENGTH);
+	int t = (int) Platform::size(transcoded_pathname);
 	DISCARD_TEXT(FN);
 	return t;
 }

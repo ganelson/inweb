@@ -495,6 +495,8 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 			@<Substitute a Section@>;
 		} else if (Regexp::match(&mr, varname, L"Docs")) {
 			@<Substitute a Docs@>;
+		} else if (Regexp::match(&mr, varname, L"Assets")) {
+			@<Substitute an Assets@>;
 		} else if (Regexp::match(&mr, varname, L"URL \"(%c+)\"")) {
 			text_stream *link_text = mr.exp[0];
 			@<Substitute a URL@>;
@@ -664,6 +666,12 @@ navigation purposes.
 	Pathnames::relative_URL(substituted,
 		Filenames::up(cls->into_file),
 		Pathnames::from_text(Colonies::home()));
+
+@<Substitute an Assets@> =
+	pathname *P = Colonies::assets_path();
+	if (P == NULL) P = Filenames::up(cls->into_file);
+	Pathnames::relative_URL(substituted,
+		Filenames::up(cls->into_file), P);
 
 @<Substitute a URL@> =
 	Pathnames::relative_URL(substituted,

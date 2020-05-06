@@ -392,12 +392,22 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
+			(Regexp::match(&mr2, mr.exp[0], L"%(download (%c+) \"(%c*)\"%)"))) {
+			Tags::add_by_name(L->owning_paragraph, I"Download");
+			L->command_code = DOWNLOAD_CMD;
+			L->category = COMMAND_LCAT;
+			code_lcat_for_body = COMMENT_BODY_LCAT;
+			L->text_operand = Str::duplicate(mr2.exp[0]);
+			L->text_operand2 = Str::duplicate(mr2.exp[1]);
+			comment_mode = TRUE;
+		} else if ((current_paragraph) &&
 			(Regexp::match(&mr2, mr.exp[0], L"%(download (%c+)%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Download");
 			L->command_code = DOWNLOAD_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
 			L->text_operand = Str::duplicate(mr2.exp[0]);
+			L->text_operand2 = Str::new();
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp::match(&mr2, mr.exp[0], L"%(carousel%)"))) {

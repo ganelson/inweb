@@ -157,7 +157,7 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 
 @<Render download@> =
 	weave_download_node *C = RETRIEVE_POINTER_weave_download_node(N->content);
-	WRITE(" <%S>", C->download_name);
+	WRITE(" <%S> %S", C->download_name, C->filetype);
 
 @<Render material@> =
 	weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);

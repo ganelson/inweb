@@ -352,6 +352,9 @@ in BLOCK CAPITAL LETTERS.
 a colony of webs -- see //Making Weaves into Websites// for more, and for
 syntaxes to do with links and URLs.
 (b) |[[Breadcrumbs]]| expands to the HTML for the breadcrumb trail.
+(c) |[[Docs]]| expands to the URL to the home page of a colony.
+(d) |[[Assets]]| expands to the URL of the directory into which plugin
+assets such as images are placed.
 
 @ The |template-index.html| file has access to additional placeholders
 enabling it to generate contents pages:

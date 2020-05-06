@@ -366,19 +366,40 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	filename *F = Filenames::in(
 		Pathnames::down(hrs->wv->weave_web->md->path_to_web, I"Downloads"),
 		C->download_name);
-	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-		hrs->wv->pattern, hrs->wv->weave_to);
-	HTML_OPEN_WITH("p", "class=\"center-p\"");
-	WRITE("Download: ");
-	TEMPORARY_TEXT(url);
-	Pathnames::relative_URL(url, Filenames::up(hrs->wv->weave_to), Filenames::up(F));
-	WRITE_TO(url, "%S", Filenames::get_leafname(F));
-	HTML::begin_download_link(OUT, url);
-	WRITE("%S", C->download_name);
-	HTML::end_link(OUT);
-	DISCARD_TEXT(url);
-	HTML_CLOSE("p");
-	WRITE("\n");
+	filename *TF = Patterns::find_file_in_subdirectory(hrs->wv->pattern, I"Embedding",
+		I"Download.html");
+	if (TF == NULL) {
+		Main::error_in_web(I"Downloads are not supported", hrs->wv->current_weave_line);
+	} else {
+		Swarm::ensure_plugin(hrs->wv, I"Downloads");
+		Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
+			hrs->wv->pattern, hrs->wv->weave_to);
+		TEMPORARY_TEXT(url);
+		TEMPORARY_TEXT(size);
+		Pathnames::relative_URL(url, Filenames::up(hrs->wv->weave_to), Filenames::up(F));
+		WRITE_TO(url, "%S", Filenames::get_leafname(F));
+		int N = Filenames::size(F);
+		if (N > 0) @<Describe the file size@>
+		else Main::error_in_web(I"Download file missing or empty",
+				hrs->wv->current_weave_line);
+		Bibliographic::set_datum(hrs->wv->weave_web->md, I"File Name", C->download_name);
+		Bibliographic::set_datum(hrs->wv->weave_web->md, I"File URL", url);
+		Bibliographic::set_datum(hrs->wv->weave_web->md, I"File Details", size);
+		Collater::for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern,
+			TF, hrs->into_file);
+		WRITE("\n");
+		DISCARD_TEXT(url);
+		DISCARD_TEXT(size);
+	}
+
+@<Describe the file size@> =
+	WRITE_TO(size, " (");
+	if (Str::len(C->filetype) > 0) WRITE_TO(size, "%S, ", C->filetype);
+	if (N < 1024) WRITE_TO(size, "%d byte%s", N, (N!=1)?"s":"");
+	else if (N < 1024*1024) WRITE_TO(size, "%dkB", N/1024);
+	else if (N < 1024*1024*1024) WRITE_TO(size, "%dMB", N/1024/1024);
+	else WRITE_TO(size, "%dGB", N/1024/1024/1024);
+	WRITE_TO(size, ")");
 
 @<Render material@> =
 	weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
