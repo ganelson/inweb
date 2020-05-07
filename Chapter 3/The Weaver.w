@@ -294,17 +294,17 @@ at us; but we don't weave them into the output, that's for sure.
 
 @<Weave a figure@> =
 	int w, h;
-	text_stream *figname = Weaver::dimensions(L->text_operand, &w, &h, L);
+	text_stream *figname = Parser::dimensions(L->text_operand, &w, &h, L);
 	Trees::make_child(WeaveTree::figure(tree, figname, w, h), state->ap);
 
 @<Weave an audio clip@> =
 	int w, h;
-	text_stream *figname = Weaver::dimensions(L->text_operand, &w, &h, L);
+	text_stream *figname = Parser::dimensions(L->text_operand, &w, &h, L);
 	Trees::make_child(WeaveTree::audio(tree, figname, w), state->ap);
 
 @<Weave a video clip@> =
 	int w, h;
-	text_stream *figname = Weaver::dimensions(L->text_operand, &w, &h, L);
+	text_stream *figname = Parser::dimensions(L->text_operand, &w, &h, L);
 	Trees::make_child(WeaveTree::video(tree, figname, w, h), state->ap);
 
 @<Weave a download@> =
@@ -313,7 +313,7 @@ at us; but we don't weave them into the output, that's for sure.
 
 @<Weave an embed@> =
 	int w, h;
-	text_stream *ID = Weaver::dimensions(L->text_operand2, &w, &h, L);
+	text_stream *ID = Parser::dimensions(L->text_operand2, &w, &h, L);
 	Trees::make_child(WeaveTree::embed(tree, L->text_operand, ID, w, h), state->ap);
 
 @<Weave a carousel@> =
@@ -426,7 +426,7 @@ of the original, this is still quite typographically complex: commentary
 and macro usage is rendered differently.
 
 @<Weave verbatim matter in code style@> =
-	@<Enter beginlines/endlines mode if necessary@>;
+	@<Change material if necessary@>;
 	@<Weave a blank line as a thin vertical skip@>;
 
 	Str::rectify_indentation(matter, 4);
@@ -444,24 +444,22 @@ and macro usage is rendered differently.
 
 	@<Offer the line to the language to weave@>;
 
+	@<Find macro usages and adjust syntax colouring accordingly@>;
 	TEMPORARY_TEXT(colouring);
 	LanguageMethods::syntax_colour(S->sect_language, wv, L, matter, colouring);
-
-	@<Find macro usages and adjust syntax colouring accordingly@>;
 	TextWeaver::source_code(tree, CL, matter, colouring, L->enable_hyperlinks);
+	DISCARD_TEXT(colouring);
+
 	if (Str::len(concluding_comment) > 0)
 		TextWeaver::comment_text_in_code(tree, CL, concluding_comment);
-
-	DISCARD_TEXT(colouring);
 	DISCARD_TEXT(concluding_comment);
 	DISCARD_TEXT(prefatory);
 	
 	ClumsyLabel: ;
 
-@ Code is typeset between the |\beginlines| and |\endlines| macros in TeX,
-hence the name of the following paragraph:
+@ We're not in Kansas any more, so:
 
-@<Enter beginlines/endlines mode if necessary@> =
+@<Change material if necessary@> =
 	if (state->kind_of_material != CODE_MATERIAL) {
 		int will_be = CODE_MATERIAL;
 		if (L->category == MACRO_DEFINITION_LCAT)
@@ -480,8 +478,8 @@ hence the name of the following paragraph:
 		state->line_break_pending = FALSE;
 	}
 
-@ A blank line is typeset as a thin vertical skip (no TeX paragraph break
-is needed):
+@ A blank line is implemented differently in different formats, so it gets
+a node of its own, a vskip:
 
 @<Weave a blank line as a thin vertical skip@> =
 	if (state->line_break_pending) {
@@ -493,9 +491,8 @@ is needed):
 		goto ClumsyLabel;
 	}
 
-@ Comments which run to the end of a line are set in italic type. If the
-only item on their lines, they are presented at the code tab stop;
-otherwise, they are set flush right.
+@ Comments which run to the end of a line can be set in italic type, for
+example, or flush left.
 
 @<Extract any comment matter ending the line to be set in italic@> =
 	TEMPORARY_TEXT(part_before_comment);
@@ -544,30 +541,16 @@ otherwise, they are set flush right.
 		para_macro *pmac = Macros::find_by_name(mr.exp[1], S);
 		if (pmac) {
 			TEMPORARY_TEXT(front_colouring);
-			Str::substr(front_colouring, Str::at(colouring, 0), Str::at(colouring, Str::len(mr.exp[0])));
+			LanguageMethods::syntax_colour(S->sect_language, wv, L, mr.exp[0], front_colouring);
 			TextWeaver::source_code(tree, CL, mr.exp[0], front_colouring, L->enable_hyperlinks);
 			DISCARD_TEXT(front_colouring);
 			Str::copy(matter, mr.exp[2]);
-			int N = Str::len(matter);
-			TEMPORARY_TEXT(back_colouring);
-			Str::substr(back_colouring,
-				Str::at(colouring, Str::len(colouring) - N), Str::at(colouring, Str::len(colouring)));
-			Str::clear(colouring);
-			Str::copy(colouring, back_colouring);
-			DISCARD_TEXT(back_colouring);
-			if (Str::len(concluding_comment) > 0)
-				TextWeaver::comment_text_in_code(tree, CL, concluding_comment);
 			int defn = (L->owning_paragraph == pmac->defining_paragraph)?TRUE:FALSE;
-			if (defn) {
-				Str::clear(matter);
-				Str::clear(colouring);
-				Painter::reset_syntax_colouring(S->sect_language);
-			}
+			if (defn) Str::clear(matter);
 			Trees::make_child(WeaveTree::pmac(tree, pmac, defn), CL);
 		} else break;
 	}
 	Regexp::dispose_of(&mr);
-
 
 @h Endnotes.
 The endnotes describe function calls from far away, or unexpected
@@ -772,53 +755,6 @@ void Weaver::figure(heterogeneous_tree *tree, weave_order *wv,
 void Weaver::commentary_text(heterogeneous_tree *tree, weave_order *wv,
 	tree_node *ap, text_stream *matter) {
 	TextWeaver::commentary_text(tree, ap, matter);
-}
-
-@
-
-@d POINTS_PER_CM 72
-
-=
-text_stream *Weaver::dimensions(text_stream *item, int *w, int *h, source_line *L) {
-	int sv = L->owning_section->md->using_syntax;
-	*w = -1; *h = -1;
-	text_stream *use = item;
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, item, L"(%c+) at (%d+) by (%d+)")) {
-		if (sv < V2_SYNTAX)
-			Parser::wrong_version(sv, L, "at X by Y", V2_SYNTAX);
-		*w = Str::atoi(mr.exp[1], 0);
-		*h = Str::atoi(mr.exp[2], 0);
-		use = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, item, L"(%c+) at height (%d+)")) {
-		if (sv < V2_SYNTAX)
-			Parser::wrong_version(sv, L, "at height Y", V2_SYNTAX);
-		*h = Str::atoi(mr.exp[1], 0);
-		use = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, item, L"(%c+) at width (%d+)")) {
-		if (sv < V2_SYNTAX)
-			Parser::wrong_version(sv, L, "at width Y", V2_SYNTAX);
-		*w = Str::atoi(mr.exp[1], 0);
-		use = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, item, L"(%c+) at (%d+)cm by (%d+)cm")) {
-		if (sv < V2_SYNTAX)
-			Parser::wrong_version(sv, L, "at Xcm by Ycm", V2_SYNTAX);
-		*w = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
-		*h = POINTS_PER_CM*Str::atoi(mr.exp[2], 0);
-		use = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, item, L"(%c+) at height (%d+)cm")) {
-		if (sv < V2_SYNTAX)
-			Parser::wrong_version(sv, L, "at height Ycm", V2_SYNTAX);
-		*h = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
-		use = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, item, L"(%c+) at width (%d+)cm")) {
-		if (sv < V2_SYNTAX)
-			Parser::wrong_version(sv, L, "at width Ycm", V2_SYNTAX);
-		*w = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
-		use = Str::duplicate(mr.exp[0]);
-	}
-	Regexp::dispose_of(&mr);
-	return use;
 }
 
 @h Section tables of contents.

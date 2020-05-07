@@ -897,6 +897,7 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define TAG_CMD 13
 #define ORDINARY_WEIGHT 0 /* an ordinary paragraph has this "weight" */
 #define SUBHEADING_WEIGHT 1 /* a heading paragraph */
+#define POINTS_PER_CM 72
 #define BASIC_SECTIONCAT 1
 #define STRUCTURES_SECTIONCAT 2
 #define FUNCTIONS_SECTIONCAT 3
@@ -922,7 +923,6 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define CODE_MATERIAL 4
 #define ENDNOTES_MATERIAL 5
 #define FOOTNOTES_MATERIAL 6
-#define POINTS_PER_CM 72
 #define LOOP_OVER_PARAGRAPHS(C, S, T, P)\
     	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)\
     		LOOP_OVER_LINKED_LIST(S, section, C->sections)\
@@ -3645,7 +3645,9 @@ text_stream * Parser__extract_purpose(text_stream *prologue, source_line *XL, se
 int  Parser__detect_footnote(web *W, text_stream *matter, text_stream *before, 	text_stream *cue, text_stream *after) ;
 #line 940 "inweb/Chapter 2/The Parser.w"
 footnote * Parser__find_footnote_in_para(paragraph *P, text_stream *cue) ;
-#line 956 "inweb/Chapter 2/The Parser.w"
+#line 957 "inweb/Chapter 2/The Parser.w"
+text_stream * Parser__dimensions(text_stream *item, int *w, int *h, source_line *L) ;
+#line 1005 "inweb/Chapter 2/The Parser.w"
 void  Parser__wrong_version(int using, source_line *L, char *feature, int need) ;
 #line 20 "inweb/Chapter 2/Paragraph Macros.w"
 para_macro * Macros__create(section *S, paragraph *P, source_line *L, text_stream *name) ;
@@ -3741,23 +3743,21 @@ int  Collater__cmp_owners(text_stream *O1, text_stream *O2) ;
 int  Weaver__weave(weave_order *wv) ;
 #line 42 "inweb/Chapter 3/The Weaver.w"
 int  Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *body) ;
-#line 577 "inweb/Chapter 3/The Weaver.w"
+#line 560 "inweb/Chapter 3/The Weaver.w"
 void  Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree, 	weave_order *wv, tree_node *ap, paragraph *P) ;
-#line 675 "inweb/Chapter 3/The Weaver.w"
+#line 658 "inweb/Chapter 3/The Weaver.w"
 void  Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv, 	tree_node *ap, paragraph *P, language_function *fn, int as_list) ;
-#line 740 "inweb/Chapter 3/The Weaver.w"
+#line 723 "inweb/Chapter 3/The Weaver.w"
 void  Weaver__weave_subheading(heterogeneous_tree *tree, weave_order *wv, 	tree_node *ap, text_stream *text) ;
-#line 746 "inweb/Chapter 3/The Weaver.w"
+#line 729 "inweb/Chapter 3/The Weaver.w"
 void  Weaver__change_material(heterogeneous_tree *tree, 	weaver_state *state, int new_material, int plainly, programming_language *pl) ;
-#line 758 "inweb/Chapter 3/The Weaver.w"
+#line 741 "inweb/Chapter 3/The Weaver.w"
 void  Weaver__change_material_for_para(heterogeneous_tree *tree, weaver_state *state) ;
-#line 766 "inweb/Chapter 3/The Weaver.w"
+#line 749 "inweb/Chapter 3/The Weaver.w"
 void  Weaver__figure(heterogeneous_tree *tree, weave_order *wv, 	tree_node *ap, text_stream *figname, int w, int h) ;
-#line 772 "inweb/Chapter 3/The Weaver.w"
+#line 755 "inweb/Chapter 3/The Weaver.w"
 void  Weaver__commentary_text(heterogeneous_tree *tree, weave_order *wv, 	tree_node *ap, text_stream *matter) ;
-#line 782 "inweb/Chapter 3/The Weaver.w"
-text_stream * Weaver__dimensions(text_stream *item, int *w, int *h, source_line *L) ;
-#line 829 "inweb/Chapter 3/The Weaver.w"
+#line 765 "inweb/Chapter 3/The Weaver.w"
 int  Weaver__weave_table_of_contents(heterogeneous_tree *tree, 	tree_node *ap, section *S) ;
 #line 12 "inweb/Chapter 3/The Weaver of Text.w"
 void  TextWeaver__commentary_text(heterogeneous_tree *tree, tree_node *ap, text_stream *matter) ;
@@ -7973,11 +7973,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A38";
+			char *svn = "7-alpha.1+1A39";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "6 May 2020";
+			char *d = "7 May 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -17687,10 +17687,53 @@ footnote *Parser__find_footnote_in_para(paragraph *P, text_stream *cue) {
 	return NULL;
 }
 
-#line 956 "inweb/Chapter 2/The Parser.w"
+#line 957 "inweb/Chapter 2/The Parser.w"
+text_stream *Parser__dimensions(text_stream *item, int *w, int *h, source_line *L) {
+	int sv = L->owning_section->md->using_syntax;
+	*w = -1; *h = -1;
+	text_stream *use = item;
+	match_results mr = Regexp__create_mr();
+	if (Regexp__match(&mr, item, L"(%c+) at (%d+) by (%d+)")) {
+		if (sv < V2_SYNTAX)
+			Parser__wrong_version(sv, L, "at X by Y", V2_SYNTAX);
+		*w = Str__atoi(mr.exp[1], 0);
+		*h = Str__atoi(mr.exp[2], 0);
+		use = Str__duplicate(mr.exp[0]);
+	} else if (Regexp__match(&mr, item, L"(%c+) at height (%d+)")) {
+		if (sv < V2_SYNTAX)
+			Parser__wrong_version(sv, L, "at height Y", V2_SYNTAX);
+		*h = Str__atoi(mr.exp[1], 0);
+		use = Str__duplicate(mr.exp[0]);
+	} else if (Regexp__match(&mr, item, L"(%c+) at width (%d+)")) {
+		if (sv < V2_SYNTAX)
+			Parser__wrong_version(sv, L, "at width Y", V2_SYNTAX);
+		*w = Str__atoi(mr.exp[1], 0);
+		use = Str__duplicate(mr.exp[0]);
+	} else if (Regexp__match(&mr, item, L"(%c+) at (%d+)cm by (%d+)cm")) {
+		if (sv < V2_SYNTAX)
+			Parser__wrong_version(sv, L, "at Xcm by Ycm", V2_SYNTAX);
+		*w = POINTS_PER_CM*Str__atoi(mr.exp[1], 0);
+		*h = POINTS_PER_CM*Str__atoi(mr.exp[2], 0);
+		use = Str__duplicate(mr.exp[0]);
+	} else if (Regexp__match(&mr, item, L"(%c+) at height (%d+)cm")) {
+		if (sv < V2_SYNTAX)
+			Parser__wrong_version(sv, L, "at height Ycm", V2_SYNTAX);
+		*h = POINTS_PER_CM*Str__atoi(mr.exp[1], 0);
+		use = Str__duplicate(mr.exp[0]);
+	} else if (Regexp__match(&mr, item, L"(%c+) at width (%d+)cm")) {
+		if (sv < V2_SYNTAX)
+			Parser__wrong_version(sv, L, "at width Ycm", V2_SYNTAX);
+		*w = POINTS_PER_CM*Str__atoi(mr.exp[1], 0);
+		use = Str__duplicate(mr.exp[0]);
+	}
+	Regexp__dispose_of(&mr);
+	return use;
+}
+
+#line 1005 "inweb/Chapter 2/The Parser.w"
 void Parser__wrong_version(int using, source_line *L, char *feature, int need) {
 	TEMPORARY_TEXT(warning);
-	WRITE_TO(warning, "%s is a feature available only in version %d syntax (you're using version %d)",
+	WRITE_TO(warning, "%s is a feature of version %d syntax (you're using v%d)",
 		feature, need, using);
 	Main__error_in_web(warning, L);
 	DISCARD_TEXT(warning);
@@ -19654,7 +19697,7 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 {
 #line 296 "inweb/Chapter 3/The Weaver.w"
 	int w, h;
-	text_stream *figname = Weaver__dimensions(L->text_operand, &w, &h, L);
+	text_stream *figname = Parser__dimensions(L->text_operand, &w, &h, L);
 	Trees__make_child(WeaveTree__figure(tree, figname, w, h), state->ap);
 
 }
@@ -19664,7 +19707,7 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 {
 #line 301 "inweb/Chapter 3/The Weaver.w"
 	int w, h;
-	text_stream *figname = Weaver__dimensions(L->text_operand, &w, &h, L);
+	text_stream *figname = Parser__dimensions(L->text_operand, &w, &h, L);
 	Trees__make_child(WeaveTree__audio(tree, figname, w), state->ap);
 
 }
@@ -19674,7 +19717,7 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 {
 #line 306 "inweb/Chapter 3/The Weaver.w"
 	int w, h;
-	text_stream *figname = Weaver__dimensions(L->text_operand, &w, &h, L);
+	text_stream *figname = Parser__dimensions(L->text_operand, &w, &h, L);
 	Trees__make_child(WeaveTree__video(tree, figname, w, h), state->ap);
 
 }
@@ -19693,7 +19736,7 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 {
 #line 315 "inweb/Chapter 3/The Weaver.w"
 	int w, h;
-	text_stream *ID = Weaver__dimensions(L->text_operand2, &w, &h, L);
+	text_stream *ID = Parser__dimensions(L->text_operand2, &w, &h, L);
 	Trees__make_child(WeaveTree__embed(tree, L->text_operand, ID, w, h), state->ap);
 
 }
@@ -19883,7 +19926,7 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 #line 429 "inweb/Chapter 3/The Weaver.w"
 	
 {
-#line 465 "inweb/Chapter 3/The Weaver.w"
+#line 463 "inweb/Chapter 3/The Weaver.w"
 	if (state->kind_of_material != CODE_MATERIAL) {
 		int will_be = CODE_MATERIAL;
 		if (L->category == MACRO_DEFINITION_LCAT)
@@ -19907,7 +19950,7 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 ;
 	
 {
-#line 487 "inweb/Chapter 3/The Weaver.w"
+#line 485 "inweb/Chapter 3/The Weaver.w"
 	if (state->line_break_pending) {
 		Trees__make_child(WeaveTree__vskip(tree, FALSE), state->ap);
 		state->line_break_pending = FALSE;
@@ -19927,7 +19970,7 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 	TEMPORARY_TEXT(concluding_comment);
 	
 {
-#line 501 "inweb/Chapter 3/The Weaver.w"
+#line 498 "inweb/Chapter 3/The Weaver.w"
 	TEMPORARY_TEXT(part_before_comment);
 	TEMPORARY_TEXT(part_within_comment);
 	programming_language *pl = S->sect_language;
@@ -19945,7 +19988,7 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 ;
 	
 {
-#line 516 "inweb/Chapter 3/The Weaver.w"
+#line 513 "inweb/Chapter 3/The Weaver.w"
 	if (L->category == BEGIN_DEFINITION_LCAT) {
 		match_results mr = Regexp__create_mr();
 		if ((Regexp__match(&mr, matter, L"@d (%c*)")) ||
@@ -19972,7 +20015,7 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 
 	
 {
-#line 531 "inweb/Chapter 3/The Weaver.w"
+#line 528 "inweb/Chapter 3/The Weaver.w"
 	TEMPORARY_TEXT(OUT);
 	int taken = LanguageMethods__weave_code_line(OUT, S->sect_language, wv,
 		W, C, S, L, matter, concluding_comment);
@@ -19987,50 +20030,35 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 #line 445 "inweb/Chapter 3/The Weaver.w"
 ;
 
-	TEMPORARY_TEXT(colouring);
-	LanguageMethods__syntax_colour(S->sect_language, wv, L, matter, colouring);
-
 	
 {
-#line 542 "inweb/Chapter 3/The Weaver.w"
+#line 539 "inweb/Chapter 3/The Weaver.w"
 	match_results mr = Regexp__create_mr();
 	while (Regexp__match(&mr, matter, L"(%c*?)%@%<(%c*?)%@%>(%c*)")) {
 		para_macro *pmac = Macros__find_by_name(mr.exp[1], S);
 		if (pmac) {
 			TEMPORARY_TEXT(front_colouring);
-			Str__substr(front_colouring, Str__at(colouring, 0), Str__at(colouring, Str__len(mr.exp[0])));
+			LanguageMethods__syntax_colour(S->sect_language, wv, L, mr.exp[0], front_colouring);
 			TextWeaver__source_code(tree, CL, mr.exp[0], front_colouring, L->enable_hyperlinks);
 			DISCARD_TEXT(front_colouring);
 			Str__copy(matter, mr.exp[2]);
-			int N = Str__len(matter);
-			TEMPORARY_TEXT(back_colouring);
-			Str__substr(back_colouring,
-				Str__at(colouring, Str__len(colouring) - N), Str__at(colouring, Str__len(colouring)));
-			Str__clear(colouring);
-			Str__copy(colouring, back_colouring);
-			DISCARD_TEXT(back_colouring);
-			if (Str__len(concluding_comment) > 0)
-				TextWeaver__comment_text_in_code(tree, CL, concluding_comment);
 			int defn = (L->owning_paragraph == pmac->defining_paragraph)?TRUE:FALSE;
-			if (defn) {
-				Str__clear(matter);
-				Str__clear(colouring);
-				Painter__reset_syntax_colouring(S->sect_language);
-			}
+			if (defn) Str__clear(matter);
 			Trees__make_child(WeaveTree__pmac(tree, pmac, defn), CL);
 		} else break;
 	}
 	Regexp__dispose_of(&mr);
 
-
 }
-#line 450 "inweb/Chapter 3/The Weaver.w"
+#line 447 "inweb/Chapter 3/The Weaver.w"
 ;
+	TEMPORARY_TEXT(colouring);
+	LanguageMethods__syntax_colour(S->sect_language, wv, L, matter, colouring);
 	TextWeaver__source_code(tree, CL, matter, colouring, L->enable_hyperlinks);
+	DISCARD_TEXT(colouring);
+
 	if (Str__len(concluding_comment) > 0)
 		TextWeaver__comment_text_in_code(tree, CL, concluding_comment);
-
-	DISCARD_TEXT(colouring);
 	DISCARD_TEXT(concluding_comment);
 	DISCARD_TEXT(prefatory);
 
@@ -20092,7 +20120,7 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 
 #line 127 "inweb/Chapter 3/The Weaver.w"
 
-#line 577 "inweb/Chapter 3/The Weaver.w"
+#line 560 "inweb/Chapter 3/The Weaver.w"
 void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	weave_order *wv, tree_node *ap, paragraph *P) {
 	tree_node *body = ap;
@@ -20100,7 +20128,7 @@ void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	if (P->defines_macro)
 		
 {
-#line 592 "inweb/Chapter 3/The Weaver.w"
+#line 575 "inweb/Chapter 3/The Weaver.w"
 	tree_node *E = WeaveTree__endnote(tree);
 	Trees__make_child(E, body); ap = E;
 	TextWeaver__commentary_text(tree, ap, TL_IS_242);
@@ -20140,24 +20168,24 @@ void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	TextWeaver__commentary_text(tree, ap, TL_IS_251);
 
 }
-#line 582 "inweb/Chapter 3/The Weaver.w"
+#line 565 "inweb/Chapter 3/The Weaver.w"
 ;
 	language_function *fn;
 	LOOP_OVER_LINKED_LIST(fn, language_function, P->functions)
 		
 {
-#line 631 "inweb/Chapter 3/The Weaver.w"
+#line 614 "inweb/Chapter 3/The Weaver.w"
 	if (fn->usage_described == FALSE)
 		Weaver__show_function_usage(tree, wv, ap, P, fn, FALSE);
 
 }
-#line 585 "inweb/Chapter 3/The Weaver.w"
+#line 568 "inweb/Chapter 3/The Weaver.w"
 ;
 	language_type *st;
 	LOOP_OVER_LINKED_LIST(st, language_type, P->structures)
 		
 {
-#line 635 "inweb/Chapter 3/The Weaver.w"
+#line 618 "inweb/Chapter 3/The Weaver.w"
 	tree_node *E = WeaveTree__endnote(tree);
 	Trees__make_child(E, body); ap = E;
 	TextWeaver__commentary_text(tree, ap, TL_IS_252);
@@ -20198,11 +20226,11 @@ void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	TextWeaver__commentary_text(tree, ap, TL_IS_257);
 
 }
-#line 588 "inweb/Chapter 3/The Weaver.w"
+#line 571 "inweb/Chapter 3/The Weaver.w"
 ;
 }
 
-#line 675 "inweb/Chapter 3/The Weaver.w"
+#line 658 "inweb/Chapter 3/The Weaver.w"
 void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 	tree_node *ap, paragraph *P, language_function *fn, int as_list) {
 	tree_node *body = ap;
@@ -20225,7 +20253,7 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 			(P->under_section == hteu->usage_recorded_at->under_section))
 			
 {
-#line 714 "inweb/Chapter 3/The Weaver.w"
+#line 697 "inweb/Chapter 3/The Weaver.w"
 	if (as_list == FALSE) {
 		if (used_flag == FALSE) TextWeaver__commentary_text(tree, ap, TL_IS_263);
 	}
@@ -20250,13 +20278,13 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 	last_cited_in = hteu->usage_recorded_at->under_section;
 
 }
-#line 695 "inweb/Chapter 3/The Weaver.w"
+#line 678 "inweb/Chapter 3/The Weaver.w"
 ;
 	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
 		if (P->under_section != hteu->usage_recorded_at->under_section)
 			
 {
-#line 714 "inweb/Chapter 3/The Weaver.w"
+#line 697 "inweb/Chapter 3/The Weaver.w"
 	if (as_list == FALSE) {
 		if (used_flag == FALSE) TextWeaver__commentary_text(tree, ap, TL_IS_263);
 	}
@@ -20281,7 +20309,7 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 	last_cited_in = hteu->usage_recorded_at->under_section;
 
 }
-#line 698 "inweb/Chapter 3/The Weaver.w"
+#line 681 "inweb/Chapter 3/The Weaver.w"
 ;
 	if (used_flag == FALSE) {
 		if (as_list == FALSE) {
@@ -20297,7 +20325,7 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 	}
 }
 
-#line 740 "inweb/Chapter 3/The Weaver.w"
+#line 723 "inweb/Chapter 3/The Weaver.w"
 void Weaver__weave_subheading(heterogeneous_tree *tree, weave_order *wv,
 	tree_node *ap, text_stream *text) {
 	tree_node *D = WeaveTree__subheading(tree, text);
@@ -20335,50 +20363,7 @@ void Weaver__commentary_text(heterogeneous_tree *tree, weave_order *wv,
 	TextWeaver__commentary_text(tree, ap, matter);
 }
 
-#line 782 "inweb/Chapter 3/The Weaver.w"
-text_stream *Weaver__dimensions(text_stream *item, int *w, int *h, source_line *L) {
-	int sv = L->owning_section->md->using_syntax;
-	*w = -1; *h = -1;
-	text_stream *use = item;
-	match_results mr = Regexp__create_mr();
-	if (Regexp__match(&mr, item, L"(%c+) at (%d+) by (%d+)")) {
-		if (sv < V2_SYNTAX)
-			Parser__wrong_version(sv, L, "at X by Y", V2_SYNTAX);
-		*w = Str__atoi(mr.exp[1], 0);
-		*h = Str__atoi(mr.exp[2], 0);
-		use = Str__duplicate(mr.exp[0]);
-	} else if (Regexp__match(&mr, item, L"(%c+) at height (%d+)")) {
-		if (sv < V2_SYNTAX)
-			Parser__wrong_version(sv, L, "at height Y", V2_SYNTAX);
-		*h = Str__atoi(mr.exp[1], 0);
-		use = Str__duplicate(mr.exp[0]);
-	} else if (Regexp__match(&mr, item, L"(%c+) at width (%d+)")) {
-		if (sv < V2_SYNTAX)
-			Parser__wrong_version(sv, L, "at width Y", V2_SYNTAX);
-		*w = Str__atoi(mr.exp[1], 0);
-		use = Str__duplicate(mr.exp[0]);
-	} else if (Regexp__match(&mr, item, L"(%c+) at (%d+)cm by (%d+)cm")) {
-		if (sv < V2_SYNTAX)
-			Parser__wrong_version(sv, L, "at Xcm by Ycm", V2_SYNTAX);
-		*w = POINTS_PER_CM*Str__atoi(mr.exp[1], 0);
-		*h = POINTS_PER_CM*Str__atoi(mr.exp[2], 0);
-		use = Str__duplicate(mr.exp[0]);
-	} else if (Regexp__match(&mr, item, L"(%c+) at height (%d+)cm")) {
-		if (sv < V2_SYNTAX)
-			Parser__wrong_version(sv, L, "at height Ycm", V2_SYNTAX);
-		*h = POINTS_PER_CM*Str__atoi(mr.exp[1], 0);
-		use = Str__duplicate(mr.exp[0]);
-	} else if (Regexp__match(&mr, item, L"(%c+) at width (%d+)cm")) {
-		if (sv < V2_SYNTAX)
-			Parser__wrong_version(sv, L, "at width Ycm", V2_SYNTAX);
-		*w = POINTS_PER_CM*Str__atoi(mr.exp[1], 0);
-		use = Str__duplicate(mr.exp[0]);
-	}
-	Regexp__dispose_of(&mr);
-	return use;
-}
-
-#line 829 "inweb/Chapter 3/The Weaver.w"
+#line 765 "inweb/Chapter 3/The Weaver.w"
 int Weaver__weave_table_of_contents(heterogeneous_tree *tree,
 	tree_node *ap, section *S) {
 	int noteworthy = 0;

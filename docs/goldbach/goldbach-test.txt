@@ -74,10 +74,10 @@ document weave order 0
                           _pppppppp_
               pmac <Solve Goldbach's conjecture for i>
               source_code <;>
-                          _c_
+                          _p_
             code line
               source_code <}>
-                          _c_
+                          _p_
         paragraph P2.1
           material discussion
             commentary <This ought to print:\n>

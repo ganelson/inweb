@@ -1,6 +1,6 @@
 # Inweb 7
 
-v7-alpha.1+1A38 'Escape to Danger' (6 May 2020)
+v7-alpha.1+1A39 'Escape to Danger' (7 May 2020)
 
 ## About Inweb
 

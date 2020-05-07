@@ -947,6 +947,55 @@ footnote *Parser::find_footnote_in_para(paragraph *P, text_stream *cue) {
 	return NULL;
 }
 
+@h Parsing of dimensions.
+It's possible, optionally, to specify width and height for some visual matter.
+This is the syntax used.
+
+@d POINTS_PER_CM 72
+
+=
+text_stream *Parser::dimensions(text_stream *item, int *w, int *h, source_line *L) {
+	int sv = L->owning_section->md->using_syntax;
+	*w = -1; *h = -1;
+	text_stream *use = item;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, item, L"(%c+) at (%d+) by (%d+)")) {
+		if (sv < V2_SYNTAX)
+			Parser::wrong_version(sv, L, "at X by Y", V2_SYNTAX);
+		*w = Str::atoi(mr.exp[1], 0);
+		*h = Str::atoi(mr.exp[2], 0);
+		use = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, item, L"(%c+) at height (%d+)")) {
+		if (sv < V2_SYNTAX)
+			Parser::wrong_version(sv, L, "at height Y", V2_SYNTAX);
+		*h = Str::atoi(mr.exp[1], 0);
+		use = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, item, L"(%c+) at width (%d+)")) {
+		if (sv < V2_SYNTAX)
+			Parser::wrong_version(sv, L, "at width Y", V2_SYNTAX);
+		*w = Str::atoi(mr.exp[1], 0);
+		use = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, item, L"(%c+) at (%d+)cm by (%d+)cm")) {
+		if (sv < V2_SYNTAX)
+			Parser::wrong_version(sv, L, "at Xcm by Ycm", V2_SYNTAX);
+		*w = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
+		*h = POINTS_PER_CM*Str::atoi(mr.exp[2], 0);
+		use = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, item, L"(%c+) at height (%d+)cm")) {
+		if (sv < V2_SYNTAX)
+			Parser::wrong_version(sv, L, "at height Ycm", V2_SYNTAX);
+		*h = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
+		use = Str::duplicate(mr.exp[0]);
+	} else if (Regexp::match(&mr, item, L"(%c+) at width (%d+)cm")) {
+		if (sv < V2_SYNTAX)
+			Parser::wrong_version(sv, L, "at width Ycm", V2_SYNTAX);
+		*w = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
+		use = Str::duplicate(mr.exp[0]);
+	}
+	Regexp::dispose_of(&mr);
+	return use;
+}
+
 @h Version errors.
 These are not fatal (why should they be?): Inweb carries on and allows the use
 of the feature despite the version mismatch. They nevertheless count as errors
@@ -955,7 +1004,7 @@ when it comes to Inweb's exit code, so they will halt a make.
 =
 void Parser::wrong_version(int using, source_line *L, char *feature, int need) {
 	TEMPORARY_TEXT(warning);
-	WRITE_TO(warning, "%s is a feature available only in version %d syntax (you're using version %d)",
+	WRITE_TO(warning, "%s is a feature of version %d syntax (you're using v%d)",
 		feature, need, using);
 	Main::error_in_web(warning, L);
 	DISCARD_TEXT(warning);
