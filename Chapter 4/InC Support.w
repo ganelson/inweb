@@ -214,11 +214,11 @@ then the text on the left goes into |text_operand| and the right into
 |text_operand2|, with the arrow itself (and white space around it) cut out.
 
 @<Parse the subsequent lines as Preform grammar@> =
+	Tags::add_by_name(L->owning_paragraph, I"Preform");
 	source_line *AL;
 	for (AL = L; (AL) && (AL->category == CODE_BODY_LCAT); AL = AL->next_line) {
 		if (Regexp::string_is_white_space(AL->text)) break;
 		AL->category = PREFORM_GRAMMAR_LCAT;
-
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, AL->text, L"(%c+) ==> (%c*)")) {
 			AL->text_operand = Str::duplicate(mr.exp[0]);
@@ -841,7 +841,8 @@ assume.)
 @h Weaving.
 The following isn't a method, but is called by the weaver directly. It adds
 additional endnotes to the woven form of a paragraph which includes Preform
-nonterminal definitions:
+nonterminal definitions; it is meaningful only in the TeX format, and should
+probably be dropped.
 
 =
 void InCSupport::weave_grammar_index(OUTPUT_STREAM) {

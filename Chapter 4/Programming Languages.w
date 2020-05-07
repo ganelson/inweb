@@ -7,7 +7,8 @@ definitions from files.
 Programming languages are identified by name: for example, |C++| or |Perl|.
 
 @ =
-programming_language *Languages::find_by_name(text_stream *lname, web *W) {
+programming_language *Languages::find_by_name(text_stream *lname, web *W,
+	int error_if_not_found) {
 	programming_language *pl;
 	@<If this is the name of a language already known, return that@>;
 	@<Read the language definition file with this name@>;
@@ -30,9 +31,12 @@ programming_language *Languages::find_by_name(text_stream *lname, web *W) {
 	}
 	pathname *P = Languages::default_directory();
 	@<Try P@>;
-	if (F == NULL)
-		Errors::fatal_with_text(
-			"unsupported programming language '%S'", lname);
+	if (F == NULL) {
+		if (error_if_not_found)
+			Errors::fatal_with_text(
+				"unsupported programming language '%S'", lname);
+		return NULL;
+	}
 	pl = Languages::read_definition(F);
 
 @<Try P@> =
@@ -48,7 +52,7 @@ programming_language *Languages::find_by_name(text_stream *lname, web *W) {
 
 =
 programming_language *Languages::default(web *W) {
-	return Languages::find_by_name(I"C", W);
+	return Languages::find_by_name(I"C", W, TRUE);
 }
 
 void Languages::show(OUTPUT_STREAM) {

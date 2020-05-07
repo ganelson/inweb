@@ -474,6 +474,12 @@ and macro usage is rendered differently.
 		programming_language *pl = L->colour_as;
 		if (pl == NULL) pl = S->sect_language;
 		if (will_be != CODE_MATERIAL) pl = NULL;
+		theme_tag *T = Tags::find_by_name(I"Preform", FALSE);
+		if ((T) && (Tags::tagged_with(L->owning_paragraph, T))) {
+			programming_language *prepl =
+				Languages::find_by_name(I"Preform", wv->weave_web, FALSE);
+			if (prepl) pl = prepl;
+		}
 		Weaver::change_material(tree, state, will_be, L->plainer, pl);
 		state->line_break_pending = FALSE;
 	}
@@ -560,6 +566,9 @@ structure usage, or how |CWEB|-style code substitutions were made.
 void Weaver::show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	weave_order *wv, tree_node *ap, paragraph *P) {
 	tree_node *body = ap;
+	theme_tag *T = Tags::find_by_name(I"Preform", FALSE);
+	if ((T) && (Tags::tagged_with(P, T)))
+		@<Show endnote on use of Preform@>;
 	Tags::show_endnote_on_ifdefs(tree, ap, P);
 	if (P->defines_macro)
 		@<Show endnote on where paragraph macro is used@>;
@@ -570,6 +579,20 @@ void Weaver::show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	LOOP_OVER_LINKED_LIST(st, language_type, P->structures)
 		@<Show endnote on where this language type is accessed@>;
 }
+
+@<Show endnote on use of Preform@> =
+	tree_node *E = WeaveTree::endnote(tree);
+	Trees::make_child(E, body); ap = E;
+	TextWeaver::commentary_text(tree, ap, I"This is ");
+	TEMPORARY_TEXT(url);
+	int ext = FALSE;
+	if (Colonies::resolve_reference_in_weave(url, NULL, wv->weave_to, I"words: Preform",
+		wv->weave_web->md, NULL, &ext))
+		Trees::make_child(WeaveTree::url(tree, url, I"Preform grammar", ext), ap);
+	else
+		TextWeaver::commentary_text(tree, ap, I"Preform grammar");
+	DISCARD_TEXT(url);
+	TextWeaver::commentary_text(tree, ap, I", not regular C code.");	
 
 @<Show endnote on where paragraph macro is used@> =
 	tree_node *E = WeaveTree::endnote(tree);

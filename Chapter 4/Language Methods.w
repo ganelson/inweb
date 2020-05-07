@@ -374,6 +374,12 @@ int LanguageMethods::syntax_colour(programming_language *pl,
 	int rv = FALSE;
 	programming_language *colour_as = pl;
 	if (L->category == TEXT_EXTRACT_LCAT) colour_as = L->colour_as;
+	theme_tag *T = Tags::find_by_name(I"Preform", FALSE);
+	if ((T) && (Tags::tagged_with(L->owning_paragraph, T))) {
+		programming_language *prepl = Languages::find_by_name(I"Preform", wv->weave_web, FALSE);
+		if ((L->category == PREFORM_LCAT) || (L->category == PREFORM_GRAMMAR_LCAT))
+			if (prepl) colour_as = prepl;
+	}
 	if (colour_as)
 		IMETHOD_CALL(rv, colour_as, SYNTAX_COLOUR_WEA_MTID, wv, L,
 			matter, colouring);

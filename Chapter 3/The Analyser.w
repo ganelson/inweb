@@ -164,8 +164,10 @@ and then some C code to deal with a match. The code is subjected to analysis
 just as any other code would be.
 
 @<Perform analysis on productions in a Preform grammar@> =
-	Analyser::analyse_as_code(W, L, L->text_operand2, ANY_USAGE, 0);
-	Analyser::analyse_as_code(W, L, L->text_operand, PREFORM_IN_CODE_USAGE, PREFORM_IN_GRAMMAR_USAGE);
+	Analyser::analyse_as_code(W, L, L->text_operand2,
+		ANY_USAGE, 0);
+	Analyser::analyse_as_code(W, L, L->text_operand,
+		PREFORM_IN_CODE_USAGE, PREFORM_IN_GRAMMAR_USAGE);
 
 @h Identifier searching.
 Here's what we actually do, then. We take the code fragment |text|, drawn

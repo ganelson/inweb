@@ -1,0 +1,20 @@
+Name: "Preform"
+Details: "The internal Inform syntax analysis grammar language"
+Extension: ".preform"
+
+colouring {
+	matches of /\S+/ {
+		=> !constant
+		"::=" => !reserved
+		"|" => !reserved
+		"==>" => !reserved
+		"(" => !reserved
+		")" => !reserved
+		"..." => !reserved
+		"......" => !reserved
+		matching /<\S+>/ => !function
+	}
+    brackets in /.*?==>(.*)/ {
+        => !plain
+    }
+}
