@@ -89,5 +89,8 @@ colouring {
 				optionally spaced prefix -> => !element
 			}
 		}
+		matches of /<\S+>/ {
+			=> !function
+		}
 	}
 }
