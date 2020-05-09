@@ -214,8 +214,8 @@ int Regexp::match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 		if ((allow_partial) && (pattern[at.ppos] == 0)) break;
 		@<Parentheses in the match pattern set up substrings to extract@>;
 
-		int chcl, /* what class of characters to match: a |*_CLASS| value */
-			range_from, range_to, /* for |LITERAL_CLASS| only */
+		int chcl, /* what class of characters to match: a |*_CHARCLASS| value */
+			range_from, range_to, /* for |LITERAL_CHARCLASS| only */
 			reverse = FALSE; /* require a non-match rather than a match */
 		@<Extract the character class to match from the pattern@>;
 
@@ -265,7 +265,7 @@ int Regexp::match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 to implement numeric repetition counts, which we won't need:
 
 @<Extract repetition markers from the pattern@> =
-	if (chcl == WHITESPACE_CLASS) {
+	if (chcl == WHITESPACE_CHARCLASS) {
 		rep_from = 1; rep_to = Str::len(text)-at.tpos;
 	}
 	if (pattern[at.ppos] == '+') {
@@ -322,16 +322,16 @@ first of which is a literal close square; within a set, a hyphen makes a
 character range; an initial |^| negates the result; and otherwise everything
 is literal.
 
-@d ANY_CLASS 1
-@d DIGIT_CLASS 2
-@d WHITESPACE_CLASS 3
-@d NONWHITESPACE_CLASS 4
-@d IDENTIFIER_CLASS 5
-@d PREFORM_CLASS 6
-@d PREFORMC_CLASS 7
-@d LITERAL_CLASS 8
-@d TAB_CLASS 9
-@d QUOTE_CLASS 10
+@d ANY_CHARCLASS 1
+@d DIGIT_CHARCLASS 2
+@d WHITESPACE_CHARCLASS 3
+@d NONWHITESPACE_CHARCLASS 4
+@d IDENTIFIER_CHARCLASS 5
+@d PREFORM_CHARCLASS 6
+@d PREFORMC_CHARCLASS 7
+@d LITERAL_CHARCLASS 8
+@d TAB_CHARCLASS 9
+@d QUOTE_CHARCLASS 10
 
 =
 int Regexp::get_cclass(wchar_t *pattern, int ppos, int *len, int *from, int *to, int *reverse) {
@@ -341,46 +341,46 @@ int Regexp::get_cclass(wchar_t *pattern, int ppos, int *len, int *from, int *to,
 			ppos++;
 			*len = 2;
 			switch (pattern[ppos]) {
-				case 'd': return DIGIT_CLASS;
-				case 'c': return ANY_CLASS;
-				case 'C': return NONWHITESPACE_CLASS;
-				case 'i': return IDENTIFIER_CLASS;
-				case 'p': return PREFORM_CLASS;
-				case 'P': return PREFORMC_CLASS;
-				case 'q': return QUOTE_CLASS;
-				case 't': return TAB_CLASS;
+				case 'd': return DIGIT_CHARCLASS;
+				case 'c': return ANY_CHARCLASS;
+				case 'C': return NONWHITESPACE_CHARCLASS;
+				case 'i': return IDENTIFIER_CHARCLASS;
+				case 'p': return PREFORM_CHARCLASS;
+				case 'P': return PREFORMC_CHARCLASS;
+				case 'q': return QUOTE_CHARCLASS;
+				case 't': return TAB_CHARCLASS;
 			}
-			*from = ppos; *to = ppos; return LITERAL_CLASS;
+			*from = ppos; *to = ppos; return LITERAL_CHARCLASS;
 		case '[':
 			*from = ppos+1;
 			ppos += 2;
 			while ((pattern[ppos]) && (pattern[ppos] != ']')) ppos++;
 			*to = ppos - 1; *len = ppos - *from + 2;
-			return LITERAL_CLASS;
+			return LITERAL_CHARCLASS;
 		case ' ':
-			*len = 1; return WHITESPACE_CLASS;
+			*len = 1; return WHITESPACE_CHARCLASS;
 	}
-	*len = 1; *from = ppos; *to = ppos; return LITERAL_CLASS;
+	*len = 1; *from = ppos; *to = ppos; return LITERAL_CHARCLASS;
 }
 
 @ =
 int Regexp::test_cclass(int c, int chcl, int range_from, int range_to, wchar_t *drawn_from, int reverse) {
 	int match = FALSE;
 	switch (chcl) {
-		case ANY_CLASS: if (c) match = TRUE; break;
-		case DIGIT_CLASS: if (isdigit(c)) match = TRUE; break;
-		case WHITESPACE_CLASS: if (Characters::is_whitespace(c)) match = TRUE; break;
-		case TAB_CLASS: if (c == '\t') match = TRUE; break;
-		case NONWHITESPACE_CLASS: if (!(Characters::is_whitespace(c))) match = TRUE; break;
-		case QUOTE_CLASS: if (c != '\"') match = TRUE; break;
-		case IDENTIFIER_CLASS: if (Regexp::identifier_char(c)) match = TRUE; break;
-		case PREFORM_CLASS: if ((c == '-') || (c == '_') ||
+		case ANY_CHARCLASS: if (c) match = TRUE; break;
+		case DIGIT_CHARCLASS: if (isdigit(c)) match = TRUE; break;
+		case WHITESPACE_CHARCLASS: if (Characters::is_whitespace(c)) match = TRUE; break;
+		case TAB_CHARCLASS: if (c == '\t') match = TRUE; break;
+		case NONWHITESPACE_CHARCLASS: if (!(Characters::is_whitespace(c))) match = TRUE; break;
+		case QUOTE_CHARCLASS: if (c != '\"') match = TRUE; break;
+		case IDENTIFIER_CHARCLASS: if (Regexp::identifier_char(c)) match = TRUE; break;
+		case PREFORM_CHARCLASS: if ((c == '-') || (c == '_') ||
 			((c >= 'a') && (c <= 'z')) ||
 			((c >= '0') && (c <= '9'))) match = TRUE; break;
-		case PREFORMC_CLASS: if ((c == '-') || (c == '_') || (c == ':') ||
+		case PREFORMC_CHARCLASS: if ((c == '-') || (c == '_') || (c == ':') ||
 			((c >= 'a') && (c <= 'z')) ||
 			((c >= '0') && (c <= '9'))) match = TRUE; break;
-		case LITERAL_CLASS:
+		case LITERAL_CHARCLASS:
 			if ((range_to > range_from) && (drawn_from[range_from] == '^')) {
 				range_from++; reverse = reverse?FALSE:TRUE;
 			}

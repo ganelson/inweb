@@ -749,7 +749,7 @@ typedef struct paragraph {
 	struct linked_list *footnotes; /* of |footnote| */
 	struct source_line *first_line_in_paragraph;
 	struct section *under_section;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } paragraph;
 
 @<Create a new paragraph, starting here, as new current paragraph@> =
@@ -845,7 +845,7 @@ typedef struct footnote {
 	int footnote_text_number; /* used only for |FOOTNOTE_TEXT_LCAT| lines */
 	struct text_stream *cue_text;
 	int cued_already;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } footnote;
 
 @<Work out footnote numbering for this paragraph@> =

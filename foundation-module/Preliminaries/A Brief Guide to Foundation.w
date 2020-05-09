@@ -133,22 +133,23 @@ traditional null-terminated |char| and |wchar_t| arrays, but don't use these.
 Texts are just better.
 
 @h Objects.
-To a limited extent, Foundation enables C programs to have "objects" and
-"methods", and it makes use of that ability itself, too. For example,
-suppose we are writing a program to store recipes, and we want something
-in C which corresponds to objects of the class "recipe". We need to do three
-things:
+To a very limited extent, Foundation enables C programs to have "classes",
+"objects" and "methods", and it makes use of that ability itself, too. (See
+//Foundation Classes// for the list of classes made by //foundation//.) For
+example, suppose we are writing a program to store recipes, and we want
+something in C which corresponds to objects of the class |recipe|. We need to
+do three things:
 
-(1) Declare an enumerated constant ending |_MT| to represent this type in the
+1. Declare an enumerated constant ending |_CLASS| to represent this type in the
 memory manager, and then make a matching use of a macro to define some associated
 functions, which we never see or think about. For example:
 = (text as Inweb)
 	@ Here are my classes...
 	
-	@e recipe_MT
+	@e recipe_CLASS
 	
 	=
-	ALLOCATE_INDIVIDUALLY(recipe)
+	DECLARE_CLASS(recipe)
 =
 The mention of "individually" is because this is for data structures where
 we expect to have relatively few instances. If we expect to have huge numbers
@@ -156,28 +157,28 @@ of throwaway instances, we would instead write:
 = (text as Inweb)
 	@ Here are my classes...
 	
-	@e salt_grain_array_MT
+	@e salt_grain_array_CLASS
 	
 	=
-	ALLOCATE_IN_ARRAYS(salt_grain, 1000)
+	DECLARE_CLASS_ALLOCATED_IN_ARRAYS(salt_grain, 1000)
 =
 The memory manager then claims these in blocks of 1000. Use this only if it's
 actually needed.
 
-(2) We have to declare the actual structure, and |typedef| the name to it. For
+2. We have to declare the actual structure, and |typedef| the name to it. For
 example:
 = (text as InC)
 	typedef struct recipe {
 		struct text_stream *name_of_dish;
 		int oven_temperature;
-		MEMORY_MANAGEMENT
+		CLASS_DEFINITION
 	} recipe;
 =
-Here |MEMORY_MANAGEMENT| is a macro defined in //Memory// which expands to the
+Here |CLASS_DEFINITION| is a macro defined in //Memory// which expands to the
 necessary field(s) to keep track of this. We won't use those fields, or ever
 think about them.
 
-(3) In fact we've now finished. The macro |CREATE(recipe)| returns a new
+3. In fact we've now finished. The macro |CREATE(recipe)| returns a new
 instance, and |DESTROY(R)| would destroy an existing one, |R|. Unless manually
 destroyed, objects last forever; there is no garbage collection. In practice
 the Inform tools suite, for which Foundation was written, almost never destroy
@@ -202,7 +203,7 @@ We also often use the convenient |LOOP_OVER| macro:
 			WRITE("- %S\n", R->name_of_dish);
 	}
 =
-|LOOP_OVER| loops through all created recipe instances (which have not been
+|LOOP_OVER| loops through all created |recipe| instances (which have not been
 destroyed).
 
 There are a few other facilities, for which see //Memory//, and also ways to
@@ -216,8 +217,8 @@ this for |recipe|, we would have to add another line to the structure:
 	typedef struct recipe {
 		struct text_stream *name_of_dish;
 		int oven_temperature;
-		METHOD_CALLS
-		MEMORY_MANAGEMENT
+		struct method_set *methods;
+		CLASS_DEFINITION
 	} recipe;
 =
 and another line to the constructor function:
@@ -233,12 +234,11 @@ type of the function call involved:
 	@e COOK_MTID
 	
 	=
-	VMETHOD_TYPE(COOK_MTID, recipe *R, int time_in_oven)
+	VOID_METHOD_TYPE(COOK_MTID, recipe *R, int time_in_oven)
 =
-The |V| here means that this will be a void function, that is, returning no
-value. It's now possible to call this on any recipe:
+It's now possible to call this on any recipe:
 = (text as InC)
-	VMETHOD_CALL(duck_a_l_orange, COOK_MTID, 45);
+	VOID_METHOD_CALL(duck_a_l_orange, COOK_MTID, 45);
 =
 What then happens? Nothing at all, unless the recipe instance in question --
 here, |duck_a_l_orange| -- has been given a receiver function. Let's revisit
@@ -262,7 +262,7 @@ and now add:
 using the arguments promised in the declaration above. With all this done,
 the effect of
 = (text as InC)
-	VMETHOD_CALL(duck_a_l_orange, COOK_MTID, 45);
+	VOID_METHOD_CALL(duck_a_l_orange, COOK_MTID, 45);
 =
 is to call:
 = (text as InC)
@@ -274,7 +274,7 @@ which case they each run in turn. As a variant on this, methods can also return
 their "success". If multiple receivers run, the first to return |TRUE| has
 claimed the right to act, and subsequent receivers aren't consulted.
 
-Such methods must be defined with |IMETHOD_CALL| and are rarely needed. See
+Such methods must be defined with |INT_METHOD_CALL| and are rarely needed. See
 //Methods// for more.
 
 @h Collections.

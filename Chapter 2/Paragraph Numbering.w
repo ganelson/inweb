@@ -61,7 +61,7 @@ lexicographic sequence.
 typedef struct macro_usage {
 	struct paragraph *used_in_paragraph;
 	int multiplicity; /* for example, 2 if it's used twice in this paragraph */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } macro_usage;
 
 @<Add a record that the macro is used in this paragraph@> =

@@ -318,23 +318,23 @@ void Unit::test_semver(void) {
 
 @h Trees.
 
-@e prince_MT
-@e princess_MT
+@e prince_CLASS
+@e princess_CLASS
 
 =
-ALLOCATE_INDIVIDUALLY(prince)
-ALLOCATE_INDIVIDUALLY(princess)
+DECLARE_CLASS(prince)
+DECLARE_CLASS(princess)
 
 @ =
 typedef struct prince {
 	struct text_stream *boys_name;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } prince;
 
 typedef struct princess {
 	int meaningless;
 	struct text_stream *girls_name;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } princess;
 
 tree_node_type *M = NULL, *F = NULL;
@@ -343,8 +343,8 @@ tree_node_type *M = NULL, *F = NULL;
 void Unit::test_trees(void) {
 	tree_type *TT = Trees::new_type(I"royal family", &Unit::verifier);
 	heterogeneous_tree *royalty = Trees::new(TT);
-	M = Trees::new_node_type(I"male", prince_MT, &Unit::prince_verifier);
-	F = Trees::new_node_type(I"female", princess_MT, &Unit::princess_verifier);
+	M = Trees::new_node_type(I"male", prince_CLASS, &Unit::prince_verifier);
+	F = Trees::new_node_type(I"female", princess_CLASS, &Unit::princess_verifier);
 
 	prince *charles_I = CREATE(prince);
 	charles_I->boys_name = I"Charles I of England";

@@ -41,7 +41,7 @@ typedef struct web_md {
 
 	struct linked_list *chapters_md; /* of |chapter_md| */
 	struct linked_list *sections_md; /* of |section_md| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } web_md;
 
 @ The |chapters_md| list in a |web_md| contains these as its entries:
@@ -59,7 +59,7 @@ typedef struct chapter_md {
 	int imported; /* from a different web? */
 
 	struct linked_list *sections_md; /* of |section_md| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } chapter_md;
 
 @ And the |sections_md| list in a |chapter_md| contains these as its entries:
@@ -79,7 +79,7 @@ typedef struct section_md {
 	struct text_stream *titling_line_to_insert;
 
 	struct module *owning_module;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } section_md;
 
 @h Reading from the file system.

@@ -42,7 +42,7 @@ typedef struct web {
 	struct ebook *as_ebook; /* when being woven to an ebook */
 	struct pathname *redirect_weaves_to; /* ditto */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } web;
 
 @ And for a chapter:
@@ -56,7 +56,7 @@ typedef struct chapter {
 	struct weave_order *ch_weave; /* |NULL| unless this chapter produces a weave of its own */
 	int titling_line_inserted; /* has an interleaved chapter heading been added yet? */
 	struct programming_language *ch_language; /* in which this chapter is written */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } chapter;
 
 @ And lastly for a section.
@@ -87,7 +87,7 @@ typedef struct section {
 	int scratch_flag; /* temporary workspace */
 	int paused_until_at; /* ignore the top half of the file, until the first |@| sign */
 	int printed_number; /* temporary again: sometimes used in weaving */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } section;
 
 @ The following routine makes the |web|-|chapter|-|section| tree out of a
@@ -385,7 +385,7 @@ a web contains just one target, which contains all of the sections.
 typedef struct tangle_target {
 	struct programming_language *tangle_language; /* common to the entire contents */
 	struct hash_table symbols; /* a table of identifiable names in this program */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } tangle_target;
 
 @ =

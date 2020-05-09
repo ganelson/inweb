@@ -12,7 +12,7 @@ does not need a plugin of a given name.
 typedef struct weave_plugin {
 	struct text_stream *plugin_name;
 	int last_included_in_round;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_plugin;
 
 @ =
@@ -36,7 +36,7 @@ typedef struct colour_scheme {
 	struct text_stream *prefix;
 	struct filename *at;
 	int last_included_in_round;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } colour_scheme;
 
 @ =
@@ -171,7 +171,7 @@ typedef struct asset_rule {
 	struct text_stream *pre;
 	struct text_stream *post;
 	int transform_names;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } asset_rule;
 
 @ A pattern has a list of such rules, as follows. In each list, exactly one

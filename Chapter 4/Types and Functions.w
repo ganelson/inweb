@@ -13,7 +13,7 @@ typedef struct language_type {
 	struct linked_list *incorporates; /* of |language_type| */
 	struct linked_list *elements; /* of |structure_element| */
 	struct language_type *next_cst_alphabetically;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } language_type;
 
 @ =
@@ -79,7 +79,7 @@ typedef struct structure_element {
 	struct text_stream *element_name;
 	struct source_line *element_created_at;
 	int allow_sharing;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } structure_element;
 
 @ =
@@ -120,7 +120,7 @@ typedef struct language_function {
 	int usage_described;
 	int no_conditionals;
 	struct source_line *within_conditionals[MAX_CONDITIONAL_COMPILATION_STACK];
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } language_function;
 
 @ =

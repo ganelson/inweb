@@ -29,7 +29,7 @@ typedef struct range_end {
 typedef struct semver_range {
 	struct range_end lower;
 	struct range_end upper;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } semver_range;
 
 @ As hinted above, the notation |[| and |]| is used for closed ends, and |(|

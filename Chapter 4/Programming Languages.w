@@ -142,8 +142,8 @@ typedef struct programming_language {
 	struct linked_list *reserved_words; /* of |reserved_word| */
 	struct hash_table built_in_keywords;
 	struct colouring_language_block *program; /* algorithm for syntax colouring */
-	METHOD_CALLS
-	MEMORY_MANAGEMENT
+	struct method_set *methods;
+	CLASS_DEFINITION
 } programming_language;
 
 @ This is a simple one-pass compiler. The |language_reader_state| provides
@@ -401,7 +401,7 @@ typedef struct colouring_language_block {
 	
 	/* workspace during painting */
 	struct match_results mr; /* of a regular expression */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } colouring_language_block;
 
 @ =
@@ -455,7 +455,7 @@ typedef struct colouring_rule {
 	/* workspace during painting */
 	int fix_position; /* where the prefix or suffix started */
 	struct match_results mr; /* of a regular expression */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } colouring_rule;
 
 @ =
@@ -560,7 +560,7 @@ Note that these can come in any colour, though usually it's |!reserved|.
 typedef struct reserved_word {
 	struct text_stream *word;
 	int colour;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } reserved_word;
 
 reserved_word *Languages::reserved(programming_language *pl, text_stream *W, int C,

@@ -15,7 +15,7 @@ typedef struct dictionary {
 	int no_entries; /* total number of key-value pairs currently stored here */
 	int hash_table_size; /* size of array... */
 	struct dict_entry *hash_table; /* ...of linked lists of dictionary entries */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } dictionary;
 
 typedef struct dict_entry {

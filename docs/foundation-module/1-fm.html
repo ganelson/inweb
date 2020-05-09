@@ -83,14 +83,14 @@ supplied instead for that case.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">ctype</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdarg</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdio</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">stdlib</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">string</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">time</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">math</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">wchar</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;ctype.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;stdarg.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;stdio.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;stdlib.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;string.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;time.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;math.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;wchar.h&gt;</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
 
@@ -134,7 +134,8 @@ shutting down.
 </p>
 
 <p class="commentary">The Inweb notation <span class="extract"><span class="extract-syntax">[[textliterals]]</span></span> inserts declarations of I-literals,
-that is, literal <span class="extract"><span class="extract-syntax">text_stream *</span></span> values written as <span class="extract"><span class="extract-syntax">I"strings"</span></span>.
+that is, literal <span class="extract"><span class="extract-syntax">text_stream *</span></span> values written as <span class="extract"><span class="extract-syntax">I"strings"</span></span>. It should
+never be used anywhere but here.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -239,7 +240,7 @@ safety problems.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Foundation::end</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-dl.html#SP7" class="function-link"><span class="function-syntax">Log::aspect_switched_on</span></a><span class="plain-syntax">(</span><span class="constant-syntax">MEMORY_USAGE_DA</span><span class="plain-syntax">)) </span><a href="2-mmr.html#SP32" class="function-link"><span class="function-syntax">Memory::log_statistics</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-dl.html#SP7" class="function-link"><span class="function-syntax">Log::aspect_switched_on</span></a><span class="plain-syntax">(</span><span class="constant-syntax">MEMORY_USAGE_DA</span><span class="plain-syntax">)) </span><a href="2-mmr.html#SP28" class="function-link"><span class="function-syntax">Memory::log_statistics</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-dl.html#SP5" class="function-link"><span class="function-syntax">Log::close</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-mmr.html#SP12" class="function-link"><span class="function-syntax">Memory::free</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>

@@ -11,7 +11,7 @@ typedef struct theme_tag {
 	struct text_stream *tag_name;
 	int ifdef_positive;
 	struct text_stream *ifdef_symbol;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } theme_tag;
 
 @ Here we find a tag from its name, case-sensitively. On each run of Inweb,
@@ -50,7 +50,7 @@ they're stored as a linked list within each paragraph.
 typedef struct paragraph_tagging {
 	struct theme_tag *the_tag;
 	struct text_stream *caption;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } paragraph_tagging;
 
 void Tags::add_to_paragraph(paragraph *P, theme_tag *tag, text_stream *caption) {

@@ -188,7 +188,7 @@ structures to be created:
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">takes_pointer_result</span><span class="plain-syntax">; </span><span class="comment-syntax"> right-hand formula defines </span><span class="extract"><span class="extract-syntax">*XP</span></span><span class="comment-syntax">, not </span><span class="extract"><span class="extract-syntax">*X</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">where_defined</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">preform_nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_pnt_alphabetically</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">preform_nonterminal</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure preform_nonterminal is accessed in 3/ta, 4/taf, 5/tf and here.</li></ul>
@@ -404,7 +404,7 @@ has identifier <span class="extract"><span class="extract-syntax">"kind_ref_NTMV
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ntv_type</span><span class="plain-syntax">; </span><span class="comment-syntax"> e.g., </span><span class="extract"><span class="extract-syntax">"int"</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ntv_identifier</span><span class="plain-syntax">; </span><span class="comment-syntax"> e.g., </span><span class="extract"><span class="extract-syntax">"num_NTMV"</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_mention</span><span class="plain-syntax">; </span><span class="comment-syntax"> first usage</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">nonterminal_variable</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure nonterminal_variable is private to this section.</li></ul>
@@ -468,7 +468,7 @@ like <span class="extract"><span class="extract-syntax">TL_IS_123</span></span>.
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_literal</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tl_identifier</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tl_content</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">text_literal</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure text_literal is private to this section.</li></ul>

@@ -89,7 +89,7 @@ essentially individual HTML files, plus some images.
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ebook_page_list</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">book_page</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ebook_image_list</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">ebook_image</span></span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ebook</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure ebook is private to this section.</li></ul>
@@ -102,7 +102,7 @@ list is entirely sufficient.
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_datum</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">key</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">value</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ebook_datum</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure ebook_datum is accessed in 2/dct, 8/bdfw and here.</li></ul>
@@ -114,7 +114,7 @@ list is entirely sufficient.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">volume_title</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">volume_starts</span><span class="plain-syntax">; </span><span class="comment-syntax"> on which page the volume starts</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CSS_file</span><span class="plain-syntax">; </span><span class="comment-syntax"> where to find the CSS file to be included</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax"> {</span>
@@ -123,7 +123,7 @@ list is entirely sufficient.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax"> *</span><span class="identifier-syntax">chapter_starts</span><span class="plain-syntax">; </span><span class="comment-syntax"> on which page the chapter starts</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ebook_mark_list</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">ebook_mark</span></span><span class="comment-syntax">: for when multiple navigable points exist within this</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">start_URL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure ebook_volume is private to this section.</li><li>The structure ebook_chapter is private to this section.</li></ul>
@@ -143,19 +143,19 @@ pages:
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_chapter</span><span class="plain-syntax">; </span><span class="comment-syntax"> to which chapter this page belongs</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">nav_entry_written</span><span class="plain-syntax">; </span><span class="comment-syntax"> keep track of what we've written to the navigation tree</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ebook_page</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_mark</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mark_text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mark_URL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ebook_mark</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook_image</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">image_ID</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">relative_URL</span><span class="plain-syntax">; </span><span class="comment-syntax"> eventual URL of this image within the ebook</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ebook_image</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure ebook_page is private to this section.</li><li>The structure ebook_mark is private to this section.</li><li>The structure ebook_image is private to this section.</li></ul>

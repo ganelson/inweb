@@ -7,7 +7,7 @@ linked lists and assigning each a unique allocation ID number.
 @h Memory manager.
 This allocates memory as needed to store the numerous "objects" of different
 sizes, all C structures. There's no garbage collection because nothing is ever
-destroyed. Each type has its own doubly-linked list, and in each type the
+destroyed. Each "class" has its own doubly-linked list, and in each class the
 objects created are given unique IDs (within that type) counting upwards
 from 0. These IDs will be unique across all threads.
 
@@ -22,62 +22,29 @@ structures of type |thingummy|, then it needs to be defined like so:
 	    int whatsit;
 	    struct text_stream *doobrey;
 	    ...
-	    MEMORY_MANAGEMENT
-	}
+	    CLASS_DEFINITION
+	} thingummy;
 =
 The caveat about "larger structures" is that smaller objects can instead be
 stored in arrays, to reduce memory and speed overheads. Their structure
 declarations do not include the following macro; they do not have unique
 IDs; and they cannot be iterated over.
 
-@d MEMORY_MANAGEMENT
+@d CLASS_DEFINITION
 	int allocation_id; /* Numbered from 0 upwards in creation order */
 	void *next_structure; /* Next object in double-linked list */
 	void *prev_structure; /* Previous object in double-linked list */
 
 @ It is also necessary to define a constant in the following enumeration
-family: for |thingummy|, it would be |thingummy_MT|. Had it been a smaller
-object, it would have been |thingummy_array_MT| instead.
+family: for |thingummy|, it would be |thingummy_CLASS|. Had it been a smaller
+object, it would have been |thingummy_array_CLASS| instead.
 
-There is no significance to the order in which structures are registered
-with the memory system. The ones here are those needed by Foundation.
+There is no significance to the order in which classes are registered
+with the memory system; the following sentinel value is not the class ID
+of any actual class, and simply forces the others to have IDs which are
+positive, since they count upwards from this.
 
-@e filename_MT from 0
-@e pathname_MT
-@e string_storage_area_MT
-@e scan_directory_MT
-@e ebook_MT
-@e ebook_datum_MT
-@e ebook_volume_MT
-@e ebook_chapter_MT
-@e ebook_page_MT
-@e ebook_image_MT
-@e HTML_file_state_MT
-@e HTML_tag_array_MT
-@e text_stream_array_MT
-@e command_line_switch_MT
-@e dictionary_MT
-@e dict_entry_array_MT
-@e debugging_aspect_MT
-@e linked_list_MT
-@e linked_list_item_array_MT
-@e match_avinue_array_MT
-@e match_trie_array_MT
-@e method_MT
-@e method_set_MT
-@e ebook_mark_MT
-@e semantic_version_number_holder_MT
-@e semver_range_MT
-@e web_md_MT
-@e chapter_md_MT
-@e section_md_MT
-@e web_bibliographic_datum_MT
-@e module_MT
-@e module_search_MT
-@e heterogeneous_tree_MT
-@e tree_type_MT
-@e tree_node_MT
-@e tree_node_type_MT
+@e unused_class_value_CLASS from 0
 
 @ For each type of object to be allocated, a single structure of the
 following design is maintained. Types which are allocated individually,
@@ -95,7 +62,7 @@ typedef struct allocation_status_structure {
 	void *last_in_memory; /* tail of doubly linked list */
 
 	/* used only to provide statistics for the debugging log: */
-	char *name_of_type; /* e.g., |"lexicon_entry_MT"| */
+	char *name_of_type; /* e.g., |"lexicon_entry_CLASS"| */
 	int bytes_allocated; /* total allocation for this type of object, not counting overhead */
 	int objects_count; /* total number currently in existence (i.e., undeleted) */
 	int no_allocated_together; /* number of objects in each array of this type of object */
@@ -106,10 +73,10 @@ fairly small array of the structures defined above. The allocator can safely
 begin as soon as this is initialised.
 
 =
-allocation_status_structure alloc_status[NO_DEFINED_MT_VALUES];
+allocation_status_structure alloc_status[NO_DEFINED_CLASS_VALUES];
 
 void Memory::start(void) {
-	for (int i=0; i<NO_DEFINED_MT_VALUES; i++) {
+	for (int i=0; i<NO_DEFINED_CLASS_VALUES; i++) {
 		alloc_status[i].first_in_memory = NULL;
 		alloc_status[i].last_in_memory = NULL;
 		alloc_status[i].objects_allocated = 0;
@@ -232,7 +199,7 @@ block.
 
 =
 void Memory::free(void) {
-	Memory::free_ssas();
+	CStrings::free_ssas();
 	memblock_header *mh = first_memblock_header;
 	while (mh != NULL) {
 		memblock_header *next_mh = mh->next;
@@ -382,11 +349,11 @@ because of the |##|. (See Kernighan and Ritchie, section 4.11.2.)
 @d COPY(to, from, type_name) (copy_##type_name(to, from))
 @d CREATE_BEFORE(existing, type_name) (allocate_##type_name##_before(existing))
 @d DESTROY(this, type_name) (deallocate_##type_name(this))
-@d FIRST_OBJECT(type_name) ((type_name *) alloc_status[type_name##_MT].first_in_memory)
-@d LAST_OBJECT(type_name) ((type_name *) alloc_status[type_name##_MT].last_in_memory)
+@d FIRST_OBJECT(type_name) ((type_name *) alloc_status[type_name##_CLASS].first_in_memory)
+@d LAST_OBJECT(type_name) ((type_name *) alloc_status[type_name##_CLASS].last_in_memory)
 @d NEXT_OBJECT(this, type_name) ((type_name *) (this->next_structure))
 @d PREV_OBJECT(this, type_name) ((type_name *) (this->prev_structure))
-@d NUMBER_CREATED(type_name) (alloc_status[type_name##_MT].objects_count)
+@d NUMBER_CREATED(type_name) (alloc_status[type_name##_CLASS].objects_count)
 
 @ The following macros are widely used (well, the first one is, anyway)
 for looking through the double linked list of existing objects of a
@@ -399,29 +366,29 @@ given type.
 
 @h Allocator functions created by macros.
 The following macros generate a family of systematically named functions.
-For instance, we shall shortly expand |ALLOCATE_INDIVIDUALLY(parse_node)|,
+For instance, we shall shortly expand |DECLARE_CLASS(parse_node)|,
 which will expand to three functions: |allocate_parse_node|,
 |deallocate_parse_node| and |allocate_parse_node_before|.
 
 Quaintly, |#type_name| expands into the value of |type_name| put within
 double-quotes.
 
-@d NEW_OBJECT(type_name) ((type_name *) Memory::allocate(type_name##_MT, sizeof(type_name)))
+@d NEW_OBJECT(type_name) ((type_name *) Memory::allocate(type_name##_CLASS, sizeof(type_name)))
 
-@d ALLOCATE_INDIVIDUALLY(type_name)
-MAKE_REFERENCE_ROUTINES(type_name, type_name##_MT)
+@d DECLARE_CLASS(type_name)
+MAKE_REFERENCE_ROUTINES(type_name, type_name##_CLASS)
 type_name *allocate_##type_name(void) {
 	CREATE_MUTEX(mutex);
 	LOCK_MUTEX(mutex);
-	alloc_status[type_name##_MT].name_of_type = #type_name;
+	alloc_status[type_name##_CLASS].name_of_type = #type_name;
 	type_name *prev_obj = LAST_OBJECT(type_name);
 	type_name *new_obj = NEW_OBJECT(type_name);
-	new_obj->allocation_id = alloc_status[type_name##_MT].objects_allocated-1;
+	new_obj->allocation_id = alloc_status[type_name##_CLASS].objects_allocated-1;
 	new_obj->next_structure = NULL;
 	if (prev_obj != NULL)
 		prev_obj->next_structure = (void *) new_obj;
 	new_obj->prev_structure = prev_obj;
-	alloc_status[type_name##_MT].objects_count++;
+	alloc_status[type_name##_CLASS].objects_count++;
 	UNLOCK_MUTEX(mutex);
 	return new_obj;
 }
@@ -431,16 +398,16 @@ void deallocate_##type_name(type_name *kill_me) {
 	type_name *prev_obj = PREV_OBJECT(kill_me, type_name);
 	type_name *next_obj = NEXT_OBJECT(kill_me, type_name);
 	if (prev_obj == NULL) {
-		alloc_status[type_name##_MT].first_in_memory = next_obj;
+		alloc_status[type_name##_CLASS].first_in_memory = next_obj;
 	} else {
 		prev_obj->next_structure = next_obj;
 	}
 	if (next_obj == NULL) {
-		alloc_status[type_name##_MT].last_in_memory = prev_obj;
+		alloc_status[type_name##_CLASS].last_in_memory = prev_obj;
 	} else {
 		next_obj->prev_structure = prev_obj;
 	}
-	alloc_status[type_name##_MT].objects_count--;
+	alloc_status[type_name##_CLASS].objects_count--;
 	UNLOCK_MUTEX(mutex);
 }
 type_name *allocate_##type_name##_before(type_name *existing) {
@@ -451,10 +418,10 @@ type_name *allocate_##type_name##_before(type_name *existing) {
 	new_obj->prev_structure = existing->prev_structure;
 	if (existing->prev_structure != NULL)
 		((type_name *) existing->prev_structure)->next_structure = new_obj;
-	else alloc_status[type_name##_MT].first_in_memory = (void *) new_obj;
+	else alloc_status[type_name##_CLASS].first_in_memory = (void *) new_obj;
 	new_obj->next_structure = existing;
 	existing->prev_structure = new_obj;
-	alloc_status[type_name##_MT].objects_count++;
+	alloc_status[type_name##_CLASS].objects_count++;
 	UNLOCK_MUTEX(mutex);
 	return new_obj;
 }
@@ -471,29 +438,29 @@ void copy_##type_name(type_name *to, type_name *from) {
 	UNLOCK_MUTEX(mutex);
 }
 
-@ |ALLOCATE_IN_ARRAYS| is still more obfuscated. When we
-|ALLOCATE_IN_ARRAYS(X, 100)|, the result will be definitions of a new type
+@ |DECLARE_CLASS_ALLOCATED_IN_ARRAYS| is still more obfuscated. When we
+|DECLARE_CLASS_ALLOCATED_IN_ARRAYS(X, 100)|, the result will be definitions of a new type
 |X_block| and functions |allocate_X|, |allocate_X_block|,
 |deallocate_X_block| and |allocate_X_block_before| (though the last is not
 destined ever to be used). Note that we are not provided with the means to
 deallocate individual objects this time: that's the trade-off for
 allocating in blocks.
 
-@d ALLOCATE_IN_ARRAYS(type_name, NO_TO_ALLOCATE_TOGETHER)
-MAKE_REFERENCE_ROUTINES(type_name, type_name##_array_MT)
+@d DECLARE_CLASS_ALLOCATED_IN_ARRAYS(type_name, NO_TO_ALLOCATE_TOGETHER)
+MAKE_REFERENCE_ROUTINES(type_name, type_name##_array_CLASS)
 typedef struct type_name##_array {
 	int used;
 	struct type_name array[NO_TO_ALLOCATE_TOGETHER];
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } type_name##_array;
-ALLOCATE_INDIVIDUALLY(type_name##_array)
+DECLARE_CLASS(type_name##_array)
 type_name##_array *next_##type_name##_array = NULL;
 struct type_name *allocate_##type_name(void) {
 	CREATE_MUTEX(mutex);
 	LOCK_MUTEX(mutex);
 	if ((next_##type_name##_array == NULL) ||
 		(next_##type_name##_array->used >= NO_TO_ALLOCATE_TOGETHER)) {
-		alloc_status[type_name##_array_MT].no_allocated_together = NO_TO_ALLOCATE_TOGETHER;
+		alloc_status[type_name##_array_CLASS].no_allocated_together = NO_TO_ALLOCATE_TOGETHER;
 		next_##type_name##_array = allocate_##type_name##_array();
 		next_##type_name##_array->used = 0;
 	}
@@ -501,74 +468,6 @@ struct type_name *allocate_##type_name(void) {
 	return &(next_##type_name##_array->array[
 		next_##type_name##_array->used++]);
 }
-
-@h Expanding many macros.
-Each given structure must have a typedef name, say |marvel|, and can be
-used in one of two ways. Either way, we can obtain a new one with the macro
-|CREATE(marvel)|.
-
-Either (a) it will be individually allocated. In this case |marvel_MT|
-should be defined with a new MT (memory type) number, and the macro
-|ALLOCATE_INDIVIDUALLY(marvel)| should be expanded. The first and last
-objects created will be |FIRST_OBJECT(marvel)| and |LAST_OBJECT(marvel)|,
-and we can proceed either way through a double linked list of them with
-|PREV_OBJECT(mv, marvel)| and |NEXT_OBJECT(mv, marvel)|. For convenience,
-we can loop through marvels, in creation order, using |LOOP_OVER(var,
-marvel)|, which expands to a |for| loop in which the variable |var| runs
-through each created marvel in turn; or equally we can run backwards
-through using |LOOP_BACKWARDS_OVER(var, marvel)|. In addition, there are
-corruption checks to protect the memory from overrunning accidents, and the
-structure can be used as a value in the symbols table. Good for large
-structures with significant semantic content.
-
-Or (b) it will be allocated in arrays. Once again we can obtain new marvels
-with |CREATE(marvel)|. This is more efficient both in speed and memory
-usage, but we lose the ability to loop through the objects. For this
-arrangement, define |marvel_array_MT| with a new MT number and expand the
-macro |ALLOCATE_IN_ARRAYS(marvel, 100)|, where 100 (or what may you) is the
-number of objects allocated jointly as a block. Good for small structures
-used in the lower levels.
-
-Here goes, then.
-
-=
-ALLOCATE_INDIVIDUALLY(filename)
-ALLOCATE_INDIVIDUALLY(pathname)
-ALLOCATE_INDIVIDUALLY(string_storage_area)
-ALLOCATE_INDIVIDUALLY(scan_directory)
-ALLOCATE_INDIVIDUALLY(ebook)
-ALLOCATE_INDIVIDUALLY(ebook_datum)
-ALLOCATE_INDIVIDUALLY(ebook_volume)
-ALLOCATE_INDIVIDUALLY(ebook_chapter)
-ALLOCATE_INDIVIDUALLY(ebook_page)
-ALLOCATE_INDIVIDUALLY(ebook_image)
-ALLOCATE_INDIVIDUALLY(HTML_file_state)
-ALLOCATE_INDIVIDUALLY(command_line_switch)
-ALLOCATE_INDIVIDUALLY(dictionary)
-ALLOCATE_INDIVIDUALLY(debugging_aspect)
-ALLOCATE_INDIVIDUALLY(linked_list)
-ALLOCATE_INDIVIDUALLY(method)
-ALLOCATE_INDIVIDUALLY(method_set)
-ALLOCATE_INDIVIDUALLY(ebook_mark)
-ALLOCATE_INDIVIDUALLY(semantic_version_number_holder)
-ALLOCATE_INDIVIDUALLY(semver_range)
-ALLOCATE_INDIVIDUALLY(web_bibliographic_datum)
-ALLOCATE_INDIVIDUALLY(web_md)
-ALLOCATE_INDIVIDUALLY(chapter_md)
-ALLOCATE_INDIVIDUALLY(section_md)
-ALLOCATE_INDIVIDUALLY(module)
-ALLOCATE_INDIVIDUALLY(module_search)
-ALLOCATE_INDIVIDUALLY(heterogeneous_tree)
-ALLOCATE_INDIVIDUALLY(tree_type)
-ALLOCATE_INDIVIDUALLY(tree_node)
-ALLOCATE_INDIVIDUALLY(tree_node_type)
-
-ALLOCATE_IN_ARRAYS(dict_entry, 100)
-ALLOCATE_IN_ARRAYS(HTML_tag, 1000)
-ALLOCATE_IN_ARRAYS(linked_list_item, 1000)
-ALLOCATE_IN_ARRAYS(match_avinue, 1000)
-ALLOCATE_IN_ARRAYS(match_trie, 1000)
-ALLOCATE_IN_ARRAYS(text_stream, 100)
 
 @h Simple memory allocations.
 Not all of our memory will be claimed in the form of structures: now and then
@@ -699,51 +598,6 @@ void Memory::I7_array_free(void *pointer, int R, int num_cells, size_t cell_size
 	Memory::I7_free(pointer, R, num_cells*((int) cell_size));
 }
 
-@h Text storage.
-We will also use much simpler memory areas for text, in 64K chunks:
-
-@d SSA_CAPACITY 64*1024
-
-=
-typedef struct string_storage_area {
-	char *storage_at;
-	int first_free_byte;
-	MEMORY_MANAGEMENT
-} string_storage_area;
-
-string_storage_area *current_ssa = NULL;
-
-@ The following is ideal for parking a read-only string of text somewhere
-safe in memory. Since the length can't be extended, it's usually unsafe
-to write to the result.
-
-=
-char *Memory::new_string(char *from) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
-	int length_needed = (int) strlen(from) + 1;
-	if (!((current_ssa) &&
-		(current_ssa->first_free_byte + length_needed < SSA_CAPACITY))) {
-		current_ssa = CREATE(string_storage_area);
-		current_ssa->storage_at = Memory::malloc(SSA_CAPACITY, STRING_STORAGE_MREASON);
-		current_ssa->first_free_byte = 0;
-	}
-	char *rp = current_ssa->storage_at + current_ssa->first_free_byte;
-	current_ssa->first_free_byte += length_needed;
-	strcpy(rp, from);
-	UNLOCK_MUTEX(mutex);
-	return rp;
-}
-
-@ And here we free any SSAs needed in the course of the run.
-
-=
-void Memory::free_ssas(void) {
-	string_storage_area *ssa;
-	LOOP_OVER(ssa, string_storage_area)
-		Memory::I7_free(ssa->storage_at, STRING_STORAGE_MREASON, SSA_CAPACITY);
-}
-
 @ And the following provides statistics, and a mini-report, for the memory
 report in the debugging log (for which, see below).
 
@@ -770,7 +624,7 @@ A small utility routine to help keep track of our unquestioned profligacy.
 void Memory::log_statistics(void) {
 	int total_for_objects = MEMORY_GRANULARITY*no_blocks_allocated; /* usage in bytes */
 	int total_for_SMAs = Memory::log_usage(0); /* usage in bytes */
-	int sorted_usage[NO_DEFINED_MT_VALUES]; /* memory type numbers, in usage order */
+	int sorted_usage[NO_DEFINED_CLASS_VALUES]; /* memory type numbers, in usage order */
 	int total = (total_for_objects + total_for_SMAs)/1024; /* total memory usage in KB */
 
 	@<Sort the table of memory type usages into decreasing size order@>;
@@ -784,7 +638,7 @@ void Memory::log_statistics(void) {
 
 @<Calculate the memory usage for objects@> =
 	int i, j;
-	for (j=0; j<NO_DEFINED_MT_VALUES; j++) {
+	for (j=0; j<NO_DEFINED_CLASS_VALUES; j++) {
 		i = sorted_usage[j];
 		if (alloc_status[i].objects_allocated != 0) {
 			if (alloc_status[i].no_allocated_together == 1)
@@ -801,8 +655,8 @@ order of total number of bytes allocated.
 
 @<Sort the table of memory type usages into decreasing size order@> =
 	int i;
-	for (i=0; i<NO_DEFINED_MT_VALUES; i++) sorted_usage[i] = i;
-	qsort(sorted_usage, (size_t) NO_DEFINED_MT_VALUES, sizeof(int), Memory::compare_usage);
+	for (i=0; i<NO_DEFINED_CLASS_VALUES; i++) sorted_usage[i] = i;
+	qsort(sorted_usage, (size_t) NO_DEFINED_CLASS_VALUES, sizeof(int), Memory::compare_usage);
 
 @ And here is the actual report:
 
@@ -817,7 +671,7 @@ order of total number of bytes allocated.
 	LOG("    0.%03d: memory manager overhead - %d bytes\n",
 		Memory::proportion(overhead_for_objects, total), overhead_for_objects);
 	int i, j;
-	for (j=0; j<NO_DEFINED_MT_VALUES; j++) {
+	for (j=0; j<NO_DEFINED_CLASS_VALUES; j++) {
 		i = sorted_usage[j];
 		if (alloc_status[i].objects_allocated != 0) {
 			LOG("    0.%03d: %s  -  ",
@@ -876,7 +730,7 @@ following:
 (a) |NULL|, to which we assign ID number $-1$;
 (b) |char|, to which we assign ID number 1000;
 (c) any individually allocated structure of the types listed above, to
-which we assign the ID numbers used above: for instance, |blorb_figure_MT|
+which we assign the ID numbers used above: for instance, |blorb_figure_CLASS|
 is the ID number for a |general_pointer| which points to a |blorb_figure|
 structure.
 
@@ -892,7 +746,7 @@ typedef struct general_pointer {
 general_pointer Memory::store_gp_null(void) {
 	general_pointer gp;
 	gp.pointer_to_data = NULL;
-	gp.run_time_type_code = -1; /* guaranteed to differ from all |_MT| values */
+	gp.run_time_type_code = -1; /* guaranteed to differ from all |_CLASS| values */
 	return gp;
 }
 int Memory::test_gp_null(general_pointer gp) {

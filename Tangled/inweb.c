@@ -332,46 +332,11 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define SHELL_USAGE_DA 1
 #define MEMORY_USAGE_DA 2
 #define TEXT_FILES_DA 3
-#define MEMORY_MANAGEMENT \
+#define CLASS_DEFINITION \
     	int allocation_id; /* Numbered from 0 upwards in creation order */\
     	void *next_structure; /* Next object in double-linked list */\
     	void *prev_structure; /* Previous object in double-linked list */
-#define filename_MT 0
-#define pathname_MT 1
-#define string_storage_area_MT 2
-#define scan_directory_MT 3
-#define ebook_MT 4
-#define ebook_datum_MT 5
-#define ebook_volume_MT 6
-#define ebook_chapter_MT 7
-#define ebook_page_MT 8
-#define ebook_image_MT 9
-#define HTML_file_state_MT 10
-#define HTML_tag_array_MT 11
-#define text_stream_array_MT 12
-#define command_line_switch_MT 13
-#define dictionary_MT 14
-#define dict_entry_array_MT 15
-#define debugging_aspect_MT 16
-#define linked_list_MT 17
-#define linked_list_item_array_MT 18
-#define match_avinue_array_MT 19
-#define match_trie_array_MT 20
-#define method_MT 21
-#define method_set_MT 22
-#define ebook_mark_MT 23
-#define semantic_version_number_holder_MT 24
-#define semver_range_MT 25
-#define web_md_MT 26
-#define chapter_md_MT 27
-#define section_md_MT 28
-#define web_bibliographic_datum_MT 29
-#define module_MT 30
-#define module_search_MT 31
-#define heterogeneous_tree_MT 32
-#define tree_type_MT 33
-#define tree_node_MT 34
-#define tree_node_type_MT 35
+#define unused_class_value_CLASS 0
 #define SAFETY_MARGIN 128
 #define BLANK_END_SIZE 256
 #define MAX_BLOCKS_ALLOWED 15000
@@ -381,30 +346,30 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define COPY(to, from, type_name) (copy_##type_name(to, from))
 #define CREATE_BEFORE(existing, type_name) (allocate_##type_name##_before(existing))
 #define DESTROY(this, type_name) (deallocate_##type_name(this))
-#define FIRST_OBJECT(type_name) ((type_name *) alloc_status[type_name##_MT].first_in_memory)
-#define LAST_OBJECT(type_name) ((type_name *) alloc_status[type_name##_MT].last_in_memory)
+#define FIRST_OBJECT(type_name) ((type_name *) alloc_status[type_name##_CLASS].first_in_memory)
+#define LAST_OBJECT(type_name) ((type_name *) alloc_status[type_name##_CLASS].last_in_memory)
 #define NEXT_OBJECT(this, type_name) ((type_name *) (this->next_structure))
 #define PREV_OBJECT(this, type_name) ((type_name *) (this->prev_structure))
-#define NUMBER_CREATED(type_name) (alloc_status[type_name##_MT].objects_count)
+#define NUMBER_CREATED(type_name) (alloc_status[type_name##_CLASS].objects_count)
 #define LOOP_OVER(var, type_name)\
     	for (var=FIRST_OBJECT(type_name); var != NULL; var = NEXT_OBJECT(var, type_name))
 #define LOOP_BACKWARDS_OVER(var, type_name)\
     	for (var=LAST_OBJECT(type_name); var != NULL; var = PREV_OBJECT(var, type_name))
-#define NEW_OBJECT(type_name) ((type_name *) Memory__allocate(type_name##_MT, sizeof(type_name)))
-#define ALLOCATE_INDIVIDUALLY(type_name) \
-    MAKE_REFERENCE_ROUTINES(type_name, type_name##_MT)\
+#define NEW_OBJECT(type_name) ((type_name *) Memory__allocate(type_name##_CLASS, sizeof(type_name)))
+#define DECLARE_CLASS(type_name) \
+    MAKE_REFERENCE_ROUTINES(type_name, type_name##_CLASS)\
     type_name *allocate_##type_name(void) {\
     	CREATE_MUTEX(mutex);\
     	LOCK_MUTEX(mutex);\
-    	alloc_status[type_name##_MT].name_of_type = #type_name;\
+    	alloc_status[type_name##_CLASS].name_of_type = #type_name;\
     	type_name *prev_obj = LAST_OBJECT(type_name);\
     	type_name *new_obj = NEW_OBJECT(type_name);\
-    	new_obj->allocation_id = alloc_status[type_name##_MT].objects_allocated-1;\
+    	new_obj->allocation_id = alloc_status[type_name##_CLASS].objects_allocated-1;\
     	new_obj->next_structure = NULL;\
     	if (prev_obj != NULL)\
     		prev_obj->next_structure = (void *) new_obj;\
     	new_obj->prev_structure = prev_obj;\
-    	alloc_status[type_name##_MT].objects_count++;\
+    	alloc_status[type_name##_CLASS].objects_count++;\
     	UNLOCK_MUTEX(mutex);\
     	return new_obj;\
     }\
@@ -414,16 +379,16 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
     	type_name *prev_obj = PREV_OBJECT(kill_me, type_name);\
     	type_name *next_obj = NEXT_OBJECT(kill_me, type_name);\
     	if (prev_obj == NULL) {\
-    		alloc_status[type_name##_MT].first_in_memory = next_obj;\
+    		alloc_status[type_name##_CLASS].first_in_memory = next_obj;\
     	} else {\
     		prev_obj->next_structure = next_obj;\
     	}\
     	if (next_obj == NULL) {\
-    		alloc_status[type_name##_MT].last_in_memory = prev_obj;\
+    		alloc_status[type_name##_CLASS].last_in_memory = prev_obj;\
     	} else {\
     		next_obj->prev_structure = prev_obj;\
     	}\
-    	alloc_status[type_name##_MT].objects_count--;\
+    	alloc_status[type_name##_CLASS].objects_count--;\
     	UNLOCK_MUTEX(mutex);\
     }\
     type_name *allocate_##type_name##_before(type_name *existing) {\
@@ -434,10 +399,10 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
     	new_obj->prev_structure = existing->prev_structure;\
     	if (existing->prev_structure != NULL)\
     		((type_name *) existing->prev_structure)->next_structure = new_obj;\
-    	else alloc_status[type_name##_MT].first_in_memory = (void *) new_obj;\
+    	else alloc_status[type_name##_CLASS].first_in_memory = (void *) new_obj;\
     	new_obj->next_structure = existing;\
     	existing->prev_structure = new_obj;\
-    	alloc_status[type_name##_MT].objects_count++;\
+    	alloc_status[type_name##_CLASS].objects_count++;\
     	UNLOCK_MUTEX(mutex);\
     	return new_obj;\
     }\
@@ -453,21 +418,21 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
     	to->prev_structure = prev_obj;\
     	UNLOCK_MUTEX(mutex);\
     }
-#define ALLOCATE_IN_ARRAYS(type_name, NO_TO_ALLOCATE_TOGETHER)\
-    MAKE_REFERENCE_ROUTINES(type_name, type_name##_array_MT)\
+#define DECLARE_CLASS_ALLOCATED_IN_ARRAYS(type_name, NO_TO_ALLOCATE_TOGETHER)\
+    MAKE_REFERENCE_ROUTINES(type_name, type_name##_array_CLASS)\
     typedef struct type_name##_array {\
     	int used;\
     	struct type_name array[NO_TO_ALLOCATE_TOGETHER];\
-    	MEMORY_MANAGEMENT\
+    	CLASS_DEFINITION\
     } type_name##_array;\
-    ALLOCATE_INDIVIDUALLY(type_name##_array)\
+    DECLARE_CLASS(type_name##_array)\
     type_name##_array *next_##type_name##_array = NULL;\
     struct type_name *allocate_##type_name(void) {\
     	CREATE_MUTEX(mutex);\
     	LOCK_MUTEX(mutex);\
     	if ((next_##type_name##_array == NULL) ||\
     		(next_##type_name##_array->used >= NO_TO_ALLOCATE_TOGETHER)) {\
-    		alloc_status[type_name##_array_MT].no_allocated_together = NO_TO_ALLOCATE_TOGETHER;\
+    		alloc_status[type_name##_array_CLASS].no_allocated_together = NO_TO_ALLOCATE_TOGETHER;\
     		next_##type_name##_array = allocate_##type_name##_array();\
     		next_##type_name##_array->used = 0;\
     	}\
@@ -480,7 +445,6 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define STRING_STORAGE_MREASON 2
 #define DICTIONARY_MREASON 3
 #define CLS_SORTING_MREASON 4
-#define SSA_CAPACITY 64*1024
 #define NULL_GENERAL_POINTER (Memory__store_gp_null())
 #define GENERAL_POINTER_IS_NULL(gp) (Memory__test_gp_null(gp))
 #define COMPARE_GENERAL_POINTERS(gp1, gp2)\
@@ -512,6 +476,42 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
     	if (gp.run_time_type_code == id_code) return TRUE;\
     	return FALSE;\
     }
+#define chapter_md_CLASS 1
+#define command_line_switch_CLASS 2
+#define debugging_aspect_CLASS 3
+#define dict_entry_array_CLASS 4
+#define dictionary_CLASS 5
+#define ebook_chapter_CLASS 6
+#define ebook_CLASS 7
+#define ebook_datum_CLASS 8
+#define ebook_image_CLASS 9
+#define ebook_mark_CLASS 10
+#define ebook_page_CLASS 11
+#define ebook_volume_CLASS 12
+#define filename_CLASS 13
+#define heterogeneous_tree_CLASS 14
+#define HTML_file_state_CLASS 15
+#define HTML_tag_array_CLASS 16
+#define linked_list_CLASS 17
+#define linked_list_item_array_CLASS 18
+#define match_avinue_array_CLASS 19
+#define match_trie_array_CLASS 20
+#define method_CLASS 21
+#define method_set_CLASS 22
+#define module_CLASS 23
+#define module_search_CLASS 24
+#define pathname_CLASS 25
+#define scan_directory_CLASS 26
+#define section_md_CLASS 27
+#define semantic_version_number_holder_CLASS 28
+#define semver_range_CLASS 29
+#define string_storage_area_CLASS 30
+#define text_stream_array_CLASS 31
+#define tree_node_CLASS 32
+#define tree_node_type_CLASS 33
+#define tree_type_CLASS 34
+#define web_bibliographic_datum_CLASS 35
+#define web_md_CLASS 36
 #define NEWLINE_IN_STRING ((char) 0x7f) /* Within quoted text, all newlines are converted to this */
 #define OUTPUT_STREAM text_stream *OUT /* used only as a function prototype argument */
 #define STDOUT Streams__get_stdout()
@@ -564,18 +564,14 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define INTSIZED_ECAT 2		/* data to be printed is or fits into an integer */
 #define WORDING_ECAT 3		/* data to be printed is a |wording| structure from inform7 */
 #define DIRECT_ECAT 4		/* data must be printed directly by the code below */
-#define METHOD_CALLS \
-    	struct method_set *methods;
-#define ENABLE_METHOD_CALLS(obj) \
-    	obj->methods = Methods__new_set();
 #define UNUSED_METHOD_ID_MTID 1
-#define IMETHOD_TYPE(id, args...)\
+#define INT_METHOD_TYPE(id, args...)\
     	typedef int (*id##_type)(args);
-#define VMETHOD_TYPE(id, args...)\
+#define VOID_METHOD_TYPE(id, args...)\
     	typedef void (*id##_type)(args);
 #define METHOD_ADD(upon, id, func)\
     	Methods__add(upon->methods, id, (void *) &func);
-#define IMETHOD_CALL(rval, upon, id, args...) {\
+#define INT_METHOD_CALL(rval, upon, id, args...) {\
     	rval = FALSE;\
     	for (method *M = upon?(upon->methods->first_method):NULL; M; M = M->next_method)\
     		if (M->method_id == id) {\
@@ -586,7 +582,7 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
     			}\
     		}\
     }
-#define IMETHOD_CALLV(rval, upon, id) {\
+#define INT_METHOD_CALL_WITHOUT_ARGUMENTS(rval, upon, id) {\
     	rval = FALSE;\
     	for (method *M = upon?(upon->methods->first_method):NULL; M; M = M->next_method)\
     		if (M->method_id == id) {\
@@ -597,11 +593,11 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
     			}\
     		}\
     }
-#define VMETHOD_CALL(upon, id, args...)\
+#define VOID_METHOD_CALL(upon, id, args...)\
     	for (method *M = upon?(upon->methods->first_method):NULL; M; M = M->next_method)\
     		if (M->method_id == id)\
     			(*((id##_type) (M->method_function)))(upon, args);
-#define VMETHOD_CALLV(upon, id)\
+#define VOID_METHOD_CALL_WITHOUT_ARGUMENTS(upon, id)\
     	for (method *M = upon?(upon->methods->first_method):NULL; M; M = M->next_method)\
     		if (M->method_id == id)\
     			(*((id##_type) (M->method_function)))(upon);
@@ -685,16 +681,16 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define MAX_TRIE_REWIND 10 /* that should be far, far more rewinding than necessary */
 #define MAX_BRACKETED_SUBEXPRESSIONS 5 /* this many bracketed subexpressions can be extracted */
 #define MATCH_TEXT_INITIAL_ALLOCATION 64
-#define ANY_CLASS 1
-#define DIGIT_CLASS 2
-#define WHITESPACE_CLASS 3
-#define NONWHITESPACE_CLASS 4
-#define IDENTIFIER_CLASS 5
-#define PREFORM_CLASS 6
-#define PREFORMC_CLASS 7
-#define LITERAL_CLASS 8
-#define TAB_CLASS 9
-#define QUOTE_CLASS 10
+#define ANY_CHARCLASS 1
+#define DIGIT_CHARCLASS 2
+#define WHITESPACE_CHARCLASS 3
+#define NONWHITESPACE_CHARCLASS 4
+#define IDENTIFIER_CHARCLASS 5
+#define PREFORM_CHARCLASS 6
+#define PREFORMC_CHARCLASS 7
+#define LITERAL_CHARCLASS 8
+#define TAB_CHARCLASS 9
+#define QUOTE_CHARCLASS 10
 #define REP_REPEATING 1
 #define REP_ATSTART 2
 #define tag_error(x) { LOG("Tag error: %s\n", x); }
@@ -721,88 +717,88 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define MAKEFILE_WEB_MOM 2
 #define MAKEFILE_MODULE_MOM 3
 #define PROGRAM_NAME "inweb"
-#define asset_rule_MT 36
-#define breadcrumb_request_MT 37
-#define chapter_MT 38
-#define colony_MT 39
-#define colony_member_MT 40
-#define colour_scheme_MT 41
-#define colouring_language_block_MT 42
-#define colouring_rule_MT 43
-#define enumeration_set_MT 44
-#define footnote_MT 45
-#define hash_table_entry_MT 46
-#define hash_table_entry_usage_MT 47
-#define language_function_MT 48
-#define language_type_MT 49
-#define macro_MT 50
-#define macro_tokens_MT 51
-#define macro_usage_MT 52
-#define nonterminal_variable_MT 53
-#define para_macro_MT 54
-#define paragraph_MT 55
-#define paragraph_tagging_MT 56
-#define preform_nonterminal_MT 57
-#define programming_language_MT 58
-#define reserved_word_MT 59
-#define section_MT 60
-#define source_line_array_MT 61
-#define structure_element_MT 62
-#define tangle_target_MT 63
-#define tex_results_MT 64
-#define text_literal_MT 65
-#define theme_tag_MT 66
-#define weave_format_MT 67
-#define weave_pattern_MT 68
-#define weave_plugin_MT 69
-#define weave_order_MT 70
-#define web_MT 71
-#define writeme_asset_MT 72
-#define weave_document_node_MT 73
-#define weave_head_node_MT 74
-#define weave_body_node_MT 75
-#define weave_tail_node_MT 76
-#define weave_section_header_node_MT 77
-#define weave_section_footer_node_MT 78
-#define weave_chapter_header_node_MT 79
-#define weave_chapter_footer_node_MT 80
-#define weave_verbatim_node_MT 81
-#define weave_section_purpose_node_MT 82
-#define weave_subheading_node_MT 83
-#define weave_bar_node_MT 84
-#define weave_linebreak_node_MT 85
-#define weave_pagebreak_node_MT 86
-#define weave_paragraph_heading_node_MT 87
-#define weave_endnote_node_MT 88
-#define weave_material_node_MT 89
-#define weave_figure_node_MT 90
-#define weave_audio_node_MT 91
-#define weave_download_node_MT 92
-#define weave_video_node_MT 93
-#define weave_embed_node_MT 94
-#define weave_pmac_node_MT 95
-#define weave_vskip_node_MT 96
-#define weave_chapter_node_MT 97
-#define weave_section_node_MT 98
-#define weave_code_line_node_MT 99
-#define weave_function_usage_node_MT 100
-#define weave_commentary_node_MT 101
-#define weave_carousel_slide_node_MT 102
-#define weave_toc_node_MT 103
-#define weave_toc_line_node_MT 104
-#define weave_chapter_title_page_node_MT 105
-#define weave_defn_node_MT 106
-#define weave_source_code_node_MT 107
-#define weave_url_node_MT 108
-#define weave_footnote_cue_node_MT 109
-#define weave_begin_footnote_text_node_MT 110
-#define weave_display_line_node_MT 111
-#define weave_function_defn_node_MT 112
-#define weave_item_node_MT 113
-#define weave_grammar_index_node_MT 114
-#define weave_inline_node_MT 115
-#define weave_locale_node_MT 116
-#define weave_maths_node_MT 117
+#define asset_rule_CLASS 37
+#define breadcrumb_request_CLASS 38
+#define chapter_CLASS 39
+#define colony_CLASS 40
+#define colony_member_CLASS 41
+#define colour_scheme_CLASS 42
+#define colouring_language_block_CLASS 43
+#define colouring_rule_CLASS 44
+#define enumeration_set_CLASS 45
+#define footnote_CLASS 46
+#define hash_table_entry_CLASS 47
+#define hash_table_entry_usage_CLASS 48
+#define language_function_CLASS 49
+#define language_type_CLASS 50
+#define macro_CLASS 51
+#define macro_tokens_CLASS 52
+#define macro_usage_CLASS 53
+#define nonterminal_variable_CLASS 54
+#define para_macro_CLASS 55
+#define paragraph_CLASS 56
+#define paragraph_tagging_CLASS 57
+#define preform_nonterminal_CLASS 58
+#define programming_language_CLASS 59
+#define reserved_word_CLASS 60
+#define section_CLASS 61
+#define source_line_array_CLASS 62
+#define structure_element_CLASS 63
+#define tangle_target_CLASS 64
+#define tex_results_CLASS 65
+#define text_literal_CLASS 66
+#define theme_tag_CLASS 67
+#define weave_format_CLASS 68
+#define weave_pattern_CLASS 69
+#define weave_plugin_CLASS 70
+#define weave_order_CLASS 71
+#define web_CLASS 72
+#define writeme_asset_CLASS 73
+#define weave_document_node_CLASS 74
+#define weave_head_node_CLASS 75
+#define weave_body_node_CLASS 76
+#define weave_tail_node_CLASS 77
+#define weave_section_header_node_CLASS 78
+#define weave_section_footer_node_CLASS 79
+#define weave_chapter_header_node_CLASS 80
+#define weave_chapter_footer_node_CLASS 81
+#define weave_verbatim_node_CLASS 82
+#define weave_section_purpose_node_CLASS 83
+#define weave_subheading_node_CLASS 84
+#define weave_bar_node_CLASS 85
+#define weave_linebreak_node_CLASS 86
+#define weave_pagebreak_node_CLASS 87
+#define weave_paragraph_heading_node_CLASS 88
+#define weave_endnote_node_CLASS 89
+#define weave_material_node_CLASS 90
+#define weave_figure_node_CLASS 91
+#define weave_audio_node_CLASS 92
+#define weave_download_node_CLASS 93
+#define weave_video_node_CLASS 94
+#define weave_embed_node_CLASS 95
+#define weave_pmac_node_CLASS 96
+#define weave_vskip_node_CLASS 97
+#define weave_chapter_node_CLASS 98
+#define weave_section_node_CLASS 99
+#define weave_code_line_node_CLASS 100
+#define weave_function_usage_node_CLASS 101
+#define weave_commentary_node_CLASS 102
+#define weave_carousel_slide_node_CLASS 103
+#define weave_toc_node_CLASS 104
+#define weave_toc_line_node_CLASS 105
+#define weave_chapter_title_page_node_CLASS 106
+#define weave_defn_node_CLASS 107
+#define weave_source_code_node_CLASS 108
+#define weave_url_node_CLASS 109
+#define weave_footnote_cue_node_CLASS 110
+#define weave_begin_footnote_text_node_CLASS 111
+#define weave_display_line_node_CLASS 112
+#define weave_function_defn_node_CLASS 113
+#define weave_item_node_CLASS 114
+#define weave_grammar_index_node_CLASS 115
+#define weave_inline_node_CLASS 116
+#define weave_locale_node_CLASS 117
+#define weave_maths_node_CLASS 118
 #define NO_MODE 0
 #define ANALYSE_MODE 1
 #define TANGLE_MODE 2
@@ -1013,7 +1009,7 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define PDFTEX_TEX_FORM 1
 #define NO_DEFINED_CLSW_VALUES 35
 #define NO_DEFINED_DA_VALUES 4
-#define NO_DEFINED_MT_VALUES 118
+#define NO_DEFINED_CLASS_VALUES 119
 #define NO_DEFINED_MREASON_VALUES 5
 #define NO_DEFINED_MTID_VALUES 42
 #define NO_DEFINED_CLSF_VALUES 5
@@ -1037,9 +1033,9 @@ typedef struct debugging_aspect {
 	struct text_stream *unhyphenated_name; /* e.g., "memory usage" */
 	int on_or_off; /* whether or not active when writing to debugging log */
 	int alternate; /* whether or not active when writing in trace mode */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } debugging_aspect;
-#line 91 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 58 "inweb/foundation-module/Chapter 2/Memory.w"
 typedef struct allocation_status_structure {
 	/* actually needed for allocation purposes: */
 	int objects_allocated; /* total number of objects (or arrays) ever allocated */
@@ -1047,31 +1043,25 @@ typedef struct allocation_status_structure {
 	void *last_in_memory; /* tail of doubly linked list */
 
 	/* used only to provide statistics for the debugging log: */
-	char *name_of_type; /* e.g., |"lexicon_entry_MT"| */
+	char *name_of_type; /* e.g., |"lexicon_entry_CLASS"| */
 	int bytes_allocated; /* total allocation for this type of object, not counting overhead */
 	int objects_count; /* total number currently in existence (i.e., undeleted) */
 	int no_allocated_together; /* number of objects in each array of this type of object */
 } allocation_status_structure;
-#line 173 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 140 "inweb/foundation-module/Chapter 2/Memory.w"
 typedef struct memblock_header {
 	int block_number;
 	struct memblock_header *next;
 	char *the_memory;
 } memblock_header;
-#line 255 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 222 "inweb/foundation-module/Chapter 2/Memory.w"
 typedef struct memory_frame {
 	int integrity_check; /* this should always contain the |INTEGRITY_NUMBER| */
 	struct memory_frame *next_frame; /* next frame in the list of memory frames */
 	int mem_type; /* type of object stored in this frame */
 	int allocation_id; /* allocation ID number of object stored in this frame */
 } memory_frame;
-#line 708 "inweb/foundation-module/Chapter 2/Memory.w"
-typedef struct string_storage_area {
-	char *storage_at;
-	int first_free_byte;
-	MEMORY_MANAGEMENT
-} string_storage_area;
-#line 887 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 741 "inweb/foundation-module/Chapter 2/Memory.w"
 typedef struct general_pointer {
 	void *pointer_to_data;
 	int run_time_type_code;
@@ -1087,17 +1077,17 @@ typedef struct text_stream {
 	int chars_capacity; /* maximum number the stream can accept without claiming more resources */
 	struct text_stream *stream_continues; /* if one memory stream is extended by another */
 } text_stream;
-#line 36 "inweb/foundation-module/Chapter 2/Methods.w"
+#line 27 "inweb/foundation-module/Chapter 2/Methods.w"
 typedef struct method_set {
 	struct method *first_method;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } method_set;
-#line 78 "inweb/foundation-module/Chapter 2/Methods.w"
+#line 69 "inweb/foundation-module/Chapter 2/Methods.w"
 typedef struct method {
 	int method_id;
 	void *method_function;
 	struct method *next_method;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } method;
 #line 23 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 typedef struct linked_list_item {
@@ -1110,7 +1100,7 @@ typedef struct linked_list {
 	struct linked_list_item *last_list_item;
 	int linked_list_length;
 	struct linked_list_item early_items[NO_LL_EARLY_ITEMS];
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } linked_list;
 #line 13 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 typedef struct dictionary {
@@ -1118,7 +1108,7 @@ typedef struct dictionary {
 	int no_entries; /* total number of key-value pairs currently stored here */
 	int hash_table_size; /* size of array... */
 	struct dict_entry *hash_table; /* ...of linked lists of dictionary entries */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } dictionary;
 #line 21 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 typedef struct dict_entry {
@@ -1131,7 +1121,7 @@ typedef struct dict_entry {
 typedef struct heterogeneous_tree {
 	struct tree_type *type;
 	struct tree_node *root;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } heterogeneous_tree;
 #line 26 "inweb/foundation-module/Chapter 2/Trees.w"
 typedef struct tree_node {
@@ -1141,20 +1131,20 @@ typedef struct tree_node {
 	struct tree_node *next;
 	struct tree_node *parent;
 	struct tree_node *child;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } tree_node;
 #line 74 "inweb/foundation-module/Chapter 2/Trees.w"
 typedef struct tree_type {
 	struct text_stream *name;
 	int (*verify_root)(struct tree_node *); /* function to vet the root node */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } tree_type;
 #line 92 "inweb/foundation-module/Chapter 2/Trees.w"
 typedef struct tree_node_type {
 	struct text_stream *node_type_name; /* text such as |TL_IS_7| */
-	int required_MT; /* if any; or negative for no restriction */
+	int required_CLASS; /* if any; or negative for no restriction */
 	int (*verify_children)(struct tree_node *); /* function to vet the children */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } tree_node_type;
 #line 38 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 typedef struct command_line_switch {
@@ -1167,7 +1157,7 @@ typedef struct command_line_switch {
 	int switch_group; /* one of the |*_CLSG| valyes above */
 	int active_by_default; /* relevant only for booleans */
 	struct command_line_switch *negates; /* relevant only for booleans */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } command_line_switch;
 #line 171 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 typedef struct clf_reader_state {
@@ -1182,20 +1172,26 @@ typedef struct pathname {
 	struct text_stream *intermediate;
 	struct pathname *pathname_of_parent;
 	int known_to_exist; /* corresponds to a directory in the filing system */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } pathname;
 #line 12 "inweb/foundation-module/Chapter 3/Filenames.w"
 typedef struct filename {
 	struct pathname *pathname_of_location;
 	struct text_stream *leafname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } filename;
 #line 8 "inweb/foundation-module/Chapter 3/Directories.w"
 typedef struct scan_directory {
 	void *directory_handle;
 	char directory_name_written_out[4*MAX_FILENAME_LENGTH];
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } scan_directory;
+#line 119 "inweb/foundation-module/Chapter 4/C Strings.w"
+typedef struct string_storage_area {
+	char *storage_at;
+	int capacity;
+	CLASS_DEFINITION
+} string_storage_area;
 #line 159 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 typedef struct string_position {
 	struct text_stream *S;
@@ -1258,13 +1254,13 @@ typedef struct HTML_file_state {
 	struct lifo_stack *tag_stack; /* of |HTML_tag|: those currently open */
 	int CSS_included;
 	int JS_included;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } HTML_file_state;
 #line 43 "inweb/foundation-module/Chapter 5/HTML.w"
 typedef struct HTML_tag {
 	char *tag_name;
 	int tag_xref;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } HTML_tag;
 #line 603 "inweb/foundation-module/Chapter 5/HTML.w"
 typedef struct colour_translation {
@@ -1289,20 +1285,20 @@ typedef struct ebook {
 
 	struct linked_list *ebook_page_list; /* of |book_page| */
 	struct linked_list *ebook_image_list; /* of |ebook_image| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } ebook;
 #line 48 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
 typedef struct ebook_datum {
 	struct text_stream *key;
 	struct text_stream *value;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } ebook_datum;
 #line 57 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
 typedef struct ebook_volume {
 	struct text_stream *volume_title;
 	struct ebook_page *volume_starts; /* on which page the volume starts */
 	struct filename *CSS_file; /* where to find the CSS file to be included */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } ebook_volume;
 #line 64 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
 typedef struct ebook_chapter {
@@ -1311,7 +1307,7 @@ typedef struct ebook_chapter {
 	struct ebook_page *chapter_starts; /* on which page the chapter starts */
 	struct linked_list *ebook_mark_list; /* of |ebook_mark|: for when multiple navigable points exist within this */
 	struct text_stream *start_URL;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } ebook_chapter;
 #line 77 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
 typedef struct ebook_page {
@@ -1325,19 +1321,19 @@ typedef struct ebook_page {
 	struct ebook_chapter *in_chapter; /* to which chapter this page belongs */
 
 	int nav_entry_written; /* keep track of what we've written to the navigation tree */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } ebook_page;
 #line 91 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
 typedef struct ebook_mark {
 	struct text_stream *mark_text;
 	struct text_stream *mark_URL;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } ebook_mark;
 #line 97 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
 typedef struct ebook_image {
 	struct text_stream *image_ID;
 	struct filename *relative_URL; /* eventual URL of this image within the ebook */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } ebook_image;
 #line 61 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 typedef struct semantic_version_number {
@@ -1348,7 +1344,7 @@ typedef struct semantic_version_number {
 #line 67 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 typedef struct semantic_version_number_holder {
 	struct semantic_version_number version;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } semantic_version_number_holder;
 #line 24 "inweb/foundation-module/Chapter 7/Version Number Ranges.w"
 typedef struct range_end {
@@ -1359,7 +1355,7 @@ typedef struct range_end {
 typedef struct semver_range {
 	struct range_end lower;
 	struct range_end upper;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } semver_range;
 #line 27 "inweb/foundation-module/Chapter 8/Web Structure.w"
 typedef struct web_md {
@@ -1379,7 +1375,7 @@ typedef struct web_md {
 
 	struct linked_list *chapters_md; /* of |chapter_md| */
 	struct linked_list *sections_md; /* of |section_md| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } web_md;
 #line 50 "inweb/foundation-module/Chapter 8/Web Structure.w"
 typedef struct chapter_md {
@@ -1394,7 +1390,7 @@ typedef struct chapter_md {
 	int imported; /* from a different web? */
 
 	struct linked_list *sections_md; /* of |section_md| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } chapter_md;
 #line 68 "inweb/foundation-module/Chapter 8/Web Structure.w"
 typedef struct section_md {
@@ -1411,7 +1407,7 @@ typedef struct section_md {
 	struct text_stream *titling_line_to_insert;
 
 	struct module *owning_module;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } section_md;
 #line 246 "inweb/foundation-module/Chapter 8/Web Structure.w"
 typedef struct reader_state {
@@ -1442,7 +1438,7 @@ typedef struct web_bibliographic_datum {
 	int declaration_mandatory; /* is it positively required to? */
 	int on_or_off; /* boolean: which we handle as the string "On" or "Off" */
 	struct web_bibliographic_datum *alias;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } web_bibliographic_datum;
 #line 19 "inweb/foundation-module/Chapter 8/Web Modules.w"
 typedef struct module {
@@ -1453,12 +1449,12 @@ typedef struct module {
 	int origin_marker; /* one of the |*_MOM| values above */
 	struct linked_list *chapters_md; /* of |chapter_md|: just the ones in this module */
 	struct linked_list *sections_md; /* of |section_md|: just the ones in this module */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } module;
 #line 73 "inweb/foundation-module/Chapter 8/Web Modules.w"
 typedef struct module_search {
 	struct pathname *path_to_search;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } module_search;
 #line 21 "inweb/foundation-module/Chapter 8/Build Files.w"
 typedef struct build_file_data {
@@ -1523,7 +1519,7 @@ typedef struct weave_order {
 
 	/* used for workspace during an actual weave: */
 	struct source_line *current_weave_line;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_order;
 #line 11 "inweb/Chapter 1/Patterns.w"
 typedef struct weave_pattern {
@@ -1551,13 +1547,13 @@ typedef struct weave_pattern {
 
 	int commands;
 	int name_command_given;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_pattern;
 #line 12 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 typedef struct weave_plugin {
 	struct text_stream *plugin_name;
 	int last_included_in_round;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_plugin;
 #line 34 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 typedef struct colour_scheme {
@@ -1565,7 +1561,7 @@ typedef struct colour_scheme {
 	struct text_stream *prefix;
 	struct filename *at;
 	int last_included_in_round;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } colour_scheme;
 #line 168 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 typedef struct asset_rule {
@@ -1574,7 +1570,7 @@ typedef struct asset_rule {
 	struct text_stream *pre;
 	struct text_stream *post;
 	int transform_names;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } asset_rule;
 #line 343 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 typedef struct css_file_transformation {
@@ -1599,7 +1595,7 @@ typedef struct web {
 	struct ebook *as_ebook; /* when being woven to an ebook */
 	struct pathname *redirect_weaves_to; /* ditto */
 
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } web;
 #line 51 "inweb/Chapter 2/The Reader.w"
 typedef struct chapter {
@@ -1610,7 +1606,7 @@ typedef struct chapter {
 	struct weave_order *ch_weave; /* |NULL| unless this chapter produces a weave of its own */
 	int titling_line_inserted; /* has an interleaved chapter heading been added yet? */
 	struct programming_language *ch_language; /* in which this chapter is written */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } chapter;
 #line 65 "inweb/Chapter 2/The Reader.w"
 typedef struct section {
@@ -1638,7 +1634,7 @@ typedef struct section {
 	int scratch_flag; /* temporary workspace */
 	int paused_until_at; /* ignore the top half of the file, until the first |@| sign */
 	int printed_number; /* temporary again: sometimes used in weaving */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } section;
 #line 255 "inweb/Chapter 3/The Analyser.w"
 typedef struct hash_table {
@@ -1649,7 +1645,7 @@ typedef struct hash_table {
 typedef struct tangle_target {
 	struct programming_language *tangle_language; /* common to the entire contents */
 	struct hash_table symbols; /* a table of identifiable names in this program */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } tangle_target;
 #line 20 "inweb/Chapter 2/Line Categories.w"
 typedef struct source_line {
@@ -1697,7 +1693,7 @@ typedef struct paragraph {
 	struct linked_list *footnotes; /* of |footnote| */
 	struct source_line *first_line_in_paragraph;
 	struct section *under_section;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } paragraph;
 #line 843 "inweb/Chapter 2/The Parser.w"
 typedef struct footnote {
@@ -1705,7 +1701,7 @@ typedef struct footnote {
 	int footnote_text_number; /* used only for |FOOTNOTE_TEXT_LCAT| lines */
 	struct text_stream *cue_text;
 	int cued_already;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } footnote;
 #line 8 "inweb/Chapter 2/Paragraph Macros.w"
 typedef struct para_macro {
@@ -1713,20 +1709,20 @@ typedef struct para_macro {
 	struct paragraph *defining_paragraph; /* as printed in small type after the name in any usage */
 	struct source_line *defn_start; /* it ends at the end of its defining paragraph */
 	struct linked_list *macro_usages; /* of |macro_usage|: only computed for weaves */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } para_macro;
 #line 10 "inweb/Chapter 2/Tags.w"
 typedef struct theme_tag {
 	struct text_stream *tag_name;
 	int ifdef_positive;
 	struct text_stream *ifdef_symbol;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } theme_tag;
 #line 50 "inweb/Chapter 2/Tags.w"
 typedef struct paragraph_tagging {
 	struct theme_tag *the_tag;
 	struct text_stream *caption;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } paragraph_tagging;
 #line 14 "inweb/Chapter 2/Enumerated Constants.w"
 typedef struct enumeration_set {
@@ -1735,13 +1731,13 @@ typedef struct enumeration_set {
 	int first_value;
 	int next_free_value;
 	struct source_line *last_observed_at;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } enumeration_set;
 #line 61 "inweb/Chapter 2/Paragraph Numbering.w"
 typedef struct macro_usage {
 	struct paragraph *used_in_paragraph;
 	int multiplicity; /* for example, 2 if it's used twice in this paragraph */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } macro_usage;
 #line 263 "inweb/Chapter 3/The Analyser.w"
 typedef struct hash_table_entry {
@@ -1750,13 +1746,13 @@ typedef struct hash_table_entry {
 	struct linked_list *usages; /* of |hash_table_entry_usage| */
 	struct source_line *definition_line; /* or null, if it's not a constant, function or type name */
 	struct language_function *as_function; /* for function names only */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } hash_table_entry;
 #line 361 "inweb/Chapter 3/The Analyser.w"
 typedef struct hash_table_entry_usage {
 	struct paragraph *usage_recorded_at;
 	int form_of_usage; /* bitmap of the |*_USAGE| constants defined above */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } hash_table_entry_usage;
 #line 48 "inweb/Chapter 3/The Collater.w"
 typedef struct collater_state {
@@ -1833,8 +1829,8 @@ typedef struct programming_language {
 	struct linked_list *reserved_words; /* of |reserved_word| */
 	struct hash_table built_in_keywords;
 	struct colouring_language_block *program; /* algorithm for syntax colouring */
-	METHOD_CALLS
-	MEMORY_MANAGEMENT
+	struct method_set *methods;
+	CLASS_DEFINITION
 } programming_language;
 #line 156 "inweb/Chapter 4/Programming Languages.w"
 typedef struct language_reader_state {
@@ -1852,7 +1848,7 @@ typedef struct colouring_language_block {
 
 	/* workspace during painting */
 	struct match_results mr; /* of a regular expression */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } colouring_language_block;
 #line 438 "inweb/Chapter 4/Programming Languages.w"
 typedef struct colouring_rule {
@@ -1875,13 +1871,13 @@ typedef struct colouring_rule {
 	/* workspace during painting */
 	int fix_position; /* where the prefix or suffix started */
 	struct match_results mr; /* of a regular expression */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } colouring_rule;
 #line 560 "inweb/Chapter 4/Programming Languages.w"
 typedef struct reserved_word {
 	struct text_stream *word;
 	int colour;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } reserved_word;
 #line 8 "inweb/Chapter 4/Types and Functions.w"
 typedef struct language_type {
@@ -1892,14 +1888,14 @@ typedef struct language_type {
 	struct linked_list *incorporates; /* of |language_type| */
 	struct linked_list *elements; /* of |structure_element| */
 	struct language_type *next_cst_alphabetically;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } language_type;
 #line 78 "inweb/Chapter 4/Types and Functions.w"
 typedef struct structure_element {
 	struct text_stream *element_name;
 	struct source_line *element_created_at;
 	int allow_sharing;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } structure_element;
 #line 112 "inweb/Chapter 4/Types and Functions.w"
 typedef struct language_function {
@@ -1913,7 +1909,7 @@ typedef struct language_function {
 	int usage_described;
 	int no_conditionals;
 	struct source_line *within_conditionals[MAX_CONDITIONAL_COMPILATION_STACK];
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } language_function;
 #line 104 "inweb/Chapter 4/InC Support.w"
 typedef struct preform_nonterminal {
@@ -1927,7 +1923,7 @@ typedef struct preform_nonterminal {
 	int takes_pointer_result; /* right-hand formula defines |*XP|, not |*X| */
 	struct source_line *where_defined;
 	struct preform_nonterminal *next_pnt_alphabetically;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } preform_nonterminal;
 #line 279 "inweb/Chapter 4/InC Support.w"
 typedef struct nonterminal_variable {
@@ -1935,117 +1931,117 @@ typedef struct nonterminal_variable {
 	struct text_stream *ntv_type; /* e.g., |"int"| */
 	struct text_stream *ntv_identifier; /* e.g., |"num_NTMV"| */
 	struct source_line *first_mention; /* first usage */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } nonterminal_variable;
 #line 331 "inweb/Chapter 4/InC Support.w"
 typedef struct text_literal {
 	struct text_stream *tl_identifier;
 	struct text_stream *tl_content;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } text_literal;
 #line 6 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_document_node {
 	struct weave_order *wv;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_document_node;
 #line 11 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_head_node {
 	struct text_stream *banner;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_head_node;
 #line 16 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_body_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_body_node;
 #line 20 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_tail_node {
 	struct text_stream *rennab;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_tail_node;
 #line 25 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_chapter_header_node {
 	struct chapter *chap;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_chapter_header_node;
 #line 30 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_chapter_footer_node {
 	struct chapter *chap;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_chapter_footer_node;
 #line 35 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_section_header_node {
 	struct section *sect;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_section_header_node;
 #line 40 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_section_footer_node {
 	struct section *sect;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_section_footer_node;
 #line 45 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_section_purpose_node {
 	struct text_stream *purpose;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_section_purpose_node;
 #line 50 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_subheading_node {
 	struct text_stream *text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_subheading_node;
 #line 55 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_bar_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_bar_node;
 #line 59 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_pagebreak_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_pagebreak_node;
 #line 63 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_linebreak_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_linebreak_node;
 #line 67 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_paragraph_heading_node {
 	struct paragraph *para;
 	int no_skip;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_paragraph_heading_node;
 #line 73 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_endnote_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_endnote_node;
 #line 77 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_figure_node {
 	struct text_stream *figname;
 	int w;
 	int h;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_figure_node;
 #line 84 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_audio_node {
 	struct text_stream *audio_name;
 	int w;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_audio_node;
 #line 90 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_video_node {
 	struct text_stream *video_name;
 	int w;
 	int h;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_video_node;
 #line 97 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_download_node {
 	struct text_stream *download_name;
 	struct text_stream *filetype;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_download_node;
 #line 103 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_material_node {
 	int material_type;
 	int plainly;
 	struct programming_language *styling;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_material_node;
 #line 110 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_embed_node {
@@ -2053,142 +2049,142 @@ typedef struct weave_embed_node {
 	struct text_stream *ID;
 	int w;
 	int h;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_embed_node;
 #line 118 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_pmac_node {
 	struct para_macro *pmac;
 	int defn;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_pmac_node;
 #line 124 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_vskip_node {
 	int in_comment;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_vskip_node;
 #line 129 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_chapter_node {
 	struct chapter *chap;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_chapter_node;
 #line 134 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_section_node {
 	struct section *sect;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_section_node;
 #line 139 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_code_line_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_code_line_node;
 #line 143 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_function_usage_node {
 	struct text_stream *url;
 	struct language_function *fn;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_function_usage_node;
 #line 149 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_commentary_node {
 	struct text_stream *text;
 	int in_code;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_commentary_node;
 #line 155 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_carousel_slide_node {
 	struct text_stream *caption;
 	int caption_command;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_carousel_slide_node;
 #line 161 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_toc_node {
 	struct text_stream *text1;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_toc_node;
 #line 166 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_toc_line_node {
 	struct text_stream *text1;
 	struct text_stream *text2;
 	struct paragraph *para;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_toc_line_node;
 #line 173 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_chapter_title_page_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_chapter_title_page_node;
 #line 177 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_defn_node {
 	struct text_stream *keyword;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_defn_node;
 #line 182 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_inline_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_inline_node;
 #line 186 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_locale_node {
 	struct paragraph *par1;
 	struct paragraph *par2;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_locale_node;
 #line 192 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_source_code_node {
 	struct text_stream *matter;
 	struct text_stream *colouring;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_source_code_node;
 #line 198 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_url_node {
 	struct text_stream *url;
 	struct text_stream *content;
 	int external;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_url_node;
 #line 205 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_footnote_cue_node {
 	struct text_stream *cue_text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_footnote_cue_node;
 #line 210 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_begin_footnote_text_node {
 	struct text_stream *cue_text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_begin_footnote_text_node;
 #line 215 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_display_line_node {
 	struct text_stream *text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_display_line_node;
 #line 220 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_function_defn_node {
 	struct language_function *fn;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_function_defn_node;
 #line 225 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_item_node {
 	int depth;
 	struct text_stream *label;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_item_node;
 #line 231 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_grammar_index_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_grammar_index_node;
 #line 235 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_maths_node {
 	struct text_stream *content;
 	int displayed;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_maths_node;
 #line 241 "inweb/Chapter 5/Weave Tree.w"
 typedef struct weave_verbatim_node {
 	struct text_stream *content;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_verbatim_node;
 #line 11 "inweb/Chapter 5/Format Methods.w"
 typedef struct weave_format {
 	struct text_stream *format_name;
 	struct text_stream *woven_extension;
-	METHOD_CALLS
-	MEMORY_MANAGEMENT
+	struct method_set *methods;
+	CLASS_DEFINITION
 } weave_format;
 #line 18 "inweb/Chapter 5/Plain Text Format.w"
 typedef struct PlainText_render_state {
@@ -2226,7 +2222,7 @@ typedef struct tex_results {
 	int page_count;
 	int pdf_size;
 	struct filename *PDF_filename;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } tex_results;
 #line 9 "inweb/Chapter 6/Makefiles.w"
 typedef struct makefile_state {
@@ -2262,14 +2258,14 @@ typedef struct macro_tokens {
 	struct text_stream *pars[8];
 	int no_pars;
 	struct macro_tokens *down;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } macro_tokens;
 #line 76 "inweb/Chapter 6/Readme Writeme.w"
 typedef struct macro {
 	struct text_stream *name;
 	struct text_stream *content;
 	struct macro_tokens tokens;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } macro;
 #line 254 "inweb/Chapter 6/Readme Writeme.w"
 typedef struct writeme_asset {
@@ -2278,7 +2274,7 @@ typedef struct writeme_asset {
 	struct text_stream *date;
 	struct text_stream *version;
 	int next_is_version;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } writeme_asset;
 #line 21 "inweb/Chapter 6/Colonies.w"
 typedef struct colony {
@@ -2286,7 +2282,7 @@ typedef struct colony {
 	struct text_stream *home; /* path of home repository */
 	struct pathname *assets_path; /* where assets shared between weaves live */
 	struct pathname *patterns_path; /* where additional patterns live */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } colony;
 #line 39 "inweb/Chapter 6/Colonies.w"
 typedef struct colony_member {
@@ -2300,7 +2296,7 @@ typedef struct colony_member {
 	struct web_md *loaded; /* metadata on its sections, lazily evaluated */
 	struct filename *navigation; /* navigation sidebar HTML */
 	struct linked_list *breadcrumb_tail; /* of |breadcrumb_request| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } colony_member;
 #line 59 "inweb/Chapter 6/Colonies.w"
 typedef struct colony_reader_state {
@@ -2313,7 +2309,7 @@ typedef struct colony_reader_state {
 typedef struct breadcrumb_request {
 	struct text_stream *breadcrumb_text;
 	struct text_stream *breadcrumb_link;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } breadcrumb_request;
 typedef long int pointer_sized_int;
 typedef void (*writer_function)(text_stream *, char *, void *);
@@ -2321,9 +2317,9 @@ typedef void (*writer_function_I)(text_stream *, char *, int);
 typedef void (*log_function)(text_stream *, void *);
 typedef void (*log_function_I)(text_stream *, int);
 typedef char string[MAX_STRING_LENGTH+1];
-#line 88 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 89 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void  Foundation__start(void) ;
-#line 167 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 168 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void  Foundation__end(void) ;
 #ifdef PLATFORM_POSIX
 #line 90 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
@@ -2517,51 +2513,47 @@ void  Log__tracing_on(int starred, text_stream *heading) ;
 void  Log__show_debugging_settings_with_state(int state) ;
 #line 274 "inweb/foundation-module/Chapter 2/Debugging Log.w"
 void  Log__show_debugging_contents(void) ;
-#line 111 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 78 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__start(void) ;
-#line 189 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 156 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__allocate_another_block(void) ;
-#line 234 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 201 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__free(void) ;
-#line 279 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 246 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__check_memory_integrity(void) ;
-#line 290 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 257 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__debug_memory_frames(int from, int to) ;
-#line 307 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 274 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__allocate(int mem_type, int extent) ;
-#line 584 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 483 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__name_fundamental_reasons(void) ;
-#line 597 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 496 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__reason_name(int r, char *reason) ;
-#line 602 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 501 "inweb/foundation-module/Chapter 2/Memory.w"
 char * Memory__description_of_reason(int r) ;
-#line 627 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 526 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__calloc(int how_many, int size_in_bytes, int reason) ;
-#line 630 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 529 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__malloc(int size_in_bytes, int reason) ;
-#line 637 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 536 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__alloc_inner(int N, int S, int R) ;
-#line 688 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 587 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__I7_free(void *pointer, int R, int bytes_freed) ;
-#line 698 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 597 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__I7_array_free(void *pointer, int R, int num_cells, size_t cell_size) ;
-#line 721 "inweb/foundation-module/Chapter 2/Memory.w"
-char * Memory__new_string(char *from) ;
-#line 741 "inweb/foundation-module/Chapter 2/Memory.w"
-void  Memory__free_ssas(void) ;
-#line 751 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 605 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__log_usage(int total) ;
-#line 770 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 624 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__log_statistics(void) ;
-#line 840 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 694 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__compare_usage(const void *ent1, const void *ent2) ;
-#line 850 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 704 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__proportion(int bytes, int total) ;
-#line 857 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 711 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__paranoid_calloc(size_t N, size_t S) ;
-#line 892 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 746 "inweb/foundation-module/Chapter 2/Memory.w"
 general_pointer  Memory__store_gp_null(void) ;
-#line 898 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 752 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__test_gp_null(general_pointer gp) ;
 #line 272 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__initialise(text_stream *stream, int from) ;
@@ -2665,11 +2657,11 @@ void  Writers__register_logger_I(int esc, void (*f)(text_stream *, int)) ;
 void  Writers__register_writer_p(int set, int esc, void *f, int cat) ;
 #line 129 "inweb/foundation-module/Chapter 2/Writers and Loggers.w"
 void  Writers__printf(text_stream *stream, char *fmt, ...) ;
-#line 41 "inweb/foundation-module/Chapter 2/Methods.w"
+#line 32 "inweb/foundation-module/Chapter 2/Methods.w"
 method_set * Methods__new_set(void) ;
-#line 85 "inweb/foundation-module/Chapter 2/Methods.w"
+#line 76 "inweb/foundation-module/Chapter 2/Methods.w"
 void  Methods__add(method_set *S, int ID, void *function) ;
-#line 99 "inweb/foundation-module/Chapter 2/Methods.w"
+#line 90 "inweb/foundation-module/Chapter 2/Methods.w"
 int  Methods__provided(method_set *S, int ID) ;
 #line 29 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 linked_list * LinkedLists__new(void) ;
@@ -3003,6 +2995,10 @@ int  CStrings__cmp(char *A, char *B) ;
 void  CStrings__transcode_ISO_string_to_UTF8(char *p, char *dest) ;
 #line 106 "inweb/foundation-module/Chapter 4/C Strings.w"
 void  CStrings__truncated_strcpy(char *to, char *from, int max) ;
+#line 126 "inweb/foundation-module/Chapter 4/C Strings.w"
+char * CStrings__park_string(char *from) ;
+#line 137 "inweb/foundation-module/Chapter 4/C Strings.w"
+void  CStrings__free_ssas(void) ;
 #line 14 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 int  Wide__len(wchar_t *p) ;
 #line 21 "inweb/foundation-module/Chapter 4/Wide Strings.w"
@@ -4952,19 +4948,19 @@ text_stream *DL = NULL; /* Current destination of debugging text: kept |NULL| un
 
 #line 79 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 
-#line 88 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 89 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void Foundation__start(void) {
 	Memory__start();
 	
 {
-#line 105 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 106 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 	Writers__register_writer('f', &Filenames__writer);
 	Writers__register_writer('p', &Pathnames__writer);
 	Writers__register_writer('v', &VersionNumbers__writer);
 	Writers__register_writer('S', &Streams__writer);
 
 }
-#line 90 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 91 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 ;
 	register_tangled_text_literals();
 ;
@@ -4972,27 +4968,27 @@ void Foundation__start(void) {
 	Pathnames__start();
 	
 {
-#line 116 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 117 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 	Log__declare_aspect(DEBUGGING_LOG_INCLUSIONS_DA, L"debugging log inclusions", FALSE, FALSE);
 	Log__declare_aspect(SHELL_USAGE_DA, L"shell usage", FALSE, FALSE);
 	Log__declare_aspect(MEMORY_USAGE_DA, L"memory usage", FALSE, FALSE);
 	Log__declare_aspect(TEXT_FILES_DA, L"text files", FALSE, FALSE);
 
 }
-#line 94 "inweb/foundation-module/Chapter 1/Foundation Module.w"
-;
-	
-{
-#line 127 "inweb/foundation-module/Chapter 1/Foundation Module.w"
-	Writers__register_logger('a', &Tries__log_avinue);
-	Writers__register_logger('S', &Streams__log);
-
-}
 #line 95 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 ;
 	
 {
-#line 146 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 128 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+	Writers__register_logger('a', &Tries__log_avinue);
+	Writers__register_logger('S', &Streams__log);
+
+}
+#line 96 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+;
+	
+{
+#line 147 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 	CommandLine__begin_group(FOUNDATION_CLSG, NULL);
 	CommandLine__declare_switch(LOG_CLSW, L"log", 2,
 		L"write the debugging log to include diagnostics on X");
@@ -5009,13 +5005,13 @@ void Foundation__start(void) {
 	CommandLine__end_group();
 
 }
-#line 96 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 97 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 ;
 }
 
-#line 144 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 145 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 
-#line 167 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 168 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void Foundation__end(void) {
 	if (Log__aspect_switched_on(MEMORY_USAGE_DA)) Memory__log_statistics();
 	Log__close();
@@ -5614,13 +5610,13 @@ void Log__show_debugging_contents(void) {
 	LOG("Omitted:\n"); Log__show_debugging_settings_with_state(FALSE);
 }
 
-#line 103 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 70 "inweb/foundation-module/Chapter 2/Memory.w"
 
-#line 109 "inweb/foundation-module/Chapter 2/Memory.w"
-allocation_status_structure alloc_status[NO_DEFINED_MT_VALUES];
+#line 76 "inweb/foundation-module/Chapter 2/Memory.w"
+allocation_status_structure alloc_status[NO_DEFINED_CLASS_VALUES];
 
 void Memory__start(void) {
-	for (int i=0; i<NO_DEFINED_MT_VALUES; i++) {
+	for (int i=0; i<NO_DEFINED_CLASS_VALUES; i++) {
 		alloc_status[i].first_in_memory = NULL;
 		alloc_status[i].last_in_memory = NULL;
 		alloc_status[i].objects_allocated = 0;
@@ -5632,26 +5628,26 @@ void Memory__start(void) {
 	Memory__name_fundamental_reasons();
 }
 
-#line 164 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 131 "inweb/foundation-module/Chapter 2/Memory.w"
 int no_blocks_allocated = 0;
 int total_objects_allocated = 0; /* a potentially larger number, used only for the debugging log */
 
-#line 178 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 145 "inweb/foundation-module/Chapter 2/Memory.w"
 
-#line 180 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 147 "inweb/foundation-module/Chapter 2/Memory.w"
 memblock_header *first_memblock_header = NULL; /* head of list of memory blocks */
 memblock_header *current_memblock_header = NULL; /* tail of list of memory blocks */
 
 int used_in_current_memblock = 0; /* number of bytes so far used in the tail memory block */
 
-#line 189 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 156 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__allocate_another_block(void) {
 	unsigned char *cp;
 	memblock_header *mh;
 
 	
 {
-#line 206 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 173 "inweb/foundation-module/Chapter 2/Memory.w"
 	int i;
 	if (no_blocks_allocated++ >= MAX_BLOCKS_ALLOWED)
 		Errors__fatal(
@@ -5663,7 +5659,7 @@ void Memory__allocate_another_block(void) {
 	for (i=0; i<MEMORY_GRANULARITY; i++) cp[i] = 0;
 
 }
-#line 193 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 160 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 
 	mh = (memblock_header *) cp;
@@ -5672,7 +5668,7 @@ void Memory__allocate_another_block(void) {
 
 	
 {
-#line 220 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 187 "inweb/foundation-module/Chapter 2/Memory.w"
 	if (current_memblock_header == NULL) {
 		mh->block_number = 0;
 		first_memblock_header = mh;
@@ -5683,13 +5679,13 @@ void Memory__allocate_another_block(void) {
 	current_memblock_header = mh;
 
 }
-#line 199 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 166 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 }
 
-#line 234 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 201 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__free(void) {
-	Memory__free_ssas();
+	CStrings__free_ssas();
 	memblock_header *mh = first_memblock_header;
 	while (mh != NULL) {
 		memblock_header *next_mh = mh->next;
@@ -5699,13 +5695,13 @@ void Memory__free(void) {
 	}
 }
 
-#line 261 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 228 "inweb/foundation-module/Chapter 2/Memory.w"
 
-#line 267 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 234 "inweb/foundation-module/Chapter 2/Memory.w"
 memory_frame *first_memory_frame = NULL; /* earliest memory frame ever allocated */
 memory_frame *last_memory_frame = NULL;  /* most recent memory frame allocated */
 
-#line 278 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 245 "inweb/foundation-module/Chapter 2/Memory.w"
 int calls_to_cmi = 0;
 void Memory__check_memory_integrity(void) {
 	int c;
@@ -5729,7 +5725,7 @@ void Memory__debug_memory_frames(int from, int to) {
 		}
 }
 
-#line 307 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 274 "inweb/foundation-module/Chapter 2/Memory.w"
 void *Memory__allocate(int mem_type, int extent) {
 	CREATE_MUTEX(mutex);
 	LOCK_MUTEX(mutex);
@@ -5743,7 +5739,7 @@ void *Memory__allocate(int mem_type, int extent) {
 
 	
 {
-#line 344 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 311 "inweb/foundation-module/Chapter 2/Memory.w"
 	if (current_memblock_header == NULL) Memory__allocate_another_block();
 	bytes_free_in_current_memblock = MEMORY_GRANULARITY - (used_in_current_memblock + extent);
 	if (bytes_free_in_current_memblock < BLANK_END_SIZE) {
@@ -5753,7 +5749,7 @@ void *Memory__allocate(int mem_type, int extent) {
 	}
 
 }
-#line 318 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 285 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 
 	cp = ((unsigned char *) (current_memblock_header->the_memory)) + used_in_current_memblock;
@@ -5768,18 +5764,18 @@ void *Memory__allocate(int mem_type, int extent) {
 
 	
 {
-#line 355 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 322 "inweb/foundation-module/Chapter 2/Memory.w"
 	mf->next_frame = NULL;
 	if (first_memory_frame == NULL) first_memory_frame = mf;
 	else last_memory_frame->next_frame = mf;
 	last_memory_frame = mf;
 
 }
-#line 330 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 297 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	
 {
-#line 363 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 330 "inweb/foundation-module/Chapter 2/Memory.w"
 	if (alloc_status[mem_type].first_in_memory == NULL)
 		alloc_status[mem_type].first_in_memory = (void *) cp;
 	alloc_status[mem_type].last_in_memory = (void *) cp;
@@ -5787,7 +5783,7 @@ void *Memory__allocate(int mem_type, int extent) {
 	alloc_status[mem_type].bytes_allocated += extent_without_overheads;
 
 }
-#line 331 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 298 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 
 	total_objects_allocated++;
@@ -5796,48 +5792,7 @@ void *Memory__allocate(int mem_type, int extent) {
 	return (void *) cp;
 }
 
-#line 535 "inweb/foundation-module/Chapter 2/Memory.w"
-ALLOCATE_INDIVIDUALLY(filename)
-ALLOCATE_INDIVIDUALLY(pathname)
-ALLOCATE_INDIVIDUALLY(string_storage_area)
-ALLOCATE_INDIVIDUALLY(scan_directory)
-ALLOCATE_INDIVIDUALLY(ebook)
-ALLOCATE_INDIVIDUALLY(ebook_datum)
-ALLOCATE_INDIVIDUALLY(ebook_volume)
-ALLOCATE_INDIVIDUALLY(ebook_chapter)
-ALLOCATE_INDIVIDUALLY(ebook_page)
-ALLOCATE_INDIVIDUALLY(ebook_image)
-ALLOCATE_INDIVIDUALLY(HTML_file_state)
-ALLOCATE_INDIVIDUALLY(command_line_switch)
-ALLOCATE_INDIVIDUALLY(dictionary)
-ALLOCATE_INDIVIDUALLY(debugging_aspect)
-ALLOCATE_INDIVIDUALLY(linked_list)
-ALLOCATE_INDIVIDUALLY(method)
-ALLOCATE_INDIVIDUALLY(method_set)
-ALLOCATE_INDIVIDUALLY(ebook_mark)
-ALLOCATE_INDIVIDUALLY(semantic_version_number_holder)
-ALLOCATE_INDIVIDUALLY(semver_range)
-ALLOCATE_INDIVIDUALLY(web_bibliographic_datum)
-ALLOCATE_INDIVIDUALLY(web_md)
-ALLOCATE_INDIVIDUALLY(chapter_md)
-ALLOCATE_INDIVIDUALLY(section_md)
-ALLOCATE_INDIVIDUALLY(module)
-ALLOCATE_INDIVIDUALLY(module_search)
-ALLOCATE_INDIVIDUALLY(heterogeneous_tree)
-ALLOCATE_INDIVIDUALLY(tree_type)
-ALLOCATE_INDIVIDUALLY(tree_node)
-ALLOCATE_INDIVIDUALLY(tree_node_type)
-
-ALLOCATE_IN_ARRAYS(dict_entry, 100)
-ALLOCATE_IN_ARRAYS(HTML_tag, 1000)
-ALLOCATE_IN_ARRAYS(linked_list_item, 1000)
-ALLOCATE_IN_ARRAYS(match_avinue, 1000)
-ALLOCATE_IN_ARRAYS(match_trie, 1000)
-ALLOCATE_IN_ARRAYS(text_stream, 100)
-
-#line 582 "inweb/foundation-module/Chapter 2/Memory.w"
-
-#line 584 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 483 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__name_fundamental_reasons(void) {
 	Memory__reason_name(STREAM_MREASON, "text stream storage");
 	Memory__reason_name(FILENAME_STORAGE_MREASON, "filename/pathname storage");
@@ -5846,7 +5801,7 @@ void Memory__name_fundamental_reasons(void) {
 	Memory__reason_name(CLS_SORTING_MREASON, "sorting");
 }
 
-#line 595 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 494 "inweb/foundation-module/Chapter 2/Memory.w"
 char *memory_needs[NO_DEFINED_MREASON_VALUES];
 
 void Memory__reason_name(int r, char *reason) {
@@ -5859,13 +5814,13 @@ char *Memory__description_of_reason(int r) {
 	return memory_needs[r];
 }
 
-#line 615 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 514 "inweb/foundation-module/Chapter 2/Memory.w"
 int max_memory_at_once_for_each_need[NO_DEFINED_MREASON_VALUES],
 	memory_claimed_for_each_need[NO_DEFINED_MREASON_VALUES],
 	number_of_claims_for_each_need[NO_DEFINED_MREASON_VALUES];
 int total_claimed_simply = 0;
 
-#line 627 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 526 "inweb/foundation-module/Chapter 2/Memory.w"
 void *Memory__calloc(int how_many, int size_in_bytes, int reason) {
 	return Memory__alloc_inner(how_many, size_in_bytes, reason);
 }
@@ -5873,7 +5828,7 @@ void *Memory__malloc(int size_in_bytes, int reason) {
 	return Memory__alloc_inner(-1, size_in_bytes, reason);
 }
 
-#line 637 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 536 "inweb/foundation-module/Chapter 2/Memory.w"
 void *Memory__alloc_inner(int N, int S, int R) {
 	CREATE_MUTEX(mutex);
 	LOCK_MUTEX(mutex);
@@ -5882,7 +5837,7 @@ void *Memory__alloc_inner(int N, int S, int R) {
 	if ((R < 0) || (R >= NO_DEFINED_MREASON_VALUES)) internal_error("no such memory reason");
 	if (total_claimed_simply == 0) 
 {
-#line 671 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 570 "inweb/foundation-module/Chapter 2/Memory.w"
 	int i;
 	for (i=0; i<NO_DEFINED_MREASON_VALUES; i++) {
 		max_memory_at_once_for_each_need[i] = 0;
@@ -5891,11 +5846,11 @@ void *Memory__alloc_inner(int N, int S, int R) {
 	}
 
 }
-#line 643 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 542 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	
 {
-#line 655 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 554 "inweb/foundation-module/Chapter 2/Memory.w"
 	if (N > 0) {
 		pointer = Memory__paranoid_calloc((size_t) N, (size_t) S);
 		bytes_needed = N*S;
@@ -5908,11 +5863,11 @@ void *Memory__alloc_inner(int N, int S, int R) {
 	}
 
 }
-#line 644 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 543 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	
 {
-#line 679 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 578 "inweb/foundation-module/Chapter 2/Memory.w"
 	memory_claimed_for_each_need[R] += bytes_needed;
 	total_claimed_simply += bytes_needed;
 	number_of_claims_for_each_need[R]++;
@@ -5920,13 +5875,13 @@ void *Memory__alloc_inner(int N, int S, int R) {
 		max_memory_at_once_for_each_need[R] = memory_claimed_for_each_need[R];
 
 }
-#line 645 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 544 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	UNLOCK_MUTEX(mutex);
 	return pointer;
 }
 
-#line 688 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 587 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__I7_free(void *pointer, int R, int bytes_freed) {
 	if ((R < 0) || (R >= NO_DEFINED_MREASON_VALUES)) internal_error("no such memory reason");
 	if (pointer == NULL) internal_error("can't free NULL memory");
@@ -5941,36 +5896,7 @@ void Memory__I7_array_free(void *pointer, int R, int num_cells, size_t cell_size
 	Memory__I7_free(pointer, R, num_cells*((int) cell_size));
 }
 
-#line 713 "inweb/foundation-module/Chapter 2/Memory.w"
-
-string_storage_area *current_ssa = NULL;
-
-#line 721 "inweb/foundation-module/Chapter 2/Memory.w"
-char *Memory__new_string(char *from) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
-	int length_needed = (int) strlen(from) + 1;
-	if (!((current_ssa) &&
-		(current_ssa->first_free_byte + length_needed < SSA_CAPACITY))) {
-		current_ssa = CREATE(string_storage_area);
-		current_ssa->storage_at = Memory__malloc(SSA_CAPACITY, STRING_STORAGE_MREASON);
-		current_ssa->first_free_byte = 0;
-	}
-	char *rp = current_ssa->storage_at + current_ssa->first_free_byte;
-	current_ssa->first_free_byte += length_needed;
-	strcpy(rp, from);
-	UNLOCK_MUTEX(mutex);
-	return rp;
-}
-
-#line 741 "inweb/foundation-module/Chapter 2/Memory.w"
-void Memory__free_ssas(void) {
-	string_storage_area *ssa;
-	LOOP_OVER(ssa, string_storage_area)
-		Memory__I7_free(ssa->storage_at, STRING_STORAGE_MREASON, SSA_CAPACITY);
-}
-
-#line 751 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 605 "inweb/foundation-module/Chapter 2/Memory.w"
 int Memory__log_usage(int total) {
 	if (total_claimed_simply == 0) return 0;
 	int i, t = 0;
@@ -5986,31 +5912,31 @@ int Memory__log_usage(int total) {
 	return t;
 }
 
-#line 770 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 624 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__log_statistics(void) {
 	int total_for_objects = MEMORY_GRANULARITY*no_blocks_allocated; /* usage in bytes */
 	int total_for_SMAs = Memory__log_usage(0); /* usage in bytes */
-	int sorted_usage[NO_DEFINED_MT_VALUES]; /* memory type numbers, in usage order */
+	int sorted_usage[NO_DEFINED_CLASS_VALUES]; /* memory type numbers, in usage order */
 	int total = (total_for_objects + total_for_SMAs)/1024; /* total memory usage in KB */
 
 	
 {
-#line 803 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 657 "inweb/foundation-module/Chapter 2/Memory.w"
 	int i;
-	for (i=0; i<NO_DEFINED_MT_VALUES; i++) sorted_usage[i] = i;
-	qsort(sorted_usage, (size_t) NO_DEFINED_MT_VALUES, sizeof(int), Memory__compare_usage);
+	for (i=0; i<NO_DEFINED_CLASS_VALUES; i++) sorted_usage[i] = i;
+	qsort(sorted_usage, (size_t) NO_DEFINED_CLASS_VALUES, sizeof(int), Memory__compare_usage);
 
 }
-#line 776 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 630 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 
 	int total_for_objects_used = 0; /* out of the |total_for_objects|, the bytes used */
 	int total_objects = 0;
 	
 {
-#line 786 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 640 "inweb/foundation-module/Chapter 2/Memory.w"
 	int i, j;
-	for (j=0; j<NO_DEFINED_MT_VALUES; j++) {
+	for (j=0; j<NO_DEFINED_CLASS_VALUES; j++) {
 		i = sorted_usage[j];
 		if (alloc_status[i].objects_allocated != 0) {
 			if (alloc_status[i].no_allocated_together == 1)
@@ -6023,12 +5949,12 @@ void Memory__log_statistics(void) {
 	}
 
 }
-#line 780 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 634 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	int overhead_for_objects = total_for_objects - total_for_objects_used; /* bytes wasted */
 	
 {
-#line 810 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 664 "inweb/foundation-module/Chapter 2/Memory.w"
 	LOG("\nReport by memory manager:\n\n");
 	LOG("Total consumption was %dK = %dMB, divided up in the following proportions:\n",
 		total, (total+512)/1024);
@@ -6039,7 +5965,7 @@ void Memory__log_statistics(void) {
 	LOG("    0.%03d: memory manager overhead - %d bytes\n",
 		Memory__proportion(overhead_for_objects, total), overhead_for_objects);
 	int i, j;
-	for (j=0; j<NO_DEFINED_MT_VALUES; j++) {
+	for (j=0; j<NO_DEFINED_CLASS_VALUES; j++) {
 		i = sorted_usage[j];
 		if (alloc_status[i].objects_allocated != 0) {
 			LOG("    0.%03d: %s  -  ",
@@ -6059,25 +5985,25 @@ void Memory__log_statistics(void) {
 	Memory__log_usage(total);
 
 }
-#line 782 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 636 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 }
 
-#line 840 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 694 "inweb/foundation-module/Chapter 2/Memory.w"
 int Memory__compare_usage(const void *ent1, const void *ent2) {
 	int ix1 = *((const int *) ent1);
 	int ix2 = *((const int *) ent2);
 	return alloc_status[ix2].bytes_allocated - alloc_status[ix1].bytes_allocated;
 }
 
-#line 850 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 704 "inweb/foundation-module/Chapter 2/Memory.w"
 int Memory__proportion(int bytes, int total) {
 	float B = (float) bytes, T = (float) total;
 	float P = (1000*B)/(1024*T);
 	return (int) P;
 }
 
-#line 857 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 711 "inweb/foundation-module/Chapter 2/Memory.w"
 void *Memory__paranoid_calloc(size_t N, size_t S) {
 	CREATE_MUTEX(mutex);
 	LOCK_MUTEX(mutex);
@@ -6086,12 +6012,12 @@ void *Memory__paranoid_calloc(size_t N, size_t S) {
 	return P;
 }
 
-#line 891 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 745 "inweb/foundation-module/Chapter 2/Memory.w"
 
 general_pointer Memory__store_gp_null(void) {
 	general_pointer gp;
 	gp.pointer_to_data = NULL;
-	gp.run_time_type_code = -1; /* guaranteed to differ from all |_MT| values */
+	gp.run_time_type_code = -1; /* guaranteed to differ from all |_CLASS| values */
 	return gp;
 }
 int Memory__test_gp_null(general_pointer gp) {
@@ -6099,8 +6025,47 @@ int Memory__test_gp_null(general_pointer gp) {
 	return FALSE;
 }
 
-#line 950 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 804 "inweb/foundation-module/Chapter 2/Memory.w"
 MAKE_REFERENCE_ROUTINES(char, 1000)
+
+#line 49 "inweb/foundation-module/Chapter 2/Foundation Classes.w"
+DECLARE_CLASS(chapter_md)
+DECLARE_CLASS(command_line_switch)
+DECLARE_CLASS(debugging_aspect)
+DECLARE_CLASS(dictionary)
+DECLARE_CLASS(ebook_chapter)
+DECLARE_CLASS(ebook_datum)
+DECLARE_CLASS(ebook_image)
+DECLARE_CLASS(ebook_mark)
+DECLARE_CLASS(ebook_page)
+DECLARE_CLASS(ebook_volume)
+DECLARE_CLASS(ebook)
+DECLARE_CLASS(filename)
+DECLARE_CLASS(heterogeneous_tree)
+DECLARE_CLASS(HTML_file_state)
+DECLARE_CLASS(linked_list)
+DECLARE_CLASS(method_set)
+DECLARE_CLASS(method)
+DECLARE_CLASS(module_search)
+DECLARE_CLASS(module)
+DECLARE_CLASS(pathname)
+DECLARE_CLASS(scan_directory)
+DECLARE_CLASS(section_md)
+DECLARE_CLASS(semantic_version_number_holder)
+DECLARE_CLASS(semver_range)
+DECLARE_CLASS(string_storage_area)
+DECLARE_CLASS(tree_node_type)
+DECLARE_CLASS(tree_node)
+DECLARE_CLASS(tree_type)
+DECLARE_CLASS(web_bibliographic_datum)
+DECLARE_CLASS(web_md)
+
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(dict_entry, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(HTML_tag, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(linked_list_item, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(match_avinue, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(match_trie, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(text_stream, 100)
 
 #line 243 "inweb/foundation-module/Chapter 2/Streams.w"
 
@@ -7011,7 +6976,7 @@ void Writers__printf(text_stream *stream, char *fmt, ...) {
 	va_end(ap); /* macro to end variable argument processing */
 }
 
-#line 40 "inweb/foundation-module/Chapter 2/Methods.w"
+#line 31 "inweb/foundation-module/Chapter 2/Methods.w"
 
 method_set *Methods__new_set(void) {
 	method_set *S = CREATE(method_set);
@@ -7019,12 +6984,12 @@ method_set *Methods__new_set(void) {
 	return S;
 }
 
-#line 53 "inweb/foundation-module/Chapter 2/Methods.w"
+#line 44 "inweb/foundation-module/Chapter 2/Methods.w"
 
-#line 67 "inweb/foundation-module/Chapter 2/Methods.w"
-IMETHOD_TYPE(UNUSED_METHOD_ID_MTID, text_stream *example, int wont_be_used)
+#line 58 "inweb/foundation-module/Chapter 2/Methods.w"
+INT_METHOD_TYPE(UNUSED_METHOD_ID_MTID, text_stream *example, int wont_be_used)
 
-#line 84 "inweb/foundation-module/Chapter 2/Methods.w"
+#line 75 "inweb/foundation-module/Chapter 2/Methods.w"
 
 void Methods__add(method_set *S, int ID, void *function) {
 	method *M = CREATE(method);
@@ -7402,8 +7367,8 @@ tree_node *Trees__new_node(heterogeneous_tree *T, tree_node_type *type, general_
 	if (T == NULL) internal_error("no tree");
 	if (wrapping.run_time_type_code == -1)
 		internal_error("no reference given");
-	if (type->required_MT >= 0)
-		if (wrapping.run_time_type_code != type->required_MT)
+	if (type->required_CLASS >= 0)
+		if (wrapping.run_time_type_code != type->required_CLASS)
 			internal_error("wrong reference type");
 
 	tree_node *N = CREATE(tree_node);
@@ -7440,7 +7405,7 @@ tree_node_type *Trees__new_node_type(text_stream *name, int req,
 	int (*verifier)(tree_node *)) {
 	tree_node_type *NT = CREATE(tree_node_type);
 	NT->node_type_name = Str__duplicate(name);
-	NT->required_MT = req;
+	NT->required_CLASS = req;
 	NT->verify_children = verifier;
 	return NT;
 }
@@ -9457,6 +9422,26 @@ void CStrings__truncated_strcpy(char *to, char *from, int max) {
 	to[i] = 0;
 }
 
+#line 124 "inweb/foundation-module/Chapter 4/C Strings.w"
+
+#line 126 "inweb/foundation-module/Chapter 4/C Strings.w"
+char *CStrings__park_string(char *from) {
+	string_storage_area *ssa = CREATE(string_storage_area);
+	ssa->capacity = (int) CStrings__strlen_unbounded(from) + 1;
+	ssa->storage_at = Memory__malloc(ssa->capacity, STRING_STORAGE_MREASON);
+	strcpy(ssa->storage_at, from);
+	return ssa->storage_at;
+}
+
+#line 137 "inweb/foundation-module/Chapter 4/C Strings.w"
+void CStrings__free_ssas(void) {
+	string_storage_area *ssa;
+	LOOP_OVER(ssa, string_storage_area)
+		Memory__I7_free(ssa->storage_at, STRING_STORAGE_MREASON, ssa->capacity);
+}
+
+
+
 #line 14 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 int Wide__len(wchar_t *p) {
 	return (int) wcslen(p);
@@ -10696,8 +10681,8 @@ int Regexp__match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 #line 215 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 ;
 
-		int chcl, /* what class of characters to match: a |*_CLASS| value */
-			range_from, range_to, /* for |LITERAL_CLASS| only */
+		int chcl, /* what class of characters to match: a |*_CHARCLASS| value */
+			range_from, range_to, /* for |LITERAL_CHARCLASS| only */
 			reverse = FALSE; /* require a non-match rather than a match */
 		
 {
@@ -10715,7 +10700,7 @@ int Regexp__match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 		
 {
 #line 268 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
-	if (chcl == WHITESPACE_CLASS) {
+	if (chcl == WHITESPACE_CHARCLASS) {
 		rep_from = 1; rep_to = Str__len(text)-at.tpos;
 	}
 	if (pattern[at.ppos] == '+') {
@@ -10790,46 +10775,46 @@ int Regexp__get_cclass(wchar_t *pattern, int ppos, int *len, int *from, int *to,
 			ppos++;
 			*len = 2;
 			switch (pattern[ppos]) {
-				case 'd': return DIGIT_CLASS;
-				case 'c': return ANY_CLASS;
-				case 'C': return NONWHITESPACE_CLASS;
-				case 'i': return IDENTIFIER_CLASS;
-				case 'p': return PREFORM_CLASS;
-				case 'P': return PREFORMC_CLASS;
-				case 'q': return QUOTE_CLASS;
-				case 't': return TAB_CLASS;
+				case 'd': return DIGIT_CHARCLASS;
+				case 'c': return ANY_CHARCLASS;
+				case 'C': return NONWHITESPACE_CHARCLASS;
+				case 'i': return IDENTIFIER_CHARCLASS;
+				case 'p': return PREFORM_CHARCLASS;
+				case 'P': return PREFORMC_CHARCLASS;
+				case 'q': return QUOTE_CHARCLASS;
+				case 't': return TAB_CHARCLASS;
 			}
-			*from = ppos; *to = ppos; return LITERAL_CLASS;
+			*from = ppos; *to = ppos; return LITERAL_CHARCLASS;
 		case '[':
 			*from = ppos+1;
 			ppos += 2;
 			while ((pattern[ppos]) && (pattern[ppos] != ']')) ppos++;
 			*to = ppos - 1; *len = ppos - *from + 2;
-			return LITERAL_CLASS;
+			return LITERAL_CHARCLASS;
 		case ' ':
-			*len = 1; return WHITESPACE_CLASS;
+			*len = 1; return WHITESPACE_CHARCLASS;
 	}
-	*len = 1; *from = ppos; *to = ppos; return LITERAL_CLASS;
+	*len = 1; *from = ppos; *to = ppos; return LITERAL_CHARCLASS;
 }
 
 #line 367 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int Regexp__test_cclass(int c, int chcl, int range_from, int range_to, wchar_t *drawn_from, int reverse) {
 	int match = FALSE;
 	switch (chcl) {
-		case ANY_CLASS: if (c) match = TRUE; break;
-		case DIGIT_CLASS: if (isdigit(c)) match = TRUE; break;
-		case WHITESPACE_CLASS: if (Characters__is_whitespace(c)) match = TRUE; break;
-		case TAB_CLASS: if (c == '\t') match = TRUE; break;
-		case NONWHITESPACE_CLASS: if (!(Characters__is_whitespace(c))) match = TRUE; break;
-		case QUOTE_CLASS: if (c != '\"') match = TRUE; break;
-		case IDENTIFIER_CLASS: if (Regexp__identifier_char(c)) match = TRUE; break;
-		case PREFORM_CLASS: if ((c == '-') || (c == '_') ||
+		case ANY_CHARCLASS: if (c) match = TRUE; break;
+		case DIGIT_CHARCLASS: if (isdigit(c)) match = TRUE; break;
+		case WHITESPACE_CHARCLASS: if (Characters__is_whitespace(c)) match = TRUE; break;
+		case TAB_CHARCLASS: if (c == '\t') match = TRUE; break;
+		case NONWHITESPACE_CHARCLASS: if (!(Characters__is_whitespace(c))) match = TRUE; break;
+		case QUOTE_CHARCLASS: if (c != '\"') match = TRUE; break;
+		case IDENTIFIER_CHARCLASS: if (Regexp__identifier_char(c)) match = TRUE; break;
+		case PREFORM_CHARCLASS: if ((c == '-') || (c == '_') ||
 			((c >= 'a') && (c <= 'z')) ||
 			((c >= '0') && (c <= '9'))) match = TRUE; break;
-		case PREFORMC_CLASS: if ((c == '-') || (c == '_') || (c == ':') ||
+		case PREFORMC_CHARCLASS: if ((c == '-') || (c == '_') || (c == ':') ||
 			((c >= 'a') && (c <= 'z')) ||
 			((c >= '0') && (c <= '9'))) match = TRUE; break;
-		case LITERAL_CLASS:
+		case LITERAL_CHARCLASS:
 			if ((range_to > range_from) && (drawn_from[range_from] == '^')) {
 				range_from++; reverse = reverse?FALSE:TRUE;
 			}
@@ -14495,89 +14480,89 @@ void BuildFiles__increment(text_stream *T) {
 }
 
 #line 100 "inweb/Chapter 1/Basics.w"
-ALLOCATE_IN_ARRAYS(source_line, 1000)
-ALLOCATE_INDIVIDUALLY(asset_rule)
-ALLOCATE_INDIVIDUALLY(breadcrumb_request)
-ALLOCATE_INDIVIDUALLY(chapter)
-ALLOCATE_INDIVIDUALLY(colony)
-ALLOCATE_INDIVIDUALLY(colony_member)
-ALLOCATE_INDIVIDUALLY(colour_scheme)
-ALLOCATE_INDIVIDUALLY(colouring_language_block)
-ALLOCATE_INDIVIDUALLY(colouring_rule)
-ALLOCATE_INDIVIDUALLY(enumeration_set)
-ALLOCATE_INDIVIDUALLY(footnote)
-ALLOCATE_INDIVIDUALLY(hash_table_entry_usage)
-ALLOCATE_INDIVIDUALLY(hash_table_entry)
-ALLOCATE_INDIVIDUALLY(language_function)
-ALLOCATE_INDIVIDUALLY(language_type)
-ALLOCATE_INDIVIDUALLY(macro_tokens)
-ALLOCATE_INDIVIDUALLY(macro_usage)
-ALLOCATE_INDIVIDUALLY(macro)
-ALLOCATE_INDIVIDUALLY(nonterminal_variable)
-ALLOCATE_INDIVIDUALLY(para_macro)
-ALLOCATE_INDIVIDUALLY(paragraph_tagging)
-ALLOCATE_INDIVIDUALLY(paragraph)
-ALLOCATE_INDIVIDUALLY(preform_nonterminal)
-ALLOCATE_INDIVIDUALLY(programming_language)
-ALLOCATE_INDIVIDUALLY(reserved_word)
-ALLOCATE_INDIVIDUALLY(section)
-ALLOCATE_INDIVIDUALLY(structure_element)
-ALLOCATE_INDIVIDUALLY(tangle_target)
-ALLOCATE_INDIVIDUALLY(tex_results)
-ALLOCATE_INDIVIDUALLY(text_literal)
-ALLOCATE_INDIVIDUALLY(theme_tag)
-ALLOCATE_INDIVIDUALLY(weave_format)
-ALLOCATE_INDIVIDUALLY(weave_pattern)
-ALLOCATE_INDIVIDUALLY(weave_plugin)
-ALLOCATE_INDIVIDUALLY(weave_order)
-ALLOCATE_INDIVIDUALLY(web)
-ALLOCATE_INDIVIDUALLY(writeme_asset)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(source_line, 1000)
+DECLARE_CLASS(asset_rule)
+DECLARE_CLASS(breadcrumb_request)
+DECLARE_CLASS(chapter)
+DECLARE_CLASS(colony)
+DECLARE_CLASS(colony_member)
+DECLARE_CLASS(colour_scheme)
+DECLARE_CLASS(colouring_language_block)
+DECLARE_CLASS(colouring_rule)
+DECLARE_CLASS(enumeration_set)
+DECLARE_CLASS(footnote)
+DECLARE_CLASS(hash_table_entry_usage)
+DECLARE_CLASS(hash_table_entry)
+DECLARE_CLASS(language_function)
+DECLARE_CLASS(language_type)
+DECLARE_CLASS(macro_tokens)
+DECLARE_CLASS(macro_usage)
+DECLARE_CLASS(macro)
+DECLARE_CLASS(nonterminal_variable)
+DECLARE_CLASS(para_macro)
+DECLARE_CLASS(paragraph_tagging)
+DECLARE_CLASS(paragraph)
+DECLARE_CLASS(preform_nonterminal)
+DECLARE_CLASS(programming_language)
+DECLARE_CLASS(reserved_word)
+DECLARE_CLASS(section)
+DECLARE_CLASS(structure_element)
+DECLARE_CLASS(tangle_target)
+DECLARE_CLASS(tex_results)
+DECLARE_CLASS(text_literal)
+DECLARE_CLASS(theme_tag)
+DECLARE_CLASS(weave_format)
+DECLARE_CLASS(weave_pattern)
+DECLARE_CLASS(weave_plugin)
+DECLARE_CLASS(weave_order)
+DECLARE_CLASS(web)
+DECLARE_CLASS(writeme_asset)
 
-ALLOCATE_INDIVIDUALLY(weave_document_node)
-ALLOCATE_INDIVIDUALLY(weave_head_node)
-ALLOCATE_INDIVIDUALLY(weave_body_node)
-ALLOCATE_INDIVIDUALLY(weave_tail_node)
-ALLOCATE_INDIVIDUALLY(weave_section_header_node)
-ALLOCATE_INDIVIDUALLY(weave_section_footer_node)
-ALLOCATE_INDIVIDUALLY(weave_chapter_header_node)
-ALLOCATE_INDIVIDUALLY(weave_chapter_footer_node)
-ALLOCATE_INDIVIDUALLY(weave_verbatim_node)
-ALLOCATE_INDIVIDUALLY(weave_section_purpose_node)
-ALLOCATE_INDIVIDUALLY(weave_subheading_node)
-ALLOCATE_INDIVIDUALLY(weave_bar_node)
-ALLOCATE_INDIVIDUALLY(weave_linebreak_node)
-ALLOCATE_INDIVIDUALLY(weave_pagebreak_node)
-ALLOCATE_INDIVIDUALLY(weave_paragraph_heading_node)
-ALLOCATE_INDIVIDUALLY(weave_endnote_node)
-ALLOCATE_INDIVIDUALLY(weave_material_node)
-ALLOCATE_INDIVIDUALLY(weave_figure_node)
-ALLOCATE_INDIVIDUALLY(weave_audio_node)
-ALLOCATE_INDIVIDUALLY(weave_video_node)
-ALLOCATE_INDIVIDUALLY(weave_download_node)
-ALLOCATE_INDIVIDUALLY(weave_embed_node)
-ALLOCATE_INDIVIDUALLY(weave_pmac_node)
-ALLOCATE_INDIVIDUALLY(weave_vskip_node)
-ALLOCATE_INDIVIDUALLY(weave_chapter_node)
-ALLOCATE_INDIVIDUALLY(weave_section_node)
-ALLOCATE_INDIVIDUALLY(weave_code_line_node)
-ALLOCATE_INDIVIDUALLY(weave_function_usage_node)
-ALLOCATE_INDIVIDUALLY(weave_commentary_node)
-ALLOCATE_INDIVIDUALLY(weave_carousel_slide_node)
-ALLOCATE_INDIVIDUALLY(weave_toc_node)
-ALLOCATE_INDIVIDUALLY(weave_toc_line_node)
-ALLOCATE_INDIVIDUALLY(weave_chapter_title_page_node)
-ALLOCATE_INDIVIDUALLY(weave_defn_node)
-ALLOCATE_INDIVIDUALLY(weave_source_code_node)
-ALLOCATE_INDIVIDUALLY(weave_url_node)
-ALLOCATE_INDIVIDUALLY(weave_footnote_cue_node)
-ALLOCATE_INDIVIDUALLY(weave_begin_footnote_text_node)
-ALLOCATE_INDIVIDUALLY(weave_display_line_node)
-ALLOCATE_INDIVIDUALLY(weave_item_node)
-ALLOCATE_INDIVIDUALLY(weave_grammar_index_node)
-ALLOCATE_INDIVIDUALLY(weave_inline_node)
-ALLOCATE_INDIVIDUALLY(weave_locale_node)
-ALLOCATE_INDIVIDUALLY(weave_maths_node)
-ALLOCATE_INDIVIDUALLY(weave_function_defn_node)
+DECLARE_CLASS(weave_document_node)
+DECLARE_CLASS(weave_head_node)
+DECLARE_CLASS(weave_body_node)
+DECLARE_CLASS(weave_tail_node)
+DECLARE_CLASS(weave_section_header_node)
+DECLARE_CLASS(weave_section_footer_node)
+DECLARE_CLASS(weave_chapter_header_node)
+DECLARE_CLASS(weave_chapter_footer_node)
+DECLARE_CLASS(weave_verbatim_node)
+DECLARE_CLASS(weave_section_purpose_node)
+DECLARE_CLASS(weave_subheading_node)
+DECLARE_CLASS(weave_bar_node)
+DECLARE_CLASS(weave_linebreak_node)
+DECLARE_CLASS(weave_pagebreak_node)
+DECLARE_CLASS(weave_paragraph_heading_node)
+DECLARE_CLASS(weave_endnote_node)
+DECLARE_CLASS(weave_material_node)
+DECLARE_CLASS(weave_figure_node)
+DECLARE_CLASS(weave_audio_node)
+DECLARE_CLASS(weave_video_node)
+DECLARE_CLASS(weave_download_node)
+DECLARE_CLASS(weave_embed_node)
+DECLARE_CLASS(weave_pmac_node)
+DECLARE_CLASS(weave_vskip_node)
+DECLARE_CLASS(weave_chapter_node)
+DECLARE_CLASS(weave_section_node)
+DECLARE_CLASS(weave_code_line_node)
+DECLARE_CLASS(weave_function_usage_node)
+DECLARE_CLASS(weave_commentary_node)
+DECLARE_CLASS(weave_carousel_slide_node)
+DECLARE_CLASS(weave_toc_node)
+DECLARE_CLASS(weave_toc_line_node)
+DECLARE_CLASS(weave_chapter_title_page_node)
+DECLARE_CLASS(weave_defn_node)
+DECLARE_CLASS(weave_source_code_node)
+DECLARE_CLASS(weave_url_node)
+DECLARE_CLASS(weave_footnote_cue_node)
+DECLARE_CLASS(weave_begin_footnote_text_node)
+DECLARE_CLASS(weave_display_line_node)
+DECLARE_CLASS(weave_item_node)
+DECLARE_CLASS(weave_grammar_index_node)
+DECLARE_CLASS(weave_inline_node)
+DECLARE_CLASS(weave_locale_node)
+DECLARE_CLASS(weave_maths_node)
+DECLARE_CLASS(weave_function_defn_node)
 
 #line 10 "inweb/Chapter 1/Program Control.w"
 int default_inweb_syntax = V2_SYNTAX;
@@ -21903,62 +21888,62 @@ void Functions__catalogue(section *S, int functions_too) {
 }
 
 #line 36 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(PARSE_TYPES_PAR_MTID, programming_language *pl, web *W)
+VOID_METHOD_TYPE(PARSE_TYPES_PAR_MTID, programming_language *pl, web *W)
 void LanguageMethods__parse_types(web *W, programming_language *pl) {
-	VMETHOD_CALL(pl, PARSE_TYPES_PAR_MTID, W);
+	VOID_METHOD_CALL(pl, PARSE_TYPES_PAR_MTID, W);
 }
 
 #line 44 "inweb/Chapter 4/Language Methods.w"
 
 #line 46 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(PARSE_FUNCTIONS_PAR_MTID, programming_language *pl, web *W)
+VOID_METHOD_TYPE(PARSE_FUNCTIONS_PAR_MTID, programming_language *pl, web *W)
 void LanguageMethods__parse_functions(web *W, programming_language *pl) {
-	VMETHOD_CALL(pl, PARSE_FUNCTIONS_PAR_MTID, W);
+	VOID_METHOD_CALL(pl, PARSE_FUNCTIONS_PAR_MTID, W);
 }
 
 #line 56 "inweb/Chapter 4/Language Methods.w"
 
 #line 58 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(FURTHER_PARSING_PAR_MTID, programming_language *pl, web *W)
+VOID_METHOD_TYPE(FURTHER_PARSING_PAR_MTID, programming_language *pl, web *W)
 void LanguageMethods__further_parsing(web *W, programming_language *pl) {
-	VMETHOD_CALL(pl, FURTHER_PARSING_PAR_MTID, W);
+	VOID_METHOD_CALL(pl, FURTHER_PARSING_PAR_MTID, W);
 }
 
 #line 69 "inweb/Chapter 4/Language Methods.w"
 
 #line 71 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(SUBCATEGORISE_LINE_PAR_MTID, programming_language *pl, source_line *L)
+VOID_METHOD_TYPE(SUBCATEGORISE_LINE_PAR_MTID, programming_language *pl, source_line *L)
 void LanguageMethods__subcategorise_line(programming_language *pl, source_line *L) {
-	VMETHOD_CALL(pl, SUBCATEGORISE_LINE_PAR_MTID, L);
+	VOID_METHOD_CALL(pl, SUBCATEGORISE_LINE_PAR_MTID, L);
 }
 
 #line 82 "inweb/Chapter 4/Language Methods.w"
 
 #line 84 "inweb/Chapter 4/Language Methods.w"
-IMETHOD_TYPE(PARSE_COMMENT_TAN_MTID, programming_language *pl, text_stream *line, text_stream *before, text_stream *within)
+INT_METHOD_TYPE(PARSE_COMMENT_TAN_MTID, programming_language *pl, text_stream *line, text_stream *before, text_stream *within)
 
 int LanguageMethods__parse_comment(programming_language *pl,
 	text_stream *line, text_stream *before, text_stream *within) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pl, PARSE_COMMENT_TAN_MTID, line, before, within);
+	INT_METHOD_CALL(rv, pl, PARSE_COMMENT_TAN_MTID, line, before, within);
 	return rv;
 }
 
 #line 102 "inweb/Chapter 4/Language Methods.w"
 
 #line 104 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(SHEBANG_TAN_MTID, programming_language *pl, text_stream *OUT, web *W, tangle_target *target)
+VOID_METHOD_TYPE(SHEBANG_TAN_MTID, programming_language *pl, text_stream *OUT, web *W, tangle_target *target)
 void LanguageMethods__shebang(OUTPUT_STREAM, programming_language *pl, web *W, tangle_target *target) {
-	VMETHOD_CALL(pl, SHEBANG_TAN_MTID, OUT, W, target);
+	VOID_METHOD_CALL(pl, SHEBANG_TAN_MTID, OUT, W, target);
 }
 
 #line 113 "inweb/Chapter 4/Language Methods.w"
 
 #line 115 "inweb/Chapter 4/Language Methods.w"
-IMETHOD_TYPE(SUPPRESS_DISCLAIMER_TAN_MTID, programming_language *pl)
+INT_METHOD_TYPE(SUPPRESS_DISCLAIMER_TAN_MTID, programming_language *pl)
 void LanguageMethods__disclaimer(text_stream *OUT, programming_language *pl, web *W, tangle_target *target) {
 	int rv = FALSE;
-	IMETHOD_CALLV(rv, pl, SUPPRESS_DISCLAIMER_TAN_MTID);
+	INT_METHOD_CALL_WITHOUT_ARGUMENTS(rv, pl, SUPPRESS_DISCLAIMER_TAN_MTID);
 	if (rv == FALSE)
 		LanguageMethods__comment(OUT, pl, TL_IS_371);
 }
@@ -21966,22 +21951,22 @@ void LanguageMethods__disclaimer(text_stream *OUT, programming_language *pl, web
 #line 127 "inweb/Chapter 4/Language Methods.w"
 
 #line 129 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(ADDITIONAL_EARLY_MATTER_TAN_MTID, programming_language *pl, text_stream *OUT, web *W, tangle_target *target)
+VOID_METHOD_TYPE(ADDITIONAL_EARLY_MATTER_TAN_MTID, programming_language *pl, text_stream *OUT, web *W, tangle_target *target)
 void LanguageMethods__additional_early_matter(text_stream *OUT, programming_language *pl, web *W, tangle_target *target) {
-	VMETHOD_CALL(pl, ADDITIONAL_EARLY_MATTER_TAN_MTID, OUT, W, target);
+	VOID_METHOD_CALL(pl, ADDITIONAL_EARLY_MATTER_TAN_MTID, OUT, W, target);
 }
 
 #line 143 "inweb/Chapter 4/Language Methods.w"
 
 #line 145 "inweb/Chapter 4/Language Methods.w"
-IMETHOD_TYPE(START_DEFN_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *term, text_stream *start, section *S, source_line *L)
-IMETHOD_TYPE(PROLONG_DEFN_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *more, section *S, source_line *L)
-IMETHOD_TYPE(END_DEFN_TAN_MTID, programming_language *pl, text_stream *OUT, section *S, source_line *L)
+INT_METHOD_TYPE(START_DEFN_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *term, text_stream *start, section *S, source_line *L)
+INT_METHOD_TYPE(PROLONG_DEFN_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *more, section *S, source_line *L)
+INT_METHOD_TYPE(END_DEFN_TAN_MTID, programming_language *pl, text_stream *OUT, section *S, source_line *L)
 
 void LanguageMethods__start_definition(OUTPUT_STREAM, programming_language *pl,
 	text_stream *term, text_stream *start, section *S, source_line *L) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pl, START_DEFN_TAN_MTID, OUT, term, start, S, L);
+	INT_METHOD_CALL(rv, pl, START_DEFN_TAN_MTID, OUT, term, start, S, L);
 	if (rv == FALSE)
 		Main__error_in_web(TL_IS_372, L);
 }
@@ -21989,7 +21974,7 @@ void LanguageMethods__start_definition(OUTPUT_STREAM, programming_language *pl,
 void LanguageMethods__prolong_definition(OUTPUT_STREAM, programming_language *pl,
 	text_stream *more, section *S, source_line *L) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pl, PROLONG_DEFN_TAN_MTID, OUT, more, S, L);
+	INT_METHOD_CALL(rv, pl, PROLONG_DEFN_TAN_MTID, OUT, more, S, L);
 	if (rv == FALSE)
 		Main__error_in_web(TL_IS_373, L);
 }
@@ -21997,142 +21982,142 @@ void LanguageMethods__prolong_definition(OUTPUT_STREAM, programming_language *pl
 void LanguageMethods__end_definition(OUTPUT_STREAM, programming_language *pl,
 	section *S, source_line *L) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pl, END_DEFN_TAN_MTID, OUT, S, L);
+	INT_METHOD_CALL(rv, pl, END_DEFN_TAN_MTID, OUT, S, L);
 }
 
 #line 175 "inweb/Chapter 4/Language Methods.w"
 
 #line 177 "inweb/Chapter 4/Language Methods.w"
-IMETHOD_TYPE(ADDITIONAL_PREDECLARATIONS_TAN_MTID, programming_language *pl, text_stream *OUT, web *W)
+INT_METHOD_TYPE(ADDITIONAL_PREDECLARATIONS_TAN_MTID, programming_language *pl, text_stream *OUT, web *W)
 void LanguageMethods__additional_predeclarations(OUTPUT_STREAM, programming_language *pl, web *W) {
-	VMETHOD_CALL(pl, ADDITIONAL_PREDECLARATIONS_TAN_MTID, OUT, W);
+	VOID_METHOD_CALL(pl, ADDITIONAL_PREDECLARATIONS_TAN_MTID, OUT, W);
 }
 
 #line 188 "inweb/Chapter 4/Language Methods.w"
 
 #line 190 "inweb/Chapter 4/Language Methods.w"
-IMETHOD_TYPE(SUPPRESS_EXPANSION_TAN_MTID, programming_language *pl, text_stream *material)
+INT_METHOD_TYPE(SUPPRESS_EXPANSION_TAN_MTID, programming_language *pl, text_stream *material)
 int LanguageMethods__allow_expansion(programming_language *pl, text_stream *material) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pl, SUPPRESS_EXPANSION_TAN_MTID, material);
+	INT_METHOD_CALL(rv, pl, SUPPRESS_EXPANSION_TAN_MTID, material);
 	return (rv)?FALSE:TRUE;
 }
 
 #line 202 "inweb/Chapter 4/Language Methods.w"
 
 #line 204 "inweb/Chapter 4/Language Methods.w"
-IMETHOD_TYPE(TANGLE_COMMAND_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *data)
+INT_METHOD_TYPE(TANGLE_COMMAND_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *data)
 
 int LanguageMethods__special_tangle_command(OUTPUT_STREAM, programming_language *pl, text_stream *data) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pl, TANGLE_COMMAND_TAN_MTID, OUT, data);
+	INT_METHOD_CALL(rv, pl, TANGLE_COMMAND_TAN_MTID, OUT, data);
 	return rv;
 }
 
 #line 219 "inweb/Chapter 4/Language Methods.w"
 
 #line 221 "inweb/Chapter 4/Language Methods.w"
-IMETHOD_TYPE(WILL_TANGLE_EXTRA_LINE_TAN_MTID, programming_language *pl, source_line *L)
-VMETHOD_TYPE(TANGLE_EXTRA_LINE_TAN_MTID, programming_language *pl, text_stream *OUT, source_line *L)
+INT_METHOD_TYPE(WILL_TANGLE_EXTRA_LINE_TAN_MTID, programming_language *pl, source_line *L)
+VOID_METHOD_TYPE(TANGLE_EXTRA_LINE_TAN_MTID, programming_language *pl, text_stream *OUT, source_line *L)
 int LanguageMethods__will_insert_in_tangle(programming_language *pl, source_line *L) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pl, WILL_TANGLE_EXTRA_LINE_TAN_MTID, L);
+	INT_METHOD_CALL(rv, pl, WILL_TANGLE_EXTRA_LINE_TAN_MTID, L);
 	return rv;
 }
 void LanguageMethods__insert_in_tangle(OUTPUT_STREAM, programming_language *pl, source_line *L) {
-	VMETHOD_CALL(pl, TANGLE_EXTRA_LINE_TAN_MTID, OUT, L);
+	VOID_METHOD_CALL(pl, TANGLE_EXTRA_LINE_TAN_MTID, OUT, L);
 }
 
 #line 238 "inweb/Chapter 4/Language Methods.w"
 
 #line 240 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(INSERT_LINE_MARKER_TAN_MTID, programming_language *pl, text_stream *OUT, source_line *L)
+VOID_METHOD_TYPE(INSERT_LINE_MARKER_TAN_MTID, programming_language *pl, text_stream *OUT, source_line *L)
 void LanguageMethods__insert_line_marker(OUTPUT_STREAM, programming_language *pl, source_line *L) {
-	VMETHOD_CALL(pl, INSERT_LINE_MARKER_TAN_MTID, OUT, L);
+	VOID_METHOD_CALL(pl, INSERT_LINE_MARKER_TAN_MTID, OUT, L);
 }
 
 #line 251 "inweb/Chapter 4/Language Methods.w"
 
 #line 253 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(BEFORE_MACRO_EXPANSION_TAN_MTID, programming_language *pl, text_stream *OUT, para_macro *pmac)
-VMETHOD_TYPE(AFTER_MACRO_EXPANSION_TAN_MTID, programming_language *pl, text_stream *OUT, para_macro *pmac)
+VOID_METHOD_TYPE(BEFORE_MACRO_EXPANSION_TAN_MTID, programming_language *pl, text_stream *OUT, para_macro *pmac)
+VOID_METHOD_TYPE(AFTER_MACRO_EXPANSION_TAN_MTID, programming_language *pl, text_stream *OUT, para_macro *pmac)
 void LanguageMethods__before_macro_expansion(OUTPUT_STREAM, programming_language *pl, para_macro *pmac) {
-	VMETHOD_CALL(pl, BEFORE_MACRO_EXPANSION_TAN_MTID, OUT, pmac);
+	VOID_METHOD_CALL(pl, BEFORE_MACRO_EXPANSION_TAN_MTID, OUT, pmac);
 }
 void LanguageMethods__after_macro_expansion(OUTPUT_STREAM, programming_language *pl, para_macro *pmac) {
-	VMETHOD_CALL(pl, AFTER_MACRO_EXPANSION_TAN_MTID, OUT, pmac);
+	VOID_METHOD_CALL(pl, AFTER_MACRO_EXPANSION_TAN_MTID, OUT, pmac);
 }
 
 #line 268 "inweb/Chapter 4/Language Methods.w"
 
 #line 270 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(OPEN_IFDEF_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *symbol, int sense)
-VMETHOD_TYPE(CLOSE_IFDEF_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *symbol, int sense)
+VOID_METHOD_TYPE(OPEN_IFDEF_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *symbol, int sense)
+VOID_METHOD_TYPE(CLOSE_IFDEF_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *symbol, int sense)
 void LanguageMethods__open_ifdef(OUTPUT_STREAM, programming_language *pl, text_stream *symbol, int sense) {
-	VMETHOD_CALL(pl, OPEN_IFDEF_TAN_MTID, OUT, symbol, sense);
+	VOID_METHOD_CALL(pl, OPEN_IFDEF_TAN_MTID, OUT, symbol, sense);
 }
 void LanguageMethods__close_ifdef(OUTPUT_STREAM, programming_language *pl, text_stream *symbol, int sense) {
-	VMETHOD_CALL(pl, CLOSE_IFDEF_TAN_MTID, OUT, symbol, sense);
+	VOID_METHOD_CALL(pl, CLOSE_IFDEF_TAN_MTID, OUT, symbol, sense);
 }
 
 #line 282 "inweb/Chapter 4/Language Methods.w"
 
 #line 284 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(COMMENT_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *comm)
+VOID_METHOD_TYPE(COMMENT_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *comm)
 void LanguageMethods__comment(OUTPUT_STREAM, programming_language *pl, text_stream *comm) {
-	VMETHOD_CALL(pl, COMMENT_TAN_MTID, OUT, comm);
+	VOID_METHOD_CALL(pl, COMMENT_TAN_MTID, OUT, comm);
 }
 
 #line 294 "inweb/Chapter 4/Language Methods.w"
 
 #line 296 "inweb/Chapter 4/Language Methods.w"
-IMETHOD_TYPE(TANGLE_LINE_UNUSUALLY_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *original)
+INT_METHOD_TYPE(TANGLE_LINE_UNUSUALLY_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *original)
 void LanguageMethods__tangle_line(OUTPUT_STREAM, programming_language *pl, text_stream *original) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pl, TANGLE_LINE_UNUSUALLY_TAN_MTID, OUT, original);
+	INT_METHOD_CALL(rv, pl, TANGLE_LINE_UNUSUALLY_TAN_MTID, OUT, original);
 	if (rv == FALSE) WRITE("%S", original);
 }
 
 #line 306 "inweb/Chapter 4/Language Methods.w"
 
 #line 308 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(GNABEHS_TAN_MTID, programming_language *pl, text_stream *OUT, web *W)
+VOID_METHOD_TYPE(GNABEHS_TAN_MTID, programming_language *pl, text_stream *OUT, web *W)
 void LanguageMethods__gnabehs(OUTPUT_STREAM, programming_language *pl, web *W) {
-	VMETHOD_CALL(pl, GNABEHS_TAN_MTID, OUT, W);
+	VOID_METHOD_CALL(pl, GNABEHS_TAN_MTID, OUT, W);
 }
 
 #line 318 "inweb/Chapter 4/Language Methods.w"
 
 #line 320 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(ADDITIONAL_TANGLING_TAN_MTID, programming_language *pl, web *W, tangle_target *target)
+VOID_METHOD_TYPE(ADDITIONAL_TANGLING_TAN_MTID, programming_language *pl, web *W, tangle_target *target)
 void LanguageMethods__additional_tangling(programming_language *pl, web *W, tangle_target *target) {
-	VMETHOD_CALL(pl, ADDITIONAL_TANGLING_TAN_MTID, W, target);
+	VOID_METHOD_CALL(pl, ADDITIONAL_TANGLING_TAN_MTID, W, target);
 }
 
 #line 330 "inweb/Chapter 4/Language Methods.w"
 
 #line 332 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(BEGIN_WEAVE_WEA_MTID, programming_language *pl, section *S, weave_order *wv)
+VOID_METHOD_TYPE(BEGIN_WEAVE_WEA_MTID, programming_language *pl, section *S, weave_order *wv)
 void LanguageMethods__begin_weave(section *S, weave_order *wv) {
-	VMETHOD_CALL(S->sect_language, BEGIN_WEAVE_WEA_MTID, S, wv);
+	VOID_METHOD_CALL(S->sect_language, BEGIN_WEAVE_WEA_MTID, S, wv);
 }
 
 #line 340 "inweb/Chapter 4/Language Methods.w"
 
 #line 342 "inweb/Chapter 4/Language Methods.w"
-IMETHOD_TYPE(SKIP_IN_WEAVING_WEA_MTID, programming_language *pl, weave_order *wv, source_line *L)
+INT_METHOD_TYPE(SKIP_IN_WEAVING_WEA_MTID, programming_language *pl, weave_order *wv, source_line *L)
 int LanguageMethods__skip_in_weaving(programming_language *pl, weave_order *wv, source_line *L) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pl, SKIP_IN_WEAVING_WEA_MTID, wv, L);
+	INT_METHOD_CALL(rv, pl, SKIP_IN_WEAVING_WEA_MTID, wv, L);
 	return rv;
 }
 
 #line 355 "inweb/Chapter 4/Language Methods.w"
 
 #line 357 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(RESET_SYNTAX_COLOURING_WEA_MTID, programming_language *pl)
+VOID_METHOD_TYPE(RESET_SYNTAX_COLOURING_WEA_MTID, programming_language *pl)
 void LanguageMethods__reset_syntax_colouring(programming_language *pl) {
-	VMETHOD_CALLV(pl, RESET_SYNTAX_COLOURING_WEA_MTID);
+	VOID_METHOD_CALL_WITHOUT_ARGUMENTS(pl, RESET_SYNTAX_COLOURING_WEA_MTID);
 }
 
 #line 365 "inweb/Chapter 4/Language Methods.w"
@@ -22140,7 +22125,7 @@ void LanguageMethods__reset_syntax_colouring(programming_language *pl) {
 #line 367 "inweb/Chapter 4/Language Methods.w"
 int colouring_state = PLAIN_COLOUR;
 
-IMETHOD_TYPE(SYNTAX_COLOUR_WEA_MTID, programming_language *pl,
+INT_METHOD_TYPE(SYNTAX_COLOUR_WEA_MTID, programming_language *pl,
 	weave_order *wv, source_line *L, text_stream *matter, text_stream *colouring)
 int LanguageMethods__syntax_colour(programming_language *pl,
 	weave_order *wv, source_line *L, text_stream *matter, text_stream *colouring) {
@@ -22155,7 +22140,7 @@ int LanguageMethods__syntax_colour(programming_language *pl,
 			if (prepl) colour_as = prepl;
 	}
 	if (colour_as)
-		IMETHOD_CALL(rv, colour_as, SYNTAX_COLOUR_WEA_MTID, wv, L,
+		INT_METHOD_CALL(rv, colour_as, SYNTAX_COLOUR_WEA_MTID, wv, L,
 			matter, colouring);
 	return rv;
 }
@@ -22163,44 +22148,44 @@ int LanguageMethods__syntax_colour(programming_language *pl,
 #line 394 "inweb/Chapter 4/Language Methods.w"
 
 #line 396 "inweb/Chapter 4/Language Methods.w"
-IMETHOD_TYPE(WEAVE_CODE_LINE_WEA_MTID, programming_language *pl, text_stream *OUT, weave_order *wv, web *W,
+INT_METHOD_TYPE(WEAVE_CODE_LINE_WEA_MTID, programming_language *pl, text_stream *OUT, weave_order *wv, web *W,
 	chapter *C, section *S, source_line *L, text_stream *matter, text_stream *concluding_comment)
 int LanguageMethods__weave_code_line(OUTPUT_STREAM, programming_language *pl, weave_order *wv,
 	web *W, chapter *C, section *S, source_line *L, text_stream *matter, text_stream *concluding_comment) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pl, WEAVE_CODE_LINE_WEA_MTID, OUT, wv, W, C, S, L, matter, concluding_comment);
+	INT_METHOD_CALL(rv, pl, WEAVE_CODE_LINE_WEA_MTID, OUT, wv, W, C, S, L, matter, concluding_comment);
 	return rv;
 }
 
 #line 408 "inweb/Chapter 4/Language Methods.w"
 
 #line 410 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(NOTIFY_NEW_TAG_WEA_MTID, programming_language *pl, theme_tag *tag)
+VOID_METHOD_TYPE(NOTIFY_NEW_TAG_WEA_MTID, programming_language *pl, theme_tag *tag)
 void LanguageMethods__new_tag_declared(theme_tag *tag) {
 	programming_language *pl;
 	LOOP_OVER(pl, programming_language)
-		VMETHOD_CALL(pl, NOTIFY_NEW_TAG_WEA_MTID, tag);
+		VOID_METHOD_CALL(pl, NOTIFY_NEW_TAG_WEA_MTID, tag);
 }
 
 #line 430 "inweb/Chapter 4/Language Methods.w"
 
 #line 432 "inweb/Chapter 4/Language Methods.w"
-VMETHOD_TYPE(ANALYSIS_ANA_MTID, programming_language *pl, web *W)
-VMETHOD_TYPE(POST_ANALYSIS_ANA_MTID, programming_language *pl, web *W)
+VOID_METHOD_TYPE(ANALYSIS_ANA_MTID, programming_language *pl, web *W)
+VOID_METHOD_TYPE(POST_ANALYSIS_ANA_MTID, programming_language *pl, web *W)
 void LanguageMethods__early_preweave_analysis(programming_language *pl, web *W) {
-	VMETHOD_CALL(pl, ANALYSIS_ANA_MTID, W);
+	VOID_METHOD_CALL(pl, ANALYSIS_ANA_MTID, W);
 }
 void LanguageMethods__late_preweave_analysis(programming_language *pl, web *W) {
-	VMETHOD_CALL(pl, POST_ANALYSIS_ANA_MTID, W);
+	VOID_METHOD_CALL(pl, POST_ANALYSIS_ANA_MTID, W);
 }
 
 #line 445 "inweb/Chapter 4/Language Methods.w"
 
 #line 447 "inweb/Chapter 4/Language Methods.w"
-IMETHOD_TYPE(SHARE_ELEMENT_ANA_MTID, programming_language *pl, text_stream *element_name)
+INT_METHOD_TYPE(SHARE_ELEMENT_ANA_MTID, programming_language *pl, text_stream *element_name)
 int LanguageMethods__share_element(programming_language *pl, text_stream *element_name) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pl, SHARE_ELEMENT_ANA_MTID, element_name);
+	INT_METHOD_CALL(rv, pl, SHARE_ELEMENT_ANA_MTID, element_name);
 	return rv;
 }
 
@@ -24191,97 +24176,97 @@ heterogeneous_tree *WeaveTree__new_tree(weave_order *wv) {
 	if (weave_tree_type == NULL) {
 		weave_tree_type = Trees__new_type(TL_IS_393, NULL);
 		weave_document_node_type =
-			Trees__new_node_type(TL_IS_394, weave_document_node_MT, NULL);
+			Trees__new_node_type(TL_IS_394, weave_document_node_CLASS, NULL);
 		weave_head_node_type =
-			Trees__new_node_type(TL_IS_395, weave_head_node_MT, NULL);
+			Trees__new_node_type(TL_IS_395, weave_head_node_CLASS, NULL);
 		weave_body_node_type =
-			Trees__new_node_type(TL_IS_396, weave_body_node_MT, NULL);
+			Trees__new_node_type(TL_IS_396, weave_body_node_CLASS, NULL);
 		weave_tail_node_type =
-			Trees__new_node_type(TL_IS_397, weave_tail_node_MT, NULL);
+			Trees__new_node_type(TL_IS_397, weave_tail_node_CLASS, NULL);
 		weave_chapter_footer_node_type =
-			Trees__new_node_type(TL_IS_398, weave_chapter_footer_node_MT, NULL);
+			Trees__new_node_type(TL_IS_398, weave_chapter_footer_node_CLASS, NULL);
 		weave_chapter_header_node_type =
-			Trees__new_node_type(TL_IS_399, weave_chapter_header_node_MT, NULL);
+			Trees__new_node_type(TL_IS_399, weave_chapter_header_node_CLASS, NULL);
 		weave_section_footer_node_type =
-			Trees__new_node_type(TL_IS_400, weave_section_footer_node_MT, NULL);
+			Trees__new_node_type(TL_IS_400, weave_section_footer_node_CLASS, NULL);
 		weave_section_header_node_type =
-			Trees__new_node_type(TL_IS_401, weave_section_header_node_MT, NULL);
+			Trees__new_node_type(TL_IS_401, weave_section_header_node_CLASS, NULL);
 		weave_section_purpose_node_type =
-			Trees__new_node_type(TL_IS_402, weave_section_purpose_node_MT, NULL);
+			Trees__new_node_type(TL_IS_402, weave_section_purpose_node_CLASS, NULL);
 
 		weave_subheading_node_type =
-			Trees__new_node_type(TL_IS_403, weave_subheading_node_MT, NULL);
+			Trees__new_node_type(TL_IS_403, weave_subheading_node_CLASS, NULL);
 		weave_bar_node_type =
-			Trees__new_node_type(TL_IS_404, weave_bar_node_MT, NULL);
+			Trees__new_node_type(TL_IS_404, weave_bar_node_CLASS, NULL);
 		weave_pagebreak_node_type =
-			Trees__new_node_type(TL_IS_405, weave_pagebreak_node_MT, NULL);
+			Trees__new_node_type(TL_IS_405, weave_pagebreak_node_CLASS, NULL);
 		weave_linebreak_node_type =
-			Trees__new_node_type(TL_IS_406, weave_linebreak_node_MT, NULL);
+			Trees__new_node_type(TL_IS_406, weave_linebreak_node_CLASS, NULL);
 		weave_paragraph_heading_node_type =
-			Trees__new_node_type(TL_IS_407, weave_paragraph_heading_node_MT, NULL);
+			Trees__new_node_type(TL_IS_407, weave_paragraph_heading_node_CLASS, NULL);
 		weave_endnote_node_type =
-			Trees__new_node_type(TL_IS_408, weave_endnote_node_MT, NULL);
+			Trees__new_node_type(TL_IS_408, weave_endnote_node_CLASS, NULL);
 		weave_figure_node_type =
-			Trees__new_node_type(TL_IS_409, weave_figure_node_MT, NULL);
+			Trees__new_node_type(TL_IS_409, weave_figure_node_CLASS, NULL);
 		weave_audio_node_type =
-			Trees__new_node_type(TL_IS_410, weave_audio_node_MT, NULL);
+			Trees__new_node_type(TL_IS_410, weave_audio_node_CLASS, NULL);
 		weave_video_node_type =
-			Trees__new_node_type(TL_IS_411, weave_video_node_MT, NULL);
+			Trees__new_node_type(TL_IS_411, weave_video_node_CLASS, NULL);
 		weave_download_node_type =
-			Trees__new_node_type(TL_IS_412, weave_download_node_MT, NULL);
+			Trees__new_node_type(TL_IS_412, weave_download_node_CLASS, NULL);
 		weave_material_node_type =
-			Trees__new_node_type(TL_IS_413, weave_material_node_MT, NULL);
+			Trees__new_node_type(TL_IS_413, weave_material_node_CLASS, NULL);
 		weave_embed_node_type =
-			Trees__new_node_type(TL_IS_414, weave_embed_node_MT, NULL);
+			Trees__new_node_type(TL_IS_414, weave_embed_node_CLASS, NULL);
 		weave_pmac_node_type =
-			Trees__new_node_type(TL_IS_415, weave_pmac_node_MT, NULL);
+			Trees__new_node_type(TL_IS_415, weave_pmac_node_CLASS, NULL);
 		weave_vskip_node_type =
-			Trees__new_node_type(TL_IS_416, weave_vskip_node_MT, NULL);
+			Trees__new_node_type(TL_IS_416, weave_vskip_node_CLASS, NULL);
 		weave_chapter_node_type =
-			Trees__new_node_type(TL_IS_417, weave_chapter_node_MT, NULL);
+			Trees__new_node_type(TL_IS_417, weave_chapter_node_CLASS, NULL);
 		weave_section_node_type =
-			Trees__new_node_type(TL_IS_418, weave_section_node_MT, NULL);
+			Trees__new_node_type(TL_IS_418, weave_section_node_CLASS, NULL);
 		weave_code_line_node_type =
-			Trees__new_node_type(TL_IS_419, weave_code_line_node_MT, NULL);
+			Trees__new_node_type(TL_IS_419, weave_code_line_node_CLASS, NULL);
 		weave_function_usage_node_type =
-			Trees__new_node_type(TL_IS_420, weave_function_usage_node_MT, NULL);
+			Trees__new_node_type(TL_IS_420, weave_function_usage_node_CLASS, NULL);
 		weave_commentary_node_type =
-			Trees__new_node_type(TL_IS_421, weave_commentary_node_MT, NULL);
+			Trees__new_node_type(TL_IS_421, weave_commentary_node_CLASS, NULL);
 		weave_carousel_slide_node_type =
-			Trees__new_node_type(TL_IS_422, weave_carousel_slide_node_MT, NULL);
+			Trees__new_node_type(TL_IS_422, weave_carousel_slide_node_CLASS, NULL);
 		weave_toc_node_type =
-			Trees__new_node_type(TL_IS_423, weave_toc_node_MT, NULL);
+			Trees__new_node_type(TL_IS_423, weave_toc_node_CLASS, NULL);
 		weave_toc_line_node_type =
-			Trees__new_node_type(TL_IS_424, weave_toc_line_node_MT, NULL);
+			Trees__new_node_type(TL_IS_424, weave_toc_line_node_CLASS, NULL);
 		weave_chapter_title_page_node_type =
-			Trees__new_node_type(TL_IS_425, weave_chapter_title_page_node_MT, NULL);
+			Trees__new_node_type(TL_IS_425, weave_chapter_title_page_node_CLASS, NULL);
 		weave_defn_node_type =
-			Trees__new_node_type(TL_IS_426, weave_defn_node_MT, NULL);
+			Trees__new_node_type(TL_IS_426, weave_defn_node_CLASS, NULL);
 		weave_source_code_node_type =
-			Trees__new_node_type(TL_IS_427, weave_source_code_node_MT, NULL);
+			Trees__new_node_type(TL_IS_427, weave_source_code_node_CLASS, NULL);
 		weave_url_node_type =
-			Trees__new_node_type(TL_IS_428, weave_url_node_MT, NULL);
+			Trees__new_node_type(TL_IS_428, weave_url_node_CLASS, NULL);
 		weave_footnote_cue_node_type =
-			Trees__new_node_type(TL_IS_429, weave_footnote_cue_node_MT, NULL);
+			Trees__new_node_type(TL_IS_429, weave_footnote_cue_node_CLASS, NULL);
 		weave_begin_footnote_text_node_type =
-			Trees__new_node_type(TL_IS_430, weave_begin_footnote_text_node_MT, NULL);
+			Trees__new_node_type(TL_IS_430, weave_begin_footnote_text_node_CLASS, NULL);
 		weave_display_line_node_type =
-			Trees__new_node_type(TL_IS_431, weave_display_line_node_MT, NULL);
+			Trees__new_node_type(TL_IS_431, weave_display_line_node_CLASS, NULL);
 		weave_function_defn_node_type =
-			Trees__new_node_type(TL_IS_432, weave_function_defn_node_MT, NULL);
+			Trees__new_node_type(TL_IS_432, weave_function_defn_node_CLASS, NULL);
 		weave_item_node_type =
-			Trees__new_node_type(TL_IS_433, weave_item_node_MT, NULL);
+			Trees__new_node_type(TL_IS_433, weave_item_node_CLASS, NULL);
 		weave_grammar_index_node_type =
-			Trees__new_node_type(TL_IS_434, weave_grammar_index_node_MT, NULL);
+			Trees__new_node_type(TL_IS_434, weave_grammar_index_node_CLASS, NULL);
 		weave_inline_node_type =
-			Trees__new_node_type(TL_IS_435, weave_inline_node_MT, NULL);
+			Trees__new_node_type(TL_IS_435, weave_inline_node_CLASS, NULL);
 		weave_locale_node_type =
-			Trees__new_node_type(TL_IS_436, weave_locale_node_MT, NULL);
+			Trees__new_node_type(TL_IS_436, weave_locale_node_CLASS, NULL);
 		weave_maths_node_type =
-			Trees__new_node_type(TL_IS_437, weave_maths_node_MT, NULL);
+			Trees__new_node_type(TL_IS_437, weave_maths_node_CLASS, NULL);
 
 		weave_verbatim_node_type =
-			Trees__new_node_type(TL_IS_438, weave_verbatim_node_MT, NULL);
+			Trees__new_node_type(TL_IS_438, weave_verbatim_node_CLASS, NULL);
 	}
 	heterogeneous_tree *tree = Trees__new(weave_tree_type);
 	Trees__make_root(tree, WeaveTree__document(tree, wv));
@@ -24623,12 +24608,12 @@ void WeaveTree__prune(heterogeneous_tree *T) {
 }
 
 int WeaveTree__prune_visit(tree_node *N, void *state) {
-	if ((N->type->required_MT == weave_material_node_MT) && (N->child == NULL))
+	if ((N->type->required_CLASS == weave_material_node_CLASS) && (N->child == NULL))
 		return TRUE;
-	if ((N->type->required_MT == weave_vskip_node_MT) && (N->next == NULL))
+	if ((N->type->required_CLASS == weave_vskip_node_CLASS) && (N->next == NULL))
 		return TRUE;
-	if ((N->type->required_MT == weave_vskip_node_MT) &&
-		(N->next->type->required_MT == weave_item_node_MT))
+	if ((N->type->required_CLASS == weave_vskip_node_CLASS) &&
+		(N->next->type->required_CLASS == weave_item_node_CLASS))
 		return TRUE;
 	return FALSE;
 }
@@ -24639,7 +24624,7 @@ weave_format *Formats__create_weave_format(text_stream *name, text_stream *ext) 
 	weave_format *wf = CREATE(weave_format);
 	wf->format_name = Str__duplicate(name);
 	wf->woven_extension = Str__duplicate(ext);
-	ENABLE_METHOD_CALLS(wf);
+	wf->methods = Methods__new_set();
 	return wf;
 }
 
@@ -24667,22 +24652,22 @@ void Formats__create_weave_formats(void) {
 #line 68 "inweb/Chapter 5/Format Methods.w"
 
 #line 70 "inweb/Chapter 5/Format Methods.w"
-IMETHOD_TYPE(BEGIN_WEAVING_FOR_MTID, weave_format *wf, web *W, weave_pattern *pattern)
-VMETHOD_TYPE(END_WEAVING_FOR_MTID, weave_format *wf, web *W, weave_pattern *pattern)
+INT_METHOD_TYPE(BEGIN_WEAVING_FOR_MTID, weave_format *wf, web *W, weave_pattern *pattern)
+VOID_METHOD_TYPE(END_WEAVING_FOR_MTID, weave_format *wf, web *W, weave_pattern *pattern)
 int Formats__begin_weaving(web *W, weave_pattern *pattern) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pattern->pattern_format, BEGIN_WEAVING_FOR_MTID, W, pattern);
+	INT_METHOD_CALL(rv, pattern->pattern_format, BEGIN_WEAVING_FOR_MTID, W, pattern);
 	if (rv) return rv;
 	return SWARM_OFF_SWM;
 }
 void Formats__end_weaving(web *W, weave_pattern *pattern) {
-	VMETHOD_CALL(pattern->pattern_format, END_WEAVING_FOR_MTID, W, pattern);
+	VOID_METHOD_CALL(pattern->pattern_format, END_WEAVING_FOR_MTID, W, pattern);
 }
 
 #line 92 "inweb/Chapter 5/Format Methods.w"
 
 #line 94 "inweb/Chapter 5/Format Methods.w"
-VMETHOD_TYPE(RENDER_FOR_MTID, weave_format *wf, text_stream *OUT, heterogeneous_tree *tree)
+VOID_METHOD_TYPE(RENDER_FOR_MTID, weave_format *wf, text_stream *OUT, heterogeneous_tree *tree)
 void Formats__render(text_stream *OUT, heterogeneous_tree *tree, filename *into) {
 	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
 	weave_format *wf = C->wv->format;
@@ -24690,7 +24675,7 @@ void Formats__render(text_stream *OUT, heterogeneous_tree *tree, filename *into)
 	WRITE_TO(template, "template-body%S", wf->woven_extension);
 	filename *F = Patterns__find_template(C->wv->pattern, template);
 	TEMPORARY_TEXT(interior);
-	VMETHOD_CALL(wf, RENDER_FOR_MTID, interior, tree);
+	VOID_METHOD_CALL(wf, RENDER_FOR_MTID, interior, tree);
 	Bibliographic__set_datum(C->wv->weave_web->md, TL_IS_439, interior);
 	if (F) Collater__for_order(OUT, C->wv, F, into);
 	else WRITE("%S", interior);
@@ -24701,7 +24686,7 @@ void Formats__render(text_stream *OUT, heterogeneous_tree *tree, filename *into)
 #line 115 "inweb/Chapter 5/Format Methods.w"
 
 #line 117 "inweb/Chapter 5/Format Methods.w"
-IMETHOD_TYPE(PREFORM_DOCUMENT_FOR_MTID, weave_format *wf, text_stream *OUT,
+INT_METHOD_TYPE(PREFORM_DOCUMENT_FOR_MTID, weave_format *wf, text_stream *OUT,
 	weave_order *wv, web *W, chapter *C, section *S, source_line *L,
 	text_stream *matter, text_stream *concluding_comment)
 int Formats__preform_document(OUTPUT_STREAM, weave_order *wv, web *W,
@@ -24709,7 +24694,7 @@ int Formats__preform_document(OUTPUT_STREAM, weave_order *wv, web *W,
 	text_stream *concluding_comment) {
 	weave_format *wf = wv->format;
 	int rv = FALSE;
-	IMETHOD_CALL(rv, wf, PREFORM_DOCUMENT_FOR_MTID, OUT, wv, W, C, S, L, matter,
+	INT_METHOD_CALL(rv, wf, PREFORM_DOCUMENT_FOR_MTID, OUT, wv, W, C, S, L, matter,
 		concluding_comment);
 	return rv;
 }
@@ -24717,29 +24702,29 @@ int Formats__preform_document(OUTPUT_STREAM, weave_order *wv, web *W,
 #line 136 "inweb/Chapter 5/Format Methods.w"
 
 #line 138 "inweb/Chapter 5/Format Methods.w"
-VMETHOD_TYPE(POST_PROCESS_POS_MTID, weave_format *wf, weave_order *wv, int open_afterwards)
+VOID_METHOD_TYPE(POST_PROCESS_POS_MTID, weave_format *wf, weave_order *wv, int open_afterwards)
 void Formats__post_process_weave(weave_order *wv, int open_afterwards) {
-	VMETHOD_CALL(wv->format, POST_PROCESS_POS_MTID, wv, open_afterwards);
+	VOID_METHOD_CALL(wv->format, POST_PROCESS_POS_MTID, wv, open_afterwards);
 }
 
 #line 148 "inweb/Chapter 5/Format Methods.w"
 
 #line 150 "inweb/Chapter 5/Format Methods.w"
-VMETHOD_TYPE(POST_PROCESS_REPORT_POS_MTID, weave_format *wf, weave_order *wv)
+VOID_METHOD_TYPE(POST_PROCESS_REPORT_POS_MTID, weave_format *wf, weave_order *wv)
 void Formats__report_on_post_processing(weave_order *wv) {
 	TeXUtilities__report_on_post_processing(wv);
-	VMETHOD_CALL(wv->format, POST_PROCESS_REPORT_POS_MTID, wv);
+	VOID_METHOD_CALL(wv->format, POST_PROCESS_REPORT_POS_MTID, wv);
 }
 
 #line 160 "inweb/Chapter 5/Format Methods.w"
 
 #line 162 "inweb/Chapter 5/Format Methods.w"
-IMETHOD_TYPE(POST_PROCESS_SUBSTITUTE_POS_MTID, weave_format *wf, text_stream *OUT,
+INT_METHOD_TYPE(POST_PROCESS_SUBSTITUTE_POS_MTID, weave_format *wf, text_stream *OUT,
 	weave_order *wv, text_stream *detail, weave_pattern *pattern)
 int Formats__substitute_post_processing_data(OUTPUT_STREAM, weave_order *wv,
 	text_stream *detail, weave_pattern *pattern) {
 	int rv = TeXUtilities__substitute_post_processing_data(OUT, wv, detail);
-	IMETHOD_CALL(rv, wv->format, POST_PROCESS_SUBSTITUTE_POS_MTID, OUT, wv, detail, pattern);
+	INT_METHOD_CALL(rv, wv->format, POST_PROCESS_SUBSTITUTE_POS_MTID, OUT, wv, detail, pattern);
 	return rv;
 }
 

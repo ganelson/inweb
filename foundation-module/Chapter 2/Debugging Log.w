@@ -44,7 +44,7 @@ typedef struct debugging_aspect {
 	struct text_stream *unhyphenated_name; /* e.g., "memory usage" */
 	int on_or_off; /* whether or not active when writing to debugging log */
 	int alternate; /* whether or not active when writing in trace mode */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } debugging_aspect;
 
 @ And now we must define all those constants and names. Note that the

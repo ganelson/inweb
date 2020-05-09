@@ -8,7 +8,7 @@ Scanning directories on the host filing system.
 typedef struct scan_directory {
 	void *directory_handle;
 	char directory_name_written_out[4*MAX_FILENAME_LENGTH];
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } scan_directory;
 
 @ The directory name going out has to be transcoded from flat Unicode to

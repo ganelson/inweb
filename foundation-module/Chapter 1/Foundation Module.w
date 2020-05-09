@@ -82,7 +82,8 @@ As noted above, the client needs to call these when starting up and when
 shutting down.
 
 The Inweb notation |[[textliterals]]| inserts declarations of I-literals,
-that is, literal |text_stream *| values written as |I"strings"|.
+that is, literal |text_stream *| values written as |I"strings"|. It should
+never be used anywhere but here.
 
 =
 void Foundation::start(void) {

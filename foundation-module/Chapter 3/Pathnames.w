@@ -39,7 +39,7 @@ typedef struct pathname {
 	struct text_stream *intermediate;
 	struct pathname *pathname_of_parent;
 	int known_to_exist; /* corresponds to a directory in the filing system */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } pathname;
 
 @h Home directory.

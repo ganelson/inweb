@@ -215,24 +215,26 @@ traditional null-terminated <span class="extract"><span class="extract-syntax">c
 Texts are just better.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Objects. </b>To a limited extent, Foundation enables C programs to have "objects" and
-"methods", and it makes use of that ability itself, too. For example,
-suppose we are writing a program to store recipes, and we want something
-in C which corresponds to objects of the class "recipe". We need to do three
-things:
+<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Objects. </b>To a very limited extent, Foundation enables C programs to have "classes",
+"objects" and "methods", and it makes use of that ability itself, too. (See
+<a href="2-fc.html" class="internal">Foundation Classes</a> for the list of classes made by <a href="index.html" class="internal">foundation</a>.) For
+example, suppose we are writing a program to store recipes, and we want
+something in C which corresponds to objects of the class <span class="extract"><span class="extract-syntax">recipe</span></span>. We need to
+do three things:
 </p>
 
-<ul class="items"><li>(1) Declare an enumerated constant ending <span class="extract"><span class="extract-syntax">_MT</span></span> to represent this type in the
+<p class="commentary">1. Declare an enumerated constant ending <span class="extract"><span class="extract-syntax">_CLASS</span></span> to represent this type in the
 memory manager, and then make a matching use of a macro to define some associated
 functions, which we never see or think about. For example:
-</li></ul>
+</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Here are my classes...</span>
 
-<span class="plain-syntax">    </span><span class="function-syntax">@e</span><span class="plain-syntax"> recipe_MT</span>
+<span class="plain-syntax">    </span><span class="function-syntax">@e</span><span class="plain-syntax"> recipe_CLASS</span>
 
 <span class="plain-syntax">    =</span>
-<span class="plain-syntax">    ALLOCATE_INDIVIDUALLY(recipe)</span>
+<span class="plain-syntax">    DECLARE_CLASS(recipe)</span>
 </pre>
 <p class="commentary">The mention of "individually" is because this is for data structures where
 we expect to have relatively few instances. If we expect to have huge numbers
@@ -242,36 +244,38 @@ of throwaway instances, we would instead write:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Here are my classes...</span>
 
-<span class="plain-syntax">    </span><span class="function-syntax">@e</span><span class="plain-syntax"> salt_grain_array_MT</span>
+<span class="plain-syntax">    </span><span class="function-syntax">@e</span><span class="plain-syntax"> salt_grain_array_CLASS</span>
 
 <span class="plain-syntax">    =</span>
-<span class="plain-syntax">    ALLOCATE_IN_ARRAYS(salt_grain, 1000)</span>
+<span class="plain-syntax">    DECLARE_CLASS_ALLOCATED_IN_ARRAYS(salt_grain, 1000)</span>
 </pre>
 <p class="commentary">The memory manager then claims these in blocks of 1000. Use this only if it's
 actually needed.
 </p>
 
-<ul class="items"><li>(2) We have to declare the actual structure, and <span class="extract"><span class="extract-syntax">typedef</span></span> the name to it. For
+<p class="commentary">2. We have to declare the actual structure, and <span class="extract"><span class="extract-syntax">typedef</span></span> the name to it. For
 example:
-</li></ul>
+</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_of_dish</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">oven_temperature</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">        </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">    } </span><span class="identifier-syntax">recipe</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary">Here <span class="extract"><span class="extract-syntax">MEMORY_MANAGEMENT</span></span> is a macro defined in <a href="2-mmr.html" class="internal">Memory</a> which expands to the
+<p class="commentary">Here <span class="extract"><span class="extract-syntax">CLASS_DEFINITION</span></span> is a macro defined in <a href="2-mmr.html" class="internal">Memory</a> which expands to the
 necessary field(s) to keep track of this. We won't use those fields, or ever
 think about them.
 </p>
 
-<ul class="items"><li>(3) In fact we've now finished. The macro <span class="extract"><span class="extract-syntax">CREATE(recipe)</span></span> returns a new
+<p class="commentary">3. In fact we've now finished. The macro <span class="extract"><span class="extract-syntax">CREATE(recipe)</span></span> returns a new
 instance, and <span class="extract"><span class="extract-syntax">DESTROY(R)</span></span> would destroy an existing one, <span class="extract"><span class="extract-syntax">R</span></span>. Unless manually
 destroyed, objects last forever; there is no garbage collection. In practice
 the Inform tools suite, for which Foundation was written, almost never destroy
 objects.
-</li></ul>
+</p>
+
 <p class="commentary">Customarily, though, we wrap the use of <span class="extract"><span class="extract-syntax">CREATE</span></span> in a constructor function:
 </p>
 
@@ -294,12 +298,12 @@ objects.
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"- %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">name_of_dish</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="commentary"><span class="extract"><span class="extract-syntax">LOOP_OVER</span></span> loops through all created recipe instances (which have not been
+<p class="commentary"><span class="extract"><span class="extract-syntax">LOOP_OVER</span></span> loops through all created <span class="extract"><span class="extract-syntax">recipe</span></span> instances (which have not been
 destroyed).
 </p>
 
 <p class="commentary">There are a few other facilities, for which see <a href="2-mmr.html" class="internal">Memory</a>, and also ways to
-allocate memory for arrays &mdash; see <a href="2-mmr.html#SP25" class="internal">Memory::calloc</a> and <a href="2-mmr.html#SP25" class="internal">Memory::malloc</a>.
+allocate memory for arrays &mdash; see <a href="2-mmr.html#SP24" class="internal">Memory::calloc</a> and <a href="2-mmr.html#SP24" class="internal">Memory::malloc</a>.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Methods. </b>It's also possible to have method calls on object instances, though the
@@ -311,8 +315,8 @@ this for <span class="extract"><span class="extract-syntax">recipe</span></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">recipe</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name_of_dish</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">oven_temperature</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">METHOD_CALLS</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">method_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">methods</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">    } </span><span class="identifier-syntax">recipe</span><span class="plain-syntax">;</span>
 </pre>
 <p class="commentary">and another line to the constructor function:
@@ -332,14 +336,13 @@ type of the function call involved:
 <span class="plain-syntax">    </span><span class="function-syntax">@e</span><span class="plain-syntax"> COOK_MTID</span>
 
 <span class="plain-syntax">    =</span>
-<span class="plain-syntax">    VMETHOD_TYPE(COOK_MTID, recipe *R, int time_in_oven)</span>
+<span class="plain-syntax">    VOID_METHOD_TYPE(COOK_MTID, recipe *R, int time_in_oven)</span>
 </pre>
-<p class="commentary">The <span class="extract"><span class="extract-syntax">V</span></span> here means that this will be a void function, that is, returning no
-value. It's now possible to call this on any recipe:
+<p class="commentary">It's now possible to call this on any recipe:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">VMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">duck_a_l_orange</span><span class="plain-syntax">, </span><span class="identifier-syntax">COOK_MTID</span><span class="plain-syntax">, </span><span class="constant-syntax">45</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">duck_a_l_orange</span><span class="plain-syntax">, </span><span class="identifier-syntax">COOK_MTID</span><span class="plain-syntax">, </span><span class="constant-syntax">45</span><span class="plain-syntax">);</span>
 </pre>
 <p class="commentary">What then happens? Nothing at all, unless the recipe instance in question &mdash;
 here, <span class="extract"><span class="extract-syntax">duck_a_l_orange</span></span> &mdash; has been given a receiver function. Let's revisit
@@ -369,7 +372,7 @@ the effect of
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">VMETHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">duck_a_l_orange</span><span class="plain-syntax">, </span><span class="identifier-syntax">COOK_MTID</span><span class="plain-syntax">, </span><span class="constant-syntax">45</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">duck_a_l_orange</span><span class="plain-syntax">, </span><span class="identifier-syntax">COOK_MTID</span><span class="plain-syntax">, </span><span class="constant-syntax">45</span><span class="plain-syntax">);</span>
 </pre>
 <p class="commentary">is to call:
 </p>
@@ -383,7 +386,7 @@ their "success". If multiple receivers run, the first to return <span class="ext
 claimed the right to act, and subsequent receivers aren't consulted.
 </p>
 
-<p class="commentary">Such methods must be defined with <span class="extract"><span class="extract-syntax">IMETHOD_CALL</span></span> and are rarely needed. See
+<p class="commentary">Such methods must be defined with <span class="extract"><span class="extract-syntax">INT_METHOD_CALL</span></span> and are rarely needed. See
 <a href="2-mth.html" class="internal">Methods</a> for more.
 </p>
 

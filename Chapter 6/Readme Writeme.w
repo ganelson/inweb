@@ -77,7 +77,7 @@ typedef struct macro {
 	struct text_stream *name;
 	struct text_stream *content;
 	struct macro_tokens tokens;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } macro;
 
 macro *Readme::new_macro(text_stream *name, text_stream *tokens, text_file_position *tfp) {
@@ -93,7 +93,7 @@ typedef struct macro_tokens {
 	struct text_stream *pars[8];
 	int no_pars;
 	struct macro_tokens *down;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } macro_tokens;
 
 @ =
@@ -257,7 +257,7 @@ typedef struct writeme_asset {
 	struct text_stream *date;
 	struct text_stream *version;
 	int next_is_version;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } writeme_asset;
 
 void Readme::write_var(text_stream *OUT, text_stream *program, text_stream *datum) {

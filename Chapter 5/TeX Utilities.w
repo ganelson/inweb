@@ -23,7 +23,7 @@ typedef struct tex_results {
 	int page_count;
 	int pdf_size;
 	struct filename *PDF_filename;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } tex_results;
 
 @ =

@@ -112,7 +112,7 @@ typedef struct preform_nonterminal {
 	int takes_pointer_result; /* right-hand formula defines |*XP|, not |*X| */
 	struct source_line *where_defined;
 	struct preform_nonterminal *next_pnt_alphabetically;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } preform_nonterminal;
 
 @ We will
@@ -281,7 +281,7 @@ typedef struct nonterminal_variable {
 	struct text_stream *ntv_type; /* e.g., |"int"| */
 	struct text_stream *ntv_identifier; /* e.g., |"num_NTMV"| */
 	struct source_line *first_mention; /* first usage */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } nonterminal_variable;
 
 @<This one's new, so create a new nonterminal variable@> =
@@ -331,7 +331,7 @@ like |TL_IS_123|.
 typedef struct text_literal {
 	struct text_stream *tl_identifier;
 	struct text_stream *tl_content;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } text_literal;
 
 @ So suppose we've got a line of web such as

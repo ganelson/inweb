@@ -75,13 +75,13 @@ operating system, and the other one on Windows.
 <span class="definition-keyword">define</span> <span class="constant-syntax">SHELL_QUOTE_CHARACTER</span><span class="plain-syntax"> </span><span class="character-syntax">'\''</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">sys</span><span class="plain-syntax">/</span><span class="identifier-syntax">stat</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">sys</span><span class="plain-syntax">/</span><span class="identifier-syntax">types</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">errno</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">dirent</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">pthread</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">limits</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">unistd</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;sys/stat.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;sys/types.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;errno.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;dirent.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;pthread.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;limits.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;unistd.h&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Mac OS X. </b></p>
@@ -101,7 +101,7 @@ Unix-based system.
 <span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">""</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">strings</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;strings.h&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_UNIX and PLATFORM_POSIX are defined.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Linux. </b>These settings are used both for the Linux versions (both command-line, by
@@ -114,7 +114,7 @@ Unix-based system.
 <span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">""</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">strings</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;strings.h&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Android. </b>These settings are used for Nathan Summers's Android versions.
@@ -125,7 +125,7 @@ Unix-based system.
 <span class="definition-keyword">define</span> <span class="constant-syntax">INFORM_FOLDER_RELATIVE_TO_HOME</span><span class="plain-syntax"> </span><span class="string-syntax">""</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">strings</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;strings.h&gt;</span>
 </pre>
 <ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_ANDROID and PLATFORM_POSIX are defined.</li></ul>
 <p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Locale. </b>The following definition handles possible differences of text encoding
@@ -280,8 +280,8 @@ memory space. Using <span class="extract"><span class="extract-syntax">posix_spa
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">spawn</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
-<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> &lt;</span><span class="identifier-syntax">sys</span><span class="plain-syntax">/</span><span class="identifier-syntax">wait</span><span class="plain-syntax">.</span><span class="identifier-syntax">h</span><span class="plain-syntax">&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;spawn.h&gt;</span>
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;sys/wait.h&gt;</span>
 
 <span class="reserved-syntax">extern</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">environ</span><span class="plain-syntax">;</span>
 

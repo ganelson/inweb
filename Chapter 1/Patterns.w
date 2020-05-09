@@ -33,7 +33,7 @@ typedef struct weave_pattern {
 	
 	int commands;
 	int name_command_given;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_pattern;
 
 @ When a given web needs a pattern with a given name, this is where it comes.

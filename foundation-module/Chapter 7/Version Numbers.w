@@ -66,7 +66,7 @@ typedef struct semantic_version_number {
 
 typedef struct semantic_version_number_holder {
 	struct semantic_version_number version;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } semantic_version_number_holder;
 
 @ All invalid strings of numbers -- i.e., breaking the above rules -- are

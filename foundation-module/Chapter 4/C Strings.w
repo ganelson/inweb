@@ -108,3 +108,36 @@ void CStrings::truncated_strcpy(char *to, char *from, int max) {
 	for (i=0; ((from[i]) && (i<max-1)); i++) to[i] = from[i];
 	to[i] = 0;
 }
+
+@h Text storage.
+The following is convenient for parking a read-only string of text somewhere
+safe in memory. Since the length can't be extended, it's usually unsafe
+to write to the result. (Inform tools very seldom use this, because C strings
+are almost always best avoided.)
+
+=
+typedef struct string_storage_area {
+	char *storage_at;
+	int capacity;
+	CLASS_DEFINITION
+} string_storage_area;
+
+@ =
+char *CStrings::park_string(char *from) {
+	string_storage_area *ssa = CREATE(string_storage_area);
+	ssa->capacity = (int) CStrings::strlen_unbounded(from) + 1;
+	ssa->storage_at = Memory::malloc(ssa->capacity, STRING_STORAGE_MREASON);
+	strcpy(ssa->storage_at, from);
+	return ssa->storage_at;
+}
+
+@ And here we free any SSAs needed in the course of the run.
+
+=
+void CStrings::free_ssas(void) {
+	string_storage_area *ssa;
+	LOOP_OVER(ssa, string_storage_area)
+		Memory::I7_free(ssa->storage_at, STRING_STORAGE_MREASON, ssa->capacity);
+}
+
+

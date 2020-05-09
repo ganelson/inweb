@@ -17,7 +17,7 @@ typedef struct enumeration_set {
 	int first_value;
 	int next_free_value;
 	struct source_line *last_observed_at;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } enumeration_set;
 
 @ There won't be enough sets to make a hash table worth the overhead, so

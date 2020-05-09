@@ -79,7 +79,7 @@ Orb-Weaving Spiders With Communal Webbing in a Man-Made Structural Habitat
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">home</span><span class="plain-syntax">; </span><span class="comment-syntax"> path of home repository</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">assets_path</span><span class="plain-syntax">; </span><span class="comment-syntax"> where assets shared between weaves live</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">patterns_path</span><span class="plain-syntax">; </span><span class="comment-syntax"> where additional patterns live</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">colony</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure colony is private to this section.</li></ul>
@@ -106,7 +106,7 @@ directory holding a multi-section web.
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">web_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">loaded</span><span class="plain-syntax">; </span><span class="comment-syntax"> metadata on its sections, lazily evaluated</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">navigation</span><span class="plain-syntax">; </span><span class="comment-syntax"> navigation sidebar HTML</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">breadcrumb_tail</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">breadcrumb_request</span></span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">colony_member</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure colony_member is accessed in 2/trs, 1/cnf, 1/ts, 3/tc, 5/wt, 6/rw and here.</li></ul>
@@ -247,7 +247,7 @@ the page, and this requests one.
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">breadcrumb_text</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">breadcrumb_link</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::request_breadcrumb</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Colonies::request_breadcrumb</span></span>:<br/>Configuration - <a href="1-cnf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>

@@ -11,7 +11,7 @@ a tree can be empty.
 typedef struct heterogeneous_tree {
 	struct tree_type *type;
 	struct tree_node *root;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } heterogeneous_tree;
 
 @ =
@@ -30,7 +30,7 @@ typedef struct tree_node {
 	struct tree_node *next;
 	struct tree_node *parent;
 	struct tree_node *child;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } tree_node;
 
 @ A node is created in limbo, removed from its tree, but it is still somehow
@@ -41,8 +41,8 @@ tree_node *Trees::new_node(heterogeneous_tree *T, tree_node_type *type, general_
 	if (T == NULL) internal_error("no tree");
 	if (wrapping.run_time_type_code == -1)
 		internal_error("no reference given");
-	if (type->required_MT >= 0)
-		if (wrapping.run_time_type_code != type->required_MT)
+	if (type->required_CLASS >= 0)
+		if (wrapping.run_time_type_code != type->required_CLASS)
 			internal_error("wrong reference type");
 
 	tree_node *N = CREATE(tree_node);
@@ -74,7 +74,7 @@ constraints:
 typedef struct tree_type {
 	struct text_stream *name;
 	int (*verify_root)(struct tree_node *); /* function to vet the root node */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } tree_type;
 
 @ =
@@ -91,9 +91,9 @@ they are re-verified by the |verify_children|.
 =
 typedef struct tree_node_type {
 	struct text_stream *node_type_name; /* text such as |I"INVOCATION"| */
-	int required_MT; /* if any; or negative for no restriction */
+	int required_CLASS; /* if any; or negative for no restriction */
 	int (*verify_children)(struct tree_node *); /* function to vet the children */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } tree_node_type;
 
 @ =
@@ -101,7 +101,7 @@ tree_node_type *Trees::new_node_type(text_stream *name, int req,
 	int (*verifier)(tree_node *)) {
 	tree_node_type *NT = CREATE(tree_node_type);
 	NT->node_type_name = Str::duplicate(name);
-	NT->required_MT = req;
+	NT->required_CLASS = req;
 	NT->verify_children = verifier;
 	return NT;
 }

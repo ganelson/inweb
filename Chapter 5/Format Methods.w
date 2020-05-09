@@ -11,15 +11,15 @@ through optional method calls.
 typedef struct weave_format {
 	struct text_stream *format_name;
 	struct text_stream *woven_extension;
-	METHOD_CALLS
-	MEMORY_MANAGEMENT
+	struct method_set *methods;
+	CLASS_DEFINITION
 } weave_format;
 
 weave_format *Formats::create_weave_format(text_stream *name, text_stream *ext) {
 	weave_format *wf = CREATE(weave_format);
 	wf->format_name = Str::duplicate(name);
 	wf->woven_extension = Str::duplicate(ext);
-	ENABLE_METHOD_CALLS(wf);
+	wf->methods = Methods::new_set();
 	return wf;
 }
 
@@ -67,16 +67,16 @@ More simply, |END_WEAVING_FOR_MTID| is called when all weaving is done.
 @e END_WEAVING_FOR_MTID
 
 =
-IMETHOD_TYPE(BEGIN_WEAVING_FOR_MTID, weave_format *wf, web *W, weave_pattern *pattern)
-VMETHOD_TYPE(END_WEAVING_FOR_MTID, weave_format *wf, web *W, weave_pattern *pattern)
+INT_METHOD_TYPE(BEGIN_WEAVING_FOR_MTID, weave_format *wf, web *W, weave_pattern *pattern)
+VOID_METHOD_TYPE(END_WEAVING_FOR_MTID, weave_format *wf, web *W, weave_pattern *pattern)
 int Formats::begin_weaving(web *W, weave_pattern *pattern) {
 	int rv = FALSE;
-	IMETHOD_CALL(rv, pattern->pattern_format, BEGIN_WEAVING_FOR_MTID, W, pattern);
+	INT_METHOD_CALL(rv, pattern->pattern_format, BEGIN_WEAVING_FOR_MTID, W, pattern);
 	if (rv) return rv;
 	return SWARM_OFF_SWM;
 }
 void Formats::end_weaving(web *W, weave_pattern *pattern) {
-	VMETHOD_CALL(pattern->pattern_format, END_WEAVING_FOR_MTID, W, pattern);
+	VOID_METHOD_CALL(pattern->pattern_format, END_WEAVING_FOR_MTID, W, pattern);
 }
 
 @ |RENDER_FOR_MTID| renders the weave tree in the given format: a format must
@@ -91,7 +91,7 @@ actual content.
 @e RENDER_FOR_MTID
 
 =
-VMETHOD_TYPE(RENDER_FOR_MTID, weave_format *wf, text_stream *OUT, heterogeneous_tree *tree)
+VOID_METHOD_TYPE(RENDER_FOR_MTID, weave_format *wf, text_stream *OUT, heterogeneous_tree *tree)
 void Formats::render(text_stream *OUT, heterogeneous_tree *tree, filename *into) {
 	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
 	weave_format *wf = C->wv->format;
@@ -99,7 +99,7 @@ void Formats::render(text_stream *OUT, heterogeneous_tree *tree, filename *into)
 	WRITE_TO(template, "template-body%S", wf->woven_extension);
 	filename *F = Patterns::find_template(C->wv->pattern, template);
 	TEMPORARY_TEXT(interior);
-	VMETHOD_CALL(wf, RENDER_FOR_MTID, interior, tree);
+	VOID_METHOD_CALL(wf, RENDER_FOR_MTID, interior, tree);
 	Bibliographic::set_datum(C->wv->weave_web->md, I"Weave Content", interior);
 	if (F) Collater::for_order(OUT, C->wv, F, into);
 	else WRITE("%S", interior);
@@ -114,7 +114,7 @@ should ignore it.
 @e PREFORM_DOCUMENT_FOR_MTID
 
 =
-IMETHOD_TYPE(PREFORM_DOCUMENT_FOR_MTID, weave_format *wf, text_stream *OUT,
+INT_METHOD_TYPE(PREFORM_DOCUMENT_FOR_MTID, weave_format *wf, text_stream *OUT,
 	weave_order *wv, web *W, chapter *C, section *S, source_line *L,
 	text_stream *matter, text_stream *concluding_comment)
 int Formats::preform_document(OUTPUT_STREAM, weave_order *wv, web *W,
@@ -122,7 +122,7 @@ int Formats::preform_document(OUTPUT_STREAM, weave_order *wv, web *W,
 	text_stream *concluding_comment) {
 	weave_format *wf = wv->format;
 	int rv = FALSE;
-	IMETHOD_CALL(rv, wf, PREFORM_DOCUMENT_FOR_MTID, OUT, wv, W, C, S, L, matter,
+	INT_METHOD_CALL(rv, wf, PREFORM_DOCUMENT_FOR_MTID, OUT, wv, W, C, S, L, matter,
 		concluding_comment);
 	return rv;
 }
@@ -135,9 +135,9 @@ post-processing.
 @e POST_PROCESS_POS_MTID
 
 =
-VMETHOD_TYPE(POST_PROCESS_POS_MTID, weave_format *wf, weave_order *wv, int open_afterwards)
+VOID_METHOD_TYPE(POST_PROCESS_POS_MTID, weave_format *wf, weave_order *wv, int open_afterwards)
 void Formats::post_process_weave(weave_order *wv, int open_afterwards) {
-	VMETHOD_CALL(wv->format, POST_PROCESS_POS_MTID, wv, open_afterwards);
+	VOID_METHOD_CALL(wv->format, POST_PROCESS_POS_MTID, wv, open_afterwards);
 }
 
 @ Optionally, a fancy report can be printed out, to describe what has been
@@ -147,10 +147,10 @@ handled by //Patterns::post_process// directly.
 @e POST_PROCESS_REPORT_POS_MTID
 
 =
-VMETHOD_TYPE(POST_PROCESS_REPORT_POS_MTID, weave_format *wf, weave_order *wv)
+VOID_METHOD_TYPE(POST_PROCESS_REPORT_POS_MTID, weave_format *wf, weave_order *wv)
 void Formats::report_on_post_processing(weave_order *wv) {
 	TeXUtilities::report_on_post_processing(wv);
-	VMETHOD_CALL(wv->format, POST_PROCESS_REPORT_POS_MTID, wv);
+	VOID_METHOD_CALL(wv->format, POST_PROCESS_REPORT_POS_MTID, wv);
 }
 
 @ For the sake of index files, we may want to substitute in values for
@@ -159,11 +159,11 @@ placeholder text in the template file.
 @e POST_PROCESS_SUBSTITUTE_POS_MTID
 
 =
-IMETHOD_TYPE(POST_PROCESS_SUBSTITUTE_POS_MTID, weave_format *wf, text_stream *OUT,
+INT_METHOD_TYPE(POST_PROCESS_SUBSTITUTE_POS_MTID, weave_format *wf, text_stream *OUT,
 	weave_order *wv, text_stream *detail, weave_pattern *pattern)
 int Formats::substitute_post_processing_data(OUTPUT_STREAM, weave_order *wv,
 	text_stream *detail, weave_pattern *pattern) {
 	int rv = TeXUtilities::substitute_post_processing_data(OUT, wv, detail);
-	IMETHOD_CALL(rv, wv->format, POST_PROCESS_SUBSTITUTE_POS_MTID, OUT, wv, detail, pattern);
+	INT_METHOD_CALL(rv, wv->format, POST_PROCESS_SUBSTITUTE_POS_MTID, OUT, wv, detail, pattern);
 	return rv;
 }

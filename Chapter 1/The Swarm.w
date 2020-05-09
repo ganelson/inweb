@@ -84,7 +84,7 @@ typedef struct weave_order {
 
 	/* used for workspace during an actual weave: */
 	struct source_line *current_weave_line;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_order;
 
 @<Compile a set of instructions for the weaver@> =

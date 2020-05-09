@@ -22,7 +22,7 @@ typedef struct HTML_file_state {
 	struct lifo_stack *tag_stack; /* of |HTML_tag|: those currently open */
 	int CSS_included;
 	int JS_included;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } HTML_file_state;
 
 void HTML::declare_as_HTML(OUTPUT_STREAM, int XHTML) {
@@ -43,7 +43,7 @@ int unique_xref = 0;
 typedef struct HTML_tag {
 	char *tag_name;
 	int tag_xref;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } HTML_tag;
 
 int HTML::push_tag(OUTPUT_STREAM, char *tag) {

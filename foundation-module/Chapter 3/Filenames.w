@@ -12,7 +12,7 @@ as Unicode code points, regardless of what text encoding the locale has.)
 typedef struct filename {
 	struct pathname *pathname_of_location;
 	struct text_stream *leafname;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } filename;
 
 @h Creation.

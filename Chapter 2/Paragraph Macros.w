@@ -10,7 +10,7 @@ typedef struct para_macro {
 	struct paragraph *defining_paragraph; /* as printed in small type after the name in any usage */
 	struct source_line *defn_start; /* it ends at the end of its defining paragraph */
 	struct linked_list *macro_usages; /* of |macro_usage|: only computed for weaves */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } para_macro;
 
 @ Each section has its own linked list of paragraph macros, since the scope for

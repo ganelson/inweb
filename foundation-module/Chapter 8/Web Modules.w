@@ -24,7 +24,7 @@ typedef struct module {
 	int origin_marker; /* one of the |*_MOM| values above */
 	struct linked_list *chapters_md; /* of |chapter_md|: just the ones in this module */
 	struct linked_list *sections_md; /* of |section_md|: just the ones in this module */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } module;
 
 @ =
@@ -72,7 +72,7 @@ The following abstracts the idea of a place where modules might be found.
 =
 typedef struct module_search {
 	struct pathname *path_to_search;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } module_search;
 
 @ =

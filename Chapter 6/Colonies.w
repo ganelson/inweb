@@ -23,7 +23,7 @@ typedef struct colony {
 	struct text_stream *home; /* path of home repository */
 	struct pathname *assets_path; /* where assets shared between weaves live */
 	struct pathname *patterns_path; /* where additional patterns live */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } colony;
 
 @ Each member is represented by an instance of the following. Note the |loaded|
@@ -47,7 +47,7 @@ typedef struct colony_member {
 	struct web_md *loaded; /* metadata on its sections, lazily evaluated */
 	struct filename *navigation; /* navigation sidebar HTML */
 	struct linked_list *breadcrumb_tail; /* of |breadcrumb_request| */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } colony_member;
 
 @ And the following reads a colony file |F| and produces a suitable |colony|
@@ -163,7 +163,7 @@ void Colonies::add_crumb(linked_list *L, text_stream *spec, text_file_position *
 typedef struct breadcrumb_request {
 	struct text_stream *breadcrumb_text;
 	struct text_stream *breadcrumb_link;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } breadcrumb_request;
 
 breadcrumb_request *Colonies::request_breadcrumb(text_stream *arg) {

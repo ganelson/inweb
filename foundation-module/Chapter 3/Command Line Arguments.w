@@ -45,7 +45,7 @@ typedef struct command_line_switch {
 	int switch_group; /* one of the |*_CLSG| valyes above */
 	int active_by_default; /* relevant only for booleans */
 	struct command_line_switch *negates; /* relevant only for booleans */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } command_line_switch;
 
 @ In case of a prodigious number of switches (ever tried typing |clang -help|?),

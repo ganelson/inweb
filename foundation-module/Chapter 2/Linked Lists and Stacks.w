@@ -17,7 +17,7 @@ typedef struct linked_list {
 	struct linked_list_item *last_list_item;
 	int linked_list_length;
 	struct linked_list_item early_items[NO_LL_EARLY_ITEMS];
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } linked_list;
 
 typedef struct linked_list_item {

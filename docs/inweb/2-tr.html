@@ -94,7 +94,7 @@ each of which has a list of <span class="extract"><span class="extract-syntax">s
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_ebook</span><span class="plain-syntax">; </span><span class="comment-syntax"> when being woven to an ebook</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">redirect_weaves_to</span><span class="plain-syntax">; </span><span class="comment-syntax"> ditto</span>
 
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">web</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure web is accessed in 1/pc, 1/ts, 1/ptt, 1/apacs, 2/lc, 2/tp, 2/pn, 3/ta, 3/tc, 3/tw, 3/twot, 3/tt, 4/pl, 4/taf, 4/as, 4/cl, 4/is, 5/fm, 5/ptf, 5/tf, 5/hf, 5/df, 6/mkf, 6/rw, 6/cln and here.</li></ul>
@@ -110,7 +110,7 @@ each of which has a list of <span class="extract"><span class="extract-syntax">s
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ch_weave</span><span class="plain-syntax">; </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">NULL</span></span><span class="comment-syntax"> unless this chapter produces a weave of its own</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">titling_line_inserted</span><span class="plain-syntax">; </span><span class="comment-syntax"> has an interleaved chapter heading been added yet?</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ch_language</span><span class="plain-syntax">; </span><span class="comment-syntax"> in which this chapter is written</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">chapter</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure chapter is accessed in 1/pc, 1/ts, 1/ptt, 2/lc, 2/tp, 2/pn, 3/ta, 3/tc, 3/tw, 3/twot, 3/tt, 4/pl, 4/as, 4/is, 5/fm, 5/ptf, 5/tf, 5/hf, 5/df, 6/mkf, 6/rw, 6/cln and here.</li></ul>
@@ -143,7 +143,7 @@ each of which has a list of <span class="extract"><span class="extract-syntax">s
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">scratch_flag</span><span class="plain-syntax">; </span><span class="comment-syntax"> temporary workspace</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">paused_until_at</span><span class="plain-syntax">; </span><span class="comment-syntax"> ignore the top half of the file, until the first </span><span class="extract"><span class="extract-syntax">@</span></span><span class="comment-syntax"> sign</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">printed_number</span><span class="plain-syntax">; </span><span class="comment-syntax"> temporary again: sometimes used in weaving</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">section</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure section is accessed in 1/pc, 1/ts, 1/ptt, 2/lc, 2/tp, 2/pm, 2/tgs, 2/pn, 3/ta, 3/tc, 3/tw, 3/twot, 3/tt, 4/pl, 4/taf, 4/lm, 4/as, 4/is, 5/fm, 5/ptf, 5/tf, 5/hf, 5/df, 6/mkf, 6/rw, 6/cln and here.</li></ul>
@@ -479,7 +479,7 @@ a web contains just one target, which contains all of the sections.
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tangle_language</span><span class="plain-syntax">; </span><span class="comment-syntax"> common to the entire contents</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> </span><span class="identifier-syntax">symbols</span><span class="plain-syntax">; </span><span class="comment-syntax"> a table of identifiable names in this program</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure tangle_target is accessed in 3/ta, 3/tt, 4/as and here.</li></ul>

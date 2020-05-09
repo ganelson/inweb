@@ -15,7 +15,7 @@ typedef struct web_bibliographic_datum {
 	int declaration_mandatory; /* is it positively required to? */
 	int on_or_off; /* boolean: which we handle as the string "On" or "Off" */
 	struct web_bibliographic_datum *alias;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } web_bibliographic_datum;
 
 @ We keep these in linked lists, and here's a convenient way to scan them:

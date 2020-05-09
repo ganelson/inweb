@@ -266,7 +266,7 @@ typedef struct hash_table_entry {
 	struct linked_list *usages; /* of |hash_table_entry_usage| */
 	struct source_line *definition_line; /* or null, if it's not a constant, function or type name */
 	struct language_function *as_function; /* for function names only */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } hash_table_entry;
 
 @ A single routine is used both to interrogate the hash and to lodge values
@@ -361,7 +361,7 @@ same paragraph of code.
 typedef struct hash_table_entry_usage {
 	struct paragraph *usage_recorded_at;
 	int form_of_usage; /* bitmap of the |*_USAGE| constants defined above */
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } hash_table_entry_usage;
 
 @ And here's how we create these usages:

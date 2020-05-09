@@ -59,7 +59,7 @@ to one of the following being created:
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tag_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ifdef_positive</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ifdef_symbol</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">theme_tag</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure theme_tag is accessed in 5/htm, 8/ws, 1/ts, 2/tr, 4/is and here.</li></ul>
@@ -101,7 +101,7 @@ they're stored as a linked list within each paragraph.
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">paragraph_tagging</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">theme_tag</span><span class="plain-syntax"> *</span><span class="identifier-syntax">the_tag</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">caption</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">MEMORY_MANAGEMENT</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">paragraph_tagging</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tags::add_to_paragraph</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Tags::add_to_paragraph</span></span>:<br/><a href="2-tgs.html#SP4">&#167;4</a><br/>The Parser - <a href="2-tp.html#SP1_1_3">&#167;1.1.3</a><br/>InC Support - <a href="4-is.html#SP3_1_3_5">&#167;3.1.3.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">theme_tag</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tag</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">caption</span><span class="plain-syntax">) {</span>

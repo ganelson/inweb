@@ -5,106 +5,106 @@ An abstraction of the weaver output.
 @ =
 typedef struct weave_document_node {
 	struct weave_order *wv;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_document_node;
 
 typedef struct weave_head_node {
 	struct text_stream *banner;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_head_node;
 
 typedef struct weave_body_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_body_node;
 
 typedef struct weave_tail_node {
 	struct text_stream *rennab;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_tail_node;
 
 typedef struct weave_chapter_header_node {
 	struct chapter *chap;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_chapter_header_node;
 
 typedef struct weave_chapter_footer_node {
 	struct chapter *chap;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_chapter_footer_node;
 
 typedef struct weave_section_header_node {
 	struct section *sect;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_section_header_node;
 
 typedef struct weave_section_footer_node {
 	struct section *sect;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_section_footer_node;
 
 typedef struct weave_section_purpose_node {
 	struct text_stream *purpose;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_section_purpose_node;
 
 typedef struct weave_subheading_node {
 	struct text_stream *text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_subheading_node;
 
 typedef struct weave_bar_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_bar_node;
 
 typedef struct weave_pagebreak_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_pagebreak_node;
 
 typedef struct weave_linebreak_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_linebreak_node;
 
 typedef struct weave_paragraph_heading_node {
 	struct paragraph *para;
 	int no_skip;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_paragraph_heading_node;
 
 typedef struct weave_endnote_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_endnote_node;
 
 typedef struct weave_figure_node {
 	struct text_stream *figname;
 	int w;
 	int h;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_figure_node;
 
 typedef struct weave_audio_node {
 	struct text_stream *audio_name;
 	int w;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_audio_node;
 
 typedef struct weave_video_node {
 	struct text_stream *video_name;
 	int w;
 	int h;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_video_node;
 
 typedef struct weave_download_node {
 	struct text_stream *download_name;
 	struct text_stream *filetype;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_download_node;
 
 typedef struct weave_material_node {
 	int material_type;
 	int plainly;
 	struct programming_language *styling;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_material_node;
 
 typedef struct weave_embed_node {
@@ -112,135 +112,135 @@ typedef struct weave_embed_node {
 	struct text_stream *ID;
 	int w;
 	int h;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_embed_node;
 
 typedef struct weave_pmac_node {
 	struct para_macro *pmac;
 	int defn;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_pmac_node;
 
 typedef struct weave_vskip_node {
 	int in_comment;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_vskip_node;
 
 typedef struct weave_chapter_node {
 	struct chapter *chap;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_chapter_node;
 
 typedef struct weave_section_node {
 	struct section *sect;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_section_node;
 
 typedef struct weave_code_line_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_code_line_node;
 
 typedef struct weave_function_usage_node {
 	struct text_stream *url;
 	struct language_function *fn;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_function_usage_node;
 
 typedef struct weave_commentary_node {
 	struct text_stream *text;
 	int in_code;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_commentary_node;
 
 typedef struct weave_carousel_slide_node {
 	struct text_stream *caption;
 	int caption_command;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_carousel_slide_node;
 
 typedef struct weave_toc_node {
 	struct text_stream *text1;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_toc_node;
 
 typedef struct weave_toc_line_node {
 	struct text_stream *text1;
 	struct text_stream *text2;
 	struct paragraph *para;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_toc_line_node;
 
 typedef struct weave_chapter_title_page_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_chapter_title_page_node;
 
 typedef struct weave_defn_node {
 	struct text_stream *keyword;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_defn_node;
 
 typedef struct weave_inline_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_inline_node;
 
 typedef struct weave_locale_node {
 	struct paragraph *par1;
 	struct paragraph *par2;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_locale_node;
 
 typedef struct weave_source_code_node {
 	struct text_stream *matter;
 	struct text_stream *colouring;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_source_code_node;
 
 typedef struct weave_url_node {
 	struct text_stream *url;
 	struct text_stream *content;
 	int external;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_url_node;
 
 typedef struct weave_footnote_cue_node {
 	struct text_stream *cue_text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_footnote_cue_node;
 
 typedef struct weave_begin_footnote_text_node {
 	struct text_stream *cue_text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_begin_footnote_text_node;
 
 typedef struct weave_display_line_node {
 	struct text_stream *text;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_display_line_node;
 
 typedef struct weave_function_defn_node {
 	struct language_function *fn;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_function_defn_node;
 
 typedef struct weave_item_node {
 	int depth;
 	struct text_stream *label;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_item_node;
 
 typedef struct weave_grammar_index_node {
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_grammar_index_node;
 
 typedef struct weave_maths_node {
 	struct text_stream *content;
 	int displayed;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_maths_node;
 
 typedef struct weave_verbatim_node {
 	struct text_stream *content;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } weave_verbatim_node;
 
 @ =
@@ -295,97 +295,97 @@ heterogeneous_tree *WeaveTree::new_tree(weave_order *wv) {
 	if (weave_tree_type == NULL) {
 		weave_tree_type = Trees::new_type(I"weave tree", NULL);
 		weave_document_node_type =
-			Trees::new_node_type(I"document", weave_document_node_MT, NULL);
+			Trees::new_node_type(I"document", weave_document_node_CLASS, NULL);
 		weave_head_node_type =
-			Trees::new_node_type(I"head", weave_head_node_MT, NULL);
+			Trees::new_node_type(I"head", weave_head_node_CLASS, NULL);
 		weave_body_node_type =
-			Trees::new_node_type(I"body", weave_body_node_MT, NULL);
+			Trees::new_node_type(I"body", weave_body_node_CLASS, NULL);
 		weave_tail_node_type =
-			Trees::new_node_type(I"tail", weave_tail_node_MT, NULL);
+			Trees::new_node_type(I"tail", weave_tail_node_CLASS, NULL);
 		weave_chapter_footer_node_type =
-			Trees::new_node_type(I"chapter footer", weave_chapter_footer_node_MT, NULL);
+			Trees::new_node_type(I"chapter footer", weave_chapter_footer_node_CLASS, NULL);
 		weave_chapter_header_node_type =
-			Trees::new_node_type(I"chapter header", weave_chapter_header_node_MT, NULL);
+			Trees::new_node_type(I"chapter header", weave_chapter_header_node_CLASS, NULL);
 		weave_section_footer_node_type =
-			Trees::new_node_type(I"section footer", weave_section_footer_node_MT, NULL);
+			Trees::new_node_type(I"section footer", weave_section_footer_node_CLASS, NULL);
 		weave_section_header_node_type =
-			Trees::new_node_type(I"section header", weave_section_header_node_MT, NULL);
+			Trees::new_node_type(I"section header", weave_section_header_node_CLASS, NULL);
 		weave_section_purpose_node_type =
-			Trees::new_node_type(I"section purpose", weave_section_purpose_node_MT, NULL);
+			Trees::new_node_type(I"section purpose", weave_section_purpose_node_CLASS, NULL);
 
 		weave_subheading_node_type =
-			Trees::new_node_type(I"subheading", weave_subheading_node_MT, NULL);
+			Trees::new_node_type(I"subheading", weave_subheading_node_CLASS, NULL);
 		weave_bar_node_type =
-			Trees::new_node_type(I"bar", weave_bar_node_MT, NULL);
+			Trees::new_node_type(I"bar", weave_bar_node_CLASS, NULL);
 		weave_pagebreak_node_type =
-			Trees::new_node_type(I"pagebreak", weave_pagebreak_node_MT, NULL);
+			Trees::new_node_type(I"pagebreak", weave_pagebreak_node_CLASS, NULL);
 		weave_linebreak_node_type =
-			Trees::new_node_type(I"linebreak", weave_linebreak_node_MT, NULL);
+			Trees::new_node_type(I"linebreak", weave_linebreak_node_CLASS, NULL);
 		weave_paragraph_heading_node_type =
-			Trees::new_node_type(I"paragraph", weave_paragraph_heading_node_MT, NULL);
+			Trees::new_node_type(I"paragraph", weave_paragraph_heading_node_CLASS, NULL);
 		weave_endnote_node_type =
-			Trees::new_node_type(I"endnote", weave_endnote_node_MT, NULL);
+			Trees::new_node_type(I"endnote", weave_endnote_node_CLASS, NULL);
 		weave_figure_node_type =
-			Trees::new_node_type(I"figure", weave_figure_node_MT, NULL);
+			Trees::new_node_type(I"figure", weave_figure_node_CLASS, NULL);
 		weave_audio_node_type =
-			Trees::new_node_type(I"audio", weave_audio_node_MT, NULL);
+			Trees::new_node_type(I"audio", weave_audio_node_CLASS, NULL);
 		weave_video_node_type =
-			Trees::new_node_type(I"video", weave_video_node_MT, NULL);
+			Trees::new_node_type(I"video", weave_video_node_CLASS, NULL);
 		weave_download_node_type =
-			Trees::new_node_type(I"download", weave_download_node_MT, NULL);
+			Trees::new_node_type(I"download", weave_download_node_CLASS, NULL);
 		weave_material_node_type =
-			Trees::new_node_type(I"material", weave_material_node_MT, NULL);
+			Trees::new_node_type(I"material", weave_material_node_CLASS, NULL);
 		weave_embed_node_type =
-			Trees::new_node_type(I"embed", weave_embed_node_MT, NULL);
+			Trees::new_node_type(I"embed", weave_embed_node_CLASS, NULL);
 		weave_pmac_node_type =
-			Trees::new_node_type(I"pmac", weave_pmac_node_MT, NULL);
+			Trees::new_node_type(I"pmac", weave_pmac_node_CLASS, NULL);
 		weave_vskip_node_type =
-			Trees::new_node_type(I"vskip", weave_vskip_node_MT, NULL);
+			Trees::new_node_type(I"vskip", weave_vskip_node_CLASS, NULL);
 		weave_chapter_node_type =
-			Trees::new_node_type(I"chapter", weave_chapter_node_MT, NULL);
+			Trees::new_node_type(I"chapter", weave_chapter_node_CLASS, NULL);
 		weave_section_node_type =
-			Trees::new_node_type(I"section", weave_section_node_MT, NULL);
+			Trees::new_node_type(I"section", weave_section_node_CLASS, NULL);
 		weave_code_line_node_type =
-			Trees::new_node_type(I"code line", weave_code_line_node_MT, NULL);
+			Trees::new_node_type(I"code line", weave_code_line_node_CLASS, NULL);
 		weave_function_usage_node_type =
-			Trees::new_node_type(I"function usage", weave_function_usage_node_MT, NULL);
+			Trees::new_node_type(I"function usage", weave_function_usage_node_CLASS, NULL);
 		weave_commentary_node_type =
-			Trees::new_node_type(I"commentary", weave_commentary_node_MT, NULL);
+			Trees::new_node_type(I"commentary", weave_commentary_node_CLASS, NULL);
 		weave_carousel_slide_node_type =
-			Trees::new_node_type(I"carousel slide", weave_carousel_slide_node_MT, NULL);
+			Trees::new_node_type(I"carousel slide", weave_carousel_slide_node_CLASS, NULL);
 		weave_toc_node_type =
-			Trees::new_node_type(I"toc", weave_toc_node_MT, NULL);
+			Trees::new_node_type(I"toc", weave_toc_node_CLASS, NULL);
 		weave_toc_line_node_type =
-			Trees::new_node_type(I"toc line", weave_toc_line_node_MT, NULL);
+			Trees::new_node_type(I"toc line", weave_toc_line_node_CLASS, NULL);
 		weave_chapter_title_page_node_type =
-			Trees::new_node_type(I"chapter_title_page", weave_chapter_title_page_node_MT, NULL);
+			Trees::new_node_type(I"chapter_title_page", weave_chapter_title_page_node_CLASS, NULL);
 		weave_defn_node_type =
-			Trees::new_node_type(I"defn", weave_defn_node_MT, NULL);
+			Trees::new_node_type(I"defn", weave_defn_node_CLASS, NULL);
 		weave_source_code_node_type =
-			Trees::new_node_type(I"source_code", weave_source_code_node_MT, NULL);
+			Trees::new_node_type(I"source_code", weave_source_code_node_CLASS, NULL);
 		weave_url_node_type =
-			Trees::new_node_type(I"url", weave_url_node_MT, NULL);
+			Trees::new_node_type(I"url", weave_url_node_CLASS, NULL);
 		weave_footnote_cue_node_type =
-			Trees::new_node_type(I"footnote_cue", weave_footnote_cue_node_MT, NULL);
+			Trees::new_node_type(I"footnote_cue", weave_footnote_cue_node_CLASS, NULL);
 		weave_begin_footnote_text_node_type =
-			Trees::new_node_type(I"footnote", weave_begin_footnote_text_node_MT, NULL);
+			Trees::new_node_type(I"footnote", weave_begin_footnote_text_node_CLASS, NULL);
 		weave_display_line_node_type =
-			Trees::new_node_type(I"display line", weave_display_line_node_MT, NULL);
+			Trees::new_node_type(I"display line", weave_display_line_node_CLASS, NULL);
 		weave_function_defn_node_type =
-			Trees::new_node_type(I"function defn", weave_function_defn_node_MT, NULL);
+			Trees::new_node_type(I"function defn", weave_function_defn_node_CLASS, NULL);
 		weave_item_node_type =
-			Trees::new_node_type(I"item", weave_item_node_MT, NULL);
+			Trees::new_node_type(I"item", weave_item_node_CLASS, NULL);
 		weave_grammar_index_node_type =
-			Trees::new_node_type(I"grammar index", weave_grammar_index_node_MT, NULL);
+			Trees::new_node_type(I"grammar index", weave_grammar_index_node_CLASS, NULL);
 		weave_inline_node_type =
-			Trees::new_node_type(I"inline", weave_inline_node_MT, NULL);
+			Trees::new_node_type(I"inline", weave_inline_node_CLASS, NULL);
 		weave_locale_node_type =
-			Trees::new_node_type(I"locale", weave_locale_node_MT, NULL);
+			Trees::new_node_type(I"locale", weave_locale_node_CLASS, NULL);
 		weave_maths_node_type =
-			Trees::new_node_type(I"mathematics", weave_maths_node_MT, NULL);
+			Trees::new_node_type(I"mathematics", weave_maths_node_CLASS, NULL);
 
 		weave_verbatim_node_type =
-			Trees::new_node_type(I"verbatim", weave_verbatim_node_MT, NULL);
+			Trees::new_node_type(I"verbatim", weave_verbatim_node_CLASS, NULL);
 	}
 	heterogeneous_tree *tree = Trees::new(weave_tree_type);
 	Trees::make_root(tree, WeaveTree::document(tree, wv));
@@ -756,12 +756,12 @@ void WeaveTree::prune(heterogeneous_tree *T) {
 }
 
 int WeaveTree::prune_visit(tree_node *N, void *state) {
-	if ((N->type->required_MT == weave_material_node_MT) && (N->child == NULL))
+	if ((N->type->required_CLASS == weave_material_node_CLASS) && (N->child == NULL))
 		return TRUE;
-	if ((N->type->required_MT == weave_vskip_node_MT) && (N->next == NULL))
+	if ((N->type->required_CLASS == weave_vskip_node_CLASS) && (N->next == NULL))
 		return TRUE;
-	if ((N->type->required_MT == weave_vskip_node_MT) &&
-		(N->next->type->required_MT == weave_item_node_MT))
+	if ((N->type->required_CLASS == weave_vskip_node_CLASS) &&
+		(N->next->type->required_CLASS == weave_item_node_CLASS))
 		return TRUE;
 	return FALSE;
 }
