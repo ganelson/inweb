@@ -157,13 +157,14 @@ of throwaway instances, we would instead write:
 = (text as Inweb)
 	@ Here are my classes...
 	
-	@e salt_grain_array_CLASS
+	@e salt_grain_CLASS
 	
 	=
 	DECLARE_CLASS_ALLOCATED_IN_ARRAYS(salt_grain, 1000)
 =
 The memory manager then claims these in blocks of 1000. Use this only if it's
-actually needed.
+actually needed; note that |DESTROY| cannot be used with objects created
+this way.
 
 2. We have to declare the actual structure, and |typedef| the name to it. For
 example:

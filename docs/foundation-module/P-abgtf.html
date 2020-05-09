@@ -244,13 +244,14 @@ of throwaway instances, we would instead write:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Here are my classes...</span>
 
-<span class="plain-syntax">    </span><span class="function-syntax">@e</span><span class="plain-syntax"> salt_grain_array_CLASS</span>
+<span class="plain-syntax">    </span><span class="function-syntax">@e</span><span class="plain-syntax"> salt_grain_CLASS</span>
 
 <span class="plain-syntax">    =</span>
 <span class="plain-syntax">    DECLARE_CLASS_ALLOCATED_IN_ARRAYS(salt_grain, 1000)</span>
 </pre>
 <p class="commentary">The memory manager then claims these in blocks of 1000. Use this only if it's
-actually needed.
+actually needed; note that <span class="extract"><span class="extract-syntax">DESTROY</span></span> cannot be used with objects created
+this way.
 </p>
 
 <p class="commentary">2. We have to declare the actual structure, and <span class="extract"><span class="extract-syntax">typedef</span></span> the name to it. For

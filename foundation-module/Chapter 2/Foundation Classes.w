@@ -11,7 +11,7 @@ here we are.
 @e chapter_md_CLASS
 @e command_line_switch_CLASS
 @e debugging_aspect_CLASS
-@e dict_entry_array_CLASS
+@e dict_entry_CLASS
 @e dictionary_CLASS
 @e ebook_chapter_CLASS
 @e ebook_CLASS
@@ -23,11 +23,11 @@ here we are.
 @e filename_CLASS
 @e heterogeneous_tree_CLASS
 @e HTML_file_state_CLASS
-@e HTML_tag_array_CLASS
+@e HTML_tag_CLASS
 @e linked_list_CLASS
-@e linked_list_item_array_CLASS
-@e match_avinue_array_CLASS
-@e match_trie_array_CLASS
+@e linked_list_item_CLASS
+@e match_avinue_CLASS
+@e match_trie_CLASS
 @e method_CLASS
 @e method_set_CLASS
 @e module_CLASS
@@ -38,7 +38,7 @@ here we are.
 @e semantic_version_number_holder_CLASS
 @e semver_range_CLASS
 @e string_storage_area_CLASS
-@e text_stream_array_CLASS
+@e text_stream_CLASS
 @e tree_node_CLASS
 @e tree_node_type_CLASS
 @e tree_type_CLASS

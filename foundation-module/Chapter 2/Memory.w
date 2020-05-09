@@ -375,20 +375,22 @@ double-quotes.
 
 @d NEW_OBJECT(type_name) ((type_name *) Memory::allocate(type_name##_CLASS, sizeof(type_name)))
 
-@d DECLARE_CLASS(type_name)
-MAKE_REFERENCE_ROUTINES(type_name, type_name##_CLASS)
+@d DECLARE_CLASS(type_name) DECLARE_CLASS_WITH_ID(type_name, type_name##_CLASS) 
+
+@d DECLARE_CLASS_WITH_ID(type_name, id_name)
+MAKE_REFERENCE_ROUTINES(type_name, id_name)
 type_name *allocate_##type_name(void) {
 	CREATE_MUTEX(mutex);
 	LOCK_MUTEX(mutex);
-	alloc_status[type_name##_CLASS].name_of_type = #type_name;
+	alloc_status[id_name].name_of_type = #type_name;
 	type_name *prev_obj = LAST_OBJECT(type_name);
 	type_name *new_obj = NEW_OBJECT(type_name);
-	new_obj->allocation_id = alloc_status[type_name##_CLASS].objects_allocated-1;
+	new_obj->allocation_id = alloc_status[id_name].objects_allocated-1;
 	new_obj->next_structure = NULL;
 	if (prev_obj != NULL)
 		prev_obj->next_structure = (void *) new_obj;
 	new_obj->prev_structure = prev_obj;
-	alloc_status[type_name##_CLASS].objects_count++;
+	alloc_status[id_name].objects_count++;
 	UNLOCK_MUTEX(mutex);
 	return new_obj;
 }
@@ -398,16 +400,16 @@ void deallocate_##type_name(type_name *kill_me) {
 	type_name *prev_obj = PREV_OBJECT(kill_me, type_name);
 	type_name *next_obj = NEXT_OBJECT(kill_me, type_name);
 	if (prev_obj == NULL) {
-		alloc_status[type_name##_CLASS].first_in_memory = next_obj;
+		alloc_status[id_name].first_in_memory = next_obj;
 	} else {
 		prev_obj->next_structure = next_obj;
 	}
 	if (next_obj == NULL) {
-		alloc_status[type_name##_CLASS].last_in_memory = prev_obj;
+		alloc_status[id_name].last_in_memory = prev_obj;
 	} else {
 		next_obj->prev_structure = prev_obj;
 	}
-	alloc_status[type_name##_CLASS].objects_count--;
+	alloc_status[id_name].objects_count--;
 	UNLOCK_MUTEX(mutex);
 }
 type_name *allocate_##type_name##_before(type_name *existing) {
@@ -418,10 +420,10 @@ type_name *allocate_##type_name##_before(type_name *existing) {
 	new_obj->prev_structure = existing->prev_structure;
 	if (existing->prev_structure != NULL)
 		((type_name *) existing->prev_structure)->next_structure = new_obj;
-	else alloc_status[type_name##_CLASS].first_in_memory = (void *) new_obj;
+	else alloc_status[id_name].first_in_memory = (void *) new_obj;
 	new_obj->next_structure = existing;
 	existing->prev_structure = new_obj;
-	alloc_status[type_name##_CLASS].objects_count++;
+	alloc_status[id_name].objects_count++;
 	UNLOCK_MUTEX(mutex);
 	return new_obj;
 }
@@ -439,21 +441,21 @@ void copy_##type_name(type_name *to, type_name *from) {
 }
 
 @ |DECLARE_CLASS_ALLOCATED_IN_ARRAYS| is still more obfuscated. When we
-|DECLARE_CLASS_ALLOCATED_IN_ARRAYS(X, 100)|, the result will be definitions of a new type
-|X_block| and functions |allocate_X|, |allocate_X_block|,
-|deallocate_X_block| and |allocate_X_block_before| (though the last is not
-destined ever to be used). Note that we are not provided with the means to
+|DECLARE_CLASS_ALLOCATED_IN_ARRAYS(X, 100)|, the result will be definitions of
+a new type |X_array| and constructors for both |X| and |X_array|, the former
+of which uses the latter. Note that we are not provided with the means to
 deallocate individual objects this time: that's the trade-off for
 allocating in blocks.
 
 @d DECLARE_CLASS_ALLOCATED_IN_ARRAYS(type_name, NO_TO_ALLOCATE_TOGETHER)
-MAKE_REFERENCE_ROUTINES(type_name, type_name##_array_CLASS)
+MAKE_REFERENCE_ROUTINES(type_name, type_name##_CLASS)
 typedef struct type_name##_array {
 	int used;
 	struct type_name array[NO_TO_ALLOCATE_TOGETHER];
 	CLASS_DEFINITION
 } type_name##_array;
-DECLARE_CLASS(type_name##_array)
+int type_name##_array_CLASS = type_name##_CLASS; /* C does permit |#define| to make |#define|s */
+DECLARE_CLASS_WITH_ID(type_name##_array, type_name##_CLASS) 
 type_name##_array *next_##type_name##_array = NULL;
 struct type_name *allocate_##type_name(void) {
 	CREATE_MUTEX(mutex);

@@ -35,7 +35,7 @@ see //foundation: A Brief Guide to Foundation//.
 @e programming_language_CLASS
 @e reserved_word_CLASS
 @e section_CLASS
-@e source_line_array_CLASS
+@e source_line_CLASS
 @e structure_element_CLASS
 @e tangle_target_CLASS
 @e tex_results_CLASS
