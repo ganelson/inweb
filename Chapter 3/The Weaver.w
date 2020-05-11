@@ -368,21 +368,21 @@ add a vertical skip between them to show the division more clearly.
 
 @<Weave bracketed list indications at start of line into items@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, matter, L"%(...%) (%c*)")) { /* continue single */
-		Weaver::change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL);
-		Trees::make_child(WeaveTree::weave_item_node(tree, 1, I""), state->ap);
-		Str::copy(matter, mr.exp[0]);
-	} else if (Regexp::match(&mr, matter, L"%(-...%) (%c*)")) { /* continue double */
+	if (Regexp::match(&mr, matter, L"%(-...%) (%c*)")) { /* continue double */
 		Weaver::change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL);
 		Trees::make_child(WeaveTree::weave_item_node(tree, 2, I""), state->ap);
 		Str::copy(matter, mr.exp[0]);
-	} else if (Regexp::match(&mr, matter, L"%((%i+)%) (%c*)")) { /* begin single */
+	} else if (Regexp::match(&mr, matter, L"%(...%) (%c*)")) { /* continue single */
 		Weaver::change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL);
-		Trees::make_child(WeaveTree::weave_item_node(tree, 1, mr.exp[0]), state->ap);
-		Str::copy(matter, mr.exp[1]);
-	} else if (Regexp::match(&mr, matter, L"%(-(%i+)%) (%c*)")) { /* begin double */
+		Trees::make_child(WeaveTree::weave_item_node(tree, 1, I""), state->ap);
+		Str::copy(matter, mr.exp[0]);
+	} else if (Regexp::match(&mr, matter, L"%(-([a-zA-Z0-9*]+)%) (%c*)")) { /* begin double */
 		Weaver::change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL);
 		Trees::make_child(WeaveTree::weave_item_node(tree, 2, mr.exp[0]), state->ap);
+		Str::copy(matter, mr.exp[1]);
+	} else if (Regexp::match(&mr, matter, L"%(([a-zA-Z0-9*]+)%) (%c*)")) { /* begin single */
+		Weaver::change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL);
+		Trees::make_child(WeaveTree::weave_item_node(tree, 1, mr.exp[0]), state->ap);
 		Str::copy(matter, mr.exp[1]);
 	}
 	Regexp::dispose_of(&mr);

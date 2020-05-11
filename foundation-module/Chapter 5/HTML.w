@@ -2,6 +2,29 @@
 
 Utility functions for writing HTML.
 
+@h Header and footer.
+
+=
+void HTML::header(OUTPUT_STREAM, text_stream *title, filename *css, filename *js) {
+	HTML::declare_as_HTML(OUT, FALSE);
+	HTML::begin_head(OUT, NULL);
+	HTML::title(OUT, title);
+	HTML::incorporate_CSS(OUT, css);
+	HTML::incorporate_javascript(OUT, TRUE, js);
+	#ifdef ADDITIONAL_SCRIPTING_HTML_CALLBACK
+	ADDITIONAL_SCRIPTING_HTML_CALLBACK(OUT);
+	#endif
+	HTML::end_head(OUT);
+	HTML::begin_body(OUT, NULL);
+	HTML::comment(OUT, I"CONTENT BEGINS");
+}
+
+void HTML::footer(OUTPUT_STREAM) {
+	WRITE("\n");
+	HTML::comment(OUT, I"CONTENT ENDS");
+	HTML::end_body(OUT);
+}
+
 @h Abstraction.
 Though the code below does nothing at all interesting, to put it mildly,
 it's written a little defensively, to increase the chances that the client
@@ -161,6 +184,14 @@ void HTML::close(OUTPUT_STREAM, char *tag) {
 	WRITE("</%s>", tag);
 	HTML::pop_tag(OUT, tag);
 	if (f >= 1) WRITE("\n");
+}
+
+void HTML::open_indented_p(OUTPUT_STREAM, int depth, char *class) {
+	int margin = depth;
+	if (margin < 1) internal_error("minimal HTML indentation is 1");
+	if (margin > 9) margin = 9;
+	HTML_OPEN_WITH("p", "class=\"%sin%d\"", class, margin);
+	while (depth > 9) { depth--; WRITE("&nbsp;&nbsp;&nbsp;&nbsp;"); }
 }
 
 int HTML::pair_formatting(char *tag) {
@@ -356,6 +387,24 @@ void HTML::image_to_dimensions(OUTPUT_STREAM, filename *F, int w, int h) {
 	}
 }
 
+@ Tooltips are the evanescent pop-up windows which appear, a little behind the
+mouse arrow, when it is poised waiting over the icon. (Inform makes heavy use of
+these in its World index, for instance, to clarify what abbreviations mean.)
+
+=
+void HTML::icon_with_tooltip(OUTPUT_STREAM, text_stream *icon_name,
+	text_stream *tip, text_stream *tip2) {
+	TEMPORARY_TEXT(img);
+	WRITE_TO(img, "border=0 src=%S ", icon_name);
+	if (tip) {
+		WRITE_TO(img, "title=\"%S", tip);
+		if (tip2) WRITE_TO(img, " %S", tip2);
+		WRITE_TO(img, "\"");
+	}
+	HTML_TAG_WITH("img", "%S", img);
+	DISCARD_TEXT(img);
+}
+
 @h Links.
 
 =
@@ -390,9 +439,20 @@ void HTML::begin_link_with_class_title_onclick(OUTPUT_STREAM, text_stream *cl, t
 	WRITE(">");
 }
 
-
 void HTML::end_link(OUTPUT_STREAM) {
 	HTML_CLOSE("a");
+}
+
+@ For convenience we keep a global setting for a prefix of a URL which
+can be removed. None of that removal happens here; we're just the bookkeeper.
+
+=
+pathname *abbreviate_links_within = NULL;
+void HTML::set_link_abbreviation_path(pathname *P) {
+	abbreviate_links_within = P;
+}
+pathname *HTML::get_link_abbreviation_path(void) {
+	return abbreviate_links_within;
 }
 
 @h Tables.
@@ -770,3 +830,82 @@ void HTML::begin_colour(OUTPUT_STREAM, text_stream *col) {
 void HTML::end_colour(OUTPUT_STREAM) {
 	HTML_CLOSE("span");
 }
+
+@h Writing text.
+To begin with, to XML:
+
+=
+void HTML::write_xml_safe_text(OUTPUT_STREAM, text_stream *txt) {
+	LOOP_THROUGH_TEXT(pos, txt) {
+		wchar_t c = Str::get(pos);
+		switch(c) {
+			case '&': WRITE("&amp;"); break;
+			case '<': WRITE("&lt;"); break;
+			case '>': WRITE("&gt;"); break;
+			default: PUT(c); break;
+		}
+	}
+}
+
+@ And now to HTML. This would be very similar, except:
+
+(a) if the |words| and |html| modules are both present, we recognise
+|*source text*Source/story.ni*14*| as something which should expand to a
+source code link -- except that the much less commonly occurring
+|SOURCE_REF_CHAR| character code is used in place of the asterisk;
+(b) if the |problems| module is present, we recognise |FORCE_NEW_PARA_CHAR|
+as a paragraph break.
+
+These two special case characters are lower and upper case Icelandic eth,
+respectively. These do not occur in Inform source text.
+
+@d SOURCE_REF_CHAR L'\xf0'
+@d FORCE_NEW_PARA_CHAR L'\xd0'
+
+=
+text_stream *source_ref_fields[3] = { NULL, NULL, NULL }; /* paraphrase, filename, line */
+int source_ref_field = -1; /* which field we are buffering */
+
+void HTML::put(OUTPUT_STREAM, int charcode) {
+	@<Buffer into one of the source reference fields@>;
+	switch(charcode) {
+		case '"': WRITE("&quot;"); break;
+		case '<': WRITE("&lt;"); break;
+		case '>': WRITE("&gt;"); break;
+		case '&': WRITE("&amp;"); break;
+		case NEWLINE_IN_STRING: HTML_TAG("br"); break;
+
+		#ifdef PROBLEMS_MODULE
+		case FORCE_NEW_PARA_CHAR: HTML_CLOSE("p"); HTML_OPEN_WITH("p", "class=\"in2\"");
+			HTML::icon_with_tooltip(OUT, I"inform:/doc_images/ornament_flower.png", NULL, NULL);
+			WRITE("&nbsp;"); break;
+		#endif
+
+		#ifdef WORDS_MODULE
+		case SOURCE_REF_CHAR: @<Deal with a source reference field divider@>; break;
+		#endif
+
+		default: PUT(charcode); break;
+	}
+}
+
+@<Buffer into one of the source reference fields@> =
+	if ((source_ref_field >= 0) && (charcode != SOURCE_REF_CHAR)) {
+		PUT_TO(source_ref_fields[source_ref_field], charcode); return;
+	}
+
+@<Deal with a source reference field divider@> =
+	source_ref_field++;
+	if (source_ref_field == 3) {
+		source_ref_field = -1;
+		source_location sl;
+		sl.file_of_origin = TextFromFiles::filename_to_source_file(source_ref_fields[1]);
+		sl.line_number = Str::atoi(source_ref_fields[2], 0);
+		#ifdef HTML_MODULE
+		SourceLinks::link(OUT, sl, TRUE);
+		#endif
+	} else {
+		if (source_ref_fields[source_ref_field] == NULL)
+			source_ref_fields[source_ref_field] = Str::new();
+		Str::clear(source_ref_fields[source_ref_field]);
+	}

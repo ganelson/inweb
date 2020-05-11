@@ -825,7 +825,8 @@ that service uses to identify the video/audio in question.
 
 @<Render item@> =
 	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
-	if (Str::len(C->label) > 0) WRITE("(%S) ", C->label);
+	if (Str::eq(C->label, I"*")) WRITE("&#9679; ");
+	else if (Str::len(C->label) > 0) WRITE("(%S) ", C->label);
 	else WRITE(" ");
 
 @<Render verbatim@> =

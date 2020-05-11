@@ -280,6 +280,17 @@ indented one tab stop further in, like so:
 (c) Harvard blah, blah, blah. (Frank Lloyd Wright)
 (-d) Pick a song and sing a yellow nectarine. (Scott Weiland)
 
+Finally, bracketed asterisks are considered to be bullets. Thus:
+= (text as Inweb)
+	(*) Do I dare to eat a peach? (T. S. Eliot)
+	(*) You sit on the veranda drinking tea and your ducklings swim on the pond,
+	and everything smells good... and there are gooseberries. (Anton Chekhov)
+=
+becomes:
+(*) Do I dare to eat a peach? (T. S. Eliot)
+(*) You sit on the veranda drinking tea and your ducklings swim on the pond,
+and everything smells good... and there are gooseberries. (Anton Chekhov)
+
 @ Text placed between vertical strokes will be set in a fixed-space, code
 style font, |thus|. This paragraph appears in the web you are reading thus:
 = (text as Inweb)
