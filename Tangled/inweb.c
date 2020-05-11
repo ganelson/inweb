@@ -3941,23 +3941,23 @@ void  ACMESupport__I6_close_ifdef(programming_language *pl, 	text_stream *OUT, t
 void  ACMESupport__insert_line_marker(programming_language *pl, 	text_stream *OUT, source_line *L) ;
 #line 145 "inweb/Chapter 4/ACME Support.w"
 void  ACMESupport__comment(programming_language *pl, 	text_stream *OUT, text_stream *comm) ;
-#line 161 "inweb/Chapter 4/ACME Support.w"
+#line 166 "inweb/Chapter 4/ACME Support.w"
 int  ACMESupport__parse_comment(programming_language *pl, 	text_stream *line, text_stream *part_before_comment, text_stream *part_within_comment) ;
-#line 223 "inweb/Chapter 4/ACME Support.w"
+#line 243 "inweb/Chapter 4/ACME Support.w"
 void  ACMESupport__parse_types(programming_language *self, web *W) ;
-#line 242 "inweb/Chapter 4/ACME Support.w"
+#line 262 "inweb/Chapter 4/ACME Support.w"
 void  ACMESupport__parse_functions(programming_language *self, web *W) ;
-#line 267 "inweb/Chapter 4/ACME Support.w"
+#line 287 "inweb/Chapter 4/ACME Support.w"
 void  ACMESupport__post_analysis(programming_language *self, web *W) ;
-#line 303 "inweb/Chapter 4/ACME Support.w"
+#line 323 "inweb/Chapter 4/ACME Support.w"
 void  ACMESupport__analyse_code(programming_language *self, web *W) ;
-#line 321 "inweb/Chapter 4/ACME Support.w"
-int  ACMESupport__suppress_disclaimer(programming_language *pl) ;
-#line 328 "inweb/Chapter 4/ACME Support.w"
-void  ACMESupport__begin_weave(programming_language *pl, section *S, weave_order *wv) ;
-#line 337 "inweb/Chapter 4/ACME Support.w"
-void  ACMESupport__reset_syntax_colouring(programming_language *pl) ;
 #line 341 "inweb/Chapter 4/ACME Support.w"
+int  ACMESupport__suppress_disclaimer(programming_language *pl) ;
+#line 348 "inweb/Chapter 4/ACME Support.w"
+void  ACMESupport__begin_weave(programming_language *pl, section *S, weave_order *wv) ;
+#line 357 "inweb/Chapter 4/ACME Support.w"
+void  ACMESupport__reset_syntax_colouring(programming_language *pl) ;
+#line 361 "inweb/Chapter 4/ACME Support.w"
 int  ACMESupport__syntax_colour(programming_language *pl, 	weave_order *wv, source_line *L, text_stream *matter, text_stream *colouring) ;
 #line 17 "inweb/Chapter 4/The Painter.w"
 void  Painter__reset_syntax_colouring(programming_language *pl) ;
@@ -22481,52 +22481,92 @@ void ACMESupport__comment(programming_language *pl,
 	}
 }
 
+#line 166 "inweb/Chapter 4/ACME Support.w"
 int ACMESupport__parse_comment(programming_language *pl,
 	text_stream *line, text_stream *part_before_comment, text_stream *part_within_comment) {
 	int q_mode = 0, c_mode = 0, non_white_space = FALSE, c_position = -1, c_end = -1;
 	for (int i=0; i<Str__len(line); i++) {
 		wchar_t c = Str__get_at(line, i);
-		if (c_mode == 2) {
-			if (Str__includes_at(line, i, pl->multiline_comment_close)) {
-				c_mode = 0; c_end = i; i += Str__len(pl->multiline_comment_close) - 1;
-			}
-		} else {
-			if ((c_mode == 0) && (!(Characters__is_whitespace(c)))) non_white_space = TRUE;
-			if ((c == Str__get_first_char(pl->string_literal_escape)) && (q_mode == 2)) i += 1;
-			if ((c == Str__get_first_char(pl->character_literal_escape)) && (q_mode == 1)) i += 1;
-			if (c == Str__get_first_char(pl->string_literal)) {
-				if (q_mode == 0) q_mode = 2;
-				else if (q_mode == 2) q_mode = 0;
-			}
-			if (q_mode == 0) {
-				if (c == Str__get_first_char(pl->character_literal)) {
-					if (q_mode == 0) q_mode = 1;
-					else if (q_mode == 1) q_mode = 0;
-				}
-				if (Str__includes_at(line, i, pl->multiline_comment_open)) {
-					c_mode = 2; c_position = i; non_white_space = FALSE;
-					i += Str__len(pl->multiline_comment_open) - 1;
-				}
-				if (c_mode == 0) {
-					if (Str__includes_at(line, i, pl->line_comment)) {
-						c_mode = 1; c_position = i; c_end = Str__len(line); non_white_space = FALSE;
-						i += Str__len(pl->line_comment) - 1;
-					}
-					if (Str__includes_at(line, i, pl->whole_line_comment)) {
-						int material_exists = FALSE;
-						for (int j=0; j<i; j++)
-							if (!(Characters__is_whitespace(Str__get_at(line, j))))
-								material_exists = TRUE;
-						if (material_exists == FALSE) {
-							c_mode = 1; c_position = i; c_end = Str__len(line);
-							non_white_space = FALSE;
-							i += Str__len(pl->whole_line_comment) - 1;
-						}
-					}
-				}
-			}
+		switch (c_mode) {
+			case 0: 
+{
+#line 200 "inweb/Chapter 4/ACME Support.w"
+	switch (q_mode) {
+		case 0: 
+{
+#line 207 "inweb/Chapter 4/ACME Support.w"
+	if (!(Characters__is_whitespace(c))) non_white_space = TRUE;
+	if (c == Str__get_first_char(pl->string_literal)) q_mode = 2;
+	else if (c == Str__get_first_char(pl->character_literal)) q_mode = 1;
+	else if (Str__includes_at(line, i, pl->multiline_comment_open)) {
+		c_mode = 2; c_position = i; non_white_space = FALSE;
+		i += Str__len(pl->multiline_comment_open) - 1;
+	} else if (Str__includes_at(line, i, pl->line_comment)) {
+		c_mode = 1; c_position = i; c_end = Str__len(line); non_white_space = FALSE;
+		i += Str__len(pl->line_comment) - 1;
+	} else if (Str__includes_at(line, i, pl->whole_line_comment)) {
+		int material_exists = FALSE;
+		for (int j=0; j<i; j++)
+			if (!(Characters__is_whitespace(Str__get_at(line, j))))
+				material_exists = TRUE;
+		if (material_exists == FALSE) {
+			c_mode = 1; c_position = i; c_end = Str__len(line);
+			non_white_space = FALSE;
+			i += Str__len(pl->whole_line_comment) - 1;
 		}
 	}
+
+}
+#line 201 "inweb/Chapter 4/ACME Support.w"
+; break;
+		case 1: 
+{
+#line 229 "inweb/Chapter 4/ACME Support.w"
+	if (!(Characters__is_whitespace(c))) non_white_space = TRUE;
+	if (c == Str__get_first_char(pl->character_literal_escape)) i += 1;
+	if (c == Str__get_first_char(pl->character_literal)) q_mode = 0;
+	q_mode = 0;
+
+}
+#line 202 "inweb/Chapter 4/ACME Support.w"
+; break;
+		case 2: 
+{
+#line 235 "inweb/Chapter 4/ACME Support.w"
+	if (!(Characters__is_whitespace(c))) non_white_space = TRUE;
+	if (c == Str__get_first_char(pl->string_literal_escape)) i += 1;
+	if (c == Str__get_first_char(pl->string_literal)) q_mode = 0;
+	q_mode = 0;
+
+}
+#line 203 "inweb/Chapter 4/ACME Support.w"
+; break;
+	}
+
+}
+#line 172 "inweb/Chapter 4/ACME Support.w"
+; break;
+			case 1: 
+{
+#line 197 "inweb/Chapter 4/ACME Support.w"
+	;
+
+}
+#line 173 "inweb/Chapter 4/ACME Support.w"
+; break;
+			case 2: 
+{
+#line 192 "inweb/Chapter 4/ACME Support.w"
+	if (Str__includes_at(line, i, pl->multiline_comment_close)) {
+		c_mode = 0; c_end = i; i += Str__len(pl->multiline_comment_close) - 1;
+	}
+
+}
+#line 174 "inweb/Chapter 4/ACME Support.w"
+; break;
+		}
+	}
+	if (c_mode == 2) c_end = Str__len(line);
 	if ((c_position >= 0) && (non_white_space == FALSE)) {
 		Str__clear(part_before_comment);
 		for (int i=0; i<c_position; i++)
@@ -22540,7 +22580,7 @@ int ACMESupport__parse_comment(programming_language *pl,
 	return FALSE;
 }
 
-#line 223 "inweb/Chapter 4/ACME Support.w"
+#line 243 "inweb/Chapter 4/ACME Support.w"
 void ACMESupport__parse_types(programming_language *self, web *W) {
 	if (W->main_language->type_notation[0]) {
 		chapter *C;
@@ -22557,7 +22597,7 @@ void ACMESupport__parse_types(programming_language *self, web *W) {
 	}
 }
 
-#line 242 "inweb/Chapter 4/ACME Support.w"
+#line 262 "inweb/Chapter 4/ACME Support.w"
 void ACMESupport__parse_functions(programming_language *self, web *W) {
 	if (W->main_language->function_notation[0]) {
 		chapter *C;
@@ -22575,7 +22615,7 @@ void ACMESupport__parse_functions(programming_language *self, web *W) {
 	}
 }
 
-#line 267 "inweb/Chapter 4/ACME Support.w"
+#line 287 "inweb/Chapter 4/ACME Support.w"
 void ACMESupport__post_analysis(programming_language *self, web *W) {
 	int check_namespaces = FALSE;
 	if (Str__eq_wide_string(Bibliographic__get_datum(W->md, TL_IS_379), L"On"))
@@ -22608,7 +22648,7 @@ void ACMESupport__post_analysis(programming_language *self, web *W) {
 	}
 }
 
-#line 303 "inweb/Chapter 4/ACME Support.w"
+#line 323 "inweb/Chapter 4/ACME Support.w"
 void ACMESupport__analyse_code(programming_language *self, web *W) {
 	language_function *fn;
 	LOOP_OVER(fn, language_function)
@@ -22623,19 +22663,19 @@ void ACMESupport__analyse_code(programming_language *self, web *W) {
 					elt->element_name, TRUE);
 }
 
-#line 321 "inweb/Chapter 4/ACME Support.w"
+#line 341 "inweb/Chapter 4/ACME Support.w"
 int ACMESupport__suppress_disclaimer(programming_language *pl) {
 	return pl->suppress_disclaimer;
 }
 
-#line 328 "inweb/Chapter 4/ACME Support.w"
+#line 348 "inweb/Chapter 4/ACME Support.w"
 void ACMESupport__begin_weave(programming_language *pl, section *S, weave_order *wv) {
 	reserved_word *rw;
 	LOOP_OVER_LINKED_LIST(rw, reserved_word, pl->reserved_words)
 		Analyser__mark_reserved_word_for_section(S, rw->word, rw->colour);
 }
 
-#line 337 "inweb/Chapter 4/ACME Support.w"
+#line 357 "inweb/Chapter 4/ACME Support.w"
 void ACMESupport__reset_syntax_colouring(programming_language *pl) {
 	Painter__reset_syntax_colouring(pl);
 }
