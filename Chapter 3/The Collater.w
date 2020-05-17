@@ -96,14 +96,14 @@ collater_state Collater::initial_state(web *W, text_stream *range,
 
 @<Form the list of imported modules@> =
 	module **module_array = 
-		Memory::calloc(c, sizeof(module *), CLS_SORTING_MREASON);
+		Memory::calloc(c, sizeof(module *), ARRAY_SORTING_MREASON);
 	module *M; int d=0;
 	LOOP_OVER_LINKED_LIST(M, module, W->md->as_module->dependencies)
 		module_array[d++] = M;
 	Collater::sort_web(W);
 	qsort(module_array, (size_t) c, sizeof(module *), Collater::sort_comparison);
 	for (int d=0; d<c; d++) ADD_TO_LINKED_LIST(module_array[d], module, cls.modules);
-	Memory::I7_free(module_array, CLS_SORTING_MREASON, c*((int) sizeof(module *)));
+	Memory::I7_free(module_array, ARRAY_SORTING_MREASON, c*((int) sizeof(module *)));
 
 @<Read in the source file containing the contents page template@> =
 	TextFiles::read(template_filename, FALSE,

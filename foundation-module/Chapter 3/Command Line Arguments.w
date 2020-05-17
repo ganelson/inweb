@@ -424,7 +424,7 @@ void CommandLine::write_help(OUTPUT_STREAM) {
 		N++;
 	}
 	command_line_switch **sorted_table =
-		Memory::calloc(N, (int) sizeof(command_line_switch *), CLS_SORTING_MREASON);
+		Memory::calloc(N, (int) sizeof(command_line_switch *), ARRAY_SORTING_MREASON);
 	int i=0; LOOP_OVER(cls, command_line_switch) sorted_table[i++] = cls;
 	qsort(sorted_table, (size_t) N, sizeof(command_line_switch *), CommandLine::compare_names);
 
@@ -437,7 +437,7 @@ void CommandLine::write_help(OUTPUT_STREAM) {
 	filter = FOUNDATION_CLSG;
 	@<Show options in alphabetical order@>;	
 
-	Memory::I7_free(sorted_table, CLS_SORTING_MREASON, N*((int) sizeof(command_line_switch *)));
+	Memory::I7_free(sorted_table, ARRAY_SORTING_MREASON, N*((int) sizeof(command_line_switch *)));
 }
 
 @<Show options in alphabetical order@> =

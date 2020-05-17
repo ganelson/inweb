@@ -117,3 +117,125 @@ int Time::feast(void) {
 
 	return NON_FEAST;
 }
+
+@h Stopwatch timings.
+The following provides a sort of hierarchical stopwatch. In principle it
+could time anything (though not very accurately), but it's mainly intended
+for monitoring how long programs internally work, since it reads time from
+the |clock()| (i.e., how much CPU time the current process has taken) rather
+than from the actual time of day.
+
+=
+typedef struct stopwatch_timer {
+	int running; /* set if this has been started but not stopped */
+	struct text_stream *event;
+	clock_t start_time;
+	clock_t end_time;
+	int time_taken; /* measured in centiseconds of CPU time */
+	linked_list *stages_chronological; /* of |stopwatch_timer| */
+	linked_list *stages_sorted; /* of |stopwatch_timer| */
+	CLASS_DEFINITION
+} stopwatch_timer;
+
+@ If |within| is not null, it must be another stopwatch which is also running;
+the idea is that the new stopwatch is to time a sub-task of the main task which
+|within| is timing.
+
+=
+stopwatch_timer *Time::start_stopwatch(stopwatch_timer *within, text_stream *name) {
+	stopwatch_timer *st = CREATE(stopwatch_timer);
+	st->event = Str::duplicate(name);
+	st->start_time = clock();
+	st->end_time = st->start_time;
+	st->time_taken = 0;
+	st->stages_chronological = NEW_LINKED_LIST(stopwatch_timer);
+	st->stages_sorted = NULL;
+	st->running = TRUE;
+	if (within) {
+		if (within->running == FALSE)
+			internal_error("stopwatch started in event not under way");
+		ADD_TO_LINKED_LIST(st, stopwatch_timer, within->stages_chronological);
+	}
+	return st;
+}
+
+@ Every started stopwatch must be stopped in order to register time having
+been used. Once this is done
+
+=
+int Time::stop_stopwatch(stopwatch_timer *st) {
+	if (st->running == FALSE) internal_error("already stopped");
+	st->running = FALSE;
+	st->end_time = clock();
+	st->time_taken += ((int) (st->end_time - st->start_time)) / (CLOCKS_PER_SEC/100);
+	int N = LinkedLists::len(st->stages_chronological);
+	if (N > 0) @<Sort the subtasks in descreasing order of how much time they took@>;
+	return st->time_taken;
+}
+
+@<Sort the subtasks in descreasing order of how much time they took@> =
+	st->stages_sorted = NEW_LINKED_LIST(stopwatch_timer);
+	stopwatch_timer **as_array = (stopwatch_timer **)
+		(Memory::calloc(N, sizeof(stopwatch_timer *), ARRAY_SORTING_MREASON));
+	stopwatch_timer *sst; int i = 0;
+	LOOP_OVER_LINKED_LIST(sst, stopwatch_timer, st->stages_chronological)
+		as_array[i++] = sst;
+	qsort(as_array, (size_t) N, sizeof(stopwatch_timer *), Time::compare_watches);
+	for (i=0; i<N; i++)
+		ADD_TO_LINKED_LIST(as_array[i], stopwatch_timer, st->stages_sorted);
+	Memory::I7_array_free(as_array,
+		ARRAY_SORTING_MREASON, N, sizeof(stopwatch_timer *));
+
+@ This sorts first by elapsed time, then by event name in alphabetical order:
+
+=
+int Time::compare_watches(const void *w1, const void *w2) {
+	const stopwatch_timer **st1 = (const stopwatch_timer **) w1;
+	const stopwatch_timer **st2 = (const stopwatch_timer **) w2;
+	if ((*st1 == NULL) || (*st2 == NULL))
+		internal_error("Disaster while sorting stopwatch timings");
+	int t1 = (*st1)->time_taken, t2 = (*st2)->time_taken;
+	if (t1 > t2) return -1;
+	if (t1 < t2) return 1;
+	return Str::cmp((*st1)->event, (*st2)->event);
+}
+
+@ Once started and then stopped, a stopwatch can be "resumed", provided it
+is then stopped again. The elapsed time is accumulated.
+
+=
+void Time::resume_stopwatch(stopwatch_timer *st) {
+	if (st->running) internal_error("already running");
+	st->running = TRUE;
+	st->start_time = clock();
+	st->end_time = st->start_time;
+}
+
+@ All of which enables a neat hierarchical printout. The task is timed to
+an accuracy of 1/1000th of the |total| supplied, and sub-tasks taking less
+than that are omitted from the log.
+
+=
+void Time::log_timing(stopwatch_timer *st, int total) {
+	if (st) {
+		int N = 1000*st->time_taken/total;
+		if (N > 0) {
+			LOG("%3d.%d%% in %S\n", N/10, N%10, st->event);
+			LOG_INDENT;
+			int T = 0, no_details = 0;
+			if (st->stages_sorted) {
+				stopwatch_timer *sst;
+				LOOP_OVER_LINKED_LIST(sst, stopwatch_timer, st->stages_sorted) {
+					no_details++;
+					T += sst->time_taken;
+					Time::log_timing(sst, total);
+				}
+			}
+			if (no_details > 0) {
+				int M = N - 1000*T/total;
+				if (M > 0) LOG("%3d.%d%% not specifically accounted for\n", M/10, M%10);
+			}
+			LOG_OUTDENT;
+		}
+	}
+}

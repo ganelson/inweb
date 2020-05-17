@@ -446,7 +446,7 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define FILENAME_STORAGE_MREASON 1
 #define STRING_STORAGE_MREASON 2
 #define DICTIONARY_MREASON 3
-#define CLS_SORTING_MREASON 4
+#define ARRAY_SORTING_MREASON 4
 #define NULL_GENERAL_POINTER (Memory__store_gp_null())
 #define GENERAL_POINTER_IS_NULL(gp) (Memory__test_gp_null(gp))
 #define COMPARE_GENERAL_POINTERS(gp1, gp2)\
@@ -507,13 +507,14 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define section_md_CLASS 27
 #define semantic_version_number_holder_CLASS 28
 #define semver_range_CLASS 29
-#define string_storage_area_CLASS 30
-#define text_stream_CLASS 31
-#define tree_node_CLASS 32
-#define tree_node_type_CLASS 33
-#define tree_type_CLASS 34
-#define web_bibliographic_datum_CLASS 35
-#define web_md_CLASS 36
+#define stopwatch_timer_CLASS 30
+#define string_storage_area_CLASS 31
+#define text_stream_CLASS 32
+#define tree_node_CLASS 33
+#define tree_node_type_CLASS 34
+#define tree_type_CLASS 35
+#define web_bibliographic_datum_CLASS 36
+#define web_md_CLASS 37
 #define NEWLINE_IN_STRING ((char) 0x7f) /* Within quoted text, all newlines are converted to this */
 #define OUTPUT_STREAM text_stream *OUT /* used only as a function prototype argument */
 #define STDOUT Streams__get_stdout()
@@ -721,88 +722,88 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define MAKEFILE_WEB_MOM 2
 #define MAKEFILE_MODULE_MOM 3
 #define PROGRAM_NAME "inweb"
-#define asset_rule_CLASS 37
-#define breadcrumb_request_CLASS 38
-#define chapter_CLASS 39
-#define colony_CLASS 40
-#define colony_member_CLASS 41
-#define colour_scheme_CLASS 42
-#define colouring_language_block_CLASS 43
-#define colouring_rule_CLASS 44
-#define enumeration_set_CLASS 45
-#define footnote_CLASS 46
-#define hash_table_entry_CLASS 47
-#define hash_table_entry_usage_CLASS 48
-#define language_function_CLASS 49
-#define language_type_CLASS 50
-#define macro_CLASS 51
-#define macro_tokens_CLASS 52
-#define macro_usage_CLASS 53
-#define nonterminal_variable_CLASS 54
-#define para_macro_CLASS 55
-#define paragraph_CLASS 56
-#define paragraph_tagging_CLASS 57
-#define preform_nonterminal_CLASS 58
-#define programming_language_CLASS 59
-#define reserved_word_CLASS 60
-#define section_CLASS 61
-#define source_line_CLASS 62
-#define structure_element_CLASS 63
-#define tangle_target_CLASS 64
-#define tex_results_CLASS 65
-#define text_literal_CLASS 66
-#define theme_tag_CLASS 67
-#define weave_format_CLASS 68
-#define weave_pattern_CLASS 69
-#define weave_plugin_CLASS 70
-#define weave_order_CLASS 71
-#define web_CLASS 72
-#define writeme_asset_CLASS 73
-#define weave_document_node_CLASS 74
-#define weave_head_node_CLASS 75
-#define weave_body_node_CLASS 76
-#define weave_tail_node_CLASS 77
-#define weave_section_header_node_CLASS 78
-#define weave_section_footer_node_CLASS 79
-#define weave_chapter_header_node_CLASS 80
-#define weave_chapter_footer_node_CLASS 81
-#define weave_verbatim_node_CLASS 82
-#define weave_section_purpose_node_CLASS 83
-#define weave_subheading_node_CLASS 84
-#define weave_bar_node_CLASS 85
-#define weave_linebreak_node_CLASS 86
-#define weave_pagebreak_node_CLASS 87
-#define weave_paragraph_heading_node_CLASS 88
-#define weave_endnote_node_CLASS 89
-#define weave_material_node_CLASS 90
-#define weave_figure_node_CLASS 91
-#define weave_audio_node_CLASS 92
-#define weave_download_node_CLASS 93
-#define weave_video_node_CLASS 94
-#define weave_embed_node_CLASS 95
-#define weave_pmac_node_CLASS 96
-#define weave_vskip_node_CLASS 97
-#define weave_chapter_node_CLASS 98
-#define weave_section_node_CLASS 99
-#define weave_code_line_node_CLASS 100
-#define weave_function_usage_node_CLASS 101
-#define weave_commentary_node_CLASS 102
-#define weave_carousel_slide_node_CLASS 103
-#define weave_toc_node_CLASS 104
-#define weave_toc_line_node_CLASS 105
-#define weave_chapter_title_page_node_CLASS 106
-#define weave_defn_node_CLASS 107
-#define weave_source_code_node_CLASS 108
-#define weave_url_node_CLASS 109
-#define weave_footnote_cue_node_CLASS 110
-#define weave_begin_footnote_text_node_CLASS 111
-#define weave_display_line_node_CLASS 112
-#define weave_function_defn_node_CLASS 113
-#define weave_item_node_CLASS 114
-#define weave_grammar_index_node_CLASS 115
-#define weave_inline_node_CLASS 116
-#define weave_locale_node_CLASS 117
-#define weave_maths_node_CLASS 118
+#define asset_rule_CLASS 38
+#define breadcrumb_request_CLASS 39
+#define chapter_CLASS 40
+#define colony_CLASS 41
+#define colony_member_CLASS 42
+#define colour_scheme_CLASS 43
+#define colouring_language_block_CLASS 44
+#define colouring_rule_CLASS 45
+#define enumeration_set_CLASS 46
+#define footnote_CLASS 47
+#define hash_table_entry_CLASS 48
+#define hash_table_entry_usage_CLASS 49
+#define language_function_CLASS 50
+#define language_type_CLASS 51
+#define macro_CLASS 52
+#define macro_tokens_CLASS 53
+#define macro_usage_CLASS 54
+#define nonterminal_variable_CLASS 55
+#define para_macro_CLASS 56
+#define paragraph_CLASS 57
+#define paragraph_tagging_CLASS 58
+#define preform_nonterminal_CLASS 59
+#define programming_language_CLASS 60
+#define reserved_word_CLASS 61
+#define section_CLASS 62
+#define source_line_CLASS 63
+#define structure_element_CLASS 64
+#define tangle_target_CLASS 65
+#define tex_results_CLASS 66
+#define text_literal_CLASS 67
+#define theme_tag_CLASS 68
+#define weave_format_CLASS 69
+#define weave_pattern_CLASS 70
+#define weave_plugin_CLASS 71
+#define weave_order_CLASS 72
+#define web_CLASS 73
+#define writeme_asset_CLASS 74
+#define weave_document_node_CLASS 75
+#define weave_head_node_CLASS 76
+#define weave_body_node_CLASS 77
+#define weave_tail_node_CLASS 78
+#define weave_section_header_node_CLASS 79
+#define weave_section_footer_node_CLASS 80
+#define weave_chapter_header_node_CLASS 81
+#define weave_chapter_footer_node_CLASS 82
+#define weave_verbatim_node_CLASS 83
+#define weave_section_purpose_node_CLASS 84
+#define weave_subheading_node_CLASS 85
+#define weave_bar_node_CLASS 86
+#define weave_linebreak_node_CLASS 87
+#define weave_pagebreak_node_CLASS 88
+#define weave_paragraph_heading_node_CLASS 89
+#define weave_endnote_node_CLASS 90
+#define weave_material_node_CLASS 91
+#define weave_figure_node_CLASS 92
+#define weave_audio_node_CLASS 93
+#define weave_download_node_CLASS 94
+#define weave_video_node_CLASS 95
+#define weave_embed_node_CLASS 96
+#define weave_pmac_node_CLASS 97
+#define weave_vskip_node_CLASS 98
+#define weave_chapter_node_CLASS 99
+#define weave_section_node_CLASS 100
+#define weave_code_line_node_CLASS 101
+#define weave_function_usage_node_CLASS 102
+#define weave_commentary_node_CLASS 103
+#define weave_carousel_slide_node_CLASS 104
+#define weave_toc_node_CLASS 105
+#define weave_toc_line_node_CLASS 106
+#define weave_chapter_title_page_node_CLASS 107
+#define weave_defn_node_CLASS 108
+#define weave_source_code_node_CLASS 109
+#define weave_url_node_CLASS 110
+#define weave_footnote_cue_node_CLASS 111
+#define weave_begin_footnote_text_node_CLASS 112
+#define weave_display_line_node_CLASS 113
+#define weave_function_defn_node_CLASS 114
+#define weave_item_node_CLASS 115
+#define weave_grammar_index_node_CLASS 116
+#define weave_inline_node_CLASS 117
+#define weave_locale_node_CLASS 118
+#define weave_maths_node_CLASS 119
 #define NO_MODE 0
 #define ANALYSE_MODE 1
 #define TANGLE_MODE 2
@@ -1013,7 +1014,7 @@ void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
 #define PDFTEX_TEX_FORM 1
 #define NO_DEFINED_CLSW_VALUES 35
 #define NO_DEFINED_DA_VALUES 4
-#define NO_DEFINED_CLASS_VALUES 119
+#define NO_DEFINED_CLASS_VALUES 120
 #define NO_DEFINED_MREASON_VALUES 5
 #define NO_DEFINED_MTID_VALUES 42
 #define NO_DEFINED_CLSF_VALUES 5
@@ -1065,7 +1066,7 @@ typedef struct memory_frame {
 	int mem_type; /* type of object stored in this frame */
 	int allocation_id; /* allocation ID number of object stored in this frame */
 } memory_frame;
-#line 743 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 758 "inweb/foundation-module/Chapter 2/Memory.w"
 typedef struct general_pointer {
 	void *pointer_to_data;
 	int run_time_type_code;
@@ -1190,6 +1191,17 @@ typedef struct scan_directory {
 	char directory_name_written_out[4*MAX_FILENAME_LENGTH];
 	CLASS_DEFINITION
 } scan_directory;
+#line 129 "inweb/foundation-module/Chapter 3/Time.w"
+typedef struct stopwatch_timer {
+	int running; /* set if this has been started but not stopped */
+	struct text_stream *event;
+	clock_t start_time;
+	clock_t end_time;
+	int time_taken; /* measured in centiseconds of CPU time */
+	linked_list *stages_chronological; /* of |stopwatch_timer| */
+	linked_list *stages_sorted; /* of |stopwatch_timer| */
+	CLASS_DEFINITION
+} stopwatch_timer;
 #line 119 "inweb/foundation-module/Chapter 4/C Strings.w"
 typedef struct string_storage_area {
 	char *storage_at;
@@ -2546,18 +2558,18 @@ void  Memory__I7_free(void *pointer, int R, int bytes_freed) ;
 #line 599 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__I7_array_free(void *pointer, int R, int num_cells, size_t cell_size) ;
 #line 607 "inweb/foundation-module/Chapter 2/Memory.w"
-int  Memory__log_usage(int total) ;
-#line 626 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__log_statistics(void) ;
-#line 696 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 689 "inweb/foundation-module/Chapter 2/Memory.w"
+int  Memory__log_usage(int total) ;
+#line 709 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__compare_usage(const void *ent1, const void *ent2) ;
-#line 706 "inweb/foundation-module/Chapter 2/Memory.w"
-int  Memory__proportion(int bytes, int total) ;
-#line 713 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 719 "inweb/foundation-module/Chapter 2/Memory.w"
+void  Memory__log_percentage(int bytes, int total) ;
+#line 728 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__paranoid_calloc(size_t N, size_t S) ;
-#line 748 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 763 "inweb/foundation-module/Chapter 2/Memory.w"
 general_pointer  Memory__store_gp_null(void) ;
-#line 754 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 769 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__test_gp_null(general_pointer gp) ;
 #line 272 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__initialise(text_stream *stream, int from) ;
@@ -2955,6 +2967,16 @@ int  Time__fixed(void) ;
 void  Time__easter(int year, int *d, int *m) ;
 #line 102 "inweb/foundation-module/Chapter 3/Time.w"
 int  Time__feast(void) ;
+#line 145 "inweb/foundation-module/Chapter 3/Time.w"
+stopwatch_timer * Time__start_stopwatch(stopwatch_timer *within, text_stream *name) ;
+#line 166 "inweb/foundation-module/Chapter 3/Time.w"
+int  Time__stop_stopwatch(stopwatch_timer *st) ;
+#line 192 "inweb/foundation-module/Chapter 3/Time.w"
+int  Time__compare_watches(const void *w1, const void *w2) ;
+#line 207 "inweb/foundation-module/Chapter 3/Time.w"
+void  Time__resume_stopwatch(stopwatch_timer *st) ;
+#line 219 "inweb/foundation-module/Chapter 3/Time.w"
+void  Time__log_timing(stopwatch_timer *st, int total) ;
 #line 8 "inweb/foundation-module/Chapter 4/Characters.w"
 wchar_t  Characters__tolower(wchar_t c) ;
 #line 11 "inweb/foundation-module/Chapter 4/Characters.w"
@@ -5822,7 +5844,7 @@ void Memory__name_fundamental_reasons(void) {
 	Memory__reason_name(FILENAME_STORAGE_MREASON, "filename/pathname storage");
 	Memory__reason_name(STRING_STORAGE_MREASON, "string storage");
 	Memory__reason_name(DICTIONARY_MREASON, "dictionary storage");
-	Memory__reason_name(CLS_SORTING_MREASON, "sorting");
+	Memory__reason_name(ARRAY_SORTING_MREASON, "sorting");
 }
 
 #line 496 "inweb/foundation-module/Chapter 2/Memory.w"
@@ -5921,22 +5943,6 @@ void Memory__I7_array_free(void *pointer, int R, int num_cells, size_t cell_size
 }
 
 #line 607 "inweb/foundation-module/Chapter 2/Memory.w"
-int Memory__log_usage(int total) {
-	if (total_claimed_simply == 0) return 0;
-	int i, t = 0;
-	for (i=0; i<NO_DEFINED_MREASON_VALUES; i++) {
-		t += max_memory_at_once_for_each_need[i];
-		if (total > 0)
-			LOG("0.%03d: %s - %d bytes in %d claim(s)\n",
-				Memory__proportion(max_memory_at_once_for_each_need[i], total),
-				Memory__description_of_reason(i),
-				max_memory_at_once_for_each_need[i],
-				number_of_claims_for_each_need[i]);
-	}
-	return t;
-}
-
-#line 626 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__log_statistics(void) {
 	int total_for_objects = MEMORY_GRANULARITY*no_blocks_allocated; /* usage in bytes */
 	int total_for_SMAs = Memory__log_usage(0); /* usage in bytes */
@@ -5945,20 +5951,19 @@ void Memory__log_statistics(void) {
 
 	
 {
-#line 659 "inweb/foundation-module/Chapter 2/Memory.w"
-	int i;
-	for (i=0; i<NO_DEFINED_CLASS_VALUES; i++) sorted_usage[i] = i;
+#line 640 "inweb/foundation-module/Chapter 2/Memory.w"
+	for (int i=0; i<NO_DEFINED_CLASS_VALUES; i++) sorted_usage[i] = i;
 	qsort(sorted_usage, (size_t) NO_DEFINED_CLASS_VALUES, sizeof(int), Memory__compare_usage);
 
 }
-#line 632 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 613 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 
 	int total_for_objects_used = 0; /* out of the |total_for_objects|, the bytes used */
 	int total_objects = 0;
 	
 {
-#line 642 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 623 "inweb/foundation-module/Chapter 2/Memory.w"
 	int i, j;
 	for (j=0; j<NO_DEFINED_CLASS_VALUES; j++) {
 		i = sorted_usage[j];
@@ -5973,61 +5978,96 @@ void Memory__log_statistics(void) {
 	}
 
 }
-#line 636 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 617 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	int overhead_for_objects = total_for_objects - total_for_objects_used; /* bytes wasted */
 	
 {
-#line 666 "inweb/foundation-module/Chapter 2/Memory.w"
-	LOG("\nReport by memory manager:\n\n");
-	LOG("Total consumption was %dK = %dMB, divided up in the following proportions:\n",
+#line 646 "inweb/foundation-module/Chapter 2/Memory.w"
+	LOG("Total memory consumption was %dK = %d MB\n\n",
 		total, (total+512)/1024);
 
-	LOG("0.%03d: %d objects in %d frames in %d memory blocks (of %dK each):\n",
-		Memory__proportion(total_for_objects, total),
-		total_objects, total_objects_allocated, no_blocks_allocated, MEMORY_GRANULARITY/1024);
-	LOG("    0.%03d: memory manager overhead - %d bytes\n",
-		Memory__proportion(overhead_for_objects, total), overhead_for_objects);
-	int i, j;
-	for (j=0; j<NO_DEFINED_CLASS_VALUES; j++) {
-		i = sorted_usage[j];
+	Memory__log_percentage(total_for_objects, total);
+	LOG(" was used for %d objects, in %d frames in %d x %dK = %dK = %d MB:\n\n",
+		total_objects, total_objects_allocated, no_blocks_allocated,
+		MEMORY_GRANULARITY/1024,
+		total_for_objects/1024, (total_for_objects+512)/1024/1024);
+	for (int j=0; j<NO_DEFINED_CLASS_VALUES; j++) {
+		int i = sorted_usage[j];
 		if (alloc_status[i].objects_allocated != 0) {
-			LOG("    0.%03d: %s  -  ",
-				Memory__proportion(alloc_status[i].bytes_allocated, total),
-				alloc_status[i].name_of_type);
+			LOG("    ");
+			Memory__log_percentage(alloc_status[i].bytes_allocated, total);
+			LOG("  %s", alloc_status[i].name_of_type);
+			for (int n=(int) strlen(alloc_status[i].name_of_type); n<41; n++) LOG(" ");
 			if (alloc_status[i].no_allocated_together == 1) {
 				LOG("%d ", alloc_status[i].objects_count);
 				if (alloc_status[i].objects_count != alloc_status[i].objects_allocated)
 					LOG("(+%d deleted) ",
 						alloc_status[i].objects_allocated - alloc_status[i].objects_count);
-			} else LOG("%d blocks of %d = %d ",
-				alloc_status[i].objects_allocated, alloc_status[i].no_allocated_together,
-				alloc_status[i].objects_allocated*alloc_status[i].no_allocated_together);
-			LOG("objects, %d bytes\n", alloc_status[i].bytes_allocated);
+				LOG("object");
+				if (alloc_status[i].objects_allocated > 1) LOG("s");
+			} else {
+				if (alloc_status[i].objects_allocated > 1)
+					LOG("%d x %d = %d ",
+					alloc_status[i].objects_allocated, alloc_status[i].no_allocated_together,
+					alloc_status[i].objects_allocated*alloc_status[i].no_allocated_together);
+				else
+					LOG("1 x %d ", alloc_status[i].no_allocated_together);
+				LOG("objects");
+			}
+			LOG(", %d bytes\n", alloc_status[i].bytes_allocated);
 		}
 	}
+	LOG("\n");
+	Memory__log_percentage(1024*total-total_for_objects, total);
+	LOG(" was used for memory not allocated for objects:\n\n");
 	Memory__log_usage(total);
+	LOG("\n"); Memory__log_percentage(overhead_for_objects, total);
+	LOG(" was overhead - %d bytes = %dK = %d MB\n\n", overhead_for_objects,
+		overhead_for_objects/1024, (overhead_for_objects+512)/1024/1024);
 
 }
-#line 638 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 619 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 }
 
-#line 696 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 689 "inweb/foundation-module/Chapter 2/Memory.w"
+int Memory__log_usage(int total) {
+	if (total_claimed_simply == 0) return 0;
+	int i, t = 0;
+	for (i=0; i<NO_DEFINED_MREASON_VALUES; i++) {
+		t += max_memory_at_once_for_each_need[i];
+		if ((total > 0) && (max_memory_at_once_for_each_need[i] > 0)) {
+			LOG("    ");
+			Memory__log_percentage(max_memory_at_once_for_each_need[i], total);
+			LOG("  %s", Memory__description_of_reason(i));
+			for (int n=(int) strlen(Memory__description_of_reason(i)); n<41; n++) LOG(" ");
+			LOG("%d bytes in %d claim%s\n",
+				max_memory_at_once_for_each_need[i],
+				number_of_claims_for_each_need[i],
+				(number_of_claims_for_each_need[i] == 1)?"":"s");
+		}
+	}
+	return t;
+}
+
+#line 709 "inweb/foundation-module/Chapter 2/Memory.w"
 int Memory__compare_usage(const void *ent1, const void *ent2) {
 	int ix1 = *((const int *) ent1);
 	int ix2 = *((const int *) ent2);
 	return alloc_status[ix2].bytes_allocated - alloc_status[ix1].bytes_allocated;
 }
 
-#line 706 "inweb/foundation-module/Chapter 2/Memory.w"
-int Memory__proportion(int bytes, int total) {
+#line 719 "inweb/foundation-module/Chapter 2/Memory.w"
+void Memory__log_percentage(int bytes, int total) {
 	float B = (float) bytes, T = (float) total;
 	float P = (1000*B)/(1024*T);
-	return (int) P;
+	int N = (int) P;
+	if (N == 0) LOG(" ----");
+	else LOG("%2d.%01d%%", N/10, N%10);
 }
 
-#line 713 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 728 "inweb/foundation-module/Chapter 2/Memory.w"
 void *Memory__paranoid_calloc(size_t N, size_t S) {
 	CREATE_MUTEX(mutex);
 	LOCK_MUTEX(mutex);
@@ -6036,7 +6076,7 @@ void *Memory__paranoid_calloc(size_t N, size_t S) {
 	return P;
 }
 
-#line 747 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 762 "inweb/foundation-module/Chapter 2/Memory.w"
 
 general_pointer Memory__store_gp_null(void) {
 	general_pointer gp;
@@ -6049,10 +6089,10 @@ int Memory__test_gp_null(general_pointer gp) {
 	return FALSE;
 }
 
-#line 806 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 821 "inweb/foundation-module/Chapter 2/Memory.w"
 MAKE_REFERENCE_ROUTINES(char, 1000)
 
-#line 49 "inweb/foundation-module/Chapter 2/Foundation Classes.w"
+#line 50 "inweb/foundation-module/Chapter 2/Foundation Classes.w"
 DECLARE_CLASS(chapter_md)
 DECLARE_CLASS(command_line_switch)
 DECLARE_CLASS(debugging_aspect)
@@ -6077,6 +6117,7 @@ DECLARE_CLASS(scan_directory)
 DECLARE_CLASS(section_md)
 DECLARE_CLASS(semantic_version_number_holder)
 DECLARE_CLASS(semver_range)
+DECLARE_CLASS(stopwatch_timer)
 DECLARE_CLASS(string_storage_area)
 DECLARE_CLASS(tree_node_type)
 DECLARE_CLASS(tree_node)
@@ -7973,11 +8014,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A41";
+			char *svn = "7-alpha.1+1A42";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "11 May 2020";
+			char *d = "17 May 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -8025,7 +8066,7 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 		N++;
 	}
 	command_line_switch **sorted_table =
-		Memory__calloc(N, (int) sizeof(command_line_switch *), CLS_SORTING_MREASON);
+		Memory__calloc(N, (int) sizeof(command_line_switch *), ARRAY_SORTING_MREASON);
 	int i=0; LOOP_OVER(cls, command_line_switch) sorted_table[i++] = cls;
 	qsort(sorted_table, (size_t) N, sizeof(command_line_switch *), CommandLine__compare_names);
 
@@ -8146,7 +8187,7 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 #line 438 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 
-	Memory__I7_free(sorted_table, CLS_SORTING_MREASON, N*((int) sizeof(command_line_switch *)));
+	Memory__I7_free(sorted_table, ARRAY_SORTING_MREASON, N*((int) sizeof(command_line_switch *)));
 }
 
 #line 476 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
@@ -9249,6 +9290,99 @@ int Time__feast(void) {
 		return CHRISTMAS_FEAST; /* that is, Christmas Day to New Year's Eve */
 
 	return NON_FEAST;
+}
+
+#line 139 "inweb/foundation-module/Chapter 3/Time.w"
+
+#line 145 "inweb/foundation-module/Chapter 3/Time.w"
+stopwatch_timer *Time__start_stopwatch(stopwatch_timer *within, text_stream *name) {
+	stopwatch_timer *st = CREATE(stopwatch_timer);
+	st->event = Str__duplicate(name);
+	st->start_time = clock();
+	st->end_time = st->start_time;
+	st->time_taken = 0;
+	st->stages_chronological = NEW_LINKED_LIST(stopwatch_timer);
+	st->stages_sorted = NULL;
+	st->running = TRUE;
+	if (within) {
+		if (within->running == FALSE)
+			internal_error("stopwatch started in event not under way");
+		ADD_TO_LINKED_LIST(st, stopwatch_timer, within->stages_chronological);
+	}
+	return st;
+}
+
+#line 166 "inweb/foundation-module/Chapter 3/Time.w"
+int Time__stop_stopwatch(stopwatch_timer *st) {
+	if (st->running == FALSE) internal_error("already stopped");
+	st->running = FALSE;
+	st->end_time = clock();
+	st->time_taken += ((int) (st->end_time - st->start_time)) / (CLOCKS_PER_SEC/100);
+	int N = LinkedLists__len(st->stages_chronological);
+	if (N > 0) 
+{
+#line 177 "inweb/foundation-module/Chapter 3/Time.w"
+	st->stages_sorted = NEW_LINKED_LIST(stopwatch_timer);
+	stopwatch_timer **as_array = (stopwatch_timer **)
+		(Memory__calloc(N, sizeof(stopwatch_timer *), ARRAY_SORTING_MREASON));
+	stopwatch_timer *sst; int i = 0;
+	LOOP_OVER_LINKED_LIST(sst, stopwatch_timer, st->stages_chronological)
+		as_array[i++] = sst;
+	qsort(as_array, (size_t) N, sizeof(stopwatch_timer *), Time__compare_watches);
+	for (i=0; i<N; i++)
+		ADD_TO_LINKED_LIST(as_array[i], stopwatch_timer, st->stages_sorted);
+	Memory__I7_array_free(as_array,
+		ARRAY_SORTING_MREASON, N, sizeof(stopwatch_timer *));
+
+}
+#line 172 "inweb/foundation-module/Chapter 3/Time.w"
+;
+	return st->time_taken;
+}
+
+#line 192 "inweb/foundation-module/Chapter 3/Time.w"
+int Time__compare_watches(const void *w1, const void *w2) {
+	const stopwatch_timer **st1 = (const stopwatch_timer **) w1;
+	const stopwatch_timer **st2 = (const stopwatch_timer **) w2;
+	if ((*st1 == NULL) || (*st2 == NULL))
+		internal_error("Disaster while sorting stopwatch timings");
+	int t1 = (*st1)->time_taken, t2 = (*st2)->time_taken;
+	if (t1 > t2) return -1;
+	if (t1 < t2) return 1;
+	return Str__cmp((*st1)->event, (*st2)->event);
+}
+
+#line 207 "inweb/foundation-module/Chapter 3/Time.w"
+void Time__resume_stopwatch(stopwatch_timer *st) {
+	if (st->running) internal_error("already running");
+	st->running = TRUE;
+	st->start_time = clock();
+	st->end_time = st->start_time;
+}
+
+#line 219 "inweb/foundation-module/Chapter 3/Time.w"
+void Time__log_timing(stopwatch_timer *st, int total) {
+	if (st) {
+		int N = 1000*st->time_taken/total;
+		if (N > 0) {
+			LOG("%3d.%d%% in %S\n", N/10, N%10, st->event);
+			LOG_INDENT;
+			int T = 0, no_details = 0;
+			if (st->stages_sorted) {
+				stopwatch_timer *sst;
+				LOOP_OVER_LINKED_LIST(sst, stopwatch_timer, st->stages_sorted) {
+					no_details++;
+					T += sst->time_taken;
+					Time__log_timing(sst, total);
+				}
+			}
+			if (no_details > 0) {
+				int M = N - 1000*T/total;
+				if (M > 0) LOG("%3d.%d%% not specifically accounted for\n", M/10, M%10);
+			}
+			LOG_OUTDENT;
+		}
+	}
 }
 
 #line 8 "inweb/foundation-module/Chapter 4/Characters.w"
@@ -18697,14 +18831,14 @@ collater_state Collater__initial_state(web *W, text_stream *range,
 {
 #line 98 "inweb/Chapter 3/The Collater.w"
 	module **module_array =
-		Memory__calloc(c, sizeof(module *), CLS_SORTING_MREASON);
+		Memory__calloc(c, sizeof(module *), ARRAY_SORTING_MREASON);
 	module *M; int d=0;
 	LOOP_OVER_LINKED_LIST(M, module, W->md->as_module->dependencies)
 		module_array[d++] = M;
 	Collater__sort_web(W);
 	qsort(module_array, (size_t) c, sizeof(module *), Collater__sort_comparison);
 	for (int d=0; d<c; d++) ADD_TO_LINKED_LIST(module_array[d], module, cls.modules);
-	Memory__I7_free(module_array, CLS_SORTING_MREASON, c*((int) sizeof(module *)));
+	Memory__I7_free(module_array, ARRAY_SORTING_MREASON, c*((int) sizeof(module *)));
 
 }
 #line 91 "inweb/Chapter 3/The Collater.w"
@@ -21260,7 +21394,7 @@ void Languages__show(OUTPUT_STREAM) {
 	WRITE("Inweb can see the following programming language definitions:\n\n");
 	int N = NUMBER_CREATED(programming_language);
 	programming_language **sorted_table =
-		Memory__calloc(N, (int) sizeof(programming_language *), CLS_SORTING_MREASON);
+		Memory__calloc(N, (int) sizeof(programming_language *), ARRAY_SORTING_MREASON);
 	int i=0; programming_language *pl;
 	LOOP_OVER(pl, programming_language) sorted_table[i++] = pl;
 	qsort(sorted_table, (size_t) N, sizeof(programming_language *), Languages__compare_names);
@@ -21269,7 +21403,7 @@ void Languages__show(OUTPUT_STREAM) {
 		programming_language *pl = sorted_table[i];
 		WRITE("%S: %S\n", pl->language_name, pl->language_details);
 	}
-	Memory__I7_free(sorted_table, CLS_SORTING_MREASON, N*((int) sizeof(programming_language *)));
+	Memory__I7_free(sorted_table, ARRAY_SORTING_MREASON, N*((int) sizeof(programming_language *)));
 }
 
 #line 75 "inweb/Chapter 4/Programming Languages.w"

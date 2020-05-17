@@ -37,6 +37,7 @@ here we are.
 @e section_md_CLASS
 @e semantic_version_number_holder_CLASS
 @e semver_range_CLASS
+@e stopwatch_timer_CLASS
 @e string_storage_area_CLASS
 @e text_stream_CLASS
 @e tree_node_CLASS
@@ -70,6 +71,7 @@ DECLARE_CLASS(scan_directory)
 DECLARE_CLASS(section_md)
 DECLARE_CLASS(semantic_version_number_holder)
 DECLARE_CLASS(semver_range)
+DECLARE_CLASS(stopwatch_timer)
 DECLARE_CLASS(string_storage_area)
 DECLARE_CLASS(tree_node_type)
 DECLARE_CLASS(tree_node)

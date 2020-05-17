@@ -387,7 +387,9 @@ sections (of //section_md//).
 
 @h Miscellaneous other features.
 What else? Well:
-(a) //Time// for the time of day and the date of Easter (no, really);
+(a) //Time// for the time of day and the date of Easter (no, really), and
+for timing internal program activity using //Time::start_stopwatch// and
+//Time::stop_stopwatch//;
 (b) //Shell// for issuing shell commands via the C library's |system| function,
 or its equivalent;
 (c) //HTML// and //Epub Ebooks// for generating web pages and ebooks;

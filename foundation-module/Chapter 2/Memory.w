@@ -479,7 +479,7 @@ we need to use the equivalent of traditional |malloc| and |calloc| routines.
 @e FILENAME_STORAGE_MREASON
 @e STRING_STORAGE_MREASON
 @e DICTIONARY_MREASON
-@e CLS_SORTING_MREASON
+@e ARRAY_SORTING_MREASON
 
 =
 void Memory::name_fundamental_reasons(void) {
@@ -487,7 +487,7 @@ void Memory::name_fundamental_reasons(void) {
 	Memory::reason_name(FILENAME_STORAGE_MREASON, "filename/pathname storage");
 	Memory::reason_name(STRING_STORAGE_MREASON, "string storage");
 	Memory::reason_name(DICTIONARY_MREASON, "dictionary storage");
-	Memory::reason_name(CLS_SORTING_MREASON, "sorting");
+	Memory::reason_name(ARRAY_SORTING_MREASON, "sorting");
 }
 
 @ And here is the (very simple) implementation.
@@ -600,25 +600,6 @@ void Memory::I7_array_free(void *pointer, int R, int num_cells, size_t cell_size
 	Memory::I7_free(pointer, R, num_cells*((int) cell_size));
 }
 
-@ And the following provides statistics, and a mini-report, for the memory
-report in the debugging log (for which, see below).
-
-=
-int Memory::log_usage(int total) {
-	if (total_claimed_simply == 0) return 0;
-	int i, t = 0;
-	for (i=0; i<NO_DEFINED_MREASON_VALUES; i++) {
-		t += max_memory_at_once_for_each_need[i];
-		if (total > 0)
-			LOG("0.%03d: %s - %d bytes in %d claim(s)\n",
-				Memory::proportion(max_memory_at_once_for_each_need[i], total),
-				Memory::description_of_reason(i),
-				max_memory_at_once_for_each_need[i],
-				number_of_claims_for_each_need[i]);
-	}
-	return t;
-}
-
 @h Memory usage report.
 A small utility routine to help keep track of our unquestioned profligacy.
 
@@ -656,41 +637,73 @@ void Memory::log_statistics(void) {
 order of total number of bytes allocated.
 
 @<Sort the table of memory type usages into decreasing size order@> =
-	int i;
-	for (i=0; i<NO_DEFINED_CLASS_VALUES; i++) sorted_usage[i] = i;
+	for (int i=0; i<NO_DEFINED_CLASS_VALUES; i++) sorted_usage[i] = i;
 	qsort(sorted_usage, (size_t) NO_DEFINED_CLASS_VALUES, sizeof(int), Memory::compare_usage);
 
 @ And here is the actual report:
 
 @<Print the report to the debugging log@> =
-	LOG("\nReport by memory manager:\n\n");
-	LOG("Total consumption was %dK = %dMB, divided up in the following proportions:\n",
+	LOG("Total memory consumption was %dK = %d MB\n\n",
 		total, (total+512)/1024);
 
-	LOG("0.%03d: %d objects in %d frames in %d memory blocks (of %dK each):\n",
-		Memory::proportion(total_for_objects, total),
-		total_objects, total_objects_allocated, no_blocks_allocated, MEMORY_GRANULARITY/1024);
-	LOG("    0.%03d: memory manager overhead - %d bytes\n",
-		Memory::proportion(overhead_for_objects, total), overhead_for_objects);
-	int i, j;
-	for (j=0; j<NO_DEFINED_CLASS_VALUES; j++) {
-		i = sorted_usage[j];
+	Memory::log_percentage(total_for_objects, total);
+	LOG(" was used for %d objects, in %d frames in %d x %dK = %dK = %d MB:\n\n",
+		total_objects, total_objects_allocated, no_blocks_allocated,
+		MEMORY_GRANULARITY/1024,
+		total_for_objects/1024, (total_for_objects+512)/1024/1024);
+	for (int j=0; j<NO_DEFINED_CLASS_VALUES; j++) {
+		int i = sorted_usage[j];
 		if (alloc_status[i].objects_allocated != 0) {
-			LOG("    0.%03d: %s  -  ",
-				Memory::proportion(alloc_status[i].bytes_allocated, total),
-				alloc_status[i].name_of_type);
+			LOG("    ");
+			Memory::log_percentage(alloc_status[i].bytes_allocated, total);
+			LOG("  %s", alloc_status[i].name_of_type);
+			for (int n=(int) strlen(alloc_status[i].name_of_type); n<41; n++) LOG(" ");
 			if (alloc_status[i].no_allocated_together == 1) {
 				LOG("%d ", alloc_status[i].objects_count);
 				if (alloc_status[i].objects_count != alloc_status[i].objects_allocated)
 					LOG("(+%d deleted) ",
 						alloc_status[i].objects_allocated - alloc_status[i].objects_count);
-			} else LOG("%d blocks of %d = %d ",
-				alloc_status[i].objects_allocated, alloc_status[i].no_allocated_together,
-				alloc_status[i].objects_allocated*alloc_status[i].no_allocated_together);
-			LOG("objects, %d bytes\n", alloc_status[i].bytes_allocated);
+				LOG("object");
+				if (alloc_status[i].objects_allocated > 1) LOG("s"); 
+			} else {
+				if (alloc_status[i].objects_allocated > 1)
+					LOG("%d x %d = %d ",
+					alloc_status[i].objects_allocated, alloc_status[i].no_allocated_together,
+					alloc_status[i].objects_allocated*alloc_status[i].no_allocated_together);
+				else
+					LOG("1 x %d ", alloc_status[i].no_allocated_together);
+				LOG("objects");
+			}
+			LOG(", %d bytes\n", alloc_status[i].bytes_allocated);
 		}
 	}
+	LOG("\n");
+	Memory::log_percentage(1024*total-total_for_objects, total);
+	LOG(" was used for memory not allocated for objects:\n\n");
 	Memory::log_usage(total);
+	LOG("\n"); Memory::log_percentage(overhead_for_objects, total);
+	LOG(" was overhead - %d bytes = %dK = %d MB\n\n", overhead_for_objects,
+		overhead_for_objects/1024, (overhead_for_objects+512)/1024/1024);
+
+@ =
+int Memory::log_usage(int total) {
+	if (total_claimed_simply == 0) return 0;
+	int i, t = 0;
+	for (i=0; i<NO_DEFINED_MREASON_VALUES; i++) {
+		t += max_memory_at_once_for_each_need[i];
+		if ((total > 0) && (max_memory_at_once_for_each_need[i] > 0)) {
+			LOG("    ");
+			Memory::log_percentage(max_memory_at_once_for_each_need[i], total);
+			LOG("  %s", Memory::description_of_reason(i));
+			for (int n=(int) strlen(Memory::description_of_reason(i)); n<41; n++) LOG(" ");
+			LOG("%d bytes in %d claim%s\n",
+				max_memory_at_once_for_each_need[i],
+				number_of_claims_for_each_need[i],
+				(number_of_claims_for_each_need[i] == 1)?"":"s");
+		}
+	}
+	return t;
+}
 
 @ =
 int Memory::compare_usage(const void *ent1, const void *ent2) {
@@ -703,10 +716,12 @@ int Memory::compare_usage(const void *ent1, const void *ent2) {
 usage. Recall that |bytes| is measured in bytes, but |total| in kilobytes.
 
 =
-int Memory::proportion(int bytes, int total) {
+void Memory::log_percentage(int bytes, int total) {
 	float B = (float) bytes, T = (float) total;
 	float P = (1000*B)/(1024*T);
-	return (int) P;
+	int N = (int) P;
+	if (N == 0) LOG(" ----");
+	else LOG("%2d.%01d%%", N/10, N%10);
 }
 
 @ =
