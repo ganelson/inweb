@@ -586,8 +586,8 @@ void Weaver::show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	TextWeaver::commentary_text(tree, ap, I"This is ");
 	TEMPORARY_TEXT(url);
 	int ext = FALSE;
-	if (Colonies::resolve_reference_in_weave(url, NULL, wv->weave_to, I"words: Preform",
-		wv->weave_web->md, NULL, &ext))
+	if (Colonies::resolve_reference_in_weave(url, NULL, wv->weave_to,
+		I"words: About Preform", wv->weave_web->md, NULL, &ext))
 		Trees::make_child(WeaveTree::url(tree, url, I"Preform grammar", ext), ap);
 	else
 		TextWeaver::commentary_text(tree, ap, I"Preform grammar");

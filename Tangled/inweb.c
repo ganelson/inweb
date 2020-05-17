@@ -20282,8 +20282,8 @@ void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	TextWeaver__commentary_text(tree, ap, TL_IS_248);
 	TEMPORARY_TEXT(url);
 	int ext = FALSE;
-	if (Colonies__resolve_reference_in_weave(url, NULL, wv->weave_to, TL_IS_249,
-		wv->weave_web->md, NULL, &ext))
+	if (Colonies__resolve_reference_in_weave(url, NULL, wv->weave_to,
+		TL_IS_249, wv->weave_web->md, NULL, &ext))
 		Trees__make_child(WeaveTree__url(tree, url, TL_IS_250, ext), ap);
 	else
 		TextWeaver__commentary_text(tree, ap, TL_IS_251);
@@ -29901,7 +29901,7 @@ void register_tangled_text_literals(void) {
     TL_IS_246 = Str__literal(L"enum");
     TL_IS_247 = Str__literal(L"Preform");
     TL_IS_248 = Str__literal(L"This is ");
-    TL_IS_249 = Str__literal(L"words: Preform");
+    TL_IS_249 = Str__literal(L"words: About Preform");
     TL_IS_250 = Str__literal(L"Preform grammar");
     TL_IS_251 = Str__literal(L"Preform grammar");
     TL_IS_252 = Str__literal(L", not regular C code.");
