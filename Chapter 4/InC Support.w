@@ -41,10 +41,11 @@ preform_nonterminal *alphabetical_list_of_nonterminals = NULL;
 void InCSupport::further_parsing(programming_language *self, web *W) {
 	chapter *C;
 	section *S;
-	LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W)) {
-		@<Detect and deal with Preform grammar@>;
-		@<Detect and deal with I-literals@>
-	}
+	LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W))
+		if ((L->category == CODE_BODY_LCAT) || (L->category == CONT_DEFINITION_LCAT)) {	
+			@<Detect and deal with Preform grammar@>;
+			@<Detect and deal with I-literals@>
+		}
 }
 
 @h Parsing Preform grammar.

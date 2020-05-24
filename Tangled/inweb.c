@@ -1927,7 +1927,7 @@ typedef struct language_function {
 	struct source_line *within_conditionals[MAX_CONDITIONAL_COMPILATION_STACK];
 	CLASS_DEFINITION
 } language_function;
-#line 104 "inweb/Chapter 4/InC Support.w"
+#line 105 "inweb/Chapter 4/InC Support.w"
 typedef struct preform_nonterminal {
 	struct text_stream *nt_name; /* e.g., |<action-clause>| */
 	struct text_stream *unangled_name; /* e.g., |action-clause| */
@@ -1941,7 +1941,7 @@ typedef struct preform_nonterminal {
 	struct preform_nonterminal *next_pnt_alphabetically;
 	CLASS_DEFINITION
 } preform_nonterminal;
-#line 279 "inweb/Chapter 4/InC Support.w"
+#line 280 "inweb/Chapter 4/InC Support.w"
 typedef struct nonterminal_variable {
 	struct text_stream *ntv_name; /* e.g., |"num"| */
 	struct text_stream *ntv_type; /* e.g., |"int"| */
@@ -1949,7 +1949,7 @@ typedef struct nonterminal_variable {
 	struct source_line *first_mention; /* first usage */
 	CLASS_DEFINITION
 } nonterminal_variable;
-#line 331 "inweb/Chapter 4/InC Support.w"
+#line 332 "inweb/Chapter 4/InC Support.w"
 typedef struct text_literal {
 	struct text_stream *tl_identifier;
 	struct text_stream *tl_content;
@@ -4021,37 +4021,37 @@ void  CLike__tangle_structure(OUTPUT_STREAM, programming_language *self, languag
 void  InCSupport__add_features(programming_language *pl) ;
 #line 41 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__further_parsing(programming_language *self, web *W) ;
-#line 367 "inweb/Chapter 4/InC Support.w"
+#line 368 "inweb/Chapter 4/InC Support.w"
 int  InCSupport__suppress_expansion(programming_language *self, text_stream *material) ;
-#line 391 "inweb/Chapter 4/InC Support.w"
+#line 392 "inweb/Chapter 4/InC Support.w"
 int  InCSupport__special_tangle_command(programming_language *me, OUTPUT_STREAM, text_stream *data) ;
-#line 415 "inweb/Chapter 4/InC Support.w"
+#line 416 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__additional_predeclarations(programming_language *self, text_stream *OUT, web *W) ;
-#line 444 "inweb/Chapter 4/InC Support.w"
+#line 445 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__gnabehs(programming_language *self, text_stream *OUT, web *W) ;
-#line 478 "inweb/Chapter 4/InC Support.w"
+#line 479 "inweb/Chapter 4/InC Support.w"
 int  InCSupport__will_insert_in_tangle(programming_language *self, source_line *L) ;
-#line 499 "inweb/Chapter 4/InC Support.w"
+#line 500 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__insert_in_tangle(programming_language *self, text_stream *OUT, source_line *L) ;
-#line 636 "inweb/Chapter 4/InC Support.w"
+#line 637 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__tangle_line(programming_language *self, text_stream *OUT, text_stream *original) ;
-#line 750 "inweb/Chapter 4/InC Support.w"
+#line 751 "inweb/Chapter 4/InC Support.w"
 preform_nonterminal * InCSupport__nonterminal_by_name(text_stream *name) ;
-#line 764 "inweb/Chapter 4/InC Support.w"
+#line 765 "inweb/Chapter 4/InC Support.w"
 text_stream * InCSupport__nonterminal_variable_identifier(text_stream *name) ;
-#line 785 "inweb/Chapter 4/InC Support.w"
+#line 786 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__additional_tangling(programming_language *self, web *W, tangle_target *target) ;
-#line 848 "inweb/Chapter 4/InC Support.w"
+#line 849 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__weave_grammar_index(OUTPUT_STREAM) ;
-#line 926 "inweb/Chapter 4/InC Support.w"
+#line 927 "inweb/Chapter 4/InC Support.w"
 int  InCSupport__skip_in_weaving(programming_language *self, weave_order *wv, source_line *L) ;
-#line 941 "inweb/Chapter 4/InC Support.w"
+#line 942 "inweb/Chapter 4/InC Support.w"
 int  InCSupport__weave_code_line(programming_language *self, text_stream *OUT, 	weave_order *wv, web *W, chapter *C, section *S, source_line *L, 	text_stream *matter, text_stream *concluding_comment) ;
-#line 955 "inweb/Chapter 4/InC Support.w"
+#line 956 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__new_tag_declared(programming_language *self, theme_tag *tag) ;
-#line 962 "inweb/Chapter 4/InC Support.w"
+#line 963 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__analyse_code(programming_language *self, web *W) ;
-#line 969 "inweb/Chapter 4/InC Support.w"
+#line 970 "inweb/Chapter 4/InC Support.w"
 int  InCSupport__share_element(programming_language *self, text_stream *elname) ;
 #line 294 "inweb/Chapter 5/Weave Tree.w"
 heterogeneous_tree * WeaveTree__new_tree(weave_order *wv) ;
@@ -23630,16 +23630,17 @@ preform_nonterminal *alphabetical_list_of_nonterminals = NULL;
 void InCSupport__further_parsing(programming_language *self, web *W) {
 	chapter *C;
 	section *S;
-	LOOP_WITHIN_TANGLE(C, S, Tangler__primary_target(W)) {
-		
+	LOOP_WITHIN_TANGLE(C, S, Tangler__primary_target(W))
+		if ((L->category == CODE_BODY_LCAT) || (L->category == CONT_DEFINITION_LCAT)) {
+			
 {
-#line 66 "inweb/Chapter 4/InC Support.w"
+#line 67 "inweb/Chapter 4/InC Support.w"
 	int form = NOT_A_NONTERMINAL; /* one of the four values above, or a non-negative word count */
 	TEMPORARY_TEXT(pntname);
 	TEMPORARY_TEXT(header);
 	
 {
-#line 79 "inweb/Chapter 4/InC Support.w"
+#line 80 "inweb/Chapter 4/InC Support.w"
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, L->text, L"(<%p+>) ::=%c*")) {
 		form = A_GRAMMAR_NONTERMINAL;
@@ -23647,7 +23648,7 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 		Str__copy(header, mr.exp[0]);
 		
 {
-#line 217 "inweb/Chapter 4/InC Support.w"
+#line 218 "inweb/Chapter 4/InC Support.w"
 	Tags__add_by_name(L->owning_paragraph, TL_IS_386);
 	source_line *AL;
 	for (AL = L; (AL) && (AL->category == CODE_BODY_LCAT); AL = AL->next_line) {
@@ -23663,18 +23664,18 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 		}
 		
 {
-#line 243 "inweb/Chapter 4/InC Support.w"
+#line 244 "inweb/Chapter 4/InC Support.w"
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, AL->text_operand, L"(%c*)%/%*%c*%*%/ *"))
 		AL->text_operand = Str__duplicate(mr.exp[0]);
 	Regexp__dispose_of(&mr);
 
 }
-#line 230 "inweb/Chapter 4/InC Support.w"
+#line 231 "inweb/Chapter 4/InC Support.w"
 ;
 		
 {
-#line 253 "inweb/Chapter 4/InC Support.w"
+#line 254 "inweb/Chapter 4/InC Support.w"
 	TEMPORARY_TEXT(to_scan); Str__copy(to_scan, AL->text_operand2);
 	match_results mr = Regexp__create_mr();
 	while (Regexp__match(&mr, to_scan, L"%c*?<<(%P+?)>> =(%c*)")) {
@@ -23691,7 +23692,7 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 				break;
 		if (ntv == NULL) 
 {
-#line 288 "inweb/Chapter 4/InC Support.w"
+#line 289 "inweb/Chapter 4/InC Support.w"
 	ntv = CREATE(nonterminal_variable);
 	ntv->ntv_name = Str__duplicate(var_given);
 	ntv->ntv_type = Str__duplicate(type_given);
@@ -23703,7 +23704,7 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 	ntv->first_mention = AL;
 
 }
-#line 267 "inweb/Chapter 4/InC Support.w"
+#line 268 "inweb/Chapter 4/InC Support.w"
 ;
 		DISCARD_TEXT(var_given);
 		DISCARD_TEXT(type_given);
@@ -23712,13 +23713,13 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 231 "inweb/Chapter 4/InC Support.w"
+#line 232 "inweb/Chapter 4/InC Support.w"
 ;
 		Regexp__dispose_of(&mr);
 	}
 
 }
-#line 84 "inweb/Chapter 4/InC Support.w"
+#line 85 "inweb/Chapter 4/InC Support.w"
 ;
 	} else if (Regexp__match(&mr, L->text, L"((<%p+>) internal %?) {%c*")) {
 		form = A_VORACIOUS_NONTERMINAL;
@@ -23736,11 +23737,11 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 69 "inweb/Chapter 4/InC Support.w"
+#line 70 "inweb/Chapter 4/InC Support.w"
 ;
 	if (form != NOT_A_NONTERMINAL) 
 {
-#line 121 "inweb/Chapter 4/InC Support.w"
+#line 122 "inweb/Chapter 4/InC Support.w"
 	preform_nonterminal *pnt = CREATE(preform_nonterminal);
 	pnt->where_defined = L;
 	pnt->nt_name = Str__duplicate(pntname);
@@ -23749,17 +23750,17 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 	pnt->next_pnt_alphabetically = NULL;
 	
 {
-#line 135 "inweb/Chapter 4/InC Support.w"
+#line 136 "inweb/Chapter 4/InC Support.w"
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, pntname, L"%<(%c*)%>")) pnt->unangled_name = Str__duplicate(mr.exp[0]);
 	Regexp__dispose_of(&mr);
 
 }
-#line 127 "inweb/Chapter 4/InC Support.w"
+#line 128 "inweb/Chapter 4/InC Support.w"
 ;
 	
 {
-#line 145 "inweb/Chapter 4/InC Support.w"
+#line 146 "inweb/Chapter 4/InC Support.w"
 	Str__delete_first_character(pnt->as_C_identifier);
 	LOOP_THROUGH_TEXT(pos, pnt->as_C_identifier) {
 		if (Str__get(pos) == '-') Str__put(pos, '_');
@@ -23768,11 +23769,11 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 	WRITE_TO(pnt->as_C_identifier, "_NTM");
 
 }
-#line 128 "inweb/Chapter 4/InC Support.w"
+#line 129 "inweb/Chapter 4/InC Support.w"
 ;
 	
 {
-#line 160 "inweb/Chapter 4/InC Support.w"
+#line 161 "inweb/Chapter 4/InC Support.w"
 	pnt->voracious = FALSE; if (form == A_VORACIOUS_NONTERMINAL) pnt->voracious = TRUE;
 	pnt->as_function = TRUE; if (form == A_GRAMMAR_NONTERMINAL) pnt->as_function = FALSE;
 
@@ -23790,12 +23791,12 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 	pnt->max_word_count = max;
 
 }
-#line 129 "inweb/Chapter 4/InC Support.w"
+#line 130 "inweb/Chapter 4/InC Support.w"
 ;
 
 	
 {
-#line 177 "inweb/Chapter 4/InC Support.w"
+#line 178 "inweb/Chapter 4/InC Support.w"
 	if (alphabetical_list_of_nonterminals == NULL) alphabetical_list_of_nonterminals = pnt;
 	else {
 		int placed = FALSE;
@@ -23819,32 +23820,32 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 	}
 
 }
-#line 131 "inweb/Chapter 4/InC Support.w"
+#line 132 "inweb/Chapter 4/InC Support.w"
 ;
 	
 {
-#line 200 "inweb/Chapter 4/InC Support.w"
+#line 201 "inweb/Chapter 4/InC Support.w"
 	L->preform_nonterminal_defined = pnt;
 	if (Preform_theme) Tags__add_to_paragraph(L->owning_paragraph, Preform_theme, NULL);
 	L->category = PREFORM_LCAT;
 	L->text_operand = Str__duplicate(header);
 
 }
-#line 132 "inweb/Chapter 4/InC Support.w"
+#line 133 "inweb/Chapter 4/InC Support.w"
 ;
 
 }
-#line 70 "inweb/Chapter 4/InC Support.w"
+#line 71 "inweb/Chapter 4/InC Support.w"
 ;
 	DISCARD_TEXT(pntname);
 	DISCARD_TEXT(header);
 
 }
-#line 45 "inweb/Chapter 4/InC Support.w"
+#line 46 "inweb/Chapter 4/InC Support.w"
 ;
-		
+			
 {
-#line 304 "inweb/Chapter 4/InC Support.w"
+#line 305 "inweb/Chapter 4/InC Support.w"
 	for (int i = 0, quoted = FALSE; i < Str__len(L->text); i++) {
 		if (Str__get_at(L->text, i) == '"')
 			if ((Str__get_at(L->text, i-1) != '\\') &&
@@ -23854,7 +23855,7 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 			(Str__get_at(L->text, i) == 'I') && (Str__get_at(L->text, i+1) == '"'))
 			
 {
-#line 315 "inweb/Chapter 4/InC Support.w"
+#line 316 "inweb/Chapter 4/InC Support.w"
 	TEMPORARY_TEXT(lit);
 	int i_was = i;
 	int ended = FALSE;
@@ -23865,7 +23866,7 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 	}
 	if (ended) 
 {
-#line 346 "inweb/Chapter 4/InC Support.w"
+#line 347 "inweb/Chapter 4/InC Support.w"
 	text_literal *tl = CREATE(text_literal);
 	tl->tl_identifier = Str__new();
 	WRITE_TO(tl->tl_identifier, "TL_IS_%d", tl->allocation_id);
@@ -23883,35 +23884,35 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 	DISCARD_TEXT(after);
 
 }
-#line 323 "inweb/Chapter 4/InC Support.w"
+#line 324 "inweb/Chapter 4/InC Support.w"
 ;
 	DISCARD_TEXT(lit);
 
 }
-#line 311 "inweb/Chapter 4/InC Support.w"
+#line 312 "inweb/Chapter 4/InC Support.w"
 ;
 	}
 
 }
-#line 46 "inweb/Chapter 4/InC Support.w"
+#line 47 "inweb/Chapter 4/InC Support.w"
 
-	}
+		}
 }
 
-#line 117 "inweb/Chapter 4/InC Support.w"
+#line 118 "inweb/Chapter 4/InC Support.w"
 
-#line 286 "inweb/Chapter 4/InC Support.w"
+#line 287 "inweb/Chapter 4/InC Support.w"
 
-#line 336 "inweb/Chapter 4/InC Support.w"
+#line 337 "inweb/Chapter 4/InC Support.w"
 
-#line 367 "inweb/Chapter 4/InC Support.w"
+#line 368 "inweb/Chapter 4/InC Support.w"
 int InCSupport__suppress_expansion(programming_language *self, text_stream *material) {
 	if ((Str__get_at(material, 0) == '/') && (Str__get_at(material, 1) == '/'))
 		return TRUE;
 	return FALSE;
 }
 
-#line 391 "inweb/Chapter 4/InC Support.w"
+#line 392 "inweb/Chapter 4/InC Support.w"
 int InCSupport__special_tangle_command(programming_language *me, OUTPUT_STREAM, text_stream *data) {
 	if (Str__eq_wide_string(data, L"nonterminals")) {
 		WRITE("register_tangled_nonterminals();\n");
@@ -23924,7 +23925,7 @@ int InCSupport__special_tangle_command(programming_language *me, OUTPUT_STREAM, 
 	return FALSE;
 }
 
-#line 415 "inweb/Chapter 4/InC Support.w"
+#line 416 "inweb/Chapter 4/InC Support.w"
 void InCSupport__additional_predeclarations(programming_language *self, text_stream *OUT, web *W) {
 	chapter *C;
 	section *S;
@@ -23950,7 +23951,7 @@ void InCSupport__additional_predeclarations(programming_language *self, text_str
 	WRITE("void register_tangled_text_literals(void);\n");
 }
 
-#line 444 "inweb/Chapter 4/InC Support.w"
+#line 445 "inweb/Chapter 4/InC Support.w"
 void InCSupport__gnabehs(programming_language *self, text_stream *OUT, web *W) {
 	WRITE("void register_tangled_nonterminals(void) {\n");
 	chapter *C;
@@ -23978,13 +23979,13 @@ void InCSupport__gnabehs(programming_language *self, text_stream *OUT, web *W) {
 	OUTDENT; WRITE("}\n");
 }
 
-#line 478 "inweb/Chapter 4/InC Support.w"
+#line 479 "inweb/Chapter 4/InC Support.w"
 int InCSupport__will_insert_in_tangle(programming_language *self, source_line *L) {
 	if (L->category == PREFORM_LCAT) return TRUE;
 	return FALSE;
 }
 
-#line 499 "inweb/Chapter 4/InC Support.w"
+#line 500 "inweb/Chapter 4/InC Support.w"
 void InCSupport__insert_in_tangle(programming_language *self, text_stream *OUT, source_line *L) {
 	preform_nonterminal *pnt = L->preform_nonterminal_defined;
 	if (pnt->as_function) {
@@ -23995,7 +23996,7 @@ void InCSupport__insert_in_tangle(programming_language *self, text_stream *OUT, 
 			pnt->as_C_identifier);
 		
 {
-#line 556 "inweb/Chapter 4/InC Support.w"
+#line 557 "inweb/Chapter 4/InC Support.w"
 	int needs_collation = FALSE;
 	for (source_line *AL = L->next_line;
 		((AL) && (AL->category == PREFORM_GRAMMAR_LCAT));
@@ -24004,7 +24005,7 @@ void InCSupport__insert_in_tangle(programming_language *self, text_stream *OUT, 
 				needs_collation = TRUE;
 	if (needs_collation) 
 {
-#line 574 "inweb/Chapter 4/InC Support.w"
+#line 575 "inweb/Chapter 4/InC Support.w"
 	WRITE("\tswitch(R[0]) {\n");
 	int c = 0;
 	for (source_line *AL = L->next_line;
@@ -24015,7 +24016,7 @@ void InCSupport__insert_in_tangle(programming_language *self, text_stream *OUT, 
 			WRITE("\t\tcase %d: ", c);
 			
 {
-#line 611 "inweb/Chapter 4/InC Support.w"
+#line 612 "inweb/Chapter 4/InC Support.w"
 	match_results mr = Regexp__create_mr();
 	if (!Regexp__match(&mr, formula, L"@<%c*")) {
 		if (pnt->takes_pointer_result) WRITE("*XP = ");
@@ -24038,7 +24039,7 @@ void InCSupport__insert_in_tangle(programming_language *self, text_stream *OUT, 
 	Regexp__dispose_of(&mr);
 
 }
-#line 582 "inweb/Chapter 4/InC Support.w"
+#line 583 "inweb/Chapter 4/InC Support.w"
 ;
 			WRITE(";\n");
 			WRITE("#pragma clang diagnostic push\n");
@@ -24051,32 +24052,32 @@ void InCSupport__insert_in_tangle(programming_language *self, text_stream *OUT, 
 	WRITE("\t}\n");
 
 }
-#line 562 "inweb/Chapter 4/InC Support.w"
+#line 563 "inweb/Chapter 4/InC Support.w"
 
 	else 
 {
-#line 571 "inweb/Chapter 4/InC Support.w"
+#line 572 "inweb/Chapter 4/InC Support.w"
 	WRITE("\t*X = R[0];\n");
 
 }
-#line 563 "inweb/Chapter 4/InC Support.w"
+#line 564 "inweb/Chapter 4/InC Support.w"
 ;
 	WRITE("\treturn TRUE;\n");
 
 }
-#line 507 "inweb/Chapter 4/InC Support.w"
+#line 508 "inweb/Chapter 4/InC Support.w"
 ;
 		WRITE("}\n");
 	}
 }
 
-#line 636 "inweb/Chapter 4/InC Support.w"
+#line 637 "inweb/Chapter 4/InC Support.w"
 void InCSupport__tangle_line(programming_language *self, text_stream *OUT, text_stream *original) {
 	int fcall_pos = -1;
 	for (int i = 0; i < Str__len(original); i++) {
 		
 {
-#line 672 "inweb/Chapter 4/InC Support.w"
+#line 673 "inweb/Chapter 4/InC Support.w"
 	if ((i > 0) && (Str__get_at(original, i) == ':') && (Str__get_at(original, i+1) == ':') &&
 		(isalpha(Str__get_at(original, i+2))) && (isalnum(Str__get_at(original, i-1)))) {
 		WRITE("__"); i++;
@@ -24084,13 +24085,13 @@ void InCSupport__tangle_line(programming_language *self, text_stream *OUT, text_
 	}
 
 }
-#line 639 "inweb/Chapter 4/InC Support.w"
+#line 640 "inweb/Chapter 4/InC Support.w"
 ;
 		if (Str__get_at(original, i) == '<') {
 			if (Str__get_at(original, i+1) == '<') {
 				
 {
-#line 684 "inweb/Chapter 4/InC Support.w"
+#line 685 "inweb/Chapter 4/InC Support.w"
 	match_results mr = Regexp__create_mr();
 	TEMPORARY_TEXT(check_this);
 	Str__substr(check_this, Str__at(original, i), Str__end(original));
@@ -24108,12 +24109,12 @@ void InCSupport__tangle_line(programming_language *self, text_stream *OUT, text_
 	Regexp__dispose_of(&mr);
 
 }
-#line 642 "inweb/Chapter 4/InC Support.w"
+#line 643 "inweb/Chapter 4/InC Support.w"
 ;
 			} else {
 				
 {
-#line 716 "inweb/Chapter 4/InC Support.w"
+#line 717 "inweb/Chapter 4/InC Support.w"
 	match_results mr = Regexp__create_mr();
 	TEMPORARY_TEXT(check_this);
 	Str__substr(check_this, Str__at(original, i), Str__end(original));
@@ -24143,7 +24144,7 @@ void InCSupport__tangle_line(programming_language *self, text_stream *OUT, text_
 	Regexp__dispose_of(&mr);
 
 }
-#line 644 "inweb/Chapter 4/InC Support.w"
+#line 645 "inweb/Chapter 4/InC Support.w"
 ;
 			}
 		}
@@ -24155,7 +24156,7 @@ void InCSupport__tangle_line(programming_language *self, text_stream *OUT, text_
 	}
 }
 
-#line 750 "inweb/Chapter 4/InC Support.w"
+#line 751 "inweb/Chapter 4/InC Support.w"
 preform_nonterminal *InCSupport__nonterminal_by_name(text_stream *name) {
 	preform_nonterminal *pnt;
 	LOOP_OVER(pnt, preform_nonterminal)
@@ -24164,7 +24165,7 @@ preform_nonterminal *InCSupport__nonterminal_by_name(text_stream *name) {
 	return NULL;
 }
 
-#line 764 "inweb/Chapter 4/InC Support.w"
+#line 765 "inweb/Chapter 4/InC Support.w"
 text_stream *InCSupport__nonterminal_variable_identifier(text_stream *name) {
 	if (Str__eq_wide_string(name, L"r")) return TL_IS_391;
 	if (Str__eq_wide_string(name, L"rp")) return TL_IS_392;
@@ -24175,7 +24176,7 @@ text_stream *InCSupport__nonterminal_variable_identifier(text_stream *name) {
 	return NULL;
 }
 
-#line 785 "inweb/Chapter 4/InC Support.w"
+#line 786 "inweb/Chapter 4/InC Support.w"
 void InCSupport__additional_tangling(programming_language *self, web *W, tangle_target *target) {
 	if (NUMBER_CREATED(preform_nonterminal) > 0) {
 		pathname *P = Reader__tangled_folder(W);
@@ -24195,7 +24196,7 @@ void InCSupport__additional_tangling(programming_language *self, web *W, tangle_
 
 		
 {
-#line 820 "inweb/Chapter 4/InC Support.w"
+#line 821 "inweb/Chapter 4/InC Support.w"
 	chapter *C;
 	section *S;
 	LOOP_WITHIN_TANGLE(C, S, target)
@@ -24218,13 +24219,13 @@ void InCSupport__additional_tangling(programming_language *self, web *W, tangle_
 		}
 
 }
-#line 802 "inweb/Chapter 4/InC Support.w"
+#line 803 "inweb/Chapter 4/InC Support.w"
 ;
 		STREAM_CLOSE(OUT);
 	}
 }
 
-#line 848 "inweb/Chapter 4/InC Support.w"
+#line 849 "inweb/Chapter 4/InC Support.w"
 void InCSupport__weave_grammar_index(OUTPUT_STREAM) {
 	WRITE("\\raggedright\\tolerance=10000");
 	preform_nonterminal *pnt;
@@ -24238,7 +24239,7 @@ void InCSupport__weave_grammar_index(OUTPUT_STREAM) {
 		int said_something = FALSE;
 		
 {
-#line 895 "inweb/Chapter 4/InC Support.w"
+#line 896 "inweb/Chapter 4/InC Support.w"
 	section *S;
 	LOOP_OVER(S, section) S->scratch_flag = FALSE;
 	hash_table_entry *hte = Analyser__find_hash_entry_for_section(
@@ -24264,11 +24265,11 @@ void InCSupport__weave_grammar_index(OUTPUT_STREAM) {
 	}
 
 }
-#line 859 "inweb/Chapter 4/InC Support.w"
+#line 860 "inweb/Chapter 4/InC Support.w"
 ;
 		
 {
-#line 870 "inweb/Chapter 4/InC Support.w"
+#line 871 "inweb/Chapter 4/InC Support.w"
 	section *S;
 	LOOP_OVER(S, section) S->scratch_flag = FALSE;
 	hash_table_entry *hte = Analyser__find_hash_entry_for_section(
@@ -24294,7 +24295,7 @@ void InCSupport__weave_grammar_index(OUTPUT_STREAM) {
 	}
 
 }
-#line 860 "inweb/Chapter 4/InC Support.w"
+#line 861 "inweb/Chapter 4/InC Support.w"
 ;
 		if (said_something == FALSE)
 			WRITE("\\par\\hangindent=3em{\\it unused}\n\n");
@@ -24304,7 +24305,7 @@ void InCSupport__weave_grammar_index(OUTPUT_STREAM) {
 	WRITE("\\hrule\\smallbreak\n");
 }
 
-#line 924 "inweb/Chapter 4/InC Support.w"
+#line 925 "inweb/Chapter 4/InC Support.w"
 int skipping_internal = FALSE, preform_production_count = 0;
 
 int InCSupport__skip_in_weaving(programming_language *self, weave_order *wv, source_line *L) {
@@ -24319,7 +24320,7 @@ int InCSupport__skip_in_weaving(programming_language *self, weave_order *wv, sou
 	return FALSE;
 }
 
-#line 941 "inweb/Chapter 4/InC Support.w"
+#line 942 "inweb/Chapter 4/InC Support.w"
 int InCSupport__weave_code_line(programming_language *self, text_stream *OUT,
 	weave_order *wv, web *W, chapter *C, section *S, source_line *L,
 	text_stream *matter, text_stream *concluding_comment) {
@@ -24329,12 +24330,12 @@ int InCSupport__weave_code_line(programming_language *self, text_stream *OUT,
 	return FALSE;
 }
 
-#line 955 "inweb/Chapter 4/InC Support.w"
+#line 956 "inweb/Chapter 4/InC Support.w"
 void InCSupport__new_tag_declared(programming_language *self, theme_tag *tag) {
 	if (Str__eq_wide_string(tag->tag_name, L"Preform")) Preform_theme = tag;
 }
 
-#line 962 "inweb/Chapter 4/InC Support.w"
+#line 963 "inweb/Chapter 4/InC Support.w"
 void InCSupport__analyse_code(programming_language *self, web *W) {
 	preform_nonterminal *pnt;
 	LOOP_OVER(pnt, preform_nonterminal)
