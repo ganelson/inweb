@@ -489,6 +489,8 @@ division in the current section.
 @<Spool from file@> =
 	L->category = BEGIN_CODE_LCAT;
 	pathname *P = W->md->path_to_web;
+	if ((S->md->owning_module) && (S->md->owning_module->module_location))
+		P = S->md->owning_module->module_location; /* references are relative to module */
 	filename *F = Filenames::from_text_relative(P, mr2.exp[1]);
 	linked_list *lines = Painter::lines(F);
 	text_stream *T;
