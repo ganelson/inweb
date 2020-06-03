@@ -10,7 +10,7 @@
 # platforms.
 
 INTEST = intest/Tangled/intest
-INWEB = inweb/Tangled/inweb
+INWEB = -inweb/Tangled/inweb
 
 # (1) Our C compiler, "CC", must accept gcc-compatible command line switches,
 # so it should probably be either gcc itself or else clang. We should define

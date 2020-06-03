@@ -354,16 +354,16 @@ int Platform::create_thread(foundation_thread *pt,
 	return pthread_create(pt, pa, fn, arg);
 }
 
-int Platform::join_thread(pthread_t pt, void** rv) {
+int Platform::join_thread(foundation_thread pt, void** rv) {
 	return pthread_join(pt, rv);
 }
 
-void Platform::init_thread(pthread_attr_t* pa, size_t size) {
+void Platform::init_thread(foundation_thread_attributes *pa, size_t size) {
 	if (pthread_attr_init(pa) != 0) internal_error("thread initialisation failed");
 	if (pthread_attr_setstacksize(pa, size) != 0) internal_error("thread stack sizing failed");
 }
 
-size_t Platform::get_thread_stack_size(pthread_attr_t* pa) {
+size_t Platform::get_thread_stack_size(foundation_thread_attributes *pa) {
 	size_t mystacksize;
 	pthread_attr_getstacksize(pa, &mystacksize);
 	return mystacksize;

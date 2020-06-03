@@ -2429,15 +2429,15 @@ int  Platform__create_thread(foundation_thread *pt, 	const foundation_thread_att
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
 #line 357 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
-int  Platform__join_thread(pthread_t pt, void** rv) ;
+int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
 #line 361 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
-void  Platform__init_thread(pthread_attr_t* pa, size_t size) ;
+void  Platform__init_thread(foundation_thread_attributes *pa, size_t size) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
 #line 366 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
-size_t  Platform__get_thread_stack_size(pthread_attr_t* pa) ;
+size_t  Platform__get_thread_stack_size(foundation_thread_attributes *pa) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_WINDOWS
 #line 43 "inweb/foundation-module/Chapter 1/Windows Platform.w"
@@ -5310,16 +5310,16 @@ int Platform__create_thread(foundation_thread *pt,
 	return pthread_create(pt, pa, fn, arg);
 }
 
-int Platform__join_thread(pthread_t pt, void** rv) {
+int Platform__join_thread(foundation_thread pt, void** rv) {
 	return pthread_join(pt, rv);
 }
 
-void Platform__init_thread(pthread_attr_t* pa, size_t size) {
+void Platform__init_thread(foundation_thread_attributes *pa, size_t size) {
 	if (pthread_attr_init(pa) != 0) internal_error("thread initialisation failed");
 	if (pthread_attr_setstacksize(pa, size) != 0) internal_error("thread stack sizing failed");
 }
 
-size_t Platform__get_thread_stack_size(pthread_attr_t* pa) {
+size_t Platform__get_thread_stack_size(foundation_thread_attributes *pa) {
 	size_t mystacksize;
 	pthread_attr_getstacksize(pa, &mystacksize);
 	return mystacksize;
@@ -7998,11 +7998,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A43";
+			char *svn = "7-alpha.1+1A44";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "24 May 2020";
+			char *d = "30 May 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;

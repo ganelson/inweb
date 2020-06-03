@@ -504,9 +504,9 @@ so we return <span class="extract"><span class="extract-syntax">TRUE</span></spa
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26. Creating memory streams. </b>Here we have a choice. One option is to use <span class="extract"><span class="extract-syntax">malloc</span></span> to allocate memory to hold
-the text of the stream; this too can fail for host platform reasons, so again
-we return a success code.
+<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26. Creating memory streams. </b>Here we have a choice. One option is to use <a href="2-mmr.html#SP24" class="internal">Memory::calloc</a> to allocate
+memory to hold the text of the stream; this too can fail for host platform
+reasons, so again we return a success code.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -525,8 +525,8 @@ we return a success code.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>The other option avoids <span class="extract"><span class="extract-syntax">malloc</span></span> by using specific storage already available.
-If called validly, this cannot fail.
+<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>The other option avoids fresh memory allocqtion by using specific storage
+already available. If called validly, this cannot fail.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

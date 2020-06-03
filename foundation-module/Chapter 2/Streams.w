@@ -431,9 +431,9 @@ int Streams::open_to_file_append(text_stream *stream, filename *name, int encodi
 }
 
 @h Creating memory streams.
-Here we have a choice. One option is to use |malloc| to allocate memory to hold
-the text of the stream; this too can fail for host platform reasons, so again
-we return a success code.
+Here we have a choice. One option is to use //Memory::calloc// to allocate
+memory to hold the text of the stream; this too can fail for host platform
+reasons, so again we return a success code.
 
 =
 int Streams::open_to_memory(text_stream *stream, int capacity) {
@@ -451,8 +451,8 @@ int Streams::open_to_memory(text_stream *stream, int capacity) {
 	return TRUE;
 }
 
-@ The other option avoids |malloc| by using specific storage already available.
-If called validly, this cannot fail.
+@ The other option avoids fresh memory allocqtion by using specific storage
+already available. If called validly, this cannot fail.
 
 =
 text_stream Streams::new_buffer(int capacity, wchar_t *at) {
