@@ -75,6 +75,11 @@ GLULXEOS = OS_UNIX
 LINK = $(GCC) $(GCCOPTS) -g
 LINKEROPTS = -lm
 
+# On some platforms, executables have a specific file extension, which we
+# define here.
+
+EXEEXTENSION = 
+
 # On most systems, the following will be the traditional archiver "ar -r", but
 # for modern Mac OS X use we need to use Apple's replacement "libtool", which
 # is able to cope with fat (i.e., multiple-architecture) binaries.

@@ -60,6 +60,11 @@ FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-form
 LINK = clang $(CCOPTS) -g
 LINKEROPTS = 
 
+# On some platforms, executables have a specific file extension, which we
+# define here.
+
+EXEEXTENSION = 
+
 # (3) We need an archive tool, "ARTOOL". The traditional archiver "ar -r"
 # should be fine on most Unix systems, but for example OS X prefers a more
 # modern replacement which can handle multiple-architecture binaries.

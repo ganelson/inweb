@@ -16,7 +16,7 @@ force:
 define make-me
 	$(INWEB) $(ME) -import-from modules -tangle
 	$(CC) -o $(ME)/Tangled/$(MYNAME).o $(ME)/Tangled/$(MYNAME).c
-	$(LINK) -o $(ME)/Tangled/$(MYNAME) $(ME)/Tangled/$(MYNAME).o $(LINKEROPTS)
+	$(LINK) -o $(ME)/Tangled/$(MYNAME)$(EXEEXTENSION) $(ME)/Tangled/$(MYNAME).o $(LINKEROPTS)
 endef
 
 # Testing the program:
