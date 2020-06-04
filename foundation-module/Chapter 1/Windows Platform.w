@@ -21,7 +21,11 @@ on a POSIX operating system.
 #include <dirent.h>
 #include <errno.h>
 #include <io.h>
+
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <shlobj.h>
+#undef OUT
 
 @ A Windows-safe form of |isdigit|. Annoyingly, the C specification allows
 the implementation to have |char| either signed or unsigned. On Windows it's
@@ -47,19 +51,20 @@ int Platform::Windows_isdigit(int c) {
 @h Environment variables.
 
 = (very early code)
-unsigned long __stdcall GetCurrentDirectoryA(unsigned long len, char* buffer);
-unsigned long __stdcall SHGetFolderPathA(unsigned long wnd, int folder,
-	unsigned long token, unsigned long flags, char* path);
-
 char *Platform::getenv(const char *name) {
-	static char env[260];
-	env[0] = 0;
-	if (strcmp(name,"PWD") == 0) {
-		if (GetCurrentDirectoryA(260,env) > 0) return env;
-	} else if (strcmp(name,"HOME") == 0) {
-		if (SHGetFolderPathA(0,5,0,0,env) == 0) return env;
+	char *env = getenv(name);
+	if (env == 0) {
+		char value[MAX_PATH];
+		if (strcmp(name, "PWD") == 0) {
+			if (GetCurrentDirectoryA(MAX_PATH, value) != 0)
+				_putenv_s(name, value);
+		} else if (strcmp(name, "HOME") == 0) {
+			if (SHGetFolderPathA(0, CSIDL_PERSONAL, 0, SHGFP_TYPE_CURRENT, value) == 0)
+				_putenv_s(name, value);
+		}
+		env = getenv(name);
 	}
-	return getenv(name);
+	return env;
 }
 
 @h Executable location.
@@ -72,52 +77,38 @@ just that installation and use of Foundation-built tools is less convenient.)
 
 =
 void Platform::where_am_i(wchar_t *p, size_t length) {
-	DWORD result = GetModuleFileNameW(NULL, p, length);	
+	DWORD result = GetModuleFileNameW(NULL, p, (DWORD)length);	
 	if ((result == 0) || (result == length)) p[0] = 0;
 }
 
 @h Shell commands.
 
 = (very early code)
-struct Win32_Startup_Info {
-	long v1; char* v2; char* v3; char* v4; long v5; long v6;
-	long v7; long v8; long v9; long v10; long v11;
-	unsigned long flags; unsigned short showWindow;
-	short v12; char* v13; long v14; long v15; long v16; };
-struct Win32_Process_Info {
-	unsigned long process; unsigned long thread; long v1; long v2; };
-unsigned long __stdcall CloseHandle(unsigned long handle);
-unsigned long __stdcall WaitForSingleObject(unsigned long handle, unsigned long ms);
-unsigned long __stdcall CreateProcessA(void* app, char* cmd, void* pa,
-	void* ta, long inherit, unsigned long flags, void* env, void* dir,
-	struct Win32_Startup_Info* start, struct Win32_Process_Info* process);
-unsigned long __stdcall GetExitCodeProcess(unsigned long proc, unsigned long* code);
-
 int Platform::system(const char *cmd) {
-	if (strncmp(cmd,"md5 ", 4) == 0) return 0;
-
 	char cmdline[4096];
 	sprintf(cmdline,"cmd /s /c \"%s\"", cmd);
 
-	struct Win32_Startup_Info start = { sizeof (struct Win32_Startup_Info), 0 };
-	start.flags = 1;
-	start.showWindow = 0;
+	STARTUPINFOA start;
+	memset(&start, 0, sizeof start);
+	start.cb = sizeof start;
+	start.dwFlags = STARTF_USESHOWWINDOW;
+	start.wShowWindow = SW_HIDE;
 
-	struct Win32_Process_Info process;
-	if (CreateProcessA(0, cmdline, 0, 0, 0, 0x8000000, 0, 0, &start, &process) == 0)
+	PROCESS_INFORMATION process;
+	if (CreateProcessA(0, cmdline, 0, 0, FALSE, CREATE_NO_WINDOW, 0, 0, &start, &process) == 0)
 		return -1;
 
-	CloseHandle(process.thread);
-	if (WaitForSingleObject(process.process, -1) != 0) {
-		CloseHandle(process.process);
+	CloseHandle(process.hThread);
+	if (WaitForSingleObject(process.hProcess, INFINITE) != WAIT_OBJECT_0) {
+		CloseHandle(process.hProcess);
 		return -1;
 	}
 
-	unsigned long code = 10;
-	GetExitCodeProcess(process.process, &code);
-	CloseHandle(process.process);
+	DWORD code = 10;
+	GetExitCodeProcess(process.hProcess, &code);
+	CloseHandle(process.hProcess);
 
-	return code;
+	return (int)code;
 }
 
 @h Directory handling.
@@ -125,7 +116,7 @@ int Platform::system(const char *cmd) {
 =
 int Platform::mkdir(char *transcoded_pathname) {
 	errno = 0;
-	int rv = _mkdir(transcoded_pathname);
+	int rv = mkdir(transcoded_pathname);
 	if (rv == 0) return TRUE;
 	if (errno == EEXIST) return TRUE;
 	return FALSE;
@@ -158,13 +149,18 @@ void Platform::closedir(void *D) {
 	closedir(dirp);
 }
 
+@h Sync.
+
+=
+void Platform::rsync(char *transcoded_source, char *transcoded_dest) {
+}
+
 @h Sleep. The Windows |Sleep| call measures time in milliseconds, whereas
 POSIX |sleep| is for seconds.
 
-= (very early code)
-void __stdcall Sleep(unsigned long ms);
+=
 void Platform::sleep(int seconds) {
-	Sleep((unsigned long) 1000*seconds);
+	Sleep((DWORD)(1000*seconds));
 }
 
 @h Notifications.
@@ -174,21 +170,16 @@ void Platform::notification(text_stream *text, int happy) {
 }
 
 @h Concurrency.
-The following predeclarations come from the Windows SDK.
 
 = (very early code)
-unsigned long __stdcall CreateThread(void* attrs, unsigned long stack,
-	void* func, void* param, unsigned long flags, unsigned long* id);
+typedef HANDLE foundation_thread;
+typedef void foundation_thread_attributes;
 
-struct Win32_Thread_Attrs {};
 struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
-
-typedef unsigned long foundation_thread;
-typedef struct Win32_Thread_Attrs foundation_thread_attributes;
 
 @
 =
-unsigned long __stdcall Platform::Win32_Thread_Func(unsigned long param) {
+DWORD WINAPI Platform::Win32_Thread_Func(LPVOID param) {
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*)param;
 	(start->fn)(start->arg);
 	free(start);
@@ -200,7 +191,7 @@ int Platform::create_thread(foundation_thread *pt, const foundation_thread_attri
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*) malloc(sizeof (struct Win32_Thread_Start));
 	start->fn = fn;
 	start->arg = arg;
-	unsigned long thread = CreateThread(0,0,Platform::Win32_Thread_Func,start,0,0);
+	HANDLE thread = CreateThread(0, 0, Platform::Win32_Thread_Func, start, 0, 0);
 	if (thread == 0) {
 		free(start);
 		return 1;
@@ -210,14 +201,14 @@ int Platform::create_thread(foundation_thread *pt, const foundation_thread_attri
 	}
 }
 
-int Platform::join_thread(pthread_t pt, void** rv) {
-	return (WaitForSingleObject(pt,-1) == 0) ? 0 : 1;
+int Platform::join_thread(foundation_thread pt, void** rv) {
+	return (WaitForSingleObject(pt, INFINITE) == WAIT_OBJECT_0) ? 0 : 1;
 }
 
-void Platform::init_thread(pthread_attr_t* pa, size_t size) {
+void Platform::init_thread(foundation_thread_attributes* pa, size_t size) {
 }
 
-size_t Platform::get_thread_stack_size(pthread_attr_t* pa) {
+size_t Platform::get_thread_stack_size(foundation_thread_attributes* pa) {
 	return 0;
 }
 
@@ -235,7 +226,7 @@ time_t Platform::never_time(void) {
 
 time_t Platform::timestamp(char *transcoded_filename) {
 	struct stat filestat;
-	if (stat(transcoded_pathname, &filestat) != -1) return filestat.st_mtime;
+	if (stat(transcoded_filename, &filestat) != -1) return filestat.st_mtime;
 	return Platform::never_time();
 }
 
@@ -248,12 +239,6 @@ off_t Platform::size(char *transcoded_filename) {
 @h Mutexes.
 
 @d CREATE_MUTEX(name)
-	struct Win32_Critical_Section name { (void*)-1, -1, 0, 0, 0, 0 };
-@d LOCK_MUTEX(name) EnterCriticalSection(&name);
-@d UNLOCK_MUTEX(name) LeaveCriticalSection(&name);
-
-= (very early code)
-struct Win32_Critical_Section {
-	void* v1; long v2; long v3; long v4; long v5; void* v6; };
-void __stdcall EnterCriticalSection(struct Win32_Critical_Section* cs);
-void __stdcall LeaveCriticalSection(struct Win32_Critical_Section* cs);
+	static LPCRITICAL_SECTION name = 0; if (name == 0) { name = malloc(sizeof (CRITICAL_SECTION)); InitializeCriticalSection(name); }
+@d LOCK_MUTEX(name) EnterCriticalSection(name)
+@d UNLOCK_MUTEX(name) LeaveCriticalSection(name)
