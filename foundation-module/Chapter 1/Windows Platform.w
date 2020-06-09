@@ -124,7 +124,7 @@ int Platform::mkdir(char *transcoded_pathname) {
 
 void *Platform::opendir(char *dir_name) {
 	DIR *dirp = opendir(dir_name);
-    return (void *) dirp;
+	return (void *) dirp;
 }
 
 int Platform::readdir(void *D, char *dir_name,
@@ -153,6 +153,7 @@ void Platform::closedir(void *D) {
 
 =
 void Platform::rsync(char *transcoded_source, char *transcoded_dest) {
+	printf("Platform::rsync() is not yet implemented!\n");
 }
 
 @h Sleep. The Windows |Sleep| call measures time in milliseconds, whereas
@@ -173,7 +174,7 @@ void Platform::notification(text_stream *text, int happy) {
 
 = (very early code)
 typedef HANDLE foundation_thread;
-typedef void foundation_thread_attributes;
+typedef int foundation_thread_attributes;
 
 struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 
