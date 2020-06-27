@@ -198,7 +198,7 @@ would be "elctrcty", since we don't count "y" as a vowel here.
 @ We never want two sections to have the same range.
 
 @<Terminate with disambiguating numbers in case of collisions@> =
-	TEMPORARY_TEXT(original_range);
+	TEMPORARY_TEXT(original_range)
 	Str::copy(original_range, Sm->sect_range);
 	int disnum = 0, collision = FALSE;
 	do {
@@ -222,7 +222,7 @@ would be "elctrcty", since we don't count "y" as a vowel here.
 					collision = TRUE; break;
 				}
 	} while (collision);
-	DISCARD_TEXT(original_range);
+	DISCARD_TEXT(original_range)
 
 @h Reading the contents page.
 Making the web begins by reading the contents section, which really isn't a
@@ -387,18 +387,18 @@ variables with fixed names; a blank line ends the block.
 	if (RS->main_web_not_module) {
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, line, L"(%c+?): (%c+?) *")) {
-			TEMPORARY_TEXT(key);
+			TEMPORARY_TEXT(key)
 			Str::copy(key, mr.exp[0]);
-			TEMPORARY_TEXT(value);
+			TEMPORARY_TEXT(value)
 			Str::copy(value, mr.exp[1]);
 			@<Set bibliographic key-value pair@>;
-			DISCARD_TEXT(key);
-			DISCARD_TEXT(value);
+			DISCARD_TEXT(key)
+			DISCARD_TEXT(value)
 		} else {
-			TEMPORARY_TEXT(err);
+			TEMPORARY_TEXT(err)
 			WRITE_TO(err, "expected 'Setting: Value' but found '%S'", line);
 			Errors::in_text_file_S(err, tfp);
-			DISCARD_TEXT(err);
+			DISCARD_TEXT(err)
 		}
 		Regexp::dispose_of(&mr);
 	}
@@ -407,20 +407,20 @@ variables with fixed names; a blank line ends the block.
 	if (Bibliographic::datum_can_be_declared(RS->Wm, key)) {
 		if (Bibliographic::datum_on_or_off(RS->Wm, key)) {
 			if ((Str::ne_wide_string(value, L"On")) && (Str::ne_wide_string(value, L"Off"))) {
-				TEMPORARY_TEXT(err);
+				TEMPORARY_TEXT(err)
 				WRITE_TO(err, "this setting must be 'On' or 'Off': %S", key);
 				Errors::in_text_file_S(err, tfp);
-				DISCARD_TEXT(err);
+				DISCARD_TEXT(err)
 				Str::clear(value);
 				WRITE_TO(value, "Off");
 			}
 		}
 		Bibliographic::set_datum(RS->Wm, key, value);
 	} else {
-		TEMPORARY_TEXT(err);
+		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "no such bibliographic datum: %S", key);
 		Errors::in_text_file_S(err, tfp);
-		DISCARD_TEXT(err);
+		DISCARD_TEXT(err)
 	}
 
 @ In the bulk of the contents, we find indented lines for sections and
@@ -452,8 +452,8 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 @ The title tells us everything we need to know about a chapter:
 
 @<Read about a new chapter@> =
-	TEMPORARY_TEXT(new_chapter_range); /* e.g., S, P, 1, 2, 3, A, B, ... */
-	TEMPORARY_TEXT(pdf_leafname);
+	TEMPORARY_TEXT(new_chapter_range) /* e.g., S, P, 1, 2, 3, A, B, ... */
+	TEMPORARY_TEXT(pdf_leafname)
 	text_stream *language_name = NULL;
 
 	match_results mr = Regexp::create_mr();
@@ -499,10 +499,10 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 			module *imported =
 				WebModules::find(RS->Wm, RS->import_from, mr.exp[0], RS->path_to_inweb);
 			if (imported == NULL) {
-				TEMPORARY_TEXT(err);
+				TEMPORARY_TEXT(err)
 				WRITE_TO(err, "unable to find module: %S", line);
 				Errors::in_text_file_S(err, tfp);
-				DISCARD_TEXT(err);
+				DISCARD_TEXT(err)
 			} else {
 				if (RS->including_modules) {
 					int save_syntax = RS->Wm->default_syntax;
@@ -531,18 +531,18 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 		WRITE_TO(pdf_leafname, "Appendix-%S.pdf", letter);
 		RS->Wm->chaptered = TRUE;
 	} else {
-		TEMPORARY_TEXT(err);
+		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "segment not understood: %S", line);
 		Errors::in_text_file_S(err, tfp);
 		WRITE_TO(STDERR, "(Must be 'Chapter <number>: Title', "
 			"'Appendix <letter A to O>: Title',\n");
 		WRITE_TO(STDERR, "'Manual', 'Preliminaries' or 'Sections')\n");
-		DISCARD_TEXT(err);
+		DISCARD_TEXT(err)
 	}
 
 	if (this_is_a_chapter) @<Create the new chapter with these details@>;
-	DISCARD_TEXT(new_chapter_range);
-	DISCARD_TEXT(pdf_leafname);
+	DISCARD_TEXT(new_chapter_range)
+	DISCARD_TEXT(pdf_leafname)
 	Regexp::dispose_of(&mr);
 
 @ A chapter whose title marks it as Independent becomes a new tangle target,
@@ -642,7 +642,7 @@ but the extension used doesn't have to be |.w|: for Inform 6 template files,
 the extension needs to be |.i6t|. We allow either.
 
 @<Work out the filename of this section file@> =
-	TEMPORARY_TEXT(leafname_to_use);
+	TEMPORARY_TEXT(leafname_to_use)
 	WRITE_TO(leafname_to_use, "%S.i6t", Sm->sect_title);
 	pathname *P = RS->path_to;
 	if (P == NULL) P = RS->Wm->path_to_web;
@@ -654,7 +654,7 @@ the extension needs to be |.i6t|. We allow either.
 		WRITE_TO(leafname_to_use, "%S.w", Sm->sect_title);
 		Sm->source_file_for_section = Filenames::in(P, leafname_to_use);
 	}
-	DISCARD_TEXT(leafname_to_use);
+	DISCARD_TEXT(leafname_to_use)
 
 @h Relative pathnames or filenames.
 

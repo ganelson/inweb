@@ -124,10 +124,10 @@ To do this, the weaver calls the following.
 
 =
 void TeXUtilities::remove_math_mode(OUTPUT_STREAM, text_stream *text) {
-	TEMPORARY_TEXT(math_matter);
+	TEMPORARY_TEXT(math_matter)
 	TeXUtilities::remove_math_mode_range(math_matter, text, 0, Str::len(text)-1);
 	WRITE("%S", math_matter);
-	DISCARD_TEXT(math_matter);
+	DISCARD_TEXT(math_matter)
 }
 
 void TeXUtilities::remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int from, int to) {
@@ -238,13 +238,13 @@ we also look out for |{}^3\sqrt{N}| for cube root.
 	}
 
 @<Do something to strip out a TeX macro@> =
-	TEMPORARY_TEXT(macro);
+	TEMPORARY_TEXT(macro)
 	i++;
 	while ((i < Str::len(text)) && (Characters::isalpha(Str::get_at(text, i))))
 		PUT_TO(macro, Str::get_at(text, i++));
 	if (Str::eq(macro, I"not")) @<Remove the not prefix@>
 	else @<Remove a general macro@>;
-	DISCARD_TEXT(macro);
+	DISCARD_TEXT(macro)
 	i--;
 
 @<Remove a general macro@> =

@@ -127,17 +127,17 @@ of which are variadic and have to be written out the old-fashioned way:
 
 =
 #define HTML_TAG_WITH(tag, args...) { \
-	TEMPORARY_TEXT(details); \
+	TEMPORARY_TEXT(details) \
 	WRITE_TO(details, args); \
 	HTML::tag(OUT, tag, details); \
-	DISCARD_TEXT(details); \
+	DISCARD_TEXT(details) \
 }
 
 #define HTML_OPEN_WITH(tag, args...) { \
-	TEMPORARY_TEXT(details); \
+	TEMPORARY_TEXT(details) \
 	WRITE_TO(details, args); \
 	HTML::open(OUT, tag, details); \
-	DISCARD_TEXT(details); \
+	DISCARD_TEXT(details) \
 }
 
 @ Which themselves depend on these routines:
@@ -339,25 +339,25 @@ void HTML::begin_div_with_class_and_id(OUTPUT_STREAM, char *cl, char *id, int hi
 }
 
 void HTML::begin_div_with_id_S(OUTPUT_STREAM, text_stream *id) {
-	TEMPORARY_TEXT(details);
+	TEMPORARY_TEXT(details)
 	WRITE_TO(details, "id=\"%S\"", id);
 	HTML::open(OUT, "div", details);
-	DISCARD_TEXT(details);
+	DISCARD_TEXT(details)
 }
 
 void HTML::begin_div_with_class_S(OUTPUT_STREAM, text_stream *cl) {
-	TEMPORARY_TEXT(details);
+	TEMPORARY_TEXT(details)
 	WRITE_TO(details, "class=\"%S\"", cl);
 	HTML::open(OUT, "div", details);
-	DISCARD_TEXT(details);
+	DISCARD_TEXT(details)
 }
 
 void HTML::begin_div_with_class_and_id_S(OUTPUT_STREAM, text_stream *cl, text_stream *id, int hide) {
-	TEMPORARY_TEXT(details);
+	TEMPORARY_TEXT(details)
 	WRITE_TO(details, "class=\"%S\" id=\"%S\"", cl, id);
 	if (hide) WRITE_TO(details, " style=\"display: none;\"");
 	HTML::open(OUT, "div", details);
-	DISCARD_TEXT(details);
+	DISCARD_TEXT(details)
 }
 
 void HTML::end_div(OUTPUT_STREAM) {
@@ -394,7 +394,7 @@ these in its World index, for instance, to clarify what abbreviations mean.)
 =
 void HTML::icon_with_tooltip(OUTPUT_STREAM, text_stream *icon_name,
 	text_stream *tip, text_stream *tip2) {
-	TEMPORARY_TEXT(img);
+	TEMPORARY_TEXT(img)
 	WRITE_TO(img, "border=0 src=%S ", icon_name);
 	if (tip) {
 		WRITE_TO(img, "title=\"%S", tip);
@@ -402,7 +402,7 @@ void HTML::icon_with_tooltip(OUTPUT_STREAM, text_stream *icon_name,
 		WRITE_TO(img, "\"");
 	}
 	HTML_TAG_WITH("img", "%S", img);
-	DISCARD_TEXT(img);
+	DISCARD_TEXT(img)
 }
 
 @h Links.
@@ -472,7 +472,7 @@ void HTML::begin_wide_html_table(OUTPUT_STREAM) {
 =
 void HTML::begin_html_table(OUTPUT_STREAM, char *colour, int full_width,
 	int border, int cellspacing, int cellpadding, int height, int width) {
-	TEMPORARY_TEXT(tab);
+	TEMPORARY_TEXT(tab)
 	WRITE_TO(tab, "border=\"%d\" cellspacing=\"%d\" cellpadding=\"%d\"",
 		border, cellspacing, cellpadding);
 	if (colour) {
@@ -485,11 +485,11 @@ void HTML::begin_html_table(OUTPUT_STREAM, char *colour, int full_width,
 	if (width > 0) WRITE_TO(tab, " width=\"%d\"", width);
 	if (height > 0) WRITE_TO(tab, " height=\"%d\"", height);
 	HTML_OPEN_WITH("table", "%S", tab);
-	DISCARD_TEXT(tab);
+	DISCARD_TEXT(tab)
 }
 void HTML::begin_html_table_bg(OUTPUT_STREAM, char *colour, int full_width,
 	int border, int cellspacing, int cellpadding, int height, int width, char *bg) {
-	TEMPORARY_TEXT(tab);
+	TEMPORARY_TEXT(tab)
 	WRITE_TO(tab, "border=\"%d\" cellspacing=\"%d\" cellpadding=\"%d\"",
 		border, cellspacing, cellpadding);
 	if (bg) WRITE_TO(tab, " background=\"inform:/map_icons/%s\"", bg);
@@ -498,7 +498,7 @@ void HTML::begin_html_table_bg(OUTPUT_STREAM, char *colour, int full_width,
 	if (width > 0) WRITE_TO(tab, " width=\"%d\"", width);
 	if (height > 0) WRITE_TO(tab, " height=\"%d\"", height);
 	HTML_OPEN_WITH("table", "%S", tab);
-	DISCARD_TEXT(tab);
+	DISCARD_TEXT(tab)
 }
 void HTML::first_html_column(OUTPUT_STREAM, int width) {
 	HTML_OPEN("tr");
@@ -507,28 +507,28 @@ void HTML::first_html_column(OUTPUT_STREAM, int width) {
 }
 void HTML::first_html_column_nowrap(OUTPUT_STREAM, int width, char *colour) {
 	if (colour) HTML_OPEN_WITH("tr", "bgcolor=\"%s\"", colour) else HTML_OPEN("tr");
-	TEMPORARY_TEXT(col);
+	TEMPORARY_TEXT(col)
 	WRITE_TO(col, "style=\"white-space:nowrap;\" align=\"left\" valign=\"top\" height=\"20\"");
 	if (width > 0) WRITE_TO(col, " width=\"%d\"", width);
 	HTML_OPEN_WITH("td", "%S", col);
-	DISCARD_TEXT(col);
+	DISCARD_TEXT(col)
 }
 void HTML::first_html_column_spaced(OUTPUT_STREAM, int width) {
 	HTML_OPEN("tr");
-	TEMPORARY_TEXT(col);
+	TEMPORARY_TEXT(col)
 	WRITE_TO(col, "style=\"padding-top: 3px;\" align=\"left\" valign=\"top\"");
 	if (width > 0) WRITE_TO(col, " width=\"%d\"", width);
 	HTML_OPEN_WITH("td", "%S", col);
-	DISCARD_TEXT(col);
+	DISCARD_TEXT(col)
 }
 void HTML::first_html_column_coloured(OUTPUT_STREAM, int width, char *colour, int cs) {
 	if (colour) HTML_OPEN_WITH("tr", "bgcolor=\"%s\"", colour) else HTML_OPEN("tr");
-	TEMPORARY_TEXT(col);
+	TEMPORARY_TEXT(col)
 	WRITE_TO(col, "nowrap=\"nowrap\" align=\"left\" valign=\"top\"");
 	if (width > 0) WRITE_TO(col, " width=\"%d\"", width);
 	if (cs > 0) WRITE_TO(col, " colspan=\"%d\"", cs);
 	HTML_OPEN_WITH("td", "%S", col);
-	DISCARD_TEXT(col);
+	DISCARD_TEXT(col)
 }
 void HTML::next_html_column(OUTPUT_STREAM, int width) {
 	WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");

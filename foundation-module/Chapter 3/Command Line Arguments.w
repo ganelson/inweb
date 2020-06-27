@@ -191,9 +191,9 @@ void CommandLine::read_array(clf_reader_state *crs, int argc, char **argv) {
 		int switched = FALSE;
 		char *p = argv[i];
 		while (p[0] == '-') { p++; switched = TRUE; } /* allow a doubled-dash as a single */
-		TEMPORARY_TEXT(opt);
+		TEMPORARY_TEXT(opt)
 		Streams::write_locale_string(opt, p);
-		TEMPORARY_TEXT(arg);
+		TEMPORARY_TEXT(arg)
 		if (i+1 < argc) Streams::write_locale_string(arg, argv[i+1]);
 		if (switched) {
 			int N = CommandLine::read_pair(crs, opt, arg);
@@ -203,8 +203,8 @@ void CommandLine::read_array(clf_reader_state *crs, int argc, char **argv) {
 		} else {
 			CommandLine::read_one(crs, opt);
 		}
-		DISCARD_TEXT(opt);
-		DISCARD_TEXT(arg);
+		DISCARD_TEXT(opt)
+		DISCARD_TEXT(arg)
 	}
 }
 
@@ -297,8 +297,8 @@ void CommandLine::read_one(clf_reader_state *crs, text_stream *opt) {
 
 =
 int CommandLine::read_pair(clf_reader_state *crs, text_stream *opt, text_stream *arg) {
-	TEMPORARY_TEXT(opt_p);
-	TEMPORARY_TEXT(opt_val);
+	TEMPORARY_TEXT(opt_p)
+	TEMPORARY_TEXT(opt_val)
 	Str::copy(opt_p, opt);
 	int N = BOGUS_CLSN;
 	match_results mr = Regexp::create_mr();
@@ -312,8 +312,8 @@ int CommandLine::read_pair(clf_reader_state *crs, text_stream *opt, text_stream 
 		Str::copy(opt_val, mr.exp[1]);
 	}
 	int rv = CommandLine::read_pair_p(opt_p, opt_val, N, arg, crs->state, crs->f, &(crs->subs));
-	DISCARD_TEXT(opt_p);
-	DISCARD_TEXT(opt_val);
+	DISCARD_TEXT(opt_p)
+	DISCARD_TEXT(opt_val)
 	return rv;
 }
 
@@ -390,10 +390,10 @@ all other switches are delegated to the client's callback function |f|.
 
 @<Parse debugging log inclusion@> =
 	if (Log::get_debug_log_filename() == NULL) {
-		TEMPORARY_TEXT(itn);
+		TEMPORARY_TEXT(itn)
 		WRITE_TO(itn, "%s", PROGRAM_NAME);
 		filename *F = Filenames::in(Pathnames::from_text(itn), I"debug-log.txt");
-		DISCARD_TEXT(itn);
+		DISCARD_TEXT(itn)
 		Log::set_debug_log_filename(F);
 	}
 	Log::open();
@@ -456,7 +456,7 @@ void CommandLine::write_help(OUTPUT_STREAM) {
 			if (Str::len(label) > 0) WRITE("%S:\n", label);
 			new_para_needed = TRUE;
 		}
-		TEMPORARY_TEXT(line);
+		TEMPORARY_TEXT(line)
 		if (Str::len(label) > 0) WRITE_TO(line, "  ");
 		WRITE_TO(line, "-%S", cls->switch_name);
 		if (cls->form == NUMERICAL_CLSF) WRITE_TO(line, "=N");
@@ -469,7 +469,7 @@ void CommandLine::write_help(OUTPUT_STREAM) {
 		if (cls->form == BOOLEAN_OFF_CLSF)
 			WRITE_TO(line, " (default is -%S)", cls->negates->switch_name);
 		WRITE("%S\n", line);
-		DISCARD_TEXT(line);
+		DISCARD_TEXT(line)
 	}
 
 @ =

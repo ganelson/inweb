@@ -95,16 +95,16 @@ VOID_METHOD_TYPE(RENDER_FOR_MTID, weave_format *wf, text_stream *OUT, heterogene
 void Formats::render(text_stream *OUT, heterogeneous_tree *tree, filename *into) {
 	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
 	weave_format *wf = C->wv->format;
-	TEMPORARY_TEXT(template);
+	TEMPORARY_TEXT(template)
 	WRITE_TO(template, "template-body%S", wf->woven_extension);
 	filename *F = Patterns::find_template(C->wv->pattern, template);
-	TEMPORARY_TEXT(interior);
+	TEMPORARY_TEXT(interior)
 	VOID_METHOD_CALL(wf, RENDER_FOR_MTID, interior, tree);
 	Bibliographic::set_datum(C->wv->weave_web->md, I"Weave Content", interior);
 	if (F) Collater::for_order(OUT, C->wv, F, into);
 	else WRITE("%S", interior);
-	DISCARD_TEXT(interior);
-	DISCARD_TEXT(template);
+	DISCARD_TEXT(interior)
+	DISCARD_TEXT(template)
 }
 
 @ The weaver has special typographical support for the stand-alone Inform

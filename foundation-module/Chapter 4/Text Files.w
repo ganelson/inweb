@@ -113,7 +113,7 @@ values returned by |ftell| into this field.
 |0A 0D| or |0D 0A|. The final line is not required to be terminated.
 
 @<Read in lines and send them one by one to the iterator@> =
-	TEMPORARY_TEXT(line);
+	TEMPORARY_TEXT(line)
 	int i = 0, c = ' ';
 	while ((c != EOF) && (tfp.actively_scanning)) {
 		c = TextFiles::utf8_fgetc(tfp.handle_when_open, NULL, escape_oddities, &tfp.ufb);
@@ -132,7 +132,7 @@ values returned by |ftell| into this field.
 	}
 	if ((i > 0) && (tfp.actively_scanning))
 		@<Feed the completed line to the iterator routine@>;
-	DISCARD_TEXT(line);
+	DISCARD_TEXT(line)
 
 @ We update the line counter only when a line is actually sent:
 

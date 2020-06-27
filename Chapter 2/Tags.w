@@ -70,8 +70,8 @@ the tag is |History|, the caption "How tags came about".
 =
 theme_tag *Tags::add_by_name(paragraph *P, text_stream *text) {
 	if (Str::len(text) == 0) internal_error("empty tag name");
-	TEMPORARY_TEXT(name); Str::copy(name, text);
-	TEMPORARY_TEXT(caption);
+	TEMPORARY_TEXT(name) Str::copy(name, text);
+	TEMPORARY_TEXT(caption)
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, name, L"(%c+?): (%c+)")) {
 		Str::copy(name, mr.exp[0]);
@@ -79,8 +79,8 @@ theme_tag *Tags::add_by_name(paragraph *P, text_stream *text) {
 	}
 	theme_tag *tag = Tags::find_by_name(name, TRUE);
 	if (P) Tags::add_to_paragraph(P, tag, caption);
-	DISCARD_TEXT(name);
-	DISCARD_TEXT(caption);
+	DISCARD_TEXT(name)
+	DISCARD_TEXT(caption)
 	Regexp::dispose_of(&mr);
 	return tag;
 }

@@ -115,7 +115,7 @@ typedef struct weave_order {
 	if (has_content == FALSE)
 		Errors::fatal("no sections match that range");
 
-	TEMPORARY_TEXT(leafname);
+	TEMPORARY_TEXT(leafname)
 	@<Translate the subweb range into details of what to weave@>;
 	pathname *H = W->redirect_weaves_to;
 	if (H == NULL) H = into;
@@ -131,7 +131,7 @@ typedef struct weave_order {
 	} else wv->weave_to = Filenames::in(H, leafname);
 	if (Str::len(pattern->initial_extension) > 0)
 		wv->weave_to = Filenames::set_extension(wv->weave_to, pattern->initial_extension);
-	DISCARD_TEXT(leafname);
+	DISCARD_TEXT(leafname)
 
 @ From the range and the theme, we work out the weave title, the leafname,
 and details of any cover-sheet to use.
@@ -204,7 +204,7 @@ colour_scheme *Swarm::ensure_colour_scheme(weave_order *wv, text_stream *name,
 	colour_scheme *cs = Assets::find_colour_scheme(wv->pattern, name, pre);
 	if (cs == NULL) {
 		if (Str::eq(name, I"Colours")) {
-			TEMPORARY_TEXT(err);
+			TEMPORARY_TEXT(err)
 			WRITE_TO(err, "No CSS file for the colour scheme '%S' can be found", name);
 			Main::error_in_web(err, NULL);
 		} else {

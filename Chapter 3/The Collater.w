@@ -128,11 +128,11 @@ void Collater::process(text_stream *OUT, collater_state *cls) {
 	int lpos = 0; /* This is our program counter: a line number in the template */
 	while (lpos < cls->no_tlines) {
 		match_results mr = Regexp::create_mr();
-		TEMPORARY_TEXT(tl);
+		TEMPORARY_TEXT(tl)
 		Str::copy(tl, cls->tlines[lpos++]); /* Fetch the line at the program counter and advance */
 		@<Make any necessary substitutions to turn tl into final output@>;
 		WRITE("%S\n", tl); /* Copy the now finished line to the output */
-		DISCARD_TEXT(tl);
+		DISCARD_TEXT(tl)
 		CYCLE: ;
 		Regexp::dispose_of(&mr);
 	}
@@ -146,14 +146,14 @@ void Collater::process(text_stream *OUT, collater_state *cls) {
 		@<Print line and contents of repeat stack@>;
 	if ((Regexp::match(&mr, tl, L"%[%[(%c+)%]%]")) ||
 		(Regexp::match(&mr, tl, L" %[%[(%c+)%]%]"))) {
-		TEMPORARY_TEXT(command);
+		TEMPORARY_TEXT(command)
 		Str::copy(command, mr.exp[0]);
 		@<Deal with a Select command@>;
 		@<Deal with an If command@>;
 		@<Deal with an Else command@>;
 		@<Deal with a Repeat command@>;
 		@<Deal with a Repeat End command@>;
-		DISCARD_TEXT(command);
+		DISCARD_TEXT(command)
 	}
 	@<Skip line if inside a failed conditional@>;
 	@<Skip line if inside an empty loop@>;
@@ -228,13 +228,13 @@ chapter as its value during the sole iteration.
 			module *M = CONTENT_IN_ITEM(
 				Collater::heading_topmost_on_stack(cls, MODULE_LEVEL), module);
 			if (M) {
-				TEMPORARY_TEXT(url);
-				TEMPORARY_TEXT(purpose);
+				TEMPORARY_TEXT(url)
+				TEMPORARY_TEXT(purpose)
 				WRITE_TO(url, "%p", M->module_location);
 				Readme::write_var(purpose, url, I"Purpose");
 				if (Str::len(purpose) > 0) level = IF_TRUE_LEVEL;
-				DISCARD_TEXT(url);		
-				DISCARD_TEXT(purpose);		
+				DISCARD_TEXT(url)		
+				DISCARD_TEXT(purpose)		
 			}
 		} else if (Str::eq(condition, I"Chapter Purpose")) {
 			chapter *C = CONTENT_IN_ITEM(
@@ -462,12 +462,12 @@ inner one. If we did, then the value of the bibliographic variable |[[Code]]|,
 used by the HTML renderer, would cause a modest-sized explosion on some pages.
 
 @<Make substitutions of square-bracketed variables in line@> =
-	TEMPORARY_TEXT(rewritten);
+	TEMPORARY_TEXT(rewritten)
 	int slen, spos;
 	while ((spos = Regexp::find_expansion(tl, '[', '[', ']', ']', &slen)) >= 0) {
-		TEMPORARY_TEXT(varname);
-		TEMPORARY_TEXT(substituted);
-		TEMPORARY_TEXT(tail);
+		TEMPORARY_TEXT(varname)
+		TEMPORARY_TEXT(substituted)
+		TEMPORARY_TEXT(tail)
 		Str::substr(rewritten, Str::start(tl), Str::at(tl, spos));
 		Str::substr(varname, Str::at(tl, spos+2), Str::at(tl, spos+slen-2));
 		Str::substr(tail, Str::at(tl, spos+slen), Str::end(tl));
@@ -527,13 +527,13 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 		Str::clear(tl);
 		WRITE_TO(rewritten, "%S", substituted);
 		WRITE_TO(tl, "%S", tail);
-		DISCARD_TEXT(tail);
-		DISCARD_TEXT(varname);
-		DISCARD_TEXT(substituted);
+		DISCARD_TEXT(tail)
+		DISCARD_TEXT(varname)
+		DISCARD_TEXT(substituted)
 	}
 	WRITE_TO(rewritten, "%S", tl);
 	Str::clear(tl); Str::copy(tl, rewritten);
-	DISCARD_TEXT(rewritten);
+	DISCARD_TEXT(rewritten)
 
 @ This is why, for instance, |[[Author]]| is replaced by the author's name:
 
@@ -591,10 +591,10 @@ this will recursively call The Collater, in fact.
 		if (Colonies::find(M->module_name))
 			Colonies::reference_URL(substituted, M->module_name, cls->into_file);
 	} else if (Str::eq_wide_string(detail, L"Purpose")) {
-		TEMPORARY_TEXT(url);
+		TEMPORARY_TEXT(url)
 		WRITE_TO(url, "%p", M->module_location);
 		Readme::write_var(substituted, url, I"Purpose");
-		DISCARD_TEXT(url);		
+		DISCARD_TEXT(url)		
 	} else {
 		WRITE_TO(substituted, "%S for %S", varname, M->module_name);
 	}
@@ -700,16 +700,16 @@ navigation purposes.
 	Regexp::dispose_of(&mr);
 
 @<Substitute a member Item@> =
-	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(url)
 	Colonies::reference_URL(url, link_text, cls->into_file);
 	@<Substitute an item at this URL@>;
-	DISCARD_TEXT(url);
+	DISCARD_TEXT(url)
 
 @<Substitute a general Item@> =
-	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(url)
 	Colonies::link_URL(url, link_text, cls->into_file);
 	@<Substitute an item at this URL@>;
-	DISCARD_TEXT(url);
+	DISCARD_TEXT(url)
 
 @<Substitute an item at this URL@> =
 	if (cls->inside_navigation_submenu == FALSE) WRITE_TO(substituted, "<ul>");

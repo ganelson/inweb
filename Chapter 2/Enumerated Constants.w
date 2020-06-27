@@ -39,12 +39,12 @@ a further constant in what ought to be an existing set.
 =
 void Enumerations::define(OUTPUT_STREAM, text_stream *symbol,
 	text_stream *from, source_line *L) {
-	TEMPORARY_TEXT(pf);
+	TEMPORARY_TEXT(pf)
 	@<Find the postfix in this symbol name@>;
 	enumeration_set *es = Enumerations::find(pf);
 	if (from == NULL) @<Continue existing set@>
 	else @<Begin new set@>;
-	DISCARD_TEXT(pf);
+	DISCARD_TEXT(pf)
 	if (es) es->last_observed_at = L;
 }
 
@@ -95,15 +95,15 @@ the code at the last line on which an |*_ST| value was defined.
 void Enumerations::define_extents(OUTPUT_STREAM, tangle_target *target, programming_language *lang) {
 	enumeration_set *es;
 	LOOP_OVER(es, enumeration_set) {
-		TEMPORARY_TEXT(symbol);
-		TEMPORARY_TEXT(value);
+		TEMPORARY_TEXT(symbol)
+		TEMPORARY_TEXT(value)
 		WRITE_TO(symbol, "NO_DEFINED_%S_VALUES", es->postfix);
 		WRITE_TO(value, "%d", es->next_free_value - es->first_value);
 		LanguageMethods::start_definition(OUT, lang, symbol, value,
 			es->last_observed_at->owning_section, es->last_observed_at);
 		LanguageMethods::end_definition(OUT, lang,
 			es->last_observed_at->owning_section, es->last_observed_at);
-		DISCARD_TEXT(symbol);
-		DISCARD_TEXT(value);
+		DISCARD_TEXT(symbol)
+		DISCARD_TEXT(value)
 	}
 }

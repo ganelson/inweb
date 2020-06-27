@@ -415,10 +415,10 @@ void Configuration::set_range(inweb_instructions *args, text_stream *opt) {
 			string_position P = Str::start(args->chosen_range);
 			Str::put(P, toupper(Str::get(P)));
 		} else {
-			TEMPORARY_TEXT(ERM);
+			TEMPORARY_TEXT(ERM)
 			WRITE_TO(ERM, "target not recognised (see -help for more): %S", opt);
 			Main::error_in_web(ERM, NULL);
-			DISCARD_TEXT(ERM);
+			DISCARD_TEXT(ERM)
 			exit(1);
 		}
 	}

@@ -173,8 +173,8 @@ line.
 
 =
 void Pathnames::to_text_relative(OUTPUT_STREAM, pathname *P, pathname *R) {
-	TEMPORARY_TEXT(rt);
-	TEMPORARY_TEXT(pt);
+	TEMPORARY_TEXT(rt)
+	TEMPORARY_TEXT(pt)
 	WRITE_TO(rt, "%p", R);
 	WRITE_TO(pt, "%p", P);
 	int n = Str::len(pt);
@@ -182,8 +182,8 @@ void Pathnames::to_text_relative(OUTPUT_STREAM, pathname *P, pathname *R) {
 		Str::delete_n_characters(rt, n+1);
 		WRITE("%S", rt);
 	} else internal_error("pathname not relative to pathname");
-	DISCARD_TEXT(rt);
-	DISCARD_TEXT(pt);
+	DISCARD_TEXT(rt)
+	DISCARD_TEXT(pt)
 }
 
 pathname *Pathnames::up(pathname *P) {
@@ -203,26 +203,26 @@ possibly, if they are in fact the same directory, an empty one.
 
 =
 void Pathnames::relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) {
-	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(url)
 	int found = FALSE;
 	for (pathname *P = to; P && (found == FALSE); P = Pathnames::up(P)) {
-		TEMPORARY_TEXT(PT);
+		TEMPORARY_TEXT(PT)
 		WRITE_TO(PT, "%p", P);
 		int q_up_count = 0;
 		for (pathname *Q = from; Q && (found == FALSE); Q = Pathnames::up(Q)) {
-			TEMPORARY_TEXT(QT);
+			TEMPORARY_TEXT(QT)
 			WRITE_TO(QT, "%p", Q);
 			if (Str::eq(PT, QT)) {
 				for (int i=0; i<q_up_count; i++) WRITE_TO(url, "../");
-				TEMPORARY_TEXT(FPT);
+				TEMPORARY_TEXT(FPT)
 				WRITE_TO(FPT, "%p", to);
 				Str::substr(url, Str::at(FPT, Str::len(PT) + 1), Str::end(FPT));
 				found = TRUE;
 			}
-			DISCARD_TEXT(QT);
+			DISCARD_TEXT(QT)
 			q_up_count++;
 		}
-		DISCARD_TEXT(PT);
+		DISCARD_TEXT(PT)
 	}
 	if (found == FALSE) {
 		for (pathname *Q = from; Q; Q = Pathnames::up(Q)) WRITE_TO(url, "../");
@@ -230,7 +230,7 @@ void Pathnames::relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) {
 	}
 	WRITE("%S", url);
 	if ((Str::len(url) > 0) && (Str::get_last_char(url) != '/')) WRITE("/");
-	DISCARD_TEXT(url);
+	DISCARD_TEXT(url)
 }
 
 @h Existence in the file system.
@@ -242,10 +242,10 @@ int Pathnames::create_in_file_system(pathname *P) {
 	if (P == NULL) return TRUE; /* the root of the file system always exists */
 	if (P->known_to_exist) return TRUE;
 	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
-	TEMPORARY_TEXT(pn);
+	TEMPORARY_TEXT(pn)
 	WRITE_TO(pn, "%p", P);
 	Str::copy_to_locale_string(transcoded_pathname, pn, 4*MAX_FILENAME_LENGTH);
-	DISCARD_TEXT(pn);
+	DISCARD_TEXT(pn)
 	P->known_to_exist = Platform::mkdir(transcoded_pathname);
 	return P->known_to_exist;
 }
@@ -258,14 +258,14 @@ anything different which was originally in |dest|).
 =
 void Pathnames::rsync(pathname *source, pathname *dest) {
 	char transcoded_source[4*MAX_FILENAME_LENGTH];
-	TEMPORARY_TEXT(pn);
+	TEMPORARY_TEXT(pn)
 	WRITE_TO(pn, "%p", source);
 	Str::copy_to_locale_string(transcoded_source, pn, 4*MAX_FILENAME_LENGTH);
-	DISCARD_TEXT(pn);
+	DISCARD_TEXT(pn)
 	char transcoded_dest[4*MAX_FILENAME_LENGTH];
-	TEMPORARY_TEXT(pn2);
+	TEMPORARY_TEXT(pn2)
 	WRITE_TO(pn2, "%p", dest);
 	Str::copy_to_locale_string(transcoded_dest, pn2, 4*MAX_FILENAME_LENGTH);
-	DISCARD_TEXT(pn2);
+	DISCARD_TEXT(pn2)
 	Platform::rsync(transcoded_source, transcoded_dest);
 }

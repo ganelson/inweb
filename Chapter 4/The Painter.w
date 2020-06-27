@@ -39,8 +39,8 @@ int Painter::syntax_colour(programming_language *pl,
 	hash_table *HT, text_stream *matter, text_stream *colouring, int with_comments) {
 	int from = 0, to = Str::len(matter) - 1;
 	if (with_comments) {
-		TEMPORARY_TEXT(part_before_comment);
-		TEMPORARY_TEXT(part_within_comment);
+		TEMPORARY_TEXT(part_before_comment)
+		TEMPORARY_TEXT(part_within_comment)
 		if (LanguageMethods::parse_comment(pl,
 			matter, part_before_comment, part_within_comment)) {
 			int N = Str::len(matter);
@@ -48,8 +48,8 @@ int Painter::syntax_colour(programming_language *pl,
 				Str::put_at(colouring, i, COMMENT_COLOUR);
 			from = 0; to = Str::len(part_before_comment);
 		}
-		DISCARD_TEXT(part_before_comment);
-		DISCARD_TEXT(part_within_comment);
+		DISCARD_TEXT(part_before_comment)
+		DISCARD_TEXT(part_within_comment)
 	}
 	Painter::syntax_colour_inner(pl, HT, matter, colouring, from, to);
 	return FALSE;
@@ -203,7 +203,7 @@ rule across the whole snippet before moving on to the next.
 void Painter::execute(hash_table *HT, colouring_language_block *block, text_stream *matter,
 	text_stream *colouring, int from, int to, int N) {
 	if (block == NULL) internal_error("no block");
-	TEMPORARY_TEXT(colouring_at_start);
+	TEMPORARY_TEXT(colouring_at_start)
 	Str::copy(colouring_at_start, colouring);
 	colouring_rule *rule;
 	LOOP_OVER_LINKED_LIST(rule, colouring_rule, block->rules) {
@@ -275,7 +275,7 @@ void Painter::execute(hash_table *HT, colouring_language_block *block, text_stre
 			}
 		}
 	}
-	DISCARD_TEXT(colouring_at_start);
+	DISCARD_TEXT(colouring_at_start)
 }
 
 @ Rules have the form: if X, then Y.
@@ -306,10 +306,10 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 			if (rule->number != N) return FALSE;
 		}
 	} else if (rule->match_regexp_text[0]) {
-		TEMPORARY_TEXT(T);
+		TEMPORARY_TEXT(T)
 		for (int j=from; j<=to; j++) PUT_TO(T, Str::get_at(matter, j));
 		int rv = Regexp::match(&(rule->mr), T, rule->match_regexp_text);
-		DISCARD_TEXT(T);
+		DISCARD_TEXT(T)
 		if (rv == FALSE) return FALSE;
 	} else if (Str::len(rule->match_text) > 0) {
 		if ((rule->match_prefix == UNSPACED_RULE_PREFIX) ||
@@ -345,10 +345,10 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 					return FALSE;
 		}
 	} else if (rule->match_keyword_of_colour != NOT_A_COLOUR) {
-		TEMPORARY_TEXT(id);
+		TEMPORARY_TEXT(id)
 		Str::substr(id, Str::at(matter, from), Str::at(matter, to+1));
 		int rw = Analyser::is_reserved_word(HT, id, rule->match_keyword_of_colour);
-		DISCARD_TEXT(id);
+		DISCARD_TEXT(id)
 		if (rw == FALSE) return FALSE;
 	} else if (rule->match_colour != NOT_A_COLOUR) {
 		for (int i=from; i<=to; i++)
@@ -423,8 +423,8 @@ void Painter::colour_file(programming_language *pl, filename *F, text_stream *to
 	LOOP_OVER_LINKED_LIST(T, text_stream, L) {
 		if (c++ > 1) { PUT_TO(to, '\n'); PUT_TO(coloured, NEWLINE_COLOUR); }
 		Str::trim_white_space_at_end(T);
-		TEMPORARY_TEXT(ST);
-		TEMPORARY_TEXT(SC);
+		TEMPORARY_TEXT(ST)
+		TEMPORARY_TEXT(SC)
 		LOOP_THROUGH_TEXT(pos, T)
 			if (Str::get(pos) == '\t')
 				WRITE_TO(ST, "    ");

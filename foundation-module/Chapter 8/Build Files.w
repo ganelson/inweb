@@ -97,7 +97,7 @@ guaranteed to produce a semver-legal version number.
 
 =
 void BuildFiles::deduce_semver(web_md *WS) {
-	TEMPORARY_TEXT(combined);
+	TEMPORARY_TEXT(combined)
 	text_stream *s = Bibliographic::get_datum(WS, I"Semantic Version Number");
 	if (Str::len(s) > 0) WRITE_TO(combined, "%S", s);
 	else {
@@ -118,7 +118,7 @@ void BuildFiles::deduce_semver(web_md *WS) {
 			Bibliographic::set_datum(WS, I"Semantic Version Number", combined);
 		}
 	}
-	DISCARD_TEXT(combined);
+	DISCARD_TEXT(combined)
 }
 
 @h Advancing.
@@ -148,7 +148,7 @@ rewrite |dateline| to today and return |FALSE|.
 int BuildFiles::dated_today(text_stream *dateline) {
 	char *monthname[12] = { "January", "February", "March", "April", "May", "June",
 		"July", "August", "September", "October", "November", "December" };
-	TEMPORARY_TEXT(today);
+	TEMPORARY_TEXT(today)
 	WRITE_TO(today, "%d %s %d",
 		the_present->tm_mday, monthname[the_present->tm_mon], the_present->tm_year+1900);
 	int rv = TRUE;
@@ -157,7 +157,7 @@ int BuildFiles::dated_today(text_stream *dateline) {
 		Str::clear(dateline);
 		Str::copy(dateline, today);
 	}
-	DISCARD_TEXT(today);
+	DISCARD_TEXT(today)
 	return rv;
 }
 

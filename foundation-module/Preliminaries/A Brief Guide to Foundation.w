@@ -96,10 +96,10 @@ existing one. But these are permanent creations, and not easy to deallocate
 amount of memory they might be using). If you want a string just for a
 momentary period, do this:
 = (text as InC)
-	TEMPORARY_TEXT(alpha);
+	TEMPORARY_TEXT(alpha)
 	WRITE_TO(alpha, "This is temporary");
 	...
-	DISCARD_TEXT(alpha);
+	DISCARD_TEXT(alpha)
 =
 Between the use of these two macros, |alpha| is a valid |text_stream *|,
 and is a string capable of growing to arbitrary size.

@@ -412,7 +412,7 @@ will turn the |text| "goose eggs" into "g!!s! !ggs".
 
 =
 int Regexp::replace(text_stream *text, wchar_t *pattern, wchar_t *replacement, int options) {
-	TEMPORARY_TEXT(altered);
+	TEMPORARY_TEXT(altered)
 	match_results mr = Regexp::create_mr();
 	int changes = 0;
 	for (int i=0, L=Str::len(text); i<L; i++) {
@@ -445,7 +445,7 @@ int Regexp::replace(text_stream *text, wchar_t *pattern, wchar_t *replacement, i
 	}
 	Regexp::dispose_of(&mr);
 	if (changes > 0) Str::copy(text, altered);
-	DISCARD_TEXT(altered);
+	DISCARD_TEXT(altered)
 	return changes;
 }
 

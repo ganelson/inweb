@@ -156,13 +156,13 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 		if (hrs->wv->self_contained == FALSE) {
 			Colonies::write_breadcrumb(OUT, bct, I"index.html");
 			if (hrs->wv->weave_web->md->chaptered) {
-				TEMPORARY_TEXT(chapter_link);
+				TEMPORARY_TEXT(chapter_link)
 				WRITE_TO(chapter_link, "index.html#%s%S",
 					(hrs->wv->weave_web->as_ebook)?"C":"",
 					C->sect->owning_chapter->md->ch_range);
 				Colonies::write_breadcrumb(OUT,
 					C->sect->owning_chapter->md->ch_title, chapter_link);
-				DISCARD_TEXT(chapter_link);
+				DISCARD_TEXT(chapter_link)
 			}
 			Colonies::write_breadcrumb(OUT, C->sect->md->sect_title, NULL);
 		} else {
@@ -203,7 +203,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 					} else {
 						HTML_OPEN_WITH("li", "class=\"progresschapter\"");
 					}
-					TEMPORARY_TEXT(TEMP);
+					TEMPORARY_TEXT(TEMP)
 					section *S = FIRST_IN_LINKED_LIST(section, Ch->sections);
 					Colonies::section_URL(TEMP, S->md);
 					if (Ch != C->sect->owning_chapter) {
@@ -213,13 +213,13 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 					if (Ch != C->sect->owning_chapter) {
 						HTML::end_link(OUT);
 					}
-					DISCARD_TEXT(TEMP);
+					DISCARD_TEXT(TEMP)
 					HTML_CLOSE("li");
 				}
 				if (Ch == C->sect->owning_chapter) {
 					section *S;
 					LOOP_OVER_LINKED_LIST(S, section, Ch->sections) {
-						TEMPORARY_TEXT(label);
+						TEMPORARY_TEXT(label)
 						int on = FALSE;
 						LOOP_THROUGH_TEXT(pos, S->md->sect_range) {
 							if (Str::get(pos) == '/') on = TRUE;
@@ -234,15 +234,15 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 							HTML_CLOSE("li");
 						} else {
 							HTML_OPEN_WITH("li", "class=\"progresssection\"");
-							TEMPORARY_TEXT(TEMP);
+							TEMPORARY_TEXT(TEMP)
 							Colonies::section_URL(TEMP, S->md);
 							HTML::begin_link(OUT, TEMP);
 							WRITE("%S", label);
 							HTML::end_link(OUT);
-							DISCARD_TEXT(TEMP);
+							DISCARD_TEXT(TEMP)
 							HTML_CLOSE("li");		
 						}
-						DISCARD_TEXT(label);
+						DISCARD_TEXT(label)
 					}
 				}
 			}
@@ -256,23 +256,23 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 @<Insert previous arrow@> =
 	if (prev_S) HTML_OPEN_WITH("li", "class=\"progressprev\"")
 	else HTML_OPEN_WITH("li", "class=\"progressprevoff\"");
-	TEMPORARY_TEXT(TEMP);
+	TEMPORARY_TEXT(TEMP)
 	if (prev_S) Colonies::section_URL(TEMP, prev_S->md);
 	if (prev_S) HTML::begin_link(OUT, TEMP);
 	WRITE("&#10094;");
 	if (prev_S) HTML::end_link(OUT);
-	DISCARD_TEXT(TEMP);
+	DISCARD_TEXT(TEMP)
 	HTML_CLOSE("li");
 
 @<Insert next arrow@> =
 	if (next_S) HTML_OPEN_WITH("li", "class=\"progressnext\"")
 	else HTML_OPEN_WITH("li", "class=\"progressnextoff\"");
-	TEMPORARY_TEXT(TEMP);
+	TEMPORARY_TEXT(TEMP)
 	if (next_S) Colonies::section_URL(TEMP, next_S->md);
 	if (next_S) HTML::begin_link(OUT, TEMP);
 	WRITE("&#10095;");
 	if (next_S) HTML::end_link(OUT);
-	DISCARD_TEXT(TEMP);
+	DISCARD_TEXT(TEMP)
 	HTML_CLOSE("li");
 
 @<Render tail@> =
@@ -374,8 +374,8 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 		Swarm::ensure_plugin(hrs->wv, I"Downloads");
 		Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
 			hrs->wv->pattern, hrs->wv->weave_to);
-		TEMPORARY_TEXT(url);
-		TEMPORARY_TEXT(size);
+		TEMPORARY_TEXT(url)
+		TEMPORARY_TEXT(size)
 		Pathnames::relative_URL(url, Filenames::up(hrs->wv->weave_to), Filenames::up(F));
 		WRITE_TO(url, "%S", Filenames::get_leafname(F));
 		int N = Filenames::size(F);
@@ -388,8 +388,8 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 		Collater::for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern,
 			TF, hrs->into_file);
 		WRITE("\n");
-		DISCARD_TEXT(url);
-		DISCARD_TEXT(size);
+		DISCARD_TEXT(url)
+		DISCARD_TEXT(size)
 	}
 
 @<Describe the file size@> =
@@ -481,18 +481,18 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 @<Deal with a code material node@> =
 	@<If no para number yet, render a p just to hold this@>;
 	if (C->styling) {
-		TEMPORARY_TEXT(csname);
+		TEMPORARY_TEXT(csname)
 		WRITE_TO(csname, "%S-Colours", C->styling->language_name);
 		hrs->colours = Swarm::ensure_colour_scheme(hrs->wv,
 			csname, C->styling->language_name);
-		DISCARD_TEXT(csname);
+		DISCARD_TEXT(csname)
 	}
-	TEMPORARY_TEXT(cl);
+	TEMPORARY_TEXT(cl)
 	WRITE_TO(cl, "%S", hrs->colours->prefix);
 	if (C->plainly) WRITE_TO(cl, "undisplayed-code");
 	else WRITE_TO(cl, "displayed-code");
 	WRITE("<pre class=\"%S all-displayed-code code-font\">\n", cl);
-	DISCARD_TEXT(cl);
+	DISCARD_TEXT(cl)
 	@<Recurse the renderer through children nodes@>;
 	HTML_CLOSE("pre"); WRITE("\n");
 
@@ -534,10 +534,10 @@ that service uses to identify the video/audio in question.
 	text_stream *CW = I"720";
 	if (C->w > 0) { Str::clear(CW); WRITE_TO(CW, "%d", C->w); }
 	if (C->h > 0) { Str::clear(CH); WRITE_TO(CH, "%d", C->h); }
-	TEMPORARY_TEXT(embed_leaf);
+	TEMPORARY_TEXT(embed_leaf)
 	WRITE_TO(embed_leaf, "%S.html", C->service);
 	filename *F = Patterns::find_file_in_subdirectory(hrs->wv->pattern, I"Embedding", embed_leaf);
-	DISCARD_TEXT(embed_leaf);
+	DISCARD_TEXT(embed_leaf)
 	if (F == NULL) {
 		Main::error_in_web(I"This is not a supported service", hrs->wv->current_weave_line);
 	} else {
@@ -556,10 +556,10 @@ that service uses to identify the video/audio in question.
 	paragraph *P = C->pmac->defining_paragraph;
 	HTML_OPEN_WITH("span", "class=\"named-paragraph-container code-font\"");
 	if (C->defn == FALSE) {
-		TEMPORARY_TEXT(url);
+		TEMPORARY_TEXT(url)
 		Colonies::paragraph_URL(url, P, hrs->wv->weave_to);
 		HTML::begin_link_with_class(OUT, I"named-paragraph-link", url);
-		DISCARD_TEXT(url);
+		DISCARD_TEXT(url)
 	}
 	HTML_OPEN_WITH("span", "class=\"%s\"",
 		(C->defn)?"named-paragraph-defn":"named-paragraph");
@@ -855,10 +855,10 @@ that service uses to identify the video/audio in question.
 	weave_maths_node *C = RETRIEVE_POINTER_weave_maths_node(N->content);
 	text_stream *plugin_name = hrs->wv->pattern->mathematics_plugin;
 	if ((Str::len(plugin_name) == 0) || (hrs->EPUB_flag)) {
-		TEMPORARY_TEXT(R);
+		TEMPORARY_TEXT(R)
 		TeXUtilities::remove_math_mode(R, C->content);
 		HTMLFormat::escape_text(OUT, R);
-		DISCARD_TEXT(R);
+		DISCARD_TEXT(R)
 	} else {
 		Swarm::ensure_plugin(hrs->wv, plugin_name);
 		if (C->displayed) WRITE("$$"); else WRITE("\\(");

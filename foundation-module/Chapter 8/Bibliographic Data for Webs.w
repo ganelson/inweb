@@ -146,9 +146,9 @@ written to a "Capitalized Title" key. (This enables cover sheets which
 want to typeset the title in full caps to do so.)
 
 @<Also set a capitalized form@> =
-	TEMPORARY_TEXT(recapped);
+	TEMPORARY_TEXT(recapped)
 	Str::copy(recapped, val);
 	LOOP_THROUGH_TEXT(P, recapped)
 		Str::put(P, toupper(Str::get(P)));
 	Bibliographic::set_datum(Wm, I"Capitalized Title", recapped);
-	DISCARD_TEXT(recapped);
+	DISCARD_TEXT(recapped)

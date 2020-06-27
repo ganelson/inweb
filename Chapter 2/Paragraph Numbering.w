@@ -29,22 +29,22 @@ void Numbering::number_web(web *W) {
 
 @<Scan this section to see where paragraph macros are used@> =
 	for (source_line *L = S->first_line; L; L = L->next_line) {
-		TEMPORARY_TEXT(p);
+		TEMPORARY_TEXT(p)
 		Str::copy(p, L->text);
 		int mlen, mpos;
 		while ((mpos = Regexp::find_expansion(p, '@', '<', '@', '>', &mlen)) != -1) {
-			TEMPORARY_TEXT(found_macro);
+			TEMPORARY_TEXT(found_macro)
 			Str::substr(found_macro, Str::at(p, mpos+2), Str::at(p, mpos+mlen-2));
-			TEMPORARY_TEXT(original_p);
+			TEMPORARY_TEXT(original_p)
 			Str::copy(original_p, p);
 			Str::clear(p);
 			Str::substr(p, Str::at(original_p, mpos + mlen), Str::end(original_p));
-			DISCARD_TEXT(original_p);
+			DISCARD_TEXT(original_p)
 			para_macro *pmac = Macros::find_by_name(found_macro, S);
 			if (pmac) @<Add a record that the macro is used in this paragraph@>;
-			DISCARD_TEXT(found_macro);
+			DISCARD_TEXT(found_macro)
 		}
-		DISCARD_TEXT(p);
+		DISCARD_TEXT(p)
 	}
 
 @ Each macro comes with a linked list of notes about which paragraphs use

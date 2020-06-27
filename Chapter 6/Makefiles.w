@@ -284,7 +284,7 @@ void Makefiles::pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 
 @<Add pattern for file F, if not already given@> =
 	pathname *P = Filenames::up(F);
-	TEMPORARY_TEXT(leaf_pattern);
+	TEMPORARY_TEXT(leaf_pattern)
 	WRITE_TO(leaf_pattern, "%S", Pathnames::directory_name(P));
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, leaf_pattern, L"Chapter %d*")) {
@@ -293,9 +293,9 @@ void Makefiles::pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 		Str::clear(leaf_pattern); WRITE_TO(leaf_pattern, "Appendix*");
 	}
 	Regexp::dispose_of(&mr);
-	TEMPORARY_TEXT(tester);
+	TEMPORARY_TEXT(tester)
 	WRITE_TO(tester, "%p/%S/*", Pathnames::up(P), leaf_pattern);
-	DISCARD_TEXT(leaf_pattern);
+	DISCARD_TEXT(leaf_pattern)
 	Filenames::write_extension(tester, F);
 	if (Dictionaries::find(patterns_done, tester) == NULL) {
 		WRITE_TO(Dictionaries::create_text(patterns_done, tester), "got this");
@@ -306,7 +306,7 @@ void Makefiles::pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 			PUT(c);
 		}
 	}
-	DISCARD_TEXT(tester);
+	DISCARD_TEXT(tester)
 
 @ And finally, the following handles repetitions both of blocks and of spans:
 
@@ -320,7 +320,7 @@ void Makefiles::repeat(OUTPUT_STREAM, text_stream *prefix, int every_time, text_
 			((Str::eq(tag, I"all")) || (Str::eq(tag, M->module_tag)))) {
 			if ((prefix) && ((c++ > 0) || (every_time))) WRITE("%S", prefix);
 			if (matter) {
-				TEMPORARY_TEXT(line);
+				TEMPORARY_TEXT(line)
 				LOOP_THROUGH_TEXT(pos, matter) {
 					if (Str::get(pos) == '\n') {
 						if (as_lines) {
@@ -336,7 +336,7 @@ void Makefiles::repeat(OUTPUT_STREAM, text_stream *prefix, int every_time, text_
 					}
 				}
 				if (!as_lines) WRITE("%S", line);
-				DISCARD_TEXT(line);
+				DISCARD_TEXT(line)
 			}
 			if (suffix) WRITE("%S", suffix);
 		}

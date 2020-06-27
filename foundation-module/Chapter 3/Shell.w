@@ -12,17 +12,17 @@ they would need to be read in a POSIX-style environment like Cygwin.
 
 =
 void Shell::quote_path(OUTPUT_STREAM, pathname *P) {
-	TEMPORARY_TEXT(FN);
+	TEMPORARY_TEXT(FN)
 	WRITE_TO(FN, "%p", P);
 	Shell::quote_text(OUT, FN);
-	DISCARD_TEXT(FN);
+	DISCARD_TEXT(FN)
 }
 
 void Shell::quote_file(OUTPUT_STREAM, filename *F) {
-	TEMPORARY_TEXT(FN);
+	TEMPORARY_TEXT(FN)
 	WRITE_TO(FN, "%f", F);
 	Shell::quote_text(OUT, FN);
-	DISCARD_TEXT(FN);
+	DISCARD_TEXT(FN)
 }
 
 void Shell::plain(OUTPUT_STREAM, char *raw) {

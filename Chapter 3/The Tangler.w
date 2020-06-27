@@ -173,7 +173,7 @@ C compiler to think that the code which follows is also from that location.
 So we insert a fresh line marker.
 
 @<Expand a paragraph macro@> =
-	TEMPORARY_TEXT(temp);
+	TEMPORARY_TEXT(temp)
 	Str::copy(temp, original); Str::truncate(temp, mpos);
 	LanguageMethods::tangle_line(OUT, S->sect_language, temp);
 
@@ -191,11 +191,11 @@ So we insert a fresh line marker.
 		WRITE_TO(STDERR, "Macro is '%S'\n", temp);
 		LanguageMethods::comment(OUT, lang, temp); /* recover by putting macro name in comment */
 	}
-	TEMPORARY_TEXT(rest);
+	TEMPORARY_TEXT(rest)
 	Str::substr(rest, Str::at(original, mpos + mlen), Str::end(original));
 	Tangler::tangle_line(OUT, rest, S, L);
-	DISCARD_TEXT(rest);
-	DISCARD_TEXT(temp);
+	DISCARD_TEXT(rest)
+	DISCARD_TEXT(temp)
 
 @ This is a similar matter, except that it expands bibliographic data:
 = (text)
@@ -215,7 +215,7 @@ passes straight through. So |[[water]]| becomes just |[[water]]|.
 @<Expand a double-square command@> =
 	web *W = S->owning_web;
 
-	TEMPORARY_TEXT(temp);
+	TEMPORARY_TEXT(temp)
 	for (int i=0; i<spos; i++) PUT_TO(temp, Str::get_at(original, i));
 	LanguageMethods::tangle_line(OUT, S->sect_language, temp);
 
@@ -228,11 +228,11 @@ passes straight through. So |[[water]]| becomes just |[[water]]|.
 			WRITE("[[%S]]", temp);
 	}
 
-	TEMPORARY_TEXT(rest);
+	TEMPORARY_TEXT(rest)
 	Str::substr(rest, Str::at(original, spos + slen), Str::end(original));
 	Tangler::tangle_line(OUT, rest, S, L);
-	DISCARD_TEXT(rest);
-	DISCARD_TEXT(temp);
+	DISCARD_TEXT(rest)
+	DISCARD_TEXT(temp)
 
 @h Prinary target.
 The first target in a web is always the one for the main program.

@@ -172,10 +172,10 @@ void Unit::test_linked_lists(void) {
 		PRINT("%S\n", text);
 	}
 	for (int i = 1; i<17; i++) {
-		TEMPORARY_TEXT(T);
+		TEMPORARY_TEXT(T)
 		WRITE_TO(T, "S%d", i);
 		ADD_TO_LINKED_LIST(Str::duplicate(T), text_stream, test_list);
-		DISCARD_TEXT(T);
+		DISCARD_TEXT(T)
 	}
 	PRINT("List contains:\n");
 	LOOP_OVER_LINKED_LIST(text, text_stream, test_list) {

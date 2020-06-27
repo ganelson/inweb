@@ -184,10 +184,10 @@ breadcrumb_request *Colonies::request_breadcrumb(text_stream *arg) {
 void Colonies::drop_initial_breadcrumbs(OUTPUT_STREAM, filename *F, linked_list *crumbs) {
 	breadcrumb_request *BR;
 	LOOP_OVER_LINKED_LIST(BR, breadcrumb_request, crumbs) {
-		TEMPORARY_TEXT(url);
+		TEMPORARY_TEXT(url)
 		Colonies::link_URL(url, BR->breadcrumb_link, F);
 		Colonies::write_breadcrumb(OUT, BR->breadcrumb_text, url);
-		DISCARD_TEXT(url);
+		DISCARD_TEXT(url)
 	}
 }
 
@@ -260,7 +260,7 @@ module *Colonies::as_module(colony_member *CM, source_line *L, web_md *Wm) {
 	CM->loaded = WebMetadata::get_without_modules(P, F);
 
 @<Failing that, throw an error@> =
-	TEMPORARY_TEXT(err);
+	TEMPORARY_TEXT(err)
 	WRITE_TO(err, "unable to load '%S'", CM->name);
 	Main::error_in_web(err, L);
 
@@ -345,10 +345,10 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 			@<Is it the name of a function in the current web?@>;
 			@<Is it the name of a type in the current web?@>;
 		}
-		TEMPORARY_TEXT(err);
+		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "Can't find the cross-reference '%S'", text);
 		Main::error_in_web(err, L);
-		DISCARD_TEXT(err);
+		DISCARD_TEXT(err)
 		return FALSE;
 	} else if (N > 1) {
 		Main::error_in_web(I"Multiple cross-references might be meant here", L);
@@ -461,14 +461,14 @@ void Colonies::link_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
 }
 
 void Colonies::reference_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
-	TEMPORARY_TEXT(title);
-	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(title)
+	TEMPORARY_TEXT(url)
 	if (Colonies::resolve_reference_in_weave(url, title, F, link_text, NULL, NULL, NULL))
 		WRITE("%S", url);
 	else
 		PRINT("Warning: unable to resolve reference '%S' in navigation\n", link_text);
-	DISCARD_TEXT(title);
-	DISCARD_TEXT(url);
+	DISCARD_TEXT(title)
+	DISCARD_TEXT(url)
 }
 
 void Colonies::section_URL(OUTPUT_STREAM, section_md *Sm) {

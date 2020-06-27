@@ -18,10 +18,10 @@ transcoded the other way.
 =
 scan_directory *Directories::open(pathname *P) {
 	scan_directory *D = CREATE(scan_directory);
-	TEMPORARY_TEXT(pn);
+	TEMPORARY_TEXT(pn)
 	WRITE_TO(pn, "%p", P);
 	Str::copy_to_locale_string(D->directory_name_written_out, pn, 4*MAX_FILENAME_LENGTH);
-	DISCARD_TEXT(pn);
+	DISCARD_TEXT(pn)
 	D->directory_handle = Platform::opendir(D->directory_name_written_out);
 	if (D->directory_handle == NULL) return NULL;
 	return D;

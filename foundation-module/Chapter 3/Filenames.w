@@ -47,10 +47,10 @@ filename *Filenames::from_text(text_stream *path) {
 	}
 	pathname *P = NULL;
 	if (pos >= 0) {
-		TEMPORARY_TEXT(PT);
+		TEMPORARY_TEXT(PT)
 		Str::substr(PT, Str::at(path, 0), Str::at(path, pos));
 		P = Pathnames::from_text(PT);
-		DISCARD_TEXT(PT);
+		DISCARD_TEXT(PT)
 	}
 	return Filenames::primitive(path, pos+1, Str::len(path), P);
 }
@@ -89,8 +89,8 @@ void Filenames::writer(OUTPUT_STREAM, char *format_string, void *vF) {
 
 =
 void Filenames::to_text_relative(OUTPUT_STREAM, filename *F, pathname *P) {
-	TEMPORARY_TEXT(ft);
-	TEMPORARY_TEXT(pt);
+	TEMPORARY_TEXT(ft)
+	TEMPORARY_TEXT(pt)
 	WRITE_TO(ft, "%f", F);
 	WRITE_TO(pt, "%p", P);
 	int n = Str::len(pt);
@@ -98,8 +98,8 @@ void Filenames::to_text_relative(OUTPUT_STREAM, filename *F, pathname *P) {
 		Str::delete_n_characters(ft, n+1);
 		WRITE("%S", ft);
 	} else internal_error("filename not relative to pathname");
-	DISCARD_TEXT(ft);
-	DISCARD_TEXT(pt);
+	DISCARD_TEXT(ft)
+	DISCARD_TEXT(pt)
 }
 
 @h Reading off the directory.
@@ -148,7 +148,7 @@ void Filenames::write_extension(OUTPUT_STREAM, filename *F) {
 }
 
 filename *Filenames::set_extension(filename *F, text_stream *extension) {
-	TEMPORARY_TEXT(NEWLEAF);
+	TEMPORARY_TEXT(NEWLEAF)
 	LOOP_THROUGH_TEXT(pos, F->leafname) {
 		wchar_t c = Str::get(pos);
 		if (c == '.') break;
@@ -159,7 +159,7 @@ filename *Filenames::set_extension(filename *F, text_stream *extension) {
 		WRITE_TO(NEWLEAF, "%S", extension);
 	}
 	filename *N = Filenames::in(F->pathname_of_location, NEWLEAF);
-	DISCARD_TEXT(NEWLEAF);
+	DISCARD_TEXT(NEWLEAF)
 	return N;
 }
 
@@ -181,14 +181,14 @@ The following guesses the file format from its file extension:
 
 =
 int Filenames::guess_format(filename *F) {
-	TEMPORARY_TEXT(EXT);
+	TEMPORARY_TEXT(EXT)
 	Filenames::write_extension(EXT, F);
-	TEMPORARY_TEXT(NORMALISED);
+	TEMPORARY_TEXT(NORMALISED)
 	LOOP_THROUGH_TEXT(pos, EXT) {
 		wchar_t c = Str::get(pos);
 		if (c != ' ') PUT_TO(NORMALISED, Characters::tolower(c));
 	}
-	DISCARD_TEXT(EXT);
+	DISCARD_TEXT(EXT)
 
 	int verdict = FORMAT_UNRECOGNISED;
 	if (Str::eq_wide_string(NORMALISED, L".html")) verdict = FORMAT_PERHAPS_HTML;
@@ -213,7 +213,7 @@ int Filenames::guess_format(filename *F) {
 		else if (Str::get(Str::back(Str::end(NORMALISED))) == 'x')
 			verdict = FORMAT_PERHAPS_GLULX;
 	}
-	DISCARD_TEXT(NORMALISED);
+	DISCARD_TEXT(NORMALISED)
 	return verdict;
 }
 
@@ -226,19 +226,19 @@ we call |fopen|, which is the main reason for the wrapper.
 =
 FILE *Filenames::fopen(filename *F, char *usage) {
 	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
-	TEMPORARY_TEXT(FN);
+	TEMPORARY_TEXT(FN)
 	WRITE_TO(FN, "%f", F);
 	Str::copy_to_locale_string(transcoded_pathname, FN, 4*MAX_FILENAME_LENGTH);
-	DISCARD_TEXT(FN);
+	DISCARD_TEXT(FN)
 	return fopen(transcoded_pathname, usage);
 }
 
 FILE *Filenames::fopen_caseless(filename *F, char *usage) {
 	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
-	TEMPORARY_TEXT(FN);
+	TEMPORARY_TEXT(FN)
 	WRITE_TO(FN, "%f", F);
 	Str::copy_to_locale_string(transcoded_pathname, FN, 4*MAX_FILENAME_LENGTH);
-	DISCARD_TEXT(FN);
+	DISCARD_TEXT(FN)
 	return CIFilingSystem::fopen(transcoded_pathname, usage);
 }
 
@@ -250,13 +250,13 @@ when printed out.
 =
 int Filenames::eq(filename *F1, filename *F2) {
 	if (F1 == F2) return TRUE;
-	TEMPORARY_TEXT(T1);
-	TEMPORARY_TEXT(T2);
+	TEMPORARY_TEXT(T1)
+	TEMPORARY_TEXT(T2)
 	WRITE_TO(T1, "%f", F1);
 	WRITE_TO(T2, "%f", F2);
 	int rv = Str::eq(T1, T2);
-	DISCARD_TEXT(T1);
-	DISCARD_TEXT(T2);
+	DISCARD_TEXT(T1)
+	DISCARD_TEXT(T2)
 	return rv;
 }
 
@@ -265,20 +265,20 @@ int Filenames::eq(filename *F1, filename *F2) {
 =
 time_t Filenames::timestamp(filename *F) {
 	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
-	TEMPORARY_TEXT(FN);
+	TEMPORARY_TEXT(FN)
 	WRITE_TO(FN, "%f", F);
 	Str::copy_to_locale_string(transcoded_pathname, FN, 4*MAX_FILENAME_LENGTH);
 	time_t t = Platform::timestamp(transcoded_pathname);
-	DISCARD_TEXT(FN);
+	DISCARD_TEXT(FN)
 	return t;
 }
 
 int Filenames::size(filename *F) {
 	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
-	TEMPORARY_TEXT(FN);
+	TEMPORARY_TEXT(FN)
 	WRITE_TO(FN, "%f", F);
 	Str::copy_to_locale_string(transcoded_pathname, FN, 4*MAX_FILENAME_LENGTH);
 	int t = (int) Platform::size(transcoded_pathname);
-	DISCARD_TEXT(FN);
+	DISCARD_TEXT(FN)
 	return t;
 }

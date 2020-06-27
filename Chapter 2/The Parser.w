@@ -39,14 +39,14 @@ markup syntax, and trying to detect incorrect uses of one within the other.
 	int before_bar = TRUE;
 	int next_par_number = 1;
 	paragraph *current_paragraph = NULL;
-	TEMPORARY_TEXT(tag_list);
+	TEMPORARY_TEXT(tag_list)
 	for (source_line *L = S->first_line, *PL = NULL; L; PL = L, L = L->next_line) {
 		@<Apply tag list, if any@>;
 		@<Remove tag list, if any@>;
 		@<Detect implied paragraph breaks@>;
 		@<Determine category for this source line@>;
 	}
-	DISCARD_TEXT(tag_list);
+	DISCARD_TEXT(tag_list)
 	@<In version 2 syntax, construe the comment under the heading as the purpose@>;
 	@<If the section as a whole is tagged, apply that tag to each paragraph in it@>;
 	@<Work out footnote numbering for this section@>;
@@ -235,8 +235,8 @@ In version 2, this notation is never used.
 @<Parse the line as a possible Inweb command@> =
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, L->text, L"%[%[(%c+)%]%]")) {
-		TEMPORARY_TEXT(full_command);
-		TEMPORARY_TEXT(command_text);
+		TEMPORARY_TEXT(full_command)
+		TEMPORARY_TEXT(command_text)
 		Str::copy(full_command, mr.exp[0]);
 		Str::copy(command_text, mr.exp[0]);
 		L->category = COMMAND_LCAT;
@@ -264,8 +264,8 @@ In version 2, this notation is never used.
 			Main::error_in_web(I"unknown [[command]]", L);
 		}
 		L->is_commentary = TRUE;
-		DISCARD_TEXT(command_text);
-		DISCARD_TEXT(full_command);
+		DISCARD_TEXT(command_text)
+		DISCARD_TEXT(full_command)
 	}
 	Regexp::dispose_of(&mr);
 
@@ -276,7 +276,7 @@ handling. We'll call these "paragraph macros".
 	match_results mr = Regexp::create_mr();
 	if ((Str::get_first_char(L->text) == '@') && (Str::get_at(L->text, 1) == '<') &&
 		(Regexp::match(&mr, L->text, L"%c<(%c+)@> *= *"))) {
-		TEMPORARY_TEXT(para_macro_name);
+		TEMPORARY_TEXT(para_macro_name)
 		Str::copy(para_macro_name, mr.exp[0]);
 		L->category = MACRO_DEFINITION_LCAT;
 		if (current_paragraph == NULL)
@@ -288,7 +288,7 @@ handling. We'll call these "paragraph macros".
 		code_pl_for_body = NULL;
 		code_plainness_for_body = FALSE;
 		hyperlink_body = FALSE;
-		DISCARD_TEXT(para_macro_name);
+		DISCARD_TEXT(para_macro_name)
 		continue;
 	}
 	Regexp::dispose_of(&mr);
@@ -297,18 +297,18 @@ handling. We'll call these "paragraph macros".
 division in the current section.
 
 @<Parse the line as a structural marker@> =
-	TEMPORARY_TEXT(command_text);
+	TEMPORARY_TEXT(command_text)
 	Str::copy(command_text, L->text);
 	Str::delete_first_character(command_text); /* i.e., strip the at-sign from the front */
-	TEMPORARY_TEXT(remainder);
+	TEMPORARY_TEXT(remainder)
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, command_text, L"(%C*) *(%c*?)")) {
 		Str::copy(command_text, mr.exp[0]);
 		Str::copy(remainder, mr.exp[1]);
 	}
 	@<Deal with a structural marker@>;
-	DISCARD_TEXT(remainder);
-	DISCARD_TEXT(command_text);
+	DISCARD_TEXT(remainder)
+	DISCARD_TEXT(command_text)
 	Regexp::dispose_of(&mr);
 	continue;
 
@@ -658,14 +658,14 @@ enumerated sort of |@d|.
 	text_stream *from = NULL;
 	match_results mr = Regexp::create_mr();
 	L->text_operand = Str::duplicate(remainder); /* name of term defined */
-	TEMPORARY_TEXT(before);
-	TEMPORARY_TEXT(after);
+	TEMPORARY_TEXT(before)
+	TEMPORARY_TEXT(after)
 	if (LanguageMethods::parse_comment(S->sect_language, L->text_operand,
 		before, after)) {
 		Str::copy(L->text_operand, before);
 	}
-	DISCARD_TEXT(before);
-	DISCARD_TEXT(after);
+	DISCARD_TEXT(before)
+	DISCARD_TEXT(after)
 	Str::trim_white_space(L->text_operand);
 	if (Regexp::match(&mr, L->text_operand, L"(%C+) from (%c+)")) {
 		from = mr.exp[1];
@@ -853,9 +853,9 @@ typedef struct footnote {
 @<Work out footnote numbering for this paragraph@> =
 	int next_footnote_in_para = 1;
 	footnote *current_text = NULL;
-	TEMPORARY_TEXT(before);
-	TEMPORARY_TEXT(cue);
-	TEMPORARY_TEXT(after);
+	TEMPORARY_TEXT(before)
+	TEMPORARY_TEXT(cue)
+	TEMPORARY_TEXT(after)
 	for (source_line *L = P->first_line_in_paragraph;
 		((L) && (L->owning_paragraph == P)); L = L->next_line)
 		if (L->is_commentary) {
@@ -870,20 +870,20 @@ typedef struct footnote {
 			}
 			L->footnote_text = current_text;
 		}
-	DISCARD_TEXT(before);
-	DISCARD_TEXT(cue);
-	DISCARD_TEXT(after);
+	DISCARD_TEXT(before)
+	DISCARD_TEXT(cue)
+	DISCARD_TEXT(after)
 
 @<This line begins a footnote text@> =
 	L->category = FOOTNOTE_TEXT_LCAT;
 	footnote *F = CREATE(footnote);	
 	F->footnote_cue_number = Str::atoi(cue, 0);
 	if (F->footnote_cue_number != next_footnote_in_para) {
-		TEMPORARY_TEXT(err);
+		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "footnote should be numbered [%d], not [%d]",
 			next_footnote_in_para, F->footnote_cue_number);
 		Main::error_in_web(err, L);
-		DISCARD_TEXT(err);
+		DISCARD_TEXT(err)
 	}
 	next_footnote_in_para++;
 	F->footnote_text_number = next_footnote++;
@@ -911,9 +911,9 @@ int Parser::detect_footnote(web *W, text_stream *matter, text_stream *before,
 					int j = i + N1 + 1;
 					while (j < Str::len(matter)) {
 						if (Str::includes_at(matter, j, fn_off_notation)) {
-							TEMPORARY_TEXT(b);
-							TEMPORARY_TEXT(c);
-							TEMPORARY_TEXT(a);
+							TEMPORARY_TEXT(b)
+							TEMPORARY_TEXT(c)
+							TEMPORARY_TEXT(a)
 							Str::substr(b, Str::start(matter), Str::at(matter, i));
 							Str::substr(c, Str::at(matter, i + N1), Str::at(matter, j));
 							Str::substr(a, Str::at(matter, j + N2), Str::end(matter));
@@ -926,9 +926,9 @@ int Parser::detect_footnote(web *W, text_stream *matter, text_stream *before,
 								Str::clear(cue); Str::copy(cue, c);
 								Str::clear(after); Str::copy(after, a);
 							}
-							DISCARD_TEXT(b);
-							DISCARD_TEXT(c);
-							DISCARD_TEXT(a);
+							DISCARD_TEXT(b)
+							DISCARD_TEXT(c)
+							DISCARD_TEXT(a)
 							if (allow) return TRUE;
 						}
 						j++;
@@ -1005,9 +1005,9 @@ when it comes to Inweb's exit code, so they will halt a make.
 
 =
 void Parser::wrong_version(int using, source_line *L, char *feature, int need) {
-	TEMPORARY_TEXT(warning);
+	TEMPORARY_TEXT(warning)
 	WRITE_TO(warning, "%s is a feature of version %d syntax (you're using v%d)",
 		feature, need, using);
 	Main::error_in_web(warning, L);
-	DISCARD_TEXT(warning);
+	DISCARD_TEXT(warning)
 }

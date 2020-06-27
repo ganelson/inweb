@@ -87,7 +87,7 @@ called |Blah| on disc? We try four possibilities in sequence:
 
 =
 module *WebModules::find(web_md *WS, module_search *ms, text_stream *name, pathname *X) {
-	TEMPORARY_TEXT(T);
+	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "%S-module", name);
 	pathname *tries[4];
 	tries[0] = WS?(WS->path_to_web):NULL;
@@ -99,7 +99,7 @@ module *WebModules::find(web_md *WS, module_search *ms, text_stream *name, pathn
 		pathname *P = Pathnames::from_text_relative(tries[i], T);
 		if ((P) && (WebModules::exists(P))) @<Accept this directory as the module@>;
 	}
-	DISCARD_TEXT(T);
+	DISCARD_TEXT(T)
 	return NULL;
 }
 

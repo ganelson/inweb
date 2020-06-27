@@ -41,10 +41,10 @@ programming_language *Languages::find_by_name(text_stream *lname, web *W,
 
 @<Try P@> =
 	if (F == NULL) {
-		TEMPORARY_TEXT(leaf);
+		TEMPORARY_TEXT(leaf)
 		WRITE_TO(leaf, "%S.ildf", lname);
 		F = Filenames::in(P, leaf);
-		DISCARD_TEXT(leaf);
+		DISCARD_TEXT(leaf)
 		if (TextFiles::exists(F) == FALSE) F = NULL;
 	}
 
@@ -84,14 +84,14 @@ int Languages::compare_names(const void *ent1, const void *ent2) {
 void Languages::read_definitions(pathname *P) {
 	if (P == NULL) P = Languages::default_directory();
 	scan_directory *D = Directories::open(P);
-	TEMPORARY_TEXT(leafname);
+	TEMPORARY_TEXT(leafname)
 	while (Directories::next(D, leafname)) {
 		if (Str::get_last_char(leafname) != FOLDER_SEPARATOR) {
 			filename *F = Filenames::in(P, leafname);
 			Languages::read_definition(F);
 		}
 	}
-	DISCARD_TEXT(leafname);
+	DISCARD_TEXT(leafname)
 	Directories::close(D);
 }
 
@@ -367,13 +367,13 @@ runs of a given colour, or give an if-X-then-Y rule:
 				(Str::get_at(line, i) == '=') && (Str::get_at(line, i+1) == '>')) at = i;
 		}
 		if (at >= 0) {
-			TEMPORARY_TEXT(premiss);
-			TEMPORARY_TEXT(conclusion);
+			TEMPORARY_TEXT(premiss)
+			TEMPORARY_TEXT(conclusion)
 			Str::substr(premiss, Str::start(line), Str::at(line, at));
 			Str::substr(conclusion, Str::at(line, at+2), Str::end(line));
 			Languages::parse_rule(state, premiss, conclusion, tfp);
-			DISCARD_TEXT(conclusion);
-			DISCARD_TEXT(premiss);
+			DISCARD_TEXT(conclusion)
+			DISCARD_TEXT(premiss)
 		} else {
 			Errors::in_text_file("line in colouring block illegible", tfp);
 		}
@@ -682,10 +682,10 @@ text_stream *Languages::text(text_stream *T, text_file_position *tfp, int allow)
 			}
 		}
 		if ((bareword) && (spaced) && (allow == FALSE)) {
-			TEMPORARY_TEXT(err);
+			TEMPORARY_TEXT(err)
 			WRITE_TO(err, "'%S' seems to be literal text, but if so it needs double-quotation marks", T);
 			Errors::in_text_file_S(err, tfp);
-			DISCARD_TEXT(err);			
+			DISCARD_TEXT(err)			
 		}
 		if (bareword) {
 			int rw = FALSE;
@@ -713,10 +713,10 @@ text_stream *Languages::text(text_stream *T, text_file_position *tfp, int allow)
 			if (Str::eq(V, I"unquoted")) rw = TRUE;
 
 			if (rw) {
-				TEMPORARY_TEXT(err);
+				TEMPORARY_TEXT(err)
 				WRITE_TO(err, "'%S' is a reserved word, so you should put it in double-quotation marks", V);
 				Errors::in_text_file_S(err, tfp);
-				DISCARD_TEXT(err);			
+				DISCARD_TEXT(err)			
 			}
 		}
 	}

@@ -404,9 +404,9 @@ void TeX::general_heading(text_stream *OUT, weave_order *wv,
 	if (P_literal == NULL) P_literal = Str::new_from_wide_string(L"P");
 	text_stream *orn = (P)?(P->ornament):P_literal;
 	text_stream *N = (P)?(P->paragraph_number):NULL;
-	TEMPORARY_TEXT(mark);
+	TEMPORARY_TEXT(mark)
 	@<Work out the next mark to place into the TeX vertical list@>;
-	TEMPORARY_TEXT(modified);
+	TEMPORARY_TEXT(modified)
 	Str::copy(modified, heading_text);
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, modified, L"(%c*?): (%c*)")) {
@@ -419,8 +419,8 @@ void TeX::general_heading(text_stream *OUT, weave_order *wv,
 	else
 		WRITE("\\%S{%S}{%S}{%S}{\\%S}{%S}%%\n",
 			TeX_macro, N, modified, mark, orn, S->md->sect_range);
-	DISCARD_TEXT(mark);
-	DISCARD_TEXT(modified);
+	DISCARD_TEXT(mark)
+	DISCARD_TEXT(modified)
 	Regexp::dispose_of(&mr);
 }
 
@@ -620,7 +620,7 @@ int TeX::preform_document(weave_format *self, text_stream *OUT, web *W,
 	WRITE("\n");
 
 @<Weave a line from the body of the nonterminal definition@> =
-	TEMPORARY_TEXT(problem);
+	TEMPORARY_TEXT(problem)
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, matter, L"Issue (%c*?) problem"))
 		Str::copy(problem, mr.exp[0]);
@@ -643,7 +643,7 @@ int TeX::preform_document(weave_format *self, text_stream *OUT, web *W,
 		WRITE_TO(matter, "%S|\\nonterminal{%S}|%S",
 			mr.exp[0], mr.exp[1], mr.exp[2]);
 	}
-	TEMPORARY_TEXT(label);
+	TEMPORARY_TEXT(label)
 	int N = preform_production_count;
 	int L = ((N-1)%26) + 1;
 	if (N <= 26) WRITE_TO(label, "%c", 'a'+L-1);
@@ -663,6 +663,6 @@ int TeX::preform_document(weave_format *self, text_stream *OUT, web *W,
 		WRITE("}");
 	}
 	WRITE("\n");
-	DISCARD_TEXT(label);
-	DISCARD_TEXT(problem);
+	DISCARD_TEXT(label)
+	DISCARD_TEXT(problem)
 	Regexp::dispose_of(&mr);

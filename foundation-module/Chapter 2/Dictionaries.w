@@ -98,24 +98,24 @@ streams. So we also offer versions suffixed |_literal|:
 
 =
 dict_entry *Dictionaries::find_literal(dictionary *D, wchar_t *lit) {
-	TEMPORARY_TEXT(K);
+	TEMPORARY_TEXT(K)
 	WRITE_TO(K, "%w", lit);
 	dict_entry *E = Dictionaries::find(D, K);
-	DISCARD_TEXT(K);
+	DISCARD_TEXT(K)
 	return E;
 }
 dict_entry *Dictionaries::create_literal(dictionary *D, wchar_t *lit) {
-	TEMPORARY_TEXT(K);
+	TEMPORARY_TEXT(K)
 	WRITE_TO(K, "%w", lit);
 	dict_entry *E = Dictionaries::create(D, K);
-	DISCARD_TEXT(K);
+	DISCARD_TEXT(K)
 	return E;
 }
 void Dictionaries::destroy_literal(dictionary *D, wchar_t *lit) {
-	TEMPORARY_TEXT(K);
+	TEMPORARY_TEXT(K)
 	WRITE_TO(K, "%w", lit);
 	Dictionaries::destroy(D, K);
-	DISCARD_TEXT(K);
+	DISCARD_TEXT(K)
 }
 
 @ So, then, find an entry (if |change| is |0|), create it (if |+1|) or delete

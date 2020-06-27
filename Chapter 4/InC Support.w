@@ -65,12 +65,12 @@ of grammar are |PREFORM_GRAMMAR_LCAT|; but the lines of InC code inside an
 
 @<Detect and deal with Preform grammar@> =
 	int form = NOT_A_NONTERMINAL; /* one of the four values above, or a non-negative word count */
-	TEMPORARY_TEXT(pntname);
-	TEMPORARY_TEXT(header);
+	TEMPORARY_TEXT(pntname)
+	TEMPORARY_TEXT(header)
 	@<Parse a Preform nonterminal header line@>;
 	if (form != NOT_A_NONTERMINAL) @<Record a Preform nonterminal here@>;
-	DISCARD_TEXT(pntname);
-	DISCARD_TEXT(header);
+	DISCARD_TEXT(pntname)
+	DISCARD_TEXT(header)
 
 @ The keyword |internal| can be followed by an indication of the number
 of words the nonterminal will match: usually a decimal non-negative number,
@@ -251,11 +251,11 @@ are divided internally with a colon, however, as |<<structure:name>>|, then
 they have the type |structure *|.
 
 @<Detect any nonterminal variables being set on the right side of the arrow@> =
-	TEMPORARY_TEXT(to_scan); Str::copy(to_scan, AL->text_operand2);
+	TEMPORARY_TEXT(to_scan) Str::copy(to_scan, AL->text_operand2);
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, to_scan, L"%c*?<<(%P+?)>> =(%c*)")) {
-		TEMPORARY_TEXT(var_given); Str::copy(var_given, mr.exp[0]);
-		TEMPORARY_TEXT(type_given); WRITE_TO(type_given, "int");
+		TEMPORARY_TEXT(var_given) Str::copy(var_given, mr.exp[0]);
+		TEMPORARY_TEXT(type_given) WRITE_TO(type_given, "int");
 		Str::copy(to_scan, mr.exp[1]);
 		if (Regexp::match(&mr, var_given, L"(%p+):%p+")) {
 			Str::clear(type_given);
@@ -266,10 +266,10 @@ they have the type |structure *|.
 			if (Str::eq(ntv->ntv_name, var_given))
 				break;
 		if (ntv == NULL) @<This one's new, so create a new nonterminal variable@>;
-		DISCARD_TEXT(var_given);
-		DISCARD_TEXT(type_given);
+		DISCARD_TEXT(var_given)
+		DISCARD_TEXT(type_given)
 	}
-	DISCARD_TEXT(to_scan);
+	DISCARD_TEXT(to_scan)
 	Regexp::dispose_of(&mr);
 
 @ Nonterminal variables are actually just global C variables, and their C
@@ -313,7 +313,7 @@ of string literal: |I"quartz"| makes a constant text stream with the content
 	}
 
 @<This looks like an I-literal@> =
-	TEMPORARY_TEXT(lit);
+	TEMPORARY_TEXT(lit)
 	int i_was = i;
 	int ended = FALSE;
 	i += 2;
@@ -322,7 +322,7 @@ of string literal: |I"quartz"| makes a constant text stream with the content
 		PUT_TO(lit, Str::get_at(L->text, i++));
 	}
 	if (ended) @<This is definitely an I-literal@>;
-	DISCARD_TEXT(lit);
+	DISCARD_TEXT(lit)
 
 @ Each I-literal results in an instance of the following being created. The
 I-literal |I"quartz"| would have content |quartz| and identifier something
@@ -348,8 +348,8 @@ weave run; we're actually amending the code of the web.)
 	tl->tl_identifier = Str::new();
 	WRITE_TO(tl->tl_identifier, "TL_IS_%d", tl->allocation_id);
 	tl->tl_content = Str::duplicate(lit);
-	TEMPORARY_TEXT(before);
-	TEMPORARY_TEXT(after);
+	TEMPORARY_TEXT(before)
+	TEMPORARY_TEXT(after)
 	Str::copy(before, L->text);
 	Str::truncate(before, i_was);
 	Str::copy_tail(after, L->text, i+1);
@@ -357,8 +357,8 @@ weave run; we're actually amending the code of the web.)
 	WRITE_TO(L->text, "%S%S", before, tl->tl_identifier);
 	i = Str::len(L->text);
 	WRITE_TO(L->text, "%S", after);
-	DISCARD_TEXT(before);
-	DISCARD_TEXT(after);
+	DISCARD_TEXT(before)
+	DISCARD_TEXT(after)
 
 @h Tangling methods.
 Suppress the expansion of macros occurring on a line introduced by a |//|
@@ -614,7 +614,7 @@ nonterminal being parsed.)
 		if (pnt->takes_pointer_result) WRITE("*XP = ");
 		else WRITE("*X = ");
 	}
-	TEMPORARY_TEXT(expanded);
+	TEMPORARY_TEXT(expanded)
 	for (int i=0; i < Str::len(formula); i++) {
 		if ((Str::get_at(formula, i) == 'W') && (Str::get_at(formula, i+1) == 'R') &&
 			(Str::get_at(formula, i+2) == '[') &&
@@ -627,7 +627,7 @@ nonterminal being parsed.)
 		}
 	}
 	Tangler::tangle_line(OUT, expanded, AL->owning_section, AL);
-	DISCARD_TEXT(expanded);
+	DISCARD_TEXT(expanded)
 	Regexp::dispose_of(&mr);
 
 @ Going down from line level to the tangling of little excerpts of C code,
@@ -683,7 +683,7 @@ just |<<fish>>|.
 
 @<Double-angles sometimes delimit Preform variable names@> =
 	match_results mr = Regexp::create_mr();
-	TEMPORARY_TEXT(check_this);
+	TEMPORARY_TEXT(check_this)
 	Str::substr(check_this, Str::at(original, i), Str::end(original));
 	if (Regexp::match(&mr, check_this, L"<<(%P+)>>%c*")) {
 		text_stream *putative = mr.exp[0];
@@ -691,11 +691,11 @@ just |<<fish>>|.
 		if (pv_identifier) {
 			WRITE("%S", pv_identifier);
 			i += Str::len(putative) + 3;
-			DISCARD_TEXT(check_this);
+			DISCARD_TEXT(check_this)
 			continue;
 		}
 	}
-	DISCARD_TEXT(check_this);
+	DISCARD_TEXT(check_this)
 	Regexp::dispose_of(&mr);
 
 @ Similarly for nonterminals; |<k-kind>| might become |k_kind_NTM|.
@@ -715,7 +715,7 @@ and Inform doesn't cause any trouble.
 
 @<Single-angles sometimes delimit Preform nonterminal names@> =
 	match_results mr = Regexp::create_mr();
-	TEMPORARY_TEXT(check_this);
+	TEMPORARY_TEXT(check_this)
 	Str::substr(check_this, Str::at(original, i), Str::end(original));
 	if (Regexp::match(&mr, check_this, L"(<%p+>)%c*")) {
 		text_stream *putative = mr.exp[0];
@@ -735,11 +735,11 @@ and Inform doesn't cause any trouble.
 			if (fcall_pos >= 0) {
 				WRITE(", "); i++;
 			}
-			DISCARD_TEXT(check_this);
+			DISCARD_TEXT(check_this)
 			continue;
 		}
 	}
-	DISCARD_TEXT(check_this);
+	DISCARD_TEXT(check_this)
 	Regexp::dispose_of(&mr);
 
 @ We needed two little routines to find nonterminals and their variables by

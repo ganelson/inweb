@@ -32,11 +32,11 @@ void Analyser::scan_line_categories(web *W, text_stream *range) {
 }
 
 @<Trace the content and category of this source line@> =
-	TEMPORARY_TEXT(C);
+	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "%s", Lines::category_name(L->category));
 	while (Str::len(C) < 20) PUT_TO(C, '.');
 	PRINT("%07d  %S  %S\n", count++, C, L->text);
-	DISCARD_TEXT(C);
+	DISCARD_TEXT(C)
 
 @h The section catalogue.
 This provides quite a useful overview of the sections. As we'll see frequently
@@ -56,16 +56,16 @@ void Analyser::catalogue_the_sections(web *W, text_stream *range, int form) {
 	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
 		LOOP_OVER_LINKED_LIST(S, section, C->sections) {
 			if (max_range_width < Str::len(S->md->sect_range)) max_range_width = Str::len(S->md->sect_range);
-			TEMPORARY_TEXT(main_title);
+			TEMPORARY_TEXT(main_title)
 			WRITE_TO(main_title, "%S/%S", C->md->ch_basic_title, S->md->sect_title);
 			if (max_width < Str::len(main_title)) max_width = Str::len(main_title);
-			DISCARD_TEXT(main_title);
+			DISCARD_TEXT(main_title)
 		}
 	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
 		if ((Str::eq_wide_string(range, L"0")) || (Str::eq(range, C->md->ch_range))) {
 			PRINT("      -----\n");
 			LOOP_OVER_LINKED_LIST(S, section, C->sections) {
-				TEMPORARY_TEXT(main_title);
+				TEMPORARY_TEXT(main_title)
 				WRITE_TO(main_title, "%S/%S", C->md->ch_basic_title, S->md->sect_title);
 				PRINT("%4d  %S", S->sect_extent, S->md->sect_range);
 				for (int i = Str::len(S->md->sect_range); i<max_range_width+2; i++) PRINT(" ");
@@ -74,7 +74,7 @@ void Analyser::catalogue_the_sections(web *W, text_stream *range, int form) {
 				if (form != BASIC_SECTIONCAT)
 					Functions::catalogue(S, (form == FUNCTIONS_SECTIONCAT)?TRUE:FALSE);
 				PRINT("\n");
-				DISCARD_TEXT(main_title);
+				DISCARD_TEXT(main_title)
 			}
 		}
 }
@@ -210,11 +210,11 @@ void Analyser::analyse_as_code(web *W, source_line *L, text_stream *text, int ma
 		u = PREFORM_IN_CODE_USAGE;
 	if (u & mask) {
 		if (transf) u = transf;
-		TEMPORARY_TEXT(identifier_found);
+		TEMPORARY_TEXT(identifier_found)
 		for (int j = 0; start_at + j < i; j++)
 			PUT_TO(identifier_found, Str::get_at(text, start_at + j));
 		Analyser::analyse_find(W, L, identifier_found, u);
-		DISCARD_TEXT(identifier_found);
+		DISCARD_TEXT(identifier_found)
 	}
 	start_at = -1; element_follows = FALSE;
 

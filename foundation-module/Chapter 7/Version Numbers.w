@@ -145,7 +145,7 @@ semantic_version_number VersionNumbers::from_text(text_stream *T) {
 	semantic_version_number V = VersionNumbers::null();
 	int component = 0, val = -1, dots_used = 0, slashes_used = 0, count = 0;
 	int part = MMP_SEMVERPART;
-	TEMPORARY_TEXT(prerelease);
+	TEMPORARY_TEXT(prerelease)
 	LOOP_THROUGH_TEXT(pos, T) {
 		wchar_t c = Str::get(pos);
 		switch (part) {
@@ -183,7 +183,7 @@ semantic_version_number VersionNumbers::from_text(text_stream *T) {
 		}
 	}
 	if ((part == PRE_SEMVERPART) && (Str::len(prerelease) > 0)) @<Add prerelease content@>;
-	DISCARD_TEXT(prerelease);
+	DISCARD_TEXT(prerelease)
 	if ((dots_used > 0) && (slashes_used > 0)) return VersionNumbers::null();
 	if (slashes_used > 0) {
 		if (component > 1) return VersionNumbers::null();

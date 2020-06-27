@@ -77,7 +77,7 @@ the sake of an illustrative example, let's suppose that line is:
 We need to extract the element name, |val|, and make a note of it.
 
 @<Work through a line in the structure definition@> =
-	TEMPORARY_TEXT(p);
+	TEMPORARY_TEXT(p)
 	Str::copy(p, L->text);
 	Str::trim_white_space(p);
 	@<Remove C type modifiers from the front of p@>;
@@ -87,14 +87,14 @@ We need to extract the element name, |val|, and make a note of it.
 		@<Move pos past any typographical type modifiers@>;
 		if (Str::in_range(pos)) {
 			match_results mr = Regexp::create_mr();
-			TEMPORARY_TEXT(elname);
+			TEMPORARY_TEXT(elname)
 			@<Copy the element name into elname@>;
 			Functions::new_element(current_str, elname, L);
-			DISCARD_TEXT(elname);
+			DISCARD_TEXT(elname)
 			Regexp::dispose_of(&mr);
 		}
 	}
-	DISCARD_TEXT(p);
+	DISCARD_TEXT(p)
 
 @ The following reduces |unsigned long long int *val;| to just |int *val;|.
 
@@ -225,24 +225,24 @@ modern ANSI C style, not the long-deprecated late 1970s C style.
 
 @<Look for a function definition on this line@> =
 	if (!(Characters::is_space_or_tab(Str::get_first_char(L->text)))) {
-		TEMPORARY_TEXT(qualifiers);
-		TEMPORARY_TEXT(modified);
+		TEMPORARY_TEXT(qualifiers)
+		TEMPORARY_TEXT(modified)
 		Str::copy(modified, L->text);
 		@<Parse past any type modifiers@>;
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, modified, L"(%i+) (%**)(%i+)%((%c*)")) {
-			TEMPORARY_TEXT(ftype); Str::copy(ftype, mr.exp[0]);
-			TEMPORARY_TEXT(asts); Str::copy(asts, mr.exp[1]);
-			TEMPORARY_TEXT(fname); Str::copy(fname, mr.exp[2]);
-			TEMPORARY_TEXT(arguments); Str::copy(arguments, mr.exp[3]);
+			TEMPORARY_TEXT(ftype) Str::copy(ftype, mr.exp[0]);
+			TEMPORARY_TEXT(asts) Str::copy(asts, mr.exp[1]);
+			TEMPORARY_TEXT(fname) Str::copy(fname, mr.exp[2]);
+			TEMPORARY_TEXT(arguments) Str::copy(arguments, mr.exp[3]);
 			@<A function definition was found@>;
-			DISCARD_TEXT(ftype);
-			DISCARD_TEXT(asts);
-			DISCARD_TEXT(fname);
-			DISCARD_TEXT(arguments);
+			DISCARD_TEXT(ftype)
+			DISCARD_TEXT(asts)
+			DISCARD_TEXT(fname)
+			DISCARD_TEXT(arguments)
 		}
-		DISCARD_TEXT(qualifiers);
-		DISCARD_TEXT(modified);
+		DISCARD_TEXT(qualifiers)
+		DISCARD_TEXT(modified)
 		Regexp::dispose_of(&mr);
 	}
 
@@ -292,10 +292,10 @@ reach an open brace |{|.
 	int arg_lc = 1;
 	while ((AL) && (arg_lc <= MAX_ARG_LINES) && (Regexp::find_open_brace(arguments) == -1)) {
 		if (AL->next_line == NULL) {
-			TEMPORARY_TEXT(err_mess);
+			TEMPORARY_TEXT(err_mess)
 			WRITE_TO(err_mess, "Function '%S' has a malformed declaration", fname);
 			Main::error_in_web(err_mess, L);
-			DISCARD_TEXT(err_mess);
+			DISCARD_TEXT(err_mess)
 			break;
 		}
 		AL = AL->next_line;

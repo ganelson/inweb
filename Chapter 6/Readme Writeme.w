@@ -215,33 +215,33 @@ void Readme::expand_macro(write_state *ws, text_stream *OUT, macro *M, text_file
 	if (ws->stack_frame->no_pars != 1)
 		Errors::in_text_file("@version takes 1 parameter", tfp);
 	else {
-		TEMPORARY_TEXT(program);
+		TEMPORARY_TEXT(program)
 		Readme::expand_material(ws, program, ws->stack_frame->pars[0], tfp);
 		Readme::write_var(OUT, program, I"Version Number");
-		DISCARD_TEXT(program);
+		DISCARD_TEXT(program)
 	}
 
 @<Perform built-in expansion of purpose macro@> =
 	if (ws->stack_frame->no_pars != 1)
 		Errors::in_text_file("@purpose takes 1 parameter", tfp);
 	else {
-		TEMPORARY_TEXT(program);
+		TEMPORARY_TEXT(program)
 		Readme::expand_material(ws, program, ws->stack_frame->pars[0], tfp);
 		Readme::write_var(OUT, program, I"Purpose");
-		DISCARD_TEXT(program);
+		DISCARD_TEXT(program)
 	}
 
 @<Perform built-in expansion of var macro@> =
 	if (ws->stack_frame->no_pars != 2)
 		Errors::in_text_file("@var takes 2 parameters", tfp);
 	else {
-		TEMPORARY_TEXT(program);
-		TEMPORARY_TEXT(bibv);
+		TEMPORARY_TEXT(program)
+		TEMPORARY_TEXT(bibv)
 		Readme::expand_material(ws, program, ws->stack_frame->pars[0], tfp);
 		Readme::expand_material(ws, bibv, ws->stack_frame->pars[1], tfp);
 		Readme::write_var(OUT, program, bibv);
-		DISCARD_TEXT(program);
-		DISCARD_TEXT(bibv);
+		DISCARD_TEXT(program)
+		DISCARD_TEXT(bibv)
 	}
 
 @ An "asset" here is something for which we might want to write the version

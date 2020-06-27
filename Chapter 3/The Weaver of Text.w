@@ -51,15 +51,15 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 	for (int i=0; i < Str::len(matter); i++) {
 		if (Str::get_at(matter, i) == '\\') i += Str::len(code_in_comments_notation) - 1;
 		else if (Str::includes_at(matter, i, code_in_comments_notation)) {
-			TEMPORARY_TEXT(before);
+			TEMPORARY_TEXT(before)
 			Str::copy(before, matter); Str::truncate(before, i);
-			TEMPORARY_TEXT(after);
+			TEMPORARY_TEXT(after)
 			Str::substr(after, Str::at(matter,
 				i + Str::len(code_in_comments_notation)), Str::end(matter));
 			TextWeaver::commentary_r(tree, ap, before, within, in_code);
 			TextWeaver::commentary_r(tree, ap, after, (within)?FALSE:TRUE, in_code);
-			DISCARD_TEXT(before);
-			DISCARD_TEXT(after);
+			DISCARD_TEXT(before)
+			DISCARD_TEXT(after)
 			return;
 		}
 	}
@@ -68,20 +68,20 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 	for (int i=0; i < Str::len(matter); i++) {
 		if ((Str::includes_at(matter, i, I"http://")) ||
 				(Str::includes_at(matter, i, I"https://"))) {
-			TEMPORARY_TEXT(before);
+			TEMPORARY_TEXT(before)
 			Str::copy(before, matter); Str::truncate(before, i);
-			TEMPORARY_TEXT(after);
+			TEMPORARY_TEXT(after)
 			Str::substr(after, Str::at(matter, i), Str::end(matter));
 			match_results mr = Regexp::create_mr();
 			if (Regexp::match(&mr, after, L"(https*://%C+)(%c*)")) {
 				while (TextWeaver::boundary_character(FALSE, Str::get_last_char(mr.exp[0]))) {
 					wchar_t c = Str::get_last_char(mr.exp[0]);
 					Str::delete_last_character(mr.exp[0]);
-					TEMPORARY_TEXT(longer);
+					TEMPORARY_TEXT(longer)
 					WRITE_TO(longer, "%c%S", c, mr.exp[1]);
 					Str::clear(mr.exp[1]);
 					Str::copy(mr.exp[1], longer);
-					DISCARD_TEXT(longer);
+					DISCARD_TEXT(longer)
 				}
 				TextWeaver::commentary_r(tree, ap, before, within, in_code);
 				Trees::make_child(WeaveTree::url(tree, mr.exp[0], mr.exp[0], TRUE), ap);
@@ -90,8 +90,8 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 				return;
 			}
 			Regexp::dispose_of(&mr);
-			DISCARD_TEXT(before);
-			DISCARD_TEXT(after);
+			DISCARD_TEXT(before)
+			DISCARD_TEXT(after)
 		}
 	}
 
@@ -103,9 +103,9 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 			while (j < Str::len(matter)) {
 				if (Str::includes_at(matter, j, tex_notation)) {
 					int allow = FALSE;
-					TEMPORARY_TEXT(before);
-					TEMPORARY_TEXT(maths);
-					TEMPORARY_TEXT(after);
+					TEMPORARY_TEXT(before)
+					TEMPORARY_TEXT(maths)
+					TEMPORARY_TEXT(after)
 					Str::substr(before, Str::start(matter), Str::at(matter, i));
 					Str::substr(maths, Str::at(matter, i + N), Str::at(matter, j));
 					Str::substr(after, Str::at(matter, j + N), Str::end(matter));
@@ -113,9 +113,9 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 					Trees::make_child(WeaveTree::mathematics(tree, maths, display_flag), ap);
 					TextWeaver::commentary_r(tree, ap, after, within, in_code);
 					allow = TRUE;					
-					DISCARD_TEXT(before);
-					DISCARD_TEXT(maths);
-					DISCARD_TEXT(after);
+					DISCARD_TEXT(before)
+					DISCARD_TEXT(maths)
+					DISCARD_TEXT(after)
 					if (allow) return;
 				}
 				j++;
@@ -124,9 +124,9 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 	}
 
 @<Detect use of footnotes@> =
-	TEMPORARY_TEXT(before);
-	TEMPORARY_TEXT(cue);
-	TEMPORARY_TEXT(after);
+	TEMPORARY_TEXT(before)
+	TEMPORARY_TEXT(cue)
+	TEMPORARY_TEXT(after)
 	int allow = FALSE;
 	if (Parser::detect_footnote(wv->weave_web, matter, before, cue, after)) {
 		footnote *F = Parser::find_footnote_in_para(
@@ -141,9 +141,9 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 			Main::error_in_web(I"this is a cue for a missing note", wv->current_weave_line);
 		}
 	}
-	DISCARD_TEXT(before);
-	DISCARD_TEXT(cue);
-	DISCARD_TEXT(after);
+	DISCARD_TEXT(before)
+	DISCARD_TEXT(cue)
+	DISCARD_TEXT(after)
 	if (allow) return;
 
 @<Recognise cross-references@> =
@@ -158,16 +158,16 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 					(TextWeaver::boundary_character(FALSE,
 						Str::get_at(matter, j+Str::len(xref_notation))))) {
 					int allow = FALSE;
-					TEMPORARY_TEXT(before);
-					TEMPORARY_TEXT(reference);
-					TEMPORARY_TEXT(after);
+					TEMPORARY_TEXT(before)
+					TEMPORARY_TEXT(reference)
+					TEMPORARY_TEXT(after)
 					Str::substr(before, Str::start(matter), Str::at(matter, i));
 					Str::substr(reference, Str::at(matter, i + N), Str::at(matter, j));
 					Str::substr(after, Str::at(matter, j + N), Str::end(matter));
 					@<Attempt to resolve the cross-reference@>;
-					DISCARD_TEXT(before);
-					DISCARD_TEXT(reference);
-					DISCARD_TEXT(after);
+					DISCARD_TEXT(before)
+					DISCARD_TEXT(reference)
+					DISCARD_TEXT(after)
 					if (allow) return;
 				}
 				j++;
@@ -176,8 +176,8 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 	}
 
 @<Attempt to resolve the cross-reference@> =
-	TEMPORARY_TEXT(url);
-	TEMPORARY_TEXT(title);
+	TEMPORARY_TEXT(url)
+	TEMPORARY_TEXT(title)
 	int ext = FALSE;
 	if (Colonies::resolve_reference_in_weave(url, title, wv->weave_to, reference,
 		wv->weave_web->md, wv->current_weave_line, &ext)) {
@@ -186,8 +186,8 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 		TextWeaver::commentary_r(tree, ap, after, within, in_code);
 		allow = TRUE;
 	}
-	DISCARD_TEXT(url);
-	DISCARD_TEXT(title);
+	DISCARD_TEXT(url)
+	DISCARD_TEXT(title)
 
 @ This tests whether a cross-reference is allowed to begin or end: it must
 begin after and finish before a "boundary character".
@@ -216,10 +216,10 @@ void TextWeaver::commentary_fragment(heterogeneous_tree *tree, tree_node *ap,
 void TextWeaver::inline_code_fragment(heterogeneous_tree *tree, tree_node *ap, text_stream *fragment) {
 	tree_node *I = WeaveTree::inline(tree);
 	Trees::make_child(I, ap);
-	TEMPORARY_TEXT(colouring);
+	TEMPORARY_TEXT(colouring)
 	for (int i=0; i< Str::len(fragment); i++) PUT_TO(colouring, EXTRACT_COLOUR);
 	tree_node *SC = WeaveTree::source_code(tree, fragment, colouring);
-	DISCARD_TEXT(colouring);
+	DISCARD_TEXT(colouring)
 	Trees::make_child(SC, I);
 }
 
@@ -242,14 +242,14 @@ void TextWeaver::source_code(heterogeneous_tree *tree, tree_node *ap,
 		}
 		if ((Str::get_at(colouring, i) == FUNCTION_COLOUR) &&
 			(wv->current_weave_line->category != TEXT_EXTRACT_LCAT)) {
-			TEMPORARY_TEXT(fname);
+			TEMPORARY_TEXT(fname)
 			int j = i;
 			while (Str::get_at(colouring, j) == FUNCTION_COLOUR)
 				PUT_TO(fname, Str::get_at(matter, j++));
 			if (Analyser::is_reserved_word_for_section(
 				wv->current_weave_line->owning_section, fname, FUNCTION_COLOUR))
 				@<Spot the function@>;
-			DISCARD_TEXT(fname);
+			DISCARD_TEXT(fname)
 		}
 
 	}
@@ -260,7 +260,7 @@ void TextWeaver::source_code(heterogeneous_tree *tree, tree_node *ap,
 @<Pick up hyperlinking at the eleventh hour@> =
 	if ((Str::includes_at(matter, i, I"http://")) ||
 		(Str::includes_at(matter, i, I"https://"))) {
-		TEMPORARY_TEXT(after);
+		TEMPORARY_TEXT(after)
 		Str::substr(after, Str::at(matter, i), Str::end(matter));
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, after, L"(https*://%C+)(%c*)")) {
@@ -270,7 +270,7 @@ void TextWeaver::source_code(heterogeneous_tree *tree, tree_node *ap,
 			i += Str::len(mr.exp[0]);
 			from = i;
 		}
-		DISCARD_TEXT(after);
+		DISCARD_TEXT(after)
 	}
 
 @<Pick up cross-references at the eleventh hour@> =
@@ -279,10 +279,10 @@ void TextWeaver::source_code(heterogeneous_tree *tree, tree_node *ap,
 		int j = i + N+1;
 		while (j < Str::len(matter)) {
 			if (Str::includes_at(matter, j, xref_notation)) {
-				TEMPORARY_TEXT(reference);
+				TEMPORARY_TEXT(reference)
 				Str::substr(reference, Str::at(matter, i + N), Str::at(matter, j));
 				@<Attempt to resolve the cross-reference at the eleventh hour@>;
-				DISCARD_TEXT(reference);
+				DISCARD_TEXT(reference)
 				break;
 			}
 			j++;
@@ -290,8 +290,8 @@ void TextWeaver::source_code(heterogeneous_tree *tree, tree_node *ap,
 	}
 
 @<Attempt to resolve the cross-reference at the eleventh hour@> =
-	TEMPORARY_TEXT(url);
-	TEMPORARY_TEXT(title);
+	TEMPORARY_TEXT(url)
+	TEMPORARY_TEXT(title)
 	int ext = FALSE;
 	if (Colonies::resolve_reference_in_weave(url, title, wv->weave_to, reference,
 		wv->weave_web->md, wv->current_weave_line, &ext)) {
@@ -301,8 +301,8 @@ void TextWeaver::source_code(heterogeneous_tree *tree, tree_node *ap,
 		i = j + N;
 		from = i;
 	}
-	DISCARD_TEXT(url);
-	DISCARD_TEXT(title);
+	DISCARD_TEXT(url)
+	DISCARD_TEXT(title)
 
 @<Spot the function@> =
 	language_function *fn = Analyser::get_function(
@@ -334,13 +334,13 @@ void TextWeaver::source_code(heterogeneous_tree *tree, tree_node *ap,
 void TextWeaver::source_code_piece(heterogeneous_tree *tree, tree_node *ap,
 	text_stream *matter, text_stream *colouring, int from, int to) {
 	if (to > from) {
-		TEMPORARY_TEXT(m);
-		TEMPORARY_TEXT(c);
+		TEMPORARY_TEXT(m)
+		TEMPORARY_TEXT(c)
 		Str::substr(m, Str::at(matter, from), Str::at(matter, to));
 		Str::substr(c, Str::at(colouring, from), Str::at(colouring, to));
 		tree_node *SC = WeaveTree::source_code(tree, m, c);
 		Trees::make_child(SC, ap);
-		DISCARD_TEXT(m);
-		DISCARD_TEXT(c);
+		DISCARD_TEXT(m)
+		DISCARD_TEXT(c)
 	}
 }

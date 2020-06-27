@@ -46,11 +46,11 @@ colour_scheme *Assets::find_colour_scheme(weave_pattern *pattern,
 	LOOP_OVER(cs, colour_scheme)
 		if (Str::eq_insensitive(cs->scheme_name, name))
 			return cs;
-	TEMPORARY_TEXT(css);
+	TEMPORARY_TEXT(css)
 	WRITE_TO(css, "%S.css", name);
 	filename *F = Patterns::find_file_in_subdirectory(pattern, I"Colouring", css);
 	if (F == NULL) F = Patterns::find_file_in_subdirectory(pattern, I"Coloring", css);
-	DISCARD_TEXT(css);
+	DISCARD_TEXT(css)
 	if (F == NULL) return NULL;
 	cs = CREATE(colour_scheme);
 	cs->scheme_name = Str::duplicate(name);
@@ -102,7 +102,7 @@ void Assets::include_plugin(OUTPUT_STREAM, web *W, weave_plugin *wp,
 		pathname *P = Pathnames::down(p->pattern_location, wp->plugin_name);
 		scan_directory *D = Directories::open(P);
 		if (D) {
-			TEMPORARY_TEXT(leafname);
+			TEMPORARY_TEXT(leafname)
 			while (Directories::next(D, leafname)) {
 				if ((Str::get_last_char(leafname) != FOLDER_SEPARATOR) &&
 					(Str::get_first_char(leafname) != '.')) {
@@ -114,12 +114,12 @@ void Assets::include_plugin(OUTPUT_STREAM, web *W, weave_plugin *wp,
 					}
 				}
 			}
-			DISCARD_TEXT(leafname);
+			DISCARD_TEXT(leafname)
 			Directories::close(D);	
 		}
 	}
 	if (finds == 0) {
-		TEMPORARY_TEXT(err);
+		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "The plugin '%S' is not supported", wp->plugin_name);
 		Main::error_in_web(err, NULL);
 	}
@@ -137,20 +137,20 @@ void Assets::include_colour_scheme(OUTPUT_STREAM, web *W, colour_scheme *cs,
 	if (cs->last_included_in_round == current_inclusion_round) return;
 	cs->last_included_in_round = current_inclusion_round;
 	if (verbose_mode) PRINT("Include colour scheme '%S'\n", cs->scheme_name);
-	TEMPORARY_TEXT(css);
+	TEMPORARY_TEXT(css)
 	WRITE_TO(css, "%S.css", cs->scheme_name);
 	filename *F = Patterns::find_file_in_subdirectory(pattern, I"Colouring", css);
 	if (F == NULL) F = Patterns::find_file_in_subdirectory(pattern, I"Coloring", css);
 	if (F == NULL) {
-		TEMPORARY_TEXT(err);
+		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "No CSS file for the colour scheme '%S' can be found",
 			cs->scheme_name);
 		Main::error_in_web(err, NULL);
-		DISCARD_TEXT(err);
+		DISCARD_TEXT(err)
 	} else {
 		Assets::include_asset(OUT, NULL, W, F, cs->prefix, pattern, from);
 	}
-	DISCARD_TEXT(css);
+	DISCARD_TEXT(css)
 }
 
 @h Asset rules lists.
@@ -250,7 +250,7 @@ then the topmost one applies; and otherwise the default rule applies.
 
 =
 asset_rule *Assets::applicable_rule(weave_pattern *pattern, filename *F) {
-	TEMPORARY_TEXT(ext);
+	TEMPORARY_TEXT(ext)
 	Filenames::write_extension(ext, F);
 	for (weave_pattern *p = pattern; p; p = p->based_on) {
 		asset_rule *R;
@@ -274,7 +274,7 @@ at filename |F|, and we now know how to find the applicable rule.
 void Assets::include_asset(OUTPUT_STREAM, asset_rule *R, web *W, filename *F,
 	text_stream *trans, weave_pattern *pattern, filename *from) {
 	if (R == NULL) R = Assets::applicable_rule(pattern, F);
-	TEMPORARY_TEXT(url);
+	TEMPORARY_TEXT(url)
 	pathname *AP = Colonies::assets_path();
 	if (AP) Pathnames::relative_URL(url, Filenames::up(from), AP);
 	WRITE_TO(url, "%S", Filenames::get_leafname(F));
@@ -287,7 +287,7 @@ void Assets::include_asset(OUTPUT_STREAM, asset_rule *R, web *W, filename *F,
 		case COLLATE_ASSET_METHOD: @<Collate asset@>; break;
 	}
 	if (Str::len(R->post) > 0) @<Embed the suffix, if any@>;
-	DISCARD_TEXT(url);
+	DISCARD_TEXT(url)
 }
 
 @<Embed the prefix, if any@> =
@@ -357,7 +357,7 @@ void Assets::transformer(text_stream *line, text_file_position *tfp, void *X) {
 	css_file_transformation *cft = (css_file_transformation *) X;
 	text_stream *OUT = cft->OUT;
 	match_results mr = Regexp::create_mr();
-	TEMPORARY_TEXT(spanned);
+	TEMPORARY_TEXT(spanned)
 	while (Regexp::match(&mr, line, L"(%c*?span.)(%i+)(%c*?)")) {
 		WRITE_TO(spanned, "%S%S%S", mr.exp[0], cft->trans, mr.exp[1]);
 		Str::clear(line); Str::copy(line, mr.exp[2]);
@@ -368,6 +368,6 @@ void Assets::transformer(text_stream *line, text_file_position *tfp, void *X) {
 		Str::clear(spanned); Str::copy(spanned, mr.exp[2]);
 	}
 	WRITE("%S", spanned);
-	DISCARD_TEXT(spanned);
+	DISCARD_TEXT(spanned)
 	Regexp::dispose_of(&mr);
 }

@@ -209,7 +209,7 @@ void Patterns::post_process(weave_pattern *pattern, weave_order *wv) {
 	text_stream *T;
 	LOOP_OVER_LINKED_LIST(T, text_stream, pattern->post_commands) {
 		filename *last_F = NULL;
-		TEMPORARY_TEXT(cmd);
+		TEMPORARY_TEXT(cmd)
 		for (int i=0; i<Str::len(T); i++) {
 			if (Str::includes_at(T, i, I"WOVENPATH")) {
 				Shell::quote_path(cmd, Filenames::up(wv->weave_to));
@@ -219,11 +219,11 @@ void Patterns::post_process(weave_pattern *pattern, weave_order *wv) {
 				i += 5;
 				if (Str::get_at(T, i) == '.') {
 					i++;
-					TEMPORARY_TEXT(ext);
+					TEMPORARY_TEXT(ext)
 					while (Characters::isalpha(Str::get_at(T, i)))
 						PUT_TO(ext,Str::get_at(T, i++));
 					W = Filenames::set_extension(W, ext);
-					DISCARD_TEXT(ext);
+					DISCARD_TEXT(ext)
 				}
 				Shell::quote_file(cmd, W);
 				last_F = W;
@@ -237,7 +237,7 @@ void Patterns::post_process(weave_pattern *pattern, weave_order *wv) {
 			int rv = Shell::run(cmd);
 			if (rv != 0) Errors::fatal("post-processing command failed");
 		}
-		DISCARD_TEXT(cmd);
+		DISCARD_TEXT(cmd)
 	}
 }
 

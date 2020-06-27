@@ -170,7 +170,7 @@ part of the function structure. We'll need it when predeclaring the function.
 		declared_namespace = I"Main::";
 	if ((Str::ne(declared_namespace, ambient_namespace)) &&
 		(L->owning_paragraph->placed_very_early == FALSE)) {
-		TEMPORARY_TEXT(err_mess);
+		TEMPORARY_TEXT(err_mess)
 		if (Str::len(declared_namespace) == 0)
 			WRITE_TO(err_mess, "Function '%S' should have namespace prefix '%S'",
 				fname, ambient_namespace);
@@ -181,7 +181,7 @@ part of the function structure. We'll need it when predeclaring the function.
 			WRITE_TO(err_mess, "Function '%S' declared in a section with the wrong namespace '%S'",
 				fname, ambient_namespace);
 		Main::error_in_web(err_mess, L);
-		DISCARD_TEXT(err_mess);
+		DISCARD_TEXT(err_mess)
 	}
 	Regexp::dispose_of(&mr);
 

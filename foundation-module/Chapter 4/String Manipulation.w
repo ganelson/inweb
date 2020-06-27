@@ -287,24 +287,24 @@ int Str::remove_indentation(text_stream *S, int spaces_per_tab) {
 		Str::delete_first_character(S);
 	}
 	if (spaces_in > 0) {
-		TEMPORARY_TEXT(respaced);
+		TEMPORARY_TEXT(respaced)
 		while (spaces_in > 0) { PUT_TO(respaced, ' '); spaces_in--; }
 		WRITE_TO(respaced, "%S", S);
 		Str::clear(S);
 		Str::copy(S, respaced);
-		DISCARD_TEXT(respaced);
+		DISCARD_TEXT(respaced)
 	}
 	return tab_stops_of_indentation;
 }
 
 void Str::rectify_indentation(text_stream *S, int spaces_per_tab) {
-	TEMPORARY_TEXT(tail);
+	TEMPORARY_TEXT(tail)
 	WRITE_TO(tail, "%S", S);
 	int N = Str::remove_indentation(tail, spaces_per_tab);
 	Str::clear(S);
 	for (int i=0; i<N; i++) for (int j=0; j<spaces_per_tab; j++) PUT_TO(S, ' ');
 	WRITE_TO(S, "%S", tail);
-	DISCARD_TEXT(tail);
+	DISCARD_TEXT(tail)
 }
 
 @h Copying.

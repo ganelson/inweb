@@ -135,14 +135,14 @@ void Main::follow_instructions(inweb_instructions *ins) {
 
 @<Test a language@> =
 	if ((ins->test_language_setting) && (ins->test_language_on_setting)) {
-		TEMPORARY_TEXT(matter);
-		TEMPORARY_TEXT(coloured);
+		TEMPORARY_TEXT(matter)
+		TEMPORARY_TEXT(coloured)
 		Painter::colour_file(ins->test_language_setting, ins->test_language_on_setting,
 			matter, coloured);
 		PRINT("Test of colouring for language %S:\n%S\n%S\n",
 			ins->test_language_setting->language_name, matter, coloured);
-		DISCARD_TEXT(matter);
-		DISCARD_TEXT(coloured);
+		DISCARD_TEXT(matter)
+		DISCARD_TEXT(coloured)
 	} else {
 		Errors::fatal("-test-language and -test-language-on must both be given");
 	}
@@ -191,7 +191,7 @@ the filename of the tangled code to write. This may have been set at the command
 line , but otherwise we impose a sensible choice based on the target.
 
 @<Tangle the web@> =
-	TEMPORARY_TEXT(tangle_leaf);
+	TEMPORARY_TEXT(tangle_leaf)
 	tangle_target *tn = NULL;
 	if (Str::eq_wide_string(ins->chosen_range, L"0")) {
 		@<Work out main tangle destination@>;
@@ -208,7 +208,7 @@ line , but otherwise we impose a sensible choice based on the target.
 	}
 	if (tn == NULL) tn = Tangler::primary_target(W);
 	Tangler::tangle(W, tn, tangle_to);
-	DISCARD_TEXT(tangle_leaf);
+	DISCARD_TEXT(tangle_leaf)
 
 @ Here the target number is 0, and the tangle is of the main part of the web,
 which for many small webs will be the entire thing.

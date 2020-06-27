@@ -131,11 +131,11 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I,
 }
 
 @<Write the Inweb Version bibliographic datum@> =
-	TEMPORARY_TEXT(IB);
+	TEMPORARY_TEXT(IB)
 	WRITE_TO(IB, "[[Version Number]]");
 	web_bibliographic_datum *bd = Bibliographic::set_datum(W->md, I"Inweb Version", IB);
 	bd->declaration_permitted = FALSE;
-	DISCARD_TEXT(IB);
+	DISCARD_TEXT(IB)
 
 @<Initialise the rest of the web structure@> =
 	W->chapters = NEW_LINKED_LIST(chapter);
@@ -238,14 +238,14 @@ void Reader::read_file(web *W, chapter *C, filename *F, text_stream *titling_lin
 
 @<Insert an implied chapter heading@> =
 	S->owning_chapter->titling_line_inserted = TRUE;
-	TEMPORARY_TEXT(line);
+	TEMPORARY_TEXT(line)
 	text_file_position *tfp = NULL;
 	WRITE_TO(line, "Chapter Heading");
 	@<Accept this as a line belonging to this section and chapter@>;
-	DISCARD_TEXT(line);
+	DISCARD_TEXT(line)
 
 @<Insert an implied section heading, for a single-file web@> =
-	TEMPORARY_TEXT(line);
+	TEMPORARY_TEXT(line)
 	text_file_position *tfp = NULL;
 	WRITE_TO(line, "Main.");
 	@<Accept this as a line belonging to this section and chapter@>;
@@ -259,7 +259,7 @@ void Reader::read_file(web *W, chapter *C, filename *F, text_stream *titling_lin
 		Str::clear(line);
 		@<Accept this as a line belonging to this section and chapter@>;
 	}
-	DISCARD_TEXT(line);
+	DISCARD_TEXT(line)
 
 @ Non-implied source lines come from here. Note that we assume here that
 trailing whitespace on a line is not significant in the language being
@@ -344,10 +344,10 @@ section *Reader::section_by_filename(web *W, text_stream *filename) {
 	if (W)
 		LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
 			LOOP_OVER_LINKED_LIST(S, section, C->sections) {
-				TEMPORARY_TEXT(SFN);
+				TEMPORARY_TEXT(SFN)
 				WRITE_TO(SFN, "%f", S->md->source_file_for_section);
 				int rv = Str::eq(SFN, filename);
-				DISCARD_TEXT(SFN);
+				DISCARD_TEXT(SFN)
 				if (rv) return S;
 			}
 	return NULL;
