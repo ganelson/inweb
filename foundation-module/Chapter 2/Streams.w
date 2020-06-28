@@ -437,8 +437,6 @@ reasons, so again we return a success code.
 
 =
 int Streams::open_to_memory(text_stream *stream, int capacity) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	capacity += SPACE_AT_END_OF_STREAM;
 	Streams::initialise(stream, FOR_OM_STRF);
@@ -447,7 +445,6 @@ int Streams::open_to_memory(text_stream *stream, int capacity) {
 	(stream->write_to_memory)[0] = 0;
 	stream->stream_flags |= MALLOCED_STRF;
 	stream->chars_capacity = capacity;
-	UNLOCK_MUTEX(mutex);
 	return TRUE;
 }
 

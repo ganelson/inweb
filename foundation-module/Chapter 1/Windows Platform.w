@@ -241,5 +241,7 @@ off_t Platform::size(char *transcoded_filename) {
 
 @d CREATE_MUTEX(name)
 	static LPCRITICAL_SECTION name = 0; if (name == 0) { name = malloc(sizeof (CRITICAL_SECTION)); InitializeCriticalSection(name); }
-@d LOCK_MUTEX(name) EnterCriticalSection(name)
+@d GLOBAL_MUTEX(name)
+	static LPCRITICAL_SECTION name = 0;
+@d LOCK_MUTEX(name) if (name == 0) { name = malloc(sizeof (CRITICAL_SECTION)); InitializeCriticalSection(name); } EnterCriticalSection(name)
 @d UNLOCK_MUTEX(name) LeaveCriticalSection(name)

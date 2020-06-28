@@ -258,6 +258,10 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
     	static pthread_mutex_t name = PTHREAD_MUTEX_INITIALIZER;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
+#define GLOBAL_MUTEX(name) \
+    	static pthread_mutex_t name = PTHREAD_MUTEX_INITIALIZER;
+#endif /* PLATFORM_POSIX */
+#ifdef PLATFORM_POSIX
 #define LOCK_MUTEX(name) pthread_mutex_lock(&name);
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
@@ -292,7 +296,11 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
     	static LPCRITICAL_SECTION name = 0; if (name == 0) { name = malloc(sizeof (CRITICAL_SECTION)); InitializeCriticalSection(name); }
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#define LOCK_MUTEX(name) EnterCriticalSection(name)
+#define GLOBAL_MUTEX(name) \
+    	static LPCRITICAL_SECTION name = 0;
+#endif /* PLATFORM_WINDOWS */
+#ifdef PLATFORM_WINDOWS
+#define LOCK_MUTEX(name) if (name == 0) { name = malloc(sizeof (CRITICAL_SECTION)); InitializeCriticalSection(name); } EnterCriticalSection(name)
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
 #define UNLOCK_MUTEX(name) LeaveCriticalSection(name)
@@ -331,23 +339,21 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 #define DECLARE_CLASS_WITH_ID(type_name, id_name)\
     MAKE_REFERENCE_ROUTINES(type_name, id_name)\
     type_name *allocate_##type_name(void) {\
-    	CREATE_MUTEX(mutex);\
-    	LOCK_MUTEX(mutex);\
+    	LOCK_MUTEX(memory_single_allocation_mutex);\
     	alloc_status[id_name].name_of_type = #type_name;\
     	type_name *prev_obj = LAST_OBJECT(type_name);\
-    	type_name *new_obj = NEW_OBJECT(type_name);\
+    	type_name *new_obj = Memory__allocate(type_name##_CLASS, sizeof(type_name));\
     	new_obj->allocation_id = alloc_status[id_name].objects_allocated-1;\
     	new_obj->next_structure = NULL;\
     	if (prev_obj != NULL)\
     		prev_obj->next_structure = (void *) new_obj;\
     	new_obj->prev_structure = prev_obj;\
     	alloc_status[id_name].objects_count++;\
-    	UNLOCK_MUTEX(mutex);\
+    	UNLOCK_MUTEX(memory_single_allocation_mutex);\
     	return new_obj;\
     }\
     void deallocate_##type_name(type_name *kill_me) {\
-    	CREATE_MUTEX(mutex);\
-    	LOCK_MUTEX(mutex);\
+    	LOCK_MUTEX(memory_single_allocation_mutex);\
     	type_name *prev_obj = PREV_OBJECT(kill_me, type_name);\
     	type_name *next_obj = NEXT_OBJECT(kill_me, type_name);\
     	if (prev_obj == NULL) {\
@@ -361,11 +367,10 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
     		next_obj->prev_structure = prev_obj;\
     	}\
     	alloc_status[id_name].objects_count--;\
-    	UNLOCK_MUTEX(mutex);\
+    	UNLOCK_MUTEX(memory_single_allocation_mutex);\
     }\
     type_name *allocate_##type_name##_before(type_name *existing) {\
-    	CREATE_MUTEX(mutex);\
-    	LOCK_MUTEX(mutex);\
+    	LOCK_MUTEX(memory_single_allocation_mutex);\
     	type_name *new_obj = allocate_##type_name();\
     	deallocate_##type_name(new_obj);\
     	new_obj->prev_structure = existing->prev_structure;\
@@ -375,12 +380,11 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
     	new_obj->next_structure = existing;\
     	existing->prev_structure = new_obj;\
     	alloc_status[id_name].objects_count++;\
-    	UNLOCK_MUTEX(mutex);\
+    	UNLOCK_MUTEX(memory_single_allocation_mutex);\
     	return new_obj;\
     }\
     void copy_##type_name(type_name *to, type_name *from) {\
-    	CREATE_MUTEX(mutex);\
-    	LOCK_MUTEX(mutex);\
+    	LOCK_MUTEX(memory_single_allocation_mutex);\
     	type_name *prev_obj = to->prev_structure;\
     	type_name *next_obj = to->next_structure;\
     	int aid = to->allocation_id;\
@@ -388,7 +392,7 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
     	to->allocation_id = aid;\
     	to->next_structure = next_obj;\
     	to->prev_structure = prev_obj;\
-    	UNLOCK_MUTEX(mutex);\
+    	UNLOCK_MUTEX(memory_single_allocation_mutex);\
     }
 #define DECLARE_CLASS_ALLOCATED_IN_ARRAYS(type_name, NO_TO_ALLOCATE_TOGETHER)\
     MAKE_REFERENCE_ROUTINES(type_name, type_name##_CLASS)\
@@ -401,17 +405,16 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
     DECLARE_CLASS_WITH_ID(type_name##_array, type_name##_CLASS)\
     type_name##_array *next_##type_name##_array = NULL;\
     struct type_name *allocate_##type_name(void) {\
-    	CREATE_MUTEX(mutex);\
-    	LOCK_MUTEX(mutex);\
+    	LOCK_MUTEX(memory_array_allocation_mutex);\
     	if ((next_##type_name##_array == NULL) ||\
     		(next_##type_name##_array->used >= NO_TO_ALLOCATE_TOGETHER)) {\
     		alloc_status[type_name##_array_CLASS].no_allocated_together = NO_TO_ALLOCATE_TOGETHER;\
     		next_##type_name##_array = allocate_##type_name##_array();\
     		next_##type_name##_array->used = 0;\
     	}\
-    	UNLOCK_MUTEX(mutex);\
-    	return &(next_##type_name##_array->array[\
-    		next_##type_name##_array->used++]);\
+    	type_name *rv = &(next_##type_name##_array->array[next_##type_name##_array->used++]);\
+    	UNLOCK_MUTEX(memory_array_allocation_mutex);\
+    	return rv;\
     }
 #define STREAM_MREASON 0
 #define FILENAME_STORAGE_MREASON 1
@@ -1030,14 +1033,14 @@ typedef struct memblock_header {
 	struct memblock_header *next;
 	char *the_memory;
 } memblock_header;
-#line 222 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 226 "inweb/foundation-module/Chapter 2/Memory.w"
 typedef struct memory_frame {
 	int integrity_check; /* this should always contain the |INTEGRITY_NUMBER| */
 	struct memory_frame *next_frame; /* next frame in the list of memory frames */
 	int mem_type; /* type of object stored in this frame */
 	int allocation_id; /* allocation ID number of object stored in this frame */
 } memory_frame;
-#line 758 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 752 "inweb/foundation-module/Chapter 2/Memory.w"
 typedef struct general_pointer {
 	void *pointer_to_data;
 	int run_time_type_code;
@@ -2506,45 +2509,45 @@ void  Log__show_debugging_settings_with_state(int state) ;
 void  Log__show_debugging_contents(void) ;
 #line 78 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__start(void) ;
-#line 156 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 160 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__allocate_another_block(void) ;
-#line 201 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 205 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__free(void) ;
-#line 246 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 250 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__check_memory_integrity(void) ;
-#line 257 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 261 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__debug_memory_frames(int from, int to) ;
-#line 274 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 278 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__allocate(int mem_type, int extent) ;
-#line 485 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 479 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__name_fundamental_reasons(void) ;
-#line 498 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 492 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__reason_name(int r, char *reason) ;
-#line 503 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 497 "inweb/foundation-module/Chapter 2/Memory.w"
 char * Memory__description_of_reason(int r) ;
-#line 528 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 522 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__calloc(int how_many, int size_in_bytes, int reason) ;
-#line 531 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 525 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__malloc(int size_in_bytes, int reason) ;
-#line 538 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 532 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__alloc_inner(int N, int S, int R) ;
-#line 589 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 583 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__I7_free(void *pointer, int R, int bytes_freed) ;
-#line 599 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 592 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__I7_array_free(void *pointer, int R, int num_cells, size_t cell_size) ;
-#line 607 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 600 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__log_statistics(void) ;
-#line 689 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 682 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__log_usage(int total) ;
-#line 709 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 702 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__compare_usage(const void *ent1, const void *ent2) ;
-#line 719 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 712 "inweb/foundation-module/Chapter 2/Memory.w"
 void  Memory__log_percentage(int bytes, int total) ;
-#line 728 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 725 "inweb/foundation-module/Chapter 2/Memory.w"
 void * Memory__paranoid_calloc(size_t N, size_t S) ;
-#line 763 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 757 "inweb/foundation-module/Chapter 2/Memory.w"
 general_pointer  Memory__store_gp_null(void) ;
-#line 769 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 763 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__test_gp_null(general_pointer gp) ;
 #line 272 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__initialise(text_stream *stream, int from) ;
@@ -2580,59 +2583,59 @@ int  Streams__open_to_file(text_stream *stream, filename *name, int encoding) ;
 int  Streams__open_to_file_append(text_stream *stream, filename *name, int encoding) ;
 #line 439 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__open_to_memory(text_stream *stream, int capacity) ;
-#line 458 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 455 "inweb/foundation-module/Chapter 2/Streams.w"
 text_stream  Streams__new_buffer(int capacity, wchar_t *at) ;
-#line 476 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 473 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__open_from_wide_string(text_stream *stream, wchar_t *c_string) ;
-#line 484 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 481 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_wide_string(text_stream *stream, wchar_t *c_string) ;
-#line 492 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 489 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__open_from_ISO_string(text_stream *stream, char *c_string) ;
-#line 500 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 497 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_ISO_string(text_stream *stream, char *c_string) ;
-#line 507 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 504 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__open_from_UTF8_string(text_stream *stream, char *c_string) ;
-#line 515 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 512 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_UTF8_string(text_stream *stream, char *c_string) ;
-#line 534 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 531 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_as_wide_string(wchar_t *C_string, text_stream *stream, int buffer_size) ;
-#line 553 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 550 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_as_ISO_string(char *C_string, text_stream *stream, int buffer_size) ;
-#line 570 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 567 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_as_UTF8_string(char *C_string, text_stream *stream, int buffer_size) ;
-#line 601 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 598 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__open_from_locale_string(text_stream *stream, char *C_string) ;
-#line 610 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 607 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_as_locale_string(char *C_string, text_stream *stream, int buffer_size) ;
-#line 619 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 616 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_locale_string(text_stream *stream, char *C_string) ;
-#line 633 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 630 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__flush(text_stream *stream) ;
-#line 641 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 638 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__close(text_stream *stream) ;
-#line 692 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 689 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__putc(int c_int, text_stream *stream) ;
-#line 788 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 785 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__literal(text_stream *stream, char *p) ;
-#line 802 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 799 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__indent(text_stream *stream) ;
-#line 807 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 804 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__outdent(text_stream *stream) ;
-#line 816 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 813 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__set_indentation(text_stream *stream, int N) ;
-#line 830 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 827 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__get_position(text_stream *stream) ;
-#line 844 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 841 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__latest(text_stream *stream) ;
-#line 860 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 857 "inweb/foundation-module/Chapter 2/Streams.w"
 wchar_t  Streams__get_char_at_index(text_stream *stream, int position) ;
-#line 872 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 869 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__put_char_at_index(text_stream *stream, int position, wchar_t C) ;
-#line 898 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 895 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__set_position(text_stream *stream, int position) ;
-#line 922 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 919 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__copy(text_stream *to, text_stream *from) ;
-#line 938 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 935 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__writer(OUTPUT_STREAM, char *format_string, void *vS) ;
 #line 51 "inweb/foundation-module/Chapter 2/Writers and Loggers.w"
 void  Writers__log_escape_usage(void) ;
@@ -5661,14 +5664,18 @@ memblock_header *current_memblock_header = NULL; /* tail of list of memory block
 
 int used_in_current_memblock = 0; /* number of bytes so far used in the tail memory block */
 
-#line 156 "inweb/foundation-module/Chapter 2/Memory.w"
+GLOBAL_MUTEX(memory_single_allocation_mutex)
+GLOBAL_MUTEX(memory_array_allocation_mutex)
+GLOBAL_MUTEX(memory_statistics_mutex)
+
+#line 160 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__allocate_another_block(void) {
 	unsigned char *cp;
 	memblock_header *mh;
 
 	
 {
-#line 173 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 177 "inweb/foundation-module/Chapter 2/Memory.w"
 	int i;
 	if (no_blocks_allocated++ >= MAX_BLOCKS_ALLOWED)
 		Errors__fatal(
@@ -5680,7 +5687,7 @@ void Memory__allocate_another_block(void) {
 	for (i=0; i<MEMORY_GRANULARITY; i++) cp[i] = 0;
 
 }
-#line 160 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 164 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 
 	mh = (memblock_header *) cp;
@@ -5689,7 +5696,7 @@ void Memory__allocate_another_block(void) {
 
 	
 {
-#line 187 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 191 "inweb/foundation-module/Chapter 2/Memory.w"
 	if (current_memblock_header == NULL) {
 		mh->block_number = 0;
 		first_memblock_header = mh;
@@ -5700,11 +5707,11 @@ void Memory__allocate_another_block(void) {
 	current_memblock_header = mh;
 
 }
-#line 166 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 170 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 }
 
-#line 201 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 205 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__free(void) {
 	CStrings__free_ssas();
 	memblock_header *mh = first_memblock_header;
@@ -5716,13 +5723,13 @@ void Memory__free(void) {
 	}
 }
 
-#line 228 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 232 "inweb/foundation-module/Chapter 2/Memory.w"
 
-#line 234 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 238 "inweb/foundation-module/Chapter 2/Memory.w"
 memory_frame *first_memory_frame = NULL; /* earliest memory frame ever allocated */
 memory_frame *last_memory_frame = NULL;  /* most recent memory frame allocated */
 
-#line 245 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 249 "inweb/foundation-module/Chapter 2/Memory.w"
 int calls_to_cmi = 0;
 void Memory__check_memory_integrity(void) {
 	int c;
@@ -5746,11 +5753,8 @@ void Memory__debug_memory_frames(int from, int to) {
 		}
 }
 
-#line 274 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 278 "inweb/foundation-module/Chapter 2/Memory.w"
 void *Memory__allocate(int mem_type, int extent) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
-
 	unsigned char *cp;
 	memory_frame *mf;
 	int bytes_free_in_current_memblock, extent_without_overheads = extent;
@@ -5760,7 +5764,7 @@ void *Memory__allocate(int mem_type, int extent) {
 
 	
 {
-#line 311 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 310 "inweb/foundation-module/Chapter 2/Memory.w"
 	if (current_memblock_header == NULL) Memory__allocate_another_block();
 	bytes_free_in_current_memblock = MEMORY_GRANULARITY - (used_in_current_memblock + extent);
 	if (bytes_free_in_current_memblock < BLANK_END_SIZE) {
@@ -5770,7 +5774,7 @@ void *Memory__allocate(int mem_type, int extent) {
 	}
 
 }
-#line 285 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 286 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 
 	cp = ((unsigned char *) (current_memblock_header->the_memory)) + used_in_current_memblock;
@@ -5785,18 +5789,18 @@ void *Memory__allocate(int mem_type, int extent) {
 
 	
 {
-#line 322 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 321 "inweb/foundation-module/Chapter 2/Memory.w"
 	mf->next_frame = NULL;
 	if (first_memory_frame == NULL) first_memory_frame = mf;
 	else last_memory_frame->next_frame = mf;
 	last_memory_frame = mf;
 
 }
-#line 297 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 298 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	
 {
-#line 330 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 329 "inweb/foundation-module/Chapter 2/Memory.w"
 	if (alloc_status[mem_type].first_in_memory == NULL)
 		alloc_status[mem_type].first_in_memory = (void *) cp;
 	alloc_status[mem_type].last_in_memory = (void *) cp;
@@ -5804,16 +5808,14 @@ void *Memory__allocate(int mem_type, int extent) {
 	alloc_status[mem_type].bytes_allocated += extent_without_overheads;
 
 }
-#line 298 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 299 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 
 	total_objects_allocated++;
-
-	UNLOCK_MUTEX(mutex);
 	return (void *) cp;
 }
 
-#line 485 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 479 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__name_fundamental_reasons(void) {
 	Memory__reason_name(STREAM_MREASON, "text stream storage");
 	Memory__reason_name(FILENAME_STORAGE_MREASON, "filename/pathname storage");
@@ -5822,7 +5824,7 @@ void Memory__name_fundamental_reasons(void) {
 	Memory__reason_name(ARRAY_SORTING_MREASON, "sorting");
 }
 
-#line 496 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 490 "inweb/foundation-module/Chapter 2/Memory.w"
 char *memory_needs[NO_DEFINED_MREASON_VALUES];
 
 void Memory__reason_name(int r, char *reason) {
@@ -5835,13 +5837,13 @@ char *Memory__description_of_reason(int r) {
 	return memory_needs[r];
 }
 
-#line 516 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 510 "inweb/foundation-module/Chapter 2/Memory.w"
 int max_memory_at_once_for_each_need[NO_DEFINED_MREASON_VALUES],
 	memory_claimed_for_each_need[NO_DEFINED_MREASON_VALUES],
 	number_of_claims_for_each_need[NO_DEFINED_MREASON_VALUES];
 int total_claimed_simply = 0;
 
-#line 528 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 522 "inweb/foundation-module/Chapter 2/Memory.w"
 void *Memory__calloc(int how_many, int size_in_bytes, int reason) {
 	return Memory__alloc_inner(how_many, size_in_bytes, reason);
 }
@@ -5849,29 +5851,28 @@ void *Memory__malloc(int size_in_bytes, int reason) {
 	return Memory__alloc_inner(-1, size_in_bytes, reason);
 }
 
-#line 538 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 532 "inweb/foundation-module/Chapter 2/Memory.w"
 void *Memory__alloc_inner(int N, int S, int R) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
 	void *pointer;
 	int bytes_needed;
 	if ((R < 0) || (R >= NO_DEFINED_MREASON_VALUES)) internal_error("no such memory reason");
 	if (total_claimed_simply == 0) 
 {
-#line 572 "inweb/foundation-module/Chapter 2/Memory.w"
-	int i;
-	for (i=0; i<NO_DEFINED_MREASON_VALUES; i++) {
+#line 563 "inweb/foundation-module/Chapter 2/Memory.w"
+	LOCK_MUTEX(memory_statistics_mutex);
+	for (int i=0; i<NO_DEFINED_MREASON_VALUES; i++) {
 		max_memory_at_once_for_each_need[i] = 0;
 		memory_claimed_for_each_need[i] = 0;
 		number_of_claims_for_each_need[i] = 0;
 	}
+	UNLOCK_MUTEX(memory_statistics_mutex);
 
 }
-#line 544 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 536 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	
 {
-#line 556 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 547 "inweb/foundation-module/Chapter 2/Memory.w"
 	if (N > 0) {
 		pointer = Memory__paranoid_calloc((size_t) N, (size_t) S);
 		bytes_needed = N*S;
@@ -5884,40 +5885,40 @@ void *Memory__alloc_inner(int N, int S, int R) {
 	}
 
 }
-#line 545 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 537 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	
 {
-#line 580 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 572 "inweb/foundation-module/Chapter 2/Memory.w"
+	LOCK_MUTEX(memory_statistics_mutex);
 	memory_claimed_for_each_need[R] += bytes_needed;
 	total_claimed_simply += bytes_needed;
 	number_of_claims_for_each_need[R]++;
 	if (memory_claimed_for_each_need[R] > max_memory_at_once_for_each_need[R])
 		max_memory_at_once_for_each_need[R] = memory_claimed_for_each_need[R];
+	UNLOCK_MUTEX(memory_statistics_mutex);
 
 }
-#line 546 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 538 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
-	UNLOCK_MUTEX(mutex);
 	return pointer;
 }
 
-#line 589 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 583 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__I7_free(void *pointer, int R, int bytes_freed) {
 	if ((R < 0) || (R >= NO_DEFINED_MREASON_VALUES)) internal_error("no such memory reason");
 	if (pointer == NULL) internal_error("can't free NULL memory");
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
+	LOCK_MUTEX(memory_statistics_mutex);
 	memory_claimed_for_each_need[R] -= bytes_freed;
+	UNLOCK_MUTEX(memory_statistics_mutex);
 	free(pointer);
-	UNLOCK_MUTEX(mutex);
 }
 
 void Memory__I7_array_free(void *pointer, int R, int num_cells, size_t cell_size) {
 	Memory__I7_free(pointer, R, num_cells*((int) cell_size));
 }
 
-#line 607 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 600 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__log_statistics(void) {
 	int total_for_objects = MEMORY_GRANULARITY*no_blocks_allocated; /* usage in bytes */
 	int total_for_SMAs = Memory__log_usage(0); /* usage in bytes */
@@ -5926,19 +5927,19 @@ void Memory__log_statistics(void) {
 
 	
 {
-#line 640 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 633 "inweb/foundation-module/Chapter 2/Memory.w"
 	for (int i=0; i<NO_DEFINED_CLASS_VALUES; i++) sorted_usage[i] = i;
 	qsort(sorted_usage, (size_t) NO_DEFINED_CLASS_VALUES, sizeof(int), Memory__compare_usage);
 
 }
-#line 613 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 606 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 
 	int total_for_objects_used = 0; /* out of the |total_for_objects|, the bytes used */
 	int total_objects = 0;
 	
 {
-#line 623 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 616 "inweb/foundation-module/Chapter 2/Memory.w"
 	int i, j;
 	for (j=0; j<NO_DEFINED_CLASS_VALUES; j++) {
 		i = sorted_usage[j];
@@ -5953,12 +5954,12 @@ void Memory__log_statistics(void) {
 	}
 
 }
-#line 617 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 610 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 	int overhead_for_objects = total_for_objects - total_for_objects_used; /* bytes wasted */
 	
 {
-#line 646 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 639 "inweb/foundation-module/Chapter 2/Memory.w"
 	LOG("Total memory consumption was %dK = %d MB\n\n",
 		total, (total+512)/1024);
 
@@ -6002,11 +6003,11 @@ void Memory__log_statistics(void) {
 		overhead_for_objects/1024, (overhead_for_objects+512)/1024/1024);
 
 }
-#line 619 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 612 "inweb/foundation-module/Chapter 2/Memory.w"
 ;
 }
 
-#line 689 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 682 "inweb/foundation-module/Chapter 2/Memory.w"
 int Memory__log_usage(int total) {
 	if (total_claimed_simply == 0) return 0;
 	int i, t = 0;
@@ -6026,14 +6027,14 @@ int Memory__log_usage(int total) {
 	return t;
 }
 
-#line 709 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 702 "inweb/foundation-module/Chapter 2/Memory.w"
 int Memory__compare_usage(const void *ent1, const void *ent2) {
 	int ix1 = *((const int *) ent1);
 	int ix2 = *((const int *) ent2);
 	return alloc_status[ix2].bytes_allocated - alloc_status[ix1].bytes_allocated;
 }
 
-#line 719 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 712 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__log_percentage(int bytes, int total) {
 	float B = (float) bytes, T = (float) total;
 	float P = (1000*B)/(1024*T);
@@ -6042,16 +6043,13 @@ void Memory__log_percentage(int bytes, int total) {
 	else LOG("%2d.%01d%%", N/10, N%10);
 }
 
-#line 728 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 725 "inweb/foundation-module/Chapter 2/Memory.w"
 void *Memory__paranoid_calloc(size_t N, size_t S) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
 	void *P = calloc(N, S);
-	UNLOCK_MUTEX(mutex);
 	return P;
 }
 
-#line 762 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 756 "inweb/foundation-module/Chapter 2/Memory.w"
 
 general_pointer Memory__store_gp_null(void) {
 	general_pointer gp;
@@ -6064,7 +6062,7 @@ int Memory__test_gp_null(general_pointer gp) {
 	return FALSE;
 }
 
-#line 821 "inweb/foundation-module/Chapter 2/Memory.w"
+#line 815 "inweb/foundation-module/Chapter 2/Memory.w"
 MAKE_REFERENCE_ROUTINES(char, 1000)
 
 #line 50 "inweb/foundation-module/Chapter 2/Foundation Classes.w"
@@ -6257,8 +6255,6 @@ int Streams__open_to_file_append(text_stream *stream, filename *name, int encodi
 
 #line 439 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__open_to_memory(text_stream *stream, int capacity) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	capacity += SPACE_AT_END_OF_STREAM;
 	Streams__initialise(stream, FOR_OM_STRF);
@@ -6267,11 +6263,10 @@ int Streams__open_to_memory(text_stream *stream, int capacity) {
 	(stream->write_to_memory)[0] = 0;
 	stream->stream_flags |= MALLOCED_STRF;
 	stream->chars_capacity = capacity;
-	UNLOCK_MUTEX(mutex);
 	return TRUE;
 }
 
-#line 458 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 455 "inweb/foundation-module/Chapter 2/Streams.w"
 text_stream Streams__new_buffer(int capacity, wchar_t *at) {
 	if (at == NULL) internal_error("tried to make stream wrapper for NULL string");
 	if (capacity < SPACE_AT_END_OF_STREAM)
@@ -6284,20 +6279,20 @@ text_stream Streams__new_buffer(int capacity, wchar_t *at) {
 	return stream;
 }
 
-#line 476 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 473 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__open_from_wide_string(text_stream *stream, wchar_t *c_string) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	int capacity = (c_string)?((int) wcslen(c_string)):0;
 	
 {
-#line 525 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 522 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (capacity < 8) capacity = 8;
 	capacity += 1+SPACE_AT_END_OF_STREAM;
 	int rv = Streams__open_to_memory(stream, capacity);
 	if (rv == FALSE) return FALSE;
 
 }
-#line 479 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 476 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 	if (c_string) Streams__write_wide_string(stream, c_string);
 	return TRUE;
@@ -6307,20 +6302,20 @@ void Streams__write_wide_string(text_stream *stream, wchar_t *c_string) {
 	for (int i=0; c_string[i]; i++) Streams__putc(c_string[i], stream);
 }
 
-#line 492 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 489 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__open_from_ISO_string(text_stream *stream, char *c_string) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	int capacity = (c_string)?((int) strlen(c_string)):0;
 	
 {
-#line 525 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 522 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (capacity < 8) capacity = 8;
 	capacity += 1+SPACE_AT_END_OF_STREAM;
 	int rv = Streams__open_to_memory(stream, capacity);
 	if (rv == FALSE) return FALSE;
 
 }
-#line 495 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 492 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 	if (c_string) Streams__write_ISO_string(stream, c_string);
 	return TRUE;
@@ -6330,20 +6325,20 @@ void Streams__write_ISO_string(text_stream *stream, char *c_string) {
 	for (int i=0; c_string[i]; i++) Streams__putc(c_string[i], stream);
 }
 
-#line 507 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 504 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__open_from_UTF8_string(text_stream *stream, char *c_string) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	int capacity = (c_string)?((int) strlen(c_string)):0;
 	
 {
-#line 525 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 522 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (capacity < 8) capacity = 8;
 	capacity += 1+SPACE_AT_END_OF_STREAM;
 	int rv = Streams__open_to_memory(stream, capacity);
 	if (rv == FALSE) return FALSE;
 
 }
-#line 510 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 507 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 	if (c_string) Streams__write_UTF8_string(stream, c_string);
 	return TRUE;
@@ -6356,7 +6351,7 @@ void Streams__write_UTF8_string(text_stream *stream, char *c_string) {
 		Streams__putc(c, stream);
 }
 
-#line 534 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 531 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__write_as_wide_string(wchar_t *C_string, text_stream *stream, int buffer_size) {
 	if (buffer_size == 0) return;
 	if (stream == NULL) { C_string[0] = 0; return; }
@@ -6372,7 +6367,7 @@ void Streams__write_as_wide_string(wchar_t *C_string, text_stream *stream, int b
 	C_string[i] = 0;
 }
 
-#line 553 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 550 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__write_as_ISO_string(char *C_string, text_stream *stream, int buffer_size) {
 	if (buffer_size == 0) return;
 	if (stream == NULL) { C_string[0] = 0; return; }
@@ -6389,7 +6384,7 @@ void Streams__write_as_ISO_string(char *C_string, text_stream *stream, int buffe
 	C_string[i] = 0;
 }
 
-#line 570 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 567 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__write_as_UTF8_string(char *C_string, text_stream *stream, int buffer_size) {
 	if (buffer_size == 0) return;
 	if (stream == NULL) { C_string[0] = 0; return; }
@@ -6418,7 +6413,7 @@ void Streams__write_as_UTF8_string(char *C_string, text_stream *stream, int buff
 	to[i] = 0;
 }
 
-#line 601 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 598 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__open_from_locale_string(text_stream *stream, char *C_string) {
 	#ifdef LOCALE_IS_UTF8
 	return Streams__open_from_UTF8_string(stream, C_string);
@@ -6446,13 +6441,13 @@ void Streams__write_locale_string(text_stream *stream, char *C_string) {
 	#endif
 }
 
-#line 633 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 630 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__flush(text_stream *stream) {
 	if (stream == NULL) return;
 	if (stream->write_to_file) fflush(stream->write_to_file);
 }
 
-#line 641 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 638 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__close(text_stream *stream) {
 	if (stream == NULL) internal_error("tried to close NULL stream");
 	if (stream == &STDOUT_struct) internal_error("tried to close STDOUT stream");
@@ -6465,7 +6460,7 @@ void Streams__close(text_stream *stream) {
 	stream->chars_capacity = -1; /* mark as closed */
 	if (stream->write_to_file) 
 {
-#line 662 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 659 "inweb/foundation-module/Chapter 2/Streams.w"
 	if ((ferror(stream->write_to_file)) || (fclose(stream->write_to_file) == EOF))
 		Errors__fatal("The host computer reported an error trying to write a text file");
 	if (stream != DL)
@@ -6476,11 +6471,11 @@ void Streams__close(text_stream *stream) {
 	stream->write_to_file = NULL;
 
 }
-#line 651 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 648 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 	if (stream->write_to_memory) 
 {
-#line 681 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 678 "inweb/foundation-module/Chapter 2/Streams.w"
 	if ((stream->stream_flags) & MALLOCED_STRF) {
 		wchar_t *mem = stream->write_to_memory;
 		stream->write_to_memory = NULL;
@@ -6489,11 +6484,11 @@ void Streams__close(text_stream *stream) {
 	}
 
 }
-#line 652 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 649 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 }
 
-#line 692 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 689 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__putc(int c_int, text_stream *stream) {
 	unsigned int c;
 	if (c_int >= 0) c = (unsigned int) c_int; else c = (unsigned int) (c_int + 256);
@@ -6501,7 +6496,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 	text_stream *first_stream = stream;
 	if (c != '\n') 
 {
-#line 741 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 738 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (first_stream->stream_flags & INDENT_PENDING_STRF) {
 		first_stream->stream_flags -= INDENT_PENDING_STRF;
 		int L = (first_stream->stream_flags & INDENTATION_MASK_STRF)/INDENTATION_BASE_STRF;
@@ -6512,7 +6507,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 	}
 
 }
-#line 697 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 694 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 	if (stream->stream_flags & READ_ONLY_STRF) internal_error("modifying read-only stream");
 	if ((stream->stream_flags) & USES_XML_ESCAPES_STRF) {
@@ -6526,7 +6521,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 	while (stream->stream_continues) stream = stream->stream_continues;
 	
 {
-#line 768 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 765 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (stream->chars_written + SPACE_AT_END_OF_STREAM >= stream->chars_capacity) {
 		if (stream->write_to_file) return; /* write nothing further */
 		if (stream->write_to_memory) {
@@ -6545,13 +6540,13 @@ void Streams__putc(int c_int, text_stream *stream) {
 	}
 
 }
-#line 708 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 705 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 	if (stream->write_to_file) {
 		if (stream->stream_flags & FILE_ENCODING_UTF8_STRF)
 			
 {
-#line 731 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 728 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (c >= 0x800) {
 		fputc(0xE0 + (c >> 12), stream->write_to_file);
 		fputc(0x80 + ((c >> 6) & 0x3f), stream->write_to_file);
@@ -6562,7 +6557,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 	} else fputc((int) c, stream->write_to_file);
 
 }
-#line 711 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 708 "inweb/foundation-module/Chapter 2/Streams.w"
 
 		else if (stream->stream_flags & FILE_ENCODING_ISO_STRF) {
 		 	if (c >= 0x100) c = '?';
@@ -6580,7 +6575,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 	stream->chars_written++;
 }
 
-#line 788 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 785 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__literal(text_stream *stream, char *p) {
 	if (stream == NULL) return;
 	int i, x = ((stream->stream_flags) & USES_XML_ESCAPES_STRF);
@@ -6589,7 +6584,7 @@ void Streams__literal(text_stream *stream, char *p) {
 	if (x) stream->stream_flags += USES_XML_ESCAPES_STRF;
 }
 
-#line 802 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 799 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__indent(text_stream *stream) {
 	if (stream == NULL) return;
 	stream->stream_flags += INDENTATION_BASE_STRF;
@@ -6611,7 +6606,7 @@ void Streams__set_indentation(text_stream *stream, int N) {
 	stream->stream_flags += N*INDENTATION_BASE_STRF;
 }
 
-#line 830 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 827 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__get_position(text_stream *stream) {
 	int t = 0;
 	while (stream) {
@@ -6621,7 +6616,7 @@ int Streams__get_position(text_stream *stream) {
 	return t;
 }
 
-#line 844 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 841 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__latest(text_stream *stream) {
 	if (stream == NULL) return 0;
 	if (stream->write_to_file) internal_error("stream_latest on file stream");
@@ -6634,7 +6629,7 @@ int Streams__latest(text_stream *stream) {
 	return 0;
 }
 
-#line 860 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 857 "inweb/foundation-module/Chapter 2/Streams.w"
 wchar_t Streams__get_char_at_index(text_stream *stream, int position) {
 	if (stream == NULL) internal_error("examining null stream");
 	if (stream->write_to_file) internal_error("examining file stream");
@@ -6666,7 +6661,7 @@ void Streams__put_char_at_index(text_stream *stream, int position, wchar_t C) {
 	}
 }
 
-#line 898 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 895 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__set_position(text_stream *stream, int position) {
 	if (stream == NULL) return;
 	if (position < 0) position = 0; /* to simplify the implementation of backspacing */
@@ -6687,7 +6682,7 @@ void Streams__set_position(text_stream *stream, int position) {
 	}
 }
 
-#line 922 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 919 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__copy(text_stream *to, text_stream *from) {
 	if ((from == NULL) || (to == NULL)) return;
 	if (from->write_to_file) internal_error("stream_copy from file stream");
@@ -6700,7 +6695,7 @@ void Streams__copy(text_stream *to, text_stream *from) {
 	}
 }
 
-#line 938 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 935 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__writer(OUTPUT_STREAM, char *format_string, void *vS) {
 	text_stream *S = (text_stream *) vS;
 	Streams__copy(OUT, S);
@@ -7989,11 +7984,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A45";
+			char *svn = "7-alpha.1+1A46";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "3 June 2020";
+			char *d = "27 June 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;

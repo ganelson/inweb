@@ -149,6 +149,10 @@ memblock_header *current_memblock_header = NULL; /* tail of list of memory block
 
 int used_in_current_memblock = 0; /* number of bytes so far used in the tail memory block */
 
+GLOBAL_MUTEX(memory_single_allocation_mutex)
+GLOBAL_MUTEX(memory_array_allocation_mutex)
+GLOBAL_MUTEX(memory_statistics_mutex)
+
 @ The actual allocation and deallocation is performed by the following
 pair of routines.
 
@@ -272,9 +276,6 @@ memory frame is created by the following function:
 
 =
 void *Memory::allocate(int mem_type, int extent) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
-
 	unsigned char *cp;
 	memory_frame *mf;
 	int bytes_free_in_current_memblock, extent_without_overheads = extent;
@@ -298,8 +299,6 @@ void *Memory::allocate(int mem_type, int extent) {
 	@<Update the allocation status for this type of object@>;
 
 	total_objects_allocated++;
-
-	UNLOCK_MUTEX(mutex);
 	return (void *) cp;
 }
 
@@ -380,23 +379,21 @@ double-quotes.
 @d DECLARE_CLASS_WITH_ID(type_name, id_name)
 MAKE_REFERENCE_ROUTINES(type_name, id_name)
 type_name *allocate_##type_name(void) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
+	LOCK_MUTEX(memory_single_allocation_mutex);
 	alloc_status[id_name].name_of_type = #type_name;
 	type_name *prev_obj = LAST_OBJECT(type_name);
-	type_name *new_obj = NEW_OBJECT(type_name);
+	type_name *new_obj = Memory::allocate(type_name##_CLASS, sizeof(type_name));
 	new_obj->allocation_id = alloc_status[id_name].objects_allocated-1;
 	new_obj->next_structure = NULL;
 	if (prev_obj != NULL)
 		prev_obj->next_structure = (void *) new_obj;
 	new_obj->prev_structure = prev_obj;
 	alloc_status[id_name].objects_count++;
-	UNLOCK_MUTEX(mutex);
+	UNLOCK_MUTEX(memory_single_allocation_mutex);
 	return new_obj;
 }
 void deallocate_##type_name(type_name *kill_me) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
+	LOCK_MUTEX(memory_single_allocation_mutex);
 	type_name *prev_obj = PREV_OBJECT(kill_me, type_name);
 	type_name *next_obj = NEXT_OBJECT(kill_me, type_name);
 	if (prev_obj == NULL) {
@@ -410,11 +407,10 @@ void deallocate_##type_name(type_name *kill_me) {
 		next_obj->prev_structure = prev_obj;
 	}
 	alloc_status[id_name].objects_count--;
-	UNLOCK_MUTEX(mutex);
+	UNLOCK_MUTEX(memory_single_allocation_mutex);
 }
 type_name *allocate_##type_name##_before(type_name *existing) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
+	LOCK_MUTEX(memory_single_allocation_mutex);
 	type_name *new_obj = allocate_##type_name();
 	deallocate_##type_name(new_obj);
 	new_obj->prev_structure = existing->prev_structure;
@@ -424,12 +420,11 @@ type_name *allocate_##type_name##_before(type_name *existing) {
 	new_obj->next_structure = existing;
 	existing->prev_structure = new_obj;
 	alloc_status[id_name].objects_count++;
-	UNLOCK_MUTEX(mutex);
+	UNLOCK_MUTEX(memory_single_allocation_mutex);
 	return new_obj;
 }
 void copy_##type_name(type_name *to, type_name *from) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
+	LOCK_MUTEX(memory_single_allocation_mutex);
 	type_name *prev_obj = to->prev_structure;
 	type_name *next_obj = to->next_structure;
 	int aid = to->allocation_id;
@@ -437,7 +432,7 @@ void copy_##type_name(type_name *to, type_name *from) {
 	to->allocation_id = aid;
 	to->next_structure = next_obj;
 	to->prev_structure = prev_obj;
-	UNLOCK_MUTEX(mutex);
+	UNLOCK_MUTEX(memory_single_allocation_mutex);
 }
 
 @ |DECLARE_CLASS_ALLOCATED_IN_ARRAYS| is still more obfuscated. When we
@@ -458,17 +453,16 @@ int type_name##_array_CLASS = type_name##_CLASS; /* C does permit |#define| to m
 DECLARE_CLASS_WITH_ID(type_name##_array, type_name##_CLASS) 
 type_name##_array *next_##type_name##_array = NULL;
 struct type_name *allocate_##type_name(void) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
+	LOCK_MUTEX(memory_array_allocation_mutex);
 	if ((next_##type_name##_array == NULL) ||
 		(next_##type_name##_array->used >= NO_TO_ALLOCATE_TOGETHER)) {
 		alloc_status[type_name##_array_CLASS].no_allocated_together = NO_TO_ALLOCATE_TOGETHER;
 		next_##type_name##_array = allocate_##type_name##_array();
 		next_##type_name##_array->used = 0;
 	}
-	UNLOCK_MUTEX(mutex);
-	return &(next_##type_name##_array->array[
-		next_##type_name##_array->used++]);
+	type_name *rv = &(next_##type_name##_array->array[next_##type_name##_array->used++]);
+	UNLOCK_MUTEX(memory_array_allocation_mutex);
+	return rv;
 }
 
 @h Simple memory allocations.
@@ -536,15 +530,12 @@ void *Memory::malloc(int size_in_bytes, int reason) {
 
 =
 void *Memory::alloc_inner(int N, int S, int R) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
 	void *pointer;
 	int bytes_needed;
 	if ((R < 0) || (R >= NO_DEFINED_MREASON_VALUES)) internal_error("no such memory reason");
 	if (total_claimed_simply == 0) @<Zero out the statistics on simple memory allocations@>;
 	@<Claim the memory using malloc or calloc as appropriate@>;
 	@<Update the statistics on simple memory allocations@>;
-	UNLOCK_MUTEX(mutex);
 	return pointer;
 }
 
@@ -569,19 +560,22 @@ debugging log, but they are very cheap to keep, since |Memory::alloc_inner| is c
 rarely and to allocate large blocks of memory.
 
 @<Zero out the statistics on simple memory allocations@> =
-	int i;
-	for (i=0; i<NO_DEFINED_MREASON_VALUES; i++) {
+	LOCK_MUTEX(memory_statistics_mutex);
+	for (int i=0; i<NO_DEFINED_MREASON_VALUES; i++) {
 		max_memory_at_once_for_each_need[i] = 0;
 		memory_claimed_for_each_need[i] = 0;
 		number_of_claims_for_each_need[i] = 0;
 	}
+	UNLOCK_MUTEX(memory_statistics_mutex);
 
 @<Update the statistics on simple memory allocations@> =
+	LOCK_MUTEX(memory_statistics_mutex);
 	memory_claimed_for_each_need[R] += bytes_needed;
 	total_claimed_simply += bytes_needed;
 	number_of_claims_for_each_need[R]++;
 	if (memory_claimed_for_each_need[R] > max_memory_at_once_for_each_need[R])
 		max_memory_at_once_for_each_need[R] = memory_claimed_for_each_need[R];
+	UNLOCK_MUTEX(memory_statistics_mutex);
 
 @ We also provide our own wrapper for |free|:
 
@@ -589,11 +583,10 @@ rarely and to allocate large blocks of memory.
 void Memory::I7_free(void *pointer, int R, int bytes_freed) {
 	if ((R < 0) || (R >= NO_DEFINED_MREASON_VALUES)) internal_error("no such memory reason");
 	if (pointer == NULL) internal_error("can't free NULL memory");
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
+	LOCK_MUTEX(memory_statistics_mutex);
 	memory_claimed_for_each_need[R] -= bytes_freed;
+	UNLOCK_MUTEX(memory_statistics_mutex);
 	free(pointer);
-	UNLOCK_MUTEX(mutex);
 }
 
 void Memory::I7_array_free(void *pointer, int R, int num_cells, size_t cell_size) {
@@ -724,12 +717,13 @@ void Memory::log_percentage(int bytes, int total) {
 	else LOG("%2d.%01d%%", N/10, N%10);
 }
 
-@ =
+@ At one time, the following function was paranoid about thread-safety of
+|calloc| as implemented in some C libraries, and was protected by a mutex.
+It has now learned to chill.
+
+=
 void *Memory::paranoid_calloc(size_t N, size_t S) {
-	CREATE_MUTEX(mutex);
-	LOCK_MUTEX(mutex);
 	void *P = calloc(N, S);
-	UNLOCK_MUTEX(mutex);
 	return P;
 }
 
