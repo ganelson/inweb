@@ -522,6 +522,9 @@ example, or flush left.
 			(Regexp::match(&mr, matter, L"@define (%c*)"))) {
 			Str::copy(prefatory, I"define");
 			Str::copy(matter, mr.exp[0]);
+		} else if (Regexp::match(&mr, matter, L"@default (%c*)")) {
+			Str::copy(prefatory, I"default");
+			Str::copy(matter, mr.exp[0]);
 		} else if ((Regexp::match(&mr, matter, L"@e (%c*)")) ||
 			(Regexp::match(&mr, matter, L"@enum (%c*)"))) {
 			Str::copy(prefatory, I"enum");
