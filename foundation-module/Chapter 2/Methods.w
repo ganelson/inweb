@@ -117,7 +117,7 @@ If |some_object| has no methods for the given ID, then nothing happens, and
 in the |I| case, the return value is |FALSE|.
 
 It will, however, produce a compilation error if |some_object| is not a pointer
-to a structure which has |METHOD_CALLS| as part of its definition.
+to a structure which has a |methods| element as part of its definition.
 
 @d INT_METHOD_CALL(rval, upon, id, args...) {
 	rval = FALSE;
