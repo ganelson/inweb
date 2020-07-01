@@ -373,7 +373,5 @@ size_t Platform::get_thread_stack_size(foundation_thread_attributes *pa) {
 
 @d CREATE_MUTEX(name)
 	static pthread_mutex_t name = PTHREAD_MUTEX_INITIALIZER;
-@d GLOBAL_MUTEX(name)
-	static pthread_mutex_t name = PTHREAD_MUTEX_INITIALIZER;
 @d LOCK_MUTEX(name) pthread_mutex_lock(&name);
 @d UNLOCK_MUTEX(name) pthread_mutex_unlock(&name);

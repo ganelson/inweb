@@ -225,9 +225,9 @@ null bytes, followed by actual data.
 
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">used_in_current_memblock</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax"> number of bytes so far used in the tail memory block</span>
 
-<span class="identifier-syntax">GLOBAL_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">memory_single_allocation_mutex</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">GLOBAL_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">memory_array_allocation_mutex</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">GLOBAL_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">memory_statistics_mutex</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">CREATE_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">memory_single_allocation_mutex</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">CREATE_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">memory_array_allocation_mutex</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">CREATE_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">memory_statistics_mutex</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>The actual allocation and deallocation is performed by the following
 pair of routines.

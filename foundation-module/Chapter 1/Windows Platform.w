@@ -242,8 +242,6 @@ off_t Platform::size(char *transcoded_filename) {
 
 @d CREATE_MUTEX(name)
 	static struct Win32_Mutex name = { INIT_ONCE_STATIC_INIT, { 0 }};
-@d GLOBAL_MUTEX(name)
-	static struct Win32_Mutex name = { INIT_ONCE_STATIC_INIT, { 0 }};
 @d LOCK_MUTEX(name) {
 	BOOL pending;
 	InitOnceBeginInitialize(&(name.init), 0, &pending, 0);

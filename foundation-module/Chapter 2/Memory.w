@@ -149,9 +149,9 @@ memblock_header *current_memblock_header = NULL; /* tail of list of memory block
 
 int used_in_current_memblock = 0; /* number of bytes so far used in the tail memory block */
 
-GLOBAL_MUTEX(memory_single_allocation_mutex)
-GLOBAL_MUTEX(memory_array_allocation_mutex)
-GLOBAL_MUTEX(memory_statistics_mutex)
+CREATE_MUTEX(memory_single_allocation_mutex)
+CREATE_MUTEX(memory_array_allocation_mutex)
+CREATE_MUTEX(memory_statistics_mutex)
 
 @ The actual allocation and deallocation is performed by the following
 pair of routines.

@@ -125,11 +125,12 @@ typedef pthread_attr_t foundation_thread_attributes;
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <shlobj.h>
+#undef IN
 #undef OUT
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 54 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 55 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 char *Platform__getenv(const char *name) {
 	char *env = getenv(name);
 	if (env == 0) {
@@ -148,7 +149,7 @@ char *Platform__getenv(const char *name) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 87 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 88 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__system(const char *cmd) {
 	char cmdline[4096];
 	sprintf(cmdline,"cmd /s /c \"%s\"", cmd);
@@ -178,11 +179,16 @@ int Platform__system(const char *cmd) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 176 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 177 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 typedef HANDLE foundation_thread;
 typedef int foundation_thread_attributes;
 
 struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
+
+#endif /* PLATFORM_WINDOWS */
+#ifdef PLATFORM_WINDOWS
+#line 259 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
 #endif /* PLATFORM_WINDOWS */
 #define TRUE 1
@@ -258,10 +264,6 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
     	static pthread_mutex_t name = PTHREAD_MUTEX_INITIALIZER;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#define GLOBAL_MUTEX(name) \
-    	static pthread_mutex_t name = PTHREAD_MUTEX_INITIALIZER;
-#endif /* PLATFORM_POSIX */
-#ifdef PLATFORM_POSIX
 #define LOCK_MUTEX(name) pthread_mutex_lock(&name);
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
@@ -293,17 +295,23 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
 #define CREATE_MUTEX(name) \
-    	static LPCRITICAL_SECTION name = 0; if (name == 0) { name = malloc(sizeof (CRITICAL_SECTION)); InitializeCriticalSection(name); }
+    	static struct Win32_Mutex name = { INIT_ONCE_STATIC_INIT, { 0 }};
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#define GLOBAL_MUTEX(name) \
-    	static LPCRITICAL_SECTION name = 0;
+#define LOCK_MUTEX(name) {\
+    	BOOL pending;\
+    	InitOnceBeginInitialize(&(name.init), 0, &pending, 0);\
+      	if (pending) {\
+      		InitializeCriticalSection(&(name.crit));\
+      		InitOnceComplete(&(name.init), 0, 0);\
+      	}\
+      	EnterCriticalSection(&(name.crit));\
+    }
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#define LOCK_MUTEX(name) if (name == 0) { name = malloc(sizeof (CRITICAL_SECTION)); InitializeCriticalSection(name); } EnterCriticalSection(name)
-#endif /* PLATFORM_WINDOWS */
-#ifdef PLATFORM_WINDOWS
-#define UNLOCK_MUTEX(name) LeaveCriticalSection(name)
+#define UNLOCK_MUTEX(name) {\
+    	LeaveCriticalSection(&(name.crit));\
+    }
 #endif /* PLATFORM_WINDOWS */
 #define LOG_INDENT STREAM_INDENT(DL)
 #define LOG_OUTDENT STREAM_OUTDENT(DL)
@@ -2414,67 +2422,67 @@ void  Platform__init_thread(foundation_thread_attributes *pa, size_t size) ;
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes *pa) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_WINDOWS
-#line 47 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 48 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__Windows_isdigit(int c) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 79 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 80 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__where_am_i(wchar_t *p, size_t length) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 117 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 118 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__mkdir(char *transcoded_pathname) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 125 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 126 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void * Platform__opendir(char *dir_name) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 130 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 131 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__readdir(void *D, char *dir_name, 	char *leafname) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 147 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 148 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__closedir(void *D) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 155 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 156 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 163 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 164 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__sleep(int seconds) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 170 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 171 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 190 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 191 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__create_thread(foundation_thread *pt, const foundation_thread_attributes *pa, 	void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 205 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 206 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 209 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 210 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__init_thread(foundation_thread_attributes* pa, size_t size) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 212 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 213 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes* pa) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 224 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 225 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 228 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 229 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 234 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 235 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #line 64 "inweb/foundation-module/Chapter 2/Debugging Log.w"
@@ -5310,14 +5318,14 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes *pa) {
 #ifdef PLATFORM_WINDOWS
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 47 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 48 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__Windows_isdigit(int c) {
 	return ((c >= '0') && (c <= '9')) ? 1 : 0;
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 79 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 80 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__where_am_i(wchar_t *p, size_t length) {
 	DWORD result = GetModuleFileNameW(NULL, p, (DWORD)length);
 	if ((result == 0) || (result == length)) p[0] = 0;
@@ -5325,7 +5333,7 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 117 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 118 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__mkdir(char *transcoded_pathname) {
 	errno = 0;
 	int rv = mkdir(transcoded_pathname);
@@ -5363,27 +5371,27 @@ void Platform__closedir(void *D) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 155 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 156 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 	printf("Platform__rsync() is not yet implemented!\n");
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 163 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 164 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__sleep(int seconds) {
 	Sleep((DWORD)(1000*seconds));
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 170 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 171 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__notification(text_stream *text, int happy) {
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 183 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 184 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 DWORD WINAPI Platform__Win32_Thread_Func(LPVOID param) {
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*)param;
 	(start->fn)(start->arg);
@@ -5419,7 +5427,7 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes* pa) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 224 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 225 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
@@ -5436,8 +5444,6 @@ off_t Platform__size(char *transcoded_filename) {
 	return (off_t) 0;
 }
 
-#endif /* PLATFORM_WINDOWS */
-#ifdef PLATFORM_WINDOWS
 #endif /* PLATFORM_WINDOWS */
 #line 10 "inweb/foundation-module/Chapter 2/Debugging Log.w"
 text_stream debug_log_file_struct; /* The actual debugging log file */
@@ -5665,9 +5671,9 @@ memblock_header *current_memblock_header = NULL; /* tail of list of memory block
 
 int used_in_current_memblock = 0; /* number of bytes so far used in the tail memory block */
 
-GLOBAL_MUTEX(memory_single_allocation_mutex)
-GLOBAL_MUTEX(memory_array_allocation_mutex)
-GLOBAL_MUTEX(memory_statistics_mutex)
+CREATE_MUTEX(memory_single_allocation_mutex)
+CREATE_MUTEX(memory_array_allocation_mutex)
+CREATE_MUTEX(memory_statistics_mutex)
 
 #line 160 "inweb/foundation-module/Chapter 2/Memory.w"
 void Memory__allocate_another_block(void) {
@@ -7985,11 +7991,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A47";
+			char *svn = "7-alpha.1+1A49";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "28 June 2020";
+			char *d = "1 July 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
