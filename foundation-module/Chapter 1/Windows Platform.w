@@ -240,14 +240,22 @@ off_t Platform::size(char *transcoded_filename) {
 
 @h Mutexes.
 
-= (very early code)
-struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
-
 @d CREATE_MUTEX(name)
 	static struct Win32_Mutex name = { INIT_ONCE_STATIC_INIT, { 0 }};
 @d GLOBAL_MUTEX(name)
 	static struct Win32_Mutex name = { INIT_ONCE_STATIC_INIT, { 0 }};
-@d LOCK_MUTEX(name)
-  { BOOL pending; InitOnceBeginInitialize(&(name.init),0,&pending,0); if (pending) { InitializeCriticalSection(&(name.crit)); InitOnceComplete(&(name.init),0,0); } EnterCriticalSection(&(name.crit)); }
-@d UNLOCK_MUTEX(name)
-  { LeaveCriticalSection(&(name.crit)); }
+@d LOCK_MUTEX(name) {
+	BOOL pending;
+	InitOnceBeginInitialize(&(name.init), 0, &pending, 0);
+  	if (pending) {
+  		InitializeCriticalSection(&(name.crit));
+  		InitOnceComplete(&(name.init), 0, 0);
+  	}
+  	EnterCriticalSection(&(name.crit));
+}
+@d UNLOCK_MUTEX(name) {
+	LeaveCriticalSection(&(name.crit));
+}
+
+= (very early code)
+struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
