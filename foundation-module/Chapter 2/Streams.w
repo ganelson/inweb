@@ -218,6 +218,7 @@ is clear, that is, no conversion is made.
 @d INDENT_PENDING_STRF      0x00000008 /* we have just ended a line, so further text should indent */
 @d FILE_ENCODING_ISO_STRF   0x00000010 /* relevant only for file streams */
 @d FILE_ENCODING_UTF8_STRF  0x00000020 /* relevant only for file streams */
+@d ECHO_BYTES_STRF          0x00000080 /* for debugging only */
 @d FOR_RE_STRF              0x00000100 /* for debugging only */
 @d FOR_TT_STRF              0x00000200 /* for debugging only */
 @d FOR_CO_STRF              0x00000400 /* for debugging only */
@@ -363,6 +364,9 @@ text_stream *Streams::get_stdout(void) {
 	if (stdout_wrapper_initialised == FALSE) {
 		Streams::initialise(&STDOUT_struct, 0); STDOUT_struct.write_to_file = stdout;
 		stdout_wrapper_initialised = TRUE;
+		#ifdef STDOUT_LOCALE_TEST
+		STDOUT_struct.stream_flags |= ECHO_BYTES_STRF;
+		#endif
 		#ifdef LOCALE_IS_ISO
 		STDOUT_struct.stream_flags |= FILE_ENCODING_ISO_STRF;
 		#endif
@@ -710,6 +714,17 @@ void Streams::putc(int c_int, text_stream *stream) {
 		 	if (c >= 0x100) c = '?';
 			fputc((int) c, stream->write_to_file);
 		} else internal_error("stream has unknown text encoding");
+		if (stream->stream_flags & ECHO_BYTES_STRF) {
+			fputc(' ', stream->write_to_file);
+			fputc('0'+(c/100), stream->write_to_file);
+			fputc('0'+(c%100)/10, stream->write_to_file);
+			fputc('0'+(c%10), stream->write_to_file);
+			if (stream->stream_flags & FILE_ENCODING_UTF8_STRF)
+				fputc('u', stream->write_to_file);
+			if (stream->stream_flags & FILE_ENCODING_ISO_STRF)
+				fputc('i', stream->write_to_file);
+			fputc(' ', stream->write_to_file);
+		}
 	} else if (stream->write_to_memory) {
 		if ((c >= 0x0300) && (c <= 0x036F) && (stream->chars_written > 0)) {
 			c = (unsigned int) Characters::combine_accent(
