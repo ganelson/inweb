@@ -17,10 +17,10 @@ on a POSIX operating system.
 @d HTML_MAP_FONT_SIZE 11
 
 = (very early code)
-#include <sys/stat.h>
 #include <dirent.h>
 #include <errno.h>
 #include <io.h>
+#include <sys/stat.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -86,8 +86,8 @@ void Platform::where_am_i(wchar_t *p, size_t length) {
 
 = (very early code)
 int Platform::system(const char *cmd) {
-	char cmdline[4096];
-	sprintf(cmdline,"cmd /s /c \"%s\"", cmd);
+	char cmd_line[10*MAX_PATH];
+	sprintf(cmd_line, "sh -c %s", cmd);
 
 	STARTUPINFOA start;
 	memset(&start, 0, sizeof start);
@@ -96,7 +96,7 @@ int Platform::system(const char *cmd) {
 	start.wShowWindow = SW_HIDE;
 
 	PROCESS_INFORMATION process;
-	if (CreateProcessA(0, cmdline, 0, 0, FALSE, CREATE_NO_WINDOW, 0, 0, &start, &process) == 0)
+	if (CreateProcessA(0, cmd_line, 0, 0, FALSE, CREATE_NO_WINDOW, 0, 0, &start, &process) == 0)
 		return -1;
 
 	CloseHandle(process.hThread);
