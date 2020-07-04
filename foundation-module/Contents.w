@@ -18,6 +18,7 @@ Chapter 2: Memory, Streams and Collections
 	Debugging Log
 	Memory
 	Foundation Classes
+	Locales
 	Streams
 	Writers and Loggers
 	Methods

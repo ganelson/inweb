@@ -142,6 +142,7 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 @e HELP_CLSW
 @e FIXTIME_CLSW
 @e AT_CLSW
+@e LOCALE_CLSW
 
 @<Register the default command line switches@> =
 	CommandLine::begin_group(FOUNDATION_CLSG, NULL);
@@ -157,6 +158,8 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 		L"pretend the time is 11 a.m. on 28 March 2016 for testing", FALSE);
 	CommandLine::declare_switch(AT_CLSW, L"at", 2,
 		L"specify that this tool is installed at X");
+	CommandLine::declare_switch(LOCALE_CLSW, L"locale", 2,
+		L"set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1");
 	CommandLine::end_group();
 
 @ Once the following has been called, it is not safe to use any of the

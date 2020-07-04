@@ -67,7 +67,10 @@ int main(int argc, char **argv) {
 	verbose_mode = args.verbose_switch;
 	fundamental_mode = args.inweb_mode;
 	path_to_inweb = Pathnames::installation_path("INWEB_PATH", I"inweb");
-	if (verbose_mode) PRINT("Installation path is %p\n", path_to_inweb);
+	if (verbose_mode) {
+		PRINT("Installation path is %p\n", path_to_inweb);
+		Locales::write_locales(STDOUT);
+	}
 	path_to_inweb_patterns = Pathnames::down(path_to_inweb, I"Patterns");
 	path_to_inweb_materials = Pathnames::down(path_to_inweb, I"Materials");
 
@@ -78,6 +81,7 @@ int main(int argc, char **argv) {
 
 @<Initialise inweb@> =
 	Foundation::start();
+	CommandLine::set_locale(argc, argv);
 	Formats::create_weave_formats();
 
 @<Shut inweb down@> =

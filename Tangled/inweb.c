@@ -203,6 +203,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define HELP_CLSW 3
 #define FIXTIME_CLSW 4
 #define AT_CLSW 5
+#define LOCALE_CLSW 6
 #ifdef PLATFORM_POSIX
 #define FOLDER_SEPARATOR '/'
 #endif /* PLATFORM_POSIX */
@@ -497,6 +498,8 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define tree_type_CLASS 35
 #define web_bibliographic_datum_CLASS 36
 #define web_md_CLASS 37
+#define SHELL_LOCALE 0
+#define CONSOLE_LOCALE 1
 #define NEWLINE_IN_STRING ((char) 0x7f) /* Within quoted text, all newlines are converted to this */
 #define OUTPUT_STREAM text_stream *OUT /* used only as a function prototype argument */
 #define STDOUT Streams__get_stdout()
@@ -796,40 +799,40 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define SWARM_INDEX_SWM 1
 #define SWARM_CHAPTERS_SWM 2
 #define SWARM_SECTIONS_SWM 3
-#define VERBOSE_CLSW 6
-#define IMPORT_FROM_CLSW 7
+#define VERBOSE_CLSW 7
+#define IMPORT_FROM_CLSW 8
 #define LANGUAGES_CLSG 2
-#define LANGUAGE_CLSW 8
-#define LANGUAGES_CLSW 9
-#define SHOW_LANGUAGES_CLSW 10
-#define TEST_LANGUAGE_CLSW 11
-#define TEST_LANGUAGE_ON_CLSW 12
+#define LANGUAGE_CLSW 9
+#define LANGUAGES_CLSW 10
+#define SHOW_LANGUAGES_CLSW 11
+#define TEST_LANGUAGE_CLSW 12
+#define TEST_LANGUAGE_ON_CLSW 13
 #define ANALYSIS_CLSG 3
-#define CATALOGUE_CLSW 13
-#define FUNCTIONS_CLSW 14
-#define STRUCTURES_CLSW 15
-#define ADVANCE_CLSW 16
-#define GITIGNORE_CLSW 17
-#define MAKEFILE_CLSW 18
-#define WRITEME_CLSW 19
-#define ADVANCE_FILE_CLSW 20
-#define PROTOTYPE_CLSW 21
-#define SCAN_CLSW 22
+#define CATALOGUE_CLSW 14
+#define FUNCTIONS_CLSW 15
+#define STRUCTURES_CLSW 16
+#define ADVANCE_CLSW 17
+#define GITIGNORE_CLSW 18
+#define MAKEFILE_CLSW 19
+#define WRITEME_CLSW 20
+#define ADVANCE_FILE_CLSW 21
+#define PROTOTYPE_CLSW 22
+#define SCAN_CLSW 23
 #define WEAVING_CLSG 4
-#define WEAVE_CLSW 23
-#define WEAVE_INTO_CLSW 24
-#define WEAVE_TO_CLSW 25
-#define OPEN_CLSW 26
-#define WEAVE_AS_CLSW 27
-#define WEAVE_TAG_CLSW 28
-#define BREADCRUMB_CLSW 29
-#define NAVIGATION_CLSW 30
+#define WEAVE_CLSW 24
+#define WEAVE_INTO_CLSW 25
+#define WEAVE_TO_CLSW 26
+#define OPEN_CLSW 27
+#define WEAVE_AS_CLSW 28
+#define WEAVE_TAG_CLSW 29
+#define BREADCRUMB_CLSW 30
+#define NAVIGATION_CLSW 31
 #define TANGLING_CLSG 5
-#define TANGLE_CLSW 31
-#define TANGLE_TO_CLSW 32
+#define TANGLE_CLSW 32
+#define TANGLE_TO_CLSW 33
 #define COLONIAL_CLSG 6
-#define COLONY_CLSW 33
-#define MEMBER_CLSW 34
+#define COLONY_CLSW 34
+#define MEMBER_CLSW 35
 #define EMBED_ASSET_METHOD 1
 #define COPY_ASSET_METHOD 2
 #define PRIVATE_COPY_ASSET_METHOD 3
@@ -995,10 +998,11 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define POST_PROCESS_REPORT_POS_MTID 41
 #define POST_PROCESS_SUBSTITUTE_POS_MTID 42
 #define PDFTEX_TEX_FORM 1
-#define NO_DEFINED_CLSW_VALUES 35
+#define NO_DEFINED_CLSW_VALUES 36
 #define NO_DEFINED_DA_VALUES 4
 #define NO_DEFINED_CLASS_VALUES 120
 #define NO_DEFINED_MREASON_VALUES 5
+#define NO_DEFINED_LOCALE_VALUES 2
 #define NO_DEFINED_MTID_VALUES 42
 #define NO_DEFINED_CLSF_VALUES 5
 #define NO_DEFINED_CLSG_VALUES 7
@@ -1031,7 +1035,7 @@ typedef struct allocation_status_structure {
 	void *last_in_memory; /* tail of doubly linked list */
 
 	/* used only to provide statistics for the debugging log: */
-	char *name_of_type; /* e.g., |"lexicon_entry_CLASS"| */
+	char *name_of_type; /* e.g., |"index_lexicon_entry_CLASS"| */
 	int bytes_allocated; /* total allocation for this type of object, not counting overhead */
 	int objects_count; /* total number currently in existence (i.e., undeleted) */
 	int no_allocated_together; /* number of objects in each array of this type of object */
@@ -1054,7 +1058,7 @@ typedef struct general_pointer {
 	void *pointer_to_data;
 	int run_time_type_code;
 } general_pointer;
-#line 234 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 235 "inweb/foundation-module/Chapter 2/Streams.w"
 typedef struct text_stream {
 	int stream_flags; /* bitmap of the |*_STRF| values above */
 	FILE *write_to_file; /* for an open stream, exactly one of these is |NULL| */
@@ -2318,7 +2322,7 @@ typedef void (*log_function_I)(text_stream *, int);
 typedef char string[MAX_STRING_LENGTH+1];
 #line 89 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void  Foundation__start(void) ;
-#line 168 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 171 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void  Foundation__end(void) ;
 #ifdef PLATFORM_POSIX
 #line 90 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
@@ -2558,93 +2562,111 @@ void * Memory__paranoid_calloc(size_t N, size_t S) ;
 general_pointer  Memory__store_gp_null(void) ;
 #line 763 "inweb/foundation-module/Chapter 2/Memory.w"
 int  Memory__test_gp_null(general_pointer gp) ;
-#line 273 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 12 "inweb/foundation-module/Chapter 2/Locales.w"
+char * Locales__name(int L) ;
+#line 20 "inweb/foundation-module/Chapter 2/Locales.w"
+int  Locales__parse_locale(char *name) ;
+#line 35 "inweb/foundation-module/Chapter 2/Locales.w"
+int  Locales__get(int L) ;
+#line 42 "inweb/foundation-module/Chapter 2/Locales.w"
+void  Locales__set(int L, int E) ;
+#line 60 "inweb/foundation-module/Chapter 2/Locales.w"
+int  Locales__parse_encoding(char *name) ;
+#line 72 "inweb/foundation-module/Chapter 2/Locales.w"
+void  Locales__write_locales(OUTPUT_STREAM) ;
+#line 82 "inweb/foundation-module/Chapter 2/Locales.w"
+void  Locales__write_locale(OUTPUT_STREAM, int L) ;
+#line 98 "inweb/foundation-module/Chapter 2/Locales.w"
+int  Locales__platform_locale(void) ;
+#line 118 "inweb/foundation-module/Chapter 2/Locales.w"
+int  Locales__set_locales(char *text) ;
+#line 274 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__initialise(text_stream *stream, int from) ;
-#line 291 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 292 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__enable_XML_escapes(text_stream *stream) ;
-#line 295 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 296 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__disable_XML_escapes(text_stream *stream) ;
-#line 301 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 302 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__enable_I6_escapes(text_stream *stream) ;
-#line 306 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 307 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__disable_I6_escapes(text_stream *stream) ;
-#line 312 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 313 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__I6_escapes_enabled(text_stream *stream) ;
-#line 316 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 317 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__enable_debugging(text_stream *stream) ;
-#line 320 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 321 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__disable_debugging(text_stream *stream) ;
-#line 325 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 326 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__mark_as_read_only(text_stream *stream) ;
-#line 329 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 330 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__declare_as_HTML(text_stream *stream, HTML_file_state *hs) ;
-#line 333 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 334 "inweb/foundation-module/Chapter 2/Streams.w"
 HTML_file_state * Streams__get_HTML_file_state(text_stream *stream) ;
-#line 340 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 341 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__log(OUTPUT_STREAM, void *vS) ;
-#line 363 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 364 "inweb/foundation-module/Chapter 2/Streams.w"
 text_stream * Streams__get_stdout(void) ;
-#line 384 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 383 "inweb/foundation-module/Chapter 2/Streams.w"
 text_stream * Streams__get_stderr(void) ;
-#line 403 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 400 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__open_to_file(text_stream *stream, filename *name, int encoding) ;
-#line 422 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 419 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__open_to_file_append(text_stream *stream, filename *name, int encoding) ;
-#line 443 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 440 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__open_to_memory(text_stream *stream, int capacity) ;
-#line 459 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 456 "inweb/foundation-module/Chapter 2/Streams.w"
 text_stream  Streams__new_buffer(int capacity, wchar_t *at) ;
-#line 477 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 474 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__open_from_wide_string(text_stream *stream, wchar_t *c_string) ;
-#line 485 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 482 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_wide_string(text_stream *stream, wchar_t *c_string) ;
-#line 493 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 490 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__open_from_ISO_string(text_stream *stream, char *c_string) ;
-#line 501 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 498 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_ISO_string(text_stream *stream, char *c_string) ;
-#line 508 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 505 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__open_from_UTF8_string(text_stream *stream, char *c_string) ;
-#line 516 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 513 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_UTF8_string(text_stream *stream, char *c_string) ;
-#line 535 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 532 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_as_wide_string(wchar_t *C_string, text_stream *stream, int buffer_size) ;
-#line 554 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 551 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_as_ISO_string(char *C_string, text_stream *stream, int buffer_size) ;
-#line 571 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 568 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_as_UTF8_string(char *C_string, text_stream *stream, int buffer_size) ;
-#line 602 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 599 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__open_from_locale_string(text_stream *stream, char *C_string) ;
-#line 611 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 608 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_as_locale_string(char *C_string, text_stream *stream, int buffer_size) ;
-#line 620 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 616 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_locale_string(text_stream *stream, char *C_string) ;
-#line 634 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 629 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__flush(text_stream *stream) ;
-#line 642 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 637 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__close(text_stream *stream) ;
-#line 693 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 688 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__putc(int c_int, text_stream *stream) ;
-#line 800 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 795 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__literal(text_stream *stream, char *p) ;
-#line 814 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 809 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__indent(text_stream *stream) ;
-#line 819 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 814 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__outdent(text_stream *stream) ;
-#line 828 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 823 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__set_indentation(text_stream *stream, int N) ;
-#line 842 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 837 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__get_position(text_stream *stream) ;
-#line 856 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 851 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__latest(text_stream *stream) ;
-#line 872 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 867 "inweb/foundation-module/Chapter 2/Streams.w"
 wchar_t  Streams__get_char_at_index(text_stream *stream, int position) ;
-#line 884 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 879 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__put_char_at_index(text_stream *stream, int position, wchar_t C) ;
-#line 910 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 905 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__set_position(text_stream *stream, int position) ;
-#line 934 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 929 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__copy(text_stream *to, text_stream *from) ;
-#line 950 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 945 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__writer(OUTPUT_STREAM, char *format_string, void *vS) ;
 #line 51 "inweb/foundation-module/Chapter 2/Writers and Loggers.w"
 void  Writers__log_escape_usage(void) ;
@@ -2815,28 +2837,30 @@ void  CommandLine__declare_textual_switch(int id, 	wchar_t *name_literal, int va
 #line 179 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__read(int argc, char **argv, void *state, 	void (*f)(int, int, text_stream *, void *), void (*g)(int, text_stream *, void *)) ;
 #line 189 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+void  CommandLine__set_locale(int argc, char **argv) ;
+#line 198 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__read_array(clf_reader_state *crs, int argc, char **argv) ;
-#line 216 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 226 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__also_read_file(filename *F) ;
-#line 227 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 237 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__record_log(text_stream *line) ;
-#line 233 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 243 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__play_back_log(void) ;
-#line 250 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 260 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__read_file(clf_reader_state *crs) ;
-#line 262 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 272 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__read_file_helper(text_stream *text, text_file_position *tfp, void *state) ;
-#line 291 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 301 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__read_one(clf_reader_state *crs, text_stream *opt) ;
-#line 299 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 309 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__read_pair(clf_reader_state *crs, text_stream *opt, text_stream *arg) ;
-#line 323 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 333 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N, 	text_stream *arg, void *state, 	void (*f)(int, int, text_stream *, void *), int *substantive) ;
-#line 414 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 425 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__declare_heading(wchar_t *heading_text_literal) ;
-#line 418 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 429 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__write_help(OUTPUT_STREAM) ;
-#line 476 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 487 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__compare_names(const void *ent1, const void *ent2) ;
 #line 51 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void  Pathnames__start(void) ;
@@ -3560,9 +3584,9 @@ int  BuildFiles__dated_today(text_stream *dateline) ;
 void  BuildFiles__increment(text_stream *T) ;
 #line 64 "inweb/Chapter 1/Program Control.w"
 int  main(int argc, char **argv) ;
-#line 92 "inweb/Chapter 1/Program Control.w"
+#line 96 "inweb/Chapter 1/Program Control.w"
 void  Main__follow_instructions(inweb_instructions *ins) ;
-#line 271 "inweb/Chapter 1/Program Control.w"
+#line 275 "inweb/Chapter 1/Program Control.w"
 void  Main__error_in_web(text_stream *message, source_line *sl) ;
 #line 56 "inweb/Chapter 1/Configuration.w"
 inweb_instructions  Configuration__read(int argc, char **argv) ;
@@ -5006,7 +5030,7 @@ void Foundation__start(void) {
 ;
 	
 {
-#line 147 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 148 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 	CommandLine__begin_group(FOUNDATION_CLSG, NULL);
 	CommandLine__declare_switch(LOG_CLSW, L"log", 2,
 		L"write the debugging log to include diagnostics on X");
@@ -5020,6 +5044,8 @@ void Foundation__start(void) {
 		L"pretend the time is 11 a.m. on 28 March 2016 for testing", FALSE);
 	CommandLine__declare_switch(AT_CLSW, L"at", 2,
 		L"specify that this tool is installed at X");
+	CommandLine__declare_switch(LOCALE_CLSW, L"locale", 2,
+		L"set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1");
 	CommandLine__end_group();
 
 }
@@ -5027,9 +5053,9 @@ void Foundation__start(void) {
 ;
 }
 
-#line 145 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 146 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 
-#line 168 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 171 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void Foundation__end(void) {
 	if (Log__aspect_switched_on(MEMORY_USAGE_DA)) Memory__log_statistics();
 	Log__close();
@@ -6113,12 +6139,120 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(match_avinue, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(match_trie, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(text_stream, 100)
 
-#line 244 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 12 "inweb/foundation-module/Chapter 2/Locales.w"
+char *Locales__name(int L) {
+	switch (L) {
+		case SHELL_LOCALE: return "shell";
+		case CONSOLE_LOCALE: return "console";
+	}
+	return "";
+}
 
-#line 259 "inweb/foundation-module/Chapter 2/Streams.w"
+int Locales__parse_locale(char *name) {
+	for (int i=0; i<NO_DEFINED_LOCALE_VALUES; i++)
+		if (strcmp(name, Locales__name(i)) == 0)
+			return i;
+	return -1;
+}
+
+#line 32 "inweb/foundation-module/Chapter 2/Locales.w"
+int locales_unset = TRUE;
+int locale_settings[NO_DEFINED_LOCALE_VALUES];
+
+int Locales__get(int L) {
+	if ((L < 0) || (L >= NO_DEFINED_LOCALE_VALUES)) Errors__fatal("locale out of range");
+	if (locales_unset) return Locales__platform_locale();
+	if (locale_settings[L] >= 0) return locale_settings[L];
+	return Locales__platform_locale();
+}
+
+void Locales__set(int L, int E) {
+	if ((L < 0) || (L >= NO_DEFINED_LOCALE_VALUES)) Errors__fatal("locale out of range");
+	if (locales_unset) {
+		for (int i=0; i<NO_DEFINED_LOCALE_VALUES; i++) locale_settings[i] = -1;
+		locales_unset = FALSE;
+	}
+	locale_settings[L] = E;
+}
+
+#line 60 "inweb/foundation-module/Chapter 2/Locales.w"
+int Locales__parse_encoding(char *name) {
+	if (strcmp(name, "platform") == 0) return -1;
+	if (strcmp(name, "iso-latin1") == 0) return FILE_ENCODING_ISO_STRF;
+	if (strcmp(name, "utf-8") == 0) return FILE_ENCODING_UTF8_STRF;
+	return 0;
+}
+
+#line 72 "inweb/foundation-module/Chapter 2/Locales.w"
+void Locales__write_locales(OUTPUT_STREAM) {
+	WRITE("Locales are: ");
+	for (int i=0; i<NO_DEFINED_LOCALE_VALUES; i++) {
+		if (i > 0) WRITE(", ");
+		WRITE("%s = ", Locales__name(i));
+		Locales__write_locale(OUT, Locales__get(i));
+	}
+	WRITE("\n");
+}
+
+void Locales__write_locale(OUTPUT_STREAM, int L) {
+	switch (L) {
+		case -1:
+			WRITE("platform (= ");
+			Locales__write_locale(OUT, Locales__platform_locale());
+			WRITE(")"); break;
+		case FILE_ENCODING_ISO_STRF: WRITE("iso-latin1"); break;
+		case FILE_ENCODING_UTF8_STRF: WRITE("utf-8"); break;
+		default: WRITE("?"); break;
+	}
+}
+
+#line 98 "inweb/foundation-module/Chapter 2/Locales.w"
+int Locales__platform_locale(void) {
+	#ifdef LOCALE_IS_ISO
+	return FILE_ENCODING_ISO_STRF;
+	#endif
+	#ifndef LOCALE_IS_ISO
+		#ifdef LOCALE_IS_UTF8
+		return FILE_ENCODING_UTF8_STRF;
+		#endif
+		#ifndef LOCALE_IS_UTF8
+		Errors__fatal("built without either LOCALE_IS_ISO or LOCALE_IS_UTF8");
+		return FILE_ENCODING_UTF8_STRF;
+		#endif
+	#endif
+}
+
+#line 118 "inweb/foundation-module/Chapter 2/Locales.w"
+int Locales__set_locales(char *text) {
+	if (text == NULL) return FALSE;
+	for (int at=0; ((at >= 0) && (text[at])); ) {
+		int c = -1;
+		for (int i=at; text[i]; i++) if (text[i] == '=') { c = i; break; }
+		if (c == -1) return FALSE;
+		if (c-at >= 16) return FALSE;
+		char L1[16], L2[16];
+		for (int i=0; i<16; i++) { L1[i] = 0; L2[i] = 0; }
+		for (int i=0; i<c-at; i++) L1[i] = (char) tolower((int) text[at+i]);
+		int next_at = -1;
+		for (int i=0; (text[c+1+i]) && (i<16); i++) {
+			if (text[c+1+i] == ',') { next_at = c+1+i+1; break; }
+			L2[i] = (char) tolower((int) text[c+1+i]);
+		}
+		int L = Locales__parse_locale(L1), E = Locales__parse_encoding(L2);
+		if ((L < 0) || (L >= NO_DEFINED_LOCALE_VALUES)) return FALSE;
+		if (E == 0) return FALSE;
+		Locales__set(L, E);
+		at = next_at;
+	}
+	return TRUE;
+}
+
+#line 245 "inweb/foundation-module/Chapter 2/Streams.w"
+
+#line 260 "inweb/foundation-module/Chapter 2/Streams.w"
 int total_file_writes = 0; /* number of text files opened for writing during the run */
 
-#line 273 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 274 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__initialise(text_stream *stream, int from) {
 	if (stream == NULL) internal_error("tried to initialise NULL stream");
 	stream->stream_flags = from;
@@ -6131,7 +6265,7 @@ void Streams__initialise(text_stream *stream, int from) {
 	stream->file_written = NULL;
 }
 
-#line 291 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 292 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__enable_XML_escapes(text_stream *stream) {
 	if (stream) stream->stream_flags |= USES_XML_ESCAPES_STRF;
 }
@@ -6178,7 +6312,7 @@ HTML_file_state *Streams__get_HTML_file_state(text_stream *stream) {
 	return stream->as_HTML;
 }
 
-#line 340 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 341 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__log(OUTPUT_STREAM, void *vS) {
 	text_stream *stream = (text_stream *) vS;
 	if (stream == NULL) {
@@ -6196,7 +6330,7 @@ void Streams__log(OUTPUT_STREAM, void *vS) {
 	}
 }
 
-#line 362 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 363 "inweb/foundation-module/Chapter 2/Streams.w"
 text_stream STDOUT_struct; int stdout_wrapper_initialised = FALSE;
 text_stream *Streams__get_stdout(void) {
 	if (stdout_wrapper_initialised == FALSE) {
@@ -6205,33 +6339,29 @@ text_stream *Streams__get_stdout(void) {
 		#ifdef STDOUT_LOCALE_TEST
 		STDOUT_struct.stream_flags |= ECHO_BYTES_STRF;
 		#endif
-		#ifdef LOCALE_IS_ISO
-		STDOUT_struct.stream_flags |= FILE_ENCODING_ISO_STRF;
-		#endif
-		#ifdef LOCALE_IS_UTF8
-		STDOUT_struct.stream_flags |= FILE_ENCODING_UTF8_STRF;
-		#endif
+		if (Locales__get(CONSOLE_LOCALE) == FILE_ENCODING_ISO_STRF)
+			STDOUT_struct.stream_flags |= FILE_ENCODING_ISO_STRF;
+		if (Locales__get(CONSOLE_LOCALE) == FILE_ENCODING_UTF8_STRF)
+			STDOUT_struct.stream_flags |= FILE_ENCODING_UTF8_STRF;
 	}
 	return &STDOUT_struct;
 }
 
-#line 383 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 382 "inweb/foundation-module/Chapter 2/Streams.w"
 text_stream STDERR_struct; int stderr_wrapper_initialised = FALSE;
 text_stream *Streams__get_stderr(void) {
 	if (stderr_wrapper_initialised == FALSE) {
 		Streams__initialise(&STDERR_struct, 0); STDERR_struct.write_to_file = stderr;
 		stderr_wrapper_initialised = TRUE;
-		#ifdef LOCALE_IS_ISO
-		STDERR_struct.stream_flags |= FILE_ENCODING_ISO_STRF;
-		#endif
-		#ifdef LOCALE_IS_UTF8
-		STDERR_struct.stream_flags |= FILE_ENCODING_UTF8_STRF;
-		#endif
+		if (Locales__get(CONSOLE_LOCALE) == FILE_ENCODING_ISO_STRF)
+			STDERR_struct.stream_flags |= FILE_ENCODING_ISO_STRF;
+		if (Locales__get(CONSOLE_LOCALE) == FILE_ENCODING_UTF8_STRF)
+			STDERR_struct.stream_flags |= FILE_ENCODING_UTF8_STRF;
 	}
 	return &STDERR_struct;
 }
 
-#line 403 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 400 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__open_to_file(text_stream *stream, filename *name, int encoding) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	if (name == NULL) internal_error("stream_open_to_file on null filename");
@@ -6248,7 +6378,7 @@ int Streams__open_to_file(text_stream *stream, filename *name, int encoding) {
 	return TRUE;
 }
 
-#line 422 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 419 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__open_to_file_append(text_stream *stream, filename *name, int encoding) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	if (name == NULL) internal_error("stream_open_to_file on null filename");
@@ -6264,7 +6394,7 @@ int Streams__open_to_file_append(text_stream *stream, filename *name, int encodi
 	return TRUE;
 }
 
-#line 443 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 440 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__open_to_memory(text_stream *stream, int capacity) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	capacity += SPACE_AT_END_OF_STREAM;
@@ -6277,7 +6407,7 @@ int Streams__open_to_memory(text_stream *stream, int capacity) {
 	return TRUE;
 }
 
-#line 459 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 456 "inweb/foundation-module/Chapter 2/Streams.w"
 text_stream Streams__new_buffer(int capacity, wchar_t *at) {
 	if (at == NULL) internal_error("tried to make stream wrapper for NULL string");
 	if (capacity < SPACE_AT_END_OF_STREAM)
@@ -6290,20 +6420,20 @@ text_stream Streams__new_buffer(int capacity, wchar_t *at) {
 	return stream;
 }
 
-#line 477 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 474 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__open_from_wide_string(text_stream *stream, wchar_t *c_string) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	int capacity = (c_string)?((int) wcslen(c_string)):0;
 	
 {
-#line 526 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 523 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (capacity < 8) capacity = 8;
 	capacity += 1+SPACE_AT_END_OF_STREAM;
 	int rv = Streams__open_to_memory(stream, capacity);
 	if (rv == FALSE) return FALSE;
 
 }
-#line 480 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 477 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 	if (c_string) Streams__write_wide_string(stream, c_string);
 	return TRUE;
@@ -6313,20 +6443,20 @@ void Streams__write_wide_string(text_stream *stream, wchar_t *c_string) {
 	for (int i=0; c_string[i]; i++) Streams__putc(c_string[i], stream);
 }
 
-#line 493 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 490 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__open_from_ISO_string(text_stream *stream, char *c_string) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	int capacity = (c_string)?((int) strlen(c_string)):0;
 	
 {
-#line 526 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 523 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (capacity < 8) capacity = 8;
 	capacity += 1+SPACE_AT_END_OF_STREAM;
 	int rv = Streams__open_to_memory(stream, capacity);
 	if (rv == FALSE) return FALSE;
 
 }
-#line 496 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 493 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 	if (c_string) Streams__write_ISO_string(stream, c_string);
 	return TRUE;
@@ -6336,20 +6466,20 @@ void Streams__write_ISO_string(text_stream *stream, char *c_string) {
 	for (int i=0; c_string[i]; i++) Streams__putc(c_string[i], stream);
 }
 
-#line 508 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 505 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__open_from_UTF8_string(text_stream *stream, char *c_string) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	int capacity = (c_string)?((int) strlen(c_string)):0;
 	
 {
-#line 526 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 523 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (capacity < 8) capacity = 8;
 	capacity += 1+SPACE_AT_END_OF_STREAM;
 	int rv = Streams__open_to_memory(stream, capacity);
 	if (rv == FALSE) return FALSE;
 
 }
-#line 511 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 508 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 	if (c_string) Streams__write_UTF8_string(stream, c_string);
 	return TRUE;
@@ -6362,7 +6492,7 @@ void Streams__write_UTF8_string(text_stream *stream, char *c_string) {
 		Streams__putc(c, stream);
 }
 
-#line 535 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 532 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__write_as_wide_string(wchar_t *C_string, text_stream *stream, int buffer_size) {
 	if (buffer_size == 0) return;
 	if (stream == NULL) { C_string[0] = 0; return; }
@@ -6378,7 +6508,7 @@ void Streams__write_as_wide_string(wchar_t *C_string, text_stream *stream, int b
 	C_string[i] = 0;
 }
 
-#line 554 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 551 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__write_as_ISO_string(char *C_string, text_stream *stream, int buffer_size) {
 	if (buffer_size == 0) return;
 	if (stream == NULL) { C_string[0] = 0; return; }
@@ -6395,7 +6525,7 @@ void Streams__write_as_ISO_string(char *C_string, text_stream *stream, int buffe
 	C_string[i] = 0;
 }
 
-#line 571 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 568 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__write_as_UTF8_string(char *C_string, text_stream *stream, int buffer_size) {
 	if (buffer_size == 0) return;
 	if (stream == NULL) { C_string[0] = 0; return; }
@@ -6424,41 +6554,39 @@ void Streams__write_as_UTF8_string(char *C_string, text_stream *stream, int buff
 	to[i] = 0;
 }
 
-#line 602 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 599 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__open_from_locale_string(text_stream *stream, char *C_string) {
-	#ifdef LOCALE_IS_UTF8
-	return Streams__open_from_UTF8_string(stream, C_string);
-	#endif
-	#ifdef LOCALE_IS_ISO
-	return Streams__open_from_ISO_string(stream, C_string);
-	#endif
+	if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
+		return Streams__open_from_UTF8_string(stream, C_string);
+	if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
+		return Streams__open_from_ISO_string(stream, C_string);
+	Errors__fatal("unknown command line locale");
+	return FALSE;
 }
 
 void Streams__write_as_locale_string(char *C_string, text_stream *stream, int buffer_size) {
-	#ifdef LOCALE_IS_UTF8
-	Streams__write_as_UTF8_string(C_string, stream, buffer_size);
-	#endif
-	#ifdef LOCALE_IS_ISO
-	Streams__write_as_ISO_string(C_string, stream, buffer_size);
-	#endif
+	if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
+		Streams__write_as_UTF8_string(C_string, stream, buffer_size);
+	else if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
+		Streams__write_as_ISO_string(C_string, stream, buffer_size);
+	else Errors__fatal("unknown command line locale");
 }
 
 void Streams__write_locale_string(text_stream *stream, char *C_string) {
-	#ifdef LOCALE_IS_UTF8
-	Streams__write_UTF8_string(stream, C_string);
-	#endif
-	#ifdef LOCALE_IS_ISO
-	Streams__write_ISO_string(stream, C_string);
-	#endif
+	if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
+		Streams__write_UTF8_string(stream, C_string);
+	else if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
+		Streams__write_ISO_string(stream, C_string);
+	else Errors__fatal("unknown command line locale");
 }
 
-#line 634 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 629 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__flush(text_stream *stream) {
 	if (stream == NULL) return;
 	if (stream->write_to_file) fflush(stream->write_to_file);
 }
 
-#line 642 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 637 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__close(text_stream *stream) {
 	if (stream == NULL) internal_error("tried to close NULL stream");
 	if (stream == &STDOUT_struct) internal_error("tried to close STDOUT stream");
@@ -6471,7 +6599,7 @@ void Streams__close(text_stream *stream) {
 	stream->chars_capacity = -1; /* mark as closed */
 	if (stream->write_to_file) 
 {
-#line 663 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 658 "inweb/foundation-module/Chapter 2/Streams.w"
 	if ((ferror(stream->write_to_file)) || (fclose(stream->write_to_file) == EOF))
 		Errors__fatal("The host computer reported an error trying to write a text file");
 	if (stream != DL)
@@ -6482,11 +6610,11 @@ void Streams__close(text_stream *stream) {
 	stream->write_to_file = NULL;
 
 }
-#line 652 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 647 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 	if (stream->write_to_memory) 
 {
-#line 682 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 677 "inweb/foundation-module/Chapter 2/Streams.w"
 	if ((stream->stream_flags) & MALLOCED_STRF) {
 		wchar_t *mem = stream->write_to_memory;
 		stream->write_to_memory = NULL;
@@ -6495,11 +6623,11 @@ void Streams__close(text_stream *stream) {
 	}
 
 }
-#line 653 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 648 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 }
 
-#line 693 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 688 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__putc(int c_int, text_stream *stream) {
 	unsigned int c;
 	if (c_int >= 0) c = (unsigned int) c_int; else c = (unsigned int) (c_int + 256);
@@ -6507,7 +6635,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 	text_stream *first_stream = stream;
 	if (c != '\n') 
 {
-#line 753 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 748 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (first_stream->stream_flags & INDENT_PENDING_STRF) {
 		first_stream->stream_flags -= INDENT_PENDING_STRF;
 		int L = (first_stream->stream_flags & INDENTATION_MASK_STRF)/INDENTATION_BASE_STRF;
@@ -6518,7 +6646,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 	}
 
 }
-#line 698 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 693 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 	if (stream->stream_flags & READ_ONLY_STRF) internal_error("modifying read-only stream");
 	if ((stream->stream_flags) & USES_XML_ESCAPES_STRF) {
@@ -6532,7 +6660,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 	while (stream->stream_continues) stream = stream->stream_continues;
 	
 {
-#line 780 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 775 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (stream->chars_written + SPACE_AT_END_OF_STREAM >= stream->chars_capacity) {
 		if (stream->write_to_file) return; /* write nothing further */
 		if (stream->write_to_memory) {
@@ -6551,13 +6679,13 @@ void Streams__putc(int c_int, text_stream *stream) {
 	}
 
 }
-#line 709 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 704 "inweb/foundation-module/Chapter 2/Streams.w"
 ;
 	if (stream->write_to_file) {
 		if (stream->stream_flags & FILE_ENCODING_UTF8_STRF)
 			
 {
-#line 743 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 738 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (c >= 0x800) {
 		fputc(0xE0 + (c >> 12), stream->write_to_file);
 		fputc(0x80 + ((c >> 6) & 0x3f), stream->write_to_file);
@@ -6568,7 +6696,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 	} else fputc((int) c, stream->write_to_file);
 
 }
-#line 712 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 707 "inweb/foundation-module/Chapter 2/Streams.w"
 
 		else if (stream->stream_flags & FILE_ENCODING_ISO_STRF) {
 		 	if (c >= 0x100) c = '?';
@@ -6597,7 +6725,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 	stream->chars_written++;
 }
 
-#line 800 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 795 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__literal(text_stream *stream, char *p) {
 	if (stream == NULL) return;
 	int i, x = ((stream->stream_flags) & USES_XML_ESCAPES_STRF);
@@ -6606,7 +6734,7 @@ void Streams__literal(text_stream *stream, char *p) {
 	if (x) stream->stream_flags += USES_XML_ESCAPES_STRF;
 }
 
-#line 814 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 809 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__indent(text_stream *stream) {
 	if (stream == NULL) return;
 	stream->stream_flags += INDENTATION_BASE_STRF;
@@ -6628,7 +6756,7 @@ void Streams__set_indentation(text_stream *stream, int N) {
 	stream->stream_flags += N*INDENTATION_BASE_STRF;
 }
 
-#line 842 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 837 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__get_position(text_stream *stream) {
 	int t = 0;
 	while (stream) {
@@ -6638,7 +6766,7 @@ int Streams__get_position(text_stream *stream) {
 	return t;
 }
 
-#line 856 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 851 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__latest(text_stream *stream) {
 	if (stream == NULL) return 0;
 	if (stream->write_to_file) internal_error("stream_latest on file stream");
@@ -6651,7 +6779,7 @@ int Streams__latest(text_stream *stream) {
 	return 0;
 }
 
-#line 872 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 867 "inweb/foundation-module/Chapter 2/Streams.w"
 wchar_t Streams__get_char_at_index(text_stream *stream, int position) {
 	if (stream == NULL) internal_error("examining null stream");
 	if (stream->write_to_file) internal_error("examining file stream");
@@ -6683,7 +6811,7 @@ void Streams__put_char_at_index(text_stream *stream, int position, wchar_t C) {
 	}
 }
 
-#line 910 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 905 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__set_position(text_stream *stream, int position) {
 	if (stream == NULL) return;
 	if (position < 0) position = 0; /* to simplify the implementation of backspacing */
@@ -6704,7 +6832,7 @@ void Streams__set_position(text_stream *stream, int position) {
 	}
 }
 
-#line 934 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 929 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__copy(text_stream *to, text_stream *from) {
 	if ((from == NULL) || (to == NULL)) return;
 	if (from->write_to_file) internal_error("stream_copy from file stream");
@@ -6717,7 +6845,7 @@ void Streams__copy(text_stream *to, text_stream *from) {
 	}
 }
 
-#line 950 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 945 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__writer(OUTPUT_STREAM, char *format_string, void *vS) {
 	text_stream *S = (text_stream *) vS;
 	Streams__copy(OUT, S);
@@ -7844,7 +7972,17 @@ int CommandLine__read(int argc, char **argv, void *state,
 	return crs.subs;
 }
 
+void CommandLine__set_locale(int argc, char **argv) {
+	for (int i=1; i<argc; i++) {
+		char *p = argv[i];
+		if ((strcmp(p, "-locale") == 0) && (i<argc-1))
+			if (Locales__set_locales(argv[i+1]) == FALSE)
+				Errors__fatal("unrecognised locale");
+	}
+}
+
 void CommandLine__read_array(clf_reader_state *crs, int argc, char **argv) {
+	CommandLine__set_locale(argc, argv);
 	for (int i=1; i<argc; i++) {
 		int switched = FALSE;
 		char *p = argv[i];
@@ -7866,13 +8004,13 @@ void CommandLine__read_array(clf_reader_state *crs, int argc, char **argv) {
 	}
 }
 
-#line 215 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 225 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 filename *command_line_file = NULL;
 void CommandLine__also_read_file(filename *F) {
 	command_line_file = F;
 }
 
-#line 226 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 236 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 linked_list *command_line_logs = NULL;
 void CommandLine__record_log(text_stream *line) {
 	if (command_line_logs == NULL)
@@ -7888,7 +8026,7 @@ void CommandLine__play_back_log(void) {
 	}
 }
 
-#line 250 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 260 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void CommandLine__read_file(clf_reader_state *crs) {
 	text_stream *logline = Str__new();
 	WRITE_TO(logline, "Reading further switches from file: %f", command_line_file);
@@ -7935,7 +8073,7 @@ void CommandLine__read_one(clf_reader_state *crs, text_stream *opt) {
 	crs->subs = TRUE;
 }
 
-#line 299 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 309 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__read_pair(clf_reader_state *crs, text_stream *opt, text_stream *arg) {
 	TEMPORARY_TEXT(opt_p)
 	TEMPORARY_TEXT(opt_val)
@@ -7957,7 +8095,7 @@ int CommandLine__read_pair(clf_reader_state *crs, text_stream *opt, text_stream 
 	return rv;
 }
 
-#line 323 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 333 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 	text_stream *arg, void *state,
 	void (*f)(int, int, text_stream *, void *), int *substantive) {
@@ -7981,7 +8119,7 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 	int innocuous = FALSE;
 	
 {
-#line 353 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 363 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	switch (cls->switch_id) {
 		case CRASH_CLSW:
 			if (cls->form == BOOLEAN_ON_CLSF) {
@@ -7990,7 +8128,7 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 			break;
 		case LOG_CLSW: 
 {
-#line 392 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 403 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	if (Log__get_debug_log_filename() == NULL) {
 		TEMPORARY_TEXT(itn)
 		WRITE_TO(itn, "%s", PROGRAM_NAME);
@@ -8002,15 +8140,15 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 	Log__set_aspect_from_command_line(arg, TRUE);
 
 }
-#line 359 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 369 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A49";
+			char *svn = "7-alpha.1+1A51";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "1 July 2020";
+			char *d = "4 July 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -8020,6 +8158,7 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 			if (cls->form == BOOLEAN_ON_CLSF) Time__fix();
 			break;
 		case AT_CLSW: Pathnames__set_installation_path(Pathnames__from_text(arg)); break;
+		case LOCALE_CLSW: break; /* because it was done earlier */
 		default:
 			if (f) {
 				int par = -1;
@@ -8036,13 +8175,13 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 	}
 
 }
-#line 344 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 354 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 	if ((innocuous == FALSE) && (substantive)) *substantive = TRUE;
 	return cls->valency;
 }
 
-#line 412 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 423 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 text_stream *cls_heading = NULL;
 
 void CommandLine__declare_heading(wchar_t *heading_text_literal) {
@@ -8066,7 +8205,7 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	int filter = NO_CLSG, new_para_needed = FALSE;
 	
 {
-#line 444 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 455 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	if (new_para_needed) {
 		WRITE("\n");
 		new_para_needed = FALSE;
@@ -8099,13 +8238,13 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	}
 
 }
-#line 433 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 444 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 	for (filter = NO_CLSG; filter<NO_DEFINED_CLSG_VALUES; filter++)
 		if ((filter != NO_CLSG) && (filter != FOUNDATION_CLSG))
 			
 {
-#line 444 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 455 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	if (new_para_needed) {
 		WRITE("\n");
 		new_para_needed = FALSE;
@@ -8138,12 +8277,12 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	}
 
 }
-#line 436 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 447 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 	filter = FOUNDATION_CLSG;
 	
 {
-#line 444 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 455 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	if (new_para_needed) {
 		WRITE("\n");
 		new_para_needed = FALSE;
@@ -8176,13 +8315,13 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	}
 
 }
-#line 438 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 449 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 
 	Memory__I7_free(sorted_table, ARRAY_SORTING_MREASON, N*((int) sizeof(command_line_switch *)));
 }
 
-#line 476 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 487 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__compare_names(const void *ent1, const void *ent2) {
 	text_stream *tx1 = (*((const command_line_switch **) ent1))->switch_sort_name;
 	text_stream *tx2 = (*((const command_line_switch **) ent2))->switch_sort_name;
@@ -14857,8 +14996,9 @@ int verbose_mode = FALSE;
 int main(int argc, char **argv) {
 	
 {
-#line 80 "inweb/Chapter 1/Program Control.w"
+#line 83 "inweb/Chapter 1/Program Control.w"
 	Foundation__start();
+	CommandLine__set_locale(argc, argv);
 	Formats__create_weave_formats();
 
 }
@@ -14868,7 +15008,10 @@ int main(int argc, char **argv) {
 	verbose_mode = args.verbose_switch;
 	fundamental_mode = args.inweb_mode;
 	path_to_inweb = Pathnames__installation_path("INWEB_PATH", TL_IS_85);
-	if (verbose_mode) PRINT("Installation path is %p\n", path_to_inweb);
+	if (verbose_mode) {
+		PRINT("Installation path is %p\n", path_to_inweb);
+		Locales__write_locales(STDOUT);
+	}
 	path_to_inweb_patterns = Pathnames__down(path_to_inweb, TL_IS_86);
 	path_to_inweb_materials = Pathnames__down(path_to_inweb, TL_IS_87);
 
@@ -14876,16 +15019,16 @@ int main(int argc, char **argv) {
 
 	
 {
-#line 84 "inweb/Chapter 1/Program Control.w"
+#line 88 "inweb/Chapter 1/Program Control.w"
 	Foundation__end();
 	return (no_inweb_errors == 0)?0:1;
 
 }
-#line 76 "inweb/Chapter 1/Program Control.w"
+#line 79 "inweb/Chapter 1/Program Control.w"
 ;
 }
 
-#line 92 "inweb/Chapter 1/Program Control.w"
+#line 96 "inweb/Chapter 1/Program Control.w"
 void Main__follow_instructions(inweb_instructions *ins) {
 	web *W = NULL;
 	if ((ins->chosen_web) || (ins->chosen_file)) {
@@ -14898,7 +15041,7 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	if (no_inweb_errors == 0) {
 		if (ins->inweb_mode == TRANSLATE_MODE) 
 {
-#line 112 "inweb/Chapter 1/Program Control.w"
+#line 116 "inweb/Chapter 1/Program Control.w"
 	if ((ins->makefile_setting) && (ins->prototype_setting == NULL))
 		ins->prototype_setting = Filenames__from_text(TL_IS_88);
 	if ((ins->gitignore_setting) && (ins->prototype_setting == NULL))
@@ -14916,20 +15059,20 @@ void Main__follow_instructions(inweb_instructions *ins) {
 		Readme__write(ins->prototype_setting, ins->writeme_setting);
 
 }
-#line 102 "inweb/Chapter 1/Program Control.w"
+#line 106 "inweb/Chapter 1/Program Control.w"
 
 		else if (ins->show_languages_switch) 
 {
-#line 131 "inweb/Chapter 1/Program Control.w"
+#line 135 "inweb/Chapter 1/Program Control.w"
 	Languages__read_definitions(NULL);
 	Languages__show(STDOUT);
 
 }
-#line 103 "inweb/Chapter 1/Program Control.w"
+#line 107 "inweb/Chapter 1/Program Control.w"
 
 		else if ((ins->test_language_setting) || (ins->test_language_on_setting)) 
 {
-#line 137 "inweb/Chapter 1/Program Control.w"
+#line 141 "inweb/Chapter 1/Program Control.w"
 	if ((ins->test_language_setting) && (ins->test_language_on_setting)) {
 		TEMPORARY_TEXT(matter)
 		TEMPORARY_TEXT(coloured)
@@ -14944,15 +15087,15 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	}
 
 }
-#line 104 "inweb/Chapter 1/Program Control.w"
+#line 108 "inweb/Chapter 1/Program Control.w"
 
 		else if (ins->inweb_mode != NO_MODE) 
 {
-#line 153 "inweb/Chapter 1/Program Control.w"
+#line 157 "inweb/Chapter 1/Program Control.w"
 	Reader__print_web_statistics(W);
 	if (ins->inweb_mode == ANALYSE_MODE) 
 {
-#line 161 "inweb/Chapter 1/Program Control.w"
+#line 165 "inweb/Chapter 1/Program Control.w"
 	if (ins->swarm_mode != SWARM_OFF_SWM)
 		Errors__fatal("only specific parts of the web can be analysed");
 	if (ins->catalogue_switch)
@@ -14972,17 +15115,17 @@ void Main__follow_instructions(inweb_instructions *ins) {
 		Analyser__scan_line_categories(W, ins->chosen_range);
 
 }
-#line 154 "inweb/Chapter 1/Program Control.w"
+#line 158 "inweb/Chapter 1/Program Control.w"
 ;
 	if (ins->inweb_mode == TANGLE_MODE) 
 {
-#line 194 "inweb/Chapter 1/Program Control.w"
+#line 198 "inweb/Chapter 1/Program Control.w"
 	TEMPORARY_TEXT(tangle_leaf)
 	tangle_target *tn = NULL;
 	if (Str__eq_wide_string(ins->chosen_range, L"0")) {
 		
 {
-#line 217 "inweb/Chapter 1/Program Control.w"
+#line 221 "inweb/Chapter 1/Program Control.w"
 	tn = NULL;
 	if (Bibliographic__data_exists(W->md, TL_IS_91))
 		Str__copy(tangle_leaf, Bibliographic__get_datum(W->md, TL_IS_92));
@@ -14991,19 +15134,19 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	Str__concatenate(tangle_leaf, W->main_language->file_extension);
 
 }
-#line 197 "inweb/Chapter 1/Program Control.w"
+#line 201 "inweb/Chapter 1/Program Control.w"
 ;
 	} else if (Reader__get_section_for_range(W, ins->chosen_range)) {
 		
 {
-#line 227 "inweb/Chapter 1/Program Control.w"
+#line 231 "inweb/Chapter 1/Program Control.w"
 	section *S = Reader__get_section_for_range(W, ins->chosen_range);
 	tn = S->sect_target;
 	if (tn == NULL) Errors__fatal("section cannot be independently tangled");
 	Str__copy(tangle_leaf, Filenames__get_leafname(S->md->source_file_for_section));
 
 }
-#line 199 "inweb/Chapter 1/Program Control.w"
+#line 203 "inweb/Chapter 1/Program Control.w"
 ;
 	}
 	if (Str__len(tangle_leaf) == 0) { Errors__fatal("no tangle destination known"); }
@@ -15019,11 +15162,11 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	DISCARD_TEXT(tangle_leaf)
 
 }
-#line 155 "inweb/Chapter 1/Program Control.w"
+#line 159 "inweb/Chapter 1/Program Control.w"
 ;
 	if (ins->inweb_mode == WEAVE_MODE) 
 {
-#line 235 "inweb/Chapter 1/Program Control.w"
+#line 239 "inweb/Chapter 1/Program Control.w"
 	Numbering__number_web(W);
 
 	theme_tag *tag = Tags__find_by_name(ins->tag_setting, FALSE);
@@ -15038,14 +15181,14 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	if (r != SWARM_OFF_SWM) ins->swarm_mode = r;
 	
 {
-#line 260 "inweb/Chapter 1/Program Control.w"
+#line 264 "inweb/Chapter 1/Program Control.w"
 	section *S; int k = 1;
 	LOOP_OVER(S, section)
 		if (Reader__range_within(S->md->sect_range, ins->chosen_range))
 			S->printed_number = k++;
 
 }
-#line 247 "inweb/Chapter 1/Program Control.w"
+#line 251 "inweb/Chapter 1/Program Control.w"
 ;
 	if (ins->swarm_mode == SWARM_OFF_SWM) {
 		Swarm__weave_subset(W, ins->chosen_range, FALSE, tag, pattern,
@@ -15059,16 +15202,16 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	Formats__end_weaving(W, pattern);
 
 }
-#line 156 "inweb/Chapter 1/Program Control.w"
+#line 160 "inweb/Chapter 1/Program Control.w"
 ;
 
 }
-#line 105 "inweb/Chapter 1/Program Control.w"
+#line 109 "inweb/Chapter 1/Program Control.w"
 ;
 	}
 }
 
-#line 271 "inweb/Chapter 1/Program Control.w"
+#line 275 "inweb/Chapter 1/Program Control.w"
 void Main__error_in_web(text_stream *message, source_line *sl) {
 	if (sl) {
 		Errors__in_text_file_S(message, &(sl->source));

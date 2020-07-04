@@ -44,7 +44,7 @@
 	mkdir: $PATH/_Results_Console
 	set: $A = $PATH/_Results_Actual/$CASE.txt
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
-	step: $INWEB -test-language-on $CANVAS -test-language $LANGUAGES/$CASE.ildf >$A 2>&1
+	step: $INWEB -locale console=utf-8 -test-language-on $CANVAS -test-language $LANGUAGES/$CASE.ildf >$A 2>&1
 	or: 'failed inweb' $A
 	show: $A
 	match text: $A $I

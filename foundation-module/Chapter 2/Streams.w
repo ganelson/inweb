@@ -201,11 +201,12 @@ stream).
 
 @d STREAM_COPY(to, from) Streams::copy(to, from)
 
-@ So much for the definition; now the implementation. Here is the |text_stream|
-structure. Open memory streams are represented by structures where
-|write_to_memory| is valid, open file streams by those where |write_to_file|
-is valid. That counts every open stream except |NULL|, which of course
-doesn't point to a |text_stream| structure at all.
+@ So much for the definition; now the implementation.
+
+Here is the |text_stream| structure. Open memory streams are represented by
+structures where |write_to_memory| is valid, open file streams by those where
+|write_to_file| is valid. That counts every open stream except |NULL|, which
+of course doesn't point to a |text_stream| structure at all.
 
 Any stream can have |USES_XML_ESCAPES_STRF| set or cleared. When this is set, the
 XML (and HTML) escapes of |&amp;| for ampersand, and |&lt;| and |&gt;| for
@@ -367,12 +368,10 @@ text_stream *Streams::get_stdout(void) {
 		#ifdef STDOUT_LOCALE_TEST
 		STDOUT_struct.stream_flags |= ECHO_BYTES_STRF;
 		#endif
-		#ifdef LOCALE_IS_ISO
-		STDOUT_struct.stream_flags |= FILE_ENCODING_ISO_STRF;
-		#endif
-		#ifdef LOCALE_IS_UTF8
-		STDOUT_struct.stream_flags |= FILE_ENCODING_UTF8_STRF;
-		#endif
+		if (Locales::get(CONSOLE_LOCALE) == FILE_ENCODING_ISO_STRF)
+			STDOUT_struct.stream_flags |= FILE_ENCODING_ISO_STRF;
+		if (Locales::get(CONSOLE_LOCALE) == FILE_ENCODING_UTF8_STRF)
+			STDOUT_struct.stream_flags |= FILE_ENCODING_UTF8_STRF;
 	}
 	return &STDOUT_struct;
 }
@@ -385,12 +384,10 @@ text_stream *Streams::get_stderr(void) {
 	if (stderr_wrapper_initialised == FALSE) {
 		Streams::initialise(&STDERR_struct, 0); STDERR_struct.write_to_file = stderr;
 		stderr_wrapper_initialised = TRUE;
-		#ifdef LOCALE_IS_ISO
-		STDERR_struct.stream_flags |= FILE_ENCODING_ISO_STRF;
-		#endif
-		#ifdef LOCALE_IS_UTF8
-		STDERR_struct.stream_flags |= FILE_ENCODING_UTF8_STRF;
-		#endif
+		if (Locales::get(CONSOLE_LOCALE) == FILE_ENCODING_ISO_STRF)
+			STDERR_struct.stream_flags |= FILE_ENCODING_ISO_STRF;
+		if (Locales::get(CONSOLE_LOCALE) == FILE_ENCODING_UTF8_STRF)
+			STDERR_struct.stream_flags |= FILE_ENCODING_UTF8_STRF;
 	}
 	return &STDERR_struct;
 }
@@ -600,30 +597,28 @@ void Streams::write_as_UTF8_string(char *C_string, text_stream *stream, int buff
 
 =
 int Streams::open_from_locale_string(text_stream *stream, char *C_string) {
-	#ifdef LOCALE_IS_UTF8
-	return Streams::open_from_UTF8_string(stream, C_string);
-	#endif
-	#ifdef LOCALE_IS_ISO
-	return Streams::open_from_ISO_string(stream, C_string);
-	#endif
+	if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
+		return Streams::open_from_UTF8_string(stream, C_string);
+	if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
+		return Streams::open_from_ISO_string(stream, C_string);
+	Errors::fatal("unknown command line locale");
+	return FALSE;
 }
 
 void Streams::write_as_locale_string(char *C_string, text_stream *stream, int buffer_size) {
-	#ifdef LOCALE_IS_UTF8
-	Streams::write_as_UTF8_string(C_string, stream, buffer_size);
-	#endif
-	#ifdef LOCALE_IS_ISO
-	Streams::write_as_ISO_string(C_string, stream, buffer_size);
-	#endif
+	if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
+		Streams::write_as_UTF8_string(C_string, stream, buffer_size);
+	else if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
+		Streams::write_as_ISO_string(C_string, stream, buffer_size);
+	else Errors::fatal("unknown command line locale");
 }
 
 void Streams::write_locale_string(text_stream *stream, char *C_string) {
-	#ifdef LOCALE_IS_UTF8
-	Streams::write_UTF8_string(stream, C_string);
-	#endif
-	#ifdef LOCALE_IS_ISO
-	Streams::write_ISO_string(stream, C_string);
-	#endif
+	if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
+		Streams::write_UTF8_string(stream, C_string);
+	else if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
+		Streams::write_ISO_string(stream, C_string);
+	else Errors::fatal("unknown command line locale");
 }
 
 @h Flush and close.

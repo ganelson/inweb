@@ -186,7 +186,17 @@ int CommandLine::read(int argc, char **argv, void *state,
 	return crs.subs;
 }
 
+void CommandLine::set_locale(int argc, char **argv) {
+	for (int i=1; i<argc; i++) {
+		char *p = argv[i];
+		if ((strcmp(p, "-locale") == 0) && (i<argc-1))
+			if (Locales::set_locales(argv[i+1]) == FALSE)
+				Errors::fatal("unrecognised locale");
+	}
+}
+
 void CommandLine::read_array(clf_reader_state *crs, int argc, char **argv) {
+	CommandLine::set_locale(argc, argv);
 	for (int i=1; i<argc; i++) {
 		int switched = FALSE;
 		char *p = argv[i];
@@ -373,6 +383,7 @@ all other switches are delegated to the client's callback function |f|.
 			if (cls->form == BOOLEAN_ON_CLSF) Time::fix();
 			break;
 		case AT_CLSW: Pathnames::set_installation_path(Pathnames::from_text(arg)); break;
+		case LOCALE_CLSW: break; /* because it was done earlier */
 		default:
 			if (f) {
 				int par = -1;

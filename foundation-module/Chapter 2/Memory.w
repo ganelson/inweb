@@ -62,7 +62,7 @@ typedef struct allocation_status_structure {
 	void *last_in_memory; /* tail of doubly linked list */
 
 	/* used only to provide statistics for the debugging log: */
-	char *name_of_type; /* e.g., |"lexicon_entry_CLASS"| */
+	char *name_of_type; /* e.g., |"index_lexicon_entry_CLASS"| */
 	int bytes_allocated; /* total allocation for this type of object, not counting overhead */
 	int objects_count; /* total number currently in existence (i.e., undeleted) */
 	int no_allocated_together; /* number of objects in each array of this type of object */
