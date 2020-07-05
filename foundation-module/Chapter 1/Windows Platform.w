@@ -171,6 +171,15 @@ void Platform::sleep(int seconds) {
 void Platform::notification(text_stream *text, int happy) {
 }
 
+@h Coloured terminal output.
+The idea of this function is that if anything needs to be done to enable the
+output of ANSI-standard coloured terminal output, then this function has the
+chance to do it.
+
+=
+void Platform::enable_coloured_terminal_output(void) {
+}
+
 @h Concurrency.
 
 = (very early code)
