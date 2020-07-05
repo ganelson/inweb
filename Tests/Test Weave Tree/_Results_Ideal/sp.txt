@@ -59,7 +59,7 @@ document weave order 0
             figure <img3.jpg> -1 by -1
           vskip (in comment)
           commentary <So there, really!\n>
-          download <alice.crt>
+          download <alice.crt> 
         paragraph P3
           material definition
             code line
@@ -83,10 +83,10 @@ document weave order 0
                           _pppppppp_
               pmac <Solve Goldbach's conjecture for i>
               source_code <;>
-                          _c_
+                          _p_
             code line
               source_code <}>
-                          _c_
+                          _p_
         paragraph P3.1
           material discussion
             commentary <This ought to print:\n>
