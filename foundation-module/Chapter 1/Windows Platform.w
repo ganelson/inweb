@@ -179,7 +179,27 @@ output of ANSI-standard coloured terminal output, then this function has the
 chance to do it.
 
 =
+int Win32_ConsModeChanged = 0;
+DWORD Win32_ConsMode = 0;
+
+void Platform::Win32_ResetConsoleMode(void) {
+	if (Win32_ConsModeChanged) {
+		HANDLE cons = GetStdHandle(STD_ERROR_HANDLE);
+		if (cons) SetConsoleMode(cons, Win32_ConsMode);
+	}
+}
+
 void Platform::enable_coloured_terminal_output(void) {
+	HANDLE cons = GetStdHandle(STD_ERROR_HANDLE);
+	if (cons) {
+		if (GetConsoleMode(cons, &Win32_ConsMode)) {
+			if ((Win32_ConsMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == 0) {
+				SetConsoleMode(cons, Win32_ConsMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+				Win32_ConsModeChanged = 1;
+				atexit(Platform::Win32_ResetConsoleMode);
+			}
+		}
+	}
 }
 
 @h Concurrency.
@@ -256,11 +276,11 @@ off_t Platform::size(char *transcoded_filename) {
 @d LOCK_MUTEX(name) {
 	BOOL pending;
 	InitOnceBeginInitialize(&(name.init), 0, &pending, 0);
-  	if (pending) {
-  		InitializeCriticalSection(&(name.crit));
-  		InitOnceComplete(&(name.init), 0, 0);
-  	}
-  	EnterCriticalSection(&(name.crit));
+	if (pending) {
+		InitializeCriticalSection(&(name.crit));
+		InitOnceComplete(&(name.init), 0, 0);
+	}
+	EnterCriticalSection(&(name.crit));
 }
 @d UNLOCK_MUTEX(name) {
 	LeaveCriticalSection(&(name.crit));
