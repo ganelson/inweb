@@ -194,9 +194,10 @@ void Platform::enable_coloured_terminal_output(void) {
 	if (cons) {
 		if (GetConsoleMode(cons, &Win32_ConsMode)) {
 			if ((Win32_ConsMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == 0) {
-				SetConsoleMode(cons, Win32_ConsMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
-				Win32_ConsModeChanged = 1;
-				atexit(Platform::Win32_ResetConsoleMode);
+				if (SetConsoleMode(cons, Win32_ConsMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING)) {
+					Win32_ConsModeChanged = 1;
+					atexit(Platform::Win32_ResetConsoleMode);
+				}
 			}
 		}
 	}
