@@ -192,28 +192,45 @@ output with the correct locale (calling |Locales::get(CONSOLE_LOCALE)| to
 find this).
 
 =
-int Win32_ConsModeChanged = 0;
-DWORD Win32_ConsMode = 0;
+#define WIN32CONS_RESET_MODE 1
+#define WIN32CONS_RESET_OUTCP 2
 
-void Platform::Win32_ResetConsoleMode(void) {
-	if (Win32_ConsModeChanged) {
+int Win32_ResetConsole = 0;
+DWORD Win32_ConsoleMode = 0;
+UINT Win32_ConsoleOutCP = 0;
+
+void Platform::Win32_ResetConsole(void) {
+	if (Win32_ResetConsole & WIN32CONS_RESET_MODE) {
 		HANDLE cons = GetStdHandle(STD_ERROR_HANDLE);
-		if (cons) SetConsoleMode(cons, Win32_ConsMode);
+		if (cons) SetConsoleMode(cons, Win32_ConsoleMode);
 	}
+	if (Win32_ResetConsole & WIN32CONS_RESET_OUTCP)
+		SetConsoleOutputCP(Win32_ConsoleOutCP);
 }
 
 void Platform::configure_terminal(void) {
 	HANDLE cons = GetStdHandle(STD_ERROR_HANDLE);
 	if (cons) {
-		if (GetConsoleMode(cons, &Win32_ConsMode)) {
-			if ((Win32_ConsMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == 0) {
-				if (SetConsoleMode(cons, Win32_ConsMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING)) {
-					Win32_ConsModeChanged = 1;
-					atexit(Platform::Win32_ResetConsoleMode);
+		if (GetConsoleMode(cons, &Win32_ConsoleMode)) {
+			if ((Win32_ConsoleMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == 0) {
+				if (SetConsoleMode(cons, Win32_ConsoleMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING)) {
+					Win32_ResetConsole |= WIN32CONS_RESET_MODE;
 				}
 			}
 		}
 	}
+
+	Win32_ConsoleOutCP = GetConsoleOutputCP();
+	UINT newCP = 0;
+	int loc = Locales::get(CONSOLE_LOCALE);
+	if (loc == FILE_ENCODING_ISO_STRF)
+		newCP = 28591; /* ISO 8859-1 Latin */
+	else if (loc == FILE_ENCODING_UTF8_STRF)
+		newCP = 65001; /* UTF-8 */
+	if ((newCP != 0) && SetConsoleOutputCP(newCP))
+		Win32_ResetConsole |= WIN32CONS_RESET_OUTCP;
+
+	if (Win32_ResetConsole != 0) atexit(Platform::Win32_ResetConsole);
 }
 
 @h Concurrency.
