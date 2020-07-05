@@ -80,8 +80,7 @@ int main(int argc, char **argv) {
 }
 
 @<Initialise inweb@> =
-	Foundation::start();
-	CommandLine::set_locale(argc, argv);
+	Foundation::start(argc, argv);
 	Formats::create_weave_formats();
 
 @<Shut inweb down@> =

@@ -413,7 +413,7 @@ void Configuration::set_range(inweb_instructions *args, text_stream *opt) {
 			|| (Regexp::match(&mr, opt, L"%i+/%i+"))) {
 			Str::copy(args->chosen_range, opt);
 			string_position P = Str::start(args->chosen_range);
-			Str::put(P, toupper(Str::get(P)));
+			Str::put(P, Characters::toupper(Str::get(P)));
 		} else {
 			TEMPORARY_TEXT(ERM)
 			WRITE_TO(ERM, "target not recognised (see -help for more): %S", opt);

@@ -184,10 +184,12 @@ void Platform::sleep(int seconds) {
 void Platform::notification(text_stream *text, int happy) {
 }
 
-@h Coloured terminal output.
+@h Terminal setup.
 The idea of this function is that if anything needs to be done to enable the
 output of ANSI-standard coloured terminal output, then this function has the
-chance to do it.
+chance to do it; similarly, it may need to configure itself to receive console
+output with the correct locale (calling |Locales::get(CONSOLE_LOCALE)| to
+find this).
 
 =
 int Win32_ConsModeChanged = 0;
@@ -200,7 +202,7 @@ void Platform::Win32_ResetConsoleMode(void) {
 	}
 }
 
-void Platform::enable_coloured_terminal_output(void) {
+void Platform::configure_terminal(void) {
 	HANDLE cons = GetStdHandle(STD_ERROR_HANDLE);
 	if (cons) {
 		if (GetConsoleMode(cons, &Win32_ConsMode)) {

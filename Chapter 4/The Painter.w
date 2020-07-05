@@ -68,7 +68,8 @@ void Painter::syntax_colour_inner(programming_language *pl,
 	int dquote = Str::get_first_char(pl->string_literal);
 	int dquote_escape = Str::get_first_char(pl->string_literal_escape);
 	for (int i=from; i <= to; i++) {
-		int skip = NOT_A_COLOUR, one_off = -1, will_be = -1;
+		wchar_t skip = NOT_A_COLOUR;
+		int one_off = -1, will_be = -1;
 		switch (colouring_state) {
 			case PLAIN_COLOUR: {
 				wchar_t c = Str::get_at(matter, i);
@@ -97,9 +98,9 @@ void Painter::syntax_colour_inner(programming_language *pl,
 				break;
 			}
 		}
-		if (one_off >= 0) Str::put_at(colouring, i, (char) one_off);
-		else Str::put_at(colouring, i, (char) colouring_state);
-		if (will_be >= 0) colouring_state = (char) will_be;
+		if (one_off >= 0) Str::put_at(colouring, i, (wchar_t) one_off);
+		else Str::put_at(colouring, i, (wchar_t) colouring_state);
+		if (will_be >= 0) colouring_state = will_be;
 		if ((skip != NOT_A_COLOUR) && (i<to)) {
 			i++; Str::put_at(colouring, i, skip);
 		}

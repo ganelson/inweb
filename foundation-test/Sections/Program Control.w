@@ -18,8 +18,7 @@ Choosing which unit test to run on the basis of the command-line arguments.
 
 =
 int main(int argc, char **argv) {
-	Foundation::start();
-	CommandLine::set_locale(argc, argv);
+	Foundation::start(argc, argv);
 	CommandLine::declare_heading(L"inexample: a tool for testing foundation facilities\n");
 
 	CommandLine::declare_switch(TEST_STRINGS_CLSW, L"test-strings", 2,

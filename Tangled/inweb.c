@@ -110,7 +110,7 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 366 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 370 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 typedef pthread_t foundation_thread;
 typedef pthread_attr_t foundation_thread_attributes;
 
@@ -181,7 +181,7 @@ int Platform__system(const char *cmd) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 220 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 222 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 typedef HANDLE foundation_thread;
 typedef int foundation_thread_attributes;
 
@@ -189,7 +189,7 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 302 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 304 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
 #endif /* PLATFORM_WINDOWS */
@@ -1875,8 +1875,8 @@ typedef struct colouring_rule {
 
 	/* the conclusion: */
 	struct colouring_language_block *execute_block; /* or |NULL|, in which case... */
-	int set_to_colour; /* ...paint the snippet in this colour */
-	int set_prefix_to_colour; /* ...also paint this (same for suffix) */
+	wchar_t set_to_colour; /* ...paint the snippet in this colour */
+	wchar_t set_prefix_to_colour; /* ...also paint this (same for suffix) */
 	int debug; /* ...or print debugging text to console */
 
 	/* workspace during painting */
@@ -2329,8 +2329,8 @@ typedef void (*log_function)(text_stream *, void *);
 typedef void (*log_function_I)(text_stream *, int);
 typedef char string[MAX_STRING_LENGTH+1];
 #line 89 "inweb/foundation-module/Chapter 1/Foundation Module.w"
-void  Foundation__start(void) ;
-#line 172 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+void  Foundation__start(int argc, char **argv) ;
+#line 173 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void  Foundation__end(void) ;
 #ifdef PLATFORM_POSIX
 #line 90 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
@@ -2419,23 +2419,23 @@ void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 360 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
-void  Platform__enable_coloured_terminal_output(void) ;
+#line 364 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 372 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 376 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__create_thread(foundation_thread *pt, 	const foundation_thread_attributes *pa, void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 377 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 381 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 381 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 385 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__init_thread(foundation_thread_attributes *pa, size_t size) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 386 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 390 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes *pa) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_WINDOWS
@@ -2475,39 +2475,39 @@ void  Platform__sleep(int seconds) ;
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 196 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 198 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__Win32_ResetConsoleMode(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 203 "inweb/foundation-module/Chapter 1/Windows Platform.w"
-void  Platform__enable_coloured_terminal_output(void) ;
+#line 205 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 234 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 236 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__create_thread(foundation_thread *pt, const foundation_thread_attributes *pa, 	void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 249 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 251 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 253 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 255 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__init_thread(foundation_thread_attributes* pa, size_t size) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 256 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 258 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes* pa) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 268 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 270 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 272 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 274 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 278 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 280 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #line 64 "inweb/foundation-module/Chapter 2/Debugging Log.w"
@@ -2860,27 +2860,27 @@ int  CommandLine__read(int argc, char **argv, void *state, 	void (*f)(int, int, 
 void  CommandLine__set_locale(int argc, char **argv) ;
 #line 198 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__read_array(clf_reader_state *crs, int argc, char **argv) ;
-#line 226 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 225 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__also_read_file(filename *F) ;
-#line 237 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 236 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__record_log(text_stream *line) ;
-#line 243 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 242 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__play_back_log(void) ;
-#line 260 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 259 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__read_file(clf_reader_state *crs) ;
-#line 272 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 271 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__read_file_helper(text_stream *text, text_file_position *tfp, void *state) ;
-#line 301 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 300 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__read_one(clf_reader_state *crs, text_stream *opt) ;
-#line 309 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 308 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__read_pair(clf_reader_state *crs, text_stream *opt, text_stream *arg) ;
-#line 333 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 332 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N, 	text_stream *arg, void *state, 	void (*f)(int, int, text_stream *, void *), int *substantive) ;
-#line 425 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 424 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__declare_heading(wchar_t *heading_text_literal) ;
-#line 429 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 428 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__write_help(OUTPUT_STREAM) ;
-#line 487 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 486 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__compare_names(const void *ent1, const void *ent2) ;
 #line 51 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void  Pathnames__start(void) ;
@@ -3604,9 +3604,9 @@ int  BuildFiles__dated_today(text_stream *dateline) ;
 void  BuildFiles__increment(text_stream *T) ;
 #line 64 "inweb/Chapter 1/Program Control.w"
 int  main(int argc, char **argv) ;
-#line 96 "inweb/Chapter 1/Program Control.w"
+#line 95 "inweb/Chapter 1/Program Control.w"
 void  Main__follow_instructions(inweb_instructions *ins) ;
-#line 275 "inweb/Chapter 1/Program Control.w"
+#line 274 "inweb/Chapter 1/Program Control.w"
 void  Main__error_in_web(text_stream *message, source_line *sl) ;
 #line 56 "inweb/Chapter 1/Configuration.w"
 inweb_instructions  Configuration__read(int argc, char **argv) ;
@@ -4018,21 +4018,21 @@ void  Painter__reset_syntax_colouring(programming_language *pl) ;
 int  Painter__syntax_colour(programming_language *pl, 	hash_table *HT, text_stream *matter, text_stream *colouring, int with_comments) ;
 #line 58 "inweb/Chapter 4/The Painter.w"
 void  Painter__syntax_colour_inner(programming_language *pl, 	hash_table *HT, text_stream *matter, text_stream *colouring, int from, int to) ;
-#line 170 "inweb/Chapter 4/The Painter.w"
+#line 171 "inweb/Chapter 4/The Painter.w"
 int  Painter__identifier_at(programming_language *pl, 	text_stream *matter, text_stream *colouring, int i) ;
-#line 203 "inweb/Chapter 4/The Painter.w"
+#line 204 "inweb/Chapter 4/The Painter.w"
 void  Painter__execute(hash_table *HT, colouring_language_block *block, text_stream *matter, 	text_stream *colouring, int from, int to, int N) ;
-#line 284 "inweb/Chapter 4/The Painter.w"
+#line 285 "inweb/Chapter 4/The Painter.w"
 void  Painter__execute_rule(hash_table *HT, colouring_rule *rule, text_stream *matter, 	text_stream *colouring, int from, int to, int N) ;
-#line 300 "inweb/Chapter 4/The Painter.w"
+#line 301 "inweb/Chapter 4/The Painter.w"
 int  Painter__satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter, 	text_stream *colouring, int from, int to, int N) ;
-#line 364 "inweb/Chapter 4/The Painter.w"
+#line 365 "inweb/Chapter 4/The Painter.w"
 void  Painter__follow(hash_table *HT, colouring_rule *rule, text_stream *matter, 	text_stream *colouring, int from, int to) ;
-#line 391 "inweb/Chapter 4/The Painter.w"
+#line 392 "inweb/Chapter 4/The Painter.w"
 linked_list * Painter__lines(filename *F) ;
-#line 413 "inweb/Chapter 4/The Painter.w"
+#line 414 "inweb/Chapter 4/The Painter.w"
 void  Painter__text_file_helper(text_stream *text, text_file_position *tfp, void *state) ;
-#line 418 "inweb/Chapter 4/The Painter.w"
+#line 419 "inweb/Chapter 4/The Painter.w"
 void  Painter__colour_file(programming_language *pl, filename *F, text_stream *to, text_stream *coloured) ;
 #line 9 "inweb/Chapter 4/C-Like Languages.w"
 void  CLike__make_c_like(programming_language *pl) ;
@@ -5011,47 +5011,48 @@ text_stream *DL = NULL; /* Current destination of debugging text: kept |NULL| un
 #line 79 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 
 #line 89 "inweb/foundation-module/Chapter 1/Foundation Module.w"
-void Foundation__start(void) {
+void Foundation__start(int argc, char **argv) {
+	CommandLine__set_locale(argc, argv);
+	Platform__configure_terminal();
 	Memory__start();
 	
 {
-#line 107 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 108 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 	Writers__register_writer('f', &Filenames__writer);
 	Writers__register_writer('p', &Pathnames__writer);
 	Writers__register_writer('v', &VersionNumbers__writer);
 	Writers__register_writer('S', &Streams__writer);
 
 }
-#line 91 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 93 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 ;
 	register_tangled_text_literals();
 ;
 	Time__begin();
 	Pathnames__start();
-	Platform__enable_coloured_terminal_output();
 	
 {
-#line 118 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 119 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 	Log__declare_aspect(DEBUGGING_LOG_INCLUSIONS_DA, L"debugging log inclusions", FALSE, FALSE);
 	Log__declare_aspect(SHELL_USAGE_DA, L"shell usage", FALSE, FALSE);
 	Log__declare_aspect(MEMORY_USAGE_DA, L"memory usage", FALSE, FALSE);
 	Log__declare_aspect(TEXT_FILES_DA, L"text files", FALSE, FALSE);
 
 }
-#line 96 "inweb/foundation-module/Chapter 1/Foundation Module.w"
-;
-	
-{
-#line 129 "inweb/foundation-module/Chapter 1/Foundation Module.w"
-	Writers__register_logger('a', &Tries__log_avinue);
-	Writers__register_logger('S', &Streams__log);
-
-}
 #line 97 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 ;
 	
 {
-#line 149 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 130 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+	Writers__register_logger('a', &Tries__log_avinue);
+	Writers__register_logger('S', &Streams__log);
+
+}
+#line 98 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+;
+	
+{
+#line 150 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 	CommandLine__begin_group(FOUNDATION_CLSG, NULL);
 	CommandLine__declare_switch(LOG_CLSW, L"log", 2,
 		L"write the debugging log to include diagnostics on X");
@@ -5070,13 +5071,13 @@ void Foundation__start(void) {
 	CommandLine__end_group();
 
 }
-#line 98 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 99 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 ;
 }
 
-#line 147 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 148 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 
-#line 172 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 173 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void Foundation__end(void) {
 	if (Log__aspect_switched_on(MEMORY_USAGE_DA)) Memory__log_statistics();
 	Log__close();
@@ -5341,13 +5342,13 @@ void Platform__notification(text_stream *text, int happy) {
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 360 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
-void Platform__enable_coloured_terminal_output(void) {
+#line 364 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+void Platform__configure_terminal(void) {
 }
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 372 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 376 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__create_thread(foundation_thread *pt,
 	const foundation_thread_attributes *pa, void *(*fn)(void *), void *arg) {
 	return pthread_create(pt, pa, fn, arg);
@@ -5449,7 +5450,7 @@ void Platform__notification(text_stream *text, int happy) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 193 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 195 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Win32_ConsModeChanged = 0;
 DWORD Win32_ConsMode = 0;
 
@@ -5460,7 +5461,7 @@ void Platform__Win32_ResetConsoleMode(void) {
 	}
 }
 
-void Platform__enable_coloured_terminal_output(void) {
+void Platform__configure_terminal(void) {
 	HANDLE cons = GetStdHandle(STD_ERROR_HANDLE);
 	if (cons) {
 		if (GetConsoleMode(cons, &Win32_ConsMode)) {
@@ -5476,7 +5477,7 @@ void Platform__enable_coloured_terminal_output(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 227 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 229 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 DWORD WINAPI Platform__Win32_Thread_Func(LPVOID param) {
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*)param;
 	(start->fn)(start->arg);
@@ -5512,7 +5513,7 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes* pa) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 268 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 270 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
@@ -8041,7 +8042,6 @@ void CommandLine__set_locale(int argc, char **argv) {
 }
 
 void CommandLine__read_array(clf_reader_state *crs, int argc, char **argv) {
-	CommandLine__set_locale(argc, argv);
 	for (int i=1; i<argc; i++) {
 		int switched = FALSE;
 		char *p = argv[i];
@@ -8063,13 +8063,13 @@ void CommandLine__read_array(clf_reader_state *crs, int argc, char **argv) {
 	}
 }
 
-#line 225 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 224 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 filename *command_line_file = NULL;
 void CommandLine__also_read_file(filename *F) {
 	command_line_file = F;
 }
 
-#line 236 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 235 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 linked_list *command_line_logs = NULL;
 void CommandLine__record_log(text_stream *line) {
 	if (command_line_logs == NULL)
@@ -8085,7 +8085,7 @@ void CommandLine__play_back_log(void) {
 	}
 }
 
-#line 260 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 259 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void CommandLine__read_file(clf_reader_state *crs) {
 	text_stream *logline = Str__new();
 	WRITE_TO(logline, "Reading further switches from file: %f", command_line_file);
@@ -8132,7 +8132,7 @@ void CommandLine__read_one(clf_reader_state *crs, text_stream *opt) {
 	crs->subs = TRUE;
 }
 
-#line 309 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 308 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__read_pair(clf_reader_state *crs, text_stream *opt, text_stream *arg) {
 	TEMPORARY_TEXT(opt_p)
 	TEMPORARY_TEXT(opt_val)
@@ -8154,7 +8154,7 @@ int CommandLine__read_pair(clf_reader_state *crs, text_stream *opt, text_stream 
 	return rv;
 }
 
-#line 333 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 332 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 	text_stream *arg, void *state,
 	void (*f)(int, int, text_stream *, void *), int *substantive) {
@@ -8178,7 +8178,7 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 	int innocuous = FALSE;
 	
 {
-#line 363 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 362 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	switch (cls->switch_id) {
 		case CRASH_CLSW:
 			if (cls->form == BOOLEAN_ON_CLSF) {
@@ -8187,7 +8187,7 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 			break;
 		case LOG_CLSW: 
 {
-#line 403 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 402 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	if (Log__get_debug_log_filename() == NULL) {
 		TEMPORARY_TEXT(itn)
 		WRITE_TO(itn, "%s", PROGRAM_NAME);
@@ -8199,7 +8199,7 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 	Log__set_aspect_from_command_line(arg, TRUE);
 
 }
-#line 369 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 368 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
@@ -8234,13 +8234,13 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 	}
 
 }
-#line 354 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 353 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 	if ((innocuous == FALSE) && (substantive)) *substantive = TRUE;
 	return cls->valency;
 }
 
-#line 423 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 422 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 text_stream *cls_heading = NULL;
 
 void CommandLine__declare_heading(wchar_t *heading_text_literal) {
@@ -8264,7 +8264,7 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	int filter = NO_CLSG, new_para_needed = FALSE;
 	
 {
-#line 455 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 454 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	if (new_para_needed) {
 		WRITE("\n");
 		new_para_needed = FALSE;
@@ -8297,13 +8297,13 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	}
 
 }
-#line 444 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 443 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 	for (filter = NO_CLSG; filter<NO_DEFINED_CLSG_VALUES; filter++)
 		if ((filter != NO_CLSG) && (filter != FOUNDATION_CLSG))
 			
 {
-#line 455 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 454 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	if (new_para_needed) {
 		WRITE("\n");
 		new_para_needed = FALSE;
@@ -8336,12 +8336,12 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	}
 
 }
-#line 447 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 446 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 	filter = FOUNDATION_CLSG;
 	
 {
-#line 455 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 454 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	if (new_para_needed) {
 		WRITE("\n");
 		new_para_needed = FALSE;
@@ -8374,13 +8374,13 @@ void CommandLine__write_help(OUTPUT_STREAM) {
 	}
 
 }
-#line 449 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 448 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 
 	Memory__I7_free(sorted_table, ARRAY_SORTING_MREASON, N*((int) sizeof(command_line_switch *)));
 }
 
-#line 487 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 486 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__compare_names(const void *ent1, const void *ent2) {
 	text_stream *tx1 = (*((const command_line_switch **) ent1))->switch_sort_name;
 	text_stream *tx2 = (*((const command_line_switch **) ent2))->switch_sort_name;
@@ -15056,8 +15056,7 @@ int main(int argc, char **argv) {
 	
 {
 #line 83 "inweb/Chapter 1/Program Control.w"
-	Foundation__start();
-	CommandLine__set_locale(argc, argv);
+	Foundation__start(argc, argv);
 	Formats__create_weave_formats();
 
 }
@@ -15078,7 +15077,7 @@ int main(int argc, char **argv) {
 
 	
 {
-#line 88 "inweb/Chapter 1/Program Control.w"
+#line 87 "inweb/Chapter 1/Program Control.w"
 	Foundation__end();
 	return (no_inweb_errors == 0)?0:1;
 
@@ -15087,7 +15086,7 @@ int main(int argc, char **argv) {
 ;
 }
 
-#line 96 "inweb/Chapter 1/Program Control.w"
+#line 95 "inweb/Chapter 1/Program Control.w"
 void Main__follow_instructions(inweb_instructions *ins) {
 	web *W = NULL;
 	if ((ins->chosen_web) || (ins->chosen_file)) {
@@ -15100,7 +15099,7 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	if (no_inweb_errors == 0) {
 		if (ins->inweb_mode == TRANSLATE_MODE) 
 {
-#line 116 "inweb/Chapter 1/Program Control.w"
+#line 115 "inweb/Chapter 1/Program Control.w"
 	if ((ins->makefile_setting) && (ins->prototype_setting == NULL))
 		ins->prototype_setting = Filenames__from_text(TL_IS_88);
 	if ((ins->gitignore_setting) && (ins->prototype_setting == NULL))
@@ -15118,20 +15117,20 @@ void Main__follow_instructions(inweb_instructions *ins) {
 		Readme__write(ins->prototype_setting, ins->writeme_setting);
 
 }
-#line 106 "inweb/Chapter 1/Program Control.w"
+#line 105 "inweb/Chapter 1/Program Control.w"
 
 		else if (ins->show_languages_switch) 
 {
-#line 135 "inweb/Chapter 1/Program Control.w"
+#line 134 "inweb/Chapter 1/Program Control.w"
 	Languages__read_definitions(NULL);
 	Languages__show(STDOUT);
 
 }
-#line 107 "inweb/Chapter 1/Program Control.w"
+#line 106 "inweb/Chapter 1/Program Control.w"
 
 		else if ((ins->test_language_setting) || (ins->test_language_on_setting)) 
 {
-#line 141 "inweb/Chapter 1/Program Control.w"
+#line 140 "inweb/Chapter 1/Program Control.w"
 	if ((ins->test_language_setting) && (ins->test_language_on_setting)) {
 		TEMPORARY_TEXT(matter)
 		TEMPORARY_TEXT(coloured)
@@ -15146,15 +15145,15 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	}
 
 }
-#line 108 "inweb/Chapter 1/Program Control.w"
+#line 107 "inweb/Chapter 1/Program Control.w"
 
 		else if (ins->inweb_mode != NO_MODE) 
 {
-#line 157 "inweb/Chapter 1/Program Control.w"
+#line 156 "inweb/Chapter 1/Program Control.w"
 	Reader__print_web_statistics(W);
 	if (ins->inweb_mode == ANALYSE_MODE) 
 {
-#line 165 "inweb/Chapter 1/Program Control.w"
+#line 164 "inweb/Chapter 1/Program Control.w"
 	if (ins->swarm_mode != SWARM_OFF_SWM)
 		Errors__fatal("only specific parts of the web can be analysed");
 	if (ins->catalogue_switch)
@@ -15174,17 +15173,17 @@ void Main__follow_instructions(inweb_instructions *ins) {
 		Analyser__scan_line_categories(W, ins->chosen_range);
 
 }
-#line 158 "inweb/Chapter 1/Program Control.w"
+#line 157 "inweb/Chapter 1/Program Control.w"
 ;
 	if (ins->inweb_mode == TANGLE_MODE) 
 {
-#line 198 "inweb/Chapter 1/Program Control.w"
+#line 197 "inweb/Chapter 1/Program Control.w"
 	TEMPORARY_TEXT(tangle_leaf)
 	tangle_target *tn = NULL;
 	if (Str__eq_wide_string(ins->chosen_range, L"0")) {
 		
 {
-#line 221 "inweb/Chapter 1/Program Control.w"
+#line 220 "inweb/Chapter 1/Program Control.w"
 	tn = NULL;
 	if (Bibliographic__data_exists(W->md, TL_IS_91))
 		Str__copy(tangle_leaf, Bibliographic__get_datum(W->md, TL_IS_92));
@@ -15193,19 +15192,19 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	Str__concatenate(tangle_leaf, W->main_language->file_extension);
 
 }
-#line 201 "inweb/Chapter 1/Program Control.w"
+#line 200 "inweb/Chapter 1/Program Control.w"
 ;
 	} else if (Reader__get_section_for_range(W, ins->chosen_range)) {
 		
 {
-#line 231 "inweb/Chapter 1/Program Control.w"
+#line 230 "inweb/Chapter 1/Program Control.w"
 	section *S = Reader__get_section_for_range(W, ins->chosen_range);
 	tn = S->sect_target;
 	if (tn == NULL) Errors__fatal("section cannot be independently tangled");
 	Str__copy(tangle_leaf, Filenames__get_leafname(S->md->source_file_for_section));
 
 }
-#line 203 "inweb/Chapter 1/Program Control.w"
+#line 202 "inweb/Chapter 1/Program Control.w"
 ;
 	}
 	if (Str__len(tangle_leaf) == 0) { Errors__fatal("no tangle destination known"); }
@@ -15221,11 +15220,11 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	DISCARD_TEXT(tangle_leaf)
 
 }
-#line 159 "inweb/Chapter 1/Program Control.w"
+#line 158 "inweb/Chapter 1/Program Control.w"
 ;
 	if (ins->inweb_mode == WEAVE_MODE) 
 {
-#line 239 "inweb/Chapter 1/Program Control.w"
+#line 238 "inweb/Chapter 1/Program Control.w"
 	Numbering__number_web(W);
 
 	theme_tag *tag = Tags__find_by_name(ins->tag_setting, FALSE);
@@ -15240,14 +15239,14 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	if (r != SWARM_OFF_SWM) ins->swarm_mode = r;
 	
 {
-#line 264 "inweb/Chapter 1/Program Control.w"
+#line 263 "inweb/Chapter 1/Program Control.w"
 	section *S; int k = 1;
 	LOOP_OVER(S, section)
 		if (Reader__range_within(S->md->sect_range, ins->chosen_range))
 			S->printed_number = k++;
 
 }
-#line 251 "inweb/Chapter 1/Program Control.w"
+#line 250 "inweb/Chapter 1/Program Control.w"
 ;
 	if (ins->swarm_mode == SWARM_OFF_SWM) {
 		Swarm__weave_subset(W, ins->chosen_range, FALSE, tag, pattern,
@@ -15261,16 +15260,16 @@ void Main__follow_instructions(inweb_instructions *ins) {
 	Formats__end_weaving(W, pattern);
 
 }
-#line 160 "inweb/Chapter 1/Program Control.w"
+#line 159 "inweb/Chapter 1/Program Control.w"
 ;
 
 }
-#line 109 "inweb/Chapter 1/Program Control.w"
+#line 108 "inweb/Chapter 1/Program Control.w"
 ;
 	}
 }
 
-#line 275 "inweb/Chapter 1/Program Control.w"
+#line 274 "inweb/Chapter 1/Program Control.w"
 void Main__error_in_web(text_stream *message, source_line *sl) {
 	if (sl) {
 		Errors__in_text_file_S(message, &(sl->source));
@@ -15612,7 +15611,7 @@ void Configuration__set_range(inweb_instructions *args, text_stream *opt) {
 			|| (Regexp__match(&mr, opt, L"%i+/%i+"))) {
 			Str__copy(args->chosen_range, opt);
 			string_position P = Str__start(args->chosen_range);
-			Str__put(P, toupper(Str__get(P)));
+			Str__put(P, Characters__toupper(Str__get(P)));
 		} else {
 			TEMPORARY_TEXT(ERM)
 			WRITE_TO(ERM, "target not recognised (see -help for more): %S", opt);
@@ -23064,7 +23063,8 @@ void Painter__syntax_colour_inner(programming_language *pl,
 	int dquote = Str__get_first_char(pl->string_literal);
 	int dquote_escape = Str__get_first_char(pl->string_literal_escape);
 	for (int i=from; i <= to; i++) {
-		int skip = NOT_A_COLOUR, one_off = -1, will_be = -1;
+		wchar_t skip = NOT_A_COLOUR;
+		int one_off = -1, will_be = -1;
 		switch (colouring_state) {
 			case PLAIN_COLOUR: {
 				wchar_t c = Str__get_at(matter, i);
@@ -23093,9 +23093,9 @@ void Painter__syntax_colour_inner(programming_language *pl,
 				break;
 			}
 		}
-		if (one_off >= 0) Str__put_at(colouring, i, (char) one_off);
-		else Str__put_at(colouring, i, (char) colouring_state);
-		if (will_be >= 0) colouring_state = (char) will_be;
+		if (one_off >= 0) Str__put_at(colouring, i, (wchar_t) one_off);
+		else Str__put_at(colouring, i, (wchar_t) colouring_state);
+		if (will_be >= 0) colouring_state = will_be;
 		if ((skip != NOT_A_COLOUR) && (i<to)) {
 			i++; Str__put_at(colouring, i, skip);
 		}
@@ -23106,7 +23106,7 @@ void Painter__syntax_colour_inner(programming_language *pl,
 ;
 	
 {
-#line 109 "inweb/Chapter 4/The Painter.w"
+#line 110 "inweb/Chapter 4/The Painter.w"
 	int base = -1, dec_possible = TRUE;
 	for (int i=from; i <= to; i++) {
 		if ((Str__get_at(colouring, i) == PLAIN_COLOUR) ||
@@ -23167,7 +23167,7 @@ void Painter__syntax_colour_inner(programming_language *pl,
 ;
 	
 {
-#line 194 "inweb/Chapter 4/The Painter.w"
+#line 195 "inweb/Chapter 4/The Painter.w"
 	if (pl->program)
 		Painter__execute(HT, pl->program, matter, colouring, from, to, painter_count++);
 
@@ -23176,7 +23176,7 @@ void Painter__syntax_colour_inner(programming_language *pl,
 ;
 }
 
-#line 170 "inweb/Chapter 4/The Painter.w"
+#line 171 "inweb/Chapter 4/The Painter.w"
 int Painter__identifier_at(programming_language *pl,
 	text_stream *matter, text_stream *colouring, int i) {
 	wchar_t c = Str__get_at(matter, i);
@@ -23197,7 +23197,7 @@ int Painter__identifier_at(programming_language *pl,
 	return FALSE;
 }
 
-#line 203 "inweb/Chapter 4/The Painter.w"
+#line 204 "inweb/Chapter 4/The Painter.w"
 void Painter__execute(hash_table *HT, colouring_language_block *block, text_stream *matter,
 	text_stream *colouring, int from, int to, int N) {
 	if (block == NULL) internal_error("no block");
@@ -23276,14 +23276,14 @@ void Painter__execute(hash_table *HT, colouring_language_block *block, text_stre
 	DISCARD_TEXT(colouring_at_start)
 }
 
-#line 284 "inweb/Chapter 4/The Painter.w"
+#line 285 "inweb/Chapter 4/The Painter.w"
 void Painter__execute_rule(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to, int N) {
 	if (Painter__satisfies(HT, rule, matter, colouring, from, to, N) == rule->sense)
 		Painter__follow(HT, rule, matter, colouring, from, to);
 }
 
-#line 300 "inweb/Chapter 4/The Painter.w"
+#line 301 "inweb/Chapter 4/The Painter.w"
 int Painter__satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to, int N) {
 	if (rule->number > 0) {
@@ -23345,14 +23345,14 @@ int Painter__satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 	return TRUE;
 }
 
-#line 364 "inweb/Chapter 4/The Painter.w"
+#line 365 "inweb/Chapter 4/The Painter.w"
 void Painter__follow(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to) {
 	if (rule->execute_block)
 		Painter__execute(HT, rule->execute_block, matter, colouring, from, to, 0);
 	else if (rule->debug) 
 {
-#line 380 "inweb/Chapter 4/The Painter.w"
+#line 381 "inweb/Chapter 4/The Painter.w"
 	PRINT("[%d, %d] text: ", from, to);
 	for (int i=from; i<=to; i++)
 		PUT_TO(STDOUT, Str__get_at(matter, i));
@@ -23362,7 +23362,7 @@ void Painter__follow(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	PRINT("\n");
 
 }
-#line 368 "inweb/Chapter 4/The Painter.w"
+#line 369 "inweb/Chapter 4/The Painter.w"
 
 	else {
 		if (rule->set_to_colour != NOT_A_COLOUR)
@@ -23374,7 +23374,7 @@ void Painter__follow(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	}
 }
 
-#line 391 "inweb/Chapter 4/The Painter.w"
+#line 392 "inweb/Chapter 4/The Painter.w"
 linked_list *Painter__lines(filename *F) {
 	linked_list *L = NEW_LINKED_LIST(text_stream);
 	TextFiles__read(F, FALSE, "unable to read file of textual extract", TRUE,

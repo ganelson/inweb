@@ -86,13 +86,14 @@ that is, literal |text_stream *| values written as |I"strings"|. It should
 never be used anywhere but here.
 
 =
-void Foundation::start(void) {
+void Foundation::start(int argc, char **argv) {
+	CommandLine::set_locale(argc, argv);
+	Platform::configure_terminal();	
 	Memory::start();
 	@<Register the default stream writers@>;
 	[[textliterals]];
 	Time::begin();
 	Pathnames::start();
-	Platform::enable_coloured_terminal_output();
 	@<Register the default debugging log aspects@>;
 	@<Register the default debugging log writers@>;
 	@<Register the default command line switches@>;

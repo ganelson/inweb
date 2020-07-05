@@ -50,7 +50,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">foundation</a></li><li><a href="index.html#1">Chapter 1: Setting Up</a></li><li><b>Windows Platform</b></li></ul></div>
 <p class="purpose">A version of our operating system interface suitable for Microsoft Windows.</p>
 
-<ul class="toc"><li><a href="1-wp.html#SP2">&#167;2. Microsoft Windows</a></li><li><a href="1-wp.html#SP4">&#167;4. Environment variables</a></li><li><a href="1-wp.html#SP5">&#167;5. Executable location</a></li><li><a href="1-wp.html#SP6">&#167;6. Snprintf</a></li><li><a href="1-wp.html#SP7">&#167;7. Shell commands</a></li><li><a href="1-wp.html#SP8">&#167;8. Directory handling</a></li><li><a href="1-wp.html#SP9">&#167;9. Sync</a></li><li><a href="1-wp.html#SP10">&#167;10. Sleep</a></li><li><a href="1-wp.html#SP11">&#167;11. Notifications</a></li><li><a href="1-wp.html#SP12">&#167;12. Coloured terminal output</a></li><li><a href="1-wp.html#SP13">&#167;13. Concurrency</a></li><li><a href="1-wp.html#SP15">&#167;15. Timestamp and file size</a></li><li><a href="1-wp.html#SP16">&#167;16. Mutexes</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="1-wp.html#SP2">&#167;2. Microsoft Windows</a></li><li><a href="1-wp.html#SP4">&#167;4. Environment variables</a></li><li><a href="1-wp.html#SP5">&#167;5. Executable location</a></li><li><a href="1-wp.html#SP6">&#167;6. Snprintf</a></li><li><a href="1-wp.html#SP7">&#167;7. Shell commands</a></li><li><a href="1-wp.html#SP8">&#167;8. Directory handling</a></li><li><a href="1-wp.html#SP9">&#167;9. Sync</a></li><li><a href="1-wp.html#SP10">&#167;10. Sleep</a></li><li><a href="1-wp.html#SP11">&#167;11. Notifications</a></li><li><a href="1-wp.html#SP12">&#167;12. Terminal setup</a></li><li><a href="1-wp.html#SP13">&#167;13. Concurrency</a></li><li><a href="1-wp.html#SP15">&#167;15. Timestamp and file size</a></li><li><a href="1-wp.html#SP16">&#167;16. Mutexes</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>This Foundation module comes with two variant versions of the <span class="extract"><span class="extract-syntax">Platform::</span></span>
 section of code. The one you're reading compiles on Windows, and the other
@@ -251,9 +251,11 @@ POSIX <span class="extract"><span class="extract-syntax">sleep</span></span> is 
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_WINDOWS is defined.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Coloured terminal output. </b>The idea of this function is that if anything needs to be done to enable the
+<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Terminal setup. </b>The idea of this function is that if anything needs to be done to enable the
 output of ANSI-standard coloured terminal output, then this function has the
-chance to do it.
+chance to do it; similarly, it may need to configure itself to receive console
+output with the correct locale (calling <span class="extract"><span class="extract-syntax">Locales::get(CONSOLE_LOCALE)</span></span> to
+find this).
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -267,7 +269,7 @@ chance to do it.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Platform::enable_coloured_terminal_output</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Platform::enable_coloured_terminal_output</span></span>:<br/>Foundation Module - <a href="1-fm.html#SP8">&#167;8</a><br/>POSIX Platforms - <a href="1-pp.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Platform::configure_terminal</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Platform::configure_terminal</span></span>:<br/>Foundation Module - <a href="1-fm.html#SP8">&#167;8</a><br/>POSIX Platforms - <a href="1-pp.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HANDLE</span><span class="plain-syntax"> </span><span class="identifier-syntax">cons</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GetStdHandle</span><span class="plain-syntax">(</span><span class="identifier-syntax">STD_ERROR_HANDLE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cons</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">GetConsoleMode</span><span class="plain-syntax">(</span><span class="identifier-syntax">cons</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">Win32_ConsMode</span><span class="plain-syntax">)) {</span>

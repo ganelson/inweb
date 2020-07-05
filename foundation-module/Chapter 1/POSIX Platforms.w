@@ -351,13 +351,17 @@ void Platform::notification(text_stream *text, int happy) {
 void Platform::notification(text_stream *text, int happy) {
 }
 
-@h Coloured terminal output.
+@h Terminal setup.
 The idea of this function is that if anything needs to be done to enable the
 output of ANSI-standard coloured terminal output, then this function has the
-chance to do it. On POSIX platforms, so far as we know, nothing need be done.
+chance to do it; similarly, it may need to configure itself to receive console
+output with the correct locale (calling |Locales::get(CONSOLE_LOCALE)| to
+find this).
+
+On POSIX platforms, so far as we know, nothing need be done.
 
 =
-void Platform::enable_coloured_terminal_output(void) {
+void Platform::configure_terminal(void) {
 }
 
 @h Concurrency.

@@ -448,8 +448,8 @@ typedef struct colouring_rule {
 
 	/* the conclusion: */
 	struct colouring_language_block *execute_block; /* or |NULL|, in which case... */
-	int set_to_colour; /* ...paint the snippet in this colour */
-	int set_prefix_to_colour; /* ...also paint this (same for suffix) */
+	wchar_t set_to_colour; /* ...paint the snippet in this colour */
+	wchar_t set_prefix_to_colour; /* ...also paint this (same for suffix) */
 	int debug; /* ...or print debugging text to console */
 	
 	/* workspace during painting */

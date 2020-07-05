@@ -42,7 +42,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">foundation</a></li><li><a href="index.html#1">Chapter 1: Setting Up</a></li><li><b>POSIX Platforms</b></li></ul></div>
 <p class="purpose">A version of our operating system interface suitable for POSIX-compliant operating systems.</p>
 
-<ul class="toc"><li><a href="1-pp.html#SP3">&#167;3. Mac OS X</a></li><li><a href="1-pp.html#SP4">&#167;4. Generic Unix</a></li><li><a href="1-pp.html#SP5">&#167;5. Linux</a></li><li><a href="1-pp.html#SP6">&#167;6. Android</a></li><li><a href="1-pp.html#SP7">&#167;7. Locale</a></li><li><a href="1-pp.html#SP8">&#167;8. Environment variables</a></li><li><a href="1-pp.html#SP9">&#167;9. Executable location</a></li><li><a href="1-pp.html#SP10">&#167;10. Shell commands</a></li><li><a href="1-pp.html#SP11">&#167;11. Snprintf</a></li><li><a href="1-pp.html#SP13">&#167;13. Directory handling</a></li><li><a href="1-pp.html#SP14">&#167;14. Timestamp and file size</a></li><li><a href="1-pp.html#SP15">&#167;15. Sync</a></li><li><a href="1-pp.html#SP16">&#167;16. Sleep</a></li><li><a href="1-pp.html#SP17">&#167;17. Notifications</a></li><li><a href="1-pp.html#SP19">&#167;19. Coloured terminal output</a></li><li><a href="1-pp.html#SP20">&#167;20. Concurrency</a></li><li><a href="1-pp.html#SP22">&#167;22. Mutexes</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="1-pp.html#SP3">&#167;3. Mac OS X</a></li><li><a href="1-pp.html#SP4">&#167;4. Generic Unix</a></li><li><a href="1-pp.html#SP5">&#167;5. Linux</a></li><li><a href="1-pp.html#SP6">&#167;6. Android</a></li><li><a href="1-pp.html#SP7">&#167;7. Locale</a></li><li><a href="1-pp.html#SP8">&#167;8. Environment variables</a></li><li><a href="1-pp.html#SP9">&#167;9. Executable location</a></li><li><a href="1-pp.html#SP10">&#167;10. Shell commands</a></li><li><a href="1-pp.html#SP11">&#167;11. Snprintf</a></li><li><a href="1-pp.html#SP13">&#167;13. Directory handling</a></li><li><a href="1-pp.html#SP14">&#167;14. Timestamp and file size</a></li><li><a href="1-pp.html#SP15">&#167;15. Sync</a></li><li><a href="1-pp.html#SP16">&#167;16. Sleep</a></li><li><a href="1-pp.html#SP17">&#167;17. Notifications</a></li><li><a href="1-pp.html#SP19">&#167;19. Terminal setup</a></li><li><a href="1-pp.html#SP20">&#167;20. Concurrency</a></li><li><a href="1-pp.html#SP22">&#167;22. Mutexes</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>The C standard library leaves many questions unanswered about how to deal
 with the host operating system: for example, it knows very little about
@@ -438,16 +438,21 @@ actually running a one-line AppleScript here.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined and if PLATFORM_MACOS is undefined.</li><li>The function Platform::notification is used in <a href="1-pp.html#SP17">&#167;17</a>, Windows Platform (<a href="1-wp.html#SP11">&#167;11</a>).</li></ul>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Coloured terminal output. </b>The idea of this function is that if anything needs to be done to enable the
+<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Terminal setup. </b>The idea of this function is that if anything needs to be done to enable the
 output of ANSI-standard coloured terminal output, then this function has the
-chance to do it. On POSIX platforms, so far as we know, nothing need be done.
+chance to do it; similarly, it may need to configure itself to receive console
+output with the correct locale (calling <span class="extract"><span class="extract-syntax">Locales::get(CONSOLE_LOCALE)</span></span> to
+find this).
+</p>
+
+<p class="commentary">On POSIX platforms, so far as we know, nothing need be done.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP12" class="function-link"><span class="function-syntax">Platform::enable_coloured_terminal_output</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><a href="1-wp.html#SP12" class="function-link"><span class="function-syntax">Platform::configure_terminal</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::enable_coloured_terminal_output is used in Foundation Module (<a href="1-fm.html#SP8">&#167;8</a>), Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>).</li></ul>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::configure_terminal is used in Foundation Module (<a href="1-fm.html#SP8">&#167;8</a>), Windows Platform (<a href="1-wp.html#SP12">&#167;12</a>).</li></ul>
 <p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Concurrency. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
