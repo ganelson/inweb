@@ -181,7 +181,7 @@ int Platform__system(const char *cmd) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 222 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 239 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 typedef HANDLE foundation_thread;
 typedef int foundation_thread_attributes;
 
@@ -189,7 +189,7 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 304 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 321 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
 #endif /* PLATFORM_WINDOWS */
@@ -1865,8 +1865,8 @@ typedef struct colouring_language_block {
 typedef struct colouring_rule {
 	/* the premiss: */
 	int sense; /* |FALSE| to negate the condition */
-	int match_colour; /* for |coloured C|, or else |NOT_A_COLOUR| */
-	int match_keyword_of_colour; /* for |keyword C|, or else |NOT_A_COLOUR| */
+	wchar_t match_colour; /* for |coloured C|, or else |NOT_A_COLOUR| */
+	wchar_t match_keyword_of_colour; /* for |keyword C|, or else |NOT_A_COLOUR| */
 	struct text_stream *match_text; /* or length 0 to mean "anything" */
 	int match_prefix; /* one of the |*_RULE_PREFIX| values above */
 	wchar_t match_regexp_text[MAX_ILDF_REGEXP_LENGTH];
@@ -2475,39 +2475,39 @@ void  Platform__sleep(int seconds) ;
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 198 "inweb/foundation-module/Chapter 1/Windows Platform.w"
-void  Platform__Win32_ResetConsoleMode(void) ;
+#line 202 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+void  Platform__Win32_ResetConsole(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 205 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 211 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 236 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 253 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__create_thread(foundation_thread *pt, const foundation_thread_attributes *pa, 	void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 251 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 268 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 255 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 272 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__init_thread(foundation_thread_attributes* pa, size_t size) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 258 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 275 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes* pa) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 270 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 287 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 274 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 291 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 280 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 297 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #line 64 "inweb/foundation-module/Chapter 2/Debugging Log.w"
@@ -3875,9 +3875,9 @@ colouring_rule * Languages__new_rule(colouring_language_block *within) ;
 #line 486 "inweb/Chapter 4/Programming Languages.w"
 void  Languages__parse_rule(language_reader_state *state, text_stream *premiss, 	text_stream *action, text_file_position *tfp) ;
 #line 566 "inweb/Chapter 4/Programming Languages.w"
-reserved_word * Languages__reserved(programming_language *pl, text_stream *W, int C, 	text_file_position *tfp) ;
+reserved_word * Languages__reserved(programming_language *pl, text_stream *W, wchar_t C, 	text_file_position *tfp) ;
 #line 603 "inweb/Chapter 4/Programming Languages.w"
-int  Languages__colour(text_stream *T, text_file_position *tfp) ;
+wchar_t  Languages__colour(text_stream *T, text_file_position *tfp) ;
 #line 628 "inweb/Chapter 4/Programming Languages.w"
 int  Languages__boolean(text_stream *T, text_file_position *tfp) ;
 #line 642 "inweb/Chapter 4/Programming Languages.w"
@@ -5451,33 +5451,50 @@ void Platform__notification(text_stream *text, int happy) {
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
 #line 195 "inweb/foundation-module/Chapter 1/Windows Platform.w"
-int Win32_ConsModeChanged = 0;
-DWORD Win32_ConsMode = 0;
+#define WIN32CONS_RESET_MODE 1
+#define WIN32CONS_RESET_OUTCP 2
 
-void Platform__Win32_ResetConsoleMode(void) {
-	if (Win32_ConsModeChanged) {
+int Win32_ResetConsole = 0;
+DWORD Win32_ConsoleMode = 0;
+UINT Win32_ConsoleOutCP = 0;
+
+void Platform__Win32_ResetConsole(void) {
+	if (Win32_ResetConsole & WIN32CONS_RESET_MODE) {
 		HANDLE cons = GetStdHandle(STD_ERROR_HANDLE);
-		if (cons) SetConsoleMode(cons, Win32_ConsMode);
+		if (cons) SetConsoleMode(cons, Win32_ConsoleMode);
 	}
+	if (Win32_ResetConsole & WIN32CONS_RESET_OUTCP)
+		SetConsoleOutputCP(Win32_ConsoleOutCP);
 }
 
 void Platform__configure_terminal(void) {
 	HANDLE cons = GetStdHandle(STD_ERROR_HANDLE);
 	if (cons) {
-		if (GetConsoleMode(cons, &Win32_ConsMode)) {
-			if ((Win32_ConsMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == 0) {
-				if (SetConsoleMode(cons, Win32_ConsMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING)) {
-					Win32_ConsModeChanged = 1;
-					atexit(Platform__Win32_ResetConsoleMode);
+		if (GetConsoleMode(cons, &Win32_ConsoleMode)) {
+			if ((Win32_ConsoleMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == 0) {
+				if (SetConsoleMode(cons, Win32_ConsoleMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING)) {
+					Win32_ResetConsole |= WIN32CONS_RESET_MODE;
 				}
 			}
 		}
 	}
+
+	Win32_ConsoleOutCP = GetConsoleOutputCP();
+	UINT newCP = 0;
+	int loc = Locales__get(CONSOLE_LOCALE);
+	if (loc == FILE_ENCODING_ISO_STRF)
+		newCP = 28591; /* ISO 8859-1 Latin */
+	else if (loc == FILE_ENCODING_UTF8_STRF)
+		newCP = 65001; /* UTF-8 */
+	if ((newCP != 0) && SetConsoleOutputCP(newCP))
+		Win32_ResetConsole |= WIN32CONS_RESET_OUTCP;
+
+	if (Win32_ResetConsole != 0) atexit(Platform__Win32_ResetConsole);
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 229 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 246 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 DWORD WINAPI Platform__Win32_Thread_Func(LPVOID param) {
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*)param;
 	(start->fn)(start->arg);
@@ -5513,7 +5530,7 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes* pa) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 270 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 287 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
@@ -21728,9 +21745,9 @@ void Languages__read_definition_line(text_stream *line, text_file_position *tfp,
 		state->current_block = rule->execute_block;
 	} else if (Regexp__match(&mr, line, L"runs of (%c+) {")) {
 		colouring_rule *rule = Languages__new_rule(state->current_block);
-		int r = UNQUOTED_COLOUR;
+		wchar_t r = UNQUOTED_COLOUR;
 		if (Str__ne(mr.exp[0], TL_IS_323)) r = Languages__colour(mr.exp[0], tfp);
-		rule->execute_block = Languages__new_block(state->current_block, r);
+		rule->execute_block = Languages__new_block(state->current_block, (int) r);
 		state->current_block = rule->execute_block;
 	} else if (Regexp__match(&mr, line, L"instances of (%c+) {")) {
 		colouring_rule *rule = Languages__new_rule(state->current_block);
@@ -21980,7 +21997,7 @@ void Languages__parse_rule(language_reader_state *state, text_stream *premiss,
 
 #line 565 "inweb/Chapter 4/Programming Languages.w"
 
-reserved_word *Languages__reserved(programming_language *pl, text_stream *W, int C,
+reserved_word *Languages__reserved(programming_language *pl, text_stream *W, wchar_t C,
 	text_file_position *tfp) {
 	reserved_word *rw;
 	LOOP_OVER_LINKED_LIST(rw, reserved_word, pl->reserved_words)
@@ -21989,14 +22006,14 @@ reserved_word *Languages__reserved(programming_language *pl, text_stream *W, int
 		}
 	rw = CREATE(reserved_word);
 	rw->word = Str__duplicate(W);
-	rw->colour = C;
+	rw->colour = (int) C;
 	ADD_TO_LINKED_LIST(rw, reserved_word, pl->reserved_words);
-	Analyser__mark_reserved_word(&(pl->built_in_keywords), rw->word, C);
+	Analyser__mark_reserved_word(&(pl->built_in_keywords), rw->word, (int) C);
 	return rw;
 }
 
 #line 603 "inweb/Chapter 4/Programming Languages.w"
-int Languages__colour(text_stream *T, text_file_position *tfp) {
+wchar_t Languages__colour(text_stream *T, text_file_position *tfp) {
 	if (Str__get_first_char(T) != '!') {
 		Errors__in_text_file("colour names must begin with !", tfp);
 		return PLAIN_COLOUR;
@@ -23334,7 +23351,7 @@ int Painter__satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 	} else if (rule->match_keyword_of_colour != NOT_A_COLOUR) {
 		TEMPORARY_TEXT(id)
 		Str__substr(id, Str__at(matter, from), Str__at(matter, to+1));
-		int rw = Analyser__is_reserved_word(HT, id, rule->match_keyword_of_colour);
+		int rw = Analyser__is_reserved_word(HT, id, (int) rule->match_keyword_of_colour);
 		DISCARD_TEXT(id)
 		if (rw == FALSE) return FALSE;
 	} else if (rule->match_colour != NOT_A_COLOUR) {

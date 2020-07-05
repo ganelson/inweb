@@ -339,9 +339,9 @@ runs of a given colour, or give an if-X-then-Y rule:
 		state->current_block = rule->execute_block;
 	} else if (Regexp::match(&mr, line, L"runs of (%c+) {")) {
 		colouring_rule *rule = Languages::new_rule(state->current_block);
-		int r = UNQUOTED_COLOUR;
+		wchar_t r = UNQUOTED_COLOUR;
 		if (Str::ne(mr.exp[0], I"unquoted")) r = Languages::colour(mr.exp[0], tfp);
-		rule->execute_block = Languages::new_block(state->current_block, r);
+		rule->execute_block = Languages::new_block(state->current_block, (int) r);
 		state->current_block = rule->execute_block;
 	} else if (Regexp::match(&mr, line, L"instances of (%c+) {")) {
 		colouring_rule *rule = Languages::new_rule(state->current_block);
@@ -438,8 +438,8 @@ Note that rules can be unconditional, in that the premiss always passes.
 typedef struct colouring_rule {
 	/* the premiss: */
 	int sense; /* |FALSE| to negate the condition */
-	int match_colour; /* for |coloured C|, or else |NOT_A_COLOUR| */
-	int match_keyword_of_colour; /* for |keyword C|, or else |NOT_A_COLOUR| */
+	wchar_t match_colour; /* for |coloured C|, or else |NOT_A_COLOUR| */
+	wchar_t match_keyword_of_colour; /* for |keyword C|, or else |NOT_A_COLOUR| */
 	struct text_stream *match_text; /* or length 0 to mean "anything" */
 	int match_prefix; /* one of the |*_RULE_PREFIX| values above */
 	wchar_t match_regexp_text[MAX_ILDF_REGEXP_LENGTH];
@@ -563,7 +563,7 @@ typedef struct reserved_word {
 	CLASS_DEFINITION
 } reserved_word;
 
-reserved_word *Languages::reserved(programming_language *pl, text_stream *W, int C,
+reserved_word *Languages::reserved(programming_language *pl, text_stream *W, wchar_t C,
 	text_file_position *tfp) {
 	reserved_word *rw;
 	LOOP_OVER_LINKED_LIST(rw, reserved_word, pl->reserved_words)
@@ -572,9 +572,9 @@ reserved_word *Languages::reserved(programming_language *pl, text_stream *W, int
 		}
 	rw = CREATE(reserved_word);
 	rw->word = Str::duplicate(W);
-	rw->colour = C;
+	rw->colour = (int) C;
 	ADD_TO_LINKED_LIST(rw, reserved_word, pl->reserved_words);
-	Analyser::mark_reserved_word(&(pl->built_in_keywords), rw->word, C);
+	Analyser::mark_reserved_word(&(pl->built_in_keywords), rw->word, (int) C);
 	return rw;
 }
 
@@ -600,7 +600,7 @@ but which are not expressible in the syntax of this file.
 @d UNQUOTED_COLOUR '_'
 
 =
-int Languages::colour(text_stream *T, text_file_position *tfp) {
+wchar_t Languages::colour(text_stream *T, text_file_position *tfp) {
 	if (Str::get_first_char(T) != '!') {
 		Errors::in_text_file("colour names must begin with !", tfp);
 		return PLAIN_COLOUR;

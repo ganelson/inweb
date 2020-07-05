@@ -348,7 +348,7 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 	} else if (rule->match_keyword_of_colour != NOT_A_COLOUR) {
 		TEMPORARY_TEXT(id)
 		Str::substr(id, Str::at(matter, from), Str::at(matter, to+1));
-		int rw = Analyser::is_reserved_word(HT, id, rule->match_keyword_of_colour);
+		int rw = Analyser::is_reserved_word(HT, id, (int) rule->match_keyword_of_colour);
 		DISCARD_TEXT(id)
 		if (rw == FALSE) return FALSE;
 	} else if (rule->match_colour != NOT_A_COLOUR) {
