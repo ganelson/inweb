@@ -257,7 +257,28 @@ chance to do it.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">Win32_ConsModeChanged</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">DWORD</span><span class="plain-syntax"> </span><span class="identifier-syntax">Win32_ConsMode</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Platform::Win32_ResetConsoleMode</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Win32_ConsModeChanged</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">HANDLE</span><span class="plain-syntax"> </span><span class="identifier-syntax">cons</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GetStdHandle</span><span class="plain-syntax">(</span><span class="identifier-syntax">STD_ERROR_HANDLE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cons</span><span class="plain-syntax">) </span><span class="identifier-syntax">SetConsoleMode</span><span class="plain-syntax">(</span><span class="identifier-syntax">cons</span><span class="plain-syntax">, </span><span class="identifier-syntax">Win32_ConsMode</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Platform::enable_coloured_terminal_output</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Platform::enable_coloured_terminal_output</span></span>:<br/>Foundation Module - <a href="1-fm.html#SP8">&#167;8</a><br/>POSIX Platforms - <a href="1-pp.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">HANDLE</span><span class="plain-syntax"> </span><span class="identifier-syntax">cons</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GetStdHandle</span><span class="plain-syntax">(</span><span class="identifier-syntax">STD_ERROR_HANDLE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cons</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">GetConsoleMode</span><span class="plain-syntax">(</span><span class="identifier-syntax">cons</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">Win32_ConsMode</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Win32_ConsMode</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">ENABLE_VIRTUAL_TERMINAL_PROCESSING</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">SetConsoleMode</span><span class="plain-syntax">(</span><span class="identifier-syntax">cons</span><span class="plain-syntax">, </span><span class="identifier-syntax">Win32_ConsMode</span><span class="plain-syntax"> | </span><span class="identifier-syntax">ENABLE_VIRTUAL_TERMINAL_PROCESSING</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">Win32_ConsModeChanged</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">atexit</span><span class="plain-syntax">(</span><a href="1-wp.html#SP12" class="function-link"><span class="function-syntax">Platform::Win32_ResetConsoleMode</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">                }</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_WINDOWS is defined.</li></ul>
