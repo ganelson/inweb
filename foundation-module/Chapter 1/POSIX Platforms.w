@@ -175,6 +175,17 @@ int Platform::system(const char *cmd) {
 	return system(cmd);
 }
 
+@h Snprintf.
+The C standard library function |snprintf| is not as standard as one might
+like, and is oddly represented in some Cygwin libraries for Windows,
+sometimes being differently named.
+
+We would like to provide a wrapper function but this is troublesome with
+variadic arguments, so instead here is a macro for the function name.
+Happily, the Inform tools make very little use of this.
+
+@d PLATFORM_SNPRINTF snprintf
+
 @ ^"ifdef-PLATFORM_MACOS"
 In MacOS 10.5, a new implementation of the C standard library 
 crippled performance of |system()| by placing it behind a global mutex, so

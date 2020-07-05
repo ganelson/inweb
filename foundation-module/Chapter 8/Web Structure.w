@@ -181,7 +181,7 @@ would be "elctrcty", since we don't count "y" as a vowel here.
 		else {
 			if (letters_from_current_word < letters_from_each_word) {
 				if (Str::get_at(from, sn) != '-') {
-					int l = tolower(Str::get_at(from, sn));
+					wchar_t l = Characters::tolower(Str::get_at(from, sn));
 					if ((letters_from_current_word == 0) ||
 						((l != 'a') && (l != 'e') && (l != 'i') &&
 							(l != 'o') && (l != 'u'))) {

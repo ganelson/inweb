@@ -82,6 +82,17 @@ void Platform::where_am_i(wchar_t *p, size_t length) {
 	if ((result == 0) || (result == length)) p[0] = 0;
 }
 
+@h Snprintf.
+The C standard library function |snprintf| is not as standard as one might
+like, and is oddly represented in some Cygwin libraries for Windows,
+sometimes being differently named.
+
+We would like to provide a wrapper function but this is troublesome with
+variadic arguments, so instead here is a macro for the function name.
+Happily, the Inform tools make very little use of this.
+
+@d PLATFORM_SNPRINTF snprintf
+
 @h Shell commands.
 
 = (very early code)

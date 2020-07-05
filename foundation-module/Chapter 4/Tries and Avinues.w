@@ -91,17 +91,17 @@ wchar_t *Tries::search(match_trie *T, text_stream *p, wchar_t *add_outcome) {
 	for (int i = start; i != endpoint+delta; i += delta) {
 		wchar_t group[MAX_TRIE_GROUP_SIZE+1];
 		int g = 0; /* size of group */
-		int c = (i<0)?0:(Str::get_at(p, i)); /* i.e., zero at the two ends of the text */
+		wchar_t c = (i<0)?0:(Str::get_at(p, i)); /* i.e., zero at the two ends of the text */
 		if ((c >= 0x20) && (c <= 0x7f)) c = Characters::tolower(c); /* normalise it within ASCII */
 		if (c == 0x20) { c = 0; i = endpoint - delta; } /* force any space to be equivalent to the final 0 */
 		if (add_outcome) {
-			int pairc = 0;
+			wchar_t pairc = 0;
 			if (c == '<') pairc = '>';
 			if (c == '>') pairc = '<';
 			if (pairc) {
 				int j;
 				for (j = i+delta; j != endpoint; j += delta) {
-					int ch = (j<0)?0:(Str::get_at(p, j));
+					wchar_t ch = (j<0)?0:(Str::get_at(p, j));
 					if (ch == pairc) break;
 					if (g > MAX_TRIE_GROUP_SIZE) { g = 0; break; }
 					group[g++] = ch;

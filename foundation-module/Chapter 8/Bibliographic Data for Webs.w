@@ -149,6 +149,6 @@ want to typeset the title in full caps to do so.)
 	TEMPORARY_TEXT(recapped)
 	Str::copy(recapped, val);
 	LOOP_THROUGH_TEXT(P, recapped)
-		Str::put(P, toupper(Str::get(P)));
+		Str::put(P, Characters::toupper(Str::get(P)));
 	Bibliographic::set_datum(Wm, I"Capitalized Title", recapped);
 	DISCARD_TEXT(recapped)
