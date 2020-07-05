@@ -181,7 +181,7 @@ int Platform__system(const char *cmd) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 199 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 220 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 typedef HANDLE foundation_thread;
 typedef int foundation_thread_attributes;
 
@@ -189,7 +189,7 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 281 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 302 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
 #endif /* PLATFORM_WINDOWS */
@@ -310,11 +310,11 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define LOCK_MUTEX(name) {\
     	BOOL pending;\
     	InitOnceBeginInitialize(&(name.init), 0, &pending, 0);\
-      	if (pending) {\
-      		InitializeCriticalSection(&(name.crit));\
-      		InitOnceComplete(&(name.init), 0, 0);\
-      	}\
-      	EnterCriticalSection(&(name.crit));\
+    	if (pending) {\
+    		InitializeCriticalSection(&(name.crit));\
+    		InitOnceComplete(&(name.init), 0, 0);\
+    	}\
+    	EnterCriticalSection(&(name.crit));\
     }
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
@@ -2475,35 +2475,39 @@ void  Platform__sleep(int seconds) ;
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 193 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 196 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+void  Platform__Win32_ResetConsoleMode(void) ;
+#endif /* PLATFORM_WINDOWS */
+#ifdef PLATFORM_WINDOWS
+#line 203 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__enable_coloured_terminal_output(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 213 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 234 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__create_thread(foundation_thread *pt, const foundation_thread_attributes *pa, 	void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 228 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 249 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 232 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 253 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__init_thread(foundation_thread_attributes* pa, size_t size) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 235 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 256 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes* pa) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 247 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 268 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 251 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 272 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 257 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 278 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #line 64 "inweb/foundation-module/Chapter 2/Debugging Log.w"
@@ -5446,12 +5450,33 @@ void Platform__notification(text_stream *text, int happy) {
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
 #line 193 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+int Win32_ConsModeChanged = 0;
+DWORD Win32_ConsMode = 0;
+
+void Platform__Win32_ResetConsoleMode(void) {
+	if (Win32_ConsModeChanged) {
+		HANDLE cons = GetStdHandle(STD_ERROR_HANDLE);
+		if (cons) SetConsoleMode(cons, Win32_ConsMode);
+	}
+}
+
 void Platform__enable_coloured_terminal_output(void) {
+	HANDLE cons = GetStdHandle(STD_ERROR_HANDLE);
+	if (cons) {
+		if (GetConsoleMode(cons, &Win32_ConsMode)) {
+			if ((Win32_ConsMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == 0) {
+				if (SetConsoleMode(cons, Win32_ConsMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING)) {
+					Win32_ConsModeChanged = 1;
+					atexit(Platform__Win32_ResetConsoleMode);
+				}
+			}
+		}
+	}
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 206 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 227 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 DWORD WINAPI Platform__Win32_Thread_Func(LPVOID param) {
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*)param;
 	(start->fn)(start->arg);
@@ -5487,7 +5512,7 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes* pa) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 247 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 268 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
