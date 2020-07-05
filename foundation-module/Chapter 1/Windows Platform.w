@@ -96,8 +96,10 @@ int Platform::system(const char *cmd) {
 	start.wShowWindow = SW_HIDE;
 
 	PROCESS_INFORMATION process;
-	if (CreateProcessA(0, cmd_line, 0, 0, FALSE, CREATE_NO_WINDOW, 0, 0, &start, &process) == 0)
+	if (CreateProcessA(0, cmd_line, 0, 0, FALSE, CREATE_NO_WINDOW, 0, 0, &start, &process) == 0) {
+		fprintf(stderr, "A Unix-like shell 'sh' (e.g. Cygwin or MinGW) must be in the path to run commands.\n");
 		return -1;
+	}
 
 	CloseHandle(process.hThread);
 	if (WaitForSingleObject(process.hProcess, INFINITE) != WAIT_OBJECT_0) {
