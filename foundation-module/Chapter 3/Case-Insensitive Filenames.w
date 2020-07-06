@@ -175,7 +175,7 @@ The contents of |workstring| are not significant afterwards.
 	char *p;
 	size_t extdirindex = 0, extindex = 0, namelen = 0, dirlen = 0;
 
-	p = strrchr(path, FOLDER_SEPARATOR);
+	p = CIFilingSystem::strrchr(path);
 	if (p) {
 		extindex = (size_t) (p - path);
 		namelen = length - extindex - 1;
@@ -185,7 +185,7 @@ The contents of |workstring| are not significant afterwards.
 	
 	strncpy(workstring, path, extindex);
 	workstring[extindex] = 0;
-	p = strrchr(workstring, FOLDER_SEPARATOR);
+	p = CIFilingSystem::strrchr(workstring);
 	if (p) {
 		extdirindex = (size_t) (p - workstring);
 		strncpy(topdirpath, path, extdirindex);
@@ -196,6 +196,20 @@ The contents of |workstring| are not significant afterwards.
 	if (dirlen > 0) dirlen -= 1;
 	strncpy(ciextdirpath, path + extdirindex + 1, dirlen);
 	ciextdirpath[dirlen] = 0;
+
+@h strrchr.
+This is an elderly C library function, really, but rewritten so that it
+can recognise any folder separator character.
+
+=
+char *CIFilingSystem::strrchr(const char *p) {
+	const char *q = NULL;
+	while (*p) {
+		if (Platform::is_folder_separator((wchar_t) (*p))) q = p;
+		p++;
+	}
+	return (char *) q;
+}
 
 @h Counting matches.
 We count the number of names within the directory which case-insensitively

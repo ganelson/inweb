@@ -104,7 +104,7 @@ void Assets::include_plugin(OUTPUT_STREAM, web *W, weave_plugin *wp,
 		if (D) {
 			TEMPORARY_TEXT(leafname)
 			while (Directories::next(D, leafname)) {
-				if ((Str::get_last_char(leafname) != FOLDER_SEPARATOR) &&
+				if ((Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) &&
 					(Str::get_first_char(leafname) != '.')) {
 					if (Dictionaries::find(leaves_gathered, leafname) == NULL) {
 						WRITE_TO(Dictionaries::create_text(leaves_gathered, leafname), "y");

@@ -55,7 +55,7 @@
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 130 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 142 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int _NSGetExecutablePath(char* buf, uint32_t* bufsize);
 
 void Platform__where_am_i(wchar_t *p, size_t length) {
@@ -69,26 +69,26 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
     if (_NSGetExecutablePath(relative_path, &tempsize) != 0) 
 {
 #ifdef PLATFORM_POSIX
-#line 168 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 180 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 	p[0] = '\0';
 	return;
 
 #endif /* PLATFORM_POSIX */
 }
-#line 140 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 152 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 ;
 
     /* Convert to canonical absolute path */
     if (realpath(relative_path, absolute_path) == NULL) 
 {
 #ifdef PLATFORM_POSIX
-#line 168 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 180 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 	p[0] = '\0';
 	return;
 
 #endif /* PLATFORM_POSIX */
 }
-#line 143 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 155 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 ;
 
     /* Next, convert the obtained buffer (which is a string in the local
@@ -97,20 +97,20 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
     if (convert_len == (size_t)-1) 
 {
 #ifdef PLATFORM_POSIX
-#line 168 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 180 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 	p[0] = '\0';
 	return;
 
 #endif /* PLATFORM_POSIX */
 }
-#line 148 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 160 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 ;
 }
 
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 370 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 382 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 typedef pthread_t foundation_thread;
 typedef pthread_attr_t foundation_thread_attributes;
 
@@ -130,7 +130,7 @@ typedef pthread_attr_t foundation_thread_attributes;
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 55 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 67 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 char *Platform__getenv(const char *name) {
 	char *env = getenv(name);
 	if (env == 0) {
@@ -149,7 +149,7 @@ char *Platform__getenv(const char *name) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 99 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 111 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__system(const char *cmd) {
 	char cmd_line[10*MAX_PATH];
 	sprintf(cmd_line, "sh -c %s", cmd);
@@ -181,7 +181,7 @@ int Platform__system(const char *cmd) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 239 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 251 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 typedef HANDLE foundation_thread;
 typedef int foundation_thread_attributes;
 
@@ -189,7 +189,7 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 321 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 333 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
 #endif /* PLATFORM_WINDOWS */
@@ -2333,109 +2333,113 @@ void  Foundation__start(int argc, char **argv) ;
 #line 173 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void  Foundation__end(void) ;
 #ifdef PLATFORM_POSIX
-#line 90 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 81 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+int  Platform__is_folder_separator(wchar_t c) ;
+#endif /* PLATFORM_POSIX */
+#ifdef PLATFORM_POSIX
+#line 102 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 char * Platform__getenv(const char *name) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_LINUX
 #ifdef PLATFORM_POSIX
-#line 103 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 115 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__where_am_i(wchar_t *p, size_t length) ;
 #endif /* PLATFORM_LINUX */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_UNIX
 #ifdef PLATFORM_POSIX
-#line 154 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 166 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__where_am_i(wchar_t *p, size_t length) ;
 #endif /* PLATFORM_UNIX */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_ANDROID
 #ifdef PLATFORM_POSIX
-#line 161 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 173 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__where_am_i(wchar_t *p, size_t length) ;
 #endif /* PLATFORM_ANDROID */
 #endif /* PLATFORM_POSIX */
 #ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 174 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 186 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__system(const char *cmd) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 215 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 227 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__system(const char *cmd) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 232 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 244 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__mkdir(char *transcoded_pathname) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 240 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 252 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void * Platform__opendir(char *dir_name) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 245 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 257 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__readdir(void *D, char *dir_name, char *leafname) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 260 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 272 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__closedir(void *D) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 273 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 285 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 277 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 289 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 283 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 295 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 297 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 309 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 306 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 318 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__quote_text(char *quoted, char *raw, int terminate) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 322 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 334 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__sleep(int seconds) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 338 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 350 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 351 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 363 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 364 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 376 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 376 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 388 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__create_thread(foundation_thread *pt, 	const foundation_thread_attributes *pa, void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 381 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 393 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 385 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 397 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__init_thread(foundation_thread_attributes *pa, size_t size) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 390 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 402 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes *pa) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_WINDOWS
@@ -2443,71 +2447,75 @@ size_t  Platform__get_thread_stack_size(foundation_thread_attributes *pa) ;
 int  Platform__Windows_isdigit(int c) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 80 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 60 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+int  Platform__is_folder_separator(wchar_t c) ;
+#endif /* PLATFORM_WINDOWS */
+#ifdef PLATFORM_WINDOWS
+#line 92 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__where_am_i(wchar_t *p, size_t length) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 131 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 143 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__mkdir(char *transcoded_pathname) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 139 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 151 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void * Platform__opendir(char *dir_name) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 144 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 156 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__readdir(void *D, char *dir_name, 	char *leafname) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 161 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 173 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__closedir(void *D) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 169 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 181 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 177 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 189 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__sleep(int seconds) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 184 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 196 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 202 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 214 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__Win32_ResetConsole(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 211 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 223 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 253 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 265 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__create_thread(foundation_thread *pt, const foundation_thread_attributes *pa, 	void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 268 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 280 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 272 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 284 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__init_thread(foundation_thread_attributes* pa, size_t size) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 275 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 287 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes* pa) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 287 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 299 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 291 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 303 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 297 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 309 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #line 64 "inweb/foundation-module/Chapter 2/Debugging Log.w"
@@ -2952,10 +2960,12 @@ int  Filenames__size(filename *F) ;
 #line 50 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
 FILE * CIFilingSystem__fopen(const char *path, const char *mode) ;
 #endif /* PLATFORM_POSIX */
-#line 211 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
+#line 205 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
+char * CIFilingSystem__strrchr(const char *p) ;
+#line 225 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
 int  CIFilingSystem__match_in_directory(void *vd, 	char *name, char *last_match) ;
 #ifndef PLATFORM_POSIX
-#line 231 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
+#line 245 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
 FILE * CIFilingSystem__fopen(const char *path, const char *mode) ;
 #endif /* PLATFORM_POSIX */
 #line 14 "inweb/foundation-module/Chapter 3/Shell.w"
@@ -5092,6 +5102,13 @@ void Foundation__end(void) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
 #line 81 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+int Platform__is_folder_separator(wchar_t c) {
+	return (c == FOLDER_SEPARATOR);
+}
+
+#endif /* PLATFORM_POSIX */
+#ifdef PLATFORM_POSIX
+#line 93 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 #ifndef LOCALE_IS_ISO
 #ifndef LOCALE_IS_UTF8
 #define LOCALE_IS_UTF8 1
@@ -5100,7 +5117,7 @@ void Foundation__end(void) {
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 90 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 102 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 char *Platform__getenv(const char *name) {
 	return getenv(name);
 }
@@ -5108,51 +5125,51 @@ char *Platform__getenv(const char *name) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_LINUX
 #ifdef PLATFORM_POSIX
-#line 103 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 115 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__where_am_i(wchar_t *p, size_t length) {
     char buffer[PATH_MAX + 1];
     
 {
 #ifdef PLATFORM_POSIX
-#line 115 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 127 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 	ssize_t link_len = readlink("/proc/self/exe", buffer, PATH_MAX);
     if (link_len < 0) 
 {
 #ifdef PLATFORM_POSIX
-#line 168 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 180 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 	p[0] = '\0';
 	return;
 
 #endif /* PLATFORM_POSIX */
 }
-#line 116 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 128 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 ; // unable to find
     buffer[link_len] = '\0';
 
 #endif /* PLATFORM_POSIX */
 }
-#line 105 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 117 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 ;
 	
 {
 #ifdef PLATFORM_POSIX
-#line 124 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 136 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
     size_t convert_len = mbstowcs(p, buffer, length);
     if (convert_len == (size_t)-1) 
 {
 #ifdef PLATFORM_POSIX
-#line 168 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 180 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 	p[0] = '\0';
 	return;
 
 #endif /* PLATFORM_POSIX */
 }
-#line 125 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 137 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 ; // wouldn't fit
 
 #endif /* PLATFORM_POSIX */
 }
-#line 106 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 118 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 ;
 }
 
@@ -5160,18 +5177,18 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_UNIX
 #ifdef PLATFORM_POSIX
-#line 154 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 166 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__where_am_i(wchar_t *p, size_t length) {
 	
 {
 #ifdef PLATFORM_POSIX
-#line 168 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 180 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 	p[0] = '\0';
 	return;
 
 #endif /* PLATFORM_POSIX */
 }
-#line 155 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 167 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 ;
 }
 
@@ -5179,18 +5196,18 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_ANDROID
 #ifdef PLATFORM_POSIX
-#line 161 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 173 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__where_am_i(wchar_t *p, size_t length) {
 	
 {
 #ifdef PLATFORM_POSIX
-#line 168 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 180 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 	p[0] = '\0';
 	return;
 
 #endif /* PLATFORM_POSIX */
 }
-#line 162 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 174 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 ;
 }
 
@@ -5198,7 +5215,7 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
 #endif /* PLATFORM_POSIX */
 #ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 174 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 186 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__system(const char *cmd) {
 	return system(cmd);
 }
@@ -5209,7 +5226,7 @@ int Platform__system(const char *cmd) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 210 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 222 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 #include <spawn.h>
 #include <sys/wait.h>
 
@@ -5232,7 +5249,7 @@ int Platform__system(const char *cmd) {
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 232 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 244 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__mkdir(char *transcoded_pathname) {
 	errno = 0;
 	int rv = mkdir(transcoded_pathname, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
@@ -5268,7 +5285,7 @@ void Platform__closedir(void *D) {
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 273 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 285 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
@@ -5287,7 +5304,7 @@ off_t Platform__size(char *transcoded_filename) {
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 297 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 309 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 	char rsync_command[10*MAX_FILENAME_LENGTH];
 	sprintf(rsync_command, "rsync -a --delete ");
@@ -5312,7 +5329,7 @@ void Platform__quote_text(char *quoted, char *raw, int terminate) {
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 322 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 334 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__sleep(int seconds) {
 	sleep((unsigned int) seconds);
 }
@@ -5320,7 +5337,7 @@ void Platform__sleep(int seconds) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 338 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 350 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__notification(text_stream *text, int happy) {
 	char *sound_name = "Bell.aiff";
 	if (happy == FALSE) sound_name = "Submarine.aiff";
@@ -5335,20 +5352,20 @@ void Platform__notification(text_stream *text, int happy) {
 #endif /* PLATFORM_POSIX */
 #ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 351 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 363 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__notification(text_stream *text, int happy) {
 }
 
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 364 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 376 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__configure_terminal(void) {
 }
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 376 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 388 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__create_thread(foundation_thread *pt,
 	const foundation_thread_attributes *pa, void *(*fn)(void *), void *arg) {
 	return pthread_create(pt, pa, fn, arg);
@@ -5382,7 +5399,14 @@ int Platform__Windows_isdigit(int c) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 80 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 60 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+int Platform__is_folder_separator(wchar_t c) {
+	return ((c == '\\') || (c == '/'));
+}
+
+#endif /* PLATFORM_WINDOWS */
+#ifdef PLATFORM_WINDOWS
+#line 92 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__where_am_i(wchar_t *p, size_t length) {
 	DWORD result = GetModuleFileNameW(NULL, p, (DWORD)length);
 	if ((result == 0) || (result == length)) p[0] = 0;
@@ -5392,7 +5416,7 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
 #ifdef PLATFORM_WINDOWS
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 131 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 143 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__mkdir(char *transcoded_pathname) {
 	errno = 0;
 	int rv = mkdir(transcoded_pathname);
@@ -5430,27 +5454,27 @@ void Platform__closedir(void *D) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 169 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 181 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 	printf("Platform__rsync() is not yet implemented!\n");
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 177 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 189 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__sleep(int seconds) {
 	Sleep((DWORD)(1000*seconds));
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 184 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 196 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__notification(text_stream *text, int happy) {
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 195 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 207 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 #define WIN32CONS_RESET_MODE 1
 #define WIN32CONS_RESET_OUTCP 2
 
@@ -5494,7 +5518,7 @@ void Platform__configure_terminal(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 246 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 258 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 DWORD WINAPI Platform__Win32_Thread_Func(LPVOID param) {
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*)param;
 	(start->fn)(start->arg);
@@ -5530,7 +5554,7 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes* pa) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 287 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 299 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
@@ -8220,11 +8244,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A52";
+			char *svn = "7-alpha.1+1A53";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "5 July 2020";
+			char *d = "6 July 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -8473,7 +8497,7 @@ pathname *Pathnames__from_text_relative(pathname *P, text_stream *path) {
 	int i = 0, pos = 0;
 	if ((Str__get(Str__start(path))) && (P == NULL)) i++;
 	for (; i < Str__len(path); i++)
-		if (Str__get(Str__at(path, i)) == FOLDER_SEPARATOR) {
+		if (Platform__is_folder_separator(Str__get(Str__at(path, i)))) {
 			if (i > pos) at = Pathnames__primitive(path, pos, i, at);
 			pos = i+1;
 		}
@@ -8504,7 +8528,7 @@ void Pathnames__to_text_relative(OUTPUT_STREAM, pathname *P, pathname *R) {
 	WRITE_TO(rt, "%p", R);
 	WRITE_TO(pt, "%p", P);
 	int n = Str__len(pt);
-	if ((Str__prefix_eq(rt, pt, n)) && (Str__get_at(rt, n)==FOLDER_SEPARATOR)) {
+	if ((Str__prefix_eq(rt, pt, n)) && (Platform__is_folder_separator(Str__get_at(rt, n)))) {
 		Str__delete_n_characters(rt, n+1);
 		WRITE("%S", rt);
 	} else internal_error("pathname not relative to pathname");
@@ -8605,7 +8629,7 @@ filename *Filenames__primitive(text_stream *S, int from, int to, pathname *P) {
 filename *Filenames__from_text(text_stream *path) {
 	int i = 0, pos = -1;
 	LOOP_THROUGH_TEXT(at, path) {
-		if (Str__get(at) == FOLDER_SEPARATOR) pos = i;
+		if (Platform__is_folder_separator(Str__get(at))) pos = i;
 		i++;
 	}
 	pathname *P = NULL;
@@ -8652,7 +8676,7 @@ void Filenames__to_text_relative(OUTPUT_STREAM, filename *F, pathname *P) {
 	WRITE_TO(ft, "%f", F);
 	WRITE_TO(pt, "%p", P);
 	int n = Str__len(pt);
-	if ((Str__prefix_eq(ft, pt, n)) && (Str__get_at(ft, n)==FOLDER_SEPARATOR)) {
+	if ((Str__prefix_eq(ft, pt, n)) && (Platform__is_folder_separator(Str__get_at(ft, n)))) {
 		Str__delete_n_characters(ft, n+1);
 		WRITE("%S", ft);
 	} else internal_error("filename not relative to pathname");
@@ -9001,7 +9025,7 @@ FILE *CIFilingSystem__fopen(const char *path, const char *mode) {
 	char *p;
 	size_t extdirindex = 0, extindex = 0, namelen = 0, dirlen = 0;
 
-	p = strrchr(path, FOLDER_SEPARATOR);
+	p = CIFilingSystem__strrchr(path);
 	if (p) {
 		extindex = (size_t) (p - path);
 		namelen = length - extindex - 1;
@@ -9011,7 +9035,7 @@ FILE *CIFilingSystem__fopen(const char *path, const char *mode) {
 
 	strncpy(workstring, path, extindex);
 	workstring[extindex] = 0;
-	p = strrchr(workstring, FOLDER_SEPARATOR);
+	p = CIFilingSystem__strrchr(workstring);
 	if (p) {
 		extdirindex = (size_t) (p - workstring);
 		strncpy(topdirpath, path, extdirindex);
@@ -9281,7 +9305,17 @@ FILE *CIFilingSystem__fopen(const char *path, const char *mode) {
 }
 
 #endif /* PLATFORM_POSIX */
-#line 211 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
+#line 205 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
+char *CIFilingSystem__strrchr(const char *p) {
+	const char *q = NULL;
+	while (*p) {
+		if (Platform__is_folder_separator((wchar_t) (*p))) q = p;
+		p++;
+	}
+	return (char *) q;
+}
+
+#line 225 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
 int CIFilingSystem__match_in_directory(void *vd,
 	char *name, char *last_match) {
 	DIR *d = (DIR *) vd;
@@ -9299,7 +9333,7 @@ int CIFilingSystem__match_in_directory(void *vd,
 }
 
 #ifndef PLATFORM_POSIX
-#line 231 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
+#line 245 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
 FILE *CIFilingSystem__fopen(const char *path, const char *mode) {
 	return fopen(path, mode);
 }
@@ -13783,7 +13817,7 @@ web_md *WebMetadata__get(pathname *P, filename *alt_F, int syntax_version,
 {
 #line 176 "inweb/foundation-module/Chapter 8/Web Structure.w"
 	int sn = 0, sw = Str__len(Sm->sect_range);
-	if (Str__get_at(from, sn) == FOLDER_SEPARATOR) sn++;
+	if (Platform__is_folder_separator(Str__get_at(from, sn))) sn++;
 	int letters_from_current_word = 0;
 	while ((Str__get_at(from, sn)) && (Str__get_at(from, sn) != '.')) {
 		if (Str__get_at(from, sn) == ' ') letters_from_current_word = 0;
@@ -16173,7 +16207,7 @@ void Assets__include_plugin(OUTPUT_STREAM, web *W, weave_plugin *wp,
 		if (D) {
 			TEMPORARY_TEXT(leafname)
 			while (Directories__next(D, leafname)) {
-				if ((Str__get_last_char(leafname) != FOLDER_SEPARATOR) &&
+				if ((Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) &&
 					(Str__get_first_char(leafname) != '.')) {
 					if (Dictionaries__find(leaves_gathered, leafname) == NULL) {
 						WRITE_TO(Dictionaries__create_text(leaves_gathered, leafname), "y");
@@ -21638,7 +21672,7 @@ void Languages__read_definitions(pathname *P) {
 	scan_directory *D = Directories__open(P);
 	TEMPORARY_TEXT(leafname)
 	while (Directories__next(D, leafname)) {
-		if (Str__get_last_char(leafname) != FOLDER_SEPARATOR) {
+		if (Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) {
 			filename *F = Filenames__in(P, leafname);
 			Languages__read_definition(F);
 		}

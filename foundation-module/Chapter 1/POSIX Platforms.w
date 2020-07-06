@@ -70,6 +70,18 @@ These settings are used for Nathan Summers's Android versions.
 = (very early code)
 #include <strings.h>
 
+@h Folder separator.
+When using a Unix-like system such as Cygwin on Windows, it's inevitable that
+paths will sometimes contain backslashes and sometimes forward slashes, meaning
+a folder (i.e. directory) divide in either case. So:
+(a) When writing such a divider, always write |FOLDER_SEPARATOR|, a backslash;
+(b) When testing for such a divider, call the following.
+
+=
+int Platform::is_folder_separator(wchar_t c) {
+	return (c == FOLDER_SEPARATOR);
+}
+
 @h Locale.
 The following definition handles possible differences of text encoding
 in filenames, which depend on the current "locale". Locale is an odd piece

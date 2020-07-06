@@ -2,6 +2,7 @@
 # and is not intended for human editing
 
 ME = inweb
+FTEST = $(ME)/foundation-test
 SAFETYCOPY = $(ME)/Tangled/inweb_dev
 
 COLONY = $(ME)/colony.txt
@@ -10,14 +11,18 @@ COLONY = $(ME)/colony.txt
 
 .PHONY: all
 
-all: $(ME)/platform-settings.mk $(ME)/Tangled/$(ME)
+all: $(ME)/platform-settings.mk $(ME)/Tangled/$(ME) $(FTEST)/Tangled/foundation-test
 
 $(ME)/Tangled/$(ME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-me)
 
+$(FTEST)/Tangled/foundation-test: $(FTEST)/Contents.w $(FTEST)/Chapter*/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
+	$(call make-ftest)
+
 .PHONY: force
 force: $(ME)/platform-settings.mk
 	$(call make-me)
+	$(call make-ftest)
 
 .PHONY: macos
 macos: 
@@ -70,6 +75,11 @@ endef
 define make-me-using-safety-copy
 	$(SAFETYCOPY) $(ME) -tangle
 	$(call make-me-once-tangled)
+endef
+
+define make-ftest
+	$(INWEB) $(FTEST) -makefile $(FTEST)/foundation-test.mk
+	make -f $(FTEST)/foundation-test.mk
 endef
 
 .PHONY: test

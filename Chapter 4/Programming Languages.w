@@ -86,7 +86,7 @@ void Languages::read_definitions(pathname *P) {
 	scan_directory *D = Directories::open(P);
 	TEMPORARY_TEXT(leafname)
 	while (Directories::next(D, leafname)) {
-		if (Str::get_last_char(leafname) != FOLDER_SEPARATOR) {
+		if (Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) {
 			filename *F = Filenames::in(P, leafname);
 			Languages::read_definition(F);
 		}

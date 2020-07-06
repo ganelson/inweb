@@ -49,6 +49,18 @@ int Platform::Windows_isdigit(int c) {
 	return ((c >= '0') && (c <= '9')) ? 1 : 0;
 }
 
+@h Folder separator.
+When using a Unix-like system such as Cygwin on Windows, it's inevitable that
+paths will sometimes contain backslashes and sometimes forward slashes, meaning
+a folder (i.e. directory) divide in either case. So:
+(a) When writing such a divider, always write |FOLDER_SEPARATOR|, a backslash;
+(b) When testing for such a divider, call the following.
+
+=
+int Platform::is_folder_separator(wchar_t c) {
+	return ((c == '\\') || (c == '/'));
+}
+
 @h Environment variables.
 
 = (very early code)

@@ -174,7 +174,7 @@ would be "elctrcty", since we don't count "y" as a vowel here.
 
 @<Make the tail using this many consonants from each word@> =
 	int sn = 0, sw = Str::len(Sm->sect_range);
-	if (Str::get_at(from, sn) == FOLDER_SEPARATOR) sn++;
+	if (Platform::is_folder_separator(Str::get_at(from, sn))) sn++;
 	int letters_from_current_word = 0;
 	while ((Str::get_at(from, sn)) && (Str::get_at(from, sn) != '.')) {
 		if (Str::get_at(from, sn) == ' ') letters_from_current_word = 0;

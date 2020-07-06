@@ -126,7 +126,7 @@ pathname *Pathnames::from_text_relative(pathname *P, text_stream *path) {
 	int i = 0, pos = 0;
 	if ((Str::get(Str::start(path))) && (P == NULL)) i++;
 	for (; i < Str::len(path); i++)
-		if (Str::get(Str::at(path, i)) == FOLDER_SEPARATOR) {
+		if (Platform::is_folder_separator(Str::get(Str::at(path, i)))) {
 			if (i > pos) at = Pathnames::primitive(path, pos, i, at);
 			pos = i+1;
 		}
@@ -178,7 +178,7 @@ void Pathnames::to_text_relative(OUTPUT_STREAM, pathname *P, pathname *R) {
 	WRITE_TO(rt, "%p", R);
 	WRITE_TO(pt, "%p", P);
 	int n = Str::len(pt);
-	if ((Str::prefix_eq(rt, pt, n)) && (Str::get_at(rt, n)==FOLDER_SEPARATOR)) {
+	if ((Str::prefix_eq(rt, pt, n)) && (Platform::is_folder_separator(Str::get_at(rt, n)))) {
 		Str::delete_n_characters(rt, n+1);
 		WRITE("%S", rt);
 	} else internal_error("pathname not relative to pathname");

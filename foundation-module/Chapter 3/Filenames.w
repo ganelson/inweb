@@ -42,7 +42,7 @@ The following takes a textual name and returns a filename.
 filename *Filenames::from_text(text_stream *path) {
 	int i = 0, pos = -1;
 	LOOP_THROUGH_TEXT(at, path) {
-		if (Str::get(at) == FOLDER_SEPARATOR) pos = i;
+		if (Platform::is_folder_separator(Str::get(at))) pos = i;
 		i++;
 	}
 	pathname *P = NULL;
@@ -94,7 +94,7 @@ void Filenames::to_text_relative(OUTPUT_STREAM, filename *F, pathname *P) {
 	WRITE_TO(ft, "%f", F);
 	WRITE_TO(pt, "%p", P);
 	int n = Str::len(pt);
-	if ((Str::prefix_eq(ft, pt, n)) && (Str::get_at(ft, n)==FOLDER_SEPARATOR)) {
+	if ((Str::prefix_eq(ft, pt, n)) && (Platform::is_folder_separator(Str::get_at(ft, n)))) {
 		Str::delete_n_characters(ft, n+1);
 		WRITE("%S", ft);
 	} else internal_error("filename not relative to pathname");
