@@ -110,7 +110,18 @@ Happily, the Inform tools make very little use of this.
 = (very early code)
 int Platform::system(const char *cmd) {
 	char cmd_line[10*MAX_PATH];
-	sprintf(cmd_line, "sh -c %s", cmd);
+	char *pcl;
+	const char *pc;
+
+	/* Run system commands with a Unix-like shell */
+	strcpy(cmd_line, "sh -c \"");
+	for (pc = cmd, pcl = cmd_line+strlen(cmd_line); *pc != 0; ++pc, ++pcl) {
+		if ((*pc == '\\') || (*pc == '\"'))
+			*(pcl++) = '\\';
+		*pcl = *pc;
+	}
+	*(pcl++) = '\"';
+	*(pcl++) = 0;
 
 	STARTUPINFOA start;
 	memset(&start, 0, sizeof start);
@@ -238,7 +249,7 @@ void Platform::configure_terminal(void) {
 	if (loc == FILE_ENCODING_ISO_STRF)
 		newCP = 28591; /* ISO 8859-1 Latin */
 	else if (loc == FILE_ENCODING_UTF8_STRF)
-		newCP = 65001; /* UTF-8 */
+		newCP = CP_UTF8;
 	if ((newCP != 0) && SetConsoleOutputCP(newCP))
 		Win32_ResetConsole |= WIN32CONS_RESET_OUTCP;
 
