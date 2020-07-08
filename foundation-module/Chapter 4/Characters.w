@@ -119,6 +119,12 @@ int Characters::make_filename_safe(int charcode) {
 	return charcode;
 }
 
+wchar_t Characters::make_wchar_t_filename_safe(wchar_t charcode) {
+	charcode = Characters::remove_wchar_t_accent(charcode);
+	if (charcode >= 128) charcode = '-';
+	return charcode;
+}
+
 @ The following strips the accent, if present, from an ISO Latin-1 character:
 
 =
@@ -148,3 +154,8 @@ int Characters::remove_accent(int charcode) {
 	}
 	return charcode;
 }
+
+wchar_t Characters::remove_wchar_t_accent(wchar_t charcode) {
+	return (wchar_t) Characters::remove_accent((int) charcode);
+}
+
