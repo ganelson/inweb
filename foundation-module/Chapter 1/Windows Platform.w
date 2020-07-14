@@ -110,18 +110,29 @@ Happily, the Inform tools make very little use of this.
 = (very early code)
 int Platform::system(const char *cmd) {
 	char cmd_line[10*MAX_PATH];
-	char *pcl;
-	const char *pc;
 
-	/* Run system commands with a Unix-like shell */
-	strcpy(cmd_line, "sh -c \"");
-	for (pc = cmd, pcl = cmd_line+strlen(cmd_line); *pc != 0; ++pc, ++pcl) {
-		if ((*pc == '\\') || (*pc == '\"'))
-			*(pcl++) = '\\';
-		*pcl = *pc;
+	/* Check if the command should be executed with the Windows cmd interpreter
+	   or a Unix-like shell, depending on whether or not the executable to run is
+	   given with a quoted path. */
+	int unix = (cmd[0] != '\"');
+	if (unix) {
+		/* For a Unix shell command, escape any double quotes and backslashes. */
+		char *pcl;
+		const char *pc;
+		strcpy(cmd_line, "sh -c \"");
+		for (pc = cmd, pcl = cmd_line+strlen(cmd_line); *pc != 0; ++pc, ++pcl) {
+			if ((*pc == '\\') || (*pc == '\"'))
+				*(pcl++) = '\\';
+			*pcl = *pc;
+		}
+		*(pcl++) = '\"';
+		*(pcl++) = 0;
+	} else {
+		/* Otherwise, run with the Windows command interpreter. */
+		strcpy(cmd_line, "cmd /s /c \"");
+		strcat(cmd_line, cmd);
+		strcat(cmd_line, "\"");
 	}
-	*(pcl++) = '\"';
-	*(pcl++) = 0;
 
 	STARTUPINFOA start;
 	memset(&start, 0, sizeof start);
@@ -131,7 +142,8 @@ int Platform::system(const char *cmd) {
 
 	PROCESS_INFORMATION process;
 	if (CreateProcessA(0, cmd_line, 0, 0, FALSE, CREATE_NO_WINDOW, 0, 0, &start, &process) == 0) {
-		fprintf(stderr, "A Unix-like shell 'sh' (e.g. Cygwin or MinGW) must be in the path to run commands.\n");
+		if (unix)
+			fprintf(stderr, "A Unix-like shell \"sh\" (such as that from Cygwin) must be in the path.\n");
 		return -1;
 	}
 
