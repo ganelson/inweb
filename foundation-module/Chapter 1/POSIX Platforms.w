@@ -377,14 +377,14 @@ void Platform::configure_terminal(void) {
 }
 
 @h Concurrency.
+The following abstracts the pthread library, so that it can all be done
+differently on Windows.
 
 = (very early code)
 typedef pthread_t foundation_thread;
 typedef pthread_attr_t foundation_thread_attributes;
 
-@
-
-=
+@ =
 int Platform::create_thread(foundation_thread *pt,
 	const foundation_thread_attributes *pa, void *(*fn)(void *), void *arg) {
 	return pthread_create(pt, pa, fn, arg);
@@ -403,6 +403,43 @@ size_t Platform::get_thread_stack_size(foundation_thread_attributes *pa) {
 	size_t mystacksize;
 	pthread_attr_getstacksize(pa, &mystacksize);
 	return mystacksize;
+}
+
+@ ^"ifdef-PLATFORM_LINUX"
+It's not easy to find a function which reliably returns the core count.
+Linux provides |sys/sysinfo.h|, but this header is a POSIX extension which
+MacOS does not support.
+
+= (very early code)
+#include <sys/sysinfo.h>
+
+@ ^"ifdef-PLATFORM_LINUX"
+= 
+int Platform::get_core_count(void) {
+	int N = get_nprocs();
+	if (N < 1) return 1;
+	return N;
+}
+
+@ ^"ifdef-PLATFORM_MACOS"
+
+= (very early code)
+#include <sys/sysctl.h>
+
+@ ^"ifdef-PLATFORM_MACOS"
+=
+int Platform::get_core_count(void) {
+	int N;
+	size_t N_size = sizeof(int);
+	sysctlbyname("hw.logicalcpu", &N, &N_size, NULL, 0);
+	if (N < 1) return 1;
+	return N;
+}
+
+@ ^"ifdef-PLATFORM_ANDROID"
+= 
+int Platform::get_core_count(void) {
+	return 1;
 }
 
 @h Mutexes.

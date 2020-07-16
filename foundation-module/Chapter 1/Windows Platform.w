@@ -311,6 +311,15 @@ size_t Platform::get_thread_stack_size(foundation_thread_attributes* pa) {
 	return 0;
 }
 
+@ To do: replace this with something finding the answer correctly. It ought
+to be the number of logical cores (i.e., twice the number of physical cores
+if there's hyperthreading).
+
+=
+int Platform::get_core_count(void) {
+	return 4;
+}
+
 @h Timestamp and file size.
 There are implementations of the C standard library where |time_t| has
 super-weird behaviour, but on almost all POSIX systems, time 0 corresponds to

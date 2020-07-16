@@ -42,7 +42,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">foundation</a></li><li><a href="index.html#1">Chapter 1: Setting Up</a></li><li><b>POSIX Platforms</b></li></ul></div>
 <p class="purpose">A version of our operating system interface suitable for POSIX-compliant operating systems.</p>
 
-<ul class="toc"><li><a href="1-pp.html#SP3">&#167;3. Mac OS X</a></li><li><a href="1-pp.html#SP4">&#167;4. Generic Unix</a></li><li><a href="1-pp.html#SP5">&#167;5. Linux</a></li><li><a href="1-pp.html#SP6">&#167;6. Android</a></li><li><a href="1-pp.html#SP7">&#167;7. Folder separator</a></li><li><a href="1-pp.html#SP8">&#167;8. Locale</a></li><li><a href="1-pp.html#SP9">&#167;9. Environment variables</a></li><li><a href="1-pp.html#SP10">&#167;10. Executable location</a></li><li><a href="1-pp.html#SP11">&#167;11. Shell commands</a></li><li><a href="1-pp.html#SP12">&#167;12. Snprintf</a></li><li><a href="1-pp.html#SP14">&#167;14. Directory handling</a></li><li><a href="1-pp.html#SP15">&#167;15. Timestamp and file size</a></li><li><a href="1-pp.html#SP16">&#167;16. Sync</a></li><li><a href="1-pp.html#SP17">&#167;17. Sleep</a></li><li><a href="1-pp.html#SP18">&#167;18. Notifications</a></li><li><a href="1-pp.html#SP20">&#167;20. Terminal setup</a></li><li><a href="1-pp.html#SP21">&#167;21. Concurrency</a></li><li><a href="1-pp.html#SP23">&#167;23. Mutexes</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="1-pp.html#SP3">&#167;3. Mac OS X</a></li><li><a href="1-pp.html#SP4">&#167;4. Generic Unix</a></li><li><a href="1-pp.html#SP5">&#167;5. Linux</a></li><li><a href="1-pp.html#SP6">&#167;6. Android</a></li><li><a href="1-pp.html#SP7">&#167;7. Folder separator</a></li><li><a href="1-pp.html#SP8">&#167;8. Locale</a></li><li><a href="1-pp.html#SP9">&#167;9. Environment variables</a></li><li><a href="1-pp.html#SP10">&#167;10. Executable location</a></li><li><a href="1-pp.html#SP11">&#167;11. Shell commands</a></li><li><a href="1-pp.html#SP12">&#167;12. Snprintf</a></li><li><a href="1-pp.html#SP14">&#167;14. Directory handling</a></li><li><a href="1-pp.html#SP15">&#167;15. Timestamp and file size</a></li><li><a href="1-pp.html#SP16">&#167;16. Sync</a></li><li><a href="1-pp.html#SP17">&#167;17. Sleep</a></li><li><a href="1-pp.html#SP18">&#167;18. Notifications</a></li><li><a href="1-pp.html#SP20">&#167;20. Terminal setup</a></li><li><a href="1-pp.html#SP21">&#167;21. Concurrency</a></li><li><a href="1-pp.html#SP28">&#167;28. Mutexes</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>The C standard library leaves many questions unanswered about how to deal
 with the host operating system: for example, it knows very little about
@@ -364,23 +364,23 @@ be dealing with.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">time_t</span><span class="plain-syntax"> </span><a href="1-wp.html#SP16" class="function-link"><span class="function-syntax">Platform::never_time</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">time_t</span><span class="plain-syntax"> </span><a href="1-wp.html#SP17" class="function-link"><span class="function-syntax">Platform::never_time</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">time_t</span><span class="plain-syntax">) </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">time_t</span><span class="plain-syntax"> </span><a href="1-wp.html#SP16" class="function-link"><span class="function-syntax">Platform::timestamp</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transcoded_filename</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">time_t</span><span class="plain-syntax"> </span><a href="1-wp.html#SP17" class="function-link"><span class="function-syntax">Platform::timestamp</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transcoded_filename</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">stat</span><span class="plain-syntax"> </span><span class="identifier-syntax">filestat</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">stat</span><span class="plain-syntax">(</span><span class="identifier-syntax">transcoded_filename</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">filestat</span><span class="plain-syntax">) != -1) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">filestat</span><span class="plain-syntax">.</span><span class="identifier-syntax">st_mtime</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="1-wp.html#SP16" class="function-link"><span class="function-syntax">Platform::never_time</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="1-wp.html#SP17" class="function-link"><span class="function-syntax">Platform::never_time</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">off_t</span><span class="plain-syntax"> </span><a href="1-wp.html#SP16" class="function-link"><span class="function-syntax">Platform::size</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transcoded_filename</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">off_t</span><span class="plain-syntax"> </span><a href="1-wp.html#SP17" class="function-link"><span class="function-syntax">Platform::size</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">transcoded_filename</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">stat</span><span class="plain-syntax"> </span><span class="identifier-syntax">filestat</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">stat</span><span class="plain-syntax">(</span><span class="identifier-syntax">transcoded_filename</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">filestat</span><span class="plain-syntax">) != -1) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">filestat</span><span class="plain-syntax">.</span><span class="identifier-syntax">st_size</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">off_t</span><span class="plain-syntax">) </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::never_time is used in Windows Platform (<a href="1-wp.html#SP16">&#167;16</a>).</li><li>The function Platform::timestamp is used in Windows Platform (<a href="1-wp.html#SP16">&#167;16</a>), Filenames (<a href="3-fln.html#SP12">&#167;12</a>).</li><li>The function Platform::size is used in Windows Platform (<a href="1-wp.html#SP16">&#167;16</a>), Filenames (<a href="3-fln.html#SP12">&#167;12</a>).</li></ul>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::never_time is used in Windows Platform (<a href="1-wp.html#SP17">&#167;17</a>).</li><li>The function Platform::timestamp is used in Windows Platform (<a href="1-wp.html#SP17">&#167;17</a>), Filenames (<a href="3-fln.html#SP12">&#167;12</a>).</li><li>The function Platform::size is used in Windows Platform (<a href="1-wp.html#SP17">&#167;17</a>), Filenames (<a href="3-fln.html#SP12">&#167;12</a>).</li></ul>
 <p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Sync. </b>Both names here are of directories which do exist. The function makes
 the <span class="extract"><span class="extract-syntax">dest</span></span> tree an exact copy of the <span class="extract"><span class="extract-syntax">source</span></span> tree (and therefore deletes
 anything different which was originally in <span class="extract"><span class="extract-syntax">dest</span></span>).
@@ -467,7 +467,9 @@ find this).
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::configure_terminal is used in Foundation Module (<a href="1-fm.html#SP8">&#167;8</a>), Windows Platform (<a href="1-wp.html#SP13">&#167;13</a>).</li></ul>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Concurrency. </b></p>
+<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Concurrency. </b>The following abstracts the pthread library, so that it can all be done
+differently on Windows.
+</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="identifier-syntax">pthread_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">foundation_thread</span><span class="plain-syntax">;</span>
@@ -498,7 +500,52 @@ find this).
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::create_thread is used in Windows Platform (<a href="1-wp.html#SP15">&#167;15</a>).</li><li>The function Platform::join_thread is used in Windows Platform (<a href="1-wp.html#SP15">&#167;15</a>).</li><li>The function Platform::init_thread is used in Windows Platform (<a href="1-wp.html#SP15">&#167;15</a>).</li><li>The function Platform::get_thread_stack_size is used in Windows Platform (<a href="1-wp.html#SP15">&#167;15</a>).</li></ul>
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23. Mutexes. </b></p>
+<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b>It's not easy to find a function which reliably returns the core count.
+Linux provides <span class="extract"><span class="extract-syntax">sys/sysinfo.h</span></span>, but this header is a POSIX extension which
+MacOS does not support.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;sys/sysinfo.h&gt;</span>
+</pre>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</li></ul>
+<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24.  </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><a href="1-wp.html#SP16" class="function-link"><span class="function-syntax">Platform::get_core_count</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">get_nprocs</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_LINUX and PLATFORM_POSIX are defined.</li><li>The function Platform::get_core_count is used in <a href="1-pp.html#SP26">&#167;26</a>, <a href="1-pp.html#SP27">&#167;27</a>, Windows Platform (<a href="1-wp.html#SP16">&#167;16</a>).</li></ul>
+<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25.  </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;sys/sysctl.h&gt;</span>
+</pre>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li></ul>
+<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26.  </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><a href="1-wp.html#SP16" class="function-link"><span class="function-syntax">Platform::get_core_count</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">size_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">N_size</span><span class="plain-syntax"> = </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">sysctlbyname</span><span class="plain-syntax">(</span><span class="string-syntax">"hw.logicalcpu"</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">N</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">N_size</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_MACOS and PLATFORM_POSIX are defined.</li><li>The function Platform::get_core_count is used in <a href="1-pp.html#SP24">&#167;24</a>, <a href="1-pp.html#SP27">&#167;27</a>, Windows Platform (<a href="1-wp.html#SP16">&#167;16</a>).</li></ul>
+<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><a href="1-wp.html#SP16" class="function-link"><span class="function-syntax">Platform::get_core_count</span></a><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_ANDROID and PLATFORM_POSIX are defined.</li><li>The function Platform::get_core_count is used in <a href="1-pp.html#SP24">&#167;24</a>, <a href="1-pp.html#SP26">&#167;26</a>, Windows Platform (<a href="1-wp.html#SP16">&#167;16</a>).</li></ul>
+<p class="commentary firstcommentary"><a id="SP28"></a><b>&#167;28. Mutexes. </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CREATE_MUTEX</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">static</span><span class="plain-syntax"> </span><span class="identifier-syntax">pthread_mutex_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PTHREAD_MUTEX_INITIALIZER</span><span class="plain-syntax">;</span>
