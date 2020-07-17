@@ -317,7 +317,9 @@ if there's hyperthreading).
 
 =
 int Platform::get_core_count(void) {
-	return 4;
+	SYSTEM_INFO sysInfo;
+	GetSystemInfo(&sysInfo);
+	return (int)sysInfo.dwNumberOfProcessors;
 }
 
 @h Timestamp and file size.
