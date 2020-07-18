@@ -311,15 +311,16 @@ size_t Platform::get_thread_stack_size(foundation_thread_attributes* pa) {
 	return 0;
 }
 
-@ To do: replace this with something finding the answer correctly. It ought
-to be the number of logical cores (i.e., twice the number of physical cores
-if there's hyperthreading).
+@ This function returns the number of logical cores in the host computer --
+i.e., twice the number of physical cores if there's hyperthreading. The
+result is used as a guess for an appropriate number of simultaneous threads
+to launch.
 
 =
 int Platform::get_core_count(void) {
 	SYSTEM_INFO sysInfo;
 	GetSystemInfo(&sysInfo);
-	return (int)sysInfo.dwNumberOfProcessors;
+	return (int) sysInfo.dwNumberOfProcessors;
 }
 
 @h Timestamp and file size.

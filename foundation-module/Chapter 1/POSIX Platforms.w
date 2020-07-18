@@ -406,8 +406,13 @@ size_t Platform::get_thread_stack_size(foundation_thread_attributes *pa) {
 }
 
 @ ^"ifdef-PLATFORM_LINUX"
-It's not easy to find a function which reliably returns the core count.
-Linux provides |sys/sysinfo.h|, but this header is a POSIX extension which
+This function returns the number of logical cores in the host computer --
+i.e., twice the number of physical cores if there's hyperthreading. The
+result is used as a guess for an appropriate number of simultaneous threads
+to launch.
+
+It's not easy to find a function which reliably does this on all POSIX platforms.
+On Linux we can use |sys/sysinfo.h|, but this header is a POSIX extension which
 MacOS does not support.
 
 = (very early code)
@@ -422,6 +427,7 @@ int Platform::get_core_count(void) {
 }
 
 @ ^"ifdef-PLATFORM_MACOS"
+While MacOS lacks |sysinfo.h|, it does have |sysctl.h|:
 
 = (very early code)
 #include <sys/sysctl.h>
@@ -437,6 +443,8 @@ int Platform::get_core_count(void) {
 }
 
 @ ^"ifdef-PLATFORM_ANDROID"
+For Android it seems prudent simply to ignore multithreading:
+
 = 
 int Platform::get_core_count(void) {
 	return 1;
