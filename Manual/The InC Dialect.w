@@ -61,7 +61,7 @@ notation means, but for example:
 
 = (text)
 	<declaration> ::=
-		declare <dominion> independent	==>	R[1]
+		declare <dominion> independent	==>	{ R[1], - }
 
 	<dominion> ::=
 		canada |

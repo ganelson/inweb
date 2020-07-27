@@ -579,6 +579,7 @@ first line, 1 for the second, and so on) by default, with an undefined pointer.
 		AL = AL->next_line, c++) {
 		text_stream *formula = AL->text_operand2;
 		if (Str::len(formula) > 0) {
+			LanguageMethods::insert_line_marker(OUT, AL->owning_section->sect_language, AL);
 			WRITE("\t\tcase %d: ", c);
 			@<Tangle the formula on the right-hand side of the arrow@>;
 			WRITE(";\n");
@@ -610,10 +611,27 @@ nonterminal being parsed.)
 
 @<Tangle the formula on the right-hand side of the arrow@> =
 	match_results mr = Regexp::create_mr();
-	if (!Regexp::match(&mr, formula, L"@<%c*")) {
-		if (pnt->takes_pointer_result) WRITE("*XP = ");
-		else WRITE("*X = ");
+	if (Regexp::match(&mr, formula, L"{ *(%c*?) *} *(%c*)")) {
+		TEMPORARY_TEXT(rewritten)
+		WRITE_TO(rewritten, "==");
+		WRITE_TO(rewritten, "> { %S }", mr.exp[0]);
+		InCSupport::tangle_line_inner(OUT, AL, pnt, rewritten);
+		InCSupport::expand_formula(OUT, AL, pnt, mr.exp[1], TRUE);
+		DISCARD_TEXT(rewritten)
+	} else {
+		if (!Regexp::match(&mr, formula, L"@<%c*")) {
+			if (pnt->takes_pointer_result) WRITE("*XP = ");
+			else WRITE("*X = ");
+		}
+		InCSupport::expand_formula(OUT, AL, pnt, formula, TRUE);
 	}
+	Regexp::dispose_of(&mr);
+
+@
+
+=
+void InCSupport::expand_formula(text_stream *OUT, source_line *AL, preform_nonterminal *pnt,
+	text_stream *formula, int full) {
 	TEMPORARY_TEXT(expanded)
 	for (int i=0; i < Str::len(formula); i++) {
 		if ((Str::get_at(formula, i) == 'W') && (Str::get_at(formula, i+1) == 'R') &&
@@ -626,18 +644,24 @@ nonterminal being parsed.)
 			PUT_TO(expanded, Str::get_at(formula, i));
 		}
 	}
-	Tangler::tangle_line(OUT, expanded, AL->owning_section, AL);
+	if (full) Tangler::tangle_line(OUT, expanded, AL->owning_section, AL);
+	else InCSupport::tangle_line_inner(OUT, AL, pnt, expanded);
 	DISCARD_TEXT(expanded)
-	Regexp::dispose_of(&mr);
+}
 
 @ Going down from line level to the tangling of little excerpts of C code,
 we also provide for some other special extensions to C.
 
 =
 void InCSupport::tangle_line(programming_language *self, text_stream *OUT, text_stream *original) {
+	InCSupport::tangle_line_inner(OUT, NULL, NULL, original);
+}
+
+void InCSupport::tangle_line_inner(text_stream *OUT, source_line *AL, preform_nonterminal *pnt, text_stream *original) {
 	int fcall_pos = -1;
 	for (int i = 0; i < Str::len(original); i++) {
 		@<Double-colons are namespace dividers in function names@>;
+		@<Long arrow and braces assigns Preform results@>;
 		if (Str::get_at(original, i) == '<') {
 			if (Str::get_at(original, i+1) == '<') {
 				@<Double-angles sometimes delimit Preform variable names@>;
@@ -674,6 +698,132 @@ Inform, where no misreadings occur.
 		(isalpha(Str::get_at(original, i+2))) && (isalnum(Str::get_at(original, i-1)))) {
 		WRITE("__"); i++;
 		continue;
+	}
+
+@ For example, |==> { A, B }| assigns the expressions A and B as the results
+of parsing a Preform nonterminal.
+
+@d MAX_PREFORM_RESULT_CLAUSES 10
+
+@<Long arrow and braces assigns Preform results@> =
+	if ((Str::get_at(original, i) == '=') &&
+		(Str::get_at(original, i+1) == '=') &&
+		(Str::get_at(original, i+2) == '>') &&
+		(Str::get_at(original, i+3) == ' ') &&
+		(Str::get_at(original, i+4) == '{')) {
+		int clauses, err = FALSE;
+		text_stream *clause[MAX_PREFORM_RESULT_CLAUSES];
+		@<Find the clauses@>;
+		TEMPORARY_TEXT(extra)
+		if (clauses == 1) @<Recognise one-clause specials@>;
+		if (clauses < 2) err = TRUE;
+		if (err == FALSE) @<Write the assignments@>;
+		if (err) Main::error_in_web(I"malformed '{ , }' formula", AL);
+		continue;
+	}
+
+@ The clauses are a comma-separated list inside the braces, except that the
+commas need to be outside of any parentheses.
+
+@<Find the clauses@> =
+	clauses = 1;
+	clause[0] = Str::new();
+	int bl = 0;
+	for (int j = i+5; j < Str::len(original); j++) {
+		wchar_t c = Str::get_at(original, j);
+		if ((c == ',') && (bl == 0)) {
+			if (clauses >= MAX_PREFORM_RESULT_CLAUSES) err = TRUE;
+			else { clause[clauses] = Str::new(); clauses++; }
+			continue;
+		}
+		if ((c == '}') && (bl == 0)) {
+			i = j; break;
+		}
+		switch (c) {
+			case '(': bl++; break;
+			case ')': bl--; if (bl < 0) err = TRUE; break;
+		}
+		PUT_TO(clause[clauses-1], c);
+	}
+	if (bl != 0) err = TRUE;
+	for (int c=0; c<clauses; c++) Str::trim_white_space(clause[c]);
+
+@ There are a number of special syntaxes with just one clause, and these
+are implemented by rewriting them in two clauses, and sometimes adding some
+extra code to execute after the assignments.
+
+@<Recognise one-clause specials@> =
+	if (Str::eq(clause[0], I"fail")) {
+		clause[1] = Str::new(); clauses = 2;
+		WRITE_TO(extra, "return FAIL_NONTERMINAL;");
+		Str::clear(clause[0]);
+		WRITE_TO(clause[0], "-");
+		WRITE_TO(clause[1], "-");
+	} else if (Str::eq(clause[0], I"fail production")) {
+		clause[1] = Str::new(); clauses = 2;
+		WRITE_TO(extra, "return FALSE;");
+		Str::clear(clause[0]);
+		WRITE_TO(clause[0], "-");
+		WRITE_TO(clause[1], "-");
+	} else if (Str::prefix_eq(clause[0], I"advance ", 8)) {
+		clause[1] = Str::new(); clauses = 2;
+		WRITE_TO(extra, "return FAIL_NONTERMINAL + ");
+		Str::substr(extra, Str::at(clause[0], 8), Str::end(clause[0]));
+		WRITE_TO(extra, ";");
+		Str::clear(clause[0]);
+		WRITE_TO(clause[0], "0");
+		WRITE_TO(clause[1], "NULL");
+	} else if (Str::prefix_eq(clause[0], I"pass ", 5)) {
+		clause[1] = Str::new(); clauses = 2;
+		TEMPORARY_TEXT(from)
+		Str::substr(from, Str::at(clause[0], 5), Str::end(clause[0]));
+		Str::clear(clause[0]);
+		WRITE_TO(clause[0], "R[%S]", from);
+		WRITE_TO(clause[1], "RP[%S]", from);
+		DISCARD_TEXT(from)
+	} else if (Str::eq(clause[0], I"lookahead")) {
+		clause[1] = Str::new(); clauses = 2;
+		Str::clear(clause[0]);
+		WRITE_TO(clause[0], "0");
+		WRITE_TO(clause[1], "NULL");
+		WRITE_TO(extra, "return preform_lookahead_mode;");
+	}
+
+@ Each clause leads to an assignment. Clauses 0 and 1 set the result values
+for the current nonterminal; any subsequent clauses must specify which
+variable is to be set. A dash means make no assignment.
+
+For example, |{ R[1], - , <<to>> = R[2] }| sets |*X| to |R[1]|, does not
+alter |*XP|, and sets |<<to>>| to |R[2]|.
+
+@<Write the assignments@> =
+	for (int c=0; c<clauses; c++) {
+		if (Str::ne(clause[c], I"-")) {
+			switch (c) {
+				case 0: WRITE("*X = ");
+					InCSupport::expand_formula(OUT, AL, pnt, clause[c], FALSE);
+					WRITE(";"); break;
+				case 1: WRITE("*XP = ");
+					InCSupport::expand_formula(OUT, AL, pnt, clause[c], FALSE);
+					WRITE(";"); break;
+				default: {
+					match_results mr = Regexp::create_mr();
+					if (Regexp::match(&mr, clause[c], L"<<(%P+)>> = *(%c*)")) {
+						text_stream *putative = mr.exp[0];
+						text_stream *pv_identifier =
+							InCSupport::nonterminal_variable_identifier(putative);
+						if (pv_identifier) {
+							WRITE("%S = ", pv_identifier);
+							InCSupport::expand_formula(OUT, AL, pnt, mr.exp[1], FALSE);
+							WRITE(";");
+						} else err = TRUE;
+					} else err = TRUE;
+				}
+			}
+		}
+	}
+	if (Str::ne(extra, I"-")) {
+		InCSupport::expand_formula(OUT, AL, pnt, extra, FALSE);
 	}
 
 @ Angle brackets around a valid Preform variable name expand into its
