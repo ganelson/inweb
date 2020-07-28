@@ -209,7 +209,7 @@ lines until we hit the end of the paragraph, or a white-space line, whichever
 comes first. Each line of grammar is categorised |PREFORM_GRAMMAR_LCAT|.
 If we have a line with an arrow, like so:
 = (text)
-	porcupine tree  ==>  2
+	porcupine tree  ==>  { 2, - }{}
 =
 then the text on the left goes into |text_operand| and the right into
 |text_operand2|, with the arrow itself (and white space around it) cut out.
@@ -221,7 +221,7 @@ then the text on the left goes into |text_operand| and the right into
 		if (Regexp::string_is_white_space(AL->text)) break;
 		AL->category = PREFORM_GRAMMAR_LCAT;
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, AL->text, L"(%c+) ==> (%c*)")) {
+		if (Regexp::match(&mr, AL->text, L"(%c+?) ==> (%c*)")) {
 			AL->text_operand = Str::duplicate(mr.exp[0]);
 			AL->text_operand2 = Str::duplicate(mr.exp[1]);
 		} else {
@@ -637,8 +637,13 @@ void InCSupport::expand_formula(text_stream *OUT, source_line *AL, preform_nonte
 		if ((Str::get_at(formula, i) == 'W') && (Str::get_at(formula, i+1) == 'R') &&
 			(Str::get_at(formula, i+2) == '[') &&
 			(isdigit(Str::get_at(formula, i+3))) && (Str::get_at(formula, i+4) == ']')) {
-				WRITE_TO(expanded,
-					"%S->range_result[%c]", pnt->as_C_identifier, Str::get_at(formula, i+3));
+				if (pnt == NULL) {
+					Main::error_in_web(I"'WR[...]' notation unavailable", AL);
+					if (AL == NULL) WRITE_TO(STDERR, "%S\n", formula);
+				} else {
+					WRITE_TO(expanded,
+						"%S->range_result[%c]", pnt->as_C_identifier, Str::get_at(formula, i+3));
+				}
 				i += 4;
 		} else {
 			PUT_TO(expanded, Str::get_at(formula, i));
@@ -718,7 +723,10 @@ of parsing a Preform nonterminal.
 		if (clauses == 1) @<Recognise one-clause specials@>;
 		if (clauses < 2) err = TRUE;
 		if (err == FALSE) @<Write the assignments@>;
-		if (err) Main::error_in_web(I"malformed '{ , }' formula", AL);
+		if (err) {
+			Main::error_in_web(I"malformed '{ , }' formula", AL);
+			if (AL == NULL) WRITE_TO(STDERR, "%S\n", original);
+		}
 		continue;
 	}
 
@@ -760,6 +768,12 @@ extra code to execute after the assignments.
 		WRITE_TO(clause[0], "-");
 		WRITE_TO(clause[1], "-");
 	} else if (Str::eq(clause[0], I"fail production")) {
+		clause[1] = Str::new(); clauses = 2;
+		WRITE_TO(extra, "return FALSE;");
+		Str::clear(clause[0]);
+		WRITE_TO(clause[0], "-");
+		WRITE_TO(clause[1], "-");
+	} else if (Str::eq(clause[0], I"fail nonterminal")) {
 		clause[1] = Str::new(); clauses = 2;
 		WRITE_TO(extra, "return FALSE;");
 		Str::clear(clause[0]);
