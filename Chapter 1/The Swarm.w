@@ -139,10 +139,11 @@ and details of any cover-sheet to use.
 @<Translate the subweb range into details of what to weave@> =
 	match_results mr = Regexp::create_mr();
 	if (Str::eq_wide_string(range, L"0")) {
-		wv->booklet_title = Str::new_from_wide_string(L"Complete Program");
 		if (W->md->single_file) {
+			wv->booklet_title = Str::duplicate(Bibliographic::get_datum(W->md, I"Title"));
 			Filenames::write_unextended_leafname(leafname, W->md->single_file);
 		} else {
+			wv->booklet_title = Str::new_from_wide_string(L"Complete Program");
 			WRITE_TO(leafname, "Complete");
 		}
 		if (wv->theme_match) @<Change the titling and leafname to match the tagged theme@>;
