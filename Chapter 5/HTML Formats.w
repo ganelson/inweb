@@ -382,7 +382,9 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 		if (N > 0) @<Describe the file size@>
 		else Main::error_in_web(I"Download file missing or empty",
 				hrs->wv->current_weave_line);
-		Bibliographic::set_datum(hrs->wv->weave_web->md, I"File Name", C->download_name);
+		filename *D = Filenames::from_text(C->download_name);
+		Bibliographic::set_datum(hrs->wv->weave_web->md, I"File Name",
+			Filenames::get_leafname(D));
 		Bibliographic::set_datum(hrs->wv->weave_web->md, I"File URL", url);
 		Bibliographic::set_datum(hrs->wv->weave_web->md, I"File Details", size);
 		Collater::for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern,
