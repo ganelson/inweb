@@ -542,7 +542,7 @@ was well.
 
 A more typical example, drawn from the actual Inform 7 web, is:
 = (text)
-	<k-kind-of-kind> <k-formal-kind-variable> ==> Kinds::variable_construction(R[2], RP[1])
+	<k-kind-of-kind> <k-formal-kind-variable> ==> { - , Kinds::variable_construction(R[2], RP[1]) }
 =
 which says that the composite result -- the right-hand formula -- is formed by
 calling a particular routine on the integer result of subexpression 2

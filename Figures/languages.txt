@@ -19,3 +19,4 @@ None: For programs in languages not yet supported by Inweb
 Perl: The scripting language Perl 5
 Plain Text: For text files which are not programs
 Preform: The internal Inform syntax analysis grammar language
+REPL: REPL output in the form expression, colon, value

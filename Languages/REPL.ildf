@@ -1,0 +1,12 @@
+Name: "REPL"
+Details: "REPL output in the form expression, colon, value"
+Extension: ".repl"
+
+colouring {
+	=> !plain
+	# Detect expression-value lines, not being fooled by a colon inside quotes
+	brackets in /\s*(.*?):(.*)/ {
+		number 1 => !element
+		number 2 => !string
+	}
+}
