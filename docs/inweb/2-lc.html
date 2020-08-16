@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-lc.html#SP1">&#167;1. Line storage</a></li><li><a href="2-lc.html#SP3">&#167;3. Categories</a></li><li><a href="2-lc.html#SP5">&#167;5. Command codes</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Line storage. </b>In the next section, we'll read in an entire web, building its hierarchical
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Line storage. </b>In the next section, we'll read in an entire web, building its hierarchical
 structure of chapters, sections and eventually paragraphs. But before we do
 that, we'll define the structure used to store a single line of the web.
 </p>
@@ -93,7 +93,7 @@ correspond to one of these:
 <span class="plain-syntax">} </span><span class="reserved-syntax">source_line</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure source_line is accessed in 1/pc, 2/tr, 2/tp, 2/pm, 2/ec, 2/pn, 3/ta, 3/tw, 3/twot, 3/tt, 4/taf, 4/lm, 4/as, 4/cl, 4/is, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df, 6/cln and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="function-syntax">Lines::new_source_line_in</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Lines::new_source_line_in</span></span>:<br/>The Reader - <a href="2-tr.html#SP6_1_2">&#167;6.1.2</a><br/>The Parser - <a href="2-tp.html#SP1_1_6_1">&#167;1.1.6.1</a>, <a href="2-tp.html#SP1_1_7_7_2">&#167;1.1.7.7.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">,</span>
@@ -127,7 +127,7 @@ correspond to one of these:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Categories. </b>The line categories are enumerated as follows. We briefly note what the text
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Categories. </b>The line categories are enumerated as follows. We briefly note what the text
 operands (TO and TO2) are set to, if anything: most of the time they're blank.
 Note that a few of these categories are needed only for the more cumbersome
 version 1 syntax; version 2 removed the need for <span class="extract"><span class="extract-syntax">BAR_LCAT</span></span>,
@@ -161,7 +161,7 @@ version 1 syntax; version 2 removed the need for <span class="extract"><span cla
 <span class="definition-keyword">enum</span> <span class="constant-syntax">TEXT_EXTRACT_LCAT</span><span class="plain-syntax">       </span><span class="comment-syntax"> the rest of the paragraph under an </span><span class="extract"><span class="extract-syntax">@x</span></span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">TYPEDEF_LCAT</span><span class="plain-syntax">            </span><span class="comment-syntax"> C-like languages only: a </span><span class="extract"><span class="extract-syntax">typedef</span></span><span class="comment-syntax"> which isn't a structure definition</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>We want to print these out nicely for the sake of a <span class="extract"><span class="extract-syntax">-scan</span></span> analysis run
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>We want to print these out nicely for the sake of a <span class="extract"><span class="extract-syntax">-scan</span></span> analysis run
 of Inweb:
 </p>
 
@@ -199,7 +199,7 @@ of Inweb:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="string-syntax">"(?unknown)"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Command codes. </b>Command-category lines are further divided up into the following. Again,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Command codes. </b>Command-category lines are further divided up into the following. Again,
 some of these fell into disuse in version 2 syntax.
 </p>
 

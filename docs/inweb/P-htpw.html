@@ -49,7 +49,7 @@
 
 <ul class="toc"><li><a href="P-htpw.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-htpw.html#SP2">&#167;2. Working out what to do, and what to do it to</a></li><li><a href="P-htpw.html#SP7">&#167;7. Programming languages</a></li><li><a href="P-htpw.html#SP8">&#167;8. Weaving mode</a></li><li><a href="P-htpw.html#SP14">&#167;14. Tangling mode</a></li><li><a href="P-htpw.html#SP15">&#167;15. Analysis mode</a></li><li><a href="P-htpw.html#SP16">&#167;16. Translation mode</a></li><li><a href="P-htpw.html#SP17">&#167;17. Adding to Inweb</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Prerequisites. </b>This page is to help readers to get their bearings in the source code for
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>This page is to help readers to get their bearings in the source code for
 Inweb, which is a literate program or "web". Before diving in:
 </p>
 
@@ -65,7 +65,7 @@ This is a web in its own right. There's no need to read it, but you may want
 to take a quick look at <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a> or the
 example <a href="../eastertide/index.html" class="internal">eastertide</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Working out what to do, and what to do it to. </b>Inweb is a C program, so it begins at <a href="1-pc.html#SP6" class="internal">main</a>, in <a href="1-pc.html" class="internal">Program Control</a>. PC
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Working out what to do, and what to do it to. </b>Inweb is a C program, so it begins at <a href="1-pc.html#SP6" class="internal">main</a>, in <a href="1-pc.html" class="internal">Program Control</a>. PC
 works out where Inweb is installed, then calls <a href="1-cnf.html" class="internal">Configuration</a>, which
 <a href="1-cnf.html#SP2" class="internal">reads the command line options</a>.
 </p>
@@ -93,7 +93,7 @@ like <a href="6-mkf.html" class="internal">making makefiles</a> or <a href="6-gs
 Strictly speaking there is also <span class="extract"><span class="extract-syntax">NO_MODE</span></span> for runs where the user simply
 asked for <span class="extract"><span class="extract-syntax">-help</span></span> at the command line.
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b><a href="1-pc.html" class="internal">Program Control</a> then resumes, calling <a href="1-pc.html#SP7" class="internal">Main::follow_instructions</a> to
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b><a href="1-pc.html" class="internal">Program Control</a> then resumes, calling <a href="1-pc.html#SP7" class="internal">Main::follow_instructions</a> to
 act on the <a href="1-cnf.html#SP1" class="internal">inweb_instructions</a> object. If the user did specify a web to
 work on, PC then goes through three stages to understand it.
 </p>
@@ -133,7 +133,7 @@ Manual chapter, <span class="extract"><span class="extract-syntax">2/tp</span></
 imported or not, whereas the <a href="../foundation-module/8-wm.html#SP1" class="internal">module</a> lists only those falling under its
 own aegis.
 <a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>After loading, the second stage is to call <a href="2-tr.html#SP5" class="internal">Reader::read_web</a>. Whereas
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>After loading, the second stage is to call <a href="2-tr.html#SP5" class="internal">Reader::read_web</a>. Whereas
 loading was rapid and involved looking only at the contents page, reading
 takes longer and means extracting every line of commentary or code. Just
 as the loader wrapped the <a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a> in a larger <a href="2-tr.html#SP1" class="internal">web</a> object, so too
@@ -153,7 +153,7 @@ by <a href="../foundation-module/index.html" class="internal">foundation</a>:
 <span class="function-syntax">FOUNDATION</span><span class="plain-syntax">   </span><a href="../foundation-module/8-ws.html#SP2" class="internal">web_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP3" class="internal">chapter_md</a><span class="plain-syntax">  ----&gt;  </span><a href="../foundation-module/8-ws.html#SP4" class="internal">section_md</a>
 <span class="plain-syntax">             </span><a href="../foundation-module/8-wm.html#SP1" class="internal">module</a>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>The third stage is to call <a href="2-tp.html#SP1" class="internal">Parser::parse_web</a>. This is where we check that
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The third stage is to call <a href="2-tp.html#SP1" class="internal">Parser::parse_web</a>. This is where we check that
 the web is syntactically valid line-by-line, reporting errors if any using
 by calling <a href="1-pc.html#SP8" class="internal">Main::error_in_web</a>. Each line is assigned a "category": for
 example, the category <span class="extract"><span class="extract-syntax">DEFINITIONS_LCAT</span></span> is given to lines holding definitions
@@ -226,7 +226,7 @@ the Inweb syntax, which is the only one anyone should still use. Continuing
 to support version 1 makes <a href="2-tp.html" class="internal">The Parser</a> much fiddlier, and at some point we
 will probably drop this quixotic goal.
 <a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The parser also recognises headings and footnotes, but most importantly, it
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The parser also recognises headings and footnotes, but most importantly, it
 introduces an additional concept: the <a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">paragraph</a>. Each nunbered passage
 corresponds to one <a href="2-tp.html#SP1_1_7_5_1_8_1" class="internal">paragraph</a> object; it may actually contain several
 paragraphs of prose in the everyday English sense, but has just one heading,
@@ -262,7 +262,7 @@ overhead than gain: there are never very many paragraph macros per section.
 <a href="#fnref:7" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:8"><p class="inwebfootnote"><sup id="fnref:8"><a href="#fn:8" rel="footnote">8</a></sup> Though the parser is not able to check that the footnotes are all used;
 that's done at weaving time instead.
 <a href="#fnref:8" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Programming languages. </b>The contents page of a web usually mentions one or more programming languages.
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Programming languages. </b>The contents page of a web usually mentions one or more programming languages.
 A line at the top like
 </p>
 
@@ -303,7 +303,7 @@ to a <a href="4-pl.html#SP6" class="internal">programming_language</a>.
 <ul class="footnotetexts"><li class="footnote" id="fn:9"><p class="inwebfootnote"><sup id="fnref:9"><a href="#fn:9" rel="footnote">9</a></sup> A little-used feature of Inweb, which should arguably be taken out as
 unnecessary now that colonies allow for multiple webs to coexist happily.
 <a href="#fnref:9" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Weaving mode. </b>Let's get back to <a href="1-pc.html" class="internal">Program Control</a>, which has now set everything up and is
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Weaving mode. </b>Let's get back to <a href="1-pc.html" class="internal">Program Control</a>, which has now set everything up and is
 about to take action. What it does depends on which of the four modes Inweb
 is in; we'll start with <span class="extract"><span class="extract-syntax">WEAVE_MODE</span></span>, the most difficult.
 </p>
@@ -329,7 +329,7 @@ paragraph defining one (see <a href="4-taf.html" class="internal">Types and Func
 at the command line filters the weave down to just these. Sing to the tune
 of Suzanne Vega's "Freeze Tag".
 <a href="#fnref:10" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b><a href="1-pc.html" class="internal">Program Control</a> begins by attempting to load the weave pattern, with
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b><a href="1-pc.html" class="internal">Program Control</a> begins by attempting to load the weave pattern, with
 <a href="1-ptt.html#SP2" class="internal">Patterns::find</a>; the syntax of weave pattern files can be found in
 <a href="1-ptt.html#SP3" class="internal">Patterns::scan_pattern_line</a>.
 </p>
@@ -356,7 +356,7 @@ this text on, around 80 <a href="1-ts.html#SP2_1" class="internal">weave_order</
 call to <a href="1-ts.html#SP2" class="internal">Swarm::weave_subset</a>, which in turn is one for each section of the
 source-code web of Inweb itself.
 <a href="#fnref:12" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>And so we descend into <a href="3-tw.html" class="internal">The Weaver</a>, where the function <a href="3-tw.html#SP1" class="internal">Weaver::weave</a>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>And so we descend into <a href="3-tw.html" class="internal">The Weaver</a>, where the function <a href="3-tw.html#SP1" class="internal">Weaver::weave</a>
 is given the <a href="1-ts.html#SP2_1" class="internal">weave_order</a> and told to get on with it.<sup id="fnref:13"><a href="#fn:13" rel="footnote">13</a></sup>
 </p>
 
@@ -530,7 +530,7 @@ necessary types and object constructors are laid tediously out in
 <ul class="footnotetexts"><li class="footnote" id="fn:13"><p class="inwebfootnote"><sup id="fnref:13"><a href="#fn:13" rel="footnote">13</a></sup> "Weaver, weave" really ought to be a folk song, but if so, I can't find
 it on Spotify.
 <a href="#fnref:13" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Syntax-colouring is worth further mention. Just as the Weaver tries not to
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Syntax-colouring is worth further mention. Just as the Weaver tries not to
 get itself into fiddly details of formats, it also avoids specifics of
 programming languages. It does this by calling <a href="4-lm.html#SP25" class="internal">LanguageMethods::syntax_colour</a>,
 which in turn calls the <span class="extract"><span class="extract-syntax">SYNTAX_COLOUR_WEA_MTID</span></span> method for the relevant
@@ -551,7 +551,7 @@ in effect, a mini-language of their own, which is compiled by
 
 <ul class="footnotetexts"><li class="footnote" id="fn:14"><p class="inwebfootnote"><sup id="fnref:14"><a href="#fn:14" rel="footnote">14</a></sup> "ACME" is used here in the sense of "generic".
 <a href="#fnref:14" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>So, then, the weave tree is now made. Just as each programming language
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>So, then, the weave tree is now made. Just as each programming language
 has an object representing it, so does each format, and at render time the
 method call <span class="extract"><span class="extract-syntax">RENDER_FOR_MTID</span></span> is sent to it. This has to turn the tree into
 HTML, plain text, TeX source, or whatever may be. It's understood that not
@@ -595,7 +595,7 @@ can make a link to any paragraph of your choice.<sup id="fnref:15"><a href="#fn:
 This is intentional, as it's intended to take the reader to just enough
 context and explanation to understand what is being linked to.
 <a href="#fnref:15" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>Finally on weaving, special mention should go to <a href="3-tc.html" class="internal">The Collater</a>, a
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Finally on weaving, special mention should go to <a href="3-tc.html" class="internal">The Collater</a>, a
 subsystem which amounts to a stream editor. Its role is to work through a
 "template" and substitute in material from outside &mdash; from the weave rendering,
 from the bibliographic data for a web, and so on &mdash; to produce a final file.
@@ -629,7 +629,7 @@ the original. See <a href="M-awwp.html" class="internal">Advanced Weaving with P
 and see <a href="3-tc.html#SP1" class="internal">Collater::collate</a> for the machinery.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Tangling mode. </b>Alternatively, we're in <span class="extract"><span class="extract-syntax">TANGLE_MODE</span></span>, which is more straightforward.
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Tangling mode. </b>Alternatively, we're in <span class="extract"><span class="extract-syntax">TANGLE_MODE</span></span>, which is more straightforward.
 <a href="1-pc.html" class="internal">Program Control</a> simply works out what we want to tangle, selecting the
 appropriate <a href="2-tr.html#SP11" class="internal">tangle_target</a> object, and calls <a href="3-tt.html#SP1" class="internal">Tangler::tangle</a>.
 Most webs have just one "tangle target", meaning that the whole web makes
@@ -668,7 +668,7 @@ it now seems better practice to make such a sidekick file its own web, and
 use a colony file to make everything tidy on a woven website. So maybe this
 feature can go.
 <a href="#fnref:16" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Analysis mode. </b>Alternatively, we're in <span class="extract"><span class="extract-syntax">ANALYSE_MODE</span></span>. There's not much to this: <a href="1-pc.html" class="internal">Program Control</a>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Analysis mode. </b>Alternatively, we're in <span class="extract"><span class="extract-syntax">ANALYSE_MODE</span></span>. There's not much to this: <a href="1-pc.html" class="internal">Program Control</a>
 simply calls <a href="3-ta.html#SP2" class="internal">Analyser::catalogue_the_sections</a>, or else makes use of the same
 functions as <span class="extract"><span class="extract-syntax">TRANSLATE_MODE</span></span> would &mdash; but in the context of having read in a
 web. If it makes a <span class="extract"><span class="extract-syntax">.gitignore</span></span> file, for example, it does so for that specific
@@ -676,7 +676,7 @@ web, whereas if the same feature is used in <span class="extract"><span class="e
 the abstract and for no particular web.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16. Translation mode. </b>Or, finally, we're in <span class="extract"><span class="extract-syntax">TRANSLATE_MODE</span></span>. We can:
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Translation mode. </b>Or, finally, we're in <span class="extract"><span class="extract-syntax">TRANSLATE_MODE</span></span>. We can:
 </p>
 
 <ul class="items"><li>(a) make a makefile by calling <a href="6-mkf.html#SP1" class="internal">Makefiles::write</a>;
@@ -690,7 +690,7 @@ see <a href="1-pc.html" class="internal">Program Control</a> itself for details.
 were errors, or 0 if not, like a good Unix citizen.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17. Adding to Inweb. </b>Here's some miscellaneous advice for those who would like to add to Inweb:
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Adding to Inweb. </b>Here's some miscellaneous advice for those who would like to add to Inweb:
 </p>
 
 <p class="commentary">1. To add a new command-line switch, declare at <a href="1-cnf.html#SP2" class="internal">Configuration::read</a> and

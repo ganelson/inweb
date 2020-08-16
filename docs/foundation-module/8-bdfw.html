@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="8-bdfw.html#SP1">&#167;1. Storing data</a></li><li><a href="8-bdfw.html#SP4">&#167;4. Initialising a web</a></li><li><a href="8-bdfw.html#SP6">&#167;6. Reading bibliographic data</a></li><li><a href="8-bdfw.html#SP7">&#167;7. Writing bibliographic data</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Storing data. </b>There are never more than a dozen or so key-value pairs, and it's more
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Storing data. </b>There are never more than a dozen or so key-value pairs, and it's more
 convenient to store them directly here than to use a dictionary.
 </p>
 
@@ -68,13 +68,13 @@ convenient to store them directly here than to use a dictionary.
 <span class="plain-syntax">} </span><span class="reserved-syntax">web_bibliographic_datum</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure web_bibliographic_datum is accessed in 2/dl, 2/dct, 5/ee and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>We keep these in linked lists, and here's a convenient way to scan them:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>We keep these in linked lists, and here's a convenient way to scan them:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LOOP_OVER_BIBLIOGRAPHIC_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">bd</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">bd</span><span class="plain-syntax">, </span><span class="reserved-syntax">web_bibliographic_datum</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">bibliographic_data</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The following check the rules:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The following check the rules:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -90,7 +90,7 @@ convenient to store them directly here than to use a dictionary.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">bd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">on_or_off</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Initialising a web. </b>Each web has the following slate of data:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Initialising a web. </b>Each web has the following slate of data:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -130,7 +130,7 @@ convenient to store them directly here than to use a dictionary.
 <span class="plain-syntax">    </span><span class="identifier-syntax">bd</span><span class="plain-syntax"> = </span><a href="8-bdfw.html#SP7" class="function-link"><span class="function-syntax">Bibliographic::set_datum</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Web Syntax Version"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Once the declarations for a web have been processed, the following is called
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Once the declarations for a web have been processed, the following is called
 to check that all the mandatory declarations have indeed been made:
 </p>
 
@@ -144,7 +144,7 @@ to check that all the mandatory declarations have indeed been made:
 <span class="plain-syntax">                    </span><span class="string-syntax">"The web does not specify '%S: ...'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">bd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">key</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Reading bibliographic data. </b>Key names are case-sensitive.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Reading bibliographic data. </b>Key names are case-sensitive.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -170,7 +170,7 @@ to check that all the mandatory declarations have indeed been made:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Writing bibliographic data. </b>Note that a key-value pair is created if the key doesn't exist at present,
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Writing bibliographic data. </b>Note that a key-value pair is created if the key doesn't exist at present,
 so this routine never fails.
 </p>
 
@@ -183,7 +183,7 @@ so this routine never fails.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">bd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create a new datum, then</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create a new datum, then</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -197,7 +197,7 @@ so this routine never fails.
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">bd</span><span class="plain-syntax">, </span><span class="reserved-syntax">web_bibliographic_datum</span><span class="plain-syntax">, </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">bibliographic_data</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-bdfw.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2"></a><b>&#167;7.2.  </b>A slightly foolish feature, this; if text like "Wuthering Heights" is
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b>A slightly foolish feature, this; if text like "Wuthering Heights" is
 written to the "Title" key, then a full-caps "WUTHERING HEIGHTS" is
 written to a "Capitalized Title" key. (This enables cover sheets which
 want to typeset the title in full caps to do so.)

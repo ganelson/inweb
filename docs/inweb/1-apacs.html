@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-apacs.html#SP1">&#167;1. Creation</a></li><li><a href="1-apacs.html#SP5">&#167;5. Plugin inclusion</a></li><li><a href="1-apacs.html#SP8">&#167;8. Asset rules lists</a></li><li><a href="1-apacs.html#SP12">&#167;12. Inclusion of assets</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Creation. </b>At present, plugins are simply their names: Inweb knows as little as possible
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Creation. </b>At present, plugins are simply their names: Inweb knows as little as possible
 about what they do. The model is just that a file being woven either does or
 does not need a plugin of a given name.
 </p>
@@ -65,7 +65,7 @@ does not need a plugin of a given name.
 <span class="plain-syntax">} </span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure weave_plugin is accessed in 1/ts and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">weave_plugin</span><span class="plain-syntax"> *</span><span class="function-syntax">Assets::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Assets::new</span></span>:<br/>The Swarm - <a href="1-ts.html#SP3">&#167;3</a><br/>Patterns - <a href="1-ptt.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
@@ -79,7 +79,7 @@ does not need a plugin of a given name.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">wp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>And almost the same can be said about colour schemes, except that these we
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>And almost the same can be said about colour schemes, except that these we
 actually look for: they will be available to some patterns and not others.
 </p>
 
@@ -93,7 +93,7 @@ actually look for: they will be available to some patterns and not others.
 <span class="plain-syntax">} </span><span class="reserved-syntax">colour_scheme</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure colour_scheme is accessed in 5/ee, 1/ts, 5/hf and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">colour_scheme</span><span class="plain-syntax"> *</span><span class="function-syntax">Assets::find_colour_scheme</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Assets::find_colour_scheme</span></span>:<br/>The Swarm - <a href="1-ts.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">,</span>
@@ -117,7 +117,7 @@ actually look for: they will be available to some patterns and not others.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Plugin inclusion. </b>Plugins are included both by the pattern, if they are needed for anything
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Plugin inclusion. </b>Plugins are included both by the pattern, if they are needed for anything
 woven to that pattern, and by the individual weave order, if a particular
 need has arisen on a particular file.
 </p>
@@ -133,7 +133,7 @@ need has arisen on a particular file.
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_OUTDENT</span><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Those two functions both repeatedly call the functions <a href="1-apacs.html#SP6" class="internal">Assets::include_plugin</a>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Those two functions both repeatedly call the functions <a href="1-apacs.html#SP6" class="internal">Assets::include_plugin</a>
 and <a href="1-apacs.html#SP7" class="internal">Assets::include_colour_scheme</a> as needed, so these are declared next.
 </p>
 
@@ -184,7 +184,7 @@ this, we store the leafnames in a dictionary.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Colour schemes are CSS files held slightly differently, in the <span class="extract"><span class="extract-syntax">Colouring</span></span>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Colour schemes are CSS files held slightly differently, in the <span class="extract"><span class="extract-syntax">Colouring</span></span>
 subdirectory of (presumably) an HTML-based pattern.
 </p>
 
@@ -214,7 +214,7 @@ file, no matter how many times this is called.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">css</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Asset rules lists. </b>The practical effect of the two function above, then, is to call
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Asset rules lists. </b>The practical effect of the two function above, then, is to call
 <a href="1-apacs.html#SP12" class="internal">Assets::include_asset</a> on each asset needed. What that function does
 is highly configurable by the pattern, so we now have to show how. Each
 different filename extension, such as <span class="extract"><span class="extract-syntax">.jpg</span></span>, has its own rule for what to do:
@@ -236,7 +236,7 @@ different filename extension, such as <span class="extract"><span class="extract
 <span class="plain-syntax">} </span><span class="reserved-syntax">asset_rule</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure asset_rule is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>A pattern has a list of such rules, as follows. In each list, exactly one
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>A pattern has a list of such rules, as follows. In each list, exactly one
 rule has the empty text as its <span class="extract"><span class="extract-syntax">applies_to</span></span>: that one is the default, for any
 file whose extension does not appear in the rules list.
 </p>
@@ -251,7 +251,7 @@ file whose extension does not appear in the rules list.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>This is called by <a href="1-ptt.html" class="internal">Patterns</a> in response to <span class="extract"><span class="extract-syntax">assets: EXT CMD</span></span> commands. The
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>This is called by <a href="1-ptt.html" class="internal">Patterns</a> in response to <span class="extract"><span class="extract-syntax">assets: EXT CMD</span></span> commands. The
 <span class="extract"><span class="extract-syntax">CMD</span></span> part is in <span class="extract"><span class="extract-syntax">line</span></span>.
 </p>
 
@@ -278,7 +278,7 @@ file whose extension does not appear in the rules list.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set R to defaults</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set R to defaults</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -288,7 +288,7 @@ file whose extension does not appear in the rules list.
 <span class="plain-syntax">    </span><span class="identifier-syntax">R</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">transform_names</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-apacs.html#SP10">&#167;10</a>, <a href="1-apacs.html#SP10_2">&#167;10.2</a> (four times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Use this R</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Use this R</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -317,7 +317,7 @@ file whose extension does not appear in the rules list.
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-apacs.html#SP10">&#167;10</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Given a filename <span class="extract"><span class="extract-syntax">F</span></span> for some asset, which rule applies to it? The answer
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Given a filename <span class="extract"><span class="extract-syntax">F</span></span> for some asset, which rule applies to it? The answer
 is that if the current pattern, or any pattern it is based on, defines a rule,
 then the topmost one applies; and otherwise the default rule applies.
 </p>
@@ -340,7 +340,7 @@ then the topmost one applies; and otherwise the default rule applies.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Inclusion of assets. </b>Finally, then, we can include a single asset. This has already been located,
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Inclusion of assets. </b>Finally, then, we can include a single asset. This has already been located,
 at filename <span class="extract"><span class="extract-syntax">F</span></span>, and we now know how to find the applicable rule.
 </p>
 
@@ -364,7 +364,7 @@ at filename <span class="extract"><span class="extract-syntax">F</span></span>, 
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12_1"></a><b>&#167;12.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Embed the prefix, if any</span><span class="named-paragraph-number">12.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP12_1" class="paragraph-anchor"></a><b>&#167;12.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Embed the prefix, if any</span><span class="named-paragraph-number">12.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -377,7 +377,7 @@ at filename <span class="extract"><span class="extract-syntax">F</span></span>, 
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-apacs.html#SP12">&#167;12</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_2"></a><b>&#167;12.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Embed asset</span><span class="named-paragraph-number">12.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP12_2" class="paragraph-anchor"></a><b>&#167;12.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Embed asset</span><span class="named-paragraph-number">12.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -385,7 +385,7 @@ at filename <span class="extract"><span class="extract-syntax">F</span></span>, 
 <span class="plain-syntax">    </span><a href="1-apacs.html#SP13" class="function-link"><span class="function-syntax">Assets::transform</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">trans</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-apacs.html#SP12">&#167;12</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_3"></a><b>&#167;12.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Copy asset</span><span class="named-paragraph-number">12.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP12_3" class="paragraph-anchor"></a><b>&#167;12.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Copy asset</span><span class="named-paragraph-number">12.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -407,7 +407,7 @@ at filename <span class="extract"><span class="extract-syntax">F</span></span>, 
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-apacs.html#SP12">&#167;12</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_4"></a><b>&#167;12.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Collate asset</span><span class="named-paragraph-number">12.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP12_4" class="paragraph-anchor"></a><b>&#167;12.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Collate asset</span><span class="named-paragraph-number">12.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -415,7 +415,7 @@ at filename <span class="extract"><span class="extract-syntax">F</span></span>, 
 <span class="plain-syntax">    </span><a href="3-tc.html#SP1" class="function-link"><span class="function-syntax">Collater::for_web_and_pattern</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-apacs.html#SP12">&#167;12</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12_5"></a><b>&#167;12.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Embed the suffix, if any</span><span class="named-paragraph-number">12.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP12_5" class="paragraph-anchor"></a><b>&#167;12.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Embed the suffix, if any</span><span class="named-paragraph-number">12.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -428,7 +428,7 @@ at filename <span class="extract"><span class="extract-syntax">F</span></span>, 
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-apacs.html#SP12">&#167;12</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>"Transforming" is what happens to a CSS file to change the class names of
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>"Transforming" is what happens to a CSS file to change the class names of
 its <span class="extract"><span class="extract-syntax">span</span></span> and <span class="extract"><span class="extract-syntax">pre</span></span> styling rules, to add a prefix text. This is what changes
 the style names for colouring, say, COBOL source code from, e.g.,
 <span class="extract"><span class="extract-syntax">span.identifier-syntax</span></span> to <span class="extract"><span class="extract-syntax">span.ConsoleText-identifier-syntax</span></span>.

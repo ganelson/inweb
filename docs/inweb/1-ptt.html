@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-ptt.html#SP1">&#167;1. Reading in</a></li><li><a href="1-ptt.html#SP5">&#167;5. Post-processing</a></li><li><a href="1-ptt.html#SP6">&#167;6. Obtaining files</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Reading in. </b>Patterns are stored as directories in the file system, and are identified by
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Reading in. </b>Patterns are stored as directories in the file system, and are identified by
 names such as <span class="extract"><span class="extract-syntax">HTML</span></span>. On request, we need to find the directory corresponding
 to such a name, and to read it in. This structure holds the result:
 </p>
@@ -87,7 +87,7 @@ to such a name, and to read it in. This structure holds the result:
 <span class="plain-syntax">} </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure weave_pattern is accessed in 1/pc, 1/ts, 1/apacs, 5/fm, 5/tf, 5/hf and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>When a given web needs a pattern with a given name, this is where it comes.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>When a given web needs a pattern with a given name, this is where it comes.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -100,7 +100,7 @@ to such a name, and to read it in. This structure holds the result:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">wp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the pattern structure</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the pattern structure</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -122,7 +122,7 @@ to such a name, and to read it in. This structure holds the result:
 <span class="plain-syntax">    </span><span class="identifier-syntax">wp</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name_command_given</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-ptt.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Locate the pattern directory</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Locate the pattern directory</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -149,7 +149,7 @@ to such a name, and to read it in. This structure holds the result:
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_text</span></a><span class="plain-syntax">(</span><span class="string-syntax">"no such weave pattern as '%S'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-ptt.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_3"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read in the pattern.txt file</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read in the pattern.txt file</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -162,7 +162,7 @@ to such a name, and to read it in. This structure holds the result:
 <span class="plain-syntax">        </span><a href="../foundation-module/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_text</span></a><span class="plain-syntax">(</span><span class="string-syntax">"pattern did not name itself at the top"</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-ptt.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The Foundation module provides a standard way to scan text files line by
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The Foundation module provides a standard way to scan text files line by
 line, and this is used to send each line in the <span class="extract"><span class="extract-syntax">pattern.txt</span></span> file to the
 following routine:
 </p>
@@ -245,7 +245,7 @@ following routine:
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Patterns::yes_or_no</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Patterns::yes_or_no</span></span>:<br/><a href="1-ptt.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
@@ -267,7 +267,7 @@ following routine:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="../foundation-module/4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Post-processing. </b>In effect, a pattern can hold a shell script to run after each weave (subset)
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Post-processing. </b>In effect, a pattern can hold a shell script to run after each weave (subset)
 completes.
 </p>
 
@@ -308,7 +308,7 @@ completes.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Obtaining files. </b>Patterns provide place template files, such as <span class="extract"><span class="extract-syntax">template-body.html</span></span>, in
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Obtaining files. </b>Patterns provide place template files, such as <span class="extract"><span class="extract-syntax">template-body.html</span></span>, in
 their root directories.
 </p>
 
@@ -329,7 +329,7 @@ from each other then this routine will lock up into an infinite loop.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Similarly, but looking in an intermediate directory:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Similarly, but looking in an intermediate directory:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -343,7 +343,7 @@ from each other then this routine will lock up into an infinite loop.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Patterns::include_plugins</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Patterns::include_plugins</span></span>:<br/>Assets, Plugins and Colour Schemes - <a href="1-apacs.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">) {</span>

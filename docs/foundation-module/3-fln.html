@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-fln.html#SP1">&#167;1. Storage</a></li><li><a href="3-fln.html#SP2">&#167;2. Creation</a></li><li><a href="3-fln.html#SP3">&#167;3. Strings to filenames</a></li><li><a href="3-fln.html#SP4">&#167;4. The writer</a></li><li><a href="3-fln.html#SP6">&#167;6. Reading off the directory</a></li><li><a href="3-fln.html#SP7">&#167;7. Reading off the leafname</a></li><li><a href="3-fln.html#SP8">&#167;8. Filename extensions</a></li><li><a href="3-fln.html#SP9">&#167;9. Guessing file formats</a></li><li><a href="3-fln.html#SP10">&#167;10. Opening</a></li><li><a href="3-fln.html#SP11">&#167;11. Comparing</a></li><li><a href="3-fln.html#SP12">&#167;12. Timestamps and sizes</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Storage. </b>Filename objects behave much like pathname ones, but they have their own
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Storage. </b>Filename objects behave much like pathname ones, but they have their own
 structure in order that the two are distinct C types. Individual filenames
 are a single instance of the following. (Note that the text part is stored
 as Unicode code points, regardless of what text encoding the locale has.)
@@ -66,7 +66,7 @@ as Unicode code points, regardless of what text encoding the locale has.)
 <span class="plain-syntax">} </span><span class="reserved-syntax">filename</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure filename is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Creation. </b>A filename is made by supplying a pathname and a leafname.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Creation. </b>A filename is made by supplying a pathname and a leafname.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -86,7 +86,7 @@ as Unicode code points, regardless of what text encoding the locale has.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Strings to filenames. </b>The following takes a textual name and returns a filename.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Strings to filenames. </b>The following takes a textual name and returns a filename.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -119,7 +119,7 @@ as Unicode code points, regardless of what text encoding the locale has.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. The writer. </b>And conversely:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The writer. </b>And conversely:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -136,7 +136,7 @@ as Unicode code points, regardless of what text encoding the locale has.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>And again relative to a given pathname:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>And again relative to a given pathname:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -154,7 +154,7 @@ as Unicode code points, regardless of what text encoding the locale has.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Reading off the directory. </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Reading off the directory. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Filenames::up</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Filenames::up</span></span>:<br/>Pathnames - <a href="3-pth.html#SP3">&#167;3</a><br/>Web Structure - <a href="8-ws.html#SP5_2">&#167;5.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
@@ -162,7 +162,7 @@ as Unicode code points, regardless of what text encoding the locale has.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">F</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pathname_of_location</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Reading off the leafname. </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Reading off the leafname. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="function-syntax">Filenames::without_path</span><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
@@ -182,7 +182,7 @@ as Unicode code points, regardless of what text encoding the locale has.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Filename extensions. </b>The following is cautiously written because of an oddity in Windows's handling
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Filename extensions. </b>The following is cautiously written because of an oddity in Windows's handling
 of filenames, which are allowed to have trailing dots or spaces, in a way
 which isn't necessarily visible to the user, who may have added these by
 an accidental brush of the keyboard. Thus <span class="extract"><span class="extract-syntax">frog.jpg .</span></span> should be treated
@@ -215,7 +215,7 @@ as equivalent to <span class="extract"><span class="extract-syntax">frog.jpg</sp
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Guessing file formats. </b>The following guesses the file format from its file extension:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Guessing file formats. </b>The following guesses the file format from its file extension:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">FORMAT_PERHAPS_HTML</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
@@ -269,7 +269,7 @@ as equivalent to <span class="extract"><span class="extract-syntax">frog.jpg</sp
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">verdict</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Opening. </b>These files are wrappers for <span class="extract"><span class="extract-syntax">fopen</span></span>, the traditional C library call, but
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Opening. </b>These files are wrappers for <span class="extract"><span class="extract-syntax">fopen</span></span>, the traditional C library call, but
 referring to the file by filename structure rather than a textual name. Note
 that we must transcode the filename to whatever the locale expects before
 we call <span class="extract"><span class="extract-syntax">fopen</span></span>, which is the main reason for the wrapper.
@@ -294,7 +294,7 @@ we call <span class="extract"><span class="extract-syntax">fopen</span></span>, 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-cf.html#SP6" class="function-link"><span class="function-syntax">CIFilingSystem::fopen</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">transcoded_pathname</span><span class="plain-syntax">, </span><span class="identifier-syntax">usage</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Comparing. </b>Not as easy as it seems. The following is a slow but effective way to
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Comparing. </b>Not as easy as it seems. The following is a slow but effective way to
 compare two filenames by seeing if they have the same canonical form
 when printed out.
 </p>
@@ -312,7 +312,7 @@ when printed out.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Timestamps and sizes. </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Timestamps and sizes. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">time_t</span><span class="plain-syntax"> </span><span class="function-syntax">Filenames::timestamp</span><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>

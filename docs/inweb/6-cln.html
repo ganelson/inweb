@@ -57,7 +57,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="6-cln.html#SP1">&#167;1. Colonies of webs</a></li><li><a href="6-cln.html#SP7">&#167;7. Searching</a></li><li><a href="6-cln.html#SP10">&#167;10. Cross-references</a></li><li><a href="6-cln.html#SP11">&#167;11. URL management</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Colonies of webs. </b>Social spiders are said to form "colonies" when their webs are shared,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> and
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Colonies of webs. </b>Social spiders are said to form "colonies" when their webs are shared,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> and
 in that spirit, a colony to Inweb is a collection of coexisting webs &mdash; which
 share no code, and in that sense have no connection at run-time, but which
 need to be cross-referenced in their woven form, so that readers can easily
@@ -70,7 +70,7 @@ Orb-Weaving Spiders With Communal Webbing in a Man-Made Structural Habitat
 (Arachnida: Araneae: Tetragnathidae, Araneidae)", American Entomologist
 (Fall 2010), at: <a href="https://www.entsoc.org/PDF/2010/Orb-weaving-spiders.pdf" class="external">https://www.entsoc.org/PDF/2010/Orb-weaving-spiders.pdf</a>
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>So, then, a colony is really just a membership list:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>So, then, a colony is really just a membership list:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -83,7 +83,7 @@ Orb-Weaving Spiders With Communal Webbing in a Man-Made Structural Habitat
 <span class="plain-syntax">} </span><span class="reserved-syntax">colony</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure colony is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Each member is represented by an instance of the following. Note the <span class="extract"><span class="extract-syntax">loaded</span></span>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Each member is represented by an instance of the following. Note the <span class="extract"><span class="extract-syntax">loaded</span></span>
 field: this holds metadata on the web/module in question. (Recall that a module
 is really just a web that doesn't tangle to an independent program but to a
 library of code: for almost all purposes, it's a web.) But for efficiency's
@@ -110,7 +110,7 @@ directory holding a multi-section web.
 <span class="plain-syntax">} </span><span class="reserved-syntax">colony_member</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure colony_member is accessed in 2/trs, 1/cnf, 1/ts, 3/tc, 5/wt, 6/rw and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>And the following reads a colony file <span class="extract"><span class="extract-syntax">F</span></span> and produces a suitable <span class="extract"><span class="extract-syntax">colony</span></span>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>And the following reads a colony file <span class="extract"><span class="extract-syntax">F</span></span> and produces a suitable <span class="extract"><span class="extract-syntax">colony</span></span>
 object from it. This, for example, is the colony file for the Inweb repository
 at GitHub:
 </p>
@@ -160,7 +160,7 @@ at GitHub:
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure colony_reader_state is accessed in 1/ts, 3/tc, 5/fm, 5/tf, 5/hf and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Lines from the colony file are fed, one by one, into:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Lines from the colony file are fed, one by one, into:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -227,7 +227,7 @@ at GitHub:
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>"Breadcrumbs" are the chain of links in a horizontal list at the top of
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>"Breadcrumbs" are the chain of links in a horizontal list at the top of
 the page, and this requests one.
 </p>
 
@@ -292,7 +292,7 @@ the page, and this requests one.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure breadcrumb_request is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Searching. </b>Given a name <span class="extract"><span class="extract-syntax">T</span></span>, we try to find a colony member of that name, returning the
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Searching. </b>Given a name <span class="extract"><span class="extract-syntax">T</span></span>, we try to find a colony member of that name, returning the
 first we find.
 </p>
 
@@ -308,7 +308,7 @@ first we find.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>And this is where we find the web metadata for a colony member. It's a
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>And this is where we find the web metadata for a colony member. It's a
 more subtle business than first appears, because maybe the colony member is
 already in Inweb's memory (because it is the web being woven, or is a module
 imported by that web even if not now being woven). If it is, we want to use
@@ -324,7 +324,7 @@ the data we already have; but if not, we read it in.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_module</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8_1"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perhaps the web being woven</span><span class="named-paragraph-number">8.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP8_1" class="paragraph-anchor"></a><b>&#167;8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perhaps the web being woven</span><span class="named-paragraph-number">8.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -332,7 +332,7 @@ the data we already have; but if not, we read it in.
 <span class="plain-syntax">        </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_2"></a><b>&#167;8.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perhaps a module imported by the web being woven</span><span class="named-paragraph-number">8.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP8_2" class="paragraph-anchor"></a><b>&#167;8.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perhaps a module imported by the web being woven</span><span class="named-paragraph-number">8.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -344,7 +344,7 @@ the data we already have; but if not, we read it in.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_3"></a><b>&#167;8.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perhaps a module not yet seen</span><span class="named-paragraph-number">8.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP8_3" class="paragraph-anchor"></a><b>&#167;8.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perhaps a module not yet seen</span><span class="named-paragraph-number">8.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -357,7 +357,7 @@ the data we already have; but if not, we read it in.
 <span class="plain-syntax">    </span><span class="identifier-syntax">CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">loaded</span><span class="plain-syntax"> = </span><a href="../foundation-module/8-ws.html#SP5" class="function-link"><span class="function-syntax">WebMetadata::get_without_modules</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8_4"></a><b>&#167;8.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Failing that, throw an error</span><span class="named-paragraph-number">8.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP8_4" class="paragraph-anchor"></a><b>&#167;8.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Failing that, throw an error</span><span class="named-paragraph-number">8.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -366,7 +366,7 @@ the data we already have; but if not, we read it in.
 <span class="plain-syntax">    </span><a href="1-pc.html#SP8" class="function-link"><span class="function-syntax">Main::error_in_web</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">err</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Finally:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Finally:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -391,7 +391,7 @@ the data we already have; but if not, we read it in.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Cross-references. </b>The following must decide what references like the following should refer to:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Cross-references. </b>The following must decide what references like the following should refer to:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -467,7 +467,7 @@ is where the reference is made from.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Is it an explicit URL?</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Is it an explicit URL?</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -482,7 +482,7 @@ is where the reference is made from.
 <span class="string-syntax">    Regexp::dispose_of(&amp;mr);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Is it the name of a member of our colony?</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Is it the name of a member of our colony?</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -496,7 +496,7 @@ is where the reference is made from.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_3"></a><b>&#167;10.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If it contains a colon, does this indicate a section in a colony member?</span><span class="named-paragraph-number">10.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_3" class="paragraph-anchor"></a><b>&#167;10.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If it contains a colon, does this indicate a section in a colony member?</span><span class="named-paragraph-number">10.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -515,7 +515,7 @@ is where the reference is made from.
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_4"></a><b>&#167;10.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Is it the name of a function in the current web?</span><span class="named-paragraph-number">10.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_4" class="paragraph-anchor"></a><b>&#167;10.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Is it the name of a function in the current web?</span><span class="named-paragraph-number">10.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -530,7 +530,7 @@ is where the reference is made from.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_5"></a><b>&#167;10.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Is it the name of a type in the current web?</span><span class="named-paragraph-number">10.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_5" class="paragraph-anchor"></a><b>&#167;10.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Is it the name of a type in the current web?</span><span class="named-paragraph-number">10.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -545,7 +545,7 @@ is where the reference is made from.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_6"></a><b>&#167;10.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">It refers unambiguously to a single section</span><span class="named-paragraph-number">10.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_6" class="paragraph-anchor"></a><b>&#167;10.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">It refers unambiguously to a single section</span><span class="named-paragraph-number">10.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -555,7 +555,7 @@ is where the reference is made from.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10">&#167;10</a>, <a href="6-cln.html#SP10_2">&#167;10.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_6_1"></a><b>&#167;10.6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The section is a known colony member</span><span class="named-paragraph-number">10.6.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_6_1" class="paragraph-anchor"></a><b>&#167;10.6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The section is a known colony member</span><span class="named-paragraph-number">10.6.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -568,7 +568,7 @@ is where the reference is made from.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="string-syntax">" (in %S)"</span><span class="plain-syntax">, </span><span class="identifier-syntax">search_CM</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10_6">&#167;10.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_6_2"></a><b>&#167;10.6.2.  </b>In the absence of a colony file, Inweb can really only guess, and the
+<p class="commentary firstcommentary"><a id="SP10_6_2" class="paragraph-anchor"></a><b>&#167;10.6.2.  </b>In the absence of a colony file, Inweb can really only guess, and the
 guess it makes is that modules of the current web will be woven alongside
 the main one.
 </p>
@@ -587,7 +587,7 @@ the main one.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-cln.html#SP10_6">&#167;10.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. URL management. </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. URL management. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::link_URL</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Colonies::link_URL</span></span>:<br/><a href="6-cln.html#SP6">&#167;6</a><br/>The Collater - <a href="3-tc.html#SP5_1_11_16">&#167;5.1.11.16</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>

@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="5-fm.html#SP1">&#167;1. Formats</a></li><li><a href="5-fm.html#SP3">&#167;3. Creation</a></li><li><a href="5-fm.html#SP4">&#167;4. Methods</a></li><li><a href="5-fm.html#SP7">&#167;7. Post-processing</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Formats. </b>Exactly as in the previous chapter, each format expresses its behaviour
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Formats. </b>Exactly as in the previous chapter, each format expresses its behaviour
 through optional method calls.
 </p>
 
@@ -81,7 +81,7 @@ through optional method calls.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure weave_format is accessed in 2/mth, 1/ts, 4/pl, 4/as and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Note that this is the file extension before any post-processing. For
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Note that this is the file extension before any post-processing. For
 example, PDFs are made by weaving a TeX file and then running this through
 <span class="extract"><span class="extract-syntax">pdftex</span></span>. The extension here will be <span class="extract"><span class="extract-syntax">.tex</span></span> because that's what the weave
 stage produces, even though we will later end up with a <span class="extract"><span class="extract-syntax">.pdf</span></span>.
@@ -92,7 +92,7 @@ stage produces, even though we will later end up with a <span class="extract"><s
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">wf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">woven_extension</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Creation. </b>This must be performed very early in Inweb's run.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Creation. </b>This must be performed very early in Inweb's run.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -103,7 +103,7 @@ stage produces, even though we will later end up with a <span class="extract"><s
 <span class="plain-syntax">    </span><a href="5-hf.html#SP1" class="function-link"><span class="function-syntax">HTMLFormat::create</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Methods. </b>These two don't allow output to be produced: they're for any setting up and
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Methods. </b>These two don't allow output to be produced: they're for any setting up and
 putting away that needs tp be done.
 </p>
 
@@ -132,7 +132,7 @@ this is helpful for EPUB weaving.
 <span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pattern_format</span><span class="plain-syntax">, </span><span class="constant-syntax">END_WEAVING_FOR_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">pattern</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b><span class="extract"><span class="extract-syntax">RENDER_FOR_MTID</span></span> renders the weave tree in the given format: a format must
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b><span class="extract"><span class="extract-syntax">RENDER_FOR_MTID</span></span> renders the weave tree in the given format: a format must
 provide this.
 </p>
 
@@ -162,7 +162,7 @@ actual content.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">template</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The weaver has special typographical support for the stand-alone Inform
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The weaver has special typographical support for the stand-alone Inform
 document of Preform grammar, and this is the hook for it. Most formats
 should ignore it.
 </p>
@@ -183,7 +183,7 @@ should ignore it.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Post-processing. </b>Post-processing is now largely done by commands in the pattern file, rather
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Post-processing. </b>Post-processing is now largely done by commands in the pattern file, rather
 than here, but we retain method calls to enable formats to do some idiosyncratic
 post-processing.
 </p>
@@ -196,7 +196,7 @@ post-processing.
 <span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">format</span><span class="plain-syntax">, </span><span class="constant-syntax">POST_PROCESS_POS_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">wv</span><span class="plain-syntax">, </span><span class="identifier-syntax">open_afterwards</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Optionally, a fancy report can be printed out, to describe what has been
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Optionally, a fancy report can be printed out, to describe what has been
 done. Support for TeX console reporting is hard-wired here because it's
 handled by <a href="1-ptt.html#SP5" class="internal">Patterns::post_process</a> directly.
 </p>
@@ -210,7 +210,7 @@ handled by <a href="1-ptt.html#SP5" class="internal">Patterns::post_process</a> 
 <span class="plain-syntax">    </span><span class="identifier-syntax">VOID_METHOD_CALL</span><span class="plain-syntax">(</span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">format</span><span class="plain-syntax">, </span><span class="constant-syntax">POST_PROCESS_REPORT_POS_MTID</span><span class="plain-syntax">, </span><span class="identifier-syntax">wv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>For the sake of index files, we may want to substitute in values for
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>For the sake of index files, we may want to substitute in values for
 placeholder text in the template file.
 </p>
 

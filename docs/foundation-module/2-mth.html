@@ -44,7 +44,7 @@
 
 <ul class="toc"><li><a href="2-mth.html#SP1">&#167;1. Method sets</a></li><li><a href="2-mth.html#SP3">&#167;3. Declaring methods</a></li><li><a href="2-mth.html#SP5">&#167;5. Adding methods</a></li><li><a href="2-mth.html#SP6">&#167;6. Calling methods</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Method sets. </b>This section provides a very rudimentary implementation of method calls,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Method sets. </b>This section provides a very rudimentary implementation of method calls,
 ordinarily not available in C, but doesn't pretend to offer the full
 functionality of an object-oriented language.
 </p>
@@ -65,7 +65,7 @@ the ways that one language differs from another, and they can do that by
 providing "methods".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>A "method set" is simply a linked list of methods:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>A "method set" is simply a linked list of methods:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -81,14 +81,14 @@ providing "methods".
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure method_set is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Declaring methods. </b>Each method is a function, though we don't know its type &mdash; which is why we
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Declaring methods. </b>Each method is a function, though we don't know its type &mdash; which is why we
 resort to the desperate measure of storing it as a <span class="extract"><span class="extract-syntax">void *</span></span> &mdash; with an ID
 number attached to it. IDs should be from the <span class="extract"><span class="extract-syntax">*_MTID</span></span> enumeration set.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">UNUSED_METHOD_ID_MTID</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The type of a method must neverthess be specified, and we do it with one
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The type of a method must neverthess be specified, and we do it with one
 of two macros: one for methods returning an integer, one for void methods,
 i.e., those returning no value.
 </p>
@@ -105,7 +105,7 @@ functions sharing the method ID <span class="extract"><span class="extract-synta
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">UNUSED_METHOD_ID_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">example</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">wont_be_used</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Adding methods. </b>Provided a function has the right type for the ID we're using, we can now
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Adding methods. </b>Provided a function has the right type for the ID we're using, we can now
 attach it to an object with a method set, using the <span class="extract"><span class="extract-syntax">METHOD_ADD</span></span> macro.
 (If the type is wrong, the C compiler will throw errors here.)
 </p>
@@ -144,7 +144,7 @@ attach it to an object with a method set, using the <span class="extract"><span 
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure method is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Calling methods. </b>Method calls are also done with a macro, but it has to come in four variants:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Calling methods. </b>Method calls are also done with a macro, but it has to come in four variants:
 </p>
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">INT_METHOD_CALL</span></span> for a method taking arguments and returning an <span class="extract"><span class="extract-syntax">int</span></span>,

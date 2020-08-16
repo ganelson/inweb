@@ -50,7 +50,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">inweb</a></li><li><a href="index.html#2">Chapter 2: Parsing a Web</a></li><li><b>Enumerated Constants</b></li></ul></div>
 <p class="purpose">To define sequentially numbered values for families of constants.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>The idea here is that each enumeration set is a sequence of named constants
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>The idea here is that each enumeration set is a sequence of named constants
 with a given postfix: for example, <span class="extract"><span class="extract-syntax">HARRY_ST</span></span>, <span class="extract"><span class="extract-syntax">NEVILLE_ST</span></span>, <span class="extract"><span class="extract-syntax">ANGELINA_ST</span></span>
 form the <span class="extract"><span class="extract-syntax">*_ST</span></span> set. By definition, the postfix part is the portion of the
 name following the final underscore, so in this case <span class="extract"><span class="extract-syntax">ST</span></span>.
@@ -71,7 +71,7 @@ increments sequentially in definition order.
 <span class="plain-syntax">} </span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure enumeration_set is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>There won't be enough sets to make a hash table worth the overhead, so
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>There won't be enough sets to make a hash table worth the overhead, so
 compare all against all:
 </p>
 
@@ -84,7 +84,7 @@ compare all against all:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The following is called when an enumeration is found. If <span class="extract"><span class="extract-syntax">from</span></span> has a
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The following is called when an enumeration is found. If <span class="extract"><span class="extract-syntax">from</span></span> has a
 sensible value, this is the start of a new enumeration set; otherwise it's
 a further constant in what ought to be an existing set.
 </p>
@@ -101,7 +101,7 @@ a further constant in what ought to be an existing set.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">) </span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">last_observed_at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b>So for instance <span class="extract"><span class="extract-syntax">HARRY_ST</span></span> to <span class="extract"><span class="extract-syntax">ST</span></span>:
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b>So for instance <span class="extract"><span class="extract-syntax">HARRY_ST</span></span> to <span class="extract"><span class="extract-syntax">ST</span></span>:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the postfix in this symbol name</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
@@ -117,7 +117,7 @@ a further constant in what ought to be an existing set.
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Continue existing set</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Continue existing set</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -128,7 +128,7 @@ a further constant in what ought to be an existing set.
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="1-pc.html#SP8" class="function-link"><span class="function-syntax">Main::error_in_web</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"this enumeration _FAMILY is unknown"</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin new set</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin new set</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -153,7 +153,7 @@ a further constant in what ought to be an existing set.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">es</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stub</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">")"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ec.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>For each set, a further constant is defined to give the range; for example,
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>For each set, a further constant is defined to give the range; for example,
 we would have <span class="extract"><span class="extract-syntax">NO_DEFINED_ST_VALUES</span></span> set to 3. This is notionally placed in
 the code at the last line on which an <span class="extract"><span class="extract-syntax">*_ST</span></span> value was defined.
 </p>

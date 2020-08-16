@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="4-cl.html#SP1">&#167;1. </a></li><li><a href="4-cl.html#SP2">&#167;2. Parsing</a></li><li><a href="4-cl.html#SP2_2">&#167;2.2. Structure dependency</a></li><li><a href="4-cl.html#SP3">&#167;3. Functions</a></li><li><a href="4-cl.html#SP4">&#167;4. Subcategorisation</a></li><li><a href="4-cl.html#SP5">&#167;5. Tangling extras</a></li><li><a href="4-cl.html#SP6">&#167;6. Tangling predeclarations</a></li><li><a href="4-cl.html#SP7">&#167;7. Overriding regular code weaving</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>What makes a language C-like?
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>What makes a language C-like?
 This does:
 </p>
 
@@ -66,7 +66,7 @@ This does:
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="constant-syntax">ADDITIONAL_PREDECLARATIONS_TAN_MTID</span><span class="plain-syntax">, </span><a href="4-cl.html#SP6" class="function-link"><span class="function-syntax">CLike::additional_predeclarations</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Parsing. </b>After a web has been read in and then parsed, code supporting its language
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Parsing. </b>After a web has been read in and then parsed, code supporting its language
 is then called to do any further parsing it might want to. The code below
 is run if the language is "C-like": regular C and InC both qualify.
 </p>
@@ -77,7 +77,7 @@ is run if the language is "C-like": regular C and InC both qualify.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-cl.html#SP2_2" class="named-paragraph-link"><span class="named-paragraph">Work out which structs contain which others</span><span class="named-paragraph-number">2.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b>We're going to assume that the C source code uses structures looking
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>We're going to assume that the C source code uses structures looking
 something like this:
 </p>
 
@@ -128,7 +128,7 @@ takes care of it automatically.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_1_1"></a><b>&#167;2.1.1.  </b>At this point we're reading a line within the structure's definition; for
+<p class="commentary firstcommentary"><a id="SP2_1_1" class="paragraph-anchor"></a><b>&#167;2.1.1.  </b>At this point we're reading a line within the structure's definition; for
 the sake of an illustrative example, let's suppose that line is:
 </p>
 
@@ -162,7 +162,7 @@ the sake of an illustrative example, let's suppose that line is:
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1">&#167;2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_1_1_1"></a><b>&#167;2.1.1.1.  </b>The following reduces <span class="extract"><span class="extract-syntax">unsigned long long int *val;</span></span> to just <span class="extract"><span class="extract-syntax">int *val;</span></span>.
+<p class="commentary firstcommentary"><a id="SP2_1_1_1" class="paragraph-anchor"></a><b>&#167;2.1.1.1.  </b>The following reduces <span class="extract"><span class="extract-syntax">unsigned long long int *val;</span></span> to just <span class="extract"><span class="extract-syntax">int *val;</span></span>.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Remove C type modifiers from the front of p</span><span class="named-paragraph-number">2.1.1.1</span></span><span class="comment-syntax"> =</span>
@@ -184,7 +184,7 @@ the sake of an illustrative example, let's suppose that line is:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1_1">&#167;2.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_1_1_2"></a><b>&#167;2.1.1.2.  </b>At this point <span class="extract"><span class="extract-syntax">p</span></span> has been reduced to <span class="extract"><span class="extract-syntax">int *val;</span></span>, but the following moves
+<p class="commentary firstcommentary"><a id="SP2_1_1_2" class="paragraph-anchor"></a><b>&#167;2.1.1.2.  </b>At this point <span class="extract"><span class="extract-syntax">p</span></span> has been reduced to <span class="extract"><span class="extract-syntax">int *val;</span></span>, but the following moves
 <span class="extract"><span class="extract-syntax">pos</span></span> to point to the <span class="extract"><span class="extract-syntax">*</span></span>:
 </p>
 
@@ -196,7 +196,7 @@ the sake of an illustrative example, let's suppose that line is:
 <span class="plain-syntax">        </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::forward</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1_1">&#167;2.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_1_1_3"></a><b>&#167;2.1.1.3.  </b>And this moves it past the <span class="extract"><span class="extract-syntax">*</span></span> to point to the <span class="extract"><span class="extract-syntax">v</span></span> in <span class="extract"><span class="extract-syntax">int *val;</span></span>:
+<p class="commentary firstcommentary"><a id="SP2_1_1_3" class="paragraph-anchor"></a><b>&#167;2.1.1.3.  </b>And this moves it past the <span class="extract"><span class="extract-syntax">*</span></span> to point to the <span class="extract"><span class="extract-syntax">v</span></span> in <span class="extract"><span class="extract-syntax">int *val;</span></span>:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Move pos past any typographical type modifiers</span><span class="named-paragraph-number">2.1.1.3</span></span><span class="comment-syntax"> =</span>
@@ -207,7 +207,7 @@ the sake of an illustrative example, let's suppose that line is:
 <span class="plain-syntax">        (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">'('</span><span class="plain-syntax">) || (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">')'</span><span class="plain-syntax">)) </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP11" class="function-link"><span class="function-syntax">Str::forward</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1_1">&#167;2.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_1_1_4"></a><b>&#167;2.1.1.4.  </b>This then first copies the substring <span class="extract"><span class="extract-syntax">val;</span></span> into <span class="extract"><span class="extract-syntax">elname</span></span>, then cuts that
+<p class="commentary firstcommentary"><a id="SP2_1_1_4" class="paragraph-anchor"></a><b>&#167;2.1.1.4.  </b>This then first copies the substring <span class="extract"><span class="extract-syntax">val;</span></span> into <span class="extract"><span class="extract-syntax">elname</span></span>, then cuts that
 down to just the identifier characters at the front, i.e., to <span class="extract"><span class="extract-syntax">val</span></span>.
 </p>
 
@@ -219,7 +219,7 @@ down to just the identifier characters at the front, i.e., to <span class="extra
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-pm.html#SP10" class="function-link"><span class="function-syntax">Regexp::match</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">elname</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"(%i+)%c*"</span><span class="plain-syntax">)) </span><a href="../foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">elname</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="element-syntax">exp</span><span class="plain-syntax">[0]);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_1_1">&#167;2.1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2. Structure dependency. </b>We say that S depends on T if <span class="extract"><span class="extract-syntax">struct S</span></span> has an element whose type is
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2. Structure dependency. </b>We say that S depends on T if <span class="extract"><span class="extract-syntax">struct S</span></span> has an element whose type is
 <span class="extract"><span class="extract-syntax">struct T</span></span>. That matters because if so then <span class="extract"><span class="extract-syntax">struct T</span></span> has to be defined
 before <span class="extract"><span class="extract-syntax">struct S</span></span> in the tangled output.
 </p>
@@ -252,7 +252,7 @@ matches only identifier characters and <span class="extract"><span class="extrac
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1"></a><b>&#167;2.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">One structure appears to contain a copy of another one</span><span class="named-paragraph-number">2.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_2_1" class="paragraph-anchor"></a><b>&#167;2.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">One structure appears to contain a copy of another one</span><span class="named-paragraph-number">2.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -264,7 +264,7 @@ matches only identifier characters and <span class="extract"><span class="extrac
 <span class="plain-syntax">            </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">str</span><span class="plain-syntax">, </span><span class="reserved-syntax">language_type</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_str</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">incorporates</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP2_2">&#167;2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Functions. </b>This time, we will need to keep track of <span class="extract"><span class="extract-syntax">#ifdef</span></span> and <span class="extract"><span class="extract-syntax">#endif</span></span> pairs
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Functions. </b>This time, we will need to keep track of <span class="extract"><span class="extract-syntax">#ifdef</span></span> and <span class="extract"><span class="extract-syntax">#endif</span></span> pairs
 in the source. This matters because we will want to predeclare functions;
 but if functions are declared in conditional compilation, then their
 predeclarations have to be made under the same conditions.
@@ -295,7 +295,7 @@ source line being scanned lies within.
 <span class="plain-syntax">        </span><a href="1-pc.html#SP8" class="function-link"><span class="function-syntax">Main::error_in_web</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"program ended with conditional compilation open"</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look for conditional compilation on this line</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look for conditional compilation on this line</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -316,7 +316,7 @@ source line being scanned lies within.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2"></a><b>&#167;3.2.  </b>So, then, we recognise a C function as being a line which takes the form
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b>So, then, we recognise a C function as being a line which takes the form
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -355,7 +355,7 @@ modern ANSI C style, not the long-deprecated late 1970s C style.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2_1"></a><b>&#167;3.2.1.  </b>C has a whole soup of reserved words applying to types, but most of them
+<p class="commentary firstcommentary"><a id="SP3_2_1" class="paragraph-anchor"></a><b>&#167;3.2.1.  </b>C has a whole soup of reserved words applying to types, but most of them
 can't apply to the return type of a function. We do, however, iterate so that
 forms like <span class="extract"><span class="extract-syntax">static long long int</span></span> will work.
 </p>
@@ -381,7 +381,7 @@ forms like <span class="extract"><span class="extract-syntax">static long long i
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP3_2">&#167;3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2_2"></a><b>&#167;3.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">A function definition was found</span><span class="named-paragraph-number">3.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_2_2" class="paragraph-anchor"></a><b>&#167;3.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">A function definition was found</span><span class="named-paragraph-number">3.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -394,7 +394,7 @@ forms like <span class="extract"><span class="extract-syntax">static long long i
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">cc_sp</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">fn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">within_conditionals</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><span class="identifier-syntax">cc_stack</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">];</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP3_2">&#167;3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2_2_1"></a><b>&#167;3.2.2.1.  </b>In some cases the function's declaration runs over several lines:
+<p class="commentary firstcommentary"><a id="SP3_2_2_1" class="paragraph-anchor"></a><b>&#167;3.2.2.1.  </b>In some cases the function's declaration runs over several lines:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -430,7 +430,7 @@ reach an open brace <span class="extract"><span class="extract-syntax">{</span><
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="../foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::truncate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arguments</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP3_2_2">&#167;3.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Subcategorisation. </b>The following is called after the parser gives every line in the web a
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Subcategorisation. </b>The following is called after the parser gives every line in the web a
 category; we can, if we wish, change that for a more exotic one. We simply
 look for a <span class="extract"><span class="extract-syntax">#include</span></span> of one of the ANSI C standard libraries.
 </p>
@@ -453,7 +453,7 @@ look for a <span class="extract"><span class="extract-syntax">#include</span></s
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Tangling extras. </b>"Additional early matter" is used for the inclusions of the ANSI library
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Tangling extras. </b>"Additional early matter" is used for the inclusions of the ANSI library
 files. We need to do that early, because otherwise types declared in them
 (such as <span class="extract"><span class="extract-syntax">FILE</span></span>) won't exist in time for the structure definitions we will
 be tangling next.
@@ -478,7 +478,7 @@ platform-specific details to handle directories without POSIX in Windows.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Tangling predeclarations. </b>This is where a language gets the chance to tangle predeclarations, early
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Tangling predeclarations. </b>This is where a language gets the chance to tangle predeclarations, early
 on in the file. We use it first for the structures, and then the functions &mdash;
 in that order since the function types likely involve the typedef names for the
 structures.
@@ -491,7 +491,7 @@ structures.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-cl.html#SP6_4" class="named-paragraph-link"><span class="named-paragraph">Predeclare the functions</span><span class="named-paragraph-number">6.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b>A "simple typedef" here means one that is aliasing something other than
+<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b>A "simple typedef" here means one that is aliasing something other than
 a structure: for example <span class="extract"><span class="extract-syntax">typedef unsigned int uint;</span></span> would be a simple typedef.
 </p>
 
@@ -510,7 +510,7 @@ a structure: for example <span class="extract"><span class="extract-syntax">type
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_2"></a><b>&#167;6.2.  </b>It's easy enough to make sure structures are tangled so that inner ones
+<p class="commentary firstcommentary"><a id="SP6_2" class="paragraph-anchor"></a><b>&#167;6.2.  </b>It's easy enough to make sure structures are tangled so that inner ones
 precede outer, but we need to be careful to be terminating if the source
 code we're given is not well founded because of an error by its programmer:
 for example, that structure A contains B contains C contains A. We do this
@@ -530,7 +530,7 @@ finished.
 <span class="plain-syntax">        </span><a href="4-cl.html#SP6_3" class="function-link"><span class="function-syntax">CLike::tangle_structure</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">self</span><span class="plain-syntax">, </span><span class="identifier-syntax">str</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_3"></a><b>&#167;6.3.  </b>Using the following recursion, which is therefore terminating:
+<p class="commentary firstcommentary"><a id="SP6_3" class="paragraph-anchor"></a><b>&#167;6.3.  </b>Using the following recursion, which is therefore terminating:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -551,7 +551,7 @@ finished.
 <span class="plain-syntax">    </span><a href="2-tgs.html#SP7" class="function-link"><span class="function-syntax">Tags::close_ifdefs</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">str</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">structure_header_at</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_paragraph</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6_4"></a><b>&#167;6.4.  </b>Functions are rather easier to deal with. In general, if a function was
+<p class="commentary firstcommentary"><a id="SP6_4" class="paragraph-anchor"></a><b>&#167;6.4.  </b>Functions are rather easier to deal with. In general, if a function was
 defined within some number of nested <span class="extract"><span class="extract-syntax">#ifdef</span></span> or <span class="extract"><span class="extract-syntax">#ifndef</span></span> directives, then
 we reproduce those around the predeclaration: except, as a special trick,
 if the line contains a particular comment. For example:
@@ -599,7 +599,7 @@ exist either way.
 <span class="plain-syntax">        }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Overriding regular code weaving. </b>We have the opportunity here to sidestep the regular weaving algorithm, and do
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Overriding regular code weaving. </b>We have the opportunity here to sidestep the regular weaving algorithm, and do
 our own thing. We decline.
 </p>
 

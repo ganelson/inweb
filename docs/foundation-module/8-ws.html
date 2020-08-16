@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="8-ws.html#SP1">&#167;1. Introduction</a></li><li><a href="8-ws.html#SP2">&#167;2. Web MD</a></li><li><a href="8-ws.html#SP5">&#167;5. Reading from the file system</a></li><li><a href="8-ws.html#SP6">&#167;6. Reading the contents page</a></li><li><a href="8-ws.html#SP8">&#167;8. Relative pathnames or filenames</a></li><li><a href="8-ws.html#SP9">&#167;9. Statistics</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Introduction. </b>Webs are literate programs for the Inweb LP system. A single web consists of
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b>Webs are literate programs for the Inweb LP system. A single web consists of
 a number of chapters (though sometimes just one, called "Sections"), each
 of which consists of a number of sections. A web can represent a stand-alone
 program, or a library to be used in multiple programs, in which case it is
@@ -66,7 +66,7 @@ versions: the second was cleaned up and simplified from the first in 2019.
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">V1_SYNTAX</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">V2_SYNTAX</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Web MD. </b>No relation to the website of the same name: MD here stands for metadata.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Web MD. </b>No relation to the website of the same name: MD here stands for metadata.
 Our task in this section will be to read a web from the filing system and
 produce the following metadata structure.
 </p>
@@ -96,7 +96,7 @@ produce the following metadata structure.
 <span class="plain-syntax">} </span><span class="reserved-syntax">web_md</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure web_md is accessed in 8/bdfw, 8/wm, 8/bf and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The <span class="extract"><span class="extract-syntax">chapters_md</span></span> list in a <span class="extract"><span class="extract-syntax">web_md</span></span> contains these as its entries:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The <span class="extract"><span class="extract-syntax">chapters_md</span></span> list in a <span class="extract"><span class="extract-syntax">web_md</span></span> contains these as its entries:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -116,7 +116,7 @@ produce the following metadata structure.
 <span class="plain-syntax">} </span><span class="reserved-syntax">chapter_md</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure chapter_md is accessed in 8/wm and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>And the <span class="extract"><span class="extract-syntax">sections_md</span></span> list in a <span class="extract"><span class="extract-syntax">chapter_md</span></span> contains these as its entries:
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>And the <span class="extract"><span class="extract-syntax">sections_md</span></span> list in a <span class="extract"><span class="extract-syntax">chapter_md</span></span> contains these as its entries:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -138,7 +138,7 @@ produce the following metadata structure.
 <span class="plain-syntax">} </span><span class="reserved-syntax">section_md</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure section_md is accessed in 5/htm, 8/wm and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Reading from the file system. </b>Webs can be stored in two ways: as a directory containing a multitude of files,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Reading from the file system. </b>Webs can be stored in two ways: as a directory containing a multitude of files,
 in which case the pathname <span class="extract"><span class="extract-syntax">P</span></span> is supplied; or as a single file with everything
 in one (and thus, implicitly, a single chapter and a single section), in which
 case a filename <span class="extract"><span class="extract-syntax">alt_F</span></span> is supplied.
@@ -162,7 +162,7 @@ case a filename <span class="extract"><span class="extract-syntax">alt_F</span><
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin the bibliographic data</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Begin the bibliographic data</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -170,7 +170,7 @@ case a filename <span class="extract"><span class="extract-syntax">alt_F</span><
 <span class="plain-syntax">    </span><a href="8-bdfw.html#SP4" class="function-link"><span class="function-syntax">Bibliographic::initialise_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the rest of the web MD</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the rest of the web MD</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -194,7 +194,7 @@ case a filename <span class="extract"><span class="extract-syntax">alt_F</span><
 <span class="plain-syntax">    </span><span class="identifier-syntax">Wm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_module</span><span class="plain-syntax"> = </span><a href="8-wm.html#SP3" class="function-link"><span class="function-syntax">WebModules::create_main_module</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_3"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Consolidate the bibliographic data</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Consolidate the bibliographic data</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -203,7 +203,7 @@ case a filename <span class="extract"><span class="extract-syntax">alt_F</span><
 <span class="plain-syntax">    </span><a href="8-bf.html#SP6" class="function-link"><span class="function-syntax">BuildFiles::deduce_semver</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4"></a><b>&#167;5.4.  </b>If no range is supplied, we make one ourselves.
+<p class="commentary firstcommentary"><a id="SP5_4" class="paragraph-anchor"></a><b>&#167;5.4.  </b>If no range is supplied, we make one ourselves.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out the section ranges</span><span class="named-paragraph-number">5.4</span></span><span class="comment-syntax"> =</span>
@@ -225,7 +225,7 @@ case a filename <span class="extract"><span class="extract-syntax">alt_F</span><
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1"></a><b>&#167;5.4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Concoct a range for section Sm in chapter Cm in web Wm</span><span class="named-paragraph-number">5.4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_4_1" class="paragraph-anchor"></a><b>&#167;5.4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Concoct a range for section Sm in chapter Cm in web Wm</span><span class="named-paragraph-number">5.4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -246,7 +246,7 @@ case a filename <span class="extract"><span class="extract-syntax">alt_F</span><
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP5_4">&#167;5.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1_1"></a><b>&#167;5.4.1.1.  </b>We collapse words to an initial letter plus consonants: thus "electricity"
+<p class="commentary firstcommentary"><a id="SP5_4_1_1" class="paragraph-anchor"></a><b>&#167;5.4.1.1.  </b>We collapse words to an initial letter plus consonants: thus "electricity"
 would be "elctrcty", since we don't count "y" as a vowel here.
 </p>
 
@@ -277,7 +277,7 @@ would be "elctrcty", since we don't count "y" as a vowel here.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP5_4_1">&#167;5.4.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4_1_2"></a><b>&#167;5.4.1.2.  </b>We never want two sections to have the same range.
+<p class="commentary firstcommentary"><a id="SP5_4_1_2" class="paragraph-anchor"></a><b>&#167;5.4.1.2.  </b>We never want two sections to have the same range.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Terminate with disambiguating numbers in case of collisions</span><span class="named-paragraph-number">5.4.1.2</span></span><span class="comment-syntax"> =</span>
@@ -311,7 +311,7 @@ would be "elctrcty", since we don't count "y" as a vowel here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">original_range</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP5_4_1">&#167;5.4.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Reading the contents page. </b>Making the web begins by reading the contents section, which really isn't a
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Reading the contents page. </b>Making the web begins by reading the contents section, which really isn't a
 section at all (and perhaps we shouldn't pretend that it is by the use of the
 <span class="extract"><span class="extract-syntax">.w</span></span> file extension, but we probably want it to have the same file extension,
 and its syntax is chosen so that syntax-colouring for regular sections doesn't
@@ -373,7 +373,7 @@ by halting at the junction point.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure reader_state is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the reader state</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the reader state</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -409,7 +409,7 @@ by halting at the junction point.
 <span class="plain-syntax">    </span><span class="identifier-syntax">RS</span><span class="plain-syntax">.</span><span class="element-syntax">last_section</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The contents section has a syntax quite different from all other sections,
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>The contents section has a syntax quite different from all other sections,
 and sets out bibliographic information about the web, the sections and their
 organisation, and so on.
 </p>
@@ -434,7 +434,7 @@ organisation, and so on.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="8-ws.html#SP7_3" class="named-paragraph-link"><span class="named-paragraph">Read regular contents material</span><span class="named-paragraph-number">7.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b>Since the web syntax version affects how the rest of the file is read, it's
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b>Since the web syntax version affects how the rest of the file is read, it's
 no good simply to store this up for later: we have to change the web structure
 immediately.
 </p>
@@ -449,7 +449,7 @@ immediately.
 <span class="plain-syntax">        </span><span class="identifier-syntax">RS</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">Wm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">default_syntax</span><span class="plain-syntax"> = </span><span class="constant-syntax">V2_SYNTAX</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2"></a><b>&#167;7.2.  </b>Suppose we're reading a single-file web, and we hit the first <span class="extract"><span class="extract-syntax">@</span></span> marker.
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b>Suppose we're reading a single-file web, and we hit the first <span class="extract"><span class="extract-syntax">@</span></span> marker.
 The contents part has now ended, so we should halt scanning. But we also need
 to give the web a single chapter ("Sections", range "S"), which contains a
 single section ("All") consisting of the remainder of the single file.
@@ -470,7 +470,7 @@ single section ("All") consisting of the remainder of the single file.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_3"></a><b>&#167;7.3.  </b>With those two complications out of the way, we now know that we're reading
+<p class="commentary firstcommentary"><a id="SP7_3" class="paragraph-anchor"></a><b>&#167;7.3.  </b>With those two complications out of the way, we now know that we're reading
 a line of contents material. At the start of the contents, this will be a
 series of bibliographic data values; then there's a blank line, and then
 we're into the section listing.
@@ -485,7 +485,7 @@ we're into the section listing.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="8-ws.html#SP7_3_3" class="named-paragraph-link"><span class="named-paragraph">Read the roster of sections at the bottom</span><span class="named-paragraph-number">7.3.3</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_3_1"></a><b>&#167;7.3.1.  </b>At this point we've gone through the bibliographic lines at the top of the
+<p class="commentary firstcommentary"><a id="SP7_3_1" class="paragraph-anchor"></a><b>&#167;7.3.1.  </b>At this point we've gone through the bibliographic lines at the top of the
 contents page, and are soon going to read in the sections.
 </p>
 
@@ -496,7 +496,7 @@ contents page, and are soon going to read in the sections.
 <span class="plain-syntax">    </span><span class="identifier-syntax">RS</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">in_biblio</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_3">&#167;7.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_3_2"></a><b>&#167;7.3.2.  </b>The bibliographic data gives lines in any order specifying values of
+<p class="commentary firstcommentary"><a id="SP7_3_2" class="paragraph-anchor"></a><b>&#167;7.3.2.  </b>The bibliographic data gives lines in any order specifying values of
 variables with fixed names; a blank line ends the block.
 </p>
 
@@ -524,7 +524,7 @@ variables with fixed names; a blank line ends the block.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_3">&#167;7.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_3_2_1"></a><b>&#167;7.3.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set bibliographic key-value pair</span><span class="named-paragraph-number">7.3.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_3_2_1" class="paragraph-anchor"></a><b>&#167;7.3.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set bibliographic key-value pair</span><span class="named-paragraph-number">7.3.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -548,7 +548,7 @@ variables with fixed names; a blank line ends the block.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_3_2">&#167;7.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_3_3"></a><b>&#167;7.3.3.  </b>In the bulk of the contents, we find indented lines for sections and
+<p class="commentary firstcommentary"><a id="SP7_3_3" class="paragraph-anchor"></a><b>&#167;7.3.3.  </b>In the bulk of the contents, we find indented lines for sections and
 unindented ones for chapters.
 </p>
 
@@ -565,7 +565,7 @@ unindented ones for chapters.
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="8-ws.html#SP7_2_2" class="named-paragraph-link"><span class="named-paragraph">Read about, and read in, a new section</span><span class="named-paragraph-number">7.2.2</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_3">&#167;7.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_3_3_1"></a><b>&#167;7.3.3.1.  </b>After a declared chapter heading, subsequent lines form its purpose, until
+<p class="commentary firstcommentary"><a id="SP7_3_3_1" class="paragraph-anchor"></a><b>&#167;7.3.3.1.  </b>After a declared chapter heading, subsequent lines form its purpose, until
 we reach a closed quote: we then stop, but remove the quotation marks. Because
 we like a spoonful of syntactic sugar on our porridge, that's why.
 </p>
@@ -584,7 +584,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_3_3">&#167;7.3.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_3_3_2"></a><b>&#167;7.3.3.2.  </b>The title tells us everything we need to know about a chapter:
+<p class="commentary firstcommentary"><a id="SP7_3_3_2" class="paragraph-anchor"></a><b>&#167;7.3.3.2.  </b>The title tells us everything we need to know about a chapter:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read about a new chapter</span><span class="named-paragraph-number">7.3.3.2</span></span><span class="comment-syntax"> =</span>
@@ -685,7 +685,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 <span class="plain-syntax">    </span><a href="4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_3_3">&#167;7.3.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_3_3_2_1"></a><b>&#167;7.3.3.2.1.  </b>A chapter whose title marks it as Independent becomes a new tangle target,
+<p class="commentary firstcommentary"><a id="SP7_3_3_2_1" class="paragraph-anchor"></a><b>&#167;7.3.3.2.1.  </b>A chapter whose title marks it as Independent becomes a new tangle target,
 with the same language as the main web unless stated otherwise.
 </p>
 
@@ -701,7 +701,7 @@ with the same language as the main web unless stated otherwise.
 <span class="plain-syntax">    </span><a href="4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_3_3_2">&#167;7.3.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2_1"></a><b>&#167;7.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create the new chapter with these details</span><span class="named-paragraph-number">7.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_2_1" class="paragraph-anchor"></a><b>&#167;7.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create the new chapter with these details</span><span class="named-paragraph-number">7.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -729,7 +729,7 @@ with the same language as the main web unless stated otherwise.
 <span class="plain-syntax">    </span><span class="identifier-syntax">RS</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chapter_being_scanned</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Cm</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_2">&#167;7.2</a>, <a href="8-ws.html#SP7_3_3_2">&#167;7.3.3.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2_2"></a><b>&#167;7.2.2.  </b>That's enough on creating chapters. This is the more interesting business
+<p class="commentary firstcommentary"><a id="SP7_2_2" class="paragraph-anchor"></a><b>&#167;7.2.2.  </b>That's enough on creating chapters. This is the more interesting business
 of registering a new section within a chapter &mdash; more interesting because
 we also read in and process its file.
 </p>
@@ -747,7 +747,7 @@ we also read in and process its file.
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="8-ws.html#SP7_2_2_4" class="named-paragraph-link"><span class="named-paragraph">Work out the filename of this section file</span><span class="named-paragraph-number">7.2.2.4</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_2">&#167;7.2</a>, <a href="8-ws.html#SP7_3_3">&#167;7.3.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2_2_1"></a><b>&#167;7.2.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the section structure</span><span class="named-paragraph-number">7.2.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_2_2_1" class="paragraph-anchor"></a><b>&#167;7.2.2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the section structure</span><span class="named-paragraph-number">7.2.2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -770,7 +770,7 @@ we also read in and process its file.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Sm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_module</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RS</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">reading_from</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_2_2">&#167;7.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2_2_2"></a><b>&#167;7.2.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the section to the web and the current chapter</span><span class="named-paragraph-number">7.2.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_2_2_2" class="paragraph-anchor"></a><b>&#167;7.2.2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the section to the web and the current chapter</span><span class="named-paragraph-number">7.2.2.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -782,7 +782,7 @@ we also read in and process its file.
 <span class="plain-syntax">    </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">Sm</span><span class="plain-syntax">, </span><span class="reserved-syntax">section_md</span><span class="plain-syntax">, </span><span class="identifier-syntax">RS</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">reading_from</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sections_md</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_2_2">&#167;7.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2_2_3"></a><b>&#167;7.2.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out the language and tangle target for the section</span><span class="named-paragraph-number">7.2.2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_2_2_3" class="paragraph-anchor"></a><b>&#167;7.2.2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out the language and tangle target for the section</span><span class="named-paragraph-number">7.2.2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -797,7 +797,7 @@ we also read in and process its file.
 <span class="plain-syntax">    </span><a href="4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_2_2">&#167;7.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2_2_3_1"></a><b>&#167;7.2.2.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Mark this section as an independent tangle target</span><span class="named-paragraph-number">7.2.2.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_2_2_3_1" class="paragraph-anchor"></a><b>&#167;7.2.2.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Mark this section as an independent tangle target</span><span class="named-paragraph-number">7.2.2.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -806,7 +806,7 @@ we also read in and process its file.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Sm</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_independent_language</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP3" class="function-link"><span class="function-syntax">Str::duplicate</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_2_2_3">&#167;7.2.2.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2_2_4"></a><b>&#167;7.2.2.4.  </b>If we're told that a section is called "Bells and Whistles", what filename
+<p class="commentary firstcommentary"><a id="SP7_2_2_4" class="paragraph-anchor"></a><b>&#167;7.2.2.4.  </b>If we're told that a section is called "Bells and Whistles", what filename
 is it stored in? Firstly, the leafname is normally <span class="extract"><span class="extract-syntax">Bells and Whistles.w</span></span>,
 but the extension used doesn't have to be <span class="extract"><span class="extract-syntax">.w</span></span>: for Inform 6 template files,
 the extension needs to be <span class="extract"><span class="extract-syntax">.i6t</span></span>. We allow either.
@@ -831,7 +831,7 @@ the extension needs to be <span class="extract"><span class="extract-syntax">.i6
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">leafname_to_use</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="8-ws.html#SP7_2_2">&#167;7.2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Relative pathnames or filenames. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Relative pathnames or filenames. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">WebMetadata::directory_looks_like_a_web</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">WebMetadata::directory_looks_like_a_web</span></span>:<br/>Web Modules - <a href="8-wm.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
@@ -842,7 +842,7 @@ the extension needs to be <span class="extract"><span class="extract-syntax">.i6
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-fln.html#SP2" class="function-link"><span class="function-syntax">Filenames::in</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Contents.w"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Statistics. </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Statistics. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">WebMetadata::chapter_count</span><span class="plain-syntax">(</span><span class="reserved-syntax">web_md</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Wm</span><span class="plain-syntax">) {</span>

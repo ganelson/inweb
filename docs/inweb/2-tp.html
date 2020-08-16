@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-tp.html#SP1">&#167;1. Sequence of parsing</a></li><li><a href="2-tp.html#SP1_1_7">&#167;1.1.7. Categorisatiom</a></li><li><a href="2-tp.html#SP1_1_4_2">&#167;1.1.4.2. Footnote notation</a></li><li><a href="2-tp.html#SP3">&#167;3. Parsing of dimensions</a></li><li><a href="2-tp.html#SP4">&#167;4. Version errors</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Sequence of parsing. </b>At this point, thw web has been read into memory. It's a linked list of
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Sequence of parsing. </b>At this point, thw web has been read into memory. It's a linked list of
 chapters, each of which is a linked list of sections, each of which must
 be parsed in turn.
 </p>
@@ -75,7 +75,7 @@ for it to do anything.
 <span class="plain-syntax">    </span><a href="4-lm.html#SP4" class="function-link"><span class="function-syntax">LanguageMethods::further_parsing</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">main_language</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP1_1"></a><b>&#167;1.1.  </b>The task now is to parse those source lines, categorise them, and group them
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b>The task now is to parse those source lines, categorise them, and group them
 further into a linked list of paragraphs. The basic method would be simple
 enough, but is made more elaborate by supporting both version 1 and version 2
 markup syntax, and trying to detect incorrect uses of one within the other.
@@ -106,7 +106,7 @@ markup syntax, and trying to detect incorrect uses of one within the other.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-tp.html#SP1_1_4" class="named-paragraph-link"><span class="named-paragraph">Work out footnote numbering for this section</span><span class="named-paragraph-number">1.1.4</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_1"></a><b>&#167;1.1.1.  </b>In versiom 2 syntax, the notation for tags was clarified. The tag list
+<p class="commentary firstcommentary"><a id="SP1_1_1" class="paragraph-anchor"></a><b>&#167;1.1.1.  </b>In versiom 2 syntax, the notation for tags was clarified. The tag list
 for a paragraph is the run of <span class="extract"><span class="extract-syntax">^"This"</span></span> and <span class="extract"><span class="extract-syntax">^"That"</span></span> markers at the end of
 the line introducing that paragraph. They can only occur, therefore, on a
 line beginning with an <span class="extract"><span class="extract-syntax">@</span></span>. We extract them into a string called <span class="extract"><span class="extract-syntax">tag_list</span></span>.
@@ -132,7 +132,7 @@ yet exist &mdash; it will only exist when the line has been fully parsed.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1">&#167;1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_2"></a><b>&#167;1.1.2.  </b>And now it's later, and we can safely apply the tags. <span class="extract"><span class="extract-syntax">current_paragraph</span></span>
+<p class="commentary firstcommentary"><a id="SP1_1_2" class="paragraph-anchor"></a><b>&#167;1.1.2.  </b>And now it's later, and we can safely apply the tags. <span class="extract"><span class="extract-syntax">current_paragraph</span></span>
 now points to the para which was created by this line, not the one before.
 </p>
 
@@ -149,7 +149,7 @@ now points to the para which was created by this line, not the one before.
 <span class="plain-syntax">    </span><a href="../foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tag_list</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1">&#167;1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_3"></a><b>&#167;1.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If the section as a whole is tagged, apply that tag to each paragraph in it</span><span class="named-paragraph-number">1.1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_1_3" class="paragraph-anchor"></a><b>&#167;1.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If the section as a whole is tagged, apply that tag to each paragraph in it</span><span class="named-paragraph-number">1.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -159,7 +159,7 @@ now points to the para which was created by this line, not the one before.
 <span class="plain-syntax">            </span><a href="2-tgs.html#SP3" class="function-link"><span class="function-syntax">Tags::add_to_paragraph</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tag_with</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1">&#167;1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_4"></a><b>&#167;1.1.4.  </b>In the woven form of each section, footnotes are counting upwards from 1.
+<p class="commentary firstcommentary"><a id="SP1_1_4" class="paragraph-anchor"></a><b>&#167;1.1.4.  </b>In the woven form of each section, footnotes are counting upwards from 1.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out footnote numbering for this section</span><span class="named-paragraph-number">1.1.4</span></span><span class="comment-syntax"> =</span>
@@ -172,7 +172,7 @@ now points to the para which was created by this line, not the one before.
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tp.html#SP1_1_4_3" class="named-paragraph-link"><span class="named-paragraph">Work out footnote numbering for this paragraph</span><span class="named-paragraph-number">1.1.4.3</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1">&#167;1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_5"></a><b>&#167;1.1.5.  </b>The "purpose" of a section is a brief note about what it's for. In version 1
+<p class="commentary firstcommentary"><a id="SP1_1_5" class="paragraph-anchor"></a><b>&#167;1.1.5.  </b>The "purpose" of a section is a brief note about what it's for. In version 1
 syntax, this had to be explicitly declared with a <span class="extract"><span class="extract-syntax">@Purpose:</span></span> command; in
 version 2 it's much tidier.
 </p>
@@ -191,7 +191,7 @@ version 2 it's much tidier.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1">&#167;1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_6"></a><b>&#167;1.1.6.  </b>A new paragraph is implied when a macro definition begins in the middle of
+<p class="commentary firstcommentary"><a id="SP1_1_6" class="paragraph-anchor"></a><b>&#167;1.1.6.  </b>A new paragraph is implied when a macro definition begins in the middle of
 what otherwise would be code, or when a paragraph and its code divider are
 immediately adjacent on the same line.
 </p>
@@ -217,7 +217,7 @@ immediately adjacent on the same line.
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1">&#167;1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_6_1"></a><b>&#167;1.1.6.1.  </b>We handle implied paragraph dividers by inserting a paragraph marker and
+<p class="commentary firstcommentary"><a id="SP1_1_6_1" class="paragraph-anchor"></a><b>&#167;1.1.6.1.  </b>We handle implied paragraph dividers by inserting a paragraph marker and
 reparsing from there.
 </p>
 
@@ -233,7 +233,7 @@ reparsing from there.
 <span class="plain-syntax">    </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_6">&#167;1.1.6</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7"></a><b>&#167;1.1.7. Categorisatiom. </b>This is where the work is really done. We have a source line: is it comment,
+<p class="commentary firstcommentary"><a id="SP1_1_7" class="paragraph-anchor"></a><b>&#167;1.1.7. Categorisatiom. </b>This is where the work is really done. We have a source line: is it comment,
 code, definition, what?
 </p>
 
@@ -265,7 +265,7 @@ code, definition, what?
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">comment_mode</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-tp.html#SP1_1_7_9" class="named-paragraph-link"><span class="named-paragraph">This is a line destined for the verbatim code</span><span class="named-paragraph-number">1.1.7.9</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1">&#167;1.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_1"></a><b>&#167;1.1.7.1.  </b>This must be one of the inserted lines marking chapter headings; it doesn't
+<p class="commentary firstcommentary"><a id="SP1_1_7_1" class="paragraph-anchor"></a><b>&#167;1.1.7.1.  </b>This must be one of the inserted lines marking chapter headings; it doesn't
 come literally from the source web.
 </p>
 
@@ -282,7 +282,7 @@ come literally from the source web.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_2"></a><b>&#167;1.1.7.2.  </b>The top line of a section gives its title; in InC, it can also give the
+<p class="commentary firstcommentary"><a id="SP1_1_7_2" class="paragraph-anchor"></a><b>&#167;1.1.7.2.  </b>The top line of a section gives its title; in InC, it can also give the
 namespace for its functions.
 </p>
 
@@ -331,7 +331,7 @@ namespace for its functions.
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_3"></a><b>&#167;1.1.7.3.  </b>Version 1 syntax was cluttered up with a number of hardly-used markup
+<p class="commentary firstcommentary"><a id="SP1_1_7_3" class="paragraph-anchor"></a><b>&#167;1.1.7.3.  </b>Version 1 syntax was cluttered up with a number of hardly-used markup
 syntaxes called "commands", written in double squared brackets <span class="extract"><span class="extract-syntax">[[Thus]]</span></span>.
 In version 2, this notation is never used.
 </p>
@@ -377,7 +377,7 @@ In version 2, this notation is never used.
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_4"></a><b>&#167;1.1.7.4.  </b>Some paragraphs define angle-bracketed macros, and those need special
+<p class="commentary firstcommentary"><a id="SP1_1_7_4" class="paragraph-anchor"></a><b>&#167;1.1.7.4.  </b>Some paragraphs define angle-bracketed macros, and those need special
 handling. We'll call these "paragraph macros".
 </p>
 
@@ -406,7 +406,7 @@ handling. We'll call these "paragraph macros".
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_5"></a><b>&#167;1.1.7.5.  </b>A structural marker is introduced by an <span class="extract"><span class="extract-syntax">@</span></span> in column 1, and is a structural
+<p class="commentary firstcommentary"><a id="SP1_1_7_5" class="paragraph-anchor"></a><b>&#167;1.1.7.5.  </b>A structural marker is introduced by an <span class="extract"><span class="extract-syntax">@</span></span> in column 1, and is a structural
 division in the current section.
 </p>
 
@@ -430,7 +430,7 @@ division in the current section.
 <span class="plain-syntax">    </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_6"></a><b>&#167;1.1.7.6.  </b>An equals sign in column 1 can just mean the end of an extract, so:
+<p class="commentary firstcommentary"><a id="SP1_1_7_6" class="paragraph-anchor"></a><b>&#167;1.1.7.6.  </b>An equals sign in column 1 can just mean the end of an extract, so:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Exit extract mode</span><span class="named-paragraph-number">1.1.7.6</span></span><span class="comment-syntax"> =</span>
@@ -442,7 +442,7 @@ division in the current section.
 <span class="plain-syntax">    </span><span class="identifier-syntax">extract_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_7"></a><b>&#167;1.1.7.7.  </b>But more usually an equals sign in column 1 is a structural marker:
+<p class="commentary firstcommentary"><a id="SP1_1_7_7" class="paragraph-anchor"></a><b>&#167;1.1.7.7.  </b>But more usually an equals sign in column 1 is a structural marker:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the line as an equals structural marker</span><span class="named-paragraph-number">1.1.7.7</span></span><span class="comment-syntax"> =</span>
@@ -598,7 +598,7 @@ division in the current section.
 <span class="plain-syntax">    </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_7_1"></a><b>&#167;1.1.7.7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make plainer</span><span class="named-paragraph-number">1.1.7.7.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_1_7_7_1" class="paragraph-anchor"></a><b>&#167;1.1.7.7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make plainer</span><span class="named-paragraph-number">1.1.7.7.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -618,7 +618,7 @@ division in the current section.
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr3</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_7">&#167;1.1.7.7</a> (6 times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_7_2"></a><b>&#167;1.1.7.7.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Spool from file</span><span class="named-paragraph-number">1.1.7.7.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_1_7_7_2" class="paragraph-anchor"></a><b>&#167;1.1.7.7.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Spool from file</span><span class="named-paragraph-number">1.1.7.7.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -644,7 +644,7 @@ division in the current section.
 <span class="plain-syntax">    </span><span class="identifier-syntax">extract_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_7">&#167;1.1.7.7</a> (three times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_5_1"></a><b>&#167;1.1.7.5.1.  </b>So here we have the possibilities which start with a column-1 <span class="extract"><span class="extract-syntax">@</span></span> sign.
+<p class="commentary firstcommentary"><a id="SP1_1_7_5_1" class="paragraph-anchor"></a><b>&#167;1.1.7.5.1.  </b>So here we have the possibilities which start with a column-1 <span class="extract"><span class="extract-syntax">@</span></span> sign.
 There appear to be hordes of these, but in fact most of them were removed
 in Inweb syntax version 2: in modern syntax, only <span class="extract"><span class="extract-syntax">@d</span></span>, <span class="extract"><span class="extract-syntax">@e</span></span>, <span class="extract"><span class="extract-syntax">@h</span></span>, their
 long forms <span class="extract"><span class="extract-syntax">@define</span></span>, <span class="extract"><span class="extract-syntax">@enum</span></span> and <span class="extract"><span class="extract-syntax">@heading</span></span>, and plain old <span class="extract"><span class="extract-syntax">@</span></span> remain.
@@ -700,7 +700,7 @@ long forms <span class="extract"><span class="extract-syntax">@define</span></sp
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5">&#167;1.1.7.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_1"></a><b>&#167;1.1.7.5.1.1.  </b>In version 1 syntax there were some peculiar special headings above a divider
+<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_1" class="paragraph-anchor"></a><b>&#167;1.1.7.5.1.1.  </b>In version 1 syntax there were some peculiar special headings above a divider
 in the file made of hyphens, called "the bar". All of that has gone in V2.
 </p>
 
@@ -717,7 +717,7 @@ in the file made of hyphens, called "the bar". All of that has gone in V2.
 <span class="plain-syntax">    </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_purpose</span><span class="plain-syntax"> = </span><a href="2-tp.html#SP1_1_4_1" class="function-link"><span class="function-syntax">Parser::extract_purpose</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">remainder</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_line</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_section</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_2"></a><b>&#167;1.1.7.5.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with Interface</span><span class="named-paragraph-number">1.1.7.5.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_2" class="paragraph-anchor"></a><b>&#167;1.1.7.5.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with Interface</span><span class="named-paragraph-number">1.1.7.5.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -736,7 +736,7 @@ in the file made of hyphens, called "the bar". All of that has gone in V2.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_3"></a><b>&#167;1.1.7.5.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with Definitions</span><span class="named-paragraph-number">1.1.7.5.1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_3" class="paragraph-anchor"></a><b>&#167;1.1.7.5.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with Definitions</span><span class="named-paragraph-number">1.1.7.5.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -750,7 +750,7 @@ in the file made of hyphens, called "the bar". All of that has gone in V2.
 <span class="plain-syntax">    </span><span class="identifier-syntax">next_par_number</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_4"></a><b>&#167;1.1.7.5.1.4.  </b>An <span class="extract"><span class="extract-syntax">@</span></span> sign in the first column, followed by a row of four or more dashes,
+<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_4" class="paragraph-anchor"></a><b>&#167;1.1.7.5.1.4.  </b>An <span class="extract"><span class="extract-syntax">@</span></span> sign in the first column, followed by a row of four or more dashes,
 constitutes the optional division bar in a section.
 </p>
 
@@ -770,7 +770,7 @@ constitutes the optional division bar in a section.
 <span class="plain-syntax">    </span><span class="identifier-syntax">next_par_number</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_5"></a><b>&#167;1.1.7.5.1.5.  </b>In version 1, the division point where a paragraoh begins to go into
+<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_5" class="paragraph-anchor"></a><b>&#167;1.1.7.5.1.5.  </b>In version 1, the division point where a paragraoh begins to go into
 verbatim code was not marked with an equals sign, but with one of the three
 commands <span class="extract"><span class="extract-syntax">@c</span></span> ("code"), <span class="extract"><span class="extract-syntax">@e</span></span> ("early code") and <span class="extract"><span class="extract-syntax">@x</span></span> ("code-like extract").
 These had identical behaviour except for whether or not to tangle what
@@ -794,7 +794,7 @@ follows:
 <span class="plain-syntax">    </span><span class="identifier-syntax">hyperlink_body</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_6"></a><b>&#167;1.1.7.5.1.6.  </b>This is for <span class="extract"><span class="extract-syntax">@d</span></span> and <span class="extract"><span class="extract-syntax">@define</span></span>. Definitions are intended to translate to
+<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_6" class="paragraph-anchor"></a><b>&#167;1.1.7.5.1.6.  </b>This is for <span class="extract"><span class="extract-syntax">@d</span></span> and <span class="extract"><span class="extract-syntax">@define</span></span>. Definitions are intended to translate to
 C preprocessor macros, Inform 6 <span class="extract"><span class="extract-syntax">Constant</span></span>s, and so on.
 </p>
 
@@ -819,7 +819,7 @@ C preprocessor macros, Inform 6 <span class="extract"><span class="extract-synta
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a> (three times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_7"></a><b>&#167;1.1.7.5.1.7.  </b>This is for <span class="extract"><span class="extract-syntax">@e</span></span> (in version 2) and <span class="extract"><span class="extract-syntax">@enum</span></span>, which makes an automatically
+<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_7" class="paragraph-anchor"></a><b>&#167;1.1.7.5.1.7.  </b>This is for <span class="extract"><span class="extract-syntax">@e</span></span> (in version 2) and <span class="extract"><span class="extract-syntax">@enum</span></span>, which makes an automatically
 enumerated sort of <span class="extract"><span class="extract-syntax">@d</span></span>.
 </p>
 
@@ -855,7 +855,7 @@ enumerated sort of <span class="extract"><span class="extract-syntax">@d</span><
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_8"></a><b>&#167;1.1.7.5.1.8.  </b>Here we handle paragraph breaks which may or may not be headings. In
+<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_8" class="paragraph-anchor"></a><b>&#167;1.1.7.5.1.8.  </b>Here we handle paragraph breaks which may or may not be headings. In
 version 1, <span class="extract"><span class="extract-syntax">@p</span></span> was a heading, and <span class="extract"><span class="extract-syntax">@pp</span></span> a grander heading, while plain <span class="extract"><span class="extract-syntax">@</span></span>
 is no heading at all. The use of "p" was a little confusing, and went back
 to CWEB, which used the term "paragraph" differently from us: it was "p"
@@ -912,7 +912,7 @@ of French weaving" and the remainder,
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1">&#167;1.1.7.5.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_8_1"></a><b>&#167;1.1.7.5.1.8.1.  </b>So now it's time to create paragraph structures:
+<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_8_1" class="paragraph-anchor"></a><b>&#167;1.1.7.5.1.8.1.  </b>So now it's time to create paragraph structures:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -940,7 +940,7 @@ of French weaving" and the remainder,
 <span class="plain-syntax">} </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure paragraph is accessed in 2/pm, 2/tgs, 2/pn, 3/tw, 3/tt, 4/taf, 4/as, 4/cl, 4/is, 5/ptf, 5/tf, 5/hf, 5/df, 6/cln and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_8_2"></a><b>&#167;1.1.7.5.1.8.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create a new paragraph, starting here, as new current paragraph</span><span class="named-paragraph-number">1.1.7.5.1.8.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_1_7_5_1_8_2" class="paragraph-anchor"></a><b>&#167;1.1.7.5.1.8.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create a new paragraph, starting here, as new current paragraph</span><span class="named-paragraph-number">1.1.7.5.1.8.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -978,7 +978,7 @@ of French weaving" and the remainder,
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_paragraph</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7_5_1_8">&#167;1.1.7.5.1.8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_8"></a><b>&#167;1.1.7.8.  </b>Finally, we're down to either commentary or code.
+<p class="commentary firstcommentary"><a id="SP1_1_7_8" class="paragraph-anchor"></a><b>&#167;1.1.7.8.  </b>Finally, we're down to either commentary or code.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This is a line destined for commentary</span><span class="named-paragraph-number">1.1.7.8</span></span><span class="comment-syntax"> =</span>
@@ -993,7 +993,7 @@ of French weaving" and the remainder,
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_7_9"></a><b>&#167;1.1.7.9.  </b>Note that in an <span class="extract"><span class="extract-syntax">@d</span></span> definition, a blank line is treated as the end of the
+<p class="commentary firstcommentary"><a id="SP1_1_7_9" class="paragraph-anchor"></a><b>&#167;1.1.7.9.  </b>Note that in an <span class="extract"><span class="extract-syntax">@d</span></span> definition, a blank line is treated as the end of the
 definition. (This is unnecessary for C, and is a point of difference with
 CWEB, but is needed for languages which don't allow multi-line definitions.)
 </p>
@@ -1019,7 +1019,7 @@ CWEB, but is needed for languages which don't allow multi-line definitions.)
 <span class="plain-syntax">    </span><a href="4-lm.html#SP5" class="function-link"><span class="function-syntax">LanguageMethods::subcategorise_line</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_language</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_7">&#167;1.1.7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_4_1"></a><b>&#167;1.1.4.1.  </b>The purpose text occurs just below the heading. In version 1 it's cued with
+<p class="commentary firstcommentary"><a id="SP1_1_4_1" class="paragraph-anchor"></a><b>&#167;1.1.4.1.  </b>The purpose text occurs just below the heading. In version 1 it's cued with
 a <span class="extract"><span class="extract-syntax">@Purpose:</span></span> command; in version 2 it is unmarked. The following routine
 is not elegant but handles the back end of both possibilities.
 </p>
@@ -1040,7 +1040,7 @@ is not elegant but handles the back end of both possibilities.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP1_1_4_2"></a><b>&#167;1.1.4.2. Footnote notation. </b></p>
+<p class="commentary firstcommentary"><a id="SP1_1_4_2" class="paragraph-anchor"></a><b>&#167;1.1.4.2. Footnote notation. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">footnote</span><span class="plain-syntax"> {</span>
@@ -1052,7 +1052,7 @@ is not elegant but handles the back end of both possibilities.
 <span class="plain-syntax">} </span><span class="reserved-syntax">footnote</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure footnote is accessed in 3/tw, 3/twot, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_4_3"></a><b>&#167;1.1.4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out footnote numbering for this paragraph</span><span class="named-paragraph-number">1.1.4.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_1_4_3" class="paragraph-anchor"></a><b>&#167;1.1.4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out footnote numbering for this paragraph</span><span class="named-paragraph-number">1.1.4.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1080,7 +1080,7 @@ is not elegant but handles the back end of both possibilities.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">after</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_4">&#167;1.1.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_4_3_1"></a><b>&#167;1.1.4.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This line begins a footnote text</span><span class="named-paragraph-number">1.1.4.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_1_4_3_1" class="paragraph-anchor"></a><b>&#167;1.1.4.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">This line begins a footnote text</span><span class="named-paragraph-number">1.1.4.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1103,7 +1103,7 @@ is not elegant but handles the back end of both possibilities.
 <span class="plain-syntax">    </span><span class="identifier-syntax">current_text</span><span class="plain-syntax"> = </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tp.html#SP1_1_4_3">&#167;1.1.4.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>Where:
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Where:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1160,7 +1160,7 @@ is not elegant but handles the back end of both possibilities.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Parsing of dimensions. </b>It's possible, optionally, to specify width and height for some visual matter.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Parsing of dimensions. </b>It's possible, optionally, to specify width and height for some visual matter.
 This is the syntax used.
 </p>
 
@@ -1209,7 +1209,7 @@ This is the syntax used.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">use</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Version errors. </b>These are not fatal (why should they be?): Inweb carries on and allows the use
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Version errors. </b>These are not fatal (why should they be?): Inweb carries on and allows the use
 of the feature despite the version mismatch. They nevertheless count as errors
 when it comes to Inweb's exit code, so they will halt a make.
 </p>

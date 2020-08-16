@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="1-cnf.html#SP1">&#167;1. Instructions</a></li><li><a href="1-cnf.html#SP2">&#167;2. Reading the command line</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Instructions. </b>The following structure exists just to hold what the user specified on the
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Instructions. </b>The following structure exists just to hold what the user specified on the
 command line: there will only ever be one of these.
 </p>
 
@@ -97,7 +97,7 @@ command line: there will only ever be one of these.
 <span class="plain-syntax">} </span><span class="reserved-syntax">inweb_instructions</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inweb_instructions is accessed in 1/pc and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Reading the command line. </b>The dull work of this is done by the Foundation module: all we need to do is
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Reading the command line. </b>The dull work of this is done by the Foundation module: all we need to do is
 to enumerate constants for the Inweb-specific command line switches, and
 then declare them.
 </p>
@@ -122,7 +122,7 @@ then declare them.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">args</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the args</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the args</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -159,7 +159,7 @@ then declare them.
 <span class="plain-syntax">    </span><span class="identifier-syntax">args</span><span class="plain-syntax">.</span><span class="element-syntax">test_language_on_setting</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-cnf.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2"></a><b>&#167;2.2.  </b>The CommandLine section of Foundation needs to be told what command-line
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b>The CommandLine section of Foundation needs to be told what command-line
 switches we want, other than the standard set (such as <span class="extract"><span class="extract-syntax">-help</span></span>) which it
 provides automatically.
 </p>
@@ -199,7 +199,7 @@ provides automatically.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">COLONY_CLSW</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">MEMBER_CLSW</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_3"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare the command-line switches specific to Inweb</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Declare the command-line switches specific to Inweb</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -299,7 +299,7 @@ provides automatically.
 <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"specify that imported modules are at pathname X"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-cnf.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Foundation calls this on any <span class="extract"><span class="extract-syntax">-switch</span></span> argument read:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Foundation calls this on any <span class="extract"><span class="extract-syntax">-switch</span></span> argument read:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -402,7 +402,7 @@ provides automatically.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The colony file is, in one sense, a collection of presets for the web
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The colony file is, in one sense, a collection of presets for the web
 location and its navigational aids.
 </p>
 
@@ -428,7 +428,7 @@ location and its navigational aids.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>Foundation calls this routine on any command-line argument which is
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Foundation calls this routine on any command-line argument which is
 neither a switch (like <span class="extract"><span class="extract-syntax">-weave</span></span>), nor an argument for a switch (like
 the <span class="extract"><span class="extract-syntax">X</span></span> in <span class="extract"><span class="extract-syntax">-weave-as X</span></span>).
 </p>
@@ -444,7 +444,7 @@ the <span class="extract"><span class="extract-syntax">X</span></span> in <span 
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="1-cnf.html#SP6" class="function-link"><span class="function-syntax">Configuration::set_range</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">args</span><span class="plain-syntax">, </span><span class="identifier-syntax">opt</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Here we read a range. The special ranges <span class="extract"><span class="extract-syntax">index</span></span>, <span class="extract"><span class="extract-syntax">chapters</span></span> and <span class="extract"><span class="extract-syntax">sections</span></span>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Here we read a range. The special ranges <span class="extract"><span class="extract-syntax">index</span></span>, <span class="extract"><span class="extract-syntax">chapters</span></span> and <span class="extract"><span class="extract-syntax">sections</span></span>
 are converted into swarm settings instead. <span class="extract"><span class="extract-syntax">all</span></span> is simply an alias for <span class="extract"><span class="extract-syntax">0</span></span>.
 Otherwise, a range is a chapter number/letter, or a section range.
 </p>
@@ -479,7 +479,7 @@ Otherwise, a range is a chapter number/letter, or a section range.
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>We can only be in a single mode at a time:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>We can only be in a single mode at a time:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

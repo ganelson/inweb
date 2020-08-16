@@ -917,7 +917,7 @@ void HTMLFormat::go_to_depth(HTML_render_state *hrs, int from_depth, int to_dept
 void HTMLFormat::paragraph_number(text_stream *OUT, paragraph *P) {
 	TEMPORARY_TEXT(TEMP)
 	Colonies::paragraph_anchor(TEMP, P);
-	HTML::anchor(OUT, TEMP);
+	HTML::anchor_with_class(OUT, TEMP, I"paragraph-anchor");
 	DISCARD_TEXT(TEMP)
 	HTML_OPEN("b");
 	WRITE("%s%S", (Str::get_first_char(P->ornament) == 'S')?"&#167;":"&para;",

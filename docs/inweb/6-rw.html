@@ -50,7 +50,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">inweb</a></li><li><a href="index.html#6">Chapter 6: Extras</a></li><li><b>Readme Writeme</b></li></ul></div>
 <p class="purpose">To construct Readme and similar files.</p>
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1.  </b>This is a very simple generator for <span class="extract"><span class="extract-syntax">README.md</span></span> files, written in Markdown
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>This is a very simple generator for <span class="extract"><span class="extract-syntax">README.md</span></span> files, written in Markdown
 syntax, but with a few macro expansions of our own. The prototype file, which
 uses these extra macros, is expanded to the final file, which does not.
 </p>
@@ -88,7 +88,7 @@ uses these extra macros, is expanded to the final file, which does not.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure write_state is accessed in 1/apacs, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>The file consists of definitions of macros, made one at a time, and
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The file consists of definitions of macros, made one at a time, and
 starting with <span class="extract"><span class="extract-syntax">@define</span></span> and finishing with <span class="extract"><span class="extract-syntax">@end</span></span>, and actual material.
 </p>
 
@@ -121,7 +121,7 @@ starting with <span class="extract"><span class="extract-syntax">@define</span><
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The "content" of a macro is its definition, and the tokens are named
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The "content" of a macro is its definition, and the tokens are named
 parameters.
 </p>
 
@@ -150,7 +150,7 @@ parameters.
 <span class="plain-syntax">} </span><span class="reserved-syntax">macro_tokens</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure macro is accessed in 2/trs, 3/twot, 5/wt, 5/fm, 5/ptf, 5/tf, 5/hf, 5/df, 6/cln and here.</li><li>The structure macro_tokens is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">macro_tokens</span><span class="plain-syntax"> </span><span class="function-syntax">Readme::parse_token_list</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Readme::parse_token_list</span></span>:<br/><a href="6-rw.html#SP3">&#167;3</a>, <a href="6-rw.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">chunk</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
@@ -178,7 +178,7 @@ parameters.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">mt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b>Quotes can be used in token lists so that literal commas and brackets can
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b>Quotes can be used in token lists so that literal commas and brackets can
 be used without breaking the flow.
 </p>
 
@@ -202,7 +202,7 @@ be used without breaking the flow.
 <span class="plain-syntax">    </span><span class="identifier-syntax">from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">x</span><span class="plain-syntax">+1;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-rw.html#SP4">&#167;4</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>So much for creating macros. Now we can write the actual expander. As can
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>So much for creating macros. Now we can write the actual expander. As can
 be seen, it passes material straight through, except for instances of the
 notation <span class="extract"><span class="extract-syntax">@name</span></span>, possibly followed by a bracketed list of parameters.
 </p>
@@ -225,7 +225,7 @@ notation <span class="extract"><span class="extract-syntax">@name</span></span>,
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>If we run into the notation <span class="extract"><span class="extract-syntax">@something</span></span>, it's possible that <span class="extract"><span class="extract-syntax">something</span></span> is
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>If we run into the notation <span class="extract"><span class="extract-syntax">@something</span></span>, it's possible that <span class="extract"><span class="extract-syntax">something</span></span> is
 the name of a parameter somewhere in the current stack, either on the top
 frame or on frames lower down. The first match wins... and if there are no
 matches, then it must be a macro name.
@@ -259,7 +259,7 @@ matches, then it must be a macro name.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="constant-syntax">STDERR</span><span class="plain-syntax">, </span><span class="string-syntax">"(command is '%S')\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">macro_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>So, then: suppose we have to expand <span class="extract"><span class="extract-syntax">@example(5, gold rings)</span></span>. Then the
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>So, then: suppose we have to expand <span class="extract"><span class="extract-syntax">@example(5, gold rings)</span></span>. Then the
 <span class="extract"><span class="extract-syntax">macro_name</span></span> below is set to <span class="extract"><span class="extract-syntax">example</span></span>, and the current stack frame contains the
 values <span class="extract"><span class="extract-syntax">5</span></span> and <span class="extract"><span class="extract-syntax">gold rings</span></span>.
 </p>
@@ -275,7 +275,7 @@ values <span class="extract"><span class="extract-syntax">5</span></span> and <s
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform built-in expansion of version macro</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform built-in expansion of version macro</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -289,7 +289,7 @@ values <span class="extract"><span class="extract-syntax">5</span></span> and <s
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-rw.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2"></a><b>&#167;7.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform built-in expansion of purpose macro</span><span class="named-paragraph-number">7.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform built-in expansion of purpose macro</span><span class="named-paragraph-number">7.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -303,7 +303,7 @@ values <span class="extract"><span class="extract-syntax">5</span></span> and <s
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-rw.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_3"></a><b>&#167;7.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform built-in expansion of var macro</span><span class="named-paragraph-number">7.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_3" class="paragraph-anchor"></a><b>&#167;7.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform built-in expansion of var macro</span><span class="named-paragraph-number">7.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -320,7 +320,7 @@ values <span class="extract"><span class="extract-syntax">5</span></span> and <s
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-rw.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>An "asset" here is something for which we might want to write the version
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>An "asset" here is something for which we might want to write the version
 number of, or some similar metadata for. Assets are usually webs, but can
 also be a few other rather Inform-specific things; those have a more limited
 range of bibliographic data, just the version and date (and we will not
@@ -345,7 +345,7 @@ assume that the version complies with any format).
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure writeme_asset is accessed in 2/trs, 5/wt, 6/cln and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>That just leaves the business of inspecting assets to obtain their metadata.
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>That just leaves the business of inspecting assets to obtain their metadata.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -362,7 +362,7 @@ assume that the version complies with any format).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9_1"></a><b>&#167;9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read in the asset</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read in the asset</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -385,7 +385,7 @@ assume that the version complies with any format).
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-rw.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_1"></a><b>&#167;9.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read in the extension file</span><span class="named-paragraph-number">9.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_1" class="paragraph-anchor"></a><b>&#167;9.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read in the extension file</span><span class="named-paragraph-number">9.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -393,7 +393,7 @@ assume that the version complies with any format).
 <span class="plain-syntax">        &amp;</span><a href="6-rw.html#SP10" class="function-link"><span class="function-syntax">Readme::extension_harvester</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-rw.html#SP9_1">&#167;9.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_2"></a><b>&#167;9.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read in I6 source header file</span><span class="named-paragraph-number">9.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_2" class="paragraph-anchor"></a><b>&#167;9.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read in I6 source header file</span><span class="named-paragraph-number">9.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -401,7 +401,7 @@ assume that the version complies with any format).
 <span class="plain-syntax">        &amp;</span><a href="6-rw.html#SP11" class="function-link"><span class="function-syntax">Readme::header_harvester</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-rw.html#SP9_1">&#167;9.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_3"></a><b>&#167;9.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read in template manifest file</span><span class="named-paragraph-number">9.1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_3" class="paragraph-anchor"></a><b>&#167;9.1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read in template manifest file</span><span class="named-paragraph-number">9.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -409,7 +409,7 @@ assume that the version complies with any format).
 <span class="plain-syntax">        &amp;</span><a href="6-rw.html#SP12" class="function-link"><span class="function-syntax">Readme::template_harvester</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-rw.html#SP9_1">&#167;9.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_1_4"></a><b>&#167;9.1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read in README file</span><span class="named-paragraph-number">9.1.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP9_1_4" class="paragraph-anchor"></a><b>&#167;9.1.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read in README file</span><span class="named-paragraph-number">9.1.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -417,7 +417,7 @@ assume that the version complies with any format).
 <span class="plain-syntax">        &amp;</span><a href="6-rw.html#SP13" class="function-link"><span class="function-syntax">Readme::readme_harvester</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-rw.html#SP9_1">&#167;9.1</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The format for the contents section of a web is documented in Inweb.
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The format for the contents section of a web is documented in Inweb.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -430,7 +430,7 @@ assume that the version complies with any format).
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Explicit code to read from <span class="extract"><span class="extract-syntax">header.h</span></span> in the Inform 6 repository.
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Explicit code to read from <span class="extract"><span class="extract-syntax">header.h</span></span> in the Inform 6 repository.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -445,7 +445,7 @@ assume that the version complies with any format).
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Explicit code to read from the manifest file of a website template.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Explicit code to read from the manifest file of a website template.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -462,7 +462,7 @@ assume that the version complies with any format).
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>And this is needed for <span class="extract"><span class="extract-syntax">cheapglk</span></span> and <span class="extract"><span class="extract-syntax">glulxe</span></span> in the Inform repository.
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>And this is needed for <span class="extract"><span class="extract-syntax">cheapglk</span></span> and <span class="extract"><span class="extract-syntax">glulxe</span></span> in the Inform repository.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

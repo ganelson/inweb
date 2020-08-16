@@ -58,7 +58,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="P-abgtf.html#SP1">&#167;1. Introduction</a></li><li><a href="P-abgtf.html#SP3">&#167;3. Truth</a></li><li><a href="P-abgtf.html#SP4">&#167;4. Text streams and formatted output</a></li><li><a href="P-abgtf.html#SP10">&#167;10. Objects</a></li><li><a href="P-abgtf.html#SP11">&#167;11. Methods</a></li><li><a href="P-abgtf.html#SP13">&#167;13. Collections</a></li><li><a href="P-abgtf.html#SP15">&#167;15. Files and paths</a></li><li><a href="P-abgtf.html#SP19">&#167;19. Handling webs</a></li><li><a href="P-abgtf.html#SP20">&#167;20. Miscellaneous other features</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Introduction. </b>The Foundation module supplies some of the conveniences of more modern
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b>The Foundation module supplies some of the conveniences of more modern
 programming languages to ANSI C. It offers the usual stuff of standard
 libraries everywhere: memory management, collection classes, filename and file
 system accesss, regular-expression matching and so on, and it does so while
@@ -80,7 +80,7 @@ features of Foundation in a simple way, see <a href="../eastertide/index.html" c
 can be found in <a href="../foundation-test/index.html" class="internal">foundation-test</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>To use <a href="index.html" class="internal">foundation</a>, a program must at minimum do three things.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>To use <a href="index.html" class="internal">foundation</a>, a program must at minimum do three things.
 </p>
 
 <p class="commentary">1. The Contents section of its web must import Foundation as a module, thus:
@@ -106,11 +106,11 @@ call <span class="extract"><span class="extract-syntax">Foundation::start()</spa
 starts, and ended before Foundation ends.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Truth. </b>Every large C program starts by defining constants for truth and falsity. So
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Truth. </b>Every large C program starts by defining constants for truth and falsity. So
 does Foundation: <span class="extract"><span class="extract-syntax">TRUE</span></span>, <span class="extract"><span class="extract-syntax">FALSE</span></span>, and a third state <span class="extract"><span class="extract-syntax">NOT_APPLICABLE</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Text streams and formatted output. </b>Perhaps the most useful feature of Foundation is that it provides for
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Text streams and formatted output. </b>Perhaps the most useful feature of Foundation is that it provides for
 memory-managed strings of Unicode text. These are unified with text files
 which are open for output, in a type called <a href="2-str.html#SP15" class="internal">text_stream</a>. It's expected
 that they may be very large indeed, and appending text to or finding the
@@ -151,7 +151,7 @@ All of these capitalised macros are defined in <a href="2-str.html" class="inter
 <span class="extract"><span class="extract-syntax">LOG("...")</span></span> similarly writes to the log file. (See <a href="2-dl.html" class="internal">Debugging Log</a>.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>If you're using <a href="../inweb/M-tid.html" class="internal">The InC Dialect (in inweb)</a>, the slight extension to C made
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>If you're using <a href="../inweb/M-tid.html" class="internal">The InC Dialect (in inweb)</a>, the slight extension to C made
 by Inweb, there's a simple notation for constants of this type:
 </p>
 
@@ -162,7 +162,7 @@ by Inweb, there's a simple notation for constants of this type:
 constants. But this is a feature of <a href="../inweb/index.html" class="internal">inweb</a> rather than of Foundation.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Programs doing a lot of parsing need to create and throw away strings all
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Programs doing a lot of parsing need to create and throw away strings all
 of the time, so we shouldn't be too casual about memory management for them.
 <a href="4-sm.html#SP2" class="internal">Str::new</a> creates a new empty string; <a href="4-sm.html#SP3" class="internal">Str::duplicate</a> duplicates an
 existing one. But these are permanent creations, and not easy to deallocate
@@ -181,14 +181,14 @@ momentary period, do this:
 and is a string capable of growing to arbitrary size.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Foundation provides an elaborate system for providing new string escapes
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Foundation provides an elaborate system for providing new string escapes
 like <span class="extract"><span class="extract-syntax">%S</span></span>: see <a href="2-wal.html" class="internal">Writers and Loggers</a>. A similar system manages a debugging
 log, to which it's easy to make "dollar escapes" for pretty-printing internal
 data structures: for example, if you've made a structure called <span class="extract"><span class="extract-syntax">recipe</span></span>, you
 could make <span class="extract"><span class="extract-syntax">$R</span></span> pretty-print one.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Foundation also has an extensive library of string-handling routines,
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Foundation also has an extensive library of string-handling routines,
 providing the sort of facilities you would expect in a typical scripting
 language. See <a href="4-sm.html" class="internal">String Manipulation</a> and <a href="4-pm.html" class="internal">Pattern Matching</a>, which can
 match text streams against regular expressions, though note that the latter
@@ -202,7 +202,7 @@ use an idiosyncratic notation.
 benefit of functions like <a href="4-sm.html#SP26" class="internal">Str::substr</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Individual characters are represented in Foundation using the standard
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Individual characters are represented in Foundation using the standard
 POSIX type <span class="extract"><span class="extract-syntax">wchar_t</span></span>, which on all modern systems is a very wide integer,
 whether or not signed. It's safe to assume it can hold all normal Unicode
 code points. See <a href="4-chr.html" class="internal">Characters</a> for class functions like <a href="4-chr.html#SP1" class="internal">Characters::isdigit</a>,
@@ -215,7 +215,7 @@ traditional null-terminated <span class="extract"><span class="extract-syntax">c
 Texts are just better.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Objects. </b>To a very limited extent, Foundation enables C programs to have "classes",
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Objects. </b>To a very limited extent, Foundation enables C programs to have "classes",
 "objects" and "methods", and it makes use of that ability itself, too. (See
 <a href="2-fc.html" class="internal">Foundation Classes</a> for the list of classes made by <a href="index.html" class="internal">foundation</a>.) For
 example, suppose we are writing a program to store recipes, and we want
@@ -307,7 +307,7 @@ destroyed).
 allocate memory for arrays &mdash; see <a href="2-mmr.html#SP24" class="internal">Memory::calloc</a> and <a href="2-mmr.html#SP24" class="internal">Memory::malloc</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Methods. </b>It's also possible to have method calls on object instances, though the
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Methods. </b>It's also possible to have method calls on object instances, though the
 syntax is not as tidy as it would be in an object-oriented language. To allow
 this for <span class="extract"><span class="extract-syntax">recipe</span></span>, we would have to add another line to the structure:
 </p>
@@ -381,7 +381,7 @@ the effect of
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Recipes::cook</span><span class="plain-syntax">(</span><span class="identifier-syntax">duck_a_l_orange</span><span class="plain-syntax">, </span><span class="constant-syntax">45</span><span class="plain-syntax">);</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>In fact it's possible to attach multiple receivers to the same object, in
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>In fact it's possible to attach multiple receivers to the same object, in
 which case they each run in turn. As a variant on this, methods can also return
 their "success". If multiple receivers run, the first to return <span class="extract"><span class="extract-syntax">TRUE</span></span> has
 claimed the right to act, and subsequent receivers aren't consulted.
@@ -391,7 +391,7 @@ claimed the right to act, and subsequent receivers aren't consulted.
 <a href="2-mth.html" class="internal">Methods</a> for more.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Collections. </b>Foundation provides three sorts of "collection": see <a href="2-llas.html" class="internal">Linked Lists and Stacks</a>,
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Collections. </b>Foundation provides three sorts of "collection": see <a href="2-llas.html" class="internal">Linked Lists and Stacks</a>,
 and also <a href="2-dct.html" class="internal">Dictionaries</a>. These all collect values which are expected to be
 pointers: for example, text streams (of type <span class="extract"><span class="extract-syntax">text_stream *</span></span>) or objects like
 the ones created above. For example,
@@ -425,13 +425,13 @@ They behave very like hashes in Perl and, as the name suggests, use hashing
 to make access rapid. See <a href="2-dct.html" class="internal">Dictionaries</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b>Foundation also provides for <a href="2-trs.html#SP1" class="internal">heterogeneous_tree</a>, which is a structure
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>Foundation also provides for <a href="2-trs.html#SP1" class="internal">heterogeneous_tree</a>, which is a structure
 able to hold a rooted tree in which nodes can be a variety of different
 objects, rather than having to be uniform. Functions are provided to
 build and verify such trees.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15. Files and paths. </b>Filenames and pathnames are, perhaps controversially, represented by two
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Files and paths. </b>Filenames and pathnames are, perhaps controversially, represented by two
 different types: <a href="3-fln.html#SP1" class="internal">filename</a> and <a href="3-pth.html#SP1" class="internal">pathname</a>. The latter should perhaps
 have been called "directoryname", but that ship has sailed.
 </p>
@@ -471,7 +471,7 @@ pathnames.
 <p class="commentary">See <a href="3-fln.html" class="internal">Filenames</a> and <a href="3-pth.html" class="internal">Pathnames</a> for more.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>If you need to iterate over the contents of a directory in the file system,
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>If you need to iterate over the contents of a directory in the file system,
 see <a href="3-drc.html" class="internal">Directories</a>. But to create a directory, call <a href="3-pth.html#SP9" class="internal">Pathnames::create_in_file_system</a>.
 For synchronisation, try <a href="3-pth.html#SP10" class="internal">Pathnames::rsync</a>, but don't expect too much.
 </p>
@@ -480,11 +480,11 @@ For synchronisation, try <a href="3-pth.html#SP10" class="internal">Pathnames::r
 working directory, and the installation directory for a program.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b><a href="6-bf.html" class="internal">Binary Files</a> does the tedious work of writing binary data while allowing
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b><a href="6-bf.html" class="internal">Binary Files</a> does the tedious work of writing binary data while allowing
 for endian-ness.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b><a href="4-tf.html" class="internal">Text Files</a> allows us to read text files. Its most useful function is
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b><a href="4-tf.html" class="internal">Text Files</a> allows us to read text files. Its most useful function is
 <a href="4-tf.html#SP5" class="internal">TextFiles::read</a>, which opens a file, can print an error if it doesn't
 exist, and if it does, then feeds the lines one at a time to an iterator.
 For example, if <span class="extract"><span class="extract-syntax">F</span></span> is a filename, the following reads the file into a
@@ -511,7 +511,7 @@ functions from <a href="3-em.html" class="internal">Error Messages</a> can then 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">Errors::in_text_file</span><span class="plain-syntax">(</span><span class="string-syntax">"bad syntax here"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Handling webs. </b>Foundation provides routines which can read the metadata of a web, i.e., a
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Handling webs. </b>Foundation provides routines which can read the metadata of a web, i.e., a
 literate program in the <a href="../inweb/index.html" class="internal">inweb</a> format, from a copy in the file system.
 The main function here is <a href="8-ws.html#SP5" class="internal">WebMetadata::get</a>, which returns a <a href="8-ws.html#SP2" class="internal">web_md</a>
 object. You can then access its bibliographic data using
@@ -520,7 +520,7 @@ its modules (instances of <a href="8-wm.html#SP1" class="internal">module</a>), 
 sections (of <a href="8-ws.html#SP4" class="internal">section_md</a>).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Miscellaneous other features. </b>What else? Well:
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Miscellaneous other features. </b>What else? Well:
 </p>
 
 <ul class="items"><li>(a) <a href="3-tm.html" class="internal">Time</a> for the time of day and the date of Easter (no, really), and

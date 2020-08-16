@@ -412,6 +412,10 @@ void HTML::anchor(OUTPUT_STREAM, text_stream *id) {
 	HTML_OPEN_WITH("a", "id=\"%S\"", id); HTML_CLOSE("a");
 }
 
+void HTML::anchor_with_class(OUTPUT_STREAM, text_stream *id, text_stream *cl) {
+	HTML_OPEN_WITH("a", "id=\"%S\" class=\"%S\"", id, cl); HTML_CLOSE("a");
+}
+
 void HTML::begin_link(OUTPUT_STREAM, text_stream *to) {
 	HTML_OPEN_WITH("a", "href=\"%S\"", to);
 }

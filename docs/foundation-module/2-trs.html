@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-trs.html#SP1">&#167;1. Trees and nodes</a></li><li><a href="2-trs.html#SP6">&#167;6. Types</a></li><li><a href="2-trs.html#SP10">&#167;10. Hierarchy</a></li><li><a href="2-trs.html#SP13">&#167;13. Traversals</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Trees and nodes. </b>The tree itself is really just a root node, which is initially null, so that
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Trees and nodes. </b>The tree itself is really just a root node, which is initially null, so that
 a tree can be empty.
 </p>
 
@@ -64,7 +64,7 @@ a tree can be empty.
 <span class="plain-syntax">} </span><span class="reserved-syntax">heterogeneous_tree</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure heterogeneous_tree is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">heterogeneous_tree</span><span class="plain-syntax"> *</span><span class="function-syntax">Trees::new</span><span class="plain-syntax">(</span><span class="reserved-syntax">tree_type</span><span class="plain-syntax"> *</span><span class="identifier-syntax">type</span><span class="plain-syntax">) {</span>
@@ -74,7 +74,7 @@ a tree can be empty.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">tree_node</span><span class="plain-syntax"> {</span>
@@ -88,7 +88,7 @@ a tree can be empty.
 <span class="plain-syntax">} </span><span class="reserved-syntax">tree_node</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure tree_node is accessed in 2/mmr, 4/taa and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>A node is created in limbo, removed from its tree, but it is still somehow
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>A node is created in limbo, removed from its tree, but it is still somehow
 owned by it.
 </p>
 
@@ -111,7 +111,7 @@ owned by it.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>A convenient abbreviation for a common manoeuvre:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>A convenient abbreviation for a common manoeuvre:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -121,7 +121,7 @@ owned by it.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Types. </b>The above will provide for multiple different types of tree to be used for
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Types. </b>The above will provide for multiple different types of tree to be used for
 different purposes. Heterogeneous trees allow the coder to make dangerously
 type-unsafe structures, so we want to hedge them in with self-imposed
 constraints:
@@ -135,7 +135,7 @@ constraints:
 <span class="plain-syntax">} </span><span class="reserved-syntax">tree_type</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure tree_type is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">tree_type</span><span class="plain-syntax"> *</span><span class="function-syntax">Trees::new_type</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">verifier</span><span class="plain-syntax">)(</span><span class="reserved-syntax">tree_node</span><span class="plain-syntax"> *)) {</span>
@@ -145,7 +145,7 @@ constraints:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Each node in a tree also has a type. Whenever the children of a node change,
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Each node in a tree also has a type. Whenever the children of a node change,
 they are re-verified by the <span class="extract"><span class="extract-syntax">verify_children</span></span>.
 </p>
 
@@ -158,7 +158,7 @@ they are re-verified by the <span class="extract"><span class="extract-syntax">v
 <span class="plain-syntax">} </span><span class="reserved-syntax">tree_node_type</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure tree_node_type is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">tree_node_type</span><span class="plain-syntax"> *</span><span class="function-syntax">Trees::new_node_type</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">req</span><span class="plain-syntax">,</span>
@@ -170,7 +170,7 @@ they are re-verified by the <span class="extract"><span class="extract-syntax">v
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Hierarchy. </b>A special function is needed to choose the root node; and note that this is
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Hierarchy. </b>A special function is needed to choose the root node; and note that this is
 verified.
 </p>
 
@@ -192,7 +192,7 @@ verified.
 <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">root</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>Otherwise, nodes are placed in a tree with respect to other nodes:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>Otherwise, nodes are placed in a tree with respect to other nodes:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -237,7 +237,7 @@ verified.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">of</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parent</span><span class="plain-syntax">)	</span><a href="2-trs.html#SP12" class="function-link"><span class="function-syntax">Trees::verify_children</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">of</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parent</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>Removing a node from a tree does not change its ownership &mdash; it still belongs
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Removing a node from a tree does not change its ownership &mdash; it still belongs
 to that tree.
 </p>
 
@@ -264,7 +264,7 @@ to that tree.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Traversals. </b>These two functions allow us to traverse the tree, visiting each node along
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Traversals. </b>These two functions allow us to traverse the tree, visiting each node along
 the way and carrying a state as we do. The distinction is that <a href="2-trs.html#SP13" class="internal">Trees::traverse_from</a>
 iterates from and then below the given node, but doesn't go through its siblings,
 whereas <a href="2-trs.html#SP13" class="internal">Trees::traverse</a> does.
@@ -294,7 +294,7 @@ whereas <a href="2-trs.html#SP13" class="internal">Trees::traverse</a> does.
 <span class="plain-syntax">            </span><a href="2-trs.html#SP13" class="function-link"><span class="function-syntax">Trees::traverse</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">M</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child</span><span class="plain-syntax">, </span><span class="identifier-syntax">visitor</span><span class="plain-syntax">, </span><span class="identifier-syntax">state</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">+1);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14.  </b></p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Trees::prune_tree</span><span class="plain-syntax">(</span><span class="reserved-syntax">heterogeneous_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">,</span>

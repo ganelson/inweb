@@ -45,7 +45,7 @@
 
 <ul class="toc"><li><a href="M-mwiw.html#SP1">&#167;1. GitHub Pages</a></li><li><a href="M-mwiw.html#SP2">&#167;2. Colonies</a></li><li><a href="M-mwiw.html#SP7">&#167;7. The navigation sidebar</a></li><li><a href="M-mwiw.html#SP10">&#167;10. The trail of breadcrumbs</a></li><li><a href="M-mwiw.html#SP11">&#167;11. Adding custom HTML, CSS and such</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. GitHub Pages. </b>If a project is hosted at GitHub, then the GitHub Pages service is the ideal
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. GitHub Pages. </b>If a project is hosted at GitHub, then the GitHub Pages service is the ideal
 place to serve a woven copy of the project to the world: the <span class="extract"><span class="extract-syntax">docs</span></span> subdirectory
 of a repository is simply served as a website, once this is enabled from the
 owner's Github control panel.
@@ -64,7 +64,7 @@ the installation of <span class="extract"><span class="extract-syntax">inweb</sp
 <p class="commentary">will do the trick. (<span class="extract"><span class="ConsoleText-extract-syntax">GitHubPages</span></span> is a pattern refining the default <span class="extract"><span class="ConsoleText-extract-syntax">HTML</span></span> one.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Colonies. </b>A collection of webs gathered in one place is, for want of a better word,
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Colonies. </b>A collection of webs gathered in one place is, for want of a better word,
 called a "colony". (Some social species of spiders form colonies, and share
 webs which are collectively woven.)
 </p>
@@ -103,7 +103,7 @@ sets its default settings: <span class="extract"><span class="ConsoleText-extrac
 <span class="extract"><span class="ConsoleText-extract-syntax">-breadcrumb</span></span> are all handled like this.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>These pathnames are taken relative to the current working directory of
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>These pathnames are taken relative to the current working directory of
 the user (not to the location of the colony file). For <a href="index.html" class="internal">inweb</a>, this
 is conventionally the directory above the actual web, and that's why the
 file needs to say:
@@ -116,7 +116,7 @@ file needs to say:
 home page of the Github Docs area for the repository.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>The use of a colony also enables cross-references from the weave of one
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The use of a colony also enables cross-references from the weave of one
 web to the weave of another, even when they are independent programs. For
 example, a section of code in <span class="extract"><span class="extract-syntax">beth</span></span> could say:
 </p>
@@ -140,7 +140,7 @@ but not to functions or types in those webs: that would require Inweb to read
 every web in the colony into memory, which would slow it down too much.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>As a more sustained example, here is the current version of the colony file
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>As a more sustained example, here is the current version of the colony file
 for the Inweb repository:
 </p>
 
@@ -181,7 +181,7 @@ home page; it's referred to in links as being the "overview", because that's
 its name as a web.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>The command <span class="extract"><span class="extract-syntax">assets X</span></span> tells Inweb to place "assets" such as images, CSS and
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The command <span class="extract"><span class="extract-syntax">assets X</span></span> tells Inweb to place "assets" such as images, CSS and
 JavaScript files which are needed by plugins (see <a href="M-awwp.html" class="internal">Advanced Weaving with Patterns</a>)
 into the directory <span class="extract"><span class="extract-syntax">X</span></span>. In practice, this avoids a great deal of duplication:
 if there are 30 webs in the colony, there's no need for each to have its own
@@ -195,7 +195,7 @@ the colony need to use the same pattern, and the pattern isn't one which is
 built in the Inweb.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. The navigation sidebar. </b>When assembling large numbers of woven websites together, as is needed for
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. The navigation sidebar. </b>When assembling large numbers of woven websites together, as is needed for
 example by the main Inform repository's GitHub pages, we need to navigate
 externally as well as internally: that is, the page for one tool will need
 a way to link to pages for other tools.
@@ -210,7 +210,7 @@ written <span class="extract"><span class="extract-syntax">[[Navigation]]</span>
 the current web.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>By default, Inweb looks for a file called <span class="extract"><span class="extract-syntax">nav.html</span></span> in two directories: the
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>By default, Inweb looks for a file called <span class="extract"><span class="extract-syntax">nav.html</span></span> in two directories: the
 one above the destination, and the destination. If both exist, they are both
 used. If neither exists, the expansion is empty, but no error is produced.
 </p>
@@ -220,7 +220,7 @@ where <span class="extract"><span class="extract-syntax">N</span></span> is the 
 it can also be preset in the Colony file (see above).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Inweb in fact makes it easy to write such navigation files, providing
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Inweb in fact makes it easy to write such navigation files, providing
 commands which mean that little HTML need be written at all. This is the
 one which generates the sidebar visible to the left of the pages on the
 Inweb <span class="extract"><span class="extract-syntax">docs</span></span> site:
@@ -274,7 +274,7 @@ example:
 that one's guaranteed to be present.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. The trail of breadcrumbs. </b>Inweb automatically adds web, chapter and section titles to the trail of
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. The trail of breadcrumbs. </b>Inweb automatically adds web, chapter and section titles to the trail of
 breadcrumbs above each page: for example,
 </p>
 
@@ -311,7 +311,7 @@ file, as
 <p class="commentary">makes a link to the web/module called <span class="extract"><span class="extract-syntax">overview</span></span> in the colony file.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. Adding custom HTML, CSS and such. </b>This is done by creating a new pattern: see <a href="M-awwp.html" class="internal">Advanced Weaving with Patterns</a>.
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Adding custom HTML, CSS and such. </b>This is done by creating a new pattern: see <a href="M-awwp.html" class="internal">Advanced Weaving with Patterns</a>.
 </p>
 
 <nav role="progress"><div class="progresscontainer">

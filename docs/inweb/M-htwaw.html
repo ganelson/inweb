@@ -66,7 +66,7 @@ MathJax = {
 
 <ul class="toc"><li><a href="M-htwaw.html#SP1">&#167;1. The title of a section</a></li><li><a href="M-htwaw.html#SP2">&#167;2. Paragraphing</a></li><li><a href="M-htwaw.html#SP6">&#167;6. Conditional compilation</a></li><li><a href="M-htwaw.html#SP7">&#167;7. Commentary</a></li><li><a href="M-htwaw.html#SP12">&#167;12. Code samples and other extraneous matter</a></li><li><a href="M-htwaw.html#SP13">&#167;13. Links</a></li><li><a href="M-htwaw.html#SP14">&#167;14. Cross-references</a></li><li><a href="M-htwaw.html#SP19">&#167;19. Figures</a></li><li><a href="M-htwaw.html#SP20">&#167;20. Carousels</a></li><li><a href="M-htwaw.html#SP21">&#167;21. Video and audio</a></li><li><a href="M-htwaw.html#SP22">&#167;22. Embedded video and audio</a></li><li><a href="M-htwaw.html#SP24">&#167;24. Downloads</a></li><li><a href="M-htwaw.html#SP25">&#167;25. Mathematics notation</a></li><li><a href="M-htwaw.html#SP26">&#167;26. Footnotes</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. The title of a section. </b>In any section file, there will be a few lines at the top which occur before
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The title of a section. </b>In any section file, there will be a few lines at the top which occur before
 the first paragraph of code begins. (The first paragraph begins on the first
 line which starts with an <span class="extract"><span class="extract-syntax">@</span></span> character.)
 </p>
@@ -102,7 +102,7 @@ example:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    A fairly fast way to determine if small numbers are prime, given storage.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Paragraphing. </b>A standard paragraph is introduced with an <span class="extract"><span class="extract-syntax">@</span></span> command, which must place
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Paragraphing. </b>A standard paragraph is introduced with an <span class="extract"><span class="extract-syntax">@</span></span> command, which must place
 that magic character in the first column of the line:
 </p>
 
@@ -140,7 +140,7 @@ example shows all three being used:
 <span class="plain-syntax">        return TRUE;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Definitions are made using one of three commands: <span class="extract"><span class="extract-syntax">@d</span></span> or <span class="extract"><span class="extract-syntax">@define</span></span>; or
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Definitions are made using one of three commands: <span class="extract"><span class="extract-syntax">@d</span></span> or <span class="extract"><span class="extract-syntax">@define</span></span>; or
 <span class="extract"><span class="extract-syntax">@e</span></span> or <span class="extract"><span class="extract-syntax">@enum</span></span>; or <span class="extract"><span class="extract-syntax">@default</span></span>, which is rarely used and has no abbreviation.
 These create new constants in the program, with the values given: they are
 the equivalent of a <span class="extract"><span class="extract-syntax">#define</span></span> directive in C. <span class="extract"><span class="extract-syntax">@define</span></span> is the simpler form.
@@ -227,7 +227,7 @@ web contains:
 <p class="commentary">then the value is 100.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>Finally, a paragraph can contain code. This is introduced with an equals
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Finally, a paragraph can contain code. This is introduced with an equals
 sign: in some sense, the value of the paragraph is the code it contains.
 In many paragraphs, as in the example above, the divider is just
 </p>
@@ -265,7 +265,7 @@ for complicated header file inclusions, but should be kept to an absolute
 minimum, if only for clarity.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>One last feature, but it's the most important. Some code extracts are
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>One last feature, but it's the most important. Some code extracts are
 given names, in angle brackets. If so, then the paragraph is the definition
 of that extract. For example:
 </p>
@@ -336,7 +336,7 @@ this:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">@&lt;Prepare to exit@&gt; =</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Conditional compilation. </b>In some languages, especially C, it's very hard to write a program which will
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Conditional compilation. </b>In some languages, especially C, it's very hard to write a program which will
 run on multiple operating systems without some use of conditional compilation:
 that is, putting some code or definitions inside <span class="extract"><span class="extract-syntax">#ifdef</span></span> clauses or the like.
 </p>
@@ -371,17 +371,17 @@ Contents listing, it's straightforward to give, say, two versions of a
 section file, one with effect on MacOS, one with effect on Windows.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Commentary. </b>The comment part of a paragraph is ignored by the tangler, and appears only
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Commentary. </b>The comment part of a paragraph is ignored by the tangler, and appears only
 in weaves. For the most part, the text is simply copied over verbatim: but
 Inweb quietly tries to improve the appearance of what it copies, and a
 few special notations are allowed, to help with this.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>A doubled hyphen becomes an em-rule; double-quotation marks automatically
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>A doubled hyphen becomes an em-rule; double-quotation marks automatically
 smarten (in TeX format, at least).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>Lines beginning with what look like bracketed list numbers or letters are
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Lines beginning with what look like bracketed list numbers or letters are
 set as such, running on into little indented paragraphs. Thus
 </p>
 
@@ -424,7 +424,7 @@ indented one tab stop further in, like so:
 </li><li>&#9679; You sit on the veranda drinking tea and your ducklings swim on the pond,
 and everything smells good... and there are gooseberries. (Anton Chekhov)
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>Text placed between vertical strokes will be set in a fixed-space, code
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Text placed between vertical strokes will be set in a fixed-space, code
 style font, <span class="extract"><span class="extract-syntax">thus</span></span>. This paragraph appears in the web you are reading thus:
 </p>
 
@@ -450,7 +450,7 @@ paragraph commentary; we would then need to write...
 <span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Text placed between vertical strokes will be set in a fixed-space, code</span>
 <span class="plain-syntax">    </span><span class="element-syntax">style font, %%thus%%. This paragraph appears in the web you are reading thus</span><span class="plain-syntax">:</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>A line written thus:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>A line written thus:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -467,7 +467,7 @@ paragraph commentary; we would then need to write...
 natural language text.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12. Code samples and other extraneous matter. </b>When is code not code? When it's an extract of text being displayed for
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Code samples and other extraneous matter. </b>When is code not code? When it's an extract of text being displayed for
 documentation reasons, is the answer. We can include this like so:
 </p>
 
@@ -528,7 +528,7 @@ For example,
 <span class="plain-syntax">    =</span>
 <span class="plain-syntax">    ...which is essential in order to restore the state of</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13. Links. </b>URLs in the web are automatically recognised and a weave to HTML will
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Links. </b>URLs in the web are automatically recognised and a weave to HTML will
 make them into links. For example:
 </p>
 
@@ -557,7 +557,7 @@ For example,
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Compare: </span><a href="https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes!" class="external">https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes!</a>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Cross-references. </b>These are like links, but are internal. These are normally written within <span class="extract"><span class="extract-syntax">//</span></span>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Cross-references. </b>These are like links, but are internal. These are normally written within <span class="extract"><span class="extract-syntax">//</span></span>
 signs and are only available in the commentary of a web. They allow us to
 place cross-references like so:
 </p>
@@ -586,7 +586,7 @@ thrown if these references to sections are in any way ambiguous. They are not
 case sensitive.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b>Sometimes we want to make a link without literally showing the destination.
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Sometimes we want to make a link without literally showing the destination.
 This is simple: for example,
 </p>
 
@@ -605,7 +605,7 @@ is also allowed:
 <p class="commentary">See <a href="http://mathshistory.st-andrews.ac.uk/Biographies/Gauss.html" class="external">this biographical note</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP16"></a><b>&#167;16.  </b>It's also possible to reference function names and type names, provided that
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>It's also possible to reference function names and type names, provided that
 the language definition supports these (see <a href="M-spl.html" class="internal">Supporting Programming Languages</a>):
 this is certainly the case for C-like languages. For example,
 </p>
@@ -624,7 +624,7 @@ current one, but this requires the use of a Colony file.
 See <a href="M-mwiw.html" class="internal">Making Weaves into Websites</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP17"></a><b>&#167;17.  </b>Cross-references also work inside text extracts marked as <span class="extract"><span class="extract-syntax">hyperlinked</span></span>.
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Cross-references also work inside text extracts marked as <span class="extract"><span class="extract-syntax">hyperlinked</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -638,7 +638,7 @@ See <a href="M-mwiw.html" class="internal">Making Weaves into Websites</a>.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    See the </span><a href="M-iti.html" class="internal">Manual</a><span class="plain-syntax"> for more on this.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18"></a><b>&#167;18.  </b>Cross-references must begin after white space, or a punctuation mark (other
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>Cross-references must begin after white space, or a punctuation mark (other
 than a colon), and must end to be followed by more white space or another
 punctuation mark (this time allowing a colon). In practice, that reduces
 the risk of misunderstanding a <span class="extract"><span class="extract-syntax">//</span></span> occurring in the commentary for some
@@ -655,7 +655,7 @@ can be configured in the Contents page of a web, say like so:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="element-syntax">Cross-References Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> Off</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19"></a><b>&#167;19. Figures. </b>Images to be included in weaves of a web are called "Figures", as they
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Figures. </b>Images to be included in weaves of a web are called "Figures", as they
 would be in a printed book. These images should ideally be in PNG, JPG or PDF
 format and placed in a subdirectory of the web called <span class="extract"><span class="extract-syntax">Figures</span></span>: for instance,
 the weaver would seek <span class="extract"><span class="extract-syntax">Fig_2_3.pdf</span></span> at pathname <span class="extract"><span class="extract-syntax">Figures/Fig_2_3.pdf</span></span>.
@@ -688,7 +688,7 @@ correspond. If you really want to monkey with the aspect ratio,
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    = (figure Whatever.jpg at 20 by 100)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20"></a><b>&#167;20. Carousels. </b>A carousel is a slide-show of (usually but not always) figures; there's a
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Carousels. </b>A carousel is a slide-show of (usually but not always) figures; there's a
 set of slides with captions, only one of which is visible at a time.
 </p>
 
@@ -801,7 +801,7 @@ it can also be <span class="extract"><span class="extract-syntax">above</span></
 <span class="plain-syntax">    = (figure furtive.jpg)</span>
 <span class="plain-syntax">    = (carousel end)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21"></a><b>&#167;21. Video and audio. </b>To include audio samples, place them as MP3 files in the subdirectory <span class="extract"><span class="extract-syntax">Audio</span></span>
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Video and audio. </b>To include audio samples, place them as MP3 files in the subdirectory <span class="extract"><span class="extract-syntax">Audio</span></span>
 of the web. For example, in the present web,
 </p>
 
@@ -827,7 +827,7 @@ Your browser does not support the audio element.
 takes up space, so for economy's sake a demonstration is omitted from this manual.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP22"></a><b>&#167;22. Embedded video and audio. </b>One way to get around such space limitations is to embed players for video or
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Embedded video and audio. </b>One way to get around such space limitations is to embed players for video or
 audio hosted on some external service. For example:
 </p>
 
@@ -870,7 +870,7 @@ this case was <span class="extract"><span class="extract-syntax">https://youtu.b
 <p class="center-p"><iframe width="100%" height="405" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/42803139&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
 </p>
 
-<p class="commentary firstcommentary"><a id="SP23"></a><b>&#167;23.  </b>Adding width and height is straightforward; by default the dimensions are
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>Adding width and height is straightforward; by default the dimensions are
 720 by 405.
 </p>
 
@@ -882,7 +882,7 @@ this case was <span class="extract"><span class="extract-syntax">https://youtu.b
 arguably music has width and not height, but SoundCloud thinks otherwise).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP24"></a><b>&#167;24. Downloads. </b>Occasional small downloads may be useful as a way to present examples to
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Downloads. </b>Occasional small downloads may be useful as a way to present examples to
 try with a program being documented. These are very simple:
 </p>
 
@@ -909,7 +909,7 @@ subdirectory of the web. The explanatory text &mdash; usually just an indication
 of what sort of file this is &mdash; is optional.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP25"></a><b>&#167;25. Mathematics notation. </b>Literate programming is a good technique to justify code which hangs on
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Mathematics notation. </b>Literate programming is a good technique to justify code which hangs on
 unobvious pieces of mathematics or computer science, and which must therefore
 be explained carefully. Formulae or equations are a real convenience for that.
 </p>
@@ -948,7 +948,7 @@ changed. The defaults are:
 treat it as any other text would be treated.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP26"></a><b>&#167;26. Footnotes. </b>Not everyone likes footnotes,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> but sometimes they're a tidy way to make
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Footnotes. </b>Not everyone likes footnotes,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> but sometimes they're a tidy way to make
 references.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
 </p>
 
@@ -957,7 +957,7 @@ University Press, 1999).
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> For example, to cite Donald Knuth, "Evaluation of Porter's constant",
 Computers &amp; Mathematics with Applications, 2, 137-39 (1976).
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP27"></a><b>&#167;27.  </b>The content of that sentence was typed as follows:
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>The content of that sentence was typed as follows:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-cla.html#SP1">&#167;1. Model</a></li><li><a href="3-cla.html#SP2">&#167;2. Switches</a></li><li><a href="3-cla.html#SP7">&#167;7. Reading the command line</a></li><li><a href="3-cla.html#SP14">&#167;14. Help text</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Model. </b>Our scheme is that the command line syntax will contain an optional
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Model. </b>Our scheme is that the command line syntax will contain an optional
 series of dashed switches. Some switches appear alone, others must be
 followed by an argument. Anything not part of the switches is termed
 a "bareword". For example, in
@@ -70,7 +70,7 @@ then two barewords, <span class="extract"><span class="extract-syntax">jam</span
 command-line switches created by Foundation itself in "Foundation".
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Switches. </b>Each different switch available is stored in one of these structures.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Switches. </b>Each different switch available is stored in one of these structures.
 Switches come in five sorts:
 </p>
 
@@ -80,7 +80,7 @@ Switches come in five sorts:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">NUMERICAL_CLSF</span><span class="plain-syntax"> </span><span class="comment-syntax"> sets an integer to the given value</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">TEXTUAL_CLSF</span><span class="plain-syntax"> </span><span class="comment-syntax"> sets text to the given value</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>Switches are also grouped, though this affects only the printout of them
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Switches are also grouped, though this affects only the printout of them
 in <span class="extract"><span class="extract-syntax">-help</span></span>. Groups are enumerated thus:
 </p>
 
@@ -102,14 +102,14 @@ in <span class="extract"><span class="extract-syntax">-help</span></span>. Group
 <span class="plain-syntax">} </span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure command_line_switch is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>In case of a prodigious number of switches (ever tried typing <span class="extract"><span class="extract-syntax">clang -help</span></span>?),
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>In case of a prodigious number of switches (ever tried typing <span class="extract"><span class="extract-syntax">clang -help</span></span>?),
 we'll hash the switch names into the following:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cls_dictionary</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>The client must declare all the switches her program will make use of, not
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The client must declare all the switches her program will make use of, not
 counting the standard set already declared by Foundation (such as <span class="extract"><span class="extract-syntax">-help</span></span>).
 A new <span class="extract"><span class="extract-syntax">*_CLSW</span></span> value should be enumerated to be the ID referring to this
 swtich, and then the client should call:
@@ -155,7 +155,7 @@ swtich, and then the client should call:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cls</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b>When we alphabetically sort switches for the <span class="extract"><span class="extract-syntax">-help</span></span> output, we want to
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b>When we alphabetically sort switches for the <span class="extract"><span class="extract-syntax">-help</span></span> output, we want to
 file, say, <span class="extract"><span class="extract-syntax">-no-verbose</span></span> immediately after <span class="extract"><span class="extract-syntax">-verbose</span></span>, not back in the N
 section. So the sorting version of <span class="extract"><span class="extract-syntax">no-verbose</span></span> is <span class="extract"><span class="extract-syntax">verbose_</span></span>.
 </p>
@@ -171,7 +171,7 @@ section. So the sorting version of <span class="extract"><span class="extract-sy
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cla.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Booleans are automatically created in pairs, e.g., <span class="extract"><span class="extract-syntax">-destroy-world</span></span> and
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Booleans are automatically created in pairs, e.g., <span class="extract"><span class="extract-syntax">-destroy-world</span></span> and
 <span class="extract"><span class="extract-syntax">-no-destroy-world</span></span>:
 </p>
 
@@ -209,7 +209,7 @@ section. So the sorting version of <span class="extract"><span class="extract-sy
 <span class="plain-syntax">    </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">form</span><span class="plain-syntax"> = </span><span class="constant-syntax">TEXTUAL_CLSF</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Reading the command line. </b>Once all the switches are declared, the client calls the following routine
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Reading the command line. </b>Once all the switches are declared, the client calls the following routine
 in order to parse the usual C <span class="extract"><span class="extract-syntax">argc</span></span> and <span class="extract"><span class="extract-syntax">argv</span></span> pair, and take action as
 appropriate. The client passes a pointer to some structure in <span class="extract"><span class="extract-syntax">state</span></span>:
 probably a structure holding its settings variables. When we parse a
@@ -226,7 +226,7 @@ general, the client should then exit with exit code 0 if this happens.
 <p class="commentary">This is all easier to demonstrate than explain. See Inweb for an example.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Here goes the reader. It works through the command line arguments, then
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Here goes the reader. It works through the command line arguments, then
 through the file if one has by that point been provided.
 </p>
 
@@ -283,7 +283,7 @@ through the file if one has by that point been provided.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure clf_reader_state is accessed in 2/dl, 2/mmr, 6/id, 6/sd, 8/ws and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>We can also read the "command line" from a file. The following variable
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>We can also read the "command line" from a file. The following variable
 holds the filename to read from.
 </p>
 
@@ -293,7 +293,7 @@ holds the filename to read from.
 <span class="plain-syntax">    </span><span class="identifier-syntax">command_line_file</span><span class="plain-syntax"> = </span><span class="identifier-syntax">F</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>It's useful to log some of what we're reading here, so that people can tell
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>It's useful to log some of what we're reading here, so that people can tell
 from the debugging log what switches were actually used. But since the log
 might not exist as early as now, we have to record any log entries, and play
 them back later (i.e., when the debugging log does exist).
@@ -315,7 +315,7 @@ them back later (i.e., when the debugging log does exist).
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>White space at start and end of lines is ignored; blank lines and those
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>White space at start and end of lines is ignored; blank lines and those
 beginning with a <span class="extract"><span class="extract-syntax">#</span></span> are ignored (but a # following other content does not
 mean a comment, so don't use trailing comments on lines); each line must
 either be a single switch like <span class="extract"><span class="extract-syntax">-no-service</span></span> or a pair like <span class="extract"><span class="extract-syntax">-connect tower11</span></span>.
@@ -371,7 +371,7 @@ problem with internal space characters in arguments.
 <span class="plain-syntax">    </span><span class="identifier-syntax">crs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">subs</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12"></a><b>&#167;12.  </b>We also allow <span class="extract"><span class="extract-syntax">-setting=X</span></span> as equivalent to <span class="extract"><span class="extract-syntax">-setting X</span></span>.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>We also allow <span class="extract"><span class="extract-syntax">-setting=X</span></span> as equivalent to <span class="extract"><span class="extract-syntax">-setting X</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -396,7 +396,7 @@ problem with internal space characters in arguments.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13"></a><b>&#167;13.  </b>So at this point we have definitely found what looks like a switch:
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>So at this point we have definitely found what looks like a switch:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -426,7 +426,7 @@ problem with internal space characters in arguments.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">cls</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">valency</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13_1"></a><b>&#167;13.1.  </b>The common set of switches declared by Foundation are all handled here;
+<p class="commentary firstcommentary"><a id="SP13_1" class="paragraph-anchor"></a><b>&#167;13.1.  </b>The common set of switches declared by Foundation are all handled here;
 all other switches are delegated to the client's callback function <span class="extract"><span class="extract-syntax">f</span></span>.
 </p>
 
@@ -474,7 +474,7 @@ all other switches are delegated to the client's callback function <span class="
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cla.html#SP13">&#167;13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13_1_1"></a><b>&#167;13.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse debugging log inclusion</span><span class="named-paragraph-number">13.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP13_1_1" class="paragraph-anchor"></a><b>&#167;13.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse debugging log inclusion</span><span class="named-paragraph-number">13.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -489,7 +489,7 @@ all other switches are delegated to the client's callback function <span class="
 <span class="plain-syntax">    </span><a href="2-dl.html#SP9" class="function-link"><span class="function-syntax">Log::set_aspect_from_command_line</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cla.html#SP13_1">&#167;13.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14"></a><b>&#167;14. Help text. </b>That just leaves the following, which implements the <span class="extract"><span class="extract-syntax">-help</span></span> switch. It
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Help text. </b>That just leaves the following, which implements the <span class="extract"><span class="extract-syntax">-help</span></span> switch. It
 alphabetically sorts the switches, and prints out a list of them as grouped,
 with ungrouped switches as the top paragraph and Foundation switches as the
 bottom one. (Those are the dull ones.)
@@ -531,7 +531,7 @@ a brief description of the tool's name and purpose.
 <span class="plain-syntax">    </span><a href="2-mmr.html#SP26" class="function-link"><span class="function-syntax">Memory::I7_free</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sorted_table</span><span class="plain-syntax">, </span><span class="constant-syntax">ARRAY_SORTING_MREASON</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">*((</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax"> *)));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14_1"></a><b>&#167;14.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Show options in alphabetical order</span><span class="named-paragraph-number">14.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP14_1" class="paragraph-anchor"></a><b>&#167;14.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Show options in alphabetical order</span><span class="named-paragraph-number">14.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -567,7 +567,7 @@ a brief description of the tool's name and purpose.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cla.html#SP14">&#167;14</a> (three times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP15"></a><b>&#167;15.  </b></p>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">CommandLine::compare_names</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">CommandLine::compare_names</span></span>:<br/><a href="3-cla.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ent1</span><span class="plain-syntax">, </span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ent2</span><span class="plain-syntax">) {</span>

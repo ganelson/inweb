@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-pth.html#SP1">&#167;1. About pathnames</a></li><li><a href="3-pth.html#SP2">&#167;2. Home directory</a></li><li><a href="3-pth.html#SP3">&#167;3. Installation directory</a></li><li><a href="3-pth.html#SP4">&#167;4. Creation</a></li><li><a href="3-pth.html#SP5">&#167;5. Text to pathnames</a></li><li><a href="3-pth.html#SP6">&#167;6. Writer</a></li><li><a href="3-pth.html#SP7">&#167;7. Relative pathnames</a></li><li><a href="3-pth.html#SP8">&#167;8. Relative URLs</a></li><li><a href="3-pth.html#SP9">&#167;9. Existence in the file system</a></li><li><a href="3-pth.html#SP10">&#167;10. Directory synchronisation</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. About pathnames. </b>We use the word "pathname" to mean a file-system location of a directory,
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. About pathnames. </b>We use the word "pathname" to mean a file-system location of a directory,
 and "filename" to mean a location of a file. For example:
 </p>
 
@@ -102,7 +102,7 @@ host file system.
 <span class="plain-syntax">} </span><span class="reserved-syntax">pathname</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure pathname is accessed in 3/fln and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Home directory. </b>We get the path to the user's home directory from the environment variable
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Home directory. </b>We get the path to the user's home directory from the environment variable
 <span class="extract"><span class="extract-syntax">HOME</span></span>, if it exists.
 </p>
 
@@ -117,7 +117,7 @@ host file system.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Installation directory. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Installation directory. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">installation_path</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -148,7 +148,7 @@ host file system.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4. Creation. </b>A subdirectory is made by taking an existing pathname (or possible <span class="extract"><span class="extract-syntax">NULL</span></span>) and
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Creation. </b>A subdirectory is made by taking an existing pathname (or possible <span class="extract"><span class="extract-syntax">NULL</span></span>) and
 then going one level deeper, using the supplied name.
 </p>
 
@@ -169,7 +169,7 @@ then going one level deeper, using the supplied name.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5. Text to pathnames. </b>The following takes a text of a name and returns a pathname,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Text to pathnames. </b>The following takes a text of a name and returns a pathname,
 possibly relative to the home directory. Empty directory names are ignored
 except possibly for an initial slash, so for example <span class="extract"><span class="extract-syntax">paris/roubaix</span></span>,
 <span class="extract"><span class="extract-syntax">paris//roubaix</span></span> and <span class="extract"><span class="extract-syntax">paris/roubaix/</span></span> are indistinguishable here, but
@@ -194,7 +194,7 @@ except possibly for an initial slash, so for example <span class="extract"><span
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6. Writer. </b>Conversely, by the miracle of depth-first recursion:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Writer. </b>Conversely, by the miracle of depth-first recursion:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -213,7 +213,7 @@ except possibly for an initial slash, so for example <span class="extract"><span
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">intermediate</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7. Relative pathnames. </b>Occasionally we want to shorten a pathname relative to another one:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Relative pathnames. </b>Occasionally we want to shorten a pathname relative to another one:
 for example,
 </p>
 
@@ -262,7 +262,7 @@ line.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">intermediate</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8. Relative URLs. </b>Suppose a web page in the directory at <span class="extract"><span class="extract-syntax">from</span></span> wants to link to a page in
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Relative URLs. </b>Suppose a web page in the directory at <span class="extract"><span class="extract-syntax">from</span></span> wants to link to a page in
 the directory <span class="extract"><span class="extract-syntax">to</span></span>. The following composes a minimal-length URL to do so:
 possibly, if they are in fact the same directory, an empty one.
 </p>
@@ -299,7 +299,7 @@ possibly, if they are in fact the same directory, an empty one.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9. Existence in the file system. </b>Just because we have a pathname, it doesn't follow that any directory exists
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Existence in the file system. </b>Just because we have a pathname, it doesn't follow that any directory exists
 on the file system with that path.
 </p>
 
@@ -316,7 +316,7 @@ on the file system with that path.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">known_to_exist</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10. Directory synchronisation. </b>Both pathnames here represent directories which do exist. The function makes
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Directory synchronisation. </b>Both pathnames here represent directories which do exist. The function makes
 the <span class="extract"><span class="extract-syntax">dest</span></span> tree an exact copy of the <span class="extract"><span class="extract-syntax">source</span></span> tree (and therefore deletes
 anything different which was originally in <span class="extract"><span class="extract-syntax">dest</span></span>).
 </p>

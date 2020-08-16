@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="4-as.html#SP1">&#167;1. One Dozen ACME Explosive Tennis Balls</a></li><li><a href="4-as.html#SP3">&#167;3. Tangling methods</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. One Dozen ACME Explosive Tennis Balls. </b>Older readers will remember that Wile E. Coyote, when wishing to frustrate
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. One Dozen ACME Explosive Tennis Balls. </b>Older readers will remember that Wile E. Coyote, when wishing to frustrate
 Road Runner with some ingenious device, would invariably buy it from the Acme
 Corporation, which manufactured everything imaginable. See Wikipedia, "Acme
 Corporation", for much else.
@@ -105,7 +105,7 @@ actually called ACME: the 6502 assembler of the same name.
 <span class="plain-syntax">        </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="constant-syntax">SYNTAX_COLOUR_WEA_MTID</span><span class="plain-syntax">, </span><a href="4-as.html#SP11" class="function-link"><span class="function-syntax">ACMESupport::syntax_colour</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2.  </b>This utility does a very limited <span class="extract"><span class="extract-syntax">WRITE</span></span>-like job. (We don't want to use
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>This utility does a very limited <span class="extract"><span class="extract-syntax">WRITE</span></span>-like job. (We don't want to use
 the actual <span class="extract"><span class="extract-syntax">WRITE</span></span> because that would make it possible for malicious language
 files to crash Inweb.)
 </p>
@@ -132,7 +132,7 @@ files to crash Inweb.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3. Tangling methods. </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Tangling methods. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ACMESupport::shebang</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">ACMESupport::shebang</span></span>:<br/><a href="4-as.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">,</span>
@@ -210,7 +210,7 @@ files to crash Inweb.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>In the following, <span class="extract"><span class="extract-syntax">q_mode</span></span> is 0 outside quotes, 1 inside a character literal,
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>In the following, <span class="extract"><span class="extract-syntax">q_mode</span></span> is 0 outside quotes, 1 inside a character literal,
 and 2 inside a string literal; <span class="extract"><span class="extract-syntax">c_mode</span></span> is 0 outside comments, 1 inside a line
 comment, and 2 inside a multiline comment.
 </p>
@@ -241,7 +241,7 @@ comment, and 2 inside a multiline comment.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a multiline comment</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a multiline comment</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -250,14 +250,14 @@ comment, and 2 inside a multiline comment.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-as.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a line comment</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a line comment</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    ;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-as.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_3"></a><b>&#167;4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Outside commentary</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Outside commentary</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -268,7 +268,7 @@ comment, and 2 inside a multiline comment.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-as.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_3_1"></a><b>&#167;4.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Outside quoted matter</span><span class="named-paragraph-number">4.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_3_1" class="paragraph-anchor"></a><b>&#167;4.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Outside quoted matter</span><span class="named-paragraph-number">4.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -294,7 +294,7 @@ comment, and 2 inside a multiline comment.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-as.html#SP4_3">&#167;4.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_3_2"></a><b>&#167;4.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a literal character</span><span class="named-paragraph-number">4.3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_3_2" class="paragraph-anchor"></a><b>&#167;4.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a literal character</span><span class="named-paragraph-number">4.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -304,7 +304,7 @@ comment, and 2 inside a multiline comment.
 <span class="plain-syntax">    </span><span class="identifier-syntax">q_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-as.html#SP4_3">&#167;4.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_3_3"></a><b>&#167;4.3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a literal string</span><span class="named-paragraph-number">4.3.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_3_3" class="paragraph-anchor"></a><b>&#167;4.3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a literal string</span><span class="named-paragraph-number">4.3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -314,7 +314,7 @@ comment, and 2 inside a multiline comment.
 <span class="plain-syntax">    </span><span class="identifier-syntax">q_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-as.html#SP4_3">&#167;4.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ACMESupport::parse_types</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">ACMESupport::parse_types</span></span>:<br/><a href="4-as.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">self</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
@@ -333,7 +333,7 @@ comment, and 2 inside a multiline comment.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ACMESupport::parse_functions</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">ACMESupport::parse_functions</span></span>:<br/><a href="4-as.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">self</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
@@ -353,7 +353,7 @@ comment, and 2 inside a multiline comment.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>The following is an opportunity for us to scold the author for any
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>The following is an opportunity for us to scold the author for any
 violation of the namespace rules. We're going to look for functions named
 <span class="extract"><span class="extract-syntax">Whatever::name()</span></span> whose definitions are not in the <span class="extract"><span class="extract-syntax">Whatever::</span></span> section;
 in other words, we police the rule that functions actually are defined in the
@@ -394,7 +394,7 @@ bibliographic variable, but don't do that.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Having found all those functions and structure elements, we make sure they
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Having found all those functions and structure elements, we make sure they
 are all known to Inweb's hash table of interesting identifiers:
 </p>
 
@@ -413,7 +413,7 @@ are all known to Inweb's hash table of interesting identifiers:
 <span class="plain-syntax">                    </span><span class="identifier-syntax">elt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">element_name</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b>This is here so that tangling the Standard Rules extension doesn't insert
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>This is here so that tangling the Standard Rules extension doesn't insert
 a spurious comment betraying Inweb's involvement in the process.
 </p>
 
@@ -422,7 +422,7 @@ a spurious comment betraying Inweb's involvement in the process.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">suppress_disclaimer</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ACMESupport::begin_weave</span><button class="popup" onclick="togglePopup('usagePopup19')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup19">Usage of <span class="code-font"><span class="function-syntax">ACMESupport::begin_weave</span></span>:<br/><a href="4-as.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">, </span><span class="reserved-syntax">section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">) {</span>
@@ -431,7 +431,7 @@ a spurious comment betraying Inweb's involvement in the process.
 <span class="plain-syntax">        </span><a href="3-ta.html#SP10" class="function-link"><span class="function-syntax">Analyser::mark_reserved_word_for_section</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">rw</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">word</span><span class="plain-syntax">, </span><span class="identifier-syntax">rw</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">colour</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11.  </b>ACME has all of its syntax-colouring done by the default engine:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>ACME has all of its syntax-colouring done by the default engine:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

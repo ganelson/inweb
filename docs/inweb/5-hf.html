@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="5-hf.html#SP1">&#167;1. Creation</a></li><li><a href="5-hf.html#SP2">&#167;2. Rendering</a></li><li><a href="5-hf.html#SP11">&#167;11. EPUB-only methods</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Creation. </b>ePub books are basically mini-websites, so they share the same renderer.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Creation. </b>ePub books are basically mini-websites, so they share the same renderer.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -61,7 +61,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-hf.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Create ePub</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP1_1"></a><b>&#167;1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create HTML</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create HTML</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -69,7 +69,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">wf</span><span class="plain-syntax">, </span><span class="constant-syntax">RENDER_FOR_MTID</span><span class="plain-syntax">, </span><a href="5-hf.html#SP4" class="function-link"><span class="function-syntax">HTMLFormat::render</span></a><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2"></a><b>&#167;1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create ePub</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create ePub</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -79,7 +79,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">wf</span><span class="plain-syntax">, </span><span class="constant-syntax">END_WEAVING_FOR_MTID</span><span class="plain-syntax">, </span><a href="5-hf.html#SP11" class="function-link"><span class="function-syntax">HTMLFormat::end_weaving_EPUB</span></a><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Rendering. </b>To keep track of what we're writing, we store the renderer state in an
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Rendering. </b>To keep track of what we're writing, we store the renderer state in an
 instance of this:
 </p>
 
@@ -98,7 +98,7 @@ instance of this:
 <span class="plain-syntax">} </span><span class="reserved-syntax">HTML_render_state</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure HTML_render_state is accessed in 1/apacs, 3/tc, 3/twot, 5/wt, 5/fm, 5/ptf, 5/tf, 5/df, 6/rw and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>The initial state is as follows:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The initial state is as follows:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -120,7 +120,7 @@ instance of this:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">hrs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>So, then, here are the front-end method functions for rendering to HTML and
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>So, then, here are the front-end method functions for rendering to HTML and
 ePub respectively:
 </p>
 
@@ -141,7 +141,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><a href="../foundation-module/5-htm.html#SP6" class="function-link"><span class="function-syntax">HTML::completed</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b>And in either case, we traverse the weave tree with the following visitor function.
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>And in either case, we traverse the weave tree with the following visitor function.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -199,7 +199,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render head</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render head</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -207,7 +207,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><a href="../foundation-module/5-htm.html#SP22" class="function-link"><span class="function-syntax">HTML::comment</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">banner</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render header</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render header</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -242,7 +242,7 @@ ePub respectively:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_3"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render footer</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render footer</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -327,7 +327,7 @@ ePub respectively:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_3_1"></a><b>&#167;5.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert previous arrow</span><span class="named-paragraph-number">5.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_3_1" class="paragraph-anchor"></a><b>&#167;5.3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert previous arrow</span><span class="named-paragraph-number">5.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -342,7 +342,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"li"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5_3">&#167;5.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_3_2"></a><b>&#167;5.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert next arrow</span><span class="named-paragraph-number">5.3.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_3_2" class="paragraph-anchor"></a><b>&#167;5.3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Insert next arrow</span><span class="named-paragraph-number">5.3.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -357,7 +357,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"li"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5_3">&#167;5.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_4"></a><b>&#167;5.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render tail</span><span class="named-paragraph-number">5.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_4" class="paragraph-anchor"></a><b>&#167;5.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render tail</span><span class="named-paragraph-number">5.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -365,7 +365,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><a href="../foundation-module/5-htm.html#SP22" class="function-link"><span class="function-syntax">HTML::comment</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">rennab</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_5"></a><b>&#167;5.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render purpose</span><span class="named-paragraph-number">5.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_5" class="paragraph-anchor"></a><b>&#167;5.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render purpose</span><span class="named-paragraph-number">5.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -376,7 +376,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">); </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_6"></a><b>&#167;5.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render subheading</span><span class="named-paragraph-number">5.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_6" class="paragraph-anchor"></a><b>&#167;5.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render subheading</span><span class="named-paragraph-number">5.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -386,14 +386,14 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"h3"</span><span class="plain-syntax">); </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_7"></a><b>&#167;5.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render bar</span><span class="named-paragraph-number">5.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_7" class="paragraph-anchor"></a><b>&#167;5.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render bar</span><span class="named-paragraph-number">5.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="../foundation-module/5-htm.html#SP22" class="function-link"><span class="function-syntax">HTML::hr</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_8"></a><b>&#167;5.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render paragraph heading</span><span class="named-paragraph-number">5.8</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_8" class="paragraph-anchor"></a><b>&#167;5.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render paragraph heading</span><span class="named-paragraph-number">5.8</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -407,7 +407,7 @@ ePub respectively:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_9"></a><b>&#167;5.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render endnote</span><span class="named-paragraph-number">5.9</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_9" class="paragraph-anchor"></a><b>&#167;5.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render endnote</span><span class="named-paragraph-number">5.9</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -417,7 +417,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_10"></a><b>&#167;5.10.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render figure</span><span class="named-paragraph-number">5.10</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_10" class="paragraph-anchor"></a><b>&#167;5.10.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render figure</span><span class="named-paragraph-number">5.10</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -434,7 +434,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_11"></a><b>&#167;5.11.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render audio clip</span><span class="named-paragraph-number">5.11</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_11" class="paragraph-anchor"></a><b>&#167;5.11.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render audio clip</span><span class="named-paragraph-number">5.11</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -453,7 +453,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_12"></a><b>&#167;5.12.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render video clip</span><span class="named-paragraph-number">5.12</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_12" class="paragraph-anchor"></a><b>&#167;5.12.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render video clip</span><span class="named-paragraph-number">5.12</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -479,7 +479,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_13"></a><b>&#167;5.13.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render download</span><span class="named-paragraph-number">5.13</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_13" class="paragraph-anchor"></a><b>&#167;5.13.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render download</span><span class="named-paragraph-number">5.13</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -516,7 +516,7 @@ ePub respectively:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_13_1"></a><b>&#167;5.13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Describe the file size</span><span class="named-paragraph-number">5.13.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_13_1" class="paragraph-anchor"></a><b>&#167;5.13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Describe the file size</span><span class="named-paragraph-number">5.13.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -534,7 +534,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">size</span><span class="plain-syntax">, </span><span class="string-syntax">")"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5_13">&#167;5.13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_14"></a><b>&#167;5.14.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render material</span><span class="named-paragraph-number">5.14</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_14" class="paragraph-anchor"></a><b>&#167;5.14.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render material</span><span class="named-paragraph-number">5.14</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -561,7 +561,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_8_1"></a><b>&#167;5.8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If no para number yet, render a p just to hold this</span><span class="named-paragraph-number">5.8.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_8_1" class="paragraph-anchor"></a><b>&#167;5.8.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">If no para number yet, render a p just to hold this</span><span class="named-paragraph-number">5.8.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -573,7 +573,7 @@ ePub respectively:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5_8">&#167;5.8</a>, <a href="5-hf.html#SP5_14_1">&#167;5.14.1</a> (twice), <a href="5-hf.html#SP5_14_2">&#167;5.14.2</a>, <a href="5-hf.html#SP5_14_3">&#167;5.14.3</a>, <a href="5-hf.html#SP5_14_4">&#167;5.14.4</a>, <a href="5-hf.html#SP5_14_6">&#167;5.14.6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_14_1"></a><b>&#167;5.14.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a commentary material node</span><span class="named-paragraph-number">5.14.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_14_1" class="paragraph-anchor"></a><b>&#167;5.14.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a commentary material node</span><span class="named-paragraph-number">5.14.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -602,7 +602,7 @@ ePub respectively:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5_14">&#167;5.14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_14_1_1"></a><b>&#167;5.14.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render a run of interior matter</span><span class="named-paragraph-number">5.14.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_14_1_1" class="paragraph-anchor"></a><b>&#167;5.14.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render a run of interior matter</span><span class="named-paragraph-number">5.14.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -622,7 +622,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5_14_1">&#167;5.14.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_14_2"></a><b>&#167;5.14.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a code material node</span><span class="named-paragraph-number">5.14.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_14_2" class="paragraph-anchor"></a><b>&#167;5.14.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a code material node</span><span class="named-paragraph-number">5.14.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -644,7 +644,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"pre"</span><span class="plain-syntax">); </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5_14">&#167;5.14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_14_3"></a><b>&#167;5.14.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a footnotes material node</span><span class="named-paragraph-number">5.14.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_14_3" class="paragraph-anchor"></a><b>&#167;5.14.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a footnotes material node</span><span class="named-paragraph-number">5.14.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -654,7 +654,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"ul"</span><span class="plain-syntax">); </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5_14">&#167;5.14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_14_4"></a><b>&#167;5.14.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a endnotes material node</span><span class="named-paragraph-number">5.14.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_14_4" class="paragraph-anchor"></a><b>&#167;5.14.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a endnotes material node</span><span class="named-paragraph-number">5.14.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -664,7 +664,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"ul"</span><span class="plain-syntax">); </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5_14">&#167;5.14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_14_5"></a><b>&#167;5.14.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a macro material node</span><span class="named-paragraph-number">5.14.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_14_5" class="paragraph-anchor"></a><b>&#167;5.14.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a macro material node</span><span class="named-paragraph-number">5.14.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -678,7 +678,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"p"</span><span class="plain-syntax">); </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5_14">&#167;5.14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_14_6"></a><b>&#167;5.14.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a definition material node</span><span class="named-paragraph-number">5.14.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_14_6" class="paragraph-anchor"></a><b>&#167;5.14.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a definition material node</span><span class="named-paragraph-number">5.14.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -688,7 +688,7 @@ ePub respectively:
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"pre"</span><span class="plain-syntax">); </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5_14">&#167;5.14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_15"></a><b>&#167;5.15.  </b>This has to embed some Internet-sourced content. <span class="extract"><span class="extract-syntax">service</span></span>
+<p class="commentary firstcommentary"><a id="SP5_15" class="paragraph-anchor"></a><b>&#167;5.15.  </b>This has to embed some Internet-sourced content. <span class="extract"><span class="extract-syntax">service</span></span>
 here is something like <span class="extract"><span class="extract-syntax">YouTube</span></span> or <span class="extract"><span class="extract-syntax">Soundcloud</span></span>, and <span class="extract"><span class="extract-syntax">ID</span></span> is whatever code
 that service uses to identify the video/audio in question.
 </p>
@@ -720,7 +720,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_16"></a><b>&#167;5.16.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render pmac</span><span class="named-paragraph-number">5.16</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_16" class="paragraph-anchor"></a><b>&#167;5.16.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render pmac</span><span class="named-paragraph-number">5.16</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -749,14 +749,14 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_17"></a><b>&#167;5.17.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render vskip</span><span class="named-paragraph-number">5.17</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_17" class="paragraph-anchor"></a><b>&#167;5.17.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render vskip</span><span class="named-paragraph-number">5.17</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_18"></a><b>&#167;5.18.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render section</span><span class="named-paragraph-number">5.18</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_18" class="paragraph-anchor"></a><b>&#167;5.18.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render section</span><span class="named-paragraph-number">5.18</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -764,7 +764,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"It was %d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">allocation_id</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_19"></a><b>&#167;5.19.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render code line</span><span class="named-paragraph-number">5.19</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_19" class="paragraph-anchor"></a><b>&#167;5.19.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render code line</span><span class="named-paragraph-number">5.19</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -773,7 +773,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_20"></a><b>&#167;5.20.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render function usage</span><span class="named-paragraph-number">5.20</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_20" class="paragraph-anchor"></a><b>&#167;5.20.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render function usage</span><span class="named-paragraph-number">5.20</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -785,7 +785,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><a href="../foundation-module/5-htm.html#SP17" class="function-link"><span class="function-syntax">HTML::end_link</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_21"></a><b>&#167;5.21.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render commentary</span><span class="named-paragraph-number">5.21</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_21" class="paragraph-anchor"></a><b>&#167;5.21.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render commentary</span><span class="named-paragraph-number">5.21</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -809,7 +809,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">in_code</span><span class="plain-syntax">) </span><a href="5-hf.html#SP9" class="function-link"><span class="function-syntax">HTMLFormat::change_colour</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, -1, </span><span class="identifier-syntax">hrs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">colours</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_22"></a><b>&#167;5.22.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render carousel slide</span><span class="named-paragraph-number">5.22</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_22" class="paragraph-anchor"></a><b>&#167;5.22.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render carousel slide</span><span class="named-paragraph-number">5.22</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -886,7 +886,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_22_1"></a><b>&#167;5.22.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place caption here</span><span class="named-paragraph-number">5.22.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_22_1" class="paragraph-anchor"></a><b>&#167;5.22.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Place caption here</span><span class="named-paragraph-number">5.22.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -894,7 +894,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;div class=\"%S\"&gt;%S&lt;/div&gt;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">caption_class</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">caption</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5_22">&#167;5.22</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_23"></a><b>&#167;5.23.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render toc</span><span class="named-paragraph-number">5.23</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_23" class="paragraph-anchor"></a><b>&#167;5.23.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render toc</span><span class="named-paragraph-number">5.23</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -910,7 +910,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_24"></a><b>&#167;5.24.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render toc line</span><span class="named-paragraph-number">5.24</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_24" class="paragraph-anchor"></a><b>&#167;5.24.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render toc line</span><span class="named-paragraph-number">5.24</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -925,7 +925,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><a href="../foundation-module/5-htm.html#SP17" class="function-link"><span class="function-syntax">HTML::end_link</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_25"></a><b>&#167;5.25.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render defn</span><span class="named-paragraph-number">5.25</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_25" class="paragraph-anchor"></a><b>&#167;5.25.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render defn</span><span class="named-paragraph-number">5.25</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -936,7 +936,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" "</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_26"></a><b>&#167;5.26.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render source code</span><span class="named-paragraph-number">5.26</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_26" class="paragraph-anchor"></a><b>&#167;5.26.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render source code</span><span class="named-paragraph-number">5.26</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -959,7 +959,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_colour</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="5-hf.html#SP9" class="function-link"><span class="function-syntax">HTMLFormat::change_colour</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, -1, </span><span class="identifier-syntax">hrs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">colours</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_27"></a><b>&#167;5.27.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render URL</span><span class="named-paragraph-number">5.27</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_27" class="paragraph-anchor"></a><b>&#167;5.27.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render URL</span><span class="named-paragraph-number">5.27</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -969,7 +969,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><a href="../foundation-module/5-htm.html#SP17" class="function-link"><span class="function-syntax">HTML::end_link</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_28"></a><b>&#167;5.28.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render footnote cue</span><span class="named-paragraph-number">5.28</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_28" class="paragraph-anchor"></a><b>&#167;5.28.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render footnote cue</span><span class="named-paragraph-number">5.28</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -987,7 +987,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">            </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cue_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cue_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cue_text</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_29"></a><b>&#167;5.29.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render footnote</span><span class="named-paragraph-number">5.29</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_29" class="paragraph-anchor"></a><b>&#167;5.29.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render footnote</span><span class="named-paragraph-number">5.29</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1012,7 +1012,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_30"></a><b>&#167;5.30.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render display line</span><span class="named-paragraph-number">5.30</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_30" class="paragraph-anchor"></a><b>&#167;5.30.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render display line</span><span class="named-paragraph-number">5.30</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1025,7 +1025,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">; </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"blockquote"</span><span class="plain-syntax">); </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_31"></a><b>&#167;5.31.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render function defn</span><span class="named-paragraph-number">5.31</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_31" class="paragraph-anchor"></a><b>&#167;5.31.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render function defn</span><span class="named-paragraph-number">5.31</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1060,7 +1060,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_32"></a><b>&#167;5.32.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render item</span><span class="named-paragraph-number">5.32</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_32" class="paragraph-anchor"></a><b>&#167;5.32.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render item</span><span class="named-paragraph-number">5.32</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1070,7 +1070,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" "</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_33"></a><b>&#167;5.33.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render verbatim</span><span class="named-paragraph-number">5.33</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_33" class="paragraph-anchor"></a><b>&#167;5.33.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render verbatim</span><span class="named-paragraph-number">5.33</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1078,7 +1078,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">content</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_34"></a><b>&#167;5.34.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render inline</span><span class="named-paragraph-number">5.34</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_34" class="paragraph-anchor"></a><b>&#167;5.34.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render inline</span><span class="named-paragraph-number">5.34</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1088,7 +1088,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_35"></a><b>&#167;5.35.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render locale</span><span class="named-paragraph-number">5.35</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_35" class="paragraph-anchor"></a><b>&#167;5.35.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render locale</span><span class="named-paragraph-number">5.35</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1104,7 +1104,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    </span><a href="../foundation-module/5-htm.html#SP17" class="function-link"><span class="function-syntax">HTML::end_link</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_36"></a><b>&#167;5.36.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render maths</span><span class="named-paragraph-number">5.36</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_36" class="paragraph-anchor"></a><b>&#167;5.36.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render maths</span><span class="named-paragraph-number">5.36</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1123,21 +1123,21 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_37"></a><b>&#167;5.37.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render linebreak</span><span class="named-paragraph-number">5.37</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_37" class="paragraph-anchor"></a><b>&#167;5.37.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render linebreak</span><span class="named-paragraph-number">5.37</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;br/&gt;"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_38"></a><b>&#167;5.38.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render nothing</span><span class="named-paragraph-number">5.38</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_38" class="paragraph-anchor"></a><b>&#167;5.38.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render nothing</span><span class="named-paragraph-number">5.38</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    ;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_9_1"></a><b>&#167;5.9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Recurse the renderer through children nodes</span><span class="named-paragraph-number">5.9.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP5_9_1" class="paragraph-anchor"></a><b>&#167;5.9.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Recurse the renderer through children nodes</span><span class="named-paragraph-number">5.9.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1145,7 +1145,7 @@ that service uses to identify the video/audio in question.
 <span class="plain-syntax">        </span><a href="../foundation-module/2-trs.html#SP13" class="function-link"><span class="function-syntax">Trees::traverse_from</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">M</span><span class="plain-syntax">, &amp;</span><a href="5-hf.html#SP5" class="function-link"><span class="function-syntax">HTMLFormat::render_visit</span></a><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">hrs</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">+1);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-hf.html#SP5_9">&#167;5.9</a>, <a href="5-hf.html#SP5_14_2">&#167;5.14.2</a>, <a href="5-hf.html#SP5_14_3">&#167;5.14.3</a>, <a href="5-hf.html#SP5_14_4">&#167;5.14.4</a>, <a href="5-hf.html#SP5_14_5">&#167;5.14.5</a>, <a href="5-hf.html#SP5_14_6">&#167;5.14.6</a>, <a href="5-hf.html#SP5_19">&#167;5.19</a>, <a href="5-hf.html#SP5_22">&#167;5.22</a>, <a href="5-hf.html#SP5_29">&#167;5.29</a>, <a href="5-hf.html#SP5_31">&#167;5.31</a>, <a href="5-hf.html#SP5_34">&#167;5.34</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>These are the nodes falling under a commentary material node which we will
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>These are the nodes falling under a commentary material node which we will
 amalgamate into a single HTML paragraph:
 </p>
 
@@ -1160,7 +1160,7 @@ amalgamate into a single HTML paragraph:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b>Depth 1 means "inside a list entry"; depth 2, "inside an entry of a list
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Depth 1 means "inside a list entry"; depth 2, "inside an entry of a list
 which is itself inside a list entry"; and so on.
 </p>
 
@@ -1182,13 +1182,13 @@ which is itself inside a list entry"; and so on.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">to_depth</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"li"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">HTMLFormat::paragraph_number</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">HTMLFormat::paragraph_number</span></span>:<br/><a href="5-hf.html#SP5_8_1">&#167;5.8.1</a>, <a href="5-hf.html#SP5_14_1_1">&#167;5.14.1.1</a>, <a href="5-hf.html#SP5_14_5">&#167;5.14.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><a href="6-cln.html#SP11" class="function-link"><span class="function-syntax">Colonies::paragraph_anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="../foundation-module/5-htm.html#SP17" class="function-link"><span class="function-syntax">HTML::anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation-module/5-htm.html#SP17" class="function-link"><span class="function-syntax">HTML::anchor_with_class</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"paragraph-anchor"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">TEMP</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"b"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%s%S"</span><span class="plain-syntax">, (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_first_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ornament</span><span class="plain-syntax">) == </span><span class="character-syntax">'S'</span><span class="plain-syntax">)?</span><span class="string-syntax">"&amp;#167;"</span><span class="plain-syntax">:</span><span class="string-syntax">"&amp;para;"</span><span class="plain-syntax">,</span>
@@ -1197,7 +1197,7 @@ which is itself inside a list entry"; and so on.
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"b"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">HTMLFormat::change_colour</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">HTMLFormat::change_colour</span></span>:<br/><a href="5-hf.html#SP5_16">&#167;5.16</a>, <a href="5-hf.html#SP5_20">&#167;5.20</a>, <a href="5-hf.html#SP5_21">&#167;5.21</a>, <a href="5-hf.html#SP5_26">&#167;5.26</a>, <a href="5-hf.html#SP5_31">&#167;5.31</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">col</span><span class="plain-syntax">, </span><span class="reserved-syntax">colour_scheme</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cs</span><span class="plain-syntax">) {</span>
@@ -1223,7 +1223,7 @@ which is itself inside a list entry"; and so on.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">HTMLFormat::escape_text</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">HTMLFormat::escape_text</span></span>:<br/><a href="5-hf.html#SP5_5">&#167;5.5</a>, <a href="5-hf.html#SP5_6">&#167;5.6</a>, <a href="5-hf.html#SP5_16">&#167;5.16</a>, <a href="5-hf.html#SP5_30">&#167;5.30</a>, <a href="5-hf.html#SP5_36">&#167;5.36</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
@@ -1235,7 +1235,7 @@ which is itself inside a list entry"; and so on.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11"></a><b>&#167;11. EPUB-only methods. </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. EPUB-only methods. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">HTMLFormat::begin_weaving_EPUB</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">HTMLFormat::begin_weaving_EPUB</span></span>:<br/><a href="5-hf.html#SP1_2">&#167;1.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">weave_format</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wf</span><span class="plain-syntax">, </span><span class="reserved-syntax">web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">) {</span>

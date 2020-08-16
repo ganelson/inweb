@@ -52,7 +52,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="5-tf.html#SP1">&#167;1. Creation</a></li><li><a href="5-tf.html#SP2">&#167;2. Rendering</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1"></a><b>&#167;1. Creation. </b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Creation. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">TeX::create</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">TeX::create</span></span>:<br/>Format Methods - <a href="5-fm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -61,7 +61,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">wf</span><span class="plain-syntax">, </span><span class="constant-syntax">PREFORM_DOCUMENT_FOR_MTID</span><span class="plain-syntax">, </span><a href="5-tf.html#SP10" class="function-link"><span class="function-syntax">TeX::preform_document</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2"></a><b>&#167;2. Rendering. </b>At present, this renderer only makes the dialect of TeX needed for <span class="extract"><span class="extract-syntax">pdftex</span></span>,
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Rendering. </b>At present, this renderer only makes the dialect of TeX needed for <span class="extract"><span class="extract-syntax">pdftex</span></span>,
 which involves various extension commands: the curse of modern TeX is the
 combination of an outdated original, and a proliferation of non-canonical
 extensions, but <span class="extract"><span class="extract-syntax">pdftex</span></span> is pretty good. All the same, we should perhaps
@@ -75,7 +75,7 @@ consider adding LaTeX, or XeTeX.
 <span class="plain-syntax">    </span><a href="5-tf.html#SP3" class="function-link"><span class="function-syntax">TeX::render_inner</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="constant-syntax">PDFTEX_TEX_FORM</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3"></a><b>&#167;3.  </b>From here on, then, the renderer, which should generate TeX which is as
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>From here on, then, the renderer, which should generate TeX which is as
 generic as possible, but with special features depending on <span class="extract"><span class="extract-syntax">trs-&gt;TeX_form</span></span>.
 </p>
 
@@ -96,7 +96,7 @@ generic as possible, but with special features depending on <span class="extract
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure TeX_render_state is accessed in 1/apacs, 3/tc, 3/twot, 5/wt, 5/fm, 5/ptf, 5/hf, 5/df, 6/rw and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4"></a><b>&#167;4.  </b>For the reason why footnotes are omitted, see below: they aren't really.
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>For the reason why footnotes are omitted, see below: they aren't really.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -154,7 +154,7 @@ generic as possible, but with special features depending on <span class="extract
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render head</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render head</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -162,7 +162,7 @@ generic as possible, but with special features depending on <span class="extract
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%% %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">banner</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render tail</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render tail</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -171,7 +171,7 @@ generic as possible, but with special features depending on <span class="extract
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\end\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_3"></a><b>&#167;4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render chapter header</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render chapter header</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -190,7 +190,7 @@ generic as possible, but with special features depending on <span class="extract
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_4"></a><b>&#167;4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render header</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_4" class="paragraph-anchor"></a><b>&#167;4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render header</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -199,7 +199,7 @@ generic as possible, but with special features depending on <span class="extract
 <span class="plain-syntax">        </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">sect</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_title</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_5"></a><b>&#167;4.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render purpose</span><span class="named-paragraph-number">4.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_5" class="paragraph-anchor"></a><b>&#167;4.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render purpose</span><span class="named-paragraph-number">4.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -207,7 +207,7 @@ generic as possible, but with special features depending on <span class="extract
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\smallskip\\par\\noindent{\\it %S}\\smallskip\\noindent\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">purpose</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_6"></a><b>&#167;4.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render subheading</span><span class="named-paragraph-number">4.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_6" class="paragraph-anchor"></a><b>&#167;4.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render subheading</span><span class="named-paragraph-number">4.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -215,28 +215,28 @@ generic as possible, but with special features depending on <span class="extract
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\par\\noindent{\\bf %S}\\mark{%S}\\medskip\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_7"></a><b>&#167;4.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render bar</span><span class="named-paragraph-number">4.7</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_7" class="paragraph-anchor"></a><b>&#167;4.7.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render bar</span><span class="named-paragraph-number">4.7</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\par\\medskip\\noindent\\hrule\\medskip\\noindent\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_8"></a><b>&#167;4.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render pagebreak</span><span class="named-paragraph-number">4.8</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_8" class="paragraph-anchor"></a><b>&#167;4.8.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render pagebreak</span><span class="named-paragraph-number">4.8</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\vfill\\eject\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_9"></a><b>&#167;4.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render linebreak</span><span class="named-paragraph-number">4.9</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_9" class="paragraph-anchor"></a><b>&#167;4.9.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render linebreak</span><span class="named-paragraph-number">4.9</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_10"></a><b>&#167;4.10.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render paragraph heading</span><span class="named-paragraph-number">4.10</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_10" class="paragraph-anchor"></a><b>&#167;4.10.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render paragraph heading</span><span class="named-paragraph-number">4.10</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -246,7 +246,7 @@ generic as possible, but with special features depending on <span class="extract
 <span class="plain-syntax">        </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">para</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">""</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_11"></a><b>&#167;4.11.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render endnote</span><span class="named-paragraph-number">4.11</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_11" class="paragraph-anchor"></a><b>&#167;4.11.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render endnote</span><span class="named-paragraph-number">4.11</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -257,7 +257,7 @@ generic as possible, but with special features depending on <span class="extract
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_12"></a><b>&#167;4.12.  </b>TeX itself has an almost defiant lack of support for anything pictorial,
+<p class="commentary firstcommentary"><a id="SP4_12" class="paragraph-anchor"></a><b>&#167;4.12.  </b>TeX itself has an almost defiant lack of support for anything pictorial,
 which is one reason it didn't live up to its hope of being the definitive basis
 for typography; even today the loose confederation of TeX-like programs and
 extensions lack standard approaches. Here we're going to use <span class="extract"><span class="extract-syntax">pdftex</span></span> features,
@@ -282,7 +282,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">        </span><span class="string-syntax">"\\smallskip\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_13"></a><b>&#167;4.13.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render material</span><span class="named-paragraph-number">4.13</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_13" class="paragraph-anchor"></a><b>&#167;4.13.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render material</span><span class="named-paragraph-number">4.13</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -309,7 +309,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_13_1"></a><b>&#167;4.13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a commentary material node</span><span class="named-paragraph-number">4.13.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_13_1" class="paragraph-anchor"></a><b>&#167;4.13.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a commentary material node</span><span class="named-paragraph-number">4.13.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -317,7 +317,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4_13">&#167;4.13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_13_2"></a><b>&#167;4.13.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a code material node</span><span class="named-paragraph-number">4.13.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_13_2" class="paragraph-anchor"></a><b>&#167;4.13.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a code material node</span><span class="named-paragraph-number">4.13.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -326,21 +326,21 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\endlines\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4_13">&#167;4.13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_13_3"></a><b>&#167;4.13.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a footnotes material node</span><span class="named-paragraph-number">4.13.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_13_3" class="paragraph-anchor"></a><b>&#167;4.13.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a footnotes material node</span><span class="named-paragraph-number">4.13.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4_13">&#167;4.13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_13_4"></a><b>&#167;4.13.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a endnotes material node</span><span class="named-paragraph-number">4.13.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_13_4" class="paragraph-anchor"></a><b>&#167;4.13.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a endnotes material node</span><span class="named-paragraph-number">4.13.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-tf.html#SP4_11_1" class="named-paragraph-link"><span class="named-paragraph">Recurse tne renderer through children nodes</span><span class="named-paragraph-number">4.11.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4_13">&#167;4.13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_13_5"></a><b>&#167;4.13.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a macro material node</span><span class="named-paragraph-number">4.13.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_13_5" class="paragraph-anchor"></a><b>&#167;4.13.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a macro material node</span><span class="named-paragraph-number">4.13.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -348,7 +348,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4_13">&#167;4.13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_13_6"></a><b>&#167;4.13.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a definition material node</span><span class="named-paragraph-number">4.13.6</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_13_6" class="paragraph-anchor"></a><b>&#167;4.13.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with a definition material node</span><span class="named-paragraph-number">4.13.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -357,7 +357,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\endlines\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4_13">&#167;4.13</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_14"></a><b>&#167;4.14.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render verbatim</span><span class="named-paragraph-number">4.14</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_14" class="paragraph-anchor"></a><b>&#167;4.14.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render verbatim</span><span class="named-paragraph-number">4.14</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -365,14 +365,14 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">content</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_15"></a><b>&#167;4.15.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render nothing</span><span class="named-paragraph-number">4.15</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_15" class="paragraph-anchor"></a><b>&#167;4.15.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render nothing</span><span class="named-paragraph-number">4.15</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    ;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_16"></a><b>&#167;4.16.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render embed</span><span class="named-paragraph-number">4.16</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_16" class="paragraph-anchor"></a><b>&#167;4.16.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render embed</span><span class="named-paragraph-number">4.16</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -380,7 +380,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"It was %d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">allocation_id</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_17"></a><b>&#167;4.17.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render pmac</span><span class="named-paragraph-number">4.17</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_17" class="paragraph-anchor"></a><b>&#167;4.17.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render pmac</span><span class="named-paragraph-number">4.17</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -388,7 +388,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><a href="5-tf.html#SP8" class="function-link"><span class="function-syntax">TeX::para_macro</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">trs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">wv</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pmac</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">defn</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_18"></a><b>&#167;4.18.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render vskip</span><span class="named-paragraph-number">4.18</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_18" class="paragraph-anchor"></a><b>&#167;4.18.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render vskip</span><span class="named-paragraph-number">4.18</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -397,7 +397,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\smallskip\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_19"></a><b>&#167;4.19.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render section</span><span class="named-paragraph-number">4.19</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_19" class="paragraph-anchor"></a><b>&#167;4.19.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render section</span><span class="named-paragraph-number">4.19</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -405,7 +405,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"It was %d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">allocation_id</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_20"></a><b>&#167;4.20.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render code line</span><span class="named-paragraph-number">4.20</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_20" class="paragraph-anchor"></a><b>&#167;4.20.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render code line</span><span class="named-paragraph-number">4.20</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -417,7 +417,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_21"></a><b>&#167;4.21.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render function usage</span><span class="named-paragraph-number">4.21</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_21" class="paragraph-anchor"></a><b>&#167;4.21.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render function usage</span><span class="named-paragraph-number">4.21</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -427,7 +427,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_22"></a><b>&#167;4.22.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render commentary</span><span class="named-paragraph-number">4.22</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_22" class="paragraph-anchor"></a><b>&#167;4.22.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render commentary</span><span class="named-paragraph-number">4.22</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -438,7 +438,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">in_code</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}|"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_23"></a><b>&#167;4.23.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render toc</span><span class="named-paragraph-number">4.23</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_23" class="paragraph-anchor"></a><b>&#167;4.23.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render toc</span><span class="named-paragraph-number">4.23</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -451,7 +451,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_24"></a><b>&#167;4.24.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render toc line</span><span class="named-paragraph-number">4.24</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_24" class="paragraph-anchor"></a><b>&#167;4.24.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render toc line</span><span class="named-paragraph-number">4.24</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -459,7 +459,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S~%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text1</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text2</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_25"></a><b>&#167;4.25.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render defn</span><span class="named-paragraph-number">4.25</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_25" class="paragraph-anchor"></a><b>&#167;4.25.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render defn</span><span class="named-paragraph-number">4.25</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -467,7 +467,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"|{\\ninebf %S} |"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">keyword</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_26"></a><b>&#167;4.26.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render source code</span><span class="named-paragraph-number">4.26</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_26" class="paragraph-anchor"></a><b>&#167;4.26.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render source code</span><span class="named-paragraph-number">4.26</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -479,7 +479,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">        </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">colouring</span><span class="plain-syntax">, </span><span class="identifier-syntax">starts</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_27"></a><b>&#167;4.27.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render URL</span><span class="named-paragraph-number">4.27</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_27" class="paragraph-anchor"></a><b>&#167;4.27.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render URL</span><span class="named-paragraph-number">4.27</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -487,7 +487,7 @@ to a given width, into the text at the current position.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">url</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_28"></a><b>&#167;4.28.  </b>The TeX macro for footnotes means that the text has to accompany the cue,
+<p class="commentary firstcommentary"><a id="SP4_28" class="paragraph-anchor"></a><b>&#167;4.28.  </b>The TeX macro for footnotes means that the text has to accompany the cue,
 which is tricky for us now because the footnote text is somewhere else in
 the weave tree &mdash; so, we go for a little walk:
 </p>
@@ -525,7 +525,7 @@ the weave tree &mdash; so, we go for a little walk:
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">found</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"cue without text"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_28_1"></a><b>&#167;4.28.1.  </b>And so here's the text. Note that we render only its second and subsequent
+<p class="commentary firstcommentary"><a id="SP4_28_1" class="paragraph-anchor"></a><b>&#167;4.28.1.  </b>And so here's the text. Note that we render only its second and subsequent
 child nodes: that's because the first child is a copy of the footnote cue,
 and TeX renders that automatically.
 </p>
@@ -543,7 +543,7 @@ are not rendered here, they never will be.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">found</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4_28">&#167;4.28</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_29"></a><b>&#167;4.29.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render display line</span><span class="named-paragraph-number">4.29</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_29" class="paragraph-anchor"></a><b>&#167;4.29.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render display line</span><span class="named-paragraph-number">4.29</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -552,7 +552,7 @@ are not rendered here, they never will be.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\quotesource{%S}\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">text</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_30"></a><b>&#167;4.30.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render function defn</span><span class="named-paragraph-number">4.30</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_30" class="paragraph-anchor"></a><b>&#167;4.30.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render function defn</span><span class="named-paragraph-number">4.30</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -564,7 +564,7 @@ are not rendered here, they never will be.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_31"></a><b>&#167;4.31.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render item</span><span class="named-paragraph-number">4.31</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_31" class="paragraph-anchor"></a><b>&#167;4.31.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render item</span><span class="named-paragraph-number">4.31</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -578,14 +578,14 @@ are not rendered here, they never will be.)
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_32"></a><b>&#167;4.32.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render grammar index</span><span class="named-paragraph-number">4.32</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_32" class="paragraph-anchor"></a><b>&#167;4.32.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render grammar index</span><span class="named-paragraph-number">4.32</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="4-is.html#SP15" class="function-link"><span class="function-syntax">InCSupport::weave_grammar_index</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_33"></a><b>&#167;4.33.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render inline</span><span class="named-paragraph-number">4.33</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_33" class="paragraph-anchor"></a><b>&#167;4.33.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render inline</span><span class="named-paragraph-number">4.33</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -595,7 +595,7 @@ are not rendered here, they never will be.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_34"></a><b>&#167;4.34.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render locale</span><span class="named-paragraph-number">4.34</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_34" class="paragraph-anchor"></a><b>&#167;4.34.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render locale</span><span class="named-paragraph-number">4.34</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -604,7 +604,7 @@ are not rendered here, they never will be.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">par2</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"-%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">par2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">paragraph_number</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_35"></a><b>&#167;4.35.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render maths</span><span class="named-paragraph-number">4.35</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_35" class="paragraph-anchor"></a><b>&#167;4.35.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Render maths</span><span class="named-paragraph-number">4.35</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -614,7 +614,7 @@ are not rendered here, they never will be.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">displayed</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"$$"</span><span class="plain-syntax">); </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"$"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_11_1"></a><b>&#167;4.11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Recurse tne renderer through children nodes</span><span class="named-paragraph-number">4.11.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_11_1" class="paragraph-anchor"></a><b>&#167;4.11.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Recurse tne renderer through children nodes</span><span class="named-paragraph-number">4.11.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -622,7 +622,7 @@ are not rendered here, they never will be.)
 <span class="plain-syntax">        </span><a href="../foundation-module/2-trs.html#SP13" class="function-link"><span class="function-syntax">Trees::traverse_from</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">M</span><span class="plain-syntax">, &amp;</span><a href="5-tf.html#SP4" class="function-link"><span class="function-syntax">TeX::render_visit</span></a><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">trs</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">+1);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP4_11">&#167;4.11</a>, <a href="5-tf.html#SP4_13_1">&#167;4.13.1</a>, <a href="5-tf.html#SP4_13_2">&#167;4.13.2</a>, <a href="5-tf.html#SP4_13_4">&#167;4.13.4</a>, <a href="5-tf.html#SP4_13_5">&#167;4.13.5</a>, <a href="5-tf.html#SP4_13_6">&#167;4.13.6</a>, <a href="5-tf.html#SP4_20">&#167;4.20</a>, <a href="5-tf.html#SP4_33">&#167;4.33</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5"></a><b>&#167;5.  </b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P_literal</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -654,7 +654,7 @@ are not rendered here, they never will be.)
 <span class="plain-syntax">    </span><a href="../foundation-module/4-pm.html#SP9" class="function-link"><span class="function-syntax">Regexp::dispose_of</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1"></a><b>&#167;5.1.  </b>We want to have different heading styles for different weights, and TeX is
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1.  </b>We want to have different heading styles for different weights, and TeX is
 horrible at using macro parameters as function arguments, so we don't want
 to pass the weight that way. Instead we use
 </p>
@@ -698,7 +698,7 @@ prevent unsightly excess white space in certain configurations of a section.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2"></a><b>&#167;5.2.  </b>"Marks" are the contrivance by which TeX produces running heads on pages
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2.  </b>"Marks" are the contrivance by which TeX produces running heads on pages
 which follow the material on those pages: so that the running head for a page
 can show the paragraph range for the material which tops it, for instance.
 </p>
@@ -730,7 +730,7 @@ in TeX's deeply peculiar font encoding system.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">mark</span><span class="plain-syntax">, </span><span class="string-syntax">"%S%S\\quad$\\%S$%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">chaptermark</span><span class="plain-syntax">, </span><span class="identifier-syntax">sectionmark</span><span class="plain-syntax">, </span><span class="identifier-syntax">orn</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6"></a><b>&#167;6.  </b>Code is typeset by TeX within vertical strokes; these switch a sort of
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Code is typeset by TeX within vertical strokes; these switch a sort of
 typewriter-type verbatim mode on and off. To get an actual stroke, we must
 escape from code mode, escape it using a backslash, then re-enter code
 mode once again:
@@ -749,7 +749,7 @@ mode once again:
 <span class="plain-syntax">    </span><span class="identifier-syntax">colour_wanted</span><span class="plain-syntax"> = </span><span class="constant-syntax">PLAIN_COLOUR</span><span class="plain-syntax">; </span><span class="named-paragraph-container code-font"><a href="5-tf.html#SP6_1" class="named-paragraph-link"><span class="named-paragraph">Adjust code colour as necessary</span><span class="named-paragraph-number">6.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP_1"></a><b>&#167;.1.  </b>We actually use <span class="extract"><span class="extract-syntax">\qquad</span></span> horizontal spaces rather than risk using TeX's
+<p class="commentary firstcommentary"><a id="SP_1" class="paragraph-anchor"></a><b>&#167;.1.  </b>We actually use <span class="extract"><span class="extract-syntax">\qquad</span></span> horizontal spaces rather than risk using TeX's
 messy alignment system:
 </p>
 
@@ -761,7 +761,7 @@ messy alignment system:
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">tab_stops_of_indentation</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\qquad"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is never used.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6_1"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adjust code colour as necessary</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adjust code colour as necessary</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -771,7 +771,7 @@ messy alignment system:
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP6">&#167;6</a> (twice).</li></ul>
-<p class="commentary firstcommentary"><a id="SP7"></a><b>&#167;7.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">TeX::change_colour_PDF</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">TeX::change_colour_PDF</span></span>:<br/><a href="5-tf.html#SP4_30">&#167;4.30</a>, <a href="5-tf.html#SP6_1">&#167;6.1</a>, <a href="5-tf.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">col</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">in_code</span><span class="plain-syntax">) {</span>
@@ -789,7 +789,7 @@ messy alignment system:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8"></a><b>&#167;8.  </b>Any usage of angle-macros is highlighted in several cute ways: first,
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Any usage of angle-macros is highlighted in several cute ways: first,
 we make use of colour and we drop in the paragraph number of the definition
 of the macro in small type; and second, we use cross-reference links.
 </p>
@@ -818,7 +818,7 @@ or DVI, only the middle one is.
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\pdfendlink|"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9"></a><b>&#167;9.  </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">TeX::commentary_text</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">TeX::commentary_text</span></span>:<br/><a href="5-tf.html#SP4_22">&#167;4.22</a>, <a href="5-tf.html#SP10_2">&#167;10.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">id</span><span class="plain-syntax">) {</span>
@@ -842,7 +842,7 @@ or DVI, only the middle one is.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10"></a><b>&#167;10.  </b>The following is called only when the language is InC, and the weave is of
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The following is called only when the language is InC, and the weave is of
 the special Preform grammar document.
 </p>
 
@@ -863,7 +863,7 @@ the special Preform grammar document.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10_1"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Weave the opening line of the nonterminal definition</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_1" class="paragraph-anchor"></a><b>&#167;10.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Weave the opening line of the nonterminal definition</span><span class="named-paragraph-number">10.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -883,7 +883,7 @@ the special Preform grammar document.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tf.html#SP10">&#167;10</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_2"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Weave a line from the body of the nonterminal definition</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_2" class="paragraph-anchor"></a><b>&#167;10.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Weave a line from the body of the nonterminal definition</span><span class="named-paragraph-number">10.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
