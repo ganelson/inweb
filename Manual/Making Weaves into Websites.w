@@ -96,6 +96,14 @@ directory name.) The point of this web is that it weaves to the |index.html|
 home page; it's referred to in links as being the "overview", because that's
 its name as a web.
 
+Presentationally, it may look better if paragraph numbers are omitted from
+these all-in-one webs used just to make top-level description pages. This
+can be done by adding
+= (text)
+Paragraph Numbers Visibility: Off
+=
+to the metadata for the all-in-one web.
+
 @ The command |assets X| tells Inweb to place "assets" such as images, CSS and
 JavaScript files which are needed by plugins (see //Advanced Weaving with Patterns//)
 into the directory |X|. In practice, this avoids a great deal of duplication:
