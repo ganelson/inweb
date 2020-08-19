@@ -76,6 +76,7 @@ void Bibliographic::initialise_data(web_md *Wm) {
 	bd = Bibliographic::set_datum(Wm, I"Code In Code Comments Notation", I"|");
 	bd = Bibliographic::set_datum(Wm, I"Cross-References Notation", I"//");
 	bd = Bibliographic::set_datum(Wm, I"Web Syntax Version", NULL);
+	bd = Bibliographic::set_datum(Wm, I"Paragraph Numbers Visibility", I"On");
 }
 
 @ Once the declarations for a web have been processed, the following is called

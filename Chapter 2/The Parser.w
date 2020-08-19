@@ -735,6 +735,7 @@ typedef struct paragraph {
 	int above_bar; /* placed above the dividing bar in its section (in Version 1 syntax) */
 	int placed_early; /* should appear early in the tangled code */
 	int placed_very_early; /* should appear very early in the tangled code */
+	int invisible; /* do not render paragraph number */
 	struct text_stream *heading_text; /* if any - many paras have none */
 	struct text_stream *ornament; /* a "P" for a pilcrow or "S" for section-marker */
 	struct text_stream *paragraph_number; /* used in combination with the ornament */
@@ -765,6 +766,9 @@ typedef struct paragraph {
 		P->placed_early = before_bar;
 		P->placed_very_early = FALSE;
 	}
+	P->invisible = FALSE;
+	if (Str::eq(Bibliographic::get_datum(W->md, I"Paragraph Numbers Visibility"), I"Off"))
+		P->invisible = TRUE;
 	P->heading_text = Str::duplicate(L->text_operand);
 	if ((S->md->using_syntax == V1_SYNTAX) && (before_bar))
 		P->ornament = Str::duplicate(I"P");

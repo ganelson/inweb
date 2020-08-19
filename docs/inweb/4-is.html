@@ -710,11 +710,11 @@ was well.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    &lt;k-kind-of-kind&gt; &lt;k-formal-kind-variable&gt; ==&gt; { - , Kinds::variable_construction(R[2], RP[1]) }</span>
+<span class="plain-syntax">    &lt;k-kind-of-kind&gt; &lt;k-formal-variable&gt; ==&gt; { - , Kinds::var_construction(R[2], RP[1]) }</span>
 </pre>
 <p class="commentary">which says that the composite result &mdash; the right-hand formula &mdash; is formed by
 calling a particular routine on the integer result of subexpression 2
-(<span class="extract"><span class="extract-syntax">&lt;k-formal-kind-variable&gt;</span></span>) and the pointer result of subexpression 1
+(<span class="extract"><span class="extract-syntax">&lt;k-formal-variable&gt;</span></span>) and the pointer result of subexpression 1
 (<span class="extract"><span class="extract-syntax">&lt;k-kind-of-kind&gt;</span></span>). The answer, the composite result, that is, must be
 placed in <span class="extract"><span class="extract-syntax">*X</span></span> and <span class="extract"><span class="extract-syntax">*XP</span></span>. (Composition functions are also allowed to
 invalidate the result, by returning <span class="extract"><span class="extract-syntax">FALSE</span></span>, and have other tricks up their

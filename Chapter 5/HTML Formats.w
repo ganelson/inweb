@@ -919,11 +919,13 @@ void HTMLFormat::paragraph_number(text_stream *OUT, paragraph *P) {
 	Colonies::paragraph_anchor(TEMP, P);
 	HTML::anchor_with_class(OUT, TEMP, I"paragraph-anchor");
 	DISCARD_TEXT(TEMP)
-	HTML_OPEN("b");
-	WRITE("%s%S", (Str::get_first_char(P->ornament) == 'S')?"&#167;":"&para;",
-		P->paragraph_number);
-	WRITE(". %S%s ", P->heading_text, (Str::len(P->heading_text) > 0)?".":"");
-	HTML_CLOSE("b");
+	if (P->invisible == FALSE) {
+		HTML_OPEN("b");
+		WRITE("%s%S", (Str::get_first_char(P->ornament) == 'S')?"&#167;":"&para;",
+			P->paragraph_number);
+		WRITE(". %S%s ", P->heading_text, (Str::len(P->heading_text) > 0)?".":"");
+		HTML_CLOSE("b");
+	}
 }
 
 @ =
