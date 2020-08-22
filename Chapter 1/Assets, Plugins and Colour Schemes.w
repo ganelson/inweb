@@ -271,7 +271,7 @@ Finally, then, we can include a single asset. This has already been located,
 at filename |F|, and we now know how to find the applicable rule.
 
 =
-void Assets::include_asset(OUTPUT_STREAM, asset_rule *R, web *W, filename *F,
+pathname *Assets::include_asset(OUTPUT_STREAM, asset_rule *R, web *W, filename *F,
 	text_stream *trans, weave_pattern *pattern, filename *from) {
 	if (R == NULL) R = Assets::applicable_rule(pattern, F);
 	TEMPORARY_TEXT(url)
@@ -279,6 +279,7 @@ void Assets::include_asset(OUTPUT_STREAM, asset_rule *R, web *W, filename *F,
 	if (AP) Pathnames::relative_URL(url, Filenames::up(from), AP);
 	WRITE_TO(url, "%S", Filenames::get_leafname(F));
 	if (R->transform_names == FALSE) trans = NULL;
+	pathname *result = NULL;
 	if (Str::len(R->pre) > 0) @<Embed the prefix, if any@>;
 	switch (R->method) {
 		case EMBED_ASSET_METHOD: @<Embed asset@>; break;
@@ -288,6 +289,7 @@ void Assets::include_asset(OUTPUT_STREAM, asset_rule *R, web *W, filename *F,
 	}
 	if (Str::len(R->post) > 0) @<Embed the suffix, if any@>;
 	DISCARD_TEXT(url)
+	return result;
 }
 
 @<Embed the prefix, if any@> =
@@ -315,7 +317,10 @@ void Assets::include_asset(OUTPUT_STREAM, asset_rule *R, web *W, filename *F,
 			Errors::fatal_with_file("unable to write tangled file", F);
 		Assets::transform(&css_S, F, trans);
 		STREAM_CLOSE(&css_S);
-	} else Shell::copy(F, H, "");
+	} else {
+		Shell::copy(F, H, "");
+		result = H;
+	}
 	if (W->as_ebook) {
 		filename *rel = Filenames::in(NULL, Filenames::get_leafname(F));
 		Epub::note_image(W->as_ebook, rel);

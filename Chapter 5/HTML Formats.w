@@ -363,20 +363,21 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 
 @<Render download@> =
 	weave_download_node *C = RETRIEVE_POINTER_weave_download_node(N->content);
-	filename *F = Filenames::in(
-		Pathnames::down(hrs->wv->weave_web->md->path_to_web, I"Downloads"),
-		C->download_name);
+	pathname *P = Pathnames::down(hrs->wv->weave_web->md->path_to_web, I"Downloads");
+	filename *F = Filenames::in(P, C->download_name);
 	filename *TF = Patterns::find_file_in_subdirectory(hrs->wv->pattern, I"Embedding",
 		I"Download.html");
 	if (TF == NULL) {
 		Main::error_in_web(I"Downloads are not supported", hrs->wv->current_weave_line);
 	} else {
 		Swarm::ensure_plugin(hrs->wv, I"Downloads");
-		Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-			hrs->wv->pattern, hrs->wv->weave_to);
+		pathname *TOP =
+			Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
+				hrs->wv->pattern, hrs->wv->weave_to);
+		if (TOP == NULL) TOP = Filenames::up(F);
 		TEMPORARY_TEXT(url)
 		TEMPORARY_TEXT(size)
-		Pathnames::relative_URL(url, Filenames::up(hrs->wv->weave_to), Filenames::up(F));
+		Pathnames::relative_URL(url, Filenames::up(hrs->wv->weave_to), TOP);
 		WRITE_TO(url, "%S", Filenames::get_leafname(F));
 		int N = Filenames::size(F);
 		if (N > 0) @<Describe the file size@>
