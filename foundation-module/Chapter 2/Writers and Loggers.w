@@ -263,3 +263,14 @@ file encodings, but expanding |%s| does not.
 		case '$': Streams::putc('$', stream); break;
 	}
 	#pragma clang diagnostic pop
+
+@h Abbreviation macros.
+The following proved convenient for Inform, at any rate.
+
+@d REGISTER_WRITER(c, f) Writers::register_logger(c, &f##_writer);
+@d COMPILE_WRITER(t, f)
+	void f##_writer(text_stream *format, void *obj) { text_stream *SDL = DL; DL = format; if (DL) f((t) obj); DL = SDL; }
+
+@d REGISTER_WRITER_I(c, f) Writers::register_logger_I(c, &f##_writer);
+@d COMPILE_WRITER_I(t, f)
+	void f##_writer(text_stream *format, int I) { text_stream *SDL = DL; DL = format; if (DL) f((t) I); DL = SDL; }

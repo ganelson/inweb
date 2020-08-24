@@ -598,6 +598,12 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define INTSIZED_ECAT 2		/* data to be printed is or fits into an integer */
 #define WORDING_ECAT 3		/* data to be printed is a |wording| structure from inform7 */
 #define DIRECT_ECAT 4		/* data must be printed directly by the code below */
+#define REGISTER_WRITER(c, f) Writers__register_logger(c, &f##_writer);
+#define COMPILE_WRITER(t, f)\
+    	void f##_writer(text_stream *format, void *obj) { text_stream *SDL = DL; DL = format; if (DL) f((t) obj); DL = SDL; }
+#define REGISTER_WRITER_I(c, f) Writers__register_logger_I(c, &f##_writer);
+#define COMPILE_WRITER_I(t, f)\
+    	void f##_writer(text_stream *format, int I) { text_stream *SDL = DL; DL = format; if (DL) f((t) I); DL = SDL; }
 #define UNUSED_METHOD_ID_MTID 1
 #define INT_METHOD_TYPE(id, args...)\
     	typedef int (*id##_type)(args);
@@ -8373,11 +8379,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A63";
+			char *svn = "7-alpha.1+1A64";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "19 August 2020";
+			char *d = "22 August 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;

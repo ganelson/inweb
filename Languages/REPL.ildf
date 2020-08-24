@@ -5,7 +5,7 @@ Extension: ".repl"
 colouring {
 	=> !plain
 	# Detect expression-value lines, not being fooled by a colon inside quotes
-	brackets in /\s*(.*?):(.*)/ {
+	brackets in /\s*'(.*?)':(.*)/ {
 		number 1 => !element
 		number 2 => !string
 	}
