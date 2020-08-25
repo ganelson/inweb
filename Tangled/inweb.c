@@ -4327,19 +4327,19 @@ void  HTMLFormat__render(weave_format *self, text_stream *OUT, heterogeneous_tre
 void  HTMLFormat__render_EPUB(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) ;
 #line 86 "inweb/Chapter 5/HTML Formats.w"
 int  HTMLFormat__render_visit(tree_node *N, void *state, int L) ;
-#line 886 "inweb/Chapter 5/HTML Formats.w"
+#line 888 "inweb/Chapter 5/HTML Formats.w"
 int  HTMLFormat__interior_material(tree_node *N) ;
-#line 900 "inweb/Chapter 5/HTML Formats.w"
+#line 902 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__go_to_depth(HTML_render_state *hrs, int from_depth, int to_depth) ;
-#line 918 "inweb/Chapter 5/HTML Formats.w"
+#line 920 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__paragraph_number(text_stream *OUT, paragraph *P) ;
-#line 933 "inweb/Chapter 5/HTML Formats.w"
+#line 935 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__change_colour(text_stream *OUT, int col, colour_scheme *cs) ;
-#line 957 "inweb/Chapter 5/HTML Formats.w"
+#line 959 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__escape_text(text_stream *OUT, text_stream *id) ;
-#line 969 "inweb/Chapter 5/HTML Formats.w"
+#line 971 "inweb/Chapter 5/HTML Formats.w"
 int  HTMLFormat__begin_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) ;
-#line 984 "inweb/Chapter 5/HTML Formats.w"
+#line 986 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__end_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) ;
 #line 9 "inweb/Chapter 5/Debugging Format.w"
 void  Debugging__create(void) ;
@@ -8379,11 +8379,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A64";
+			char *svn = "7-alpha.1+1A65";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "22 August 2020";
+			char *d = "24 August 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -26861,7 +26861,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 		(N->type == weave_chapter_title_page_node_type) ||
 		(N->type == weave_grammar_index_node_type)) 
 {
-#line 876 "inweb/Chapter 5/HTML Formats.w"
+#line 878 "inweb/Chapter 5/HTML Formats.w"
 	;
 
 }
@@ -26879,7 +26879,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_tail_node_type) 
 {
-#line 279 "inweb/Chapter 5/HTML Formats.w"
+#line 281 "inweb/Chapter 5/HTML Formats.w"
 	weave_tail_node *C = RETRIEVE_POINTER_weave_tail_node(N->content);
 	HTML__comment(OUT, C->rennab);
 
@@ -26888,7 +26888,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_verbatim_node_type) 
 {
-#line 836 "inweb/Chapter 5/HTML Formats.w"
+#line 838 "inweb/Chapter 5/HTML Formats.w"
 	weave_verbatim_node *C = RETRIEVE_POINTER_weave_verbatim_node(N->content);
 	WRITE("%S", C->content);
 
@@ -26956,7 +26956,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 		HTML_OPEN_WITH("ul", "class=\"progressbar\"");
 		
 {
-#line 257 "inweb/Chapter 5/HTML Formats.w"
+#line 259 "inweb/Chapter 5/HTML Formats.w"
 	if (prev_S) HTML_OPEN_WITH("li", "class=\"progressprev\"")
 	else HTML_OPEN_WITH("li", "class=\"progressprevoff\"");
 	TEMPORARY_TEXT(TEMP)
@@ -26979,17 +26979,19 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 					} else {
 						HTML_OPEN_WITH("li", "class=\"progresschapter\"");
 					}
-					TEMPORARY_TEXT(TEMP)
 					section *S = FIRST_IN_LINKED_LIST(section, Ch->sections);
-					Colonies__section_URL(TEMP, S->md);
-					if (Ch != C->sect->owning_chapter) {
-						HTML__begin_link(OUT, TEMP);
+					if (S) {
+						TEMPORARY_TEXT(TEMP)
+						Colonies__section_URL(TEMP, S->md);
+						if (Ch != C->sect->owning_chapter) {
+							HTML__begin_link(OUT, TEMP);
+						}
+						WRITE("%S", Ch->md->ch_range);
+						if (Ch != C->sect->owning_chapter) {
+							HTML__end_link(OUT);
+						}
+						DISCARD_TEXT(TEMP)
 					}
-					WRITE("%S", Ch->md->ch_range);
-					if (Ch != C->sect->owning_chapter) {
-						HTML__end_link(OUT);
-					}
-					DISCARD_TEXT(TEMP)
 					HTML_CLOSE("li");
 				}
 				if (Ch == C->sect->owning_chapter) {
@@ -27025,7 +27027,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 		}
 		
 {
-#line 268 "inweb/Chapter 5/HTML Formats.w"
+#line 270 "inweb/Chapter 5/HTML Formats.w"
 	if (next_S) HTML_OPEN_WITH("li", "class=\"progressnext\"")
 	else HTML_OPEN_WITH("li", "class=\"progressnextoff\"");
 	TEMPORARY_TEXT(TEMP)
@@ -27037,7 +27039,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	HTML_CLOSE("li");
 
 }
-#line 250 "inweb/Chapter 5/HTML Formats.w"
+#line 252 "inweb/Chapter 5/HTML Formats.w"
 ;
 		HTML_CLOSE("ul");
 		HTML_CLOSE("div");
@@ -27049,7 +27051,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_section_purpose_node_type) 
 {
-#line 283 "inweb/Chapter 5/HTML Formats.w"
+#line 285 "inweb/Chapter 5/HTML Formats.w"
 	weave_section_purpose_node *C =
 		RETRIEVE_POINTER_weave_section_purpose_node(N->content);
 	HTML_OPEN_WITH("p", "class=\"purpose\"");
@@ -27061,7 +27063,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_subheading_node_type) 
 {
-#line 290 "inweb/Chapter 5/HTML Formats.w"
+#line 292 "inweb/Chapter 5/HTML Formats.w"
 	weave_subheading_node *C = RETRIEVE_POINTER_weave_subheading_node(N->content);
 	HTML_OPEN("h3");
 	HTMLFormat__escape_text(OUT, C->text);
@@ -27072,7 +27074,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_bar_node_type) 
 {
-#line 296 "inweb/Chapter 5/HTML Formats.w"
+#line 298 "inweb/Chapter 5/HTML Formats.w"
 	HTML__hr(OUT, NULL);
 
 }
@@ -27080,7 +27082,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_paragraph_heading_node_type) 
 {
-#line 299 "inweb/Chapter 5/HTML Formats.w"
+#line 301 "inweb/Chapter 5/HTML Formats.w"
 	weave_paragraph_heading_node *C =
 		RETRIEVE_POINTER_weave_paragraph_heading_node(N->content);
 	paragraph *P = C->para;
@@ -27089,7 +27091,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 		paragraph *first_in_para = P;
 		
 {
-#line 436 "inweb/Chapter 5/HTML Formats.w"
+#line 438 "inweb/Chapter 5/HTML Formats.w"
 	if (first_in_para) {
 		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 		HTMLFormat__paragraph_number(OUT, first_in_para);
@@ -27098,7 +27100,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	}
 
 }
-#line 305 "inweb/Chapter 5/HTML Formats.w"
+#line 307 "inweb/Chapter 5/HTML Formats.w"
 ;
 	}
 
@@ -27107,16 +27109,16 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_endnote_node_type) 
 {
-#line 309 "inweb/Chapter 5/HTML Formats.w"
+#line 311 "inweb/Chapter 5/HTML Formats.w"
 	HTML_OPEN("li");
 	
 {
-#line 879 "inweb/Chapter 5/HTML Formats.w"
+#line 881 "inweb/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLFormat__render_visit, (void *) hrs, L+1);
 
 }
-#line 310 "inweb/Chapter 5/HTML Formats.w"
+#line 312 "inweb/Chapter 5/HTML Formats.w"
 ;
 	HTML_CLOSE("li");
 	return FALSE;
@@ -27126,7 +27128,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_figure_node_type) 
 {
-#line 315 "inweb/Chapter 5/HTML Formats.w"
+#line 317 "inweb/Chapter 5/HTML Formats.w"
 	weave_figure_node *C = RETRIEVE_POINTER_weave_figure_node(N->content);
 	filename *F = Filenames__in(
 		Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_478),
@@ -27144,7 +27146,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_audio_node_type) 
 {
-#line 328 "inweb/Chapter 5/HTML Formats.w"
+#line 330 "inweb/Chapter 5/HTML Formats.w"
 	weave_audio_node *C = RETRIEVE_POINTER_weave_audio_node(N->content);
 	filename *F = Filenames__in(
 		Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_479),
@@ -27164,7 +27166,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_video_node_type) 
 {
-#line 343 "inweb/Chapter 5/HTML Formats.w"
+#line 345 "inweb/Chapter 5/HTML Formats.w"
 	weave_video_node *C = RETRIEVE_POINTER_weave_video_node(N->content);
 	filename *F = Filenames__in(
 		Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_480),
@@ -27191,7 +27193,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_download_node_type) 
 {
-#line 365 "inweb/Chapter 5/HTML Formats.w"
+#line 367 "inweb/Chapter 5/HTML Formats.w"
 	weave_download_node *C = RETRIEVE_POINTER_weave_download_node(N->content);
 	pathname *P = Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_481);
 	filename *F = Filenames__in(P, C->download_name);
@@ -27212,7 +27214,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 		int N = Filenames__size(F);
 		if (N > 0) 
 {
-#line 399 "inweb/Chapter 5/HTML Formats.w"
+#line 401 "inweb/Chapter 5/HTML Formats.w"
 	WRITE_TO(size, " (");
 	if (Str__len(C->filetype) > 0) WRITE_TO(size, "%S, ", C->filetype);
 	int x = 0, y = 0;
@@ -27227,7 +27229,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	WRITE_TO(size, ")");
 
 }
-#line 383 "inweb/Chapter 5/HTML Formats.w"
+#line 385 "inweb/Chapter 5/HTML Formats.w"
 
 		else Main__error_in_web(TL_IS_486,
 				hrs->wv->current_weave_line);
@@ -27248,7 +27250,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_material_node_type) 
 {
-#line 413 "inweb/Chapter 5/HTML Formats.w"
+#line 415 "inweb/Chapter 5/HTML Formats.w"
 	weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
 	paragraph *first_in_para = NULL;
 	if ((N == N->parent->child) &&
@@ -27260,13 +27262,13 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	if (C->material_type == COMMENTARY_MATERIAL)
 		
 {
-#line 444 "inweb/Chapter 5/HTML Formats.w"
+#line 446 "inweb/Chapter 5/HTML Formats.w"
 	int item_depth = 0;
 	for (tree_node *M = N->child; M; M = M->next) {
 		if (M->type == weave_item_node_type) {
 			
 {
-#line 436 "inweb/Chapter 5/HTML Formats.w"
+#line 438 "inweb/Chapter 5/HTML Formats.w"
 	if (first_in_para) {
 		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 		HTMLFormat__paragraph_number(OUT, first_in_para);
@@ -27275,7 +27277,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	}
 
 }
-#line 447 "inweb/Chapter 5/HTML Formats.w"
+#line 449 "inweb/Chapter 5/HTML Formats.w"
 ;
 			weave_item_node *C = RETRIEVE_POINTER_weave_item_node(M->content);
 			HTMLFormat__go_to_depth(hrs, item_depth, C->depth);
@@ -27285,7 +27287,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 		}
 		if (HTMLFormat__interior_material(M)) 
 {
-#line 469 "inweb/Chapter 5/HTML Formats.w"
+#line 471 "inweb/Chapter 5/HTML Formats.w"
 	if (first_in_para) {
 		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 		HTMLFormat__paragraph_number(OUT, first_in_para);
@@ -27302,11 +27304,11 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	continue;
 
 }
-#line 454 "inweb/Chapter 5/HTML Formats.w"
+#line 456 "inweb/Chapter 5/HTML Formats.w"
 ;
 		
 {
-#line 436 "inweb/Chapter 5/HTML Formats.w"
+#line 438 "inweb/Chapter 5/HTML Formats.w"
 	if (first_in_para) {
 		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 		HTMLFormat__paragraph_number(OUT, first_in_para);
@@ -27315,7 +27317,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	}
 
 }
-#line 455 "inweb/Chapter 5/HTML Formats.w"
+#line 457 "inweb/Chapter 5/HTML Formats.w"
 ;
 		if (item_depth > 0) {
 			HTMLFormat__go_to_depth(hrs, item_depth, 0);
@@ -27330,15 +27332,15 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	}
 
 }
-#line 422 "inweb/Chapter 5/HTML Formats.w"
+#line 424 "inweb/Chapter 5/HTML Formats.w"
 
 	else if (C->material_type == CODE_MATERIAL)
 		
 {
-#line 485 "inweb/Chapter 5/HTML Formats.w"
+#line 487 "inweb/Chapter 5/HTML Formats.w"
 	
 {
-#line 436 "inweb/Chapter 5/HTML Formats.w"
+#line 438 "inweb/Chapter 5/HTML Formats.w"
 	if (first_in_para) {
 		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 		HTMLFormat__paragraph_number(OUT, first_in_para);
@@ -27347,7 +27349,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	}
 
 }
-#line 485 "inweb/Chapter 5/HTML Formats.w"
+#line 487 "inweb/Chapter 5/HTML Formats.w"
 ;
 	if (C->styling) {
 		TEMPORARY_TEXT(csname)
@@ -27364,86 +27366,86 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	DISCARD_TEXT(cl)
 	
 {
-#line 879 "inweb/Chapter 5/HTML Formats.w"
+#line 881 "inweb/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLFormat__render_visit, (void *) hrs, L+1);
 
 }
-#line 499 "inweb/Chapter 5/HTML Formats.w"
+#line 501 "inweb/Chapter 5/HTML Formats.w"
 ;
 	HTML_CLOSE("pre"); WRITE("\n");
 
 }
-#line 424 "inweb/Chapter 5/HTML Formats.w"
+#line 426 "inweb/Chapter 5/HTML Formats.w"
 
 	else if (C->material_type == FOOTNOTES_MATERIAL)
 		
 {
-#line 503 "inweb/Chapter 5/HTML Formats.w"
+#line 505 "inweb/Chapter 5/HTML Formats.w"
 	
 {
-#line 436 "inweb/Chapter 5/HTML Formats.w"
+#line 438 "inweb/Chapter 5/HTML Formats.w"
 	if (first_in_para) {
 		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 		HTMLFormat__paragraph_number(OUT, first_in_para);
 		HTML_CLOSE("p"); WRITE("\n");
 		first_in_para = NULL;
 	}
-
-}
-#line 503 "inweb/Chapter 5/HTML Formats.w"
-;
-	HTML_OPEN_WITH("ul", "class=\"footnotetexts\"");
-	
-{
-#line 879 "inweb/Chapter 5/HTML Formats.w"
-	for (tree_node *M = N->child; M; M = M->next)
-		Trees__traverse_from(M, &HTMLFormat__render_visit, (void *) hrs, L+1);
 
 }
 #line 505 "inweb/Chapter 5/HTML Formats.w"
 ;
-	HTML_CLOSE("ul"); WRITE("\n");
-
-}
-#line 426 "inweb/Chapter 5/HTML Formats.w"
-
-	else if (C->material_type == ENDNOTES_MATERIAL)
-		
-{
-#line 509 "inweb/Chapter 5/HTML Formats.w"
+	HTML_OPEN_WITH("ul", "class=\"footnotetexts\"");
 	
 {
-#line 436 "inweb/Chapter 5/HTML Formats.w"
-	if (first_in_para) {
-		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
-		HTMLFormat__paragraph_number(OUT, first_in_para);
-		HTML_CLOSE("p"); WRITE("\n");
-		first_in_para = NULL;
-	}
-
-}
-#line 509 "inweb/Chapter 5/HTML Formats.w"
-;
-	HTML_OPEN_WITH("ul", "class=\"endnotetexts\"");
-	
-{
-#line 879 "inweb/Chapter 5/HTML Formats.w"
+#line 881 "inweb/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLFormat__render_visit, (void *) hrs, L+1);
 
 }
-#line 511 "inweb/Chapter 5/HTML Formats.w"
+#line 507 "inweb/Chapter 5/HTML Formats.w"
 ;
 	HTML_CLOSE("ul"); WRITE("\n");
 
 }
 #line 428 "inweb/Chapter 5/HTML Formats.w"
 
+	else if (C->material_type == ENDNOTES_MATERIAL)
+		
+{
+#line 511 "inweb/Chapter 5/HTML Formats.w"
+	
+{
+#line 438 "inweb/Chapter 5/HTML Formats.w"
+	if (first_in_para) {
+		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
+		HTMLFormat__paragraph_number(OUT, first_in_para);
+		HTML_CLOSE("p"); WRITE("\n");
+		first_in_para = NULL;
+	}
+
+}
+#line 511 "inweb/Chapter 5/HTML Formats.w"
+;
+	HTML_OPEN_WITH("ul", "class=\"endnotetexts\"");
+	
+{
+#line 881 "inweb/Chapter 5/HTML Formats.w"
+	for (tree_node *M = N->child; M; M = M->next)
+		Trees__traverse_from(M, &HTMLFormat__render_visit, (void *) hrs, L+1);
+
+}
+#line 513 "inweb/Chapter 5/HTML Formats.w"
+;
+	HTML_CLOSE("ul"); WRITE("\n");
+
+}
+#line 430 "inweb/Chapter 5/HTML Formats.w"
+
 	else if (C->material_type == MACRO_MATERIAL)
 		
 {
-#line 515 "inweb/Chapter 5/HTML Formats.w"
+#line 517 "inweb/Chapter 5/HTML Formats.w"
 	if (first_in_para) {
 		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 		HTMLFormat__paragraph_number(OUT, first_in_para);
@@ -27452,25 +27454,25 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	}
 	
 {
-#line 879 "inweb/Chapter 5/HTML Formats.w"
+#line 881 "inweb/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLFormat__render_visit, (void *) hrs, L+1);
 
 }
-#line 521 "inweb/Chapter 5/HTML Formats.w"
+#line 523 "inweb/Chapter 5/HTML Formats.w"
 ;
 	HTML_CLOSE("p"); WRITE("\n");
 
 }
-#line 430 "inweb/Chapter 5/HTML Formats.w"
+#line 432 "inweb/Chapter 5/HTML Formats.w"
 
 	else if (C->material_type == DEFINITION_MATERIAL)
 		
 {
-#line 525 "inweb/Chapter 5/HTML Formats.w"
+#line 527 "inweb/Chapter 5/HTML Formats.w"
 	
 {
-#line 436 "inweb/Chapter 5/HTML Formats.w"
+#line 438 "inweb/Chapter 5/HTML Formats.w"
 	if (first_in_para) {
 		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 		HTMLFormat__paragraph_number(OUT, first_in_para);
@@ -27479,22 +27481,22 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	}
 
 }
-#line 525 "inweb/Chapter 5/HTML Formats.w"
+#line 527 "inweb/Chapter 5/HTML Formats.w"
 ;
 	HTML_OPEN_WITH("pre", "class=\"definitions code-font\"");
 	
 {
-#line 879 "inweb/Chapter 5/HTML Formats.w"
+#line 881 "inweb/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLFormat__render_visit, (void *) hrs, L+1);
 
 }
-#line 527 "inweb/Chapter 5/HTML Formats.w"
+#line 529 "inweb/Chapter 5/HTML Formats.w"
 ;
 	HTML_CLOSE("pre"); WRITE("\n");
 
 }
-#line 432 "inweb/Chapter 5/HTML Formats.w"
+#line 434 "inweb/Chapter 5/HTML Formats.w"
 ;
 	return FALSE;
 
@@ -27503,7 +27505,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_embed_node_type) 
 {
-#line 535 "inweb/Chapter 5/HTML Formats.w"
+#line 537 "inweb/Chapter 5/HTML Formats.w"
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
 	text_stream *CH = TL_IS_495;
 	text_stream *CW = TL_IS_496;
@@ -27531,7 +27533,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_pmac_node_type) 
 {
-#line 558 "inweb/Chapter 5/HTML Formats.w"
+#line 560 "inweb/Chapter 5/HTML Formats.w"
 	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
 	paragraph *P = C->pmac->defining_paragraph;
 	HTML_OPEN_WITH("span", "class=\"named-paragraph-container code-font\"");
@@ -27561,7 +27563,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_vskip_node_type) 
 {
-#line 583 "inweb/Chapter 5/HTML Formats.w"
+#line 585 "inweb/Chapter 5/HTML Formats.w"
 	WRITE("\n");
 
 }
@@ -27569,7 +27571,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_section_node_type) 
 {
-#line 586 "inweb/Chapter 5/HTML Formats.w"
+#line 588 "inweb/Chapter 5/HTML Formats.w"
 	weave_section_node *C = RETRIEVE_POINTER_weave_section_node(N->content);
 	LOG("It was %d\n", C->allocation_id);
 
@@ -27578,15 +27580,15 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_code_line_node_type) 
 {
-#line 590 "inweb/Chapter 5/HTML Formats.w"
+#line 592 "inweb/Chapter 5/HTML Formats.w"
 	
 {
-#line 879 "inweb/Chapter 5/HTML Formats.w"
+#line 881 "inweb/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLFormat__render_visit, (void *) hrs, L+1);
 
 }
-#line 590 "inweb/Chapter 5/HTML Formats.w"
+#line 592 "inweb/Chapter 5/HTML Formats.w"
 ;
 	WRITE("\n");
 	return FALSE;
@@ -27596,7 +27598,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_function_usage_node_type) 
 {
-#line 595 "inweb/Chapter 5/HTML Formats.w"
+#line 597 "inweb/Chapter 5/HTML Formats.w"
 	weave_function_usage_node *C = RETRIEVE_POINTER_weave_function_usage_node(N->content);
 	HTML__begin_link_with_class(OUT, TL_IS_503, C->url);
 	HTMLFormat__change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
@@ -27609,7 +27611,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_commentary_node_type) 
 {
-#line 603 "inweb/Chapter 5/HTML Formats.w"
+#line 605 "inweb/Chapter 5/HTML Formats.w"
 	weave_commentary_node *C = RETRIEVE_POINTER_weave_commentary_node(N->content);
 	if (C->in_code) HTMLFormat__change_colour(OUT, COMMENT_COLOUR, hrs->colours);
 	for (int i=0; i < Str__len(C->text); i++) {
@@ -27634,7 +27636,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_carousel_slide_node_type) 
 {
-#line 623 "inweb/Chapter 5/HTML Formats.w"
+#line 625 "inweb/Chapter 5/HTML Formats.w"
 	weave_carousel_slide_node *C = RETRIEVE_POINTER_weave_carousel_slide_node(N->content);
 	Swarm__ensure_plugin(hrs->wv, TL_IS_504);
 	TEMPORARY_TEXT(carousel_id)
@@ -27668,12 +27670,12 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	if (C->caption_command == CAROUSEL_ABOVE_CMD) {
 		
 {
-#line 696 "inweb/Chapter 5/HTML Formats.w"
+#line 698 "inweb/Chapter 5/HTML Formats.w"
 	if (C->caption_command != CAROUSEL_UNCAPTIONED_CMD)
 		WRITE("<div class=\"%S\">%S</div>\n", caption_class, C->caption);
 
 }
-#line 654 "inweb/Chapter 5/HTML Formats.w"
+#line 656 "inweb/Chapter 5/HTML Formats.w"
 ;
 		WRITE("<div class=\"%S\">%d / %d</div>\n",
 			slide_count_class, hrs->slide_number, hrs->slide_of);
@@ -27684,22 +27686,22 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	WRITE("<div class=\"carousel-content\">");
 	
 {
-#line 879 "inweb/Chapter 5/HTML Formats.w"
+#line 881 "inweb/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLFormat__render_visit, (void *) hrs, L+1);
 
 }
-#line 662 "inweb/Chapter 5/HTML Formats.w"
+#line 664 "inweb/Chapter 5/HTML Formats.w"
 ;
 	WRITE("</div>\n");
 	if (C->caption_command != CAROUSEL_ABOVE_CMD) 
 {
-#line 696 "inweb/Chapter 5/HTML Formats.w"
+#line 698 "inweb/Chapter 5/HTML Formats.w"
 	if (C->caption_command != CAROUSEL_UNCAPTIONED_CMD)
 		WRITE("<div class=\"%S\">%S</div>\n", caption_class, C->caption);
 
 }
-#line 664 "inweb/Chapter 5/HTML Formats.w"
+#line 666 "inweb/Chapter 5/HTML Formats.w"
 ;
 	WRITE("</div>\n");
 	if (hrs->slide_number == hrs->slide_of) {
@@ -27736,7 +27738,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_toc_node_type) 
 {
-#line 700 "inweb/Chapter 5/HTML Formats.w"
+#line 702 "inweb/Chapter 5/HTML Formats.w"
 	HTML_OPEN_WITH("ul", "class=\"toc\"");
 	for (tree_node *M = N->child; M; M = M->next) {
 		HTML_OPEN("li");
@@ -27753,7 +27755,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_toc_line_node_type) 
 {
-#line 712 "inweb/Chapter 5/HTML Formats.w"
+#line 714 "inweb/Chapter 5/HTML Formats.w"
 	weave_toc_line_node *C = RETRIEVE_POINTER_weave_toc_line_node(N->content);
 	TEMPORARY_TEXT(TEMP)
 	Colonies__paragraph_URL(TEMP, C->para, hrs->wv->weave_to);
@@ -27769,7 +27771,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_defn_node_type) 
 {
-#line 723 "inweb/Chapter 5/HTML Formats.w"
+#line 725 "inweb/Chapter 5/HTML Formats.w"
 	weave_defn_node *C = RETRIEVE_POINTER_weave_defn_node(N->content);
 	HTML_OPEN_WITH("span", "class=\"definition-keyword\"");
 	WRITE("%S", C->keyword);
@@ -27781,7 +27783,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_source_code_node_type) 
 {
-#line 730 "inweb/Chapter 5/HTML Formats.w"
+#line 732 "inweb/Chapter 5/HTML Formats.w"
 	weave_source_code_node *C = RETRIEVE_POINTER_weave_source_code_node(N->content);
 	int starts = FALSE;
 	if (N == N->parent->child) starts = TRUE;
@@ -27805,7 +27807,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_url_node_type) 
 {
-#line 749 "inweb/Chapter 5/HTML Formats.w"
+#line 751 "inweb/Chapter 5/HTML Formats.w"
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
 	HTML__begin_link_with_class(OUT, (C->external)?TL_IS_511:TL_IS_512, C->url);
 	WRITE("%S", C->content);
@@ -27816,7 +27818,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_footnote_cue_node_type) 
 {
-#line 755 "inweb/Chapter 5/HTML Formats.w"
+#line 757 "inweb/Chapter 5/HTML Formats.w"
 	weave_footnote_cue_node *C = RETRIEVE_POINTER_weave_footnote_cue_node(N->content);
 	text_stream *fn_plugin_name = hrs->wv->pattern->footnotes_plugin;
 	if (Str__len(fn_plugin_name) > 0)
@@ -27835,7 +27837,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_begin_footnote_text_node_type) 
 {
-#line 769 "inweb/Chapter 5/HTML Formats.w"
+#line 771 "inweb/Chapter 5/HTML Formats.w"
 	weave_begin_footnote_text_node *C =
 		RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
 	text_stream *fn_plugin_name = hrs->wv->pattern->footnotes_plugin;
@@ -27849,12 +27851,12 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 			C->cue_text);
 	
 {
-#line 879 "inweb/Chapter 5/HTML Formats.w"
+#line 881 "inweb/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLFormat__render_visit, (void *) hrs, L+1);
 
 }
-#line 780 "inweb/Chapter 5/HTML Formats.w"
+#line 782 "inweb/Chapter 5/HTML Formats.w"
 ;
 	if (hrs->EPUB_flag)
 		WRITE("<a href=\"#fnref%S\"> (return to text)</a></p></li>",
@@ -27869,7 +27871,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_display_line_node_type) 
 {
-#line 790 "inweb/Chapter 5/HTML Formats.w"
+#line 792 "inweb/Chapter 5/HTML Formats.w"
 	weave_display_line_node *C =
 		RETRIEVE_POINTER_weave_display_line_node(N->content);
 	HTML_OPEN("blockquote"); WRITE("\n"); INDENT;
@@ -27883,7 +27885,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_function_defn_node_type) 
 {
-#line 799 "inweb/Chapter 5/HTML Formats.w"
+#line 801 "inweb/Chapter 5/HTML Formats.w"
 	weave_function_defn_node *C =
 		RETRIEVE_POINTER_weave_function_defn_node(N->content);
 	if ((Functions__used_elsewhere(C->fn)) && (hrs->EPUB_flag == FALSE)) {
@@ -27905,12 +27907,12 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 		WRITE(":<br/>");
 		
 {
-#line 879 "inweb/Chapter 5/HTML Formats.w"
+#line 881 "inweb/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLFormat__render_visit, (void *) hrs, L+1);
 
 }
-#line 818 "inweb/Chapter 5/HTML Formats.w"
+#line 820 "inweb/Chapter 5/HTML Formats.w"
 ;
 		HTMLFormat__change_colour(OUT, -1, hrs->colours);
 		WRITE("</button>");
@@ -27927,7 +27929,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_item_node_type) 
 {
-#line 830 "inweb/Chapter 5/HTML Formats.w"
+#line 832 "inweb/Chapter 5/HTML Formats.w"
 	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
 	if (Str__eq(C->label, TL_IS_514)) WRITE("&#9679; ");
 	else if (Str__len(C->label) > 0) WRITE("(%S) ", C->label);
@@ -27938,16 +27940,16 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_inline_node_type) 
 {
-#line 840 "inweb/Chapter 5/HTML Formats.w"
+#line 842 "inweb/Chapter 5/HTML Formats.w"
 	HTML_OPEN_WITH("span", "class=\"extract\"");
 	
 {
-#line 879 "inweb/Chapter 5/HTML Formats.w"
+#line 881 "inweb/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLFormat__render_visit, (void *) hrs, L+1);
 
 }
-#line 841 "inweb/Chapter 5/HTML Formats.w"
+#line 843 "inweb/Chapter 5/HTML Formats.w"
 ;
 	HTML_CLOSE("span");
 	return FALSE;
@@ -27957,7 +27959,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_locale_node_type) 
 {
-#line 846 "inweb/Chapter 5/HTML Formats.w"
+#line 848 "inweb/Chapter 5/HTML Formats.w"
 	weave_locale_node *C = RETRIEVE_POINTER_weave_locale_node(N->content);
 	TEMPORARY_TEXT(TEMP)
 	Colonies__paragraph_URL(TEMP, C->par1, hrs->wv->weave_to);
@@ -27974,7 +27976,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_maths_node_type) 
 {
-#line 858 "inweb/Chapter 5/HTML Formats.w"
+#line 860 "inweb/Chapter 5/HTML Formats.w"
 	weave_maths_node *C = RETRIEVE_POINTER_weave_maths_node(N->content);
 	text_stream *plugin_name = hrs->wv->pattern->mathematics_plugin;
 	if ((Str__len(plugin_name) == 0) || (hrs->EPUB_flag)) {
@@ -27994,7 +27996,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_linebreak_node_type) 
 {
-#line 873 "inweb/Chapter 5/HTML Formats.w"
+#line 875 "inweb/Chapter 5/HTML Formats.w"
 	WRITE("<br/>");
 
 }
@@ -28005,7 +28007,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	return TRUE;
 }
 
-#line 886 "inweb/Chapter 5/HTML Formats.w"
+#line 888 "inweb/Chapter 5/HTML Formats.w"
 int HTMLFormat__interior_material(tree_node *N) {
 	if (N->type == weave_commentary_node_type) return TRUE;
 	if (N->type == weave_url_node_type) return TRUE;
@@ -28016,7 +28018,7 @@ int HTMLFormat__interior_material(tree_node *N) {
 	return FALSE;
 }
 
-#line 900 "inweb/Chapter 5/HTML Formats.w"
+#line 902 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__go_to_depth(HTML_render_state *hrs, int from_depth, int to_depth) {
 	text_stream *OUT = hrs->OUT;
 	if (from_depth == to_depth) {
@@ -28034,7 +28036,7 @@ void HTMLFormat__go_to_depth(HTML_render_state *hrs, int from_depth, int to_dept
 	if (to_depth > 0) HTML_OPEN("li");
 }
 
-#line 918 "inweb/Chapter 5/HTML Formats.w"
+#line 920 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__paragraph_number(text_stream *OUT, paragraph *P) {
 	TEMPORARY_TEXT(TEMP)
 	Colonies__paragraph_anchor(TEMP, P);
@@ -28049,7 +28051,7 @@ void HTMLFormat__paragraph_number(text_stream *OUT, paragraph *P) {
 	}
 }
 
-#line 933 "inweb/Chapter 5/HTML Formats.w"
+#line 935 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__change_colour(text_stream *OUT, int col, colour_scheme *cs) {
 	if (col == -1) {
 		HTML_CLOSE("span");
@@ -28073,7 +28075,7 @@ void HTMLFormat__change_colour(text_stream *OUT, int col, colour_scheme *cs) {
 	}
 }
 
-#line 957 "inweb/Chapter 5/HTML Formats.w"
+#line 959 "inweb/Chapter 5/HTML Formats.w"
 void HTMLFormat__escape_text(text_stream *OUT, text_stream *id) {
 	for (int i=0; i < Str__len(id); i++) {
 		if (Str__get_at(id, i) == '&') WRITE("&amp;");
@@ -28083,7 +28085,7 @@ void HTMLFormat__escape_text(text_stream *OUT, text_stream *id) {
 	}
 }
 
-#line 969 "inweb/Chapter 5/HTML Formats.w"
+#line 971 "inweb/Chapter 5/HTML Formats.w"
 int HTMLFormat__begin_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) {
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "%S", Bibliographic__get_datum(W->md, TL_IS_516));

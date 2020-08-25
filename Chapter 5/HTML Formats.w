@@ -203,17 +203,19 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 					} else {
 						HTML_OPEN_WITH("li", "class=\"progresschapter\"");
 					}
-					TEMPORARY_TEXT(TEMP)
 					section *S = FIRST_IN_LINKED_LIST(section, Ch->sections);
-					Colonies::section_URL(TEMP, S->md);
-					if (Ch != C->sect->owning_chapter) {
-						HTML::begin_link(OUT, TEMP);
+					if (S) {
+						TEMPORARY_TEXT(TEMP)
+						Colonies::section_URL(TEMP, S->md);
+						if (Ch != C->sect->owning_chapter) {
+							HTML::begin_link(OUT, TEMP);
+						}
+						WRITE("%S", Ch->md->ch_range);
+						if (Ch != C->sect->owning_chapter) {
+							HTML::end_link(OUT);
+						}
+						DISCARD_TEXT(TEMP)
 					}
-					WRITE("%S", Ch->md->ch_range);
-					if (Ch != C->sect->owning_chapter) {
-						HTML::end_link(OUT);
-					}
-					DISCARD_TEXT(TEMP)
 					HTML_CLOSE("li");
 				}
 				if (Ch == C->sect->owning_chapter) {
