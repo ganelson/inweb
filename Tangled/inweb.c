@@ -1042,6 +1042,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define A_GRAMMAR_NONTERMINAL -1
 #define INFINITE_WORD_COUNT 1000000000
 #define MAX_PREFORM_RESULT_CLAUSES 10
+#define SPACES_PER_TAB_IN_WOVEN_CODE 4
 #define BEGIN_WEAVING_FOR_MTID 36
 #define END_WEAVING_FOR_MTID 37
 #define RENDER_FOR_MTID 38
@@ -1696,7 +1697,7 @@ typedef struct hash_table {
 	struct linked_list *analysis_hash[HASH_TAB_SIZE]; /* of |hash_table_entry| */
 	int analysis_hash_initialised; /* when we start up, array's contents are undefined */
 } hash_table;
-#line 385 "inweb/Chapter 2/The Reader.w"
+#line 384 "inweb/Chapter 2/The Reader.w"
 typedef struct tangle_target {
 	struct programming_language *tangle_language; /* common to the entire contents */
 	struct hash_table symbols; /* a table of identifiable names in this program */
@@ -3765,25 +3766,25 @@ void  Reader__read_web(web *W) ;
 void  Reader__read_file(web *W, chapter *C, filename *F, text_stream *titling_line, 	section *S, int disregard_top) ;
 #line 269 "inweb/Chapter 2/The Reader.w"
 void  Reader__scan_source_line(text_stream *line, text_file_position *tfp, void *state) ;
-#line 297 "inweb/Chapter 2/The Reader.w"
+#line 296 "inweb/Chapter 2/The Reader.w"
 pathname * Reader__woven_folder(web *W) ;
-#line 303 "inweb/Chapter 2/The Reader.w"
+#line 302 "inweb/Chapter 2/The Reader.w"
 pathname * Reader__tangled_folder(web *W) ;
-#line 318 "inweb/Chapter 2/The Reader.w"
+#line 317 "inweb/Chapter 2/The Reader.w"
 chapter * Reader__get_chapter_for_range(web *W, text_stream *range) ;
-#line 327 "inweb/Chapter 2/The Reader.w"
+#line 326 "inweb/Chapter 2/The Reader.w"
 section * Reader__get_section_for_range(web *W, text_stream *range) ;
-#line 341 "inweb/Chapter 2/The Reader.w"
+#line 340 "inweb/Chapter 2/The Reader.w"
 section * Reader__section_by_filename(web *W, text_stream *filename) ;
-#line 363 "inweb/Chapter 2/The Reader.w"
+#line 362 "inweb/Chapter 2/The Reader.w"
 int  Reader__range_within(text_stream *range1, text_stream *range2) ;
-#line 392 "inweb/Chapter 2/The Reader.w"
+#line 391 "inweb/Chapter 2/The Reader.w"
 tangle_target * Reader__add_tangle_target(web *W, programming_language *language) ;
-#line 416 "inweb/Chapter 2/The Reader.w"
+#line 415 "inweb/Chapter 2/The Reader.w"
 void  Reader__add_imported_header(web *W, filename *HF) ;
-#line 423 "inweb/Chapter 2/The Reader.w"
+#line 422 "inweb/Chapter 2/The Reader.w"
 int  Reader__web_has_one_section(web *W) ;
-#line 431 "inweb/Chapter 2/The Reader.w"
+#line 430 "inweb/Chapter 2/The Reader.w"
 void  Reader__print_web_statistics(web *W) ;
 #line 46 "inweb/Chapter 2/Line Categories.w"
 source_line * Lines__new_source_line_in(text_stream *line, text_file_position *tfp, 	section *S) ;
@@ -4241,33 +4242,33 @@ tree_node * WeaveTree__contents_line(heterogeneous_tree *tree, 	text_stream *tex
 tree_node * WeaveTree__weave_chapter_title_page_node(heterogeneous_tree *tree) ;
 #line 641 "inweb/Chapter 5/Weave Tree.w"
 tree_node * WeaveTree__weave_defn_node(heterogeneous_tree *tree, text_stream *keyword) ;
-#line 651 "inweb/Chapter 5/Weave Tree.w"
+#line 658 "inweb/Chapter 5/Weave Tree.w"
 tree_node * WeaveTree__source_code(heterogeneous_tree *tree, 	text_stream *matter, text_stream *colouring) ;
-#line 662 "inweb/Chapter 5/Weave Tree.w"
+#line 690 "inweb/Chapter 5/Weave Tree.w"
 tree_node * WeaveTree__url(heterogeneous_tree *tree, text_stream *url, 	text_stream *content, int external) ;
-#line 671 "inweb/Chapter 5/Weave Tree.w"
+#line 699 "inweb/Chapter 5/Weave Tree.w"
 tree_node * WeaveTree__footnote_cue(heterogeneous_tree *tree, text_stream *cue) ;
-#line 677 "inweb/Chapter 5/Weave Tree.w"
+#line 705 "inweb/Chapter 5/Weave Tree.w"
 tree_node * WeaveTree__footnote(heterogeneous_tree *tree, text_stream *cue) ;
-#line 687 "inweb/Chapter 5/Weave Tree.w"
+#line 715 "inweb/Chapter 5/Weave Tree.w"
 tree_node * WeaveTree__function_defn(heterogeneous_tree *tree, language_function *fn) ;
-#line 697 "inweb/Chapter 5/Weave Tree.w"
+#line 725 "inweb/Chapter 5/Weave Tree.w"
 tree_node * WeaveTree__display_line(heterogeneous_tree *tree, text_stream *text) ;
-#line 716 "inweb/Chapter 5/Weave Tree.w"
+#line 744 "inweb/Chapter 5/Weave Tree.w"
 tree_node * WeaveTree__weave_item_node(heterogeneous_tree *tree, int depth, text_stream *label) ;
-#line 723 "inweb/Chapter 5/Weave Tree.w"
+#line 751 "inweb/Chapter 5/Weave Tree.w"
 tree_node * WeaveTree__grammar_index(heterogeneous_tree *tree) ;
-#line 728 "inweb/Chapter 5/Weave Tree.w"
+#line 756 "inweb/Chapter 5/Weave Tree.w"
 tree_node * WeaveTree__inline(heterogeneous_tree *tree) ;
-#line 733 "inweb/Chapter 5/Weave Tree.w"
+#line 761 "inweb/Chapter 5/Weave Tree.w"
 tree_node * WeaveTree__locale(heterogeneous_tree *tree, paragraph *par1, paragraph *par2) ;
-#line 740 "inweb/Chapter 5/Weave Tree.w"
+#line 768 "inweb/Chapter 5/Weave Tree.w"
 tree_node * WeaveTree__mathematics(heterogeneous_tree *tree, text_stream *content, int displayed) ;
-#line 747 "inweb/Chapter 5/Weave Tree.w"
+#line 775 "inweb/Chapter 5/Weave Tree.w"
 void  WeaveTree__show(text_stream *OUT, heterogeneous_tree *T) ;
-#line 754 "inweb/Chapter 5/Weave Tree.w"
+#line 782 "inweb/Chapter 5/Weave Tree.w"
 void  WeaveTree__prune(heterogeneous_tree *T) ;
-#line 758 "inweb/Chapter 5/Weave Tree.w"
+#line 786 "inweb/Chapter 5/Weave Tree.w"
 int  WeaveTree__prune_visit(tree_node *N, void *state) ;
 #line 18 "inweb/Chapter 5/Format Methods.w"
 weave_format * Formats__create_weave_format(text_stream *name, text_stream *ext) ;
@@ -8379,11 +8380,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A65";
+			char *svn = "7-alpha.1+1A66";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "24 August 2020";
+			char *d = "25 August 2020";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -16903,7 +16904,7 @@ void Reader__read_file(web *W, chapter *C, filename *F, text_stream *titling_lin
 	WRITE_TO(line, "Chapter Heading");
 	
 {
-#line 283 "inweb/Chapter 2/The Reader.w"
+#line 282 "inweb/Chapter 2/The Reader.w"
 	source_line *sl = Lines__new_source_line_in(line, tfp, S);
 
 	/* enter this in its section's linked list of lines: */
@@ -16932,7 +16933,7 @@ void Reader__read_file(web *W, chapter *C, filename *F, text_stream *titling_lin
 	WRITE_TO(line, "Main.");
 	
 {
-#line 283 "inweb/Chapter 2/The Reader.w"
+#line 282 "inweb/Chapter 2/The Reader.w"
 	source_line *sl = Lines__new_source_line_in(line, tfp, S);
 
 	/* enter this in its section's linked list of lines: */
@@ -16949,7 +16950,7 @@ void Reader__read_file(web *W, chapter *C, filename *F, text_stream *titling_lin
 	Str__clear(line);
 	
 {
-#line 283 "inweb/Chapter 2/The Reader.w"
+#line 282 "inweb/Chapter 2/The Reader.w"
 	source_line *sl = Lines__new_source_line_in(line, tfp, S);
 
 	/* enter this in its section's linked list of lines: */
@@ -16969,7 +16970,7 @@ void Reader__read_file(web *W, chapter *C, filename *F, text_stream *titling_lin
 		WRITE_TO(line, "Implied Purpose: %S", purpose);
 		
 {
-#line 283 "inweb/Chapter 2/The Reader.w"
+#line 282 "inweb/Chapter 2/The Reader.w"
 	source_line *sl = Lines__new_source_line_in(line, tfp, S);
 
 	/* enter this in its section's linked list of lines: */
@@ -16986,7 +16987,7 @@ void Reader__read_file(web *W, chapter *C, filename *F, text_stream *titling_lin
 		Str__clear(line);
 		
 {
-#line 283 "inweb/Chapter 2/The Reader.w"
+#line 282 "inweb/Chapter 2/The Reader.w"
 	source_line *sl = Lines__new_source_line_in(line, tfp, S);
 
 	/* enter this in its section's linked list of lines: */
@@ -17018,14 +17019,13 @@ void Reader__scan_source_line(text_stream *line, text_file_position *tfp, void *
 	int l = Str__len(line) - 1;
 	while ((l>=0) && (Characters__is_space_or_tab(Str__get_at(line, l))))
 		Str__truncate(line, l--);
-
 	if (S->paused_until_at) {
 		if (Str__get_at(line, 0) == '@') S->paused_until_at = FALSE;
 		else return;
 	}
 	
 {
-#line 283 "inweb/Chapter 2/The Reader.w"
+#line 282 "inweb/Chapter 2/The Reader.w"
 	source_line *sl = Lines__new_source_line_in(line, tfp, S);
 
 	/* enter this in its section's linked list of lines: */
@@ -17037,11 +17037,11 @@ void Reader__scan_source_line(text_stream *line, text_file_position *tfp, void *
 	sl->owning_paragraph = NULL;
 
 }
-#line 279 "inweb/Chapter 2/The Reader.w"
+#line 278 "inweb/Chapter 2/The Reader.w"
 ;
 }
 
-#line 297 "inweb/Chapter 2/The Reader.w"
+#line 296 "inweb/Chapter 2/The Reader.w"
 pathname *Reader__woven_folder(web *W) {
 	pathname *P = Pathnames__down(W->md->path_to_web, TL_IS_158);
 	if (Pathnames__create_in_file_system(P) == FALSE)
@@ -17055,7 +17055,7 @@ pathname *Reader__tangled_folder(web *W) {
 	return P;
 }
 
-#line 318 "inweb/Chapter 2/The Reader.w"
+#line 317 "inweb/Chapter 2/The Reader.w"
 chapter *Reader__get_chapter_for_range(web *W, text_stream *range) {
 	chapter *C;
 	if (W)
@@ -17076,7 +17076,7 @@ section *Reader__get_section_for_range(web *W, text_stream *range) {
 	return NULL;
 }
 
-#line 341 "inweb/Chapter 2/The Reader.w"
+#line 340 "inweb/Chapter 2/The Reader.w"
 section *Reader__section_by_filename(web *W, text_stream *filename) {
 	chapter *C;
 	section *S;
@@ -17092,7 +17092,7 @@ section *Reader__section_by_filename(web *W, text_stream *filename) {
 	return NULL;
 }
 
-#line 363 "inweb/Chapter 2/The Reader.w"
+#line 362 "inweb/Chapter 2/The Reader.w"
 int Reader__range_within(text_stream *range1, text_stream *range2) {
 	if (Str__eq_wide_string(range2, L"0")) return TRUE;
 	if (Str__eq(range1, range2)) return TRUE;
@@ -17104,9 +17104,9 @@ int Reader__range_within(text_stream *range1, text_stream *range2) {
 	return FALSE;
 }
 
-#line 390 "inweb/Chapter 2/The Reader.w"
+#line 389 "inweb/Chapter 2/The Reader.w"
 
-#line 392 "inweb/Chapter 2/The Reader.w"
+#line 391 "inweb/Chapter 2/The Reader.w"
 tangle_target *Reader__add_tangle_target(web *W, programming_language *language) {
 	tangle_target *tt = CREATE(tangle_target);
 	tt->tangle_language = language;
@@ -17115,18 +17115,18 @@ tangle_target *Reader__add_tangle_target(web *W, programming_language *language)
 	return tt;
 }
 
-#line 416 "inweb/Chapter 2/The Reader.w"
+#line 415 "inweb/Chapter 2/The Reader.w"
 void Reader__add_imported_header(web *W, filename *HF) {
 	ADD_TO_LINKED_LIST(HF, filename, W->headers);
 }
 
-#line 423 "inweb/Chapter 2/The Reader.w"
+#line 422 "inweb/Chapter 2/The Reader.w"
 int Reader__web_has_one_section(web *W) {
 	if (WebMetadata__section_count(W->md) == 1) return TRUE;
 	return FALSE;
 }
 
-#line 431 "inweb/Chapter 2/The Reader.w"
+#line 430 "inweb/Chapter 2/The Reader.w"
 void Reader__print_web_statistics(web *W) {
 	PRINT("web \"%S\": ", Bibliographic__get_datum(W->md, TL_IS_160));
 	int c = WebMetadata__chapter_count(W->md);
@@ -25412,12 +25412,33 @@ tree_node *WeaveTree__weave_defn_node(heterogeneous_tree *tree, text_stream *key
 	return Trees__new_node(tree, weave_defn_node_type, STORE_POINTER_weave_defn_node(C));
 }
 
-#line 651 "inweb/Chapter 5/Weave Tree.w"
+#line 658 "inweb/Chapter 5/Weave Tree.w"
 tree_node *WeaveTree__source_code(heterogeneous_tree *tree,
 	text_stream *matter, text_stream *colouring) {
 	if (Str__len(colouring) != Str__len(matter)) internal_error("bad source segment");
-	for (int i=0; i<Str__len(colouring); i++)
-		if (Str__get_at(colouring, i) == 0) internal_error("scorb");
+
+	for (int i=0; i<Str__len(matter); i++) {
+		wchar_t c = Str__get_at(matter, i);
+		if (c == '\t') {
+			Str__put_at(matter, i, ' ');
+			int extra_spaces =
+				SPACES_PER_TAB_IN_WOVEN_CODE - 1 - (i % SPACES_PER_TAB_IN_WOVEN_CODE);
+			if (extra_spaces > 0) {
+				for (int j=0; j<extra_spaces; j++) {
+					PUT_TO(matter, ' '); PUT_TO(colouring, PLAIN_COLOUR);
+				}
+				for (int j=Str__len(matter)-1; j >= i+extra_spaces; j--) {
+					Str__put_at(matter, j, Str__get_at(matter, j-extra_spaces));
+					Str__put_at(colouring, j, Str__get_at(colouring, j-extra_spaces));
+				}
+				for (int j=0; j<extra_spaces; j++) {
+					Str__put_at(matter, i+1+j, ' ');
+					Str__put_at(colouring, i+1+j, PLAIN_COLOUR);
+				}
+			}
+		}
+	}
+
 	weave_source_code_node *C = CREATE(weave_source_code_node);
 	C->matter = Str__duplicate(matter);
 	C->colouring = Str__duplicate(colouring);
@@ -25445,21 +25466,21 @@ tree_node *WeaveTree__footnote(heterogeneous_tree *tree, text_stream *cue) {
 	return Trees__new_node(tree, weave_begin_footnote_text_node_type, STORE_POINTER_weave_begin_footnote_text_node(C));
 }
 
-#line 687 "inweb/Chapter 5/Weave Tree.w"
+#line 715 "inweb/Chapter 5/Weave Tree.w"
 tree_node *WeaveTree__function_defn(heterogeneous_tree *tree, language_function *fn) {
 	weave_function_defn_node *C = CREATE(weave_function_defn_node);
 	C->fn = fn;
 	return Trees__new_node(tree, weave_function_defn_node_type, STORE_POINTER_weave_function_defn_node(C));
 }
 
-#line 697 "inweb/Chapter 5/Weave Tree.w"
+#line 725 "inweb/Chapter 5/Weave Tree.w"
 tree_node *WeaveTree__display_line(heterogeneous_tree *tree, text_stream *text) {
 	weave_display_line_node *C = CREATE(weave_display_line_node);
 	C->text = Str__duplicate(text);
 	return Trees__new_node(tree, weave_display_line_node_type, STORE_POINTER_weave_display_line_node(C));
 }
 
-#line 716 "inweb/Chapter 5/Weave Tree.w"
+#line 744 "inweb/Chapter 5/Weave Tree.w"
 tree_node *WeaveTree__weave_item_node(heterogeneous_tree *tree, int depth, text_stream *label) {
 	weave_item_node *C = CREATE(weave_item_node);
 	C->depth = depth;

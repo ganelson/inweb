@@ -179,10 +179,10 @@ for example:
 <span class="plain-syntax">0000012  COMMENT_BODY........  This program finds a few small pairs of twins, by the simplest method possible,</span>
 <span class="plain-syntax">0000013  COMMENT_BODY........  and should print output like so:</span>
 <span class="plain-syntax">0000014  BEGIN_CODE..........  = (text)</span>
-<span class="plain-syntax">0000015  TEXT_EXTRACT........  	3 and 5</span>
-<span class="plain-syntax">0000016  TEXT_EXTRACT........  	5 and 7</span>
-<span class="plain-syntax">0000017  TEXT_EXTRACT........  	11 and 13</span>
-<span class="plain-syntax">0000018  TEXT_EXTRACT........  	...</span>
+<span class="plain-syntax">0000015  TEXT_EXTRACT........   3 and 5</span>
+<span class="plain-syntax">0000016  TEXT_EXTRACT........   5 and 7</span>
+<span class="plain-syntax">0000017  TEXT_EXTRACT........   11 and 13</span>
+<span class="plain-syntax">0000018  TEXT_EXTRACT........   ...</span>
 <span class="plain-syntax">0000019  END_EXTRACT.........  =</span>
 <span class="plain-syntax">0000020  COMMENT_BODY........  </span>
 <span class="plain-syntax">0000021  BEGIN_DEFINITION....  @d RANGE 100 /* the upper limit to the numbers we will consider */</span>
@@ -191,14 +191,14 @@ for example:
 <span class="plain-syntax">0000024  C_LIBRARY_INCLUDE...  #include &lt;stdio.h&gt;</span>
 <span class="plain-syntax">0000025  CODE_BODY...........  </span>
 <span class="plain-syntax">0000026  CODE_BODY...........  int main(int argc, char *argv[]) {</span>
-<span class="plain-syntax">0000027  CODE_BODY...........  	for (int i=1; i&lt;RANGE; i++)</span>
-<span class="plain-syntax">0000028  CODE_BODY...........  		@&lt;Test for twin prime at i@&gt;;</span>
+<span class="plain-syntax">0000027  CODE_BODY...........   for (int i=1; i&lt;RANGE; i++)</span>
+<span class="plain-syntax">0000028  CODE_BODY...........       @&lt;Test for twin prime at i@&gt;;</span>
 <span class="plain-syntax">0000029  CODE_BODY...........  }</span>
 <span class="plain-syntax">0000030  CODE_BODY...........  </span>
 <span class="plain-syntax">0000031  PARAGRAPH_START.....  @</span>
 <span class="plain-syntax">0000032  MACRO_DEFINITION....  @&lt;Test for twin prime at i@&gt; =</span>
-<span class="plain-syntax">0000033  CODE_BODY...........  	if ((isprime(i)) &amp;&amp; (isprime(i+2)))</span>
-<span class="plain-syntax">0000034  CODE_BODY...........  		printf("%d and %d\n", i, i+2);</span>
+<span class="plain-syntax">0000033  CODE_BODY...........   if ((isprime(i)) &amp;&amp; (isprime(i+2)))</span>
+<span class="plain-syntax">0000034  CODE_BODY...........       printf("%d and %d\n", i, i+2);</span>
 <span class="plain-syntax">0000035  CODE_BODY...........  </span>
 <span class="plain-syntax">0000036  HEADING_START.......  @h Primality.</span>
 <span class="plain-syntax">0000037  COMMENT_BODY........  This simple and slow test tries to divide by every whole number at least</span>
@@ -213,11 +213,11 @@ for example:
 <span class="plain-syntax">0000046  COMMENT_BODY........  </span>
 <span class="plain-syntax">0000047  BEGIN_CODE..........  =</span>
 <span class="plain-syntax">0000048  CODE_BODY...........  int isprime(int n) {</span>
-<span class="plain-syntax">0000049  CODE_BODY...........  	if (n &lt;= 1) return FALSE;</span>
-<span class="plain-syntax">0000050  CODE_BODY...........  	for (int m = 2; m*m &lt;= n; m++)</span>
-<span class="plain-syntax">0000051  CODE_BODY...........  		if (n % m == 0)</span>
-<span class="plain-syntax">0000052  CODE_BODY...........  			return FALSE;</span>
-<span class="plain-syntax">0000053  CODE_BODY...........  	return TRUE;</span>
+<span class="plain-syntax">0000049  CODE_BODY...........   if (n &lt;= 1) return FALSE;</span>
+<span class="plain-syntax">0000050  CODE_BODY...........   for (int m = 2; m*m &lt;= n; m++)</span>
+<span class="plain-syntax">0000051  CODE_BODY...........       if (n % m == 0)</span>
+<span class="plain-syntax">0000052  CODE_BODY...........           return FALSE;</span>
+<span class="plain-syntax">0000053  CODE_BODY...........   return TRUE;</span>
 <span class="plain-syntax">0000054  CODE_BODY...........  }</span>
 <span class="plain-syntax">0000055  CODE_BODY...........  </span>
 </pre>

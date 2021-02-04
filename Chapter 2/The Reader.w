@@ -271,7 +271,6 @@ void Reader::scan_source_line(text_stream *line, text_file_position *tfp, void *
 	int l = Str::len(line) - 1;
 	while ((l>=0) && (Characters::is_space_or_tab(Str::get_at(line, l))))
 		Str::truncate(line, l--);
-
 	if (S->paused_until_at) {
 		if (Str::get_at(line, 0) == '@') S->paused_until_at = FALSE;
 		else return;

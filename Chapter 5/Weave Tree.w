@@ -647,12 +647,40 @@ tree_node *WeaveTree::weave_defn_node(heterogeneous_tree *tree, text_stream *key
 @ The following node is expected to weave a piece of code, which has already
 been syntax-coloured.
 
+We don't want to leak tab characters out into woven code, where they are at
+the mercy of web browsers, which render tabs slightly oddly (and not to the
+width this author happens to like). So tabs are automatically converted to
+spaces sufficient to reach the next tab-stop position, calculated as:
+
+@d SPACES_PER_TAB_IN_WOVEN_CODE 4
+
 =
 tree_node *WeaveTree::source_code(heterogeneous_tree *tree,
 	text_stream *matter, text_stream *colouring) {
 	if (Str::len(colouring) != Str::len(matter)) internal_error("bad source segment");
-	for (int i=0; i<Str::len(colouring); i++)
-		if (Str::get_at(colouring, i) == 0) internal_error("scorb");
+
+	for (int i=0; i<Str::len(matter); i++) {
+		wchar_t c = Str::get_at(matter, i);
+		if (c == '\t') {
+			Str::put_at(matter, i, ' ');
+			int extra_spaces =
+				SPACES_PER_TAB_IN_WOVEN_CODE - 1 - (i % SPACES_PER_TAB_IN_WOVEN_CODE);
+			if (extra_spaces > 0) {
+				for (int j=0; j<extra_spaces; j++) {
+					PUT_TO(matter, ' '); PUT_TO(colouring, PLAIN_COLOUR);
+				}
+				for (int j=Str::len(matter)-1; j >= i+extra_spaces; j--) {
+					Str::put_at(matter, j, Str::get_at(matter, j-extra_spaces));
+					Str::put_at(colouring, j, Str::get_at(colouring, j-extra_spaces));
+				}
+				for (int j=0; j<extra_spaces; j++) {
+					Str::put_at(matter, i+1+j, ' ');
+					Str::put_at(colouring, i+1+j, PLAIN_COLOUR);
+				}
+			}
+		}
+	}
+
 	weave_source_code_node *C = CREATE(weave_source_code_node);
 	C->matter = Str::duplicate(matter);
 	C->colouring = Str::duplicate(colouring);
