@@ -28,10 +28,14 @@ typedef struct linked_list_item {
 @ =
 linked_list *LinkedLists::new(void) {
 	linked_list *ll = CREATE(linked_list);
+	LinkedLists::empty(ll);
+	return ll;
+}
+
+void LinkedLists::empty(linked_list *ll) {
 	ll->linked_list_length = 0;
 	ll->first_list_item = NULL;
 	ll->last_list_item = NULL;
-	return ll;
 }
 
 @ The following runs in constant time, i.e., performs no loops. In general we
@@ -45,7 +49,6 @@ void LinkedLists::add(linked_list *L, void *P, int to_end) {
 		item = &(L->early_items[L->linked_list_length]);
 	else
 		item = CREATE(linked_list_item);
-	CREATE(linked_list_item);
 	item->item_contents = P;
 	if (to_end) {
 		item->next_list_item = NULL;
@@ -98,6 +101,35 @@ void *LinkedLists::delete(int N, linked_list *L) {
 
 	internal_error("index not found");
 	return NULL;
+}
+
+@ And indeed to insert at a known position, where |N| being 0 means the front
+of the list, |N| being 1 means "after the first item", and so on.
+
+=
+void LinkedLists::insert(linked_list *L, int N, void *P) {
+	if (N <= 0) LinkedLists::add(L, P, FALSE);
+	else {
+		linked_list_item *prev = NULL;
+		for (linked_list_item *I = L->first_list_item; I; I = I->next_list_item) {
+			if (N-- == 0) break;
+			prev = I;
+		}
+		if (prev == NULL) LinkedLists::add(L, P, FALSE);
+		else {
+			linked_list_item *item = NULL;
+			if (L->linked_list_length < NO_LL_EARLY_ITEMS)
+				item = &(L->early_items[L->linked_list_length]);
+			else
+				item = CREATE(linked_list_item);
+			item->item_contents = P;
+
+			linked_list_item *subs = prev->next_list_item;
+			prev->next_list_item = item;
+			item->next_list_item = subs;
+			L->linked_list_length++;
+		}
+	}
 }
 
 @h A function call API.
