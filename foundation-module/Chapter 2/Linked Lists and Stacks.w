@@ -148,6 +148,13 @@ void *LinkedLists::entry(int N, linked_list *L) {
 			return I->item_contents;
 	return NULL;
 }
+void LinkedLists::set_entry(int N, linked_list *L, void *P) {
+	if ((N < 0) || (L == NULL) || (N >= L->linked_list_length)) return;
+	for (linked_list_item *I = L->first_list_item; I; I = I->next_list_item)
+		if (N-- == 0) {
+			I->item_contents = P; return;
+		}
+}
 linked_list_item *LinkedLists::last(linked_list *L) {
 	return L?(L->last_list_item):NULL;
 }

@@ -443,6 +443,7 @@ int Str::ends_with_wide_string(text_stream *S, wchar_t *suffix) {
 
 @ =
 int Str::eq_wide_string(text_stream *S1, wchar_t *S2) {
+	if (S2 == NULL) return (Str::len(S1) == 0)?TRUE:FALSE;
 	if (Str::len(S1) == (int) wcslen(S2)) {
 		int i=0;
 		LOOP_THROUGH_TEXT(P, S1)
@@ -453,6 +454,7 @@ int Str::eq_wide_string(text_stream *S1, wchar_t *S2) {
 	return FALSE;
 }
 int Str::eq_narrow_string(text_stream *S1, char *S2) {
+	if (S2 == NULL) return (Str::len(S1) == 0)?TRUE:FALSE;
 	if (Str::len(S1) == (int) strlen(S2)) {
 		int i=0;
 		LOOP_THROUGH_TEXT(P, S1)

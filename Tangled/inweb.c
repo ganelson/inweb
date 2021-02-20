@@ -2786,23 +2786,29 @@ void  Methods__add(method_set *S, int ID, void *function) ;
 int  Methods__provided(method_set *S, int ID) ;
 #line 29 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 linked_list * LinkedLists__new(void) ;
-#line 41 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 35 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+void  LinkedLists__empty(linked_list *ll) ;
+#line 45 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void  LinkedLists__add(linked_list *L, void *P, int to_end) ;
-#line 70 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 73 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void * LinkedLists__remove_from_front(linked_list *L) ;
-#line 83 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 86 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void * LinkedLists__delete(int N, linked_list *L) ;
-#line 106 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 110 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+void  LinkedLists__insert(linked_list *L, int N, void *P) ;
+#line 138 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 int  LinkedLists__len(linked_list *L) ;
-#line 109 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 141 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 linked_list_item * LinkedLists__first(linked_list *L) ;
-#line 112 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 144 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void * LinkedLists__entry(int N, linked_list *L) ;
-#line 119 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 151 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+void  LinkedLists__set_entry(int N, linked_list *L, void *P) ;
+#line 158 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 linked_list_item * LinkedLists__last(linked_list *L) ;
-#line 122 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 161 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 linked_list_item * LinkedLists__next(linked_list_item *I) ;
-#line 125 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 164 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void * LinkedLists__content(linked_list_item *I) ;
 #line 33 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 dictionary * Dictionaries__new(int S, int textual) ;
@@ -3248,39 +3254,39 @@ int  Str__begins_with_wide_string(text_stream *S, wchar_t *prefix) ;
 int  Str__ends_with_wide_string(text_stream *S, wchar_t *suffix) ;
 #line 445 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__eq_wide_string(text_stream *S1, wchar_t *S2) ;
-#line 455 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 456 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__eq_narrow_string(text_stream *S1, char *S2) ;
-#line 465 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 467 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__ne_wide_string(text_stream *S1, wchar_t *S2) ;
-#line 472 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 474 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__is_whitespace(text_stream *S) ;
-#line 482 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 484 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void  Str__trim_white_space(text_stream *S) ;
-#line 511 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 513 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__trim_white_space_at_end(text_stream *S) ;
-#line 522 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 524 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__trim_all_white_space_at_end(text_stream *S) ;
-#line 536 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 538 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void  Str__delete_first_character(text_stream *S) ;
-#line 540 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 542 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void  Str__delete_last_character(text_stream *S) ;
-#line 545 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 547 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void  Str__delete_nth_character(text_stream *S, int n) ;
-#line 550 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 552 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void  Str__delete_n_characters(text_stream *S, int n) ;
-#line 563 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 565 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void  Str__substr(OUTPUT_STREAM, string_position from, string_position to) ;
-#line 569 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 571 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__includes_character(text_stream *S, wchar_t c) ;
-#line 577 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 579 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__includes_wide_string_at(text_stream *S, wchar_t *prefix, int j) ;
-#line 586 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 588 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__includes_wide_string_at_insensitive(text_stream *S, wchar_t *prefix, int j) ;
-#line 595 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 597 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__includes(text_stream *S, text_stream *T) ;
-#line 610 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 612 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__includes_at(text_stream *line, int i, text_stream *pattern) ;
-#line 633 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 635 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 text_stream * Str__literal(wchar_t *wide_C_string) ;
 #line 15 "inweb/foundation-module/Chapter 4/Text Files.w"
 int  TextFiles__exists(filename *F) ;
@@ -3665,7 +3671,7 @@ module * WebModules__find(web_md *WS, module_search *ms, text_stream *name, path
 #line 119 "inweb/foundation-module/Chapter 8/Web Modules.w"
 int  WebModules__exists(pathname *P) ;
 #line 142 "inweb/foundation-module/Chapter 8/Web Modules.w"
-int  WebModules__named_reference(module **return_M, section_md **return_Sm, 	int *named_as_module, text_stream *title, module *from_M, text_stream *text, int list) ;
+int  WebModules__named_reference(module **return_M, section_md **return_Sm, 	int *named_as_module, text_stream *title, module *from_M, text_stream *text, 	int list, int sections_only) ;
 #line 10 "inweb/foundation-module/Chapter 8/Build Files.w"
 filename * BuildFiles__build_file_for_web(web_md *WS) ;
 #line 30 "inweb/foundation-module/Chapter 8/Build Files.w"
@@ -4434,15 +4440,15 @@ pathname * Colonies__patterns_path(void) ;
 int  Colonies__resolve_reference_in_weave(text_stream *url, text_stream *title, 	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L, int *ext) ;
 #line 327 "inweb/Chapter 6/Colonies.w"
 int  Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *title, 	filename *for_HTML_file, text_stream *text, web_md *Wm, source_line *L, int *ext) ;
-#line 454 "inweb/Chapter 6/Colonies.w"
+#line 467 "inweb/Chapter 6/Colonies.w"
 void  Colonies__link_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) ;
-#line 463 "inweb/Chapter 6/Colonies.w"
+#line 476 "inweb/Chapter 6/Colonies.w"
 void  Colonies__reference_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) ;
-#line 474 "inweb/Chapter 6/Colonies.w"
+#line 487 "inweb/Chapter 6/Colonies.w"
 void  Colonies__section_URL(OUTPUT_STREAM, section_md *Sm) ;
-#line 484 "inweb/Chapter 6/Colonies.w"
+#line 497 "inweb/Chapter 6/Colonies.w"
 void  Colonies__paragraph_URL(OUTPUT_STREAM, paragraph *P, filename *from) ;
-#line 505 "inweb/Chapter 6/Colonies.w"
+#line 518 "inweb/Chapter 6/Colonies.w"
 void  Colonies__paragraph_anchor(OUTPUT_STREAM, paragraph *P) ;
 void register_tangled_nonterminals(void);
 text_stream *TL_IS_0 = NULL;
@@ -7442,13 +7448,17 @@ int Methods__provided(method_set *S, int ID) {
 #line 29 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 linked_list *LinkedLists__new(void) {
 	linked_list *ll = CREATE(linked_list);
-	ll->linked_list_length = 0;
-	ll->first_list_item = NULL;
-	ll->last_list_item = NULL;
+	LinkedLists__empty(ll);
 	return ll;
 }
 
-#line 41 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+void LinkedLists__empty(linked_list *ll) {
+	ll->linked_list_length = 0;
+	ll->first_list_item = NULL;
+	ll->last_list_item = NULL;
+}
+
+#line 45 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void LinkedLists__add(linked_list *L, void *P, int to_end) {
 	if (L == NULL) internal_error("null list");
 	linked_list_item *item = NULL;
@@ -7456,7 +7466,6 @@ void LinkedLists__add(linked_list *L, void *P, int to_end) {
 		item = &(L->early_items[L->linked_list_length]);
 	else
 		item = CREATE(linked_list_item);
-	CREATE(linked_list_item);
 	item->item_contents = P;
 	if (to_end) {
 		item->next_list_item = NULL;
@@ -7475,7 +7484,7 @@ void LinkedLists__add(linked_list *L, void *P, int to_end) {
 	L->linked_list_length++;
 }
 
-#line 70 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 73 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void *LinkedLists__remove_from_front(linked_list *L) {
 	if (L == NULL) internal_error("null list");
 	if (L->first_list_item == NULL) internal_error("empty list can't be popped");
@@ -7486,7 +7495,7 @@ void *LinkedLists__remove_from_front(linked_list *L) {
 	return top->item_contents;
 }
 
-#line 83 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 86 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void *LinkedLists__delete(int N, linked_list *L) {
 	if (L == NULL) internal_error("null list");
 	if ((N < 0) || (N >= L->linked_list_length)) internal_error("index not valid");
@@ -7507,7 +7516,33 @@ void *LinkedLists__delete(int N, linked_list *L) {
 	return NULL;
 }
 
-#line 106 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 110 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+void LinkedLists__insert(linked_list *L, int N, void *P) {
+	if (N <= 0) LinkedLists__add(L, P, FALSE);
+	else {
+		linked_list_item *prev = NULL;
+		for (linked_list_item *I = L->first_list_item; I; I = I->next_list_item) {
+			if (N-- == 0) break;
+			prev = I;
+		}
+		if (prev == NULL) LinkedLists__add(L, P, FALSE);
+		else {
+			linked_list_item *item = NULL;
+			if (L->linked_list_length < NO_LL_EARLY_ITEMS)
+				item = &(L->early_items[L->linked_list_length]);
+			else
+				item = CREATE(linked_list_item);
+			item->item_contents = P;
+
+			linked_list_item *subs = prev->next_list_item;
+			prev->next_list_item = item;
+			item->next_list_item = subs;
+			L->linked_list_length++;
+		}
+	}
+}
+
+#line 138 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 int LinkedLists__len(linked_list *L) {
 	return L?(L->linked_list_length):0;
 }
@@ -7520,6 +7555,13 @@ void *LinkedLists__entry(int N, linked_list *L) {
 		if (N-- == 0)
 			return I->item_contents;
 	return NULL;
+}
+void LinkedLists__set_entry(int N, linked_list *L, void *P) {
+	if ((N < 0) || (L == NULL) || (N >= L->linked_list_length)) return;
+	for (linked_list_item *I = L->first_list_item; I; I = I->next_list_item)
+		if (N-- == 0) {
+			I->item_contents = P; return;
+		}
 }
 linked_list_item *LinkedLists__last(linked_list *L) {
 	return L?(L->last_list_item):NULL;
@@ -8380,11 +8422,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A66";
+			char *svn = "7-alpha.1+1A68";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "25 August 2020";
+			char *d = "14 February 2021";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -10343,6 +10385,7 @@ int Str__ends_with_wide_string(text_stream *S, wchar_t *suffix) {
 
 #line 445 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int Str__eq_wide_string(text_stream *S1, wchar_t *S2) {
+	if (S2 == NULL) return (Str__len(S1) == 0)?TRUE:FALSE;
 	if (Str__len(S1) == (int) wcslen(S2)) {
 		int i=0;
 		LOOP_THROUGH_TEXT(P, S1)
@@ -10353,6 +10396,7 @@ int Str__eq_wide_string(text_stream *S1, wchar_t *S2) {
 	return FALSE;
 }
 int Str__eq_narrow_string(text_stream *S1, char *S2) {
+	if (S2 == NULL) return (Str__len(S1) == 0)?TRUE:FALSE;
 	if (Str__len(S1) == (int) strlen(S2)) {
 		int i=0;
 		LOOP_THROUGH_TEXT(P, S1)
@@ -10366,7 +10410,7 @@ int Str__ne_wide_string(text_stream *S1, wchar_t *S2) {
 	return (Str__eq_wide_string(S1, S2)?FALSE:TRUE);
 }
 
-#line 472 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 474 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int Str__is_whitespace(text_stream *S) {
 	LOOP_THROUGH_TEXT(pos, S)
 		if (Characters__is_space_or_tab(Str__get(pos)) == FALSE)
@@ -10374,7 +10418,7 @@ int Str__is_whitespace(text_stream *S) {
 	return TRUE;
 }
 
-#line 482 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 484 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void Str__trim_white_space(text_stream *S) {
 	int len = Str__len(S), i = 0, j = 0;
 	string_position F = Str__start(S);
@@ -10426,7 +10470,7 @@ int Str__trim_all_white_space_at_end(text_stream *S) {
 	return shortened;
 }
 
-#line 536 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 538 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void Str__delete_first_character(text_stream *S) {
 	Str__delete_nth_character(S, 0);
 }
@@ -10451,7 +10495,7 @@ void Str__delete_n_characters(text_stream *S, int n) {
 	}
 }
 
-#line 563 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 565 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void Str__substr(OUTPUT_STREAM, string_position from, string_position to) {
 	if (from.S != to.S) internal_error("substr on two different strings");
 	for (int i = from.index; i < to.index; i++)
@@ -10509,7 +10553,7 @@ int Str__includes_at(text_stream *line, int i, text_stream *pattern) {
 	return TRUE;
 }
 
-#line 631 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 633 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 dictionary *string_literals_dictionary = NULL;
 
 text_stream *Str__literal(wchar_t *wide_C_string) {
@@ -10518,7 +10562,7 @@ text_stream *Str__literal(wchar_t *wide_C_string) {
 	LOCK_MUTEX(mutex);
 	
 {
-#line 643 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 645 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 	if (string_literals_dictionary == NULL)
 		string_literals_dictionary = Dictionaries__new(100, TRUE);
 	answer = Dictionaries__get_text_literal(string_literals_dictionary, wide_C_string);
@@ -10530,7 +10574,7 @@ text_stream *Str__literal(wchar_t *wide_C_string) {
 	}
 
 }
-#line 637 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 639 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 ;
 	UNLOCK_MUTEX(mutex);
 	return answer;
@@ -14799,7 +14843,8 @@ int WebModules__exists(pathname *P) {
 
 #line 142 "inweb/foundation-module/Chapter 8/Web Modules.w"
 int WebModules__named_reference(module **return_M, section_md **return_Sm,
-	int *named_as_module, text_stream *title, module *from_M, text_stream *text, int list) {
+	int *named_as_module, text_stream *title, module *from_M, text_stream *text,
+	int list, int sections_only) {
 	*return_M = NULL; *return_Sm = NULL; *named_as_module = FALSE;
 	module *M;
 	int finds = 0;
@@ -14812,12 +14857,12 @@ int WebModules__named_reference(module **return_M, section_md **return_Sm,
 				seek = mr.exp[1];
 				
 {
-#line 173 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 174 "inweb/foundation-module/Chapter 8/Web Modules.w"
 	if (M == NULL) internal_error("no module");
 	if (Str__eq_insensitive(M->module_name, seek))
 		
 {
-#line 189 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 191 "inweb/foundation-module/Chapter 8/Web Modules.w"
 	finds++;
 	if (finds == 1) {
 		*return_M = M; *return_Sm = FIRST_IN_LINKED_LIST(section_md, M->sections_md);
@@ -14827,17 +14872,18 @@ int WebModules__named_reference(module **return_M, section_md **return_Sm,
 	if (list) WRITE_TO(STDERR, "(%d)  Module '%S'\n", finds, M->module_name);
 
 }
-#line 175 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 176 "inweb/foundation-module/Chapter 8/Web Modules.w"
 ;
 	chapter_md *Cm;
 	section_md *Sm;
 	LOOP_OVER_LINKED_LIST(Cm, chapter_md, M->chapters_md) {
-		if ((Str__eq_insensitive(Cm->ch_title, seek)) ||
+		if ((sections_only == FALSE) &&
+			((Str__eq_insensitive(Cm->ch_title, seek)) ||
 			(Str__eq_insensitive(Cm->ch_basic_title, seek)) ||
-			(Str__eq_insensitive(Cm->ch_decorated_title, seek)))
+			(Str__eq_insensitive(Cm->ch_decorated_title, seek))))
 			
 {
-#line 198 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 200 "inweb/foundation-module/Chapter 8/Web Modules.w"
 	finds++;
 	if (finds == 1) {
 		*return_M = M; *return_Sm = FIRST_IN_LINKED_LIST(section_md, Cm->sections_md);
@@ -14846,13 +14892,13 @@ int WebModules__named_reference(module **return_M, section_md **return_Sm,
 	if (list) WRITE_TO(STDERR, "(%d)  Chapter '%S'\n", finds, Cm->ch_title);
 
 }
-#line 182 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 184 "inweb/foundation-module/Chapter 8/Web Modules.w"
 ;
 		LOOP_OVER_LINKED_LIST(Sm, section_md, Cm->sections_md)
 			if (Str__eq_insensitive(Sm->sect_title, seek))
 				
 {
-#line 206 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 208 "inweb/foundation-module/Chapter 8/Web Modules.w"
 	finds++;
 	if (finds == 1) {
 		*return_M = M; *return_Sm = Sm;
@@ -14861,12 +14907,12 @@ int WebModules__named_reference(module **return_M, section_md **return_Sm,
 	if (list) WRITE_TO(STDERR, "(%d)  Section '%S'\n", finds, Sm->sect_title);
 
 }
-#line 185 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 187 "inweb/foundation-module/Chapter 8/Web Modules.w"
 ;
 	}
 
 }
-#line 154 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 155 "inweb/foundation-module/Chapter 8/Web Modules.w"
 ;
 			}
 	}
@@ -14877,12 +14923,12 @@ int WebModules__named_reference(module **return_M, section_md **return_Sm,
 			M = from_M;
 			
 {
-#line 173 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 174 "inweb/foundation-module/Chapter 8/Web Modules.w"
 	if (M == NULL) internal_error("no module");
 	if (Str__eq_insensitive(M->module_name, seek))
 		
 {
-#line 189 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 191 "inweb/foundation-module/Chapter 8/Web Modules.w"
 	finds++;
 	if (finds == 1) {
 		*return_M = M; *return_Sm = FIRST_IN_LINKED_LIST(section_md, M->sections_md);
@@ -14892,17 +14938,18 @@ int WebModules__named_reference(module **return_M, section_md **return_Sm,
 	if (list) WRITE_TO(STDERR, "(%d)  Module '%S'\n", finds, M->module_name);
 
 }
-#line 175 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 176 "inweb/foundation-module/Chapter 8/Web Modules.w"
 ;
 	chapter_md *Cm;
 	section_md *Sm;
 	LOOP_OVER_LINKED_LIST(Cm, chapter_md, M->chapters_md) {
-		if ((Str__eq_insensitive(Cm->ch_title, seek)) ||
+		if ((sections_only == FALSE) &&
+			((Str__eq_insensitive(Cm->ch_title, seek)) ||
 			(Str__eq_insensitive(Cm->ch_basic_title, seek)) ||
-			(Str__eq_insensitive(Cm->ch_decorated_title, seek)))
+			(Str__eq_insensitive(Cm->ch_decorated_title, seek))))
 			
 {
-#line 198 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 200 "inweb/foundation-module/Chapter 8/Web Modules.w"
 	finds++;
 	if (finds == 1) {
 		*return_M = M; *return_Sm = FIRST_IN_LINKED_LIST(section_md, Cm->sections_md);
@@ -14911,13 +14958,13 @@ int WebModules__named_reference(module **return_M, section_md **return_Sm,
 	if (list) WRITE_TO(STDERR, "(%d)  Chapter '%S'\n", finds, Cm->ch_title);
 
 }
-#line 182 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 184 "inweb/foundation-module/Chapter 8/Web Modules.w"
 ;
 		LOOP_OVER_LINKED_LIST(Sm, section_md, Cm->sections_md)
 			if (Str__eq_insensitive(Sm->sect_title, seek))
 				
 {
-#line 206 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 208 "inweb/foundation-module/Chapter 8/Web Modules.w"
 	finds++;
 	if (finds == 1) {
 		*return_M = M; *return_Sm = Sm;
@@ -14926,24 +14973,24 @@ int WebModules__named_reference(module **return_M, section_md **return_Sm,
 	if (list) WRITE_TO(STDERR, "(%d)  Section '%S'\n", finds, Sm->sect_title);
 
 }
-#line 185 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 187 "inweb/foundation-module/Chapter 8/Web Modules.w"
 ;
 	}
 
 }
-#line 162 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 163 "inweb/foundation-module/Chapter 8/Web Modules.w"
 ;
 		}
 		if (stage == 2) {
 			LOOP_OVER_LINKED_LIST(M, module, from_M->dependencies)
 				
 {
-#line 173 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 174 "inweb/foundation-module/Chapter 8/Web Modules.w"
 	if (M == NULL) internal_error("no module");
 	if (Str__eq_insensitive(M->module_name, seek))
 		
 {
-#line 189 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 191 "inweb/foundation-module/Chapter 8/Web Modules.w"
 	finds++;
 	if (finds == 1) {
 		*return_M = M; *return_Sm = FIRST_IN_LINKED_LIST(section_md, M->sections_md);
@@ -14953,17 +15000,18 @@ int WebModules__named_reference(module **return_M, section_md **return_Sm,
 	if (list) WRITE_TO(STDERR, "(%d)  Module '%S'\n", finds, M->module_name);
 
 }
-#line 175 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 176 "inweb/foundation-module/Chapter 8/Web Modules.w"
 ;
 	chapter_md *Cm;
 	section_md *Sm;
 	LOOP_OVER_LINKED_LIST(Cm, chapter_md, M->chapters_md) {
-		if ((Str__eq_insensitive(Cm->ch_title, seek)) ||
+		if ((sections_only == FALSE) &&
+			((Str__eq_insensitive(Cm->ch_title, seek)) ||
 			(Str__eq_insensitive(Cm->ch_basic_title, seek)) ||
-			(Str__eq_insensitive(Cm->ch_decorated_title, seek)))
+			(Str__eq_insensitive(Cm->ch_decorated_title, seek))))
 			
 {
-#line 198 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 200 "inweb/foundation-module/Chapter 8/Web Modules.w"
 	finds++;
 	if (finds == 1) {
 		*return_M = M; *return_Sm = FIRST_IN_LINKED_LIST(section_md, Cm->sections_md);
@@ -14972,13 +15020,13 @@ int WebModules__named_reference(module **return_M, section_md **return_Sm,
 	if (list) WRITE_TO(STDERR, "(%d)  Chapter '%S'\n", finds, Cm->ch_title);
 
 }
-#line 182 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 184 "inweb/foundation-module/Chapter 8/Web Modules.w"
 ;
 		LOOP_OVER_LINKED_LIST(Sm, section_md, Cm->sections_md)
 			if (Str__eq_insensitive(Sm->sect_title, seek))
 				
 {
-#line 206 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 208 "inweb/foundation-module/Chapter 8/Web Modules.w"
 	finds++;
 	if (finds == 1) {
 		*return_M = M; *return_Sm = Sm;
@@ -14987,12 +15035,12 @@ int WebModules__named_reference(module **return_M, section_md **return_Sm,
 	if (list) WRITE_TO(STDERR, "(%d)  Section '%S'\n", finds, Sm->sect_title);
 
 }
-#line 185 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 187 "inweb/foundation-module/Chapter 8/Web Modules.w"
 ;
 	}
 
 }
-#line 166 "inweb/foundation-module/Chapter 8/Web Modules.w"
+#line 167 "inweb/foundation-module/Chapter 8/Web Modules.w"
 ;
 		}
 	}
@@ -30146,7 +30194,7 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 
 	
 {
-#line 365 "inweb/Chapter 6/Colonies.w"
+#line 378 "inweb/Chapter 6/Colonies.w"
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, text, L"https*://%c*")) {
 		WRITE_TO(url, "%S", text);
@@ -30162,7 +30210,7 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 ;
 	
 {
-#line 376 "inweb/Chapter 6/Colonies.w"
+#line 389 "inweb/Chapter 6/Colonies.w"
 	search_CM = Colonies__find(text);
 	if (search_CM) {
 		module *found_M = Colonies__as_module(search_CM, L, Wm);
@@ -30171,11 +30219,11 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 		WRITE_TO(title, "%S", search_CM->name);
 		
 {
-#line 423 "inweb/Chapter 6/Colonies.w"
+#line 436 "inweb/Chapter 6/Colonies.w"
 	if (found_M == NULL) internal_error("could not locate M");
 	if (search_CM) 
 {
-#line 429 "inweb/Chapter 6/Colonies.w"
+#line 442 "inweb/Chapter 6/Colonies.w"
 	pathname *from = Filenames__up(for_HTML_file);
 	pathname *to = search_CM->weave_path;
 	Pathnames__relative_URL(url, from, to);
@@ -30185,11 +30233,11 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 		WRITE_TO(title, " (in %S)", search_CM->name);
 
 }
-#line 424 "inweb/Chapter 6/Colonies.w"
+#line 437 "inweb/Chapter 6/Colonies.w"
 
 	else 
 {
-#line 442 "inweb/Chapter 6/Colonies.w"
+#line 455 "inweb/Chapter 6/Colonies.w"
 	if (found_M == from_M) {
 		Colonies__section_URL(url, found_Sm);
 	} else {
@@ -30200,12 +30248,12 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	}
 
 }
-#line 425 "inweb/Chapter 6/Colonies.w"
+#line 438 "inweb/Chapter 6/Colonies.w"
 ;
 	return TRUE;
 
 }
-#line 382 "inweb/Chapter 6/Colonies.w"
+#line 395 "inweb/Chapter 6/Colonies.w"
 ;
 	}
 
@@ -30214,7 +30262,7 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 ;
 	
 {
-#line 386 "inweb/Chapter 6/Colonies.w"
+#line 399 "inweb/Chapter 6/Colonies.w"
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, text, L"(%c*?): (%c*)")) {
 		search_CM = Colonies__find(mr.exp[0]);
@@ -30236,13 +30284,26 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	module *found_M = NULL;
 	section_md *found_Sm = NULL;
 	int bare_module_name = FALSE;
+
+	/* find how many hits (N), and how many which are sections (NS) */
 	int N = WebModules__named_reference(&found_M, &found_Sm, &bare_module_name,
-		title, search_M, text, FALSE);
+		NULL, search_M, text, FALSE, FALSE);
+	found_M = NULL; found_Sm = NULL; bare_module_name = FALSE;
+	int NS = WebModules__named_reference(&found_M, &found_Sm, &bare_module_name,
+		NULL, search_M, text, FALSE, TRUE);
+	int sections_only = FALSE;
+	if ((N > 1) && (NS == 1)) sections_only = TRUE;
+
+	/* now perform the definitive search */
+	found_M = NULL; found_Sm = NULL; bare_module_name = FALSE;
+	N = WebModules__named_reference(&found_M, &found_Sm, &bare_module_name,
+		title, search_M, text, FALSE, sections_only);
+
 	if (N == 0) {
 		if ((L) && (external == FALSE)) {
 			
 {
-#line 401 "inweb/Chapter 6/Colonies.w"
+#line 414 "inweb/Chapter 6/Colonies.w"
 	language_function *fn;
 	LOOP_OVER(fn, language_function) {
 		if (Str__eq_insensitive(fn->function_name, text)) {
@@ -30254,11 +30315,11 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	}
 
 }
-#line 345 "inweb/Chapter 6/Colonies.w"
+#line 358 "inweb/Chapter 6/Colonies.w"
 ;
 			
 {
-#line 412 "inweb/Chapter 6/Colonies.w"
+#line 425 "inweb/Chapter 6/Colonies.w"
 	language_type *str;
 	LOOP_OVER(str, language_type) {
 		if (Str__eq_insensitive(str->structure_name, text)) {
@@ -30270,7 +30331,7 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	}
 
 }
-#line 346 "inweb/Chapter 6/Colonies.w"
+#line 359 "inweb/Chapter 6/Colonies.w"
 ;
 		}
 		TEMPORARY_TEXT(err)
@@ -30278,19 +30339,20 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 		Main__error_in_web(err, L);
 		DISCARD_TEXT(err)
 		return FALSE;
-	} else if (N > 1) {
+	}
+	if (N > 1) {
 		Main__error_in_web(TL_IS_648, L);
 		WebModules__named_reference(&found_M, &found_Sm, &bare_module_name,
-			title, search_M, text, TRUE);
+			title, search_M, text, TRUE, FALSE);
 		return FALSE;
-	} else {
-		
+	}
+	
 {
-#line 423 "inweb/Chapter 6/Colonies.w"
+#line 436 "inweb/Chapter 6/Colonies.w"
 	if (found_M == NULL) internal_error("could not locate M");
 	if (search_CM) 
 {
-#line 429 "inweb/Chapter 6/Colonies.w"
+#line 442 "inweb/Chapter 6/Colonies.w"
 	pathname *from = Filenames__up(for_HTML_file);
 	pathname *to = search_CM->weave_path;
 	Pathnames__relative_URL(url, from, to);
@@ -30300,11 +30362,11 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 		WRITE_TO(title, " (in %S)", search_CM->name);
 
 }
-#line 424 "inweb/Chapter 6/Colonies.w"
+#line 437 "inweb/Chapter 6/Colonies.w"
 
 	else 
 {
-#line 442 "inweb/Chapter 6/Colonies.w"
+#line 455 "inweb/Chapter 6/Colonies.w"
 	if (found_M == from_M) {
 		Colonies__section_URL(url, found_Sm);
 	} else {
@@ -30315,18 +30377,17 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	}
 
 }
-#line 425 "inweb/Chapter 6/Colonies.w"
+#line 438 "inweb/Chapter 6/Colonies.w"
 ;
 	return TRUE;
 
 }
-#line 359 "inweb/Chapter 6/Colonies.w"
+#line 373 "inweb/Chapter 6/Colonies.w"
 ;
-		return TRUE;
-	}
+	return TRUE;
 }
 
-#line 454 "inweb/Chapter 6/Colonies.w"
+#line 467 "inweb/Chapter 6/Colonies.w"
 void Colonies__link_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, link_text, L" *//(%c+)// *"))

@@ -140,7 +140,8 @@ section of code you are now reading.
 
 =
 int WebModules::named_reference(module **return_M, section_md **return_Sm,
-	int *named_as_module, text_stream *title, module *from_M, text_stream *text, int list) {
+	int *named_as_module, text_stream *title, module *from_M, text_stream *text,
+	int list, int sections_only) {
 	*return_M = NULL; *return_Sm = NULL; *named_as_module = FALSE;
 	module *M;
 	int finds = 0;
@@ -176,9 +177,10 @@ int WebModules::named_reference(module **return_M, section_md **return_Sm,
 	chapter_md *Cm;
 	section_md *Sm;
 	LOOP_OVER_LINKED_LIST(Cm, chapter_md, M->chapters_md) {
-		if ((Str::eq_insensitive(Cm->ch_title, seek)) ||
+		if ((sections_only == FALSE) &&
+			((Str::eq_insensitive(Cm->ch_title, seek)) ||
 			(Str::eq_insensitive(Cm->ch_basic_title, seek)) ||
-			(Str::eq_insensitive(Cm->ch_decorated_title, seek)))
+			(Str::eq_insensitive(Cm->ch_decorated_title, seek))))
 			@<Found first section in chapter@>;
 		LOOP_OVER_LINKED_LIST(Sm, section_md, Cm->sections_md)
 			if (Str::eq_insensitive(Sm->sect_title, seek))

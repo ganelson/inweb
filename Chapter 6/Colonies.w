@@ -338,8 +338,21 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	module *found_M = NULL;
 	section_md *found_Sm = NULL;
 	int bare_module_name = FALSE;
+
+	/* find how many hits (N), and how many which are sections (NS) */
 	int N = WebModules::named_reference(&found_M, &found_Sm, &bare_module_name,
-		title, search_M, text, FALSE);
+		NULL, search_M, text, FALSE, FALSE);
+	found_M = NULL; found_Sm = NULL; bare_module_name = FALSE;
+	int NS = WebModules::named_reference(&found_M, &found_Sm, &bare_module_name,
+		NULL, search_M, text, FALSE, TRUE);
+	int sections_only = FALSE;
+	if ((N > 1) && (NS == 1)) sections_only = TRUE;
+
+	/* now perform the definitive search */
+	found_M = NULL; found_Sm = NULL; bare_module_name = FALSE;
+	N = WebModules::named_reference(&found_M, &found_Sm, &bare_module_name,
+		title, search_M, text, FALSE, sections_only);
+
 	if (N == 0) {
 		if ((L) && (external == FALSE)) {
 			@<Is it the name of a function in the current web?@>;
@@ -350,15 +363,15 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 		Main::error_in_web(err, L);
 		DISCARD_TEXT(err)
 		return FALSE;
-	} else if (N > 1) {
+	}
+	if (N > 1) {
 		Main::error_in_web(I"Multiple cross-references might be meant here", L);
 		WebModules::named_reference(&found_M, &found_Sm, &bare_module_name,
-			title, search_M, text, TRUE);
+			title, search_M, text, TRUE, FALSE);
 		return FALSE;
-	} else {
-		@<It refers unambiguously to a single section@>;
-		return TRUE;
 	}
+	@<It refers unambiguously to a single section@>;
+	return TRUE;
 }
 
 @<Is it an explicit URL?@> =
