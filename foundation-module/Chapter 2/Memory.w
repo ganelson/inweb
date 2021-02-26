@@ -741,8 +741,8 @@ following:
 (a) |NULL|, to which we assign ID number $-1$;
 (b) |char|, to which we assign ID number 1000;
 (c) any individually allocated structure of the types listed above, to
-which we assign the ID numbers used above: for instance, |blorb_figure_CLASS|
-is the ID number for a |general_pointer| which points to a |blorb_figure|
+which we assign the ID numbers used above: for instance, |figures_data_CLASS|
+is the ID number for a |general_pointer| which points to a |figures_data|
 structure.
 
 @d NULL_GENERAL_POINTER (Memory::store_gp_null())

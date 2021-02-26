@@ -1,6 +1,6 @@
 # Inweb 7
 
-v7-alpha.1+1A69 'Escape to Danger' (20 February 2021)
+v7-alpha.1+1A70 'Escape to Danger' (26 February 2021)
 
 ## About Inweb
 
