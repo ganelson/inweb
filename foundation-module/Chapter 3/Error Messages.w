@@ -24,9 +24,11 @@ int Errors::have_occurred(void) {
 }
 
 void Errors::issue(text_stream *message, int fatality) {
+	STREAM_FLUSH(STDOUT);
 	int rv = TRUE;
 	if (errors_handler) rv = (*errors_handler)(message, fatality);
 	if (rv) WRITE_TO(STDERR, "%S", message);
+	STREAM_FLUSH(STDERR);
 	if (fatality) Errors::die(); else problem_count++;
 }
 
