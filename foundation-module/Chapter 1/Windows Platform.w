@@ -24,7 +24,9 @@ on a POSIX operating system.
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <shellapi.h>
 #include <shlobj.h>
+#include <shlwapi.h>
 #undef IN
 #undef OUT
 
@@ -201,8 +203,86 @@ void Platform::closedir(void *D) {
 @h Sync.
 
 =
+void Platform::path_add(const char* base, const char* add, char* path) {
+  strcpy(path, base);
+  PathAppendA(path, add);
+}
+
 void Platform::rsync(char *transcoded_source, char *transcoded_dest) {
-	printf("Platform::rsync() is not yet implemented!\n");
+	CreateDirectoryA(transcoded_dest, 0);
+
+	char srcPath[MAX_PATH], destPath[MAX_PATH];
+	WIN32_FIND_DATA findData = { 0 };
+
+	Platform::path_add(transcoded_dest, "*", destPath);
+	HANDLE findHandle = FindFirstFileA(destPath, &findData);
+	if (findHandle != INVALID_HANDLE_VALUE) {
+		do {
+			if ((strcmp(findData.cFileName, ".") == 0) || (strcmp(findData.cFileName, "..") == 0))
+				continue;
+
+			Platform::path_add(transcoded_source, findData.cFileName, srcPath);
+
+			int remove = 1;
+			{
+				DWORD srcAttrs = GetFileAttributesA(srcPath);
+				if (srcAttrs != INVALID_FILE_ATTRIBUTES) {
+					if ((findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == (srcAttrs & FILE_ATTRIBUTE_DIRECTORY))
+						remove = 0;
+				}
+			}
+			if (remove) {
+				Platform::path_add(transcoded_dest, findData.cFileName, destPath);
+				if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+					destPath[strlen(destPath) + 1] = 0;
+
+					SHFILEOPSTRUCTA oper = { 0 };
+					oper.wFunc = FO_DELETE;
+					oper.pFrom = destPath;
+					oper.fFlags = FOF_NO_UI;
+					SHFileOperationA(&oper);
+				}
+				else DeleteFileA(destPath);
+			}
+		}
+		while (FindNextFileA(findHandle, &findData) != 0);
+		FindClose(findHandle);
+	}
+
+	Platform::path_add(transcoded_source, "*", srcPath);
+	findHandle = FindFirstFileA(srcPath, &findData);
+	if (findHandle != INVALID_HANDLE_VALUE) {
+		do {
+			if ((strcmp(findData.cFileName, ".") == 0) || (strcmp(findData.cFileName, "..") == 0))
+				continue;
+
+			Platform::path_add(transcoded_source, findData.cFileName, srcPath);
+			Platform::path_add(transcoded_dest, findData.cFileName, destPath);
+
+			if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+				CreateDirectoryA(destPath, 0);
+				Platform::rsync(srcPath, destPath);
+			} else {
+				int needCopy = 1;
+				{
+					WIN32_FIND_DATA destFindData = { 0 };
+					HANDLE destFindHandle = FindFirstFileA(destPath, &destFindData);
+					if (destFindHandle != INVALID_HANDLE_VALUE) {
+						if ((findData.nFileSizeLow == destFindData.nFileSizeLow) && (findData.nFileSizeHigh == destFindData.nFileSizeHigh)) {
+							if (CompareFileTime(&(findData.ftLastWriteTime), &(destFindData.ftLastWriteTime)) == 0)
+								needCopy = 0;
+						}
+						FindClose(destFindHandle);
+					}
+				}
+
+				if (needCopy)
+					CopyFileA(srcPath, destPath, 0);
+			}
+		}
+		while (FindNextFileA(findHandle, &findData) != 0);
+		FindClose(findHandle);
+	}
 }
 
 @h Sleep. The Windows |Sleep| call measures time in milliseconds, whereas
