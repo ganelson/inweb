@@ -2892,35 +2892,35 @@ void  Errors__set_internal_handler(void (*f)(void *, char *, char *, int)) ;
 int  Errors__have_occurred(void) ;
 #line 26 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__issue(text_stream *message, int fatality) ;
-#line 41 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 43 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__fatal(char *message) ;
-#line 48 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 50 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__fatal_with_C_string(char *message, char *parameter) ;
-#line 57 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 59 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__fatal_with_text(char *message, text_stream *parameter) ;
-#line 66 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 68 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__fatal_with_file(char *message, filename *F) ;
-#line 73 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 75 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__fatal_with_path(char *message, pathname *P) ;
-#line 85 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 87 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__internal_error_handler(void *p, char *message, char *f, int lc) ;
-#line 99 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 101 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__enter_debugger_mode(void) ;
-#line 104 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 106 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__die(void) ;
-#line 120 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 122 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__nowhere(char *message) ;
-#line 124 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 126 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__in_text_file(char *message, text_file_position *here) ;
-#line 131 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 133 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__in_text_file_S(text_stream *message, text_file_position *here) ;
-#line 141 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 143 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__at_position(char *message, filename *file, int line) ;
-#line 150 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 152 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__at_position_S(text_stream *message, filename *file, int line) ;
-#line 162 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 164 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__with_file(char *message, filename *F) ;
-#line 169 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 171 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__with_text(char *message, text_stream *T) ;
 #line 65 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__begin_group(int id, text_stream *name) ;
@@ -8022,13 +8022,15 @@ int Errors__have_occurred(void) {
 }
 
 void Errors__issue(text_stream *message, int fatality) {
+	STREAM_FLUSH(STDOUT);
 	int rv = TRUE;
 	if (errors_handler) rv = (*errors_handler)(message, fatality);
 	if (rv) WRITE_TO(STDERR, "%S", message);
+	STREAM_FLUSH(STDERR);
 	if (fatality) Errors__die(); else problem_count++;
 }
 
-#line 41 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 43 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void Errors__fatal(char *message) {
 	TEMPORARY_TEXT(ERM)
 	WRITE_TO(ERM, "%s: fatal error: %s\n", PROGRAM_NAME, message);
@@ -8068,7 +8070,7 @@ void Errors__fatal_with_path(char *message, pathname *P) {
 	DISCARD_TEXT(ERM)
 }
 
-#line 85 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 87 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void Errors__internal_error_handler(void *p, char *message, char *f, int lc) {
 	if (internal_errors_handler)
 		(*internal_errors_handler)(p, message, f, lc);
@@ -8076,7 +8078,7 @@ void Errors__internal_error_handler(void *p, char *message, char *f, int lc) {
 		Errors__fatal_with_C_string("internal error (%s)", message);
 }
 
-#line 98 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 100 "inweb/foundation-module/Chapter 3/Error Messages.w"
 int debugger_mode = FALSE;
 void Errors__enter_debugger_mode(void) {
 	debugger_mode = TRUE;
@@ -8094,7 +8096,7 @@ void Errors__die(void) { /* as void as it gets */
 	exit(2);
 }
 
-#line 120 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 122 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void Errors__nowhere(char *message) {
 	Errors__in_text_file(message, NULL);
 }
@@ -8113,7 +8115,7 @@ void Errors__in_text_file_S(text_stream *message, text_file_position *here) {
 		Errors__at_position_S(message, NULL, 0);
 }
 
-#line 141 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 143 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void Errors__at_position(char *message, filename *file, int line) {
 	TEMPORARY_TEXT(ERM)
 	WRITE_TO(ERM, "%s: ", PROGRAM_NAME);
@@ -8132,7 +8134,7 @@ void Errors__at_position_S(text_stream *message, filename *file, int line) {
 	DISCARD_TEXT(ERM)
 }
 
-#line 162 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 164 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void Errors__with_file(char *message, filename *F) {
 	TEMPORARY_TEXT(ERM)
 	WRITE_TO(ERM, "%s: %f: %s\n", PROGRAM_NAME, F, message);
@@ -8422,11 +8424,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A69";
+			char *svn = "7-alpha.1+1A72";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "20 February 2021";
+			char *d = "19 April 2021";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
