@@ -77,7 +77,7 @@ ARTOOL = libtool -o
 # The I6 source code needs a constant defined to tell it what platform it'll
 # be used on, so:
 
-INFORM6OS = OSX
+INFORM6OS = MACOS
 
 # The following is needed when compiling glulxe, as part of dumb-glulx, which
 # is used in testing. For Mac OS X and probably all Unix-based systems, it
