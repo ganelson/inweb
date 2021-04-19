@@ -66,6 +66,7 @@ android:
 .PHONY: initial
 initial: $(ME)/platform-settings.mk
 	$(call make-me-once-tangled)
+	$(call make-ftest)
 
 .PHONY: safe
 safe:
