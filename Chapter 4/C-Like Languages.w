@@ -433,25 +433,35 @@ exist either way.
 	chapter *C;
 	section *S;
 	LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W))
-		if ((L->function_defined) && (L->owning_paragraph->placed_very_early == FALSE)) {
-			language_function *fn = L->function_defined;
-			int to_close = 0;
-			for (int i=0; i<fn->no_conditionals; i++) {
-				match_results mr = Regexp::create_mr();
-				if (!(Regexp::match(&mr, fn->within_conditionals[i]->text,
-					L"%c*inweb: always predeclare%c*"))) {
-					WRITE("%S\n", fn->within_conditionals[i]->text);
-					to_close++;
-				}
+		if (L->function_defined) {
+			if (L->owning_paragraph == NULL) {
+				TEMPORARY_TEXT(err_mess)
+				WRITE_TO(err_mess, "Function '%S' seems outside of any paragraph",
+					L->function_defined->function_name);
+				Main::error_in_web(err_mess, L);
+				DISCARD_TEXT(err_mess)
+				continue;
 			}
-			Tags::open_ifdefs(OUT, L->owning_paragraph);
-			LanguageMethods::insert_line_marker(OUT, W->main_language, L);
-			WRITE("%S ", fn->function_type);
-			LanguageMethods::tangle_line(OUT, W->main_language, fn->function_name);
-			WRITE("(%S;\n", fn->function_arguments);
-			Tags::close_ifdefs(OUT, L->owning_paragraph);
-			for (int i=0; i<to_close; i++) {
-				WRITE("#endif\n");
+			if (L->owning_paragraph->placed_very_early == FALSE) {
+				language_function *fn = L->function_defined;
+				int to_close = 0;
+				for (int i=0; i<fn->no_conditionals; i++) {
+					match_results mr = Regexp::create_mr();
+					if (!(Regexp::match(&mr, fn->within_conditionals[i]->text,
+						L"%c*inweb: always predeclare%c*"))) {
+						WRITE("%S\n", fn->within_conditionals[i]->text);
+						to_close++;
+					}
+				}
+				Tags::open_ifdefs(OUT, L->owning_paragraph);
+				LanguageMethods::insert_line_marker(OUT, W->main_language, L);
+				WRITE("%S ", fn->function_type);
+				LanguageMethods::tangle_line(OUT, W->main_language, fn->function_name);
+				WRITE("(%S;\n", fn->function_arguments);
+				Tags::close_ifdefs(OUT, L->owning_paragraph);
+				for (int i=0; i<to_close; i++) {
+					WRITE("#endif\n");
+				}
 			}
 		}
 

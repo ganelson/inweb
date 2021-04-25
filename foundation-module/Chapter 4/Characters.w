@@ -159,3 +159,10 @@ wchar_t Characters::remove_wchar_t_accent(wchar_t charcode) {
 	return (wchar_t) Characters::remove_accent((int) charcode);
 }
 
+@ This will do until we properly use Unicode character classes some day:
+
+=
+int Characters::isalphabetic(int letter) {
+	return Characters::isalpha((wchar_t) Characters::remove_accent(letter));
+}
+

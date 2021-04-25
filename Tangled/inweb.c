@@ -3130,6 +3130,8 @@ wchar_t  Characters__make_wchar_t_filename_safe(wchar_t charcode) ;
 int  Characters__remove_accent(int charcode) ;
 #line 158 "inweb/foundation-module/Chapter 4/Characters.w"
 wchar_t  Characters__remove_wchar_t_accent(wchar_t charcode) ;
+#line 165 "inweb/foundation-module/Chapter 4/Characters.w"
+int  Characters__isalphabetic(int letter) ;
 #line 25 "inweb/foundation-module/Chapter 4/C Strings.w"
 int  CStrings__strlen_unbounded(const char *p) ;
 #line 35 "inweb/foundation-module/Chapter 4/C Strings.w"
@@ -10027,6 +10029,11 @@ int Characters__remove_accent(int charcode) {
 
 wchar_t Characters__remove_wchar_t_accent(wchar_t charcode) {
 	return (wchar_t) Characters__remove_accent((int) charcode);
+}
+
+#line 165 "inweb/foundation-module/Chapter 4/Characters.w"
+int Characters__isalphabetic(int letter) {
+	return Characters__isalpha((wchar_t) Characters__remove_accent(letter));
 }
 
 
@@ -24106,25 +24113,35 @@ void CLike__additional_predeclarations(programming_language *self, text_stream *
 	chapter *C;
 	section *S;
 	LOOP_WITHIN_TANGLE(C, S, Tangler__primary_target(W))
-		if ((L->function_defined) && (L->owning_paragraph->placed_very_early == FALSE)) {
-			language_function *fn = L->function_defined;
-			int to_close = 0;
-			for (int i=0; i<fn->no_conditionals; i++) {
-				match_results mr = Regexp__create_mr();
-				if (!(Regexp__match(&mr, fn->within_conditionals[i]->text,
-					L"%c*inweb: always predeclare%c*"))) {
-					WRITE("%S\n", fn->within_conditionals[i]->text);
-					to_close++;
-				}
+		if (L->function_defined) {
+			if (L->owning_paragraph == NULL) {
+				TEMPORARY_TEXT(err_mess)
+				WRITE_TO(err_mess, "Function '%S' seems outside of any paragraph",
+					L->function_defined->function_name);
+				Main__error_in_web(err_mess, L);
+				DISCARD_TEXT(err_mess)
+				continue;
 			}
-			Tags__open_ifdefs(OUT, L->owning_paragraph);
-			LanguageMethods__insert_line_marker(OUT, W->main_language, L);
-			WRITE("%S ", fn->function_type);
-			LanguageMethods__tangle_line(OUT, W->main_language, fn->function_name);
-			WRITE("(%S;\n", fn->function_arguments);
-			Tags__close_ifdefs(OUT, L->owning_paragraph);
-			for (int i=0; i<to_close; i++) {
-				WRITE("#endif\n");
+			if (L->owning_paragraph->placed_very_early == FALSE) {
+				language_function *fn = L->function_defined;
+				int to_close = 0;
+				for (int i=0; i<fn->no_conditionals; i++) {
+					match_results mr = Regexp__create_mr();
+					if (!(Regexp__match(&mr, fn->within_conditionals[i]->text,
+						L"%c*inweb: always predeclare%c*"))) {
+						WRITE("%S\n", fn->within_conditionals[i]->text);
+						to_close++;
+					}
+				}
+				Tags__open_ifdefs(OUT, L->owning_paragraph);
+				LanguageMethods__insert_line_marker(OUT, W->main_language, L);
+				WRITE("%S ", fn->function_type);
+				LanguageMethods__tangle_line(OUT, W->main_language, fn->function_name);
+				WRITE("(%S;\n", fn->function_arguments);
+				Tags__close_ifdefs(OUT, L->owning_paragraph);
+				for (int i=0; i<to_close; i++) {
+					WRITE("#endif\n");
+				}
 			}
 		}
 
