@@ -266,15 +266,33 @@ void HTML::close_javascript(OUTPUT_STREAM) {
 	HTML_CLOSE("script");
 }
 
+dictionary *HTML_incorporation_cache = NULL;
+
 void HTML::incorporate_javascript(OUTPUT_STREAM, int define_project, filename *M) {
 	HTML::open_javascript(OUT, define_project);
+	if (HTML_incorporation_cache == NULL)
+		HTML_incorporation_cache = Dictionaries::new(32, TRUE);
+	TEMPORARY_TEXT(key)
+	WRITE_TO(key, "%f", M);
+	text_stream *existing_entry = Dictionaries::get_text(HTML_incorporation_cache, key);
+	if (existing_entry) {
+		WRITE("%S", existing_entry);
+	} else {
+		text_stream *new_entry = Dictionaries::create_text(HTML_incorporation_cache, key);
+		HTML::incorporate_javascript_from_file(new_entry, M);
+		WRITE("%S", new_entry);
+	}
+	DISCARD_TEXT(key)
+	HTML::close_javascript(OUT);
+	HTML_file_state *hs = Streams::get_HTML_file_state(OUT);
+	if (hs) hs->JS_included++;
+}
+
+void HTML::incorporate_javascript_from_file(OUTPUT_STREAM, filename *M) {
 	if (TextFiles::read(M, FALSE, NULL, FALSE, HTML::incorporate_helper, NULL, OUT) == FALSE) {
 		WRITE_TO(STDERR, "%f", M);
 		internal_error("Unable to open model JS material for reading");
 	}
-	HTML::close_javascript(OUT);
-	HTML_file_state *hs = Streams::get_HTML_file_state(OUT);
-	if (hs) hs->JS_included++;
 }
 
 void HTML::open_CSS(OUTPUT_STREAM) {
@@ -288,15 +306,47 @@ void HTML::close_CSS(OUTPUT_STREAM) {
 }
 
 void HTML::incorporate_CSS(OUTPUT_STREAM, filename *M) {
-	HTML::open_CSS(OUT);
-	if (TextFiles::read(M, FALSE, NULL, FALSE, HTML::incorporate_helper, NULL, OUT) == FALSE)
-		internal_error("Unable to open model CSS material for reading");
-	HTML::close_CSS(OUT);
+	if (HTML_incorporation_cache == NULL)
+		HTML_incorporation_cache = Dictionaries::new(32, TRUE);
+	TEMPORARY_TEXT(key)
+	WRITE_TO(key, "%f", M);
+	text_stream *existing_entry = Dictionaries::get_text(HTML_incorporation_cache, key);
+	if (existing_entry) {
+		WRITE("%S", existing_entry);
+	} else {
+		text_stream *new_entry = Dictionaries::create_text(HTML_incorporation_cache, key);
+		HTML::incorporate_CSS_from_file(new_entry, M);
+		WRITE("%S", new_entry);
+	}
+	DISCARD_TEXT(key)
 	HTML_file_state *hs = Streams::get_HTML_file_state(OUT);
 	if (hs) hs->CSS_included++;
 }
 
+void HTML::incorporate_CSS_from_file(OUTPUT_STREAM, filename *M) {
+	HTML::open_CSS(OUT);
+	if (TextFiles::read(M, FALSE, NULL, FALSE, HTML::incorporate_helper, NULL, OUT) == FALSE)
+		internal_error("Unable to open model CSS material for reading");
+	HTML::close_CSS(OUT);
+}
+
 void HTML::incorporate_HTML(OUTPUT_STREAM, filename *M) {
+	if (HTML_incorporation_cache == NULL)
+		HTML_incorporation_cache = Dictionaries::new(32, TRUE);
+	TEMPORARY_TEXT(key)
+	WRITE_TO(key, "%f", M);
+	text_stream *existing_entry = Dictionaries::get_text(HTML_incorporation_cache, key);
+	if (existing_entry) {
+		WRITE("%S", existing_entry);
+	} else {
+		text_stream *new_entry = Dictionaries::create_text(HTML_incorporation_cache, key);
+		HTML::incorporate_HTML_from_file(new_entry, M);
+		WRITE("%S", new_entry);
+	}
+	DISCARD_TEXT(key)
+}
+
+void HTML::incorporate_HTML_from_file(OUTPUT_STREAM, filename *M) {
 	if (TextFiles::read(M, FALSE, NULL, FALSE, HTML::incorporate_helper, NULL, OUT) == FALSE)
 		internal_error("Unable to open model HTML material for reading");
 }
