@@ -7,6 +7,7 @@ C: The C programming language
 C++: The C++ programming language
 ConsoleText: For styling command line text in documentation
 Delia: For defining test recipes in Intest
+Extracts: For code extracts to be written to a configuration file
 ILDF: The Inweb Language Definition File format
 InC: The Inform-tools extension to the C programming language
 Indoc: The markup syntax for the Indoc documentation tool

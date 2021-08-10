@@ -35,6 +35,7 @@ MathJax = {
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Extracts-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -64,7 +65,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">inweb</a></li><li><a href="index.html#M">Manual</a></li><li><b>How to Write a Web</b></li></ul></div>
 <p class="purpose">How to mark up code for literate programming.</p>
 
-<ul class="toc"><li><a href="M-htwaw.html#SP1">&#167;1. The title of a section</a></li><li><a href="M-htwaw.html#SP2">&#167;2. Paragraphing</a></li><li><a href="M-htwaw.html#SP6">&#167;6. Conditional compilation</a></li><li><a href="M-htwaw.html#SP7">&#167;7. Commentary</a></li><li><a href="M-htwaw.html#SP12">&#167;12. Code samples and other extraneous matter</a></li><li><a href="M-htwaw.html#SP13">&#167;13. Links</a></li><li><a href="M-htwaw.html#SP14">&#167;14. Cross-references</a></li><li><a href="M-htwaw.html#SP19">&#167;19. Figures</a></li><li><a href="M-htwaw.html#SP20">&#167;20. Carousels</a></li><li><a href="M-htwaw.html#SP21">&#167;21. Video and audio</a></li><li><a href="M-htwaw.html#SP22">&#167;22. Embedded video and audio</a></li><li><a href="M-htwaw.html#SP24">&#167;24. Downloads</a></li><li><a href="M-htwaw.html#SP25">&#167;25. Mathematics notation</a></li><li><a href="M-htwaw.html#SP26">&#167;26. Footnotes</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-htwaw.html#SP1">&#167;1. The title of a section</a></li><li><a href="M-htwaw.html#SP2">&#167;2. Paragraphing</a></li><li><a href="M-htwaw.html#SP6">&#167;6. Conditional compilation</a></li><li><a href="M-htwaw.html#SP7">&#167;7. Commentary</a></li><li><a href="M-htwaw.html#SP12">&#167;12. Code samples and other extraneous matter</a></li><li><a href="M-htwaw.html#SP13">&#167;13. Extract files</a></li><li><a href="M-htwaw.html#SP14">&#167;14. Links</a></li><li><a href="M-htwaw.html#SP15">&#167;15. Cross-references</a></li><li><a href="M-htwaw.html#SP20">&#167;20. Figures</a></li><li><a href="M-htwaw.html#SP21">&#167;21. Carousels</a></li><li><a href="M-htwaw.html#SP22">&#167;22. Video and audio</a></li><li><a href="M-htwaw.html#SP23">&#167;23. Embedded video and audio</a></li><li><a href="M-htwaw.html#SP25">&#167;25. Downloads</a></li><li><a href="M-htwaw.html#SP26">&#167;26. Mathematics notation</a></li><li><a href="M-htwaw.html#SP27">&#167;27. Footnotes</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The title of a section. </b>In any section file, there will be a few lines at the top which occur before
 the first paragraph of code begins. (The first paragraph begins on the first
@@ -528,7 +529,62 @@ For example,
 <span class="plain-syntax">    =</span>
 <span class="plain-syntax">    ...which is essential in order to restore the state of</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Links. </b>URLs in the web are automatically recognised and a weave to HTML will
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Extract files. </b>Many programs can only properly function if accompanied by a configuration file
+of some kind: a set of default preferences, for example, or some other associated
+data. This is not part of the program, and will instead be read in every time
+the program runs.
+</p>
+
+<p class="commentary">To explain such a program properly, one really needs to explain this sidekick
+file as well. So Inweb provides a feature for including these files inside the
+body of a web, as what are called "extracts". For example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    = (text to magic-settings.txt)</span>
+<span class="plain-syntax">        top-hat-capacity = 6 rabbits</span>
+<span class="plain-syntax">        cabinet-trapdoor = closed</span>
+<span class="plain-syntax">    =</span>
+</pre>
+<p class="commentary">The result weaves like so:
+</p>
+
+<pre class="Extracts-displayed-code all-displayed-code code-font">
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">top</span><span class="Extracts-plain-syntax">-</span><span class="Extracts-identifier-syntax">hat</span><span class="Extracts-plain-syntax">-</span><span class="Extracts-identifier-syntax">capacity</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-constant-syntax">6</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">rabbits</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">cabinet</span><span class="Extracts-plain-syntax">-</span><span class="Extracts-identifier-syntax">trapdoor</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-identifier-syntax">closed</span>
+</pre>
+<ul class="endnotetexts"><li>This is part of the extract file magic-settings.txt.</li></ul>
+<p class="commentary">When the web is tangled, the file <span class="extract"><span class="Extracts-extract-syntax">magic-settings.txt</span></span> will be created with these
+contents and placed alongside the main tangled output, i.e., usually in the web's
+<span class="extract"><span class="Extracts-extract-syntax">Tangled</span></span> directory.
+</p>
+
+<p class="commentary">There can be up to 10 differently-named extract files. If there are multiple
+extracts naming the same file &mdash; for example, if we also have:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    = (text to magic-settings.txt)</span>
+<span class="plain-syntax">        marked-card = 6 of clubs</span>
+<span class="plain-syntax">    =</span>
+</pre>
+<p class="commentary">which weaves like so:
+</p>
+
+<pre class="Extracts-displayed-code all-displayed-code code-font">
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">marked</span><span class="Extracts-plain-syntax">-</span><span class="Extracts-identifier-syntax">card</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-constant-syntax">6</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">of</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">clubs</span>
+</pre>
+<ul class="endnotetexts"><li>This is part of the extract file magic-settings.txt.</li></ul>
+<p class="commentary">then the extracts are tangled together into one file. So the result of the two
+example extracts above, after tangling, would be a single file which reads:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    top-hat-capacity = 6 rabbits</span>
+<span class="plain-syntax">    cabinet-trapdoor = closed</span>
+<span class="plain-syntax">    marked-card = 6 of clubs</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Links. </b>URLs in the web are automatically recognised and a weave to HTML will
 make them into links. For example:
 </p>
 
@@ -557,7 +613,7 @@ For example,
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Compare: </span><a href="https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes!" class="external">https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes!</a>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Cross-references. </b>These are like links, but are internal. These are normally written within <span class="extract"><span class="extract-syntax">//</span></span>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Cross-references. </b>These are like links, but are internal. These are normally written within <span class="extract"><span class="extract-syntax">//</span></span>
 signs and are only available in the commentary of a web. They allow us to
 place cross-references like so:
 </p>
@@ -586,7 +642,7 @@ thrown if these references to sections are in any way ambiguous. They are not
 case sensitive.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>Sometimes we want to make a link without literally showing the destination.
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>Sometimes we want to make a link without literally showing the destination.
 This is simple: for example,
 </p>
 
@@ -605,7 +661,7 @@ is also allowed:
 <p class="commentary">See <a href="http://mathshistory.st-andrews.ac.uk/Biographies/Gauss.html" class="external">this biographical note</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>It's also possible to reference function names and type names, provided that
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>It's also possible to reference function names and type names, provided that
 the language definition supports these (see <a href="M-spl.html" class="internal">Supporting Programming Languages</a>):
 this is certainly the case for C-like languages. For example,
 </p>
@@ -624,7 +680,7 @@ current one, but this requires the use of a Colony file.
 See <a href="M-mwiw.html" class="internal">Making Weaves into Websites</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>Cross-references also work inside text extracts marked as <span class="extract"><span class="extract-syntax">hyperlinked</span></span>.
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>Cross-references also work inside text extracts marked as <span class="extract"><span class="extract-syntax">hyperlinked</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -638,7 +694,7 @@ See <a href="M-mwiw.html" class="internal">Making Weaves into Websites</a>.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    See the </span><a href="M-iti.html" class="internal">Manual</a><span class="plain-syntax"> for more on this.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>Cross-references must begin after white space, or a punctuation mark (other
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>Cross-references must begin after white space, or a punctuation mark (other
 than a colon), and must end to be followed by more white space or another
 punctuation mark (this time allowing a colon). In practice, that reduces
 the risk of misunderstanding a <span class="extract"><span class="extract-syntax">//</span></span> occurring in the commentary for some
@@ -655,7 +711,7 @@ can be configured in the Contents page of a web, say like so:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="element-syntax">Cross-References Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> Off</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Figures. </b>Images to be included in weaves of a web are called "Figures", as they
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Figures. </b>Images to be included in weaves of a web are called "Figures", as they
 would be in a printed book. These images should ideally be in PNG, JPG or PDF
 format and placed in a subdirectory of the web called <span class="extract"><span class="extract-syntax">Figures</span></span>: for instance,
 the weaver would seek <span class="extract"><span class="extract-syntax">Fig_2_3.pdf</span></span> at pathname <span class="extract"><span class="extract-syntax">Figures/Fig_2_3.pdf</span></span>.
@@ -688,7 +744,7 @@ correspond. If you really want to monkey with the aspect ratio,
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    = (figure Whatever.jpg at 20 by 100)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Carousels. </b>A carousel is a slide-show of (usually but not always) figures; there's a
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Carousels. </b>A carousel is a slide-show of (usually but not always) figures; there's a
 set of slides with captions, only one of which is visible at a time.
 </p>
 
@@ -801,7 +857,7 @@ it can also be <span class="extract"><span class="extract-syntax">above</span></
 <span class="plain-syntax">    = (figure furtive.jpg)</span>
 <span class="plain-syntax">    = (carousel end)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Video and audio. </b>To include audio samples, place them as MP3 files in the subdirectory <span class="extract"><span class="extract-syntax">Audio</span></span>
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Video and audio. </b>To include audio samples, place them as MP3 files in the subdirectory <span class="extract"><span class="extract-syntax">Audio</span></span>
 of the web. For example, in the present web,
 </p>
 
@@ -827,7 +883,7 @@ Your browser does not support the audio element.
 takes up space, so for economy's sake a demonstration is omitted from this manual.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Embedded video and audio. </b>One way to get around such space limitations is to embed players for video or
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Embedded video and audio. </b>One way to get around such space limitations is to embed players for video or
 audio hosted on some external service. For example:
 </p>
 
@@ -870,7 +926,7 @@ this case was <span class="extract"><span class="extract-syntax">https://youtu.b
 <p class="center-p"><iframe width="100%" height="405" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/42803139&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
 </p>
 
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>Adding width and height is straightforward; by default the dimensions are
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>Adding width and height is straightforward; by default the dimensions are
 720 by 405.
 </p>
 
@@ -882,7 +938,7 @@ this case was <span class="extract"><span class="extract-syntax">https://youtu.b
 arguably music has width and not height, but SoundCloud thinks otherwise).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Downloads. </b>Occasional small downloads may be useful as a way to present examples to
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Downloads. </b>Occasional small downloads may be useful as a way to present examples to
 try with a program being documented. These are very simple:
 </p>
 
@@ -909,7 +965,7 @@ subdirectory of the web. The explanatory text &mdash; usually just an indication
 of what sort of file this is &mdash; is optional.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Mathematics notation. </b>Literate programming is a good technique to justify code which hangs on
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Mathematics notation. </b>Literate programming is a good technique to justify code which hangs on
 unobvious pieces of mathematics or computer science, and which must therefore
 be explained carefully. Formulae or equations are a real convenience for that.
 </p>
@@ -948,7 +1004,7 @@ changed. The defaults are:
 treat it as any other text would be treated.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Footnotes. </b>Not everyone likes footnotes,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> but sometimes they're a tidy way to make
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Footnotes. </b>Not everyone likes footnotes,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> but sometimes they're a tidy way to make
 references.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
 </p>
 
@@ -957,7 +1013,7 @@ University Press, 1999).
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> For example, to cite Donald Knuth, "Evaluation of Porter's constant",
 Computers &amp; Mathematics with Applications, 2, 137-39 (1976).
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>The content of that sentence was typed as follows:
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>The content of that sentence was typed as follows:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

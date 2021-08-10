@@ -28,6 +28,7 @@ typedef struct source_line {
 	int plainer; /* used only for |BEGIN_CODE_LCAT| lines: suppresses box */
 	int enable_hyperlinks; /* used only for |CODE_BODY_LCAT| lines: link URLs in weave */
 	struct programming_language *colour_as; /* used only for |TEXT_EXTRACT_LCAT| lines */
+	struct text_stream *extract_to; /* used only for |TEXT_EXTRACT_LCAT| lines */
 	int is_commentary; /* flag */
 	struct language_function *function_defined; /* if any C-like function is defined on this line */
 	struct preform_nonterminal *preform_nonterminal_defined; /* similarly */
@@ -56,6 +57,7 @@ source_line *Lines::new_source_line_in(text_stream *line, text_file_position *tf
 	sl->plainer = FALSE;
 	sl->enable_hyperlinks = FALSE;
 	sl->colour_as = NULL;
+	sl->extract_to = NULL;
 	sl->is_commentary = FALSE;
 	sl->function_defined = NULL;
 	sl->preform_nonterminal_defined = NULL;

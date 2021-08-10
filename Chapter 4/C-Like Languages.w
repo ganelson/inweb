@@ -51,22 +51,24 @@ takes care of it automatically.
 	chapter *C;
 	section *S;
 	LOOP_WITHIN_TANGLE(C, S, Tangler::primary_target(W)) {
-		match_results mr = Regexp::create_mr();
+		if (Str::len(L->extract_to) == 0) {
+			match_results mr = Regexp::create_mr();
 
-		if (Regexp::match(&mr, L->text, L"typedef struct (%i+) %c*{%c*")) {
-			current_str = Functions::new_struct(W, mr.exp[0], L);
-			Tags::add_by_name(L->owning_paragraph, I"Structures");
-		} else if ((Str::get_first_char(L->text) == '}') && (current_str)) {
-			current_str->typedef_ends = L;
-			current_str = NULL;
-		} else if ((current_str) && (current_str->typedef_ends == NULL)) {
-			@<Work through a line in the structure definition@>;
-		} else if ((Regexp::match(&mr, L->text, L"typedef %c+")) &&
-			(Regexp::match(&mr, L->text, L"%c+##%c+") == FALSE)) {
-			if (L->owning_paragraph->placed_very_early == FALSE)
-				L->category = TYPEDEF_LCAT;
+			if (Regexp::match(&mr, L->text, L"typedef struct (%i+) %c*{%c*")) {
+				current_str = Functions::new_struct(W, mr.exp[0], L);
+				Tags::add_by_name(L->owning_paragraph, I"Structures");
+			} else if ((Str::get_first_char(L->text) == '}') && (current_str)) {
+				current_str->typedef_ends = L;
+				current_str = NULL;
+			} else if ((current_str) && (current_str->typedef_ends == NULL)) {
+				@<Work through a line in the structure definition@>;
+			} else if ((Regexp::match(&mr, L->text, L"typedef %c+")) &&
+				(Regexp::match(&mr, L->text, L"%c+##%c+") == FALSE)) {
+				if (L->owning_paragraph->placed_very_early == FALSE)
+					L->category = TYPEDEF_LCAT;
+			}
+			Regexp::dispose_of(&mr);
 		}
-		Regexp::dispose_of(&mr);
 	}
 
 @ At this point we're reading a line within the structure's definition; for

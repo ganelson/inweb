@@ -5,14 +5,14 @@ Utility functions for writing HTML.
 @h Header and footer.
 
 =
-void HTML::header(OUTPUT_STREAM, text_stream *title, filename *css, filename *js) {
+void HTML::header(OUTPUT_STREAM, text_stream *title, filename *css, filename *js, void *state) {
 	HTML::declare_as_HTML(OUT, FALSE);
 	HTML::begin_head(OUT, NULL);
 	HTML::title(OUT, title);
 	HTML::incorporate_CSS(OUT, css);
 	HTML::incorporate_javascript(OUT, TRUE, js);
 	#ifdef ADDITIONAL_SCRIPTING_HTML_CALLBACK
-	ADDITIONAL_SCRIPTING_HTML_CALLBACK(OUT);
+	ADDITIONAL_SCRIPTING_HTML_CALLBACK(OUT, state);
 	#endif
 	HTML::end_head(OUT);
 	HTML::begin_body(OUT, NULL);
@@ -34,7 +34,7 @@ close the |b|: that would be wrongly nested. We want to throw errors like
 that into the debugging log, so:
 
 @d tag_error(x) { LOG("Tag error: %s\n", x); }
-
+ 
 @ Any text stream can be declared as being HTML, and therefore subject to
 this auditing. To do that, we atach an |HTML_file_state| object to the
 text stream.

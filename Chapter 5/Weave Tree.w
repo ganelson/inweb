@@ -104,6 +104,7 @@ typedef struct weave_material_node {
 	int material_type;
 	int plainly;
 	struct programming_language *styling;
+	struct text_stream *endnote;
 	CLASS_DEFINITION
 } weave_material_node;
 
@@ -544,11 +545,12 @@ tree_node *WeaveTree::download(heterogeneous_tree *tree,
 }
 
 tree_node *WeaveTree::material(heterogeneous_tree *tree, int material_type, int plainly,
-	programming_language *styling) {
+	programming_language *styling, text_stream *endnote) {
 	weave_material_node *C = CREATE(weave_material_node);
 	C->material_type = material_type;
 	C->plainly = plainly;
 	C->styling = styling;
+	C->endnote = Str::duplicate(endnote);
 	return Trees::new_node(tree, weave_material_node_type, STORE_POINTER_weave_material_node(C));
 }
 

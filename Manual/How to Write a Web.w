@@ -372,6 +372,49 @@ For example,
 	...which is essential in order to restore the state of
 =
 
+@h Extract files.
+Many programs can only properly function if accompanied by a configuration file
+of some kind: a set of default preferences, for example, or some other associated
+data. This is not part of the program, and will instead be read in every time
+the program runs.
+
+To explain such a program properly, one really needs to explain this sidekick
+file as well. So Inweb provides a feature for including these files inside the
+body of a web, as what are called "extracts". For example:
+= (text as Inweb)
+	= (text to magic-settings.txt)
+	    top-hat-capacity = 6 rabbits
+	    cabinet-trapdoor = closed
+	=
+=
+The result weaves like so:
+= (text to magic-settings.txt)
+	top-hat-capacity = 6 rabbits
+	cabinet-trapdoor = closed
+=
+When the web is tangled, the file |magic-settings.txt| will be created with these
+contents and placed alongside the main tangled output, i.e., usually in the web's
+|Tangled| directory.
+
+There can be up to 10 differently-named extract files. If there are multiple
+extracts naming the same file -- for example, if we also have:
+= (text as Inweb)
+	= (text to magic-settings.txt)
+	    marked-card = 6 of clubs
+	=
+=
+which weaves like so:
+= (text to magic-settings.txt)
+	marked-card = 6 of clubs
+=
+then the extracts are tangled together into one file. So the result of the two
+example extracts above, after tangling, would be a single file which reads:
+= (text)
+	top-hat-capacity = 6 rabbits
+	cabinet-trapdoor = closed
+	marked-card = 6 of clubs
+=
+
 @h Links.
 URLs in the web are automatically recognised and a weave to HTML will
 make them into links. For example:

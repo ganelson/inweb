@@ -500,6 +500,13 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	DISCARD_TEXT(cl)
 	@<Recurse the renderer through children nodes@>;
 	HTML_CLOSE("pre"); WRITE("\n");
+	if (Str::len(C->endnote) > 0) {
+		HTML_OPEN_WITH("ul", "class=\"endnotetexts\"");
+		HTML_OPEN("li");
+		HTMLFormat::escape_text(OUT, C->endnote);
+		HTML_CLOSE("li");
+		HTML_CLOSE("ul"); WRITE("\n");
+	}
 
 @<Deal with a footnotes material node@> =
 	@<If no para number yet, render a p just to hold this@>;

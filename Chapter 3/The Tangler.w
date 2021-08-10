@@ -23,6 +23,7 @@ void Tangler::tangle(web *W, tangle_target *target, filename *dest_file) {
 	STREAM_CLOSE(OUT);
 
 	@<Tangle any imported headers@>;
+	@<Tangle any extract files not part of the target itself@>;
 	LanguageMethods::additional_tangling(lang, W, target);
 }
 
@@ -100,6 +101,37 @@ extend across multiple lines.
 	filename *F;
 	LOOP_OVER_LINKED_LIST(F, filename, W->headers)
 		Shell::copy(F, Reader::tangled_folder(W), "");
+
+@ The following simple implementation splices raw lines from text (probably
+code, or configuration gobbledegook) marked as "to ...", giving a leafname.
+We place files of those leafnames in the same directory as the tangle target.
+
+@d MAX_EXTRACT_FILES 10
+
+@<Tangle any extract files not part of the target itself@> =
+	text_stream *extract_names[MAX_EXTRACT_FILES];
+	text_stream extract_files[MAX_EXTRACT_FILES];
+	int no_extract_files = 0;
+	chapter *C; section *S; paragraph *P;
+	LOOP_OVER_PARAGRAPHS(C, S, target, P)
+		for (source_line *L = P->first_line_in_paragraph;
+			((L) && (L->owning_paragraph == P)); L = L->next_line)
+				if (Str::len(L->extract_to) > 0) {
+					int j = no_extract_files;
+					for (int i=0; i<no_extract_files; i++) 
+						if (Str::eq(L->extract_to, extract_names[i])) j = i;
+					if (j == no_extract_files) {
+						if (j == MAX_EXTRACT_FILES)
+							Errors::fatal("too many extract files in tangle");
+						extract_names[j] = Str::duplicate(L->extract_to);
+						filename *F = Filenames::in(Filenames::up(dest_file), L->extract_to);
+						if (STREAM_OPEN_TO_FILE(&(extract_files[j]), F, UTF8_ENC) == FALSE)
+							Errors::fatal_with_file("unable to write extract file", F);
+						no_extract_files++;
+					}
+					WRITE_TO(&(extract_files[j]), "%S\n", L->text);
+				}
+	for (int i=0; i<no_extract_files; i++) STREAM_CLOSE(&(extract_files[i]));
 
 @ So here is the main tangler for a single paragraph. We basically expect to
 act only on |CODE_BODY_LCAT| lines (those containing actual code), unless

@@ -36,6 +36,7 @@ markup syntax, and trying to detect incorrect uses of one within the other.
 		code_plainness_for_body = FALSE,
 		hyperlink_body = FALSE;
 	programming_language *code_pl_for_body = NULL;
+	text_stream *code_destination = NULL;
 	int before_bar = TRUE;
 	int next_par_number = 1;
 	paragraph *current_paragraph = NULL;
@@ -325,6 +326,7 @@ division in the current section.
 	L->category = BEGIN_CODE_LCAT;
 	L->plainer = FALSE;
 	code_lcat_for_body = CODE_BODY_LCAT;
+	code_destination = NULL;
 	code_pl_for_body = NULL;
 	comment_mode = FALSE;
 	match_results mr = Regexp::create_mr();
@@ -338,18 +340,28 @@ division in the current section.
 			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text%)"))) {
 			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
+			code_destination = NULL;
 			code_pl_for_body = NULL;
+			extract_mode = TRUE;
+		} else if ((current_paragraph) &&
+			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text to *(%c+)%)"))) {
+			@<Make plainer@>;
+			code_lcat_for_body = TEXT_EXTRACT_LCAT;
+			code_destination = Str::duplicate(mr2.exp[1]);
+			code_pl_for_body = Languages::find_by_name(I"Extracts", W, TRUE);
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text as code%)"))) {
 			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
+			code_destination = NULL;
 			code_pl_for_body = S->sect_language;
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text as (%c+)%)"))) {
 			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
+			code_destination = NULL;
 			code_pl_for_body = Languages::find_by_name(mr2.exp[1], W, TRUE);
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
@@ -811,7 +823,10 @@ CWEB, but is needed for languages which don't allow multi-line definitions.)
 		L->category = code_lcat_for_body;
 		L->plainer = code_plainness_for_body;
 		L->enable_hyperlinks = hyperlink_body;
-		if (L->category == TEXT_EXTRACT_LCAT) L->colour_as = code_pl_for_body;
+		if (L->category == TEXT_EXTRACT_LCAT) {
+			L->colour_as = code_pl_for_body;
+			if (code_destination) L->extract_to = Str::duplicate(code_destination);
+		}
 	}
 
 	if ((L->category == CONT_DEFINITION_LCAT) && (Regexp::string_is_white_space(L->text))) {
