@@ -511,6 +511,24 @@ specifies the files to be ignored. The following does so for a web |W|:
 Once again, Inweb does this by working from a script, this time called
 |gitignorescript.txt|.
 
+@h Ctags.
+Each time a web is tangled, Inweb writes a |tags| file to the web's home
+directory, containing a list of //Universal ctags -> https://ctags.io//
+for any structures, functions or constant definitions found in the web. You
+need do nothing to make this happen, and can ignore the file if it's of no
+use. If you are editing a web in certain text editors, though, such as
+//BBEdit -> https://www.barebones.com/products/bbedit// for MacOS, then this
+should make code completion and definition lookup features work.
+
+You can however write the file elsewhere:
+= (text as ConsoleText)
+	$ inweb/Tangled/inweb W -tangle -ctags-to secret_lair/my_nifty.ctags
+=
+or not at all:
+= (text as ConsoleText)
+	$ inweb/Tangled/inweb W -tangle -no-ctags
+=
+
 @h README files.
 Repositories at Github customarily have |README.mk| files, in Markdown
 syntax, explaining what they are. These of course should probably include

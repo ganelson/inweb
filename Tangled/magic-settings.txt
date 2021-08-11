@@ -1,0 +1,3 @@
+	top-hat-capacity = 6 rabbits
+	cabinet-trapdoor = closed
+	marked-card = 6 of clubs

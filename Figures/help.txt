@@ -49,6 +49,8 @@ for weaving a web:
   -weave-to X            weave, but to filename X (for single files only)
 
 for tangling a web:
+  -ctags-to X            tangle, but write Universal Ctags file to X not to 'tags'
+  -no-ctags              don't write a Universal Ctags file when tangling (default is -ctags)
   -tangle                tangle the web into machine-compilable form
   -tangle-to X           tangle, but to filename X
 

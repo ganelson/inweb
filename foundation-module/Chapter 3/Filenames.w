@@ -97,7 +97,14 @@ void Filenames::to_text_relative(OUTPUT_STREAM, filename *F, pathname *P) {
 	if ((Str::prefix_eq(ft, pt, n)) && (Platform::is_folder_separator(Str::get_at(ft, n)))) {
 		Str::delete_n_characters(ft, n+1);
 		WRITE("%S", ft);
-	} else internal_error("filename not relative to pathname");
+	} else {
+		if (P == NULL) {
+			WRITE("%S", ft);
+		} else {
+			WRITE("..%c", FOLDER_SEPARATOR);
+			Filenames::to_text_relative(OUT, F, Pathnames::up(P));
+		}
+	}
 	DISCARD_TEXT(ft)
 	DISCARD_TEXT(pt)
 }

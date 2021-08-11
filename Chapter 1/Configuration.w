@@ -25,10 +25,12 @@ typedef struct inweb_instructions {
 	int structures_switch; /* |-structures|: print catalogue of structures within sections */
 	int advance_switch; /* |-advance-build|: advance build file for web */
 	int scan_switch; /* |-scan|: simply show the syntactic scan of the source */
+	int ctags_switch; /* |-ctags|: generate a set of Universal Ctags on each tangle */
 	struct filename *weave_to_setting; /* |-weave-to X|: the pathname X, if supplied */
 	struct pathname *weave_into_setting; /* |-weave-into X|: the pathname X, if supplied */
 	int sequential; /* give the sections sequential sigils */
 	struct filename *tangle_setting; /* |-tangle-to X|: the pathname X, if supplied */
+	struct filename *ctags_setting; /* |-ctags-to X|: the pathname X, if supplied */
 	struct filename *makefile_setting; /* |-makefile X|: the filename X, if supplied */
 	struct filename *gitignore_setting; /* |-gitignore X|: the filename X, if supplied */
 	struct filename *advance_setting; /* |-advance-build-file X|: advance build file X */
@@ -82,11 +84,13 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.advance_switch = FALSE;
 	args.scan_switch = FALSE;
 	args.verbose_switch = FALSE;
+	args.ctags_switch = TRUE;
 	args.chosen_web = NULL;
 	args.chosen_file = NULL;
 	args.chosen_range = Str::new();
 	args.chosen_range_actually_chosen = FALSE;
 	args.tangle_setting = NULL;
+	args.ctags_setting = NULL;
 	args.weave_to_setting = NULL;
 	args.weave_into_setting = NULL;
 	args.makefile_setting = NULL;
@@ -148,6 +152,8 @@ provides automatically.
 
 @e TANGLE_CLSW
 @e TANGLE_TO_CLSW
+@e CTAGS_TO_CLSW
+@e CTAGS_CLSW
 
 @e COLONIAL_CLSG
 
@@ -235,6 +241,10 @@ provides automatically.
 		L"tangle the web into machine-compilable form");
 	CommandLine::declare_switch(TANGLE_TO_CLSW, L"tangle-to", 2,
 		L"tangle, but to filename X");
+	CommandLine::declare_switch(CTAGS_TO_CLSW, L"ctags-to", 2,
+		L"tangle, but write Universal Ctags file to X not to 'tags'");
+	CommandLine::declare_boolean_switch(CTAGS_CLSW, L"ctags", 1,
+		L"write a Universal Ctags file when tangling", TRUE);
 	CommandLine::end_group();
 
 	CommandLine::begin_group(COLONIAL_CLSG,
@@ -347,6 +357,12 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 		case TANGLE_TO_CLSW:
 			args->tangle_setting = Filenames::from_text(arg);
 			Configuration::set_fundamental_mode(args, TANGLE_MODE); break;
+		case CTAGS_TO_CLSW:
+			args->ctags_setting = Filenames::from_text(arg);
+			break;
+		case CTAGS_CLSW:
+			args->ctags_switch = val;
+			break;
 
 		default: internal_error("unimplemented switch");
 	}

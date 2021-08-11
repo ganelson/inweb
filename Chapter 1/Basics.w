@@ -18,6 +18,7 @@ see //foundation: A Brief Guide to Foundation//.
 @e colour_scheme_CLASS
 @e colouring_language_block_CLASS
 @e colouring_rule_CLASS
+@e defined_constant_CLASS
 @e enumeration_set_CLASS
 @e footnote_CLASS
 @e hash_table_entry_CLASS
@@ -106,6 +107,7 @@ DECLARE_CLASS(colony_member)
 DECLARE_CLASS(colour_scheme)
 DECLARE_CLASS(colouring_language_block)
 DECLARE_CLASS(colouring_rule)
+DECLARE_CLASS(defined_constant)
 DECLARE_CLASS(enumeration_set)
 DECLARE_CLASS(footnote)
 DECLARE_CLASS(hash_table_entry_usage)

@@ -211,6 +211,7 @@ line , but otherwise we impose a sensible choice based on the target.
 	}
 	if (tn == NULL) tn = Tangler::primary_target(W);
 	Tangler::tangle(W, tn, tangle_to);
+	if (ins->ctags_switch) Ctags::write(W, ins->ctags_setting);
 	DISCARD_TEXT(tangle_leaf)
 
 @ Here the target number is 0, and the tangle is of the main part of the web,

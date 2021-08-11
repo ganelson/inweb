@@ -77,6 +77,7 @@ Chapter 6: Extras
 "Additional features for turning webs into open-source projects."
 	Makefiles
 	Git Support
+	Ctags Support
 	Readme Writeme
 	Colonies
 

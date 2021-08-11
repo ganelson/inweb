@@ -1,6 +1,7 @@
 # This is the script from which inweb -gitignore will construct a .gitignore.
 
 debug-log.txt
+tags
 Woven/
 Tangled/
 !Tangled/*.preform
