@@ -68,3 +68,5 @@ Chapter 8: Literate Programming
 	Bibliographic Data for Webs
 	Web Modules
 	Build Files
+	Simple Tangler
+

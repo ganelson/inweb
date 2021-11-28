@@ -879,7 +879,7 @@ wchar_t *HTML::translate_colour_name(wchar_t *original) {
 
 @ =
 void HTML::begin_colour(OUTPUT_STREAM, text_stream *col) {
-	HTML_OPEN_WITH("span", "style=\"color:#%S\"", col);
+	HTML_OPEN_WITH("span", "style='color:#%S'", col);
 }
 void HTML::end_colour(OUTPUT_STREAM) {
 	HTML_CLOSE("span");
