@@ -239,8 +239,8 @@ int VersionNumbers::le(semantic_version_number V1, semantic_version_number V2) {
 		I1 = LinkedLists::next(I1);
 		I2 = LinkedLists::next(I2);
 	}
-	if ((I1 == NULL) && (I2)) return TRUE;
-	if ((I1) && (I2 == NULL)) return FALSE;
+	if ((I1 == NULL) && (I2)) return FALSE;
+	if ((I1) && (I2 == NULL)) return TRUE;
 	return TRUE;
 }
 

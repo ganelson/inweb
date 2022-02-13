@@ -1,6 +1,7 @@
 Name: "Inter Pipeline"
 Details: "For pipelines of Inform code-generation stages"
 Extension: ".interpipeline"
+Line Comment: "!"
 
 colouring {
 	instances of "->" {
