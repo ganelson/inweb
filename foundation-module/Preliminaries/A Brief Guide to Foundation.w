@@ -6,7 +6,7 @@ Notes on getting started with the Foundation library.
 The Foundation module supplies some of the conveniences of more modern
 programming languages to ANSI C. It offers the usual stuff of standard
 libraries everywhere: memory management, collection classes, filename and file
-system accesss, regular-expression matching and so on, and it does so while
+system access, regular-expression matching and so on, and it does so while
 abstracting away differences between operating systems (Windows, Linux,
 Unix, MacOS, Android and so on).
 
@@ -350,7 +350,8 @@ See //Pathnames// for how to access the user's home directory, the current
 working directory, and the installation directory for a program.
 
 @ //Binary Files// does the tedious work of writing binary data while allowing
-for endian-ness.
+for endian-ness; and it can also compute md5 hashes of binary files, which is
+useful for testing the correctness of our tools.
 
 @ //Text Files// allows us to read text files. Its most useful function is
 //TextFiles::read//, which opens a file, can print an error if it doesn't
