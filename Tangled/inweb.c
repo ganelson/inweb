@@ -3611,6 +3611,10 @@ FILE * BinaryFiles__try_to_open_for_writing(filename *F) ;
 void  BinaryFiles__close(FILE *handle) ;
 #line 213 "inweb/foundation-module/Chapter 6/Binary Files.w"
 int  BinaryFiles__copy(filename *from, filename *to, int suppress_error) ;
+#line 259 "inweb/foundation-module/Chapter 6/Binary Files.w"
+void  BinaryFiles__md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) ;
+#line 383 "inweb/foundation-module/Chapter 6/Binary Files.w"
+uint32_t  BinaryFiles__rotate(uint32_t value, uint32_t shift) ;
 #line 24 "inweb/foundation-module/Chapter 6/Image Dimensions.w"
 int  ImageFiles__get_JPEG_dimensions(FILE *JPEG_file, unsigned int *width, unsigned int *height) ;
 #line 77 "inweb/foundation-module/Chapter 6/Image Dimensions.w"
@@ -8572,11 +8576,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A77";
+			char *svn = "7-alpha.1+1A79";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "28 November 2021";
+			char *d = "5 March 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -13388,6 +13392,567 @@ int BinaryFiles__copy(filename *from, filename *to, int suppress_error) {
 
 	BinaryFiles__close(FROM); BinaryFiles__close(TO);
 	return size;
+}
+
+#line 259 "inweb/foundation-module/Chapter 6/Binary Files.w"
+void BinaryFiles__md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) {
+	uint32_t s[64] = {
+		7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,
+		5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,
+		4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,
+		6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21 };
+	uint32_t K[64] = {
+		0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
+		0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
+		0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
+		0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
+		0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa,
+		0xd62f105d, 0x02441453, 0xd8a1e681, 0xe7d3fbc8,
+		0x21e1cde6, 0xc33707d6, 0xf4d50d87, 0x455a14ed,
+		0xa9e3e905, 0xfcefa3f8, 0x676f02d9, 0x8d2a4c8a,
+		0xfffa3942, 0x8771f681, 0x6d9d6122, 0xfde5380c,
+		0xa4beea44, 0x4bdecfa9, 0xf6bb4b60, 0xbebfbc70,
+		0x289b7ec6, 0xeaa127fa, 0xd4ef3085, 0x04881d05,
+		0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665,
+		0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039,
+		0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1,
+		0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
+		0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391 };
+
+	uint32_t a0 = 0x67452301;
+	uint32_t b0 = 0xefcdab89;
+	uint32_t c0 = 0x98badcfe;
+	uint32_t d0 = 0x10325476;
+
+	unsigned int buffer[64];
+	int bc = 0;
+
+	FILE *bin = BinaryFiles__open_for_reading(F);
+	if (bin == NULL) Errors__fatal_with_file("unable to open binary file", F);
+	unsigned int b = 0;
+	uint64_t L = 0;
+	while (BinaryFiles__read_int8(bin, &b)) {
+		if ((mask) && (mask(L))) b = 0;
+		
+{
+#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 297 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+		L++;
+	}
+	uint64_t original_length = L*8;
+
+	b = 0x80;
+	
+{
+#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 303 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+	L++;
+	while (L % 64 != 56) {
+		b = 0;
+		
+{
+#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 307 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+		L++;
+	}
+
+	b = (original_length & 0x00000000000000FF) >> 0;
+	
+{
+#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 312 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+	b = (original_length & 0x000000000000FF00) >> 8;
+	
+{
+#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 314 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+	b = (original_length & 0x0000000000FF0000) >> 16;
+	
+{
+#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 316 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+	b = (original_length & 0x00000000FF000000) >> 24;
+	
+{
+#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 318 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+	b = (original_length & 0x000000FF00000000) >> 32;
+	
+{
+#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 320 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+	b = (original_length & 0x0000FF0000000000) >> 40;
+	
+{
+#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 322 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+	b = (original_length & 0x00FF000000000000) >> 48;
+	
+{
+#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 324 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+	b = (original_length & 0xFF00000000000000) >> 56;
+	
+{
+#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 326 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+
+	WRITE("%02x%02x%02x%02x",
+		a0 % 0x100, (a0 >> 8) % 0x100, (a0 >> 16) % 0x100, (a0 >> 24) % 0x100);
+	WRITE("%02x%02x%02x%02x",
+		b0 % 0x100, (b0 >> 8) % 0x100, (b0 >> 16) % 0x100, (b0 >> 24) % 0x100);
+	WRITE("%02x%02x%02x%02x",
+		c0 % 0x100, (c0 >> 8) % 0x100, (c0 >> 16) % 0x100, (c0 >> 24) % 0x100);
+	WRITE("%02x%02x%02x%02x",
+		d0 % 0x100, (d0 >> 8) % 0x100, (d0 >> 16) % 0x100, (d0 >> 24) % 0x100);
+
+	BinaryFiles__close(bin);
+}
+
+#line 383 "inweb/foundation-module/Chapter 6/Binary Files.w"
+uint32_t BinaryFiles__rotate(uint32_t value, uint32_t shift) {
+    if ((shift &= sizeof(value)*8 - 1) == 0) return value;
+    return (value << shift) | (value >> (sizeof(value)*8 - shift));
 }
 
 #line 24 "inweb/foundation-module/Chapter 6/Image Dimensions.w"
@@ -30282,7 +30847,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A77\t/built 28 November 2021/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A79\t/built 5 March 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"

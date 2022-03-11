@@ -333,6 +333,8 @@ void BinaryFiles::md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) {
 		c0 % 0x100, (c0 >> 8) % 0x100, (c0 >> 16) % 0x100, (c0 >> 24) % 0x100);
 	WRITE("%02x%02x%02x%02x",
 		d0 % 0x100, (d0 >> 8) % 0x100, (d0 >> 16) % 0x100, (d0 >> 24) % 0x100);
+		
+	BinaryFiles::close(bin);
 }
 
 @<Process one byte of message@> =
