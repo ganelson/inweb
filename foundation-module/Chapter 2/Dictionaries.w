@@ -199,6 +199,11 @@ Eventually we're going to want the value. In principle we could be storing
 values which are arbitrary pointers, so we have to use void pointers:
 
 =
+void *Dictionaries::value_for_entry(dict_entry *de) {
+	if (de) return de->value;
+	return NULL;
+}
+
 void *Dictionaries::read_value(dictionary *D, text_stream *key) {
 	if (D == NULL) return NULL;
 	if (D->textual) internal_error("textual dictionary accessed as pointy");

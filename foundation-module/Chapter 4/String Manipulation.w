@@ -351,7 +351,7 @@ We provide both case sensitive and insensitive versions.
 
 =
 int Str::eq(text_stream *S1, text_stream *S2) {
-	if ((Str::len(S1) == Str::len(S2)) && (Str::cmp(S1, S2) == 0)) return TRUE;
+	if (Str::cmp(S1, S2) == 0) return TRUE;
 	return FALSE;
 }
 
@@ -361,7 +361,7 @@ int Str::eq_insensitive(text_stream *S1, text_stream *S2) {
 }
 
 int Str::ne(text_stream *S1, text_stream *S2) {
-	if ((Str::len(S1) != Str::len(S2)) || (Str::cmp(S1, S2) != 0)) return TRUE;
+	if (Str::cmp(S1, S2) != 0) return TRUE;
 	return FALSE;
 }
 
@@ -373,8 +373,8 @@ int Str::ne_insensitive(text_stream *S1, text_stream *S2) {
 @ These two routines produce a numerical string difference suitable for
 alphabetic sorting, like |strlen| in the C standard library.
 
-=
-int Str::cmp(text_stream *S1, text_stream *S2) {
+This would be a more elegant implementation:
+= (text as InC)
 	for (string_position P = Str::start(S1), Q = Str::start(S2);
 		(P.index < Str::len(S1)) && (Q.index < Str::len(S2));
 		P = Str::forward(P), Q = Str::forward(Q)) {
@@ -382,6 +382,19 @@ int Str::cmp(text_stream *S1, text_stream *S2) {
 		if (d != 0) return d;
 	}
 	return Str::len(S1) - Str::len(S2);
+=
+But profiling shows that the following speeds up the Inform 7 compiler by
+around 1%.
+
+=
+int Str::cmp(text_stream *S1, text_stream *S2) {
+	int L1 = Str::len(S1), L2 = Str::len(S2), M = L1;
+	if (L2 < M) M = L2;
+	for (int i=0; i<M; i++) {
+		int d = (int) Str::get_at(S1, i) - (int) Str::get_at(S2, i);
+		if (d != 0) return d;
+	}
+	return L1 - L2;
 }
 
 int Str::cmp_insensitive(text_stream *S1, text_stream *S2) {

@@ -2868,22 +2868,24 @@ void  Dictionaries__destroy_literal(dictionary *D, wchar_t *lit) ;
 #line 125 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 dict_entry * Dictionaries__find_p(dictionary *D, text_stream *K, int change) ;
 #line 202 "inweb/foundation-module/Chapter 2/Dictionaries.w"
+void * Dictionaries__value_for_entry(dict_entry *de) ;
+#line 207 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 void * Dictionaries__read_value(dictionary *D, text_stream *key) ;
-#line 210 "inweb/foundation-module/Chapter 2/Dictionaries.w"
+#line 215 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 void * Dictionaries__read_value_literal(dictionary *D, wchar_t *key) ;
-#line 219 "inweb/foundation-module/Chapter 2/Dictionaries.w"
+#line 224 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 void  Dictionaries__write_value(dictionary *D, text_stream *key, void *val) ;
-#line 227 "inweb/foundation-module/Chapter 2/Dictionaries.w"
+#line 232 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 void  Dictionaries__write_value_literal(dictionary *D, wchar_t *key, void *val) ;
-#line 240 "inweb/foundation-module/Chapter 2/Dictionaries.w"
+#line 245 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 text_stream * Dictionaries__create_text(dictionary *D, text_stream *key) ;
-#line 246 "inweb/foundation-module/Chapter 2/Dictionaries.w"
+#line 251 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 text_stream * Dictionaries__create_text_literal(dictionary *D, wchar_t *lit) ;
-#line 257 "inweb/foundation-module/Chapter 2/Dictionaries.w"
+#line 262 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 text_stream * Dictionaries__get_text(dictionary *D, text_stream *key) ;
-#line 265 "inweb/foundation-module/Chapter 2/Dictionaries.w"
+#line 270 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 text_stream * Dictionaries__get_text_literal(dictionary *D, wchar_t *lit) ;
-#line 278 "inweb/foundation-module/Chapter 2/Dictionaries.w"
+#line 283 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 void  Dictionaries__dispose_of(dictionary *D) ;
 #line 18 "inweb/foundation-module/Chapter 2/Trees.w"
 heterogeneous_tree * Trees__new(tree_type *type) ;
@@ -3279,53 +3281,53 @@ int  Str__eq_insensitive(text_stream *S1, text_stream *S2) ;
 int  Str__ne(text_stream *S1, text_stream *S2) ;
 #line 368 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__ne_insensitive(text_stream *S1, text_stream *S2) ;
-#line 377 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 390 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__cmp(text_stream *S1, text_stream *S2) ;
-#line 387 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 400 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__cmp_insensitive(text_stream *S1, text_stream *S2) ;
-#line 408 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 421 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__prefix_eq(text_stream *S1, text_stream *S2, int N) ;
-#line 417 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 430 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__suffix_eq(text_stream *S1, text_stream *S2, int N) ;
-#line 426 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 439 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__begins_with_wide_string(text_stream *S, wchar_t *prefix) ;
-#line 435 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 448 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__ends_with_wide_string(text_stream *S, wchar_t *suffix) ;
-#line 445 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 458 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__eq_wide_string(text_stream *S1, wchar_t *S2) ;
-#line 456 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 469 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__eq_narrow_string(text_stream *S1, char *S2) ;
-#line 467 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 480 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__ne_wide_string(text_stream *S1, wchar_t *S2) ;
-#line 474 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 487 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__is_whitespace(text_stream *S) ;
-#line 484 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 497 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void  Str__trim_white_space(text_stream *S) ;
-#line 513 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 526 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__trim_white_space_at_end(text_stream *S) ;
-#line 524 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 537 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__trim_all_white_space_at_end(text_stream *S) ;
-#line 538 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 551 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void  Str__delete_first_character(text_stream *S) ;
-#line 542 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 555 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void  Str__delete_last_character(text_stream *S) ;
-#line 547 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 560 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void  Str__delete_nth_character(text_stream *S, int n) ;
-#line 552 "inweb/foundation-module/Chapter 4/String Manipulation.w"
-void  Str__delete_n_characters(text_stream *S, int n) ;
 #line 565 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+void  Str__delete_n_characters(text_stream *S, int n) ;
+#line 578 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void  Str__substr(OUTPUT_STREAM, string_position from, string_position to) ;
-#line 571 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 584 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__includes_character(text_stream *S, wchar_t c) ;
-#line 579 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 592 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__includes_wide_string_at(text_stream *S, wchar_t *prefix, int j) ;
-#line 588 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 601 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__includes_wide_string_at_insensitive(text_stream *S, wchar_t *prefix, int j) ;
-#line 597 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 610 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__includes(text_stream *S, text_stream *T) ;
-#line 612 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 625 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int  Str__includes_at(text_stream *line, int i, text_stream *pattern) ;
-#line 635 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 648 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 text_stream * Str__literal(wchar_t *wide_C_string) ;
 #line 15 "inweb/foundation-module/Chapter 4/Text Files.w"
 int  TextFiles__exists(filename *F) ;
@@ -7890,6 +7892,11 @@ dict_entry *Dictionaries__find_p(dictionary *D, text_stream *K, int change) {
 }
 
 #line 202 "inweb/foundation-module/Chapter 2/Dictionaries.w"
+void *Dictionaries__value_for_entry(dict_entry *de) {
+	if (de) return de->value;
+	return NULL;
+}
+
 void *Dictionaries__read_value(dictionary *D, text_stream *key) {
 	if (D == NULL) return NULL;
 	if (D->textual) internal_error("textual dictionary accessed as pointy");
@@ -7924,7 +7931,7 @@ void Dictionaries__write_value_literal(dictionary *D, wchar_t *key, void *val) {
 	E->value = val;
 }
 
-#line 240 "inweb/foundation-module/Chapter 2/Dictionaries.w"
+#line 245 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 text_stream *Dictionaries__create_text(dictionary *D, text_stream *key) {
 	if (D == NULL) internal_error("wrote to null dictionary");
 	if (D->textual == FALSE) internal_error("pointy dictionary accessed as textual");
@@ -7938,7 +7945,7 @@ text_stream *Dictionaries__create_text_literal(dictionary *D, wchar_t *lit) {
 	return (text_stream *) E->value;
 }
 
-#line 257 "inweb/foundation-module/Chapter 2/Dictionaries.w"
+#line 262 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 text_stream *Dictionaries__get_text(dictionary *D, text_stream *key) {
 	if (D == NULL) return NULL;
 	if (D->textual == FALSE) internal_error("pointy dictionary accessed as textual");
@@ -7955,7 +7962,7 @@ text_stream *Dictionaries__get_text_literal(dictionary *D, wchar_t *lit) {
 	return (text_stream *) E->value;
 }
 
-#line 278 "inweb/foundation-module/Chapter 2/Dictionaries.w"
+#line 283 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 void Dictionaries__dispose_of(dictionary *D) {
 	if (D->textual)
 		for (int i=0; i<D->hash_table_size; i++)
@@ -8576,11 +8583,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A79";
+			char *svn = "7-alpha.1+1A80";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "5 March 2022";
+			char *d = "11 March 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -10472,7 +10479,7 @@ void Str__copy_wide_string(text_stream *S, wchar_t *C_string) {
 
 #line 353 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int Str__eq(text_stream *S1, text_stream *S2) {
-	if ((Str__len(S1) == Str__len(S2)) && (Str__cmp(S1, S2) == 0)) return TRUE;
+	if (Str__cmp(S1, S2) == 0) return TRUE;
 	return FALSE;
 }
 
@@ -10482,7 +10489,7 @@ int Str__eq_insensitive(text_stream *S1, text_stream *S2) {
 }
 
 int Str__ne(text_stream *S1, text_stream *S2) {
-	if ((Str__len(S1) != Str__len(S2)) || (Str__cmp(S1, S2) != 0)) return TRUE;
+	if (Str__cmp(S1, S2) != 0) return TRUE;
 	return FALSE;
 }
 
@@ -10491,15 +10498,15 @@ int Str__ne_insensitive(text_stream *S1, text_stream *S2) {
 	return FALSE;
 }
 
-#line 377 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 390 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int Str__cmp(text_stream *S1, text_stream *S2) {
-	for (string_position P = Str__start(S1), Q = Str__start(S2);
-		(P.index < Str__len(S1)) && (Q.index < Str__len(S2));
-		P = Str__forward(P), Q = Str__forward(Q)) {
-		int d = (int) Str__get(P) - (int) Str__get(Q);
+	int L1 = Str__len(S1), L2 = Str__len(S2), M = L1;
+	if (L2 < M) M = L2;
+	for (int i=0; i<M; i++) {
+		int d = (int) Str__get_at(S1, i) - (int) Str__get_at(S2, i);
 		if (d != 0) return d;
 	}
-	return Str__len(S1) - Str__len(S2);
+	return L1 - L2;
 }
 
 int Str__cmp_insensitive(text_stream *S1, text_stream *S2) {
@@ -10512,7 +10519,7 @@ int Str__cmp_insensitive(text_stream *S1, text_stream *S2) {
 	return Str__len(S1) - Str__len(S2);
 }
 
-#line 408 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 421 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int Str__prefix_eq(text_stream *S1, text_stream *S2, int N) {
 	int L1 = Str__len(S1), L2 = Str__len(S2);
 	if ((N > L1) || (N > L2)) return FALSE;
@@ -10549,7 +10556,7 @@ int Str__ends_with_wide_string(text_stream *S, wchar_t *suffix) {
 	return TRUE;
 }
 
-#line 445 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 458 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int Str__eq_wide_string(text_stream *S1, wchar_t *S2) {
 	if (S2 == NULL) return (Str__len(S1) == 0)?TRUE:FALSE;
 	if (Str__len(S1) == (int) wcslen(S2)) {
@@ -10576,7 +10583,7 @@ int Str__ne_wide_string(text_stream *S1, wchar_t *S2) {
 	return (Str__eq_wide_string(S1, S2)?FALSE:TRUE);
 }
 
-#line 474 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 487 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 int Str__is_whitespace(text_stream *S) {
 	LOOP_THROUGH_TEXT(pos, S)
 		if (Characters__is_space_or_tab(Str__get(pos)) == FALSE)
@@ -10584,7 +10591,7 @@ int Str__is_whitespace(text_stream *S) {
 	return TRUE;
 }
 
-#line 484 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 497 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void Str__trim_white_space(text_stream *S) {
 	int len = Str__len(S), i = 0, j = 0;
 	string_position F = Str__start(S);
@@ -10636,7 +10643,7 @@ int Str__trim_all_white_space_at_end(text_stream *S) {
 	return shortened;
 }
 
-#line 538 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 551 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void Str__delete_first_character(text_stream *S) {
 	Str__delete_nth_character(S, 0);
 }
@@ -10661,7 +10668,7 @@ void Str__delete_n_characters(text_stream *S, int n) {
 	}
 }
 
-#line 565 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 578 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 void Str__substr(OUTPUT_STREAM, string_position from, string_position to) {
 	if (from.S != to.S) internal_error("substr on two different strings");
 	for (int i = from.index; i < to.index; i++)
@@ -10719,7 +10726,7 @@ int Str__includes_at(text_stream *line, int i, text_stream *pattern) {
 	return TRUE;
 }
 
-#line 633 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 646 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 dictionary *string_literals_dictionary = NULL;
 
 text_stream *Str__literal(wchar_t *wide_C_string) {
@@ -10728,7 +10735,7 @@ text_stream *Str__literal(wchar_t *wide_C_string) {
 	LOCK_MUTEX(mutex);
 	
 {
-#line 645 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 658 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 	if (string_literals_dictionary == NULL)
 		string_literals_dictionary = Dictionaries__new(100, TRUE);
 	answer = Dictionaries__get_text_literal(string_literals_dictionary, wide_C_string);
@@ -10740,7 +10747,7 @@ text_stream *Str__literal(wchar_t *wide_C_string) {
 	}
 
 }
-#line 639 "inweb/foundation-module/Chapter 4/String Manipulation.w"
+#line 652 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 ;
 	UNLOCK_MUTEX(mutex);
 	return answer;
@@ -30847,7 +30854,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A79\t/built 5 March 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A80\t/built 11 March 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
