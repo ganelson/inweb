@@ -388,6 +388,14 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
+			(Regexp::match(&mr2, mr.exp[0], L"%(html (%c+)%)"))) {
+			Tags::add_by_name(L->owning_paragraph, I"HTML");
+			L->command_code = HTML_CMD;
+			L->category = COMMAND_LCAT;
+			code_lcat_for_body = COMMENT_BODY_LCAT;
+			L->text_operand = Str::duplicate(mr2.exp[0]);
+			comment_mode = TRUE;
+		} else if ((current_paragraph) &&
 			(Regexp::match(&mr2, mr.exp[0], L"%(audio (%c+)%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Audio");
 			L->command_code = AUDIO_CMD;

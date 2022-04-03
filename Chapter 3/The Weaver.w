@@ -279,6 +279,7 @@ at us; but we don't weave them into the output, that's for sure.
 		if (L->command_code == GRAMMAR_INDEX_CMD)
 			Trees::make_child(WeaveTree::grammar_index(tree), state->ap);
 		if (L->command_code == FIGURE_CMD) @<Weave a figure@>;
+		if (L->command_code == HTML_CMD) @<Weave a raw HTML extract@>;
 		if (L->command_code == AUDIO_CMD) @<Weave an audio clip@>;
 		if (L->command_code == VIDEO_CMD) @<Weave a video clip@>;
 		if (L->command_code == DOWNLOAD_CMD) @<Weave a download@>;
@@ -296,6 +297,10 @@ at us; but we don't weave them into the output, that's for sure.
 	int w, h;
 	text_stream *figname = Parser::dimensions(L->text_operand, &w, &h, L);
 	Trees::make_child(WeaveTree::figure(tree, figname, w, h), state->ap);
+
+@<Weave a raw HTML extract@> =
+	Trees::make_child(WeaveTree::raw_extract(tree, L->text_operand),
+		state->ap);
 
 @<Weave an audio clip@> =
 	int w, h;

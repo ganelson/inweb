@@ -67,6 +67,7 @@ see //foundation: A Brief Guide to Foundation//.
 @e weave_endnote_node_CLASS
 @e weave_material_node_CLASS
 @e weave_figure_node_CLASS
+@e weave_extract_node_CLASS
 @e weave_audio_node_CLASS
 @e weave_download_node_CLASS
 @e weave_video_node_CLASS
@@ -155,6 +156,7 @@ DECLARE_CLASS(weave_paragraph_heading_node)
 DECLARE_CLASS(weave_endnote_node)
 DECLARE_CLASS(weave_material_node)
 DECLARE_CLASS(weave_figure_node)
+DECLARE_CLASS(weave_extract_node)
 DECLARE_CLASS(weave_audio_node)
 DECLARE_CLASS(weave_video_node)
 DECLARE_CLASS(weave_download_node)

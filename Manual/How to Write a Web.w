@@ -664,6 +664,14 @@ The file to download, in this case |alice.crt|, must be placed in a |Downloads|
 subdirectory of the web. The explanatory text -- usually just an indication
 of what sort of file this is -- is optional.
 
+@h Raw HTML snippets.
+Finally, it's possible to include a chunk of raw HTML code, though of course
+this will only be viewable if the web is being woven to HTML.
+= (text as Inweb)
+	= (html fireworks.html)
+=
+incorporates the contents of the file from the subdirectory |HTML| of the web.
+
 @h Mathematics notation.
 Literate programming is a good technique to justify code which hangs on
 unobvious pieces of mathematics or computer science, and which must therefore

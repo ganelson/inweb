@@ -106,6 +106,7 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraph heading@>
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
 	else if (N->type == weave_figure_node_type) @<Render figure@>
+	else if (N->type == weave_extract_node_type) @<Render extract@>
 	else if (N->type == weave_audio_node_type) @<Render audio clip@>
 	else if (N->type == weave_video_node_type) @<Render video clip@>
 	else if (N->type == weave_download_node_type) @<Render download@>
@@ -324,6 +325,27 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
 		hrs->wv->pattern, hrs->wv->weave_to);
 	HTML_CLOSE("p");
+	WRITE("\n");
+
+@<Render extract@> =
+	weave_extract_node *C = RETRIEVE_POINTER_weave_extract_node(N->content);
+	filename *F = Filenames::in(
+		Pathnames::down(hrs->wv->weave_web->md->path_to_web, I"HTML"),
+		C->extract);
+	HTML_OPEN_WITH("div", "class=\"inweb-extract\"");
+	FILE *B = BinaryFiles::try_to_open_for_reading(F);
+	if (B == NULL) {
+		Main::error_in_web(I"Unable to find this HTML extract",
+			hrs->wv->current_weave_line);
+	} else {
+		while (TRUE) {
+			int c = getc(B);
+    		if (c == EOF) break;
+    		PUT((wchar_t) c);
+		}
+		BinaryFiles::close(B);
+	}
+	HTML_CLOSE("div");
 	WRITE("\n");
 
 @<Render audio clip@> =

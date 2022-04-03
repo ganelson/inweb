@@ -188,16 +188,12 @@ the debugging log.
 allocated by each individual <span class="extract"><span class="extract-syntax">malloc</span></span> call.
 </p>
 
-<p class="commentary">After <span class="extract"><span class="extract-syntax">MAX_BLOCKS_ALLOWED</span></span> blocks, we throw in the towel: we must have
-fallen into an endless loop which creates endless new objects somewhere.
-(If this ever happens, it would be a bug: the point of this mechanism is to
-be able to recover. Without this safety measure, OS X in particular would
-grind slowly to a halt, never refusing a <span class="extract"><span class="extract-syntax">malloc</span></span>, until the user was
-unable to get the GUI responsive enough to kill the process.)
+<p class="commentary">As of the early 2020s, typical Inform projects need around 500 blocks to be
+allocated, for around 400 MB of memory in all; the largest known take us into
+the low 10000s of blocks, for more like 8 to 10 GB. But the latter are very rare.
 </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_BLOCKS_ALLOWED</span><span class="plain-syntax"> </span><span class="constant-syntax">15000</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">MEMORY_GRANULARITY</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="plain-syntax">*1024*8 </span><span class="comment-syntax"> which must be divisible by 1024</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MEMORY_GRANULARITY</span><span class="plain-syntax"> </span><span class="constant-syntax">100</span><span class="plain-syntax">*1024*8 </span><span class="comment-syntax"> which must be divisible by 1024</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_blocks_allocated</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -255,15 +251,10 @@ pointer types as far as the C compiler is concerned.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">no_blocks_allocated</span><span class="plain-syntax">++ &gt;= </span><span class="constant-syntax">MAX_BLOCKS_ALLOWED</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><a href="3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal</span></a><span class="plain-syntax">(</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"the memory manager has halted inweb, which seems to be generating "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"endless structures. Presumably it is trapped in a loop"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-mmr.html#SP15" class="function-link"><span class="function-syntax">Memory::check_memory_integrity</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">cp</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *) (</span><a href="2-mmr.html#SP31" class="function-link"><span class="function-syntax">Memory::paranoid_calloc</span></a><span class="plain-syntax">(</span><span class="constant-syntax">MEMORY_GRANULARITY</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><a href="3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal</span></a><span class="plain-syntax">(</span><span class="string-syntax">"Run out of memory: malloc failed"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">MEMORY_GRANULARITY</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">cp</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="constant-syntax">MEMORY_GRANULARITY</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">cp</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">] = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-mmr.html#SP11">&#167;11</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2.  </b>As can be seen, memory block numbers count upwards from 0 in order of

@@ -117,14 +117,10 @@ the debugging log.
 @ At present |MEMORY_GRANULARITY| is 800K. This is the quantity of memory
 allocated by each individual |malloc| call.
 
-After |MAX_BLOCKS_ALLOWED| blocks, we throw in the towel: we must have
-fallen into an endless loop which creates endless new objects somewhere.
-(If this ever happens, it would be a bug: the point of this mechanism is to
-be able to recover. Without this safety measure, OS X in particular would
-grind slowly to a halt, never refusing a |malloc|, until the user was
-unable to get the GUI responsive enough to kill the process.)
+As of the early 2020s, typical Inform projects need around 500 blocks to be
+allocated, for around 400 MB of memory in all; the largest known take us into
+the low 10000s of blocks, for more like 8 to 10 GB. But the latter are very rare.
 
-@d MAX_BLOCKS_ALLOWED 15000
 @d MEMORY_GRANULARITY 100*1024*8 /* which must be divisible by 1024 */
 
 =
@@ -174,15 +170,10 @@ void Memory::allocate_another_block(void) {
 pointer types as far as the C compiler is concerned.
 
 @<Allocate and zero out a block of memory, making cp point to it@> =
-	int i;
-	if (no_blocks_allocated++ >= MAX_BLOCKS_ALLOWED)
-		Errors::fatal(
-			"the memory manager has halted inweb, which seems to be generating "
-			"endless structures. Presumably it is trapped in a loop");
 	Memory::check_memory_integrity();
 	cp = (unsigned char *) (Memory::paranoid_calloc(MEMORY_GRANULARITY, 1));
 	if (cp == NULL) Errors::fatal("Run out of memory: malloc failed");
-	for (i=0; i<MEMORY_GRANULARITY; i++) cp[i] = 0;
+	for (int i=0; i<MEMORY_GRANULARITY; i++) cp[i] = 0;
 
 @ As can be seen, memory block numbers count upwards from 0 in order of
 their allocation.
