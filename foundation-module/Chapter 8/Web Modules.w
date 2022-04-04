@@ -148,12 +148,16 @@ int WebModules::named_reference(module **return_M, section_md **return_Sm,
 	if (from_M == NULL) return 0;
 	match_results mr = Regexp::create_mr();
 	text_stream *seek = text;
+	text_stream *seek_module = NULL;
 	if (Regexp::match(&mr, text, L"(%C+?): *(%c+?) *")) {
-		LOOP_OVER_LINKED_LIST(M, module, from_M->dependencies)
-			if (Str::eq_insensitive(M->module_name, mr.exp[0])) {
-				seek = mr.exp[1];
-				@<Look for references to chapters or sections in M@>;
-			}
+		seek_module = mr.exp[0]; seek = mr.exp[1];
+	} else {
+		seek_module = from_M->module_name; seek = text;
+	}
+	LOOP_OVER_LINKED_LIST(M, module, from_M->dependencies) {
+		if (Str::eq_insensitive(M->module_name, seek_module)) {
+			@<Look for references to chapters or sections in M@>;
+		}
 	}
 	Regexp::dispose_of(&mr);
 	seek = text;
@@ -202,7 +206,8 @@ int WebModules::named_reference(module **return_M, section_md **return_Sm,
 		*return_M = M; *return_Sm = FIRST_IN_LINKED_LIST(section_md, Cm->sections_md);
 		WRITE_TO(title, "%S", Cm->ch_title);
 	}
-	if (list) WRITE_TO(STDERR, "(%d)  Chapter '%S'\n", finds, Cm->ch_title);
+	if (list) WRITE_TO(STDERR, "(%d)  Chapter '%S' of module '%S'\n",
+		finds, Cm->ch_title, M->module_name);
 
 @<Found section by name@> =
 	finds++;
@@ -210,4 +215,5 @@ int WebModules::named_reference(module **return_M, section_md **return_Sm,
 		*return_M = M; *return_Sm = Sm;
 		WRITE_TO(title, "%S", Sm->sect_title);
 	}
-	if (list) WRITE_TO(STDERR, "(%d)  Section '%S'\n", finds, Sm->sect_title);
+	if (list) WRITE_TO(STDERR, "(%d)  Section '%S' in chapter '%S' of module '%S'\n",
+		finds, Sm->sect_title, Cm->ch_title, M->module_name);

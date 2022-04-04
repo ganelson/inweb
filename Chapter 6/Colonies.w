@@ -403,7 +403,8 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 			module *found_M = Colonies::as_module(search_CM, L, Wm);
 			if (found_M) {
 				search_M = found_M;
-				text = Str::duplicate(mr.exp[1]);
+				if (LinkedLists::len(found_M->dependencies) == 0)
+					text = Str::duplicate(mr.exp[1]);
 				external = TRUE;
 			}
 		}
