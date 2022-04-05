@@ -1148,7 +1148,7 @@ typedef struct method {
 	struct method *next_method;
 	CLASS_DEFINITION
 } method;
-#line 23 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 24 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 typedef struct linked_list_item {
 	void *item_contents;
 	struct linked_list_item *next_list_item;
@@ -1158,6 +1158,7 @@ typedef struct linked_list {
 	struct linked_list_item *first_list_item;
 	struct linked_list_item *last_list_item;
 	int linked_list_length;
+	int early_items_used;
 	struct linked_list_item early_items[NO_LL_EARLY_ITEMS];
 	CLASS_DEFINITION
 } linked_list;
@@ -2827,31 +2828,31 @@ method_set * Methods__new_set(void) ;
 void  Methods__add(method_set *S, int ID, void *function) ;
 #line 90 "inweb/foundation-module/Chapter 2/Methods.w"
 int  Methods__provided(method_set *S, int ID) ;
-#line 29 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 30 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 linked_list * LinkedLists__new(void) ;
-#line 35 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 36 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void  LinkedLists__empty(linked_list *ll) ;
-#line 45 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 47 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void  LinkedLists__add(linked_list *L, void *P, int to_end) ;
-#line 73 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 75 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void * LinkedLists__remove_from_front(linked_list *L) ;
-#line 86 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 88 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void * LinkedLists__delete(int N, linked_list *L) ;
-#line 110 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 112 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void  LinkedLists__insert(linked_list *L, int N, void *P) ;
-#line 138 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 140 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 int  LinkedLists__len(linked_list *L) ;
-#line 141 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 143 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 linked_list_item * LinkedLists__first(linked_list *L) ;
-#line 144 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 146 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void * LinkedLists__entry(int N, linked_list *L) ;
-#line 151 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 153 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void  LinkedLists__set_entry(int N, linked_list *L, void *P) ;
-#line 158 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 160 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 linked_list_item * LinkedLists__last(linked_list *L) ;
-#line 161 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 163 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 linked_list_item * LinkedLists__next(linked_list_item *I) ;
-#line 164 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 166 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void * LinkedLists__content(linked_list_item *I) ;
 #line 33 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 dictionary * Dictionaries__new(int S, int textual) ;
@@ -7602,11 +7603,11 @@ int Methods__provided(method_set *S, int ID) {
 	return FALSE;
 }
 
-#line 22 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 23 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 
-#line 27 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 28 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 
-#line 29 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 30 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 linked_list *LinkedLists__new(void) {
 	linked_list *ll = CREATE(linked_list);
 	LinkedLists__empty(ll);
@@ -7615,16 +7616,17 @@ linked_list *LinkedLists__new(void) {
 
 void LinkedLists__empty(linked_list *ll) {
 	ll->linked_list_length = 0;
+	ll->early_items_used = 0;
 	ll->first_list_item = NULL;
 	ll->last_list_item = NULL;
 }
 
-#line 45 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 47 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void LinkedLists__add(linked_list *L, void *P, int to_end) {
 	if (L == NULL) internal_error("null list");
 	linked_list_item *item = NULL;
-	if (L->linked_list_length < NO_LL_EARLY_ITEMS)
-		item = &(L->early_items[L->linked_list_length]);
+	if (L->early_items_used < NO_LL_EARLY_ITEMS)
+		item = &(L->early_items[L->early_items_used++]);
 	else
 		item = CREATE(linked_list_item);
 	item->item_contents = P;
@@ -7645,18 +7647,18 @@ void LinkedLists__add(linked_list *L, void *P, int to_end) {
 	L->linked_list_length++;
 }
 
-#line 73 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 75 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void *LinkedLists__remove_from_front(linked_list *L) {
 	if (L == NULL) internal_error("null list");
-	if (L->first_list_item == NULL) internal_error("empty list can't be popped");
-	linked_list_item *top = L->first_list_item;
-	L->first_list_item = top->next_list_item;
+	linked_list_item *front = L->first_list_item;
+	if (front == NULL) internal_error("empty list can't have item 0 removed");
+	L->first_list_item = front->next_list_item;
 	if (L->first_list_item == NULL) L->last_list_item = NULL;
 	L->linked_list_length--;
-	return top->item_contents;
+	return front->item_contents;
 }
 
-#line 86 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 88 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void *LinkedLists__delete(int N, linked_list *L) {
 	if (L == NULL) internal_error("null list");
 	if ((N < 0) || (N >= L->linked_list_length)) internal_error("index not valid");
@@ -7677,7 +7679,7 @@ void *LinkedLists__delete(int N, linked_list *L) {
 	return NULL;
 }
 
-#line 110 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 112 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 void LinkedLists__insert(linked_list *L, int N, void *P) {
 	if (N <= 0) LinkedLists__add(L, P, FALSE);
 	else {
@@ -7689,8 +7691,8 @@ void LinkedLists__insert(linked_list *L, int N, void *P) {
 		if (prev == NULL) LinkedLists__add(L, P, FALSE);
 		else {
 			linked_list_item *item = NULL;
-			if (L->linked_list_length < NO_LL_EARLY_ITEMS)
-				item = &(L->early_items[L->linked_list_length]);
+			if (L->early_items_used < NO_LL_EARLY_ITEMS)
+				item = &(L->early_items[L->early_items_used++]);
 			else
 				item = CREATE(linked_list_item);
 			item->item_contents = P;
@@ -7703,7 +7705,7 @@ void LinkedLists__insert(linked_list *L, int N, void *P) {
 	}
 }
 
-#line 138 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
+#line 140 "inweb/foundation-module/Chapter 2/Linked Lists and Stacks.w"
 int LinkedLists__len(linked_list *L) {
 	return L?(L->linked_list_length):0;
 }
@@ -8590,11 +8592,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A83";
+			char *svn = "7-alpha.1+1A84";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "4 April 2022";
+			char *d = "5 April 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -30928,7 +30930,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A83\t/built 4 April 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A84\t/built 5 April 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"

@@ -16,6 +16,7 @@ typedef struct linked_list {
 	struct linked_list_item *first_list_item;
 	struct linked_list_item *last_list_item;
 	int linked_list_length;
+	int early_items_used;
 	struct linked_list_item early_items[NO_LL_EARLY_ITEMS];
 	CLASS_DEFINITION
 } linked_list;
@@ -34,6 +35,7 @@ linked_list *LinkedLists::new(void) {
 
 void LinkedLists::empty(linked_list *ll) {
 	ll->linked_list_length = 0;
+	ll->early_items_used = 0;
 	ll->first_list_item = NULL;
 	ll->last_list_item = NULL;
 }
@@ -45,8 +47,8 @@ want speed rather than memory efficiency.
 void LinkedLists::add(linked_list *L, void *P, int to_end) {
 	if (L == NULL) internal_error("null list");
 	linked_list_item *item = NULL;
-	if (L->linked_list_length < NO_LL_EARLY_ITEMS)
-		item = &(L->early_items[L->linked_list_length]);
+	if (L->early_items_used < NO_LL_EARLY_ITEMS)
+		item = &(L->early_items[L->early_items_used++]);
 	else
 		item = CREATE(linked_list_item);
 	item->item_contents = P;
@@ -72,12 +74,12 @@ void LinkedLists::add(linked_list *L, void *P, int to_end) {
 =
 void *LinkedLists::remove_from_front(linked_list *L) {
 	if (L == NULL) internal_error("null list");
-	if (L->first_list_item == NULL) internal_error("empty list can't be popped");
-	linked_list_item *top = L->first_list_item;
-	L->first_list_item = top->next_list_item;
+	linked_list_item *front = L->first_list_item;
+	if (front == NULL) internal_error("empty list can't have item 0 removed");
+	L->first_list_item = front->next_list_item;
 	if (L->first_list_item == NULL) L->last_list_item = NULL;
 	L->linked_list_length--;
-	return top->item_contents;
+	return front->item_contents;
 }
 
 @ It's rather slower to delete from a known position in the middle:
@@ -118,8 +120,8 @@ void LinkedLists::insert(linked_list *L, int N, void *P) {
 		if (prev == NULL) LinkedLists::add(L, P, FALSE);
 		else {
 			linked_list_item *item = NULL;
-			if (L->linked_list_length < NO_LL_EARLY_ITEMS)
-				item = &(L->early_items[L->linked_list_length]);
+			if (L->early_items_used < NO_LL_EARLY_ITEMS)
+				item = &(L->early_items[L->early_items_used++]);
 			else
 				item = CREATE(linked_list_item);
 			item->item_contents = P;
