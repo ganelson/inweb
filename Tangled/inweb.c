@@ -9391,7 +9391,7 @@ FILE *CIFilingSystem__fopen(const char *path, const char *mode) {
 	}
 	ciextname[namelen] = 0;
 
-	strncpy(workstring, path, extindex);
+	if (extindex > 0) strncpy(workstring, path, extindex);
 	workstring[extindex] = 0;
 	p = CIFilingSystem__strrchr(workstring);
 	if (p) {
