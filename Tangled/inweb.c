@@ -18,7 +18,9 @@
 #ifdef PLATFORM_WINDOWS
 #include <errno.h>
 #endif /* PLATFORM_WINDOWS */
-#line 47 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 42 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#include <stdint.h>
+#line 48 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 #include <wchar.h>
 
 #ifdef PLATFORM_POSIX
@@ -2414,9 +2416,9 @@ typedef void (*writer_function_I)(text_stream *, char *, int);
 typedef void (*log_function)(text_stream *, void *);
 typedef void (*log_function_I)(text_stream *, int);
 typedef char string[MAX_STRING_LENGTH+1];
-#line 89 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 90 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void  Foundation__start(int argc, char **argv) ;
-#line 173 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 174 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void  Foundation__end(void) ;
 #ifdef PLATFORM_POSIX
 #line 81 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
@@ -5204,26 +5206,26 @@ void register_tangled_text_literals(void);
 	if (Log__aspect_switched_on(aspect##_DA)) Writers__printf(DL, args); \
 }
 
-#line 50 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 51 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 text_stream *DL = NULL; /* Current destination of debugging text: kept |NULL| until opened */
 
-#line 79 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 80 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 
-#line 89 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 90 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void Foundation__start(int argc, char **argv) {
 	CommandLine__set_locale(argc, argv);
 	Platform__configure_terminal();
 	Memory__start();
 	
 {
-#line 108 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 109 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 	Writers__register_writer('f', &Filenames__writer);
 	Writers__register_writer('p', &Pathnames__writer);
 	Writers__register_writer('v', &VersionNumbers__writer);
 	Writers__register_writer('S', &Streams__writer);
 
 }
-#line 93 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 94 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 ;
 	register_tangled_text_literals();
 ;
@@ -5231,27 +5233,27 @@ void Foundation__start(int argc, char **argv) {
 	Pathnames__start();
 	
 {
-#line 119 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 120 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 	Log__declare_aspect(DEBUGGING_LOG_INCLUSIONS_DA, L"debugging log inclusions", FALSE, FALSE);
 	Log__declare_aspect(SHELL_USAGE_DA, L"shell usage", FALSE, FALSE);
 	Log__declare_aspect(MEMORY_USAGE_DA, L"memory usage", FALSE, FALSE);
 	Log__declare_aspect(TEXT_FILES_DA, L"text files", FALSE, FALSE);
 
 }
-#line 97 "inweb/foundation-module/Chapter 1/Foundation Module.w"
-;
-	
-{
-#line 130 "inweb/foundation-module/Chapter 1/Foundation Module.w"
-	Writers__register_logger('a', &Tries__log_avinue);
-	Writers__register_logger('S', &Streams__log);
-
-}
 #line 98 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 ;
 	
 {
-#line 150 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 131 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+	Writers__register_logger('a', &Tries__log_avinue);
+	Writers__register_logger('S', &Streams__log);
+
+}
+#line 99 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+;
+	
+{
+#line 151 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 	CommandLine__begin_group(FOUNDATION_CLSG, NULL);
 	CommandLine__declare_switch(LOG_CLSW, L"log", 2,
 		L"write the debugging log to include diagnostics on X");
@@ -5270,13 +5272,13 @@ void Foundation__start(int argc, char **argv) {
 	CommandLine__end_group();
 
 }
-#line 99 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 100 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 ;
 }
 
-#line 148 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 149 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 
-#line 173 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 174 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void Foundation__end(void) {
 	if (Log__aspect_switched_on(MEMORY_USAGE_DA)) Memory__log_statistics();
 	Log__close();
