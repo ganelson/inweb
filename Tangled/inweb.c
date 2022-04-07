@@ -28087,7 +28087,7 @@ int TeX__preform_document(weave_format *self, text_stream *OUT, web *W,
 		if (L->preform_nonterminal_defined->voracious)
 			WRITE(" (voracious)");
 		else if (L->preform_nonterminal_defined->min_word_count ==
-			L->preform_nonterminal_defined->min_word_count)
+			L->preform_nonterminal_defined->max_word_count)
 			WRITE(" (%d word%s)",
 				L->preform_nonterminal_defined->min_word_count,
 				(L->preform_nonterminal_defined->min_word_count != 1)?"s":"");
