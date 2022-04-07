@@ -232,6 +232,10 @@ for example,
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    Fireball/tablature</span>
 </pre>
+<p class="commentary">If the two pathnames are the same, the relative pathname is the empty text,
+and so nothing is output.
+</p>
+
 <p class="commentary">Note that this does not correctly handle symlinks, <span class="extract"><span class="extract-syntax">.</span></span>, <span class="extract"><span class="extract-syntax">..</span></span> and so on,
 so it's probably not wise to use it with filenames typed in at the command
 line.
@@ -247,7 +251,8 @@ line.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="4-sm.html#SP21" class="function-link"><span class="function-syntax">Str::prefix_eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rt</span><span class="plain-syntax">, </span><span class="identifier-syntax">pt</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">)) &amp;&amp; (</span><a href="1-wp.html#SP4" class="function-link"><span class="function-syntax">Platform::is_folder_separator</span></a><span class="plain-syntax">(</span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rt</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">)))) {</span>
 <span class="plain-syntax">        </span><a href="4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_n_characters</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rt</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">+1);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">rt</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"pathname not relative to pathname"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rt</span><span class="plain-syntax">, </span><span class="identifier-syntax">pt</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"pathname not relative to pathname"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">rt</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pt</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>

@@ -167,6 +167,9 @@ would be
 = (text)
 	Fireball/tablature
 =
+If the two pathnames are the same, the relative pathname is the empty text,
+and so nothing is output.
+
 Note that this does not correctly handle symlinks, |.|, |..| and so on,
 so it's probably not wise to use it with filenames typed in at the command
 line.
@@ -181,7 +184,8 @@ void Pathnames::to_text_relative(OUTPUT_STREAM, pathname *P, pathname *R) {
 	if ((Str::prefix_eq(rt, pt, n)) && (Platform::is_folder_separator(Str::get_at(rt, n)))) {
 		Str::delete_n_characters(rt, n+1);
 		WRITE("%S", rt);
-	} else internal_error("pathname not relative to pathname");
+	} else if (Str::eq(rt, pt) == FALSE)
+		internal_error("pathname not relative to pathname");
 	DISCARD_TEXT(rt)
 	DISCARD_TEXT(pt)
 }

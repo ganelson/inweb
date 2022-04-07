@@ -3028,17 +3028,17 @@ pathname * Pathnames__from_text_relative(pathname *P, text_stream *path) ;
 void  Pathnames__writer(OUTPUT_STREAM, char *format_string, void *vP) ;
 #line 148 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void  Pathnames__writer_r(OUTPUT_STREAM, pathname *P, int divider) ;
-#line 175 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 178 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void  Pathnames__to_text_relative(OUTPUT_STREAM, pathname *P, pathname *R) ;
-#line 189 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 193 "inweb/foundation-module/Chapter 3/Pathnames.w"
 pathname * Pathnames__up(pathname *P) ;
-#line 194 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 198 "inweb/foundation-module/Chapter 3/Pathnames.w"
 text_stream * Pathnames__directory_name(pathname *P) ;
-#line 205 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 209 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void  Pathnames__relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) ;
-#line 241 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 245 "inweb/foundation-module/Chapter 3/Pathnames.w"
 int  Pathnames__create_in_file_system(pathname *P) ;
-#line 259 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 263 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void  Pathnames__rsync(pathname *source, pathname *dest) ;
 #line 22 "inweb/foundation-module/Chapter 3/Filenames.w"
 filename * Filenames__in(pathname *P, text_stream *file_name) ;
@@ -8869,7 +8869,7 @@ void Pathnames__writer_r(OUTPUT_STREAM, pathname *P, int divider) {
 	WRITE("%S", P->intermediate);
 }
 
-#line 175 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 178 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void Pathnames__to_text_relative(OUTPUT_STREAM, pathname *P, pathname *R) {
 	TEMPORARY_TEXT(rt)
 	TEMPORARY_TEXT(pt)
@@ -8879,7 +8879,8 @@ void Pathnames__to_text_relative(OUTPUT_STREAM, pathname *P, pathname *R) {
 	if ((Str__prefix_eq(rt, pt, n)) && (Platform__is_folder_separator(Str__get_at(rt, n)))) {
 		Str__delete_n_characters(rt, n+1);
 		WRITE("%S", rt);
-	} else internal_error("pathname not relative to pathname");
+	} else if (Str__eq(rt, pt) == FALSE)
+		internal_error("pathname not relative to pathname");
 	DISCARD_TEXT(rt)
 	DISCARD_TEXT(pt)
 }
@@ -8894,7 +8895,7 @@ text_stream *Pathnames__directory_name(pathname *P) {
 	return P->intermediate;
 }
 
-#line 205 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 209 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void Pathnames__relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) {
 	TEMPORARY_TEXT(url)
 	int found = FALSE;
@@ -8926,7 +8927,7 @@ void Pathnames__relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) {
 	DISCARD_TEXT(url)
 }
 
-#line 241 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 245 "inweb/foundation-module/Chapter 3/Pathnames.w"
 int Pathnames__create_in_file_system(pathname *P) {
 	if (P == NULL) return TRUE; /* the root of the file system always exists */
 	if (P->known_to_exist) return TRUE;
@@ -8939,7 +8940,7 @@ int Pathnames__create_in_file_system(pathname *P) {
 	return P->known_to_exist;
 }
 
-#line 259 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 263 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void Pathnames__rsync(pathname *source, pathname *dest) {
 	char transcoded_source[4*MAX_FILENAME_LENGTH];
 	TEMPORARY_TEXT(pn)
