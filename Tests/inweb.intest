@@ -13,7 +13,7 @@
 	set: $TA = $PATH/_Tangled_Actual/$CASE.txt
 	set: $TI = $PATH/_Tangled_Ideal/$CASE.txt
 	set: $TC = $PATH/_Tangled_Console/$CASE.txt
-	step: $INWEB $WEB -tangle-to $TA >$TC 2>&1
+	step: $INWEB $WEB -no-ctags -tangle-to $TA >$TC 2>&1
 	or: 'failed inweb' $TC
 	show: $TA
 	match text: $TA $TI
@@ -44,7 +44,7 @@
 	mkdir: $PATH/_Results_Console
 	set: $A = $PATH/_Results_Actual/$CASE.txt
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
-	step: $INWEB -locale console=utf-8 -test-language-on $CANVAS -test-language $LANGUAGES/$CASE.ildf >$A 2>&1
+	step: $INWEB -no-ctags -locale console=utf-8 -test-language-on $CANVAS -test-language $LANGUAGES/$CASE.ildf >$A 2>&1
 	or: 'failed inweb' $A
 	show: $A
 	match text: $A $I
@@ -65,7 +65,7 @@
 	set: $A = $PATH/_Results_Actual/$CASE.txt
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
 	set: $C = $PATH/_Results_Console/$CASE.txt
-	step: $INWEB $PATH/variations -weave S/$CASE -weave-as TestingInweb -weave-to $A >$C 2>&1
+	step: $INWEB -no-ctags $PATH/variations -weave S/$CASE -weave-as TestingInweb -weave-to $A >$C 2>&1
 	or: 'failed inweb' $C
 	show: $A
 	match text: $A $I
