@@ -182,8 +182,8 @@ The contents of |workstring| are not significant afterwards.
 		strncpy(ciextname, path + extindex + 1, namelen);
 	}
 	ciextname[namelen] = 0;
-	
-	strncpy(workstring, path, extindex);
+
+	if (extindex > 0) strncpy(workstring, path, extindex);
 	workstring[extindex] = 0;
 	p = CIFilingSystem::strrchr(workstring);
 	if (p) {

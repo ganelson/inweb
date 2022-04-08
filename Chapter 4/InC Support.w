@@ -658,8 +658,9 @@ void InCSupport::expand_formula(text_stream *OUT, source_line *AL, preform_nonte
 we also provide for some other special extensions to C.
 
 =
-void InCSupport::tangle_line(programming_language *self, text_stream *OUT, text_stream *original) {
+int InCSupport::tangle_line(programming_language *self, text_stream *OUT, text_stream *original) {
 	InCSupport::tangle_line_inner(OUT, NULL, NULL, original);
+    return TRUE;
 }
 
 void InCSupport::tangle_line_inner(text_stream *OUT, source_line *AL, preform_nonterminal *pnt, text_stream *original) {

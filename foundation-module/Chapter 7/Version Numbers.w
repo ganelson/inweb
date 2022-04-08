@@ -203,13 +203,15 @@ semantic_version_number VersionNumbers::from_text(text_stream *T) {
 	ADD_TO_LINKED_LIST(Str::duplicate(prerelease), text_stream, V.prerelease_segments);
 	Str::clear(prerelease);
 
-@h Precendence.
+@h Precedence.
 The most important part of the semver standard is the rule on which versions
 take precedence over which others, and we follow it exactly. The following
 criteria are used in turn: major version; minor version; patch version;
-any prerelease elements, which must be compared numerically if consisting
-of digits only, and alphabetically otherwise; and finally the number of
-prerelease elements. Build metadata is disregarded entirely.
+the presence or absence of prerelease elements (a prerelease version has
+lower precedence); the prerelease elements themselves, which must be
+compared numerically if consisting of digits only, and alphabetically
+otherwise; and finally the number of prerelease elements. Build metadata is
+disregarded entirely.
 
 =
 int VersionNumbers::le(semantic_version_number V1, semantic_version_number V2) {
@@ -221,7 +223,9 @@ int VersionNumbers::le(semantic_version_number V1, semantic_version_number V2) {
 	}
 	linked_list_item *I1 = (V1.prerelease_segments)?(LinkedLists::first(V1.prerelease_segments)):NULL;
 	linked_list_item *I2 = (V2.prerelease_segments)?(LinkedLists::first(V2.prerelease_segments)):NULL;
-	while ((I1) && (I2)) {
+	if ((I1 == NULL) && (I2)) return FALSE;
+	if ((I1) && (I2 == NULL)) return TRUE;
+	do {
 		text_stream *T1 = (text_stream *) LinkedLists::content(I1);
 		text_stream *T2 = (text_stream *) LinkedLists::content(I2);
 		int N1 = VersionNumbers::strict_atoi(T1);
@@ -238,9 +242,9 @@ int VersionNumbers::le(semantic_version_number V1, semantic_version_number V2) {
 		}
 		I1 = LinkedLists::next(I1);
 		I2 = LinkedLists::next(I2);
-	}
-	if ((I1 == NULL) && (I2)) return FALSE;
-	if ((I1) && (I2 == NULL)) return TRUE;
+	} while ((I1) && (I2));
+	if ((I1 == NULL) && (I2)) return TRUE;
+	if ((I1) && (I2 == NULL)) return FALSE;
 	return TRUE;
 }
 

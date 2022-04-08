@@ -18,7 +18,9 @@
 #ifdef PLATFORM_WINDOWS
 #include <errno.h>
 #endif /* PLATFORM_WINDOWS */
-#line 47 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 42 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#include <stdint.h>
+#line 48 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 #include <wchar.h>
 
 #ifdef PLATFORM_POSIX
@@ -2414,9 +2416,9 @@ typedef void (*writer_function_I)(text_stream *, char *, int);
 typedef void (*log_function)(text_stream *, void *);
 typedef void (*log_function_I)(text_stream *, int);
 typedef char string[MAX_STRING_LENGTH+1];
-#line 89 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 90 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void  Foundation__start(int argc, char **argv) ;
-#line 173 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 174 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void  Foundation__end(void) ;
 #ifdef PLATFORM_POSIX
 #line 81 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
@@ -3644,23 +3646,23 @@ void  VersionNumbers__to_text(OUTPUT_STREAM, semantic_version_number V) ;
 void  VersionNumbers__writer(OUTPUT_STREAM, char *format_string, void *vE) ;
 #line 144 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 semantic_version_number  VersionNumbers__from_text(text_stream *T) ;
-#line 215 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 217 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int  VersionNumbers__le(semantic_version_number V1, semantic_version_number V2) ;
-#line 251 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 255 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int  VersionNumbers__floor(int N) ;
-#line 261 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 265 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int  VersionNumbers__strict_atoi(text_stream *T) ;
-#line 277 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 281 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int  VersionNumbers__eq(semantic_version_number V1, semantic_version_number V2) ;
-#line 283 "inweb/foundation-module/Chapter 7/Version Numbers.w"
-int  VersionNumbers__ne(semantic_version_number V1, semantic_version_number V2) ;
 #line 287 "inweb/foundation-module/Chapter 7/Version Numbers.w"
-int  VersionNumbers__gt(semantic_version_number V1, semantic_version_number V2) ;
+int  VersionNumbers__ne(semantic_version_number V1, semantic_version_number V2) ;
 #line 291 "inweb/foundation-module/Chapter 7/Version Numbers.w"
-int  VersionNumbers__ge(semantic_version_number V1, semantic_version_number V2) ;
+int  VersionNumbers__gt(semantic_version_number V1, semantic_version_number V2) ;
 #line 295 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+int  VersionNumbers__ge(semantic_version_number V1, semantic_version_number V2) ;
+#line 299 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int  VersionNumbers__lt(semantic_version_number V1, semantic_version_number V2) ;
-#line 302 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 306 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int  VersionNumbers__cmp(semantic_version_number V1, semantic_version_number V2) ;
 #line 39 "inweb/foundation-module/Chapter 7/Version Number Ranges.w"
 void  VersionNumberRanges__write_range(OUTPUT_STREAM, semver_range *R) ;
@@ -4231,26 +4233,26 @@ void  InCSupport__insert_in_tangle(programming_language *self, text_stream *OUT,
 #line 633 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__expand_formula(text_stream *OUT, source_line *AL, preform_nonterminal *pnt, 	text_stream *formula, int full) ;
 #line 661 "inweb/Chapter 4/InC Support.w"
-void  InCSupport__tangle_line(programming_language *self, text_stream *OUT, text_stream *original) ;
-#line 665 "inweb/Chapter 4/InC Support.w"
+int  InCSupport__tangle_line(programming_language *self, text_stream *OUT, text_stream *original) ;
+#line 666 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_nonterminal *pnt, text_stream *original) ;
-#line 915 "inweb/Chapter 4/InC Support.w"
+#line 916 "inweb/Chapter 4/InC Support.w"
 preform_nonterminal * InCSupport__nonterminal_by_name(text_stream *name) ;
-#line 929 "inweb/Chapter 4/InC Support.w"
+#line 930 "inweb/Chapter 4/InC Support.w"
 text_stream * InCSupport__nonterminal_variable_identifier(text_stream *name) ;
-#line 950 "inweb/Chapter 4/InC Support.w"
+#line 951 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__additional_tangling(programming_language *self, web *W, tangle_target *target) ;
-#line 1013 "inweb/Chapter 4/InC Support.w"
+#line 1014 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__weave_grammar_index(OUTPUT_STREAM) ;
-#line 1091 "inweb/Chapter 4/InC Support.w"
+#line 1092 "inweb/Chapter 4/InC Support.w"
 int  InCSupport__skip_in_weaving(programming_language *self, weave_order *wv, source_line *L) ;
-#line 1106 "inweb/Chapter 4/InC Support.w"
+#line 1107 "inweb/Chapter 4/InC Support.w"
 int  InCSupport__weave_code_line(programming_language *self, text_stream *OUT, 	weave_order *wv, web *W, chapter *C, section *S, source_line *L, 	text_stream *matter, text_stream *concluding_comment) ;
-#line 1120 "inweb/Chapter 4/InC Support.w"
+#line 1121 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__new_tag_declared(programming_language *self, theme_tag *tag) ;
-#line 1127 "inweb/Chapter 4/InC Support.w"
+#line 1128 "inweb/Chapter 4/InC Support.w"
 void  InCSupport__analyse_code(programming_language *self, web *W) ;
-#line 1134 "inweb/Chapter 4/InC Support.w"
+#line 1135 "inweb/Chapter 4/InC Support.w"
 int  InCSupport__share_element(programming_language *self, text_stream *elname) ;
 #line 301 "inweb/Chapter 5/Weave Tree.w"
 heterogeneous_tree * WeaveTree__new_tree(weave_order *wv) ;
@@ -5204,26 +5206,26 @@ void register_tangled_text_literals(void);
 	if (Log__aspect_switched_on(aspect##_DA)) Writers__printf(DL, args); \
 }
 
-#line 50 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 51 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 text_stream *DL = NULL; /* Current destination of debugging text: kept |NULL| until opened */
 
-#line 79 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 80 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 
-#line 89 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 90 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void Foundation__start(int argc, char **argv) {
 	CommandLine__set_locale(argc, argv);
 	Platform__configure_terminal();
 	Memory__start();
 	
 {
-#line 108 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 109 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 	Writers__register_writer('f', &Filenames__writer);
 	Writers__register_writer('p', &Pathnames__writer);
 	Writers__register_writer('v', &VersionNumbers__writer);
 	Writers__register_writer('S', &Streams__writer);
 
 }
-#line 93 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 94 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 ;
 	register_tangled_text_literals();
 ;
@@ -5231,27 +5233,27 @@ void Foundation__start(int argc, char **argv) {
 	Pathnames__start();
 	
 {
-#line 119 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 120 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 	Log__declare_aspect(DEBUGGING_LOG_INCLUSIONS_DA, L"debugging log inclusions", FALSE, FALSE);
 	Log__declare_aspect(SHELL_USAGE_DA, L"shell usage", FALSE, FALSE);
 	Log__declare_aspect(MEMORY_USAGE_DA, L"memory usage", FALSE, FALSE);
 	Log__declare_aspect(TEXT_FILES_DA, L"text files", FALSE, FALSE);
 
 }
-#line 97 "inweb/foundation-module/Chapter 1/Foundation Module.w"
-;
-	
-{
-#line 130 "inweb/foundation-module/Chapter 1/Foundation Module.w"
-	Writers__register_logger('a', &Tries__log_avinue);
-	Writers__register_logger('S', &Streams__log);
-
-}
 #line 98 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 ;
 	
 {
-#line 150 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 131 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+	Writers__register_logger('a', &Tries__log_avinue);
+	Writers__register_logger('S', &Streams__log);
+
+}
+#line 99 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+;
+	
+{
+#line 151 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 	CommandLine__begin_group(FOUNDATION_CLSG, NULL);
 	CommandLine__declare_switch(LOG_CLSW, L"log", 2,
 		L"write the debugging log to include diagnostics on X");
@@ -5270,13 +5272,13 @@ void Foundation__start(int argc, char **argv) {
 	CommandLine__end_group();
 
 }
-#line 99 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 100 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 ;
 }
 
-#line 148 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 149 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 
-#line 173 "inweb/foundation-module/Chapter 1/Foundation Module.w"
+#line 174 "inweb/foundation-module/Chapter 1/Foundation Module.w"
 void Foundation__end(void) {
 	if (Log__aspect_switched_on(MEMORY_USAGE_DA)) Memory__log_statistics();
 	Log__close();
@@ -8592,11 +8594,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A84";
+			char *svn = "7-alpha.1+1A85";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "5 April 2022";
+			char *d = "7 April 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -9389,7 +9391,7 @@ FILE *CIFilingSystem__fopen(const char *path, const char *mode) {
 	}
 	ciextname[namelen] = 0;
 
-	strncpy(workstring, path, extindex);
+	if (extindex > 0) strncpy(workstring, path, extindex);
 	workstring[extindex] = 0;
 	p = CIFilingSystem__strrchr(workstring);
 	if (p) {
@@ -14492,7 +14494,7 @@ semantic_version_number VersionNumbers__from_text(text_stream *T) {
 	return V;
 }
 
-#line 215 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 217 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int VersionNumbers__le(semantic_version_number V1, semantic_version_number V2) {
 	for (int i=0; i<SEMVER_NUMBER_DEPTH; i++) {
 		int N1 = VersionNumbers__floor(V1.version_numbers[i]);
@@ -14502,7 +14504,9 @@ int VersionNumbers__le(semantic_version_number V1, semantic_version_number V2) {
 	}
 	linked_list_item *I1 = (V1.prerelease_segments)?(LinkedLists__first(V1.prerelease_segments)):NULL;
 	linked_list_item *I2 = (V2.prerelease_segments)?(LinkedLists__first(V2.prerelease_segments)):NULL;
-	while ((I1) && (I2)) {
+	if ((I1 == NULL) && (I2)) return FALSE;
+	if ((I1) && (I2 == NULL)) return TRUE;
+	do {
 		text_stream *T1 = (text_stream *) LinkedLists__content(I1);
 		text_stream *T2 = (text_stream *) LinkedLists__content(I2);
 		int N1 = VersionNumbers__strict_atoi(T1);
@@ -14519,19 +14523,19 @@ int VersionNumbers__le(semantic_version_number V1, semantic_version_number V2) {
 		}
 		I1 = LinkedLists__next(I1);
 		I2 = LinkedLists__next(I2);
-	}
-	if ((I1 == NULL) && (I2)) return FALSE;
-	if ((I1) && (I2 == NULL)) return TRUE;
+	} while ((I1) && (I2));
+	if ((I1 == NULL) && (I2)) return TRUE;
+	if ((I1) && (I2 == NULL)) return FALSE;
 	return TRUE;
 }
 
-#line 251 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 255 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int VersionNumbers__floor(int N) {
 	if (N < 0) return 0;
 	return N;
 }
 
-#line 261 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 265 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int VersionNumbers__strict_atoi(text_stream *T) {
 	LOOP_THROUGH_TEXT(pos, T)
 		if (Characters__isdigit(Str__get(pos)) == FALSE)
@@ -14541,7 +14545,7 @@ int VersionNumbers__strict_atoi(text_stream *T) {
 	return Str__atoi(T, 0);
 }
 
-#line 277 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 281 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int VersionNumbers__eq(semantic_version_number V1, semantic_version_number V2) {
 	if ((VersionNumbers__le(V1, V2)) && (VersionNumbers__le(V2, V1)))
 		return TRUE;
@@ -14564,7 +14568,7 @@ int VersionNumbers__lt(semantic_version_number V1, semantic_version_number V2) {
 	return (VersionNumbers__ge(V1, V2))?FALSE:TRUE;
 }
 
-#line 302 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 306 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int VersionNumbers__cmp(semantic_version_number V1, semantic_version_number V2) {
 	if (VersionNumbers__eq(V1, V2)) return 0;
 	if (VersionNumbers__gt(V1, V2)) return 1;
@@ -25847,8 +25851,9 @@ void InCSupport__expand_formula(text_stream *OUT, source_line *AL, preform_nonte
 }
 
 #line 661 "inweb/Chapter 4/InC Support.w"
-void InCSupport__tangle_line(programming_language *self, text_stream *OUT, text_stream *original) {
+int InCSupport__tangle_line(programming_language *self, text_stream *OUT, text_stream *original) {
 	InCSupport__tangle_line_inner(OUT, NULL, NULL, original);
+    return TRUE;
 }
 
 void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_nonterminal *pnt, text_stream *original) {
@@ -25856,7 +25861,7 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 	for (int i = 0; i < Str__len(original); i++) {
 		
 {
-#line 702 "inweb/Chapter 4/InC Support.w"
+#line 703 "inweb/Chapter 4/InC Support.w"
 	if ((i > 0) && (Str__get_at(original, i) == ':') && (Str__get_at(original, i+1) == ':') &&
 		(isalpha(Str__get_at(original, i+2))) && (isalnum(Str__get_at(original, i-1)))) {
 		WRITE("__"); i++;
@@ -25864,11 +25869,11 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 	}
 
 }
-#line 668 "inweb/Chapter 4/InC Support.w"
+#line 669 "inweb/Chapter 4/InC Support.w"
 ;
 		
 {
-#line 714 "inweb/Chapter 4/InC Support.w"
+#line 715 "inweb/Chapter 4/InC Support.w"
 	if ((Str__get_at(original, i) == '=') &&
 		(Str__get_at(original, i+1) == '=') &&
 		(Str__get_at(original, i+2) == '>') &&
@@ -25878,7 +25883,7 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 		text_stream *clause[MAX_PREFORM_RESULT_CLAUSES];
 		
 {
-#line 737 "inweb/Chapter 4/InC Support.w"
+#line 738 "inweb/Chapter 4/InC Support.w"
 	clauses = 1;
 	clause[0] = Str__new();
 	int bl = 0;
@@ -25902,12 +25907,12 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 	for (int c=0; c<clauses; c++) Str__trim_white_space(clause[c]);
 
 }
-#line 721 "inweb/Chapter 4/InC Support.w"
+#line 722 "inweb/Chapter 4/InC Support.w"
 ;
 		TEMPORARY_TEXT(extra)
 		if (clauses == 1) 
 {
-#line 764 "inweb/Chapter 4/InC Support.w"
+#line 765 "inweb/Chapter 4/InC Support.w"
 	if (Str__eq(clause[0], TL_IS_386)) {
 		clause[1] = Str__new(); clauses = 2;
 		WRITE_TO(extra, "return FAIL_NONTERMINAL;");
@@ -25951,12 +25956,12 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 	}
 
 }
-#line 723 "inweb/Chapter 4/InC Support.w"
+#line 724 "inweb/Chapter 4/InC Support.w"
 ;
 		if (clauses < 2) err = TRUE;
 		if (err == FALSE) 
 {
-#line 814 "inweb/Chapter 4/InC Support.w"
+#line 815 "inweb/Chapter 4/InC Support.w"
 	for (int c=0; c<clauses; c++) {
 		if (Str__ne(clause[c], TL_IS_392)) {
 			switch (c) {
@@ -25987,7 +25992,7 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 	}
 
 }
-#line 725 "inweb/Chapter 4/InC Support.w"
+#line 726 "inweb/Chapter 4/InC Support.w"
 ;
 		if (err) {
 			Main__error_in_web(TL_IS_385, AL);
@@ -25997,13 +26002,13 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 	}
 
 }
-#line 669 "inweb/Chapter 4/InC Support.w"
+#line 670 "inweb/Chapter 4/InC Support.w"
 ;
 		if (Str__get_at(original, i) == '<') {
 			if (Str__get_at(original, i+1) == '<') {
 				
 {
-#line 849 "inweb/Chapter 4/InC Support.w"
+#line 850 "inweb/Chapter 4/InC Support.w"
 	match_results mr = Regexp__create_mr();
 	TEMPORARY_TEXT(check_this)
 	Str__substr(check_this, Str__at(original, i), Str__end(original));
@@ -26021,12 +26026,12 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 	Regexp__dispose_of(&mr);
 
 }
-#line 672 "inweb/Chapter 4/InC Support.w"
+#line 673 "inweb/Chapter 4/InC Support.w"
 ;
 			} else {
 				
 {
-#line 881 "inweb/Chapter 4/InC Support.w"
+#line 882 "inweb/Chapter 4/InC Support.w"
 	match_results mr = Regexp__create_mr();
 	TEMPORARY_TEXT(check_this)
 	Str__substr(check_this, Str__at(original, i), Str__end(original));
@@ -26056,7 +26061,7 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 	Regexp__dispose_of(&mr);
 
 }
-#line 674 "inweb/Chapter 4/InC Support.w"
+#line 675 "inweb/Chapter 4/InC Support.w"
 ;
 			}
 		}
@@ -26068,7 +26073,7 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 	}
 }
 
-#line 915 "inweb/Chapter 4/InC Support.w"
+#line 916 "inweb/Chapter 4/InC Support.w"
 preform_nonterminal *InCSupport__nonterminal_by_name(text_stream *name) {
 	preform_nonterminal *pnt;
 	LOOP_OVER(pnt, preform_nonterminal)
@@ -26077,7 +26082,7 @@ preform_nonterminal *InCSupport__nonterminal_by_name(text_stream *name) {
 	return NULL;
 }
 
-#line 929 "inweb/Chapter 4/InC Support.w"
+#line 930 "inweb/Chapter 4/InC Support.w"
 text_stream *InCSupport__nonterminal_variable_identifier(text_stream *name) {
 	if (Str__eq_wide_string(name, L"r")) return TL_IS_394;
 	if (Str__eq_wide_string(name, L"rp")) return TL_IS_395;
@@ -26088,7 +26093,7 @@ text_stream *InCSupport__nonterminal_variable_identifier(text_stream *name) {
 	return NULL;
 }
 
-#line 950 "inweb/Chapter 4/InC Support.w"
+#line 951 "inweb/Chapter 4/InC Support.w"
 void InCSupport__additional_tangling(programming_language *self, web *W, tangle_target *target) {
 	if (NUMBER_CREATED(preform_nonterminal) > 0) {
 		pathname *P = Reader__tangled_folder(W);
@@ -26108,7 +26113,7 @@ void InCSupport__additional_tangling(programming_language *self, web *W, tangle_
 
 		
 {
-#line 985 "inweb/Chapter 4/InC Support.w"
+#line 986 "inweb/Chapter 4/InC Support.w"
 	chapter *C;
 	section *S;
 	LOOP_WITHIN_TANGLE(C, S, target)
@@ -26131,13 +26136,13 @@ void InCSupport__additional_tangling(programming_language *self, web *W, tangle_
 		}
 
 }
-#line 967 "inweb/Chapter 4/InC Support.w"
+#line 968 "inweb/Chapter 4/InC Support.w"
 ;
 		STREAM_CLOSE(OUT);
 	}
 }
 
-#line 1013 "inweb/Chapter 4/InC Support.w"
+#line 1014 "inweb/Chapter 4/InC Support.w"
 void InCSupport__weave_grammar_index(OUTPUT_STREAM) {
 	WRITE("\\raggedright\\tolerance=10000");
 	preform_nonterminal *pnt;
@@ -26151,7 +26156,7 @@ void InCSupport__weave_grammar_index(OUTPUT_STREAM) {
 		int said_something = FALSE;
 		
 {
-#line 1060 "inweb/Chapter 4/InC Support.w"
+#line 1061 "inweb/Chapter 4/InC Support.w"
 	section *S;
 	LOOP_OVER(S, section) S->scratch_flag = FALSE;
 	hash_table_entry *hte = Analyser__find_hash_entry_for_section(
@@ -26177,11 +26182,11 @@ void InCSupport__weave_grammar_index(OUTPUT_STREAM) {
 	}
 
 }
-#line 1024 "inweb/Chapter 4/InC Support.w"
+#line 1025 "inweb/Chapter 4/InC Support.w"
 ;
 		
 {
-#line 1035 "inweb/Chapter 4/InC Support.w"
+#line 1036 "inweb/Chapter 4/InC Support.w"
 	section *S;
 	LOOP_OVER(S, section) S->scratch_flag = FALSE;
 	hash_table_entry *hte = Analyser__find_hash_entry_for_section(
@@ -26207,7 +26212,7 @@ void InCSupport__weave_grammar_index(OUTPUT_STREAM) {
 	}
 
 }
-#line 1025 "inweb/Chapter 4/InC Support.w"
+#line 1026 "inweb/Chapter 4/InC Support.w"
 ;
 		if (said_something == FALSE)
 			WRITE("\\par\\hangindent=3em{\\it unused}\n\n");
@@ -26217,7 +26222,7 @@ void InCSupport__weave_grammar_index(OUTPUT_STREAM) {
 	WRITE("\\hrule\\smallbreak\n");
 }
 
-#line 1089 "inweb/Chapter 4/InC Support.w"
+#line 1090 "inweb/Chapter 4/InC Support.w"
 int skipping_internal = FALSE, preform_production_count = 0;
 
 int InCSupport__skip_in_weaving(programming_language *self, weave_order *wv, source_line *L) {
@@ -26232,7 +26237,7 @@ int InCSupport__skip_in_weaving(programming_language *self, weave_order *wv, sou
 	return FALSE;
 }
 
-#line 1106 "inweb/Chapter 4/InC Support.w"
+#line 1107 "inweb/Chapter 4/InC Support.w"
 int InCSupport__weave_code_line(programming_language *self, text_stream *OUT,
 	weave_order *wv, web *W, chapter *C, section *S, source_line *L,
 	text_stream *matter, text_stream *concluding_comment) {
@@ -26242,12 +26247,12 @@ int InCSupport__weave_code_line(programming_language *self, text_stream *OUT,
 	return FALSE;
 }
 
-#line 1120 "inweb/Chapter 4/InC Support.w"
+#line 1121 "inweb/Chapter 4/InC Support.w"
 void InCSupport__new_tag_declared(programming_language *self, theme_tag *tag) {
 	if (Str__eq_wide_string(tag->tag_name, L"Preform")) Preform_theme = tag;
 }
 
-#line 1127 "inweb/Chapter 4/InC Support.w"
+#line 1128 "inweb/Chapter 4/InC Support.w"
 void InCSupport__analyse_code(programming_language *self, web *W) {
 	preform_nonterminal *pnt;
 	LOOP_OVER(pnt, preform_nonterminal)
@@ -28084,7 +28089,7 @@ int TeX__preform_document(weave_format *self, text_stream *OUT, web *W,
 		if (L->preform_nonterminal_defined->voracious)
 			WRITE(" (voracious)");
 		else if (L->preform_nonterminal_defined->min_word_count ==
-			L->preform_nonterminal_defined->min_word_count)
+			L->preform_nonterminal_defined->max_word_count)
 			WRITE(" (%d word%s)",
 				L->preform_nonterminal_defined->min_word_count,
 				(L->preform_nonterminal_defined->min_word_count != 1)?"s":"");
@@ -30931,7 +30936,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A84\t/built 5 April 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A85\t/built 7 April 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
