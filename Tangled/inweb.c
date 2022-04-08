@@ -3646,23 +3646,23 @@ void  VersionNumbers__to_text(OUTPUT_STREAM, semantic_version_number V) ;
 void  VersionNumbers__writer(OUTPUT_STREAM, char *format_string, void *vE) ;
 #line 144 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 semantic_version_number  VersionNumbers__from_text(text_stream *T) ;
-#line 215 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 217 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int  VersionNumbers__le(semantic_version_number V1, semantic_version_number V2) ;
-#line 251 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 255 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int  VersionNumbers__floor(int N) ;
-#line 261 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 265 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int  VersionNumbers__strict_atoi(text_stream *T) ;
-#line 277 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 281 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int  VersionNumbers__eq(semantic_version_number V1, semantic_version_number V2) ;
-#line 283 "inweb/foundation-module/Chapter 7/Version Numbers.w"
-int  VersionNumbers__ne(semantic_version_number V1, semantic_version_number V2) ;
 #line 287 "inweb/foundation-module/Chapter 7/Version Numbers.w"
-int  VersionNumbers__gt(semantic_version_number V1, semantic_version_number V2) ;
+int  VersionNumbers__ne(semantic_version_number V1, semantic_version_number V2) ;
 #line 291 "inweb/foundation-module/Chapter 7/Version Numbers.w"
-int  VersionNumbers__ge(semantic_version_number V1, semantic_version_number V2) ;
+int  VersionNumbers__gt(semantic_version_number V1, semantic_version_number V2) ;
 #line 295 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+int  VersionNumbers__ge(semantic_version_number V1, semantic_version_number V2) ;
+#line 299 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int  VersionNumbers__lt(semantic_version_number V1, semantic_version_number V2) ;
-#line 302 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 306 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int  VersionNumbers__cmp(semantic_version_number V1, semantic_version_number V2) ;
 #line 39 "inweb/foundation-module/Chapter 7/Version Number Ranges.w"
 void  VersionNumberRanges__write_range(OUTPUT_STREAM, semver_range *R) ;
@@ -8594,11 +8594,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A84";
+			char *svn = "7-alpha.1+1A85";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "5 April 2022";
+			char *d = "7 April 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -14494,7 +14494,7 @@ semantic_version_number VersionNumbers__from_text(text_stream *T) {
 	return V;
 }
 
-#line 215 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 217 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int VersionNumbers__le(semantic_version_number V1, semantic_version_number V2) {
 	for (int i=0; i<SEMVER_NUMBER_DEPTH; i++) {
 		int N1 = VersionNumbers__floor(V1.version_numbers[i]);
@@ -14504,7 +14504,9 @@ int VersionNumbers__le(semantic_version_number V1, semantic_version_number V2) {
 	}
 	linked_list_item *I1 = (V1.prerelease_segments)?(LinkedLists__first(V1.prerelease_segments)):NULL;
 	linked_list_item *I2 = (V2.prerelease_segments)?(LinkedLists__first(V2.prerelease_segments)):NULL;
-	while ((I1) && (I2)) {
+	if ((I1 == NULL) && (I2)) return FALSE;
+	if ((I1) && (I2 == NULL)) return TRUE;
+	do {
 		text_stream *T1 = (text_stream *) LinkedLists__content(I1);
 		text_stream *T2 = (text_stream *) LinkedLists__content(I2);
 		int N1 = VersionNumbers__strict_atoi(T1);
@@ -14521,19 +14523,19 @@ int VersionNumbers__le(semantic_version_number V1, semantic_version_number V2) {
 		}
 		I1 = LinkedLists__next(I1);
 		I2 = LinkedLists__next(I2);
-	}
-	if ((I1 == NULL) && (I2)) return FALSE;
-	if ((I1) && (I2 == NULL)) return TRUE;
+	} while ((I1) && (I2));
+	if ((I1 == NULL) && (I2)) return TRUE;
+	if ((I1) && (I2 == NULL)) return FALSE;
 	return TRUE;
 }
 
-#line 251 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 255 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int VersionNumbers__floor(int N) {
 	if (N < 0) return 0;
 	return N;
 }
 
-#line 261 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 265 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int VersionNumbers__strict_atoi(text_stream *T) {
 	LOOP_THROUGH_TEXT(pos, T)
 		if (Characters__isdigit(Str__get(pos)) == FALSE)
@@ -14543,7 +14545,7 @@ int VersionNumbers__strict_atoi(text_stream *T) {
 	return Str__atoi(T, 0);
 }
 
-#line 277 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 281 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int VersionNumbers__eq(semantic_version_number V1, semantic_version_number V2) {
 	if ((VersionNumbers__le(V1, V2)) && (VersionNumbers__le(V2, V1)))
 		return TRUE;
@@ -14566,7 +14568,7 @@ int VersionNumbers__lt(semantic_version_number V1, semantic_version_number V2) {
 	return (VersionNumbers__ge(V1, V2))?FALSE:TRUE;
 }
 
-#line 302 "inweb/foundation-module/Chapter 7/Version Numbers.w"
+#line 306 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 int VersionNumbers__cmp(semantic_version_number V1, semantic_version_number V2) {
 	if (VersionNumbers__eq(V1, V2)) return 0;
 	if (VersionNumbers__gt(V1, V2)) return 1;
@@ -30934,7 +30936,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A84\t/built 5 April 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A85\t/built 7 April 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
