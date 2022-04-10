@@ -20,8 +20,8 @@ INWEB = inweb/Tangled/inweb
 # "INDULGENTCC" is for code from older or externally written projects, which
 # wouldn't stand up to the same scrutiny.
 
-CC = clang -std=c99 -c $(MANYWARNINGS) $(CCOPTS) -g 
-INDULGENTCC = clang -std=c99 -c $(FEWERWARNINGS) $(CCOPTS) -g
+CC = clang -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g 
+INDULGENTCC = clang -std=c11 -c $(FEWERWARNINGS) $(CCOPTS) -g
 
 # On Mac OS X, we assume the user has the Developer Tools installed:
 
