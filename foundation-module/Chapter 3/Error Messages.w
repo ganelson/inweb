@@ -79,16 +79,21 @@ void Errors::fatal_with_path(char *message, pathname *P) {
 	DISCARD_TEXT(ERM)
 }
 
-@ Assertion failures lead to the following:
+@ Assertion failures lead to the following. Note the use of the C11 syntax
+|_Noreturn|; this seems now to be well-supported on modern C compilers, though.
+(It needs to be on its own line to avoid hassle with InC, which has no special
+support for C annotations.)
 
 @d internal_error(message) Errors::internal_error_handler(NULL, message, __FILE__, __LINE__)
 
 =
+_Noreturn
 void Errors::internal_error_handler(void *p, char *message, char *f, int lc) {
 	if (internal_errors_handler)
 		(*internal_errors_handler)(p, message, f, lc);
 	else
 		Errors::fatal_with_C_string("internal error (%s)", message);
+	exit(1); /* redundant but needed to remove compiler warning in clang */
 }
 
 @h Deliberately crashing.

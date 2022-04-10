@@ -2950,25 +2950,25 @@ void  Errors__fatal_with_text(char *message, text_stream *parameter) ;
 void  Errors__fatal_with_file(char *message, filename *F) ;
 #line 75 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__fatal_with_path(char *message, pathname *P) ;
-#line 87 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 91 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__internal_error_handler(void *p, char *message, char *f, int lc) ;
-#line 101 "inweb/foundation-module/Chapter 3/Error Messages.w"
-void  Errors__enter_debugger_mode(void) ;
 #line 106 "inweb/foundation-module/Chapter 3/Error Messages.w"
+void  Errors__enter_debugger_mode(void) ;
+#line 111 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__die(void) ;
-#line 122 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 127 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__nowhere(char *message) ;
-#line 126 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 131 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__in_text_file(char *message, text_file_position *here) ;
-#line 133 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 138 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__in_text_file_S(text_stream *message, text_file_position *here) ;
-#line 143 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 148 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__at_position(char *message, filename *file, int line) ;
-#line 152 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 157 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__at_position_S(text_stream *message, filename *file, int line) ;
-#line 164 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 169 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__with_file(char *message, filename *F) ;
-#line 171 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 176 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void  Errors__with_text(char *message, text_stream *T) ;
 #line 65 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__begin_group(int id, text_stream *name) ;
@@ -8240,15 +8240,17 @@ void Errors__fatal_with_path(char *message, pathname *P) {
 	DISCARD_TEXT(ERM)
 }
 
-#line 87 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 90 "inweb/foundation-module/Chapter 3/Error Messages.w"
+_Noreturn
 void Errors__internal_error_handler(void *p, char *message, char *f, int lc) {
 	if (internal_errors_handler)
 		(*internal_errors_handler)(p, message, f, lc);
 	else
 		Errors__fatal_with_C_string("internal error (%s)", message);
+	exit(1); /* redundant but needed to remove compiler warning in clang */
 }
 
-#line 100 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 105 "inweb/foundation-module/Chapter 3/Error Messages.w"
 int debugger_mode = FALSE;
 void Errors__enter_debugger_mode(void) {
 	debugger_mode = TRUE;
@@ -8266,7 +8268,7 @@ void Errors__die(void) { /* as void as it gets */
 	exit(2);
 }
 
-#line 122 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 127 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void Errors__nowhere(char *message) {
 	Errors__in_text_file(message, NULL);
 }
@@ -8285,7 +8287,7 @@ void Errors__in_text_file_S(text_stream *message, text_file_position *here) {
 		Errors__at_position_S(message, NULL, 0);
 }
 
-#line 143 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 148 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void Errors__at_position(char *message, filename *file, int line) {
 	TEMPORARY_TEXT(ERM)
 	WRITE_TO(ERM, "%s: ", PROGRAM_NAME);
@@ -8304,7 +8306,7 @@ void Errors__at_position_S(text_stream *message, filename *file, int line) {
 	DISCARD_TEXT(ERM)
 }
 
-#line 164 "inweb/foundation-module/Chapter 3/Error Messages.w"
+#line 169 "inweb/foundation-module/Chapter 3/Error Messages.w"
 void Errors__with_file(char *message, filename *F) {
 	TEMPORARY_TEXT(ERM)
 	WRITE_TO(ERM, "%s: %f: %s\n", PROGRAM_NAME, F, message);
@@ -8594,11 +8596,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A85";
+			char *svn = "7-alpha.1+1A86";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "7 April 2022";
+			char *d = "8 April 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -30936,7 +30938,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A85\t/built 7 April 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A86\t/built 8 April 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"

@@ -129,17 +129,22 @@ the temporary stream, not some other string which might need fresh allocation.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">ERM</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Assertion failures lead to the following:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Assertion failures lead to the following. Note the use of the C11 syntax
+<span class="extract"><span class="extract-syntax">_Noreturn</span></span>; this seems now to be well-supported on modern C compilers, though.
+(It needs to be on its own line to avoid hassle with InC, which has no special
+support for C annotations.)
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="identifier-syntax">message</span><span class="plain-syntax">) </span><a href="3-em.html#SP3" class="function-link"><span class="function-syntax">Errors::internal_error_handler</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">message</span><span class="plain-syntax">, </span><span class="identifier-syntax">__FILE__</span><span class="plain-syntax">, </span><span class="identifier-syntax">__LINE__</span><span class="plain-syntax">)</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">_Noreturn</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Errors::internal_error_handler</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">message</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lc</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">internal_errors_handler</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        (*</span><span class="identifier-syntax">internal_errors_handler</span><span class="plain-syntax">)(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">message</span><span class="plain-syntax">, </span><span class="identifier-syntax">f</span><span class="plain-syntax">, </span><span class="identifier-syntax">lc</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span>
 <span class="plain-syntax">        </span><a href="3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal_with_C_string</span></a><span class="plain-syntax">(</span><span class="string-syntax">"internal error (%s)"</span><span class="plain-syntax">, </span><span class="identifier-syntax">message</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">exit</span><span class="plain-syntax">(1); </span><span class="comment-syntax"> redundant but needed to remove compiler warning in clang</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Deliberately crashing. </b>It's sometimes convenient to get a backtrace from the debugger when an error
