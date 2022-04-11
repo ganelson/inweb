@@ -471,7 +471,7 @@ by a C string. First, a wide string (a sequence of 32-bit Unicode code
 points, null terminated):
 
 =
-int Streams::open_from_wide_string(text_stream *stream, wchar_t *c_string) {
+int Streams::open_from_wide_string(text_stream *stream, const wchar_t *c_string) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	int capacity = (c_string)?((int) wcslen(c_string)):0;
 	@<Ensure a capacity large enough to hold the initial string in one frame@>;
@@ -479,7 +479,7 @@ int Streams::open_from_wide_string(text_stream *stream, wchar_t *c_string) {
 	return TRUE;
 }
 
-void Streams::write_wide_string(text_stream *stream, wchar_t *c_string) {
+void Streams::write_wide_string(text_stream *stream, const wchar_t *c_string) {
 	for (int i=0; c_string[i]; i++) Streams::putc(c_string[i], stream);
 }
 
@@ -487,7 +487,7 @@ void Streams::write_wide_string(text_stream *stream, wchar_t *c_string) {
 page of the Unicode set, null terminated):
 
 =
-int Streams::open_from_ISO_string(text_stream *stream, char *c_string) {
+int Streams::open_from_ISO_string(text_stream *stream, const char *c_string) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	int capacity = (c_string)?((int) strlen(c_string)):0;
 	@<Ensure a capacity large enough to hold the initial string in one frame@>;
@@ -495,14 +495,14 @@ int Streams::open_from_ISO_string(text_stream *stream, char *c_string) {
 	return TRUE;
 }
 
-void Streams::write_ISO_string(text_stream *stream, char *c_string) {
+void Streams::write_ISO_string(text_stream *stream, const char *c_string) {
 	for (int i=0; c_string[i]; i++) Streams::putc(c_string[i], stream);
 }
 
 @ Finally, a UTF-8 encoded C string:
 
 =
-int Streams::open_from_UTF8_string(text_stream *stream, char *c_string) {
+int Streams::open_from_UTF8_string(text_stream *stream, const char *c_string) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	int capacity = (c_string)?((int) strlen(c_string)):0;
 	@<Ensure a capacity large enough to hold the initial string in one frame@>;
@@ -510,7 +510,7 @@ int Streams::open_from_UTF8_string(text_stream *stream, char *c_string) {
 	return TRUE;
 }
 
-void Streams::write_UTF8_string(text_stream *stream, char *c_string) {
+void Streams::write_UTF8_string(text_stream *stream, const char *c_string) {
 	unicode_file_buffer ufb = TextFiles::create_ufb();
 	int c;
 	while ((c = TextFiles::utf8_fgetc(NULL, &c_string, FALSE, &ufb)) != 0)
@@ -596,7 +596,7 @@ void Streams::write_as_UTF8_string(char *C_string, text_stream *stream, int buff
 @h Locale versions.
 
 =
-int Streams::open_from_locale_string(text_stream *stream, char *C_string) {
+int Streams::open_from_locale_string(text_stream *stream, const char *C_string) {
 	if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
 		return Streams::open_from_UTF8_string(stream, C_string);
 	if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)

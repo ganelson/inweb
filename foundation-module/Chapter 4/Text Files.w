@@ -223,7 +223,7 @@ unicode_file_buffer TextFiles::create_ufb(void) {
 	return ufb;
 }
 
-int TextFiles::utf8_fgetc(FILE *from, char **or_from, int escape_oddities,
+int TextFiles::utf8_fgetc(FILE *from, const char **or_from, int escape_oddities,
 	unicode_file_buffer *ufb) {
 	int c = EOF, conts;
 	if ((ufb) && (ufb->ufb_counter >= 0)) {

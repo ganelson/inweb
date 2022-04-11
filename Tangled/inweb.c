@@ -2759,17 +2759,17 @@ int  Streams__open_to_memory(text_stream *stream, int capacity) ;
 #line 456 "inweb/foundation-module/Chapter 2/Streams.w"
 text_stream  Streams__new_buffer(int capacity, wchar_t *at) ;
 #line 474 "inweb/foundation-module/Chapter 2/Streams.w"
-int  Streams__open_from_wide_string(text_stream *stream, wchar_t *c_string) ;
+int  Streams__open_from_wide_string(text_stream *stream, const wchar_t *c_string) ;
 #line 482 "inweb/foundation-module/Chapter 2/Streams.w"
-void  Streams__write_wide_string(text_stream *stream, wchar_t *c_string) ;
+void  Streams__write_wide_string(text_stream *stream, const wchar_t *c_string) ;
 #line 490 "inweb/foundation-module/Chapter 2/Streams.w"
-int  Streams__open_from_ISO_string(text_stream *stream, char *c_string) ;
+int  Streams__open_from_ISO_string(text_stream *stream, const char *c_string) ;
 #line 498 "inweb/foundation-module/Chapter 2/Streams.w"
-void  Streams__write_ISO_string(text_stream *stream, char *c_string) ;
+void  Streams__write_ISO_string(text_stream *stream, const char *c_string) ;
 #line 505 "inweb/foundation-module/Chapter 2/Streams.w"
-int  Streams__open_from_UTF8_string(text_stream *stream, char *c_string) ;
+int  Streams__open_from_UTF8_string(text_stream *stream, const char *c_string) ;
 #line 513 "inweb/foundation-module/Chapter 2/Streams.w"
-void  Streams__write_UTF8_string(text_stream *stream, char *c_string) ;
+void  Streams__write_UTF8_string(text_stream *stream, const char *c_string) ;
 #line 532 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_as_wide_string(wchar_t *C_string, text_stream *stream, int buffer_size) ;
 #line 551 "inweb/foundation-module/Chapter 2/Streams.w"
@@ -2777,7 +2777,7 @@ void  Streams__write_as_ISO_string(char *C_string, text_stream *stream, int buff
 #line 568 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_as_UTF8_string(char *C_string, text_stream *stream, int buffer_size) ;
 #line 599 "inweb/foundation-module/Chapter 2/Streams.w"
-int  Streams__open_from_locale_string(text_stream *stream, char *C_string) ;
+int  Streams__open_from_locale_string(text_stream *stream, const char *C_string) ;
 #line 608 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__write_as_locale_string(char *C_string, text_stream *stream, int buffer_size) ;
 #line 616 "inweb/foundation-module/Chapter 2/Streams.w"
@@ -3209,13 +3209,13 @@ void  Str__dispose_of(text_stream *text) ;
 #line 57 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 text_stream * Str__duplicate(text_stream *E) ;
 #line 73 "inweb/foundation-module/Chapter 4/String Manipulation.w"
-text_stream * Str__new_from_wide_string(wchar_t *C_string) ;
+text_stream * Str__new_from_wide_string(const wchar_t *C_string) ;
 #line 79 "inweb/foundation-module/Chapter 4/String Manipulation.w"
-text_stream * Str__new_from_ISO_string(char *C_string) ;
+text_stream * Str__new_from_ISO_string(const char *C_string) ;
 #line 85 "inweb/foundation-module/Chapter 4/String Manipulation.w"
-text_stream * Str__new_from_UTF8_string(char *C_string) ;
+text_stream * Str__new_from_UTF8_string(const char *C_string) ;
 #line 91 "inweb/foundation-module/Chapter 4/String Manipulation.w"
-text_stream * Str__new_from_locale_string(char *C_string) ;
+text_stream * Str__new_from_locale_string(const char *C_string) ;
 #line 100 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 text_stream * Str__from_wide_string(text_stream *S, wchar_t *c_string) ;
 #line 105 "inweb/foundation-module/Chapter 4/String Manipulation.w"
@@ -3355,7 +3355,7 @@ void  TextFiles__lose_interest(text_file_position *tfp) ;
 #line 220 "inweb/foundation-module/Chapter 4/Text Files.w"
 unicode_file_buffer  TextFiles__create_ufb(void) ;
 #line 226 "inweb/foundation-module/Chapter 4/Text Files.w"
-int  TextFiles__utf8_fgetc(FILE *from, char **or_from, int escape_oddities, 	unicode_file_buffer *ufb) ;
+int  TextFiles__utf8_fgetc(FILE *from, const char **or_from, int escape_oddities, 	unicode_file_buffer *ufb) ;
 #line 77 "inweb/foundation-module/Chapter 4/Tries and Avinues.w"
 wchar_t * Tries__search(match_trie *T, text_stream *p, wchar_t *add_outcome) ;
 #line 237 "inweb/foundation-module/Chapter 4/Tries and Avinues.w"
@@ -6827,7 +6827,7 @@ text_stream Streams__new_buffer(int capacity, wchar_t *at) {
 }
 
 #line 474 "inweb/foundation-module/Chapter 2/Streams.w"
-int Streams__open_from_wide_string(text_stream *stream, wchar_t *c_string) {
+int Streams__open_from_wide_string(text_stream *stream, const wchar_t *c_string) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	int capacity = (c_string)?((int) wcslen(c_string)):0;
 	
@@ -6845,12 +6845,12 @@ int Streams__open_from_wide_string(text_stream *stream, wchar_t *c_string) {
 	return TRUE;
 }
 
-void Streams__write_wide_string(text_stream *stream, wchar_t *c_string) {
+void Streams__write_wide_string(text_stream *stream, const wchar_t *c_string) {
 	for (int i=0; c_string[i]; i++) Streams__putc(c_string[i], stream);
 }
 
 #line 490 "inweb/foundation-module/Chapter 2/Streams.w"
-int Streams__open_from_ISO_string(text_stream *stream, char *c_string) {
+int Streams__open_from_ISO_string(text_stream *stream, const char *c_string) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	int capacity = (c_string)?((int) strlen(c_string)):0;
 	
@@ -6868,12 +6868,12 @@ int Streams__open_from_ISO_string(text_stream *stream, char *c_string) {
 	return TRUE;
 }
 
-void Streams__write_ISO_string(text_stream *stream, char *c_string) {
+void Streams__write_ISO_string(text_stream *stream, const char *c_string) {
 	for (int i=0; c_string[i]; i++) Streams__putc(c_string[i], stream);
 }
 
 #line 505 "inweb/foundation-module/Chapter 2/Streams.w"
-int Streams__open_from_UTF8_string(text_stream *stream, char *c_string) {
+int Streams__open_from_UTF8_string(text_stream *stream, const char *c_string) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	int capacity = (c_string)?((int) strlen(c_string)):0;
 	
@@ -6891,7 +6891,7 @@ int Streams__open_from_UTF8_string(text_stream *stream, char *c_string) {
 	return TRUE;
 }
 
-void Streams__write_UTF8_string(text_stream *stream, char *c_string) {
+void Streams__write_UTF8_string(text_stream *stream, const char *c_string) {
 	unicode_file_buffer ufb = TextFiles__create_ufb();
 	int c;
 	while ((c = TextFiles__utf8_fgetc(NULL, &c_string, FALSE, &ufb)) != 0)
@@ -6961,7 +6961,7 @@ void Streams__write_as_UTF8_string(char *C_string, text_stream *stream, int buff
 }
 
 #line 599 "inweb/foundation-module/Chapter 2/Streams.w"
-int Streams__open_from_locale_string(text_stream *stream, char *C_string) {
+int Streams__open_from_locale_string(text_stream *stream, const char *C_string) {
 	if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
 		return Streams__open_from_UTF8_string(stream, C_string);
 	if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
@@ -10259,25 +10259,25 @@ text_stream *Str__duplicate(text_stream *E) {
 }
 
 #line 73 "inweb/foundation-module/Chapter 4/String Manipulation.w"
-text_stream *Str__new_from_wide_string(wchar_t *C_string) {
+text_stream *Str__new_from_wide_string(const wchar_t *C_string) {
 	text_stream *S = CREATE(text_stream);
 	if (Streams__open_from_wide_string(S, C_string)) return S;
 	return NULL;
 }
 
-text_stream *Str__new_from_ISO_string(char *C_string) {
+text_stream *Str__new_from_ISO_string(const char *C_string) {
 	text_stream *S = CREATE(text_stream);
 	if (Streams__open_from_ISO_string(S, C_string)) return S;
 	return NULL;
 }
 
-text_stream *Str__new_from_UTF8_string(char *C_string) {
+text_stream *Str__new_from_UTF8_string(const char *C_string) {
 	text_stream *S = CREATE(text_stream);
 	if (Streams__open_from_UTF8_string(S, C_string)) return S;
 	return NULL;
 }
 
-text_stream *Str__new_from_locale_string(char *C_string) {
+text_stream *Str__new_from_locale_string(const char *C_string) {
 	text_stream *S = CREATE(text_stream);
 	if (Streams__open_from_locale_string(S, C_string)) return S;
 	return NULL;
@@ -10935,7 +10935,7 @@ unicode_file_buffer TextFiles__create_ufb(void) {
 	return ufb;
 }
 
-int TextFiles__utf8_fgetc(FILE *from, char **or_from, int escape_oddities,
+int TextFiles__utf8_fgetc(FILE *from, const char **or_from, int escape_oddities,
 	unicode_file_buffer *ufb) {
 	int c = EOF, conts;
 	if ((ufb) && (ufb->ufb_counter >= 0)) {
