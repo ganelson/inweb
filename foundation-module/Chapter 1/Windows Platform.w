@@ -117,6 +117,12 @@ int Platform::system(const char *cmd) {
 	   or a Unix-like shell, depending on whether or not the executable to run is
 	   given with a quoted path. */
 	int unix = (cmd[0] != '\"');
+	if (!unix) {
+		/* This detects an awkward case of a command that runs MinGW Clang compiler
+		   under Cygwin. Really there needs to be a better solution than this. */
+		if (strncmp(cmd+1,"x86_64",6) == 0)
+			unix = 1;
+	}
 	if (unix) {
 		/* For a Unix shell command, escape any double quotes and backslashes. */
 		char *pcl;
