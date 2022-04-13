@@ -4,8 +4,8 @@
 INTEST = intest/Tangled/intest
 INWEB = inweb/Tangled/inweb
 
-CC = clang -std=c99 -c $(MANYWARNINGS) $(CCOPTS) -g 
-INDULGENTCC = clang -std=c99 -c $(FEWERWARNINGS) $(CCOPTS) -g
+CC = clang -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g 
+INDULGENTCC = clang -std=c11 -c $(FEWERWARNINGS) $(CCOPTS) -g
 
 CCOPTS = -DPLATFORM_MACOS=1 -mmacosx-version-min=10.6 -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
@@ -20,7 +20,7 @@ EXEEXTENSION =
 
 ARTOOL = libtool -o
 
-INFORM6OS = OSX
+INFORM6OS = MACOS
 
 GLULXEOS = OS_UNIX
 

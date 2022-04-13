@@ -49,13 +49,13 @@ dictionary *Dictionaries::new(int S, int textual) {
 
 =
 void Dictionaries::log(OUTPUT_STREAM, dictionary *D) {
-	WRITE("Dictionary:\n", (unsigned int) D); INDENT;
+	WRITE("Dictionary:\n"); INDENT;
 	for (int i=0; i<D->hash_table_size; i++) {
 		WRITE("Slot %02d:", i);
 		for (dict_entry *E = &(D->hash_table[i]); E; E = E->next_in_entry)
 			if (E->vacant) WRITE(" vacant");
 			else if (D->textual) WRITE(" %S='%S'", E->key, E->value);
-			else WRITE(" %S=%08x", E->key, (unsigned int) E->value);
+			else WRITE(" %S=<binary>", E->key);
 		WRITE("\n");
 	}
 	OUTDENT;

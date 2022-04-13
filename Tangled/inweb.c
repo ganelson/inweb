@@ -7760,13 +7760,13 @@ dictionary *Dictionaries__new(int S, int textual) {
 
 #line 51 "inweb/foundation-module/Chapter 2/Dictionaries.w"
 void Dictionaries__log(OUTPUT_STREAM, dictionary *D) {
-	WRITE("Dictionary:\n", (unsigned int) D); INDENT;
+	WRITE("Dictionary:\n"); INDENT;
 	for (int i=0; i<D->hash_table_size; i++) {
 		WRITE("Slot %02d:", i);
 		for (dict_entry *E = &(D->hash_table[i]); E; E = E->next_in_entry)
 			if (E->vacant) WRITE(" vacant");
 			else if (D->textual) WRITE(" %S='%S'", E->key, E->value);
-			else WRITE(" %S=%08x", E->key, (unsigned int) E->value);
+			else WRITE(" %S=<binary>", E->key);
 		WRITE("\n");
 	}
 	OUTDENT;
@@ -8596,11 +8596,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A86";
+			char *svn = "7-alpha.1+1A87";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "8 April 2022";
+			char *d = "10 April 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -30938,7 +30938,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A86\t/built 8 April 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A87\t/built 10 April 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
