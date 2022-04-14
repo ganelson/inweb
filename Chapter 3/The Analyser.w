@@ -234,7 +234,7 @@ int Analyser::hash_code_from_word(text_stream *text) {
     string_position p = Str::start(text);
     switch(Str::get(p)) {
     	case '-': if (Str::len(text) == 1) break; /* an isolated minus sign is an ordinary word */
-    		/* and otherwise fall into... */
+    		/* and otherwise fall through to... */
     	case '0': case '1': case '2': case '3': case '4':
     	case '5': case '6': case '7': case '8': case '9': {
     		int numeric = TRUE;

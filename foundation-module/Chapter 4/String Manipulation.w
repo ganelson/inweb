@@ -70,25 +70,25 @@ with the capacity of the initial block large enough to hold the whole
 thing plus a little extra, for efficiency's sake.
 
 =
-text_stream *Str::new_from_wide_string(wchar_t *C_string) {
+text_stream *Str::new_from_wide_string(const wchar_t *C_string) {
 	text_stream *S = CREATE(text_stream);
 	if (Streams::open_from_wide_string(S, C_string)) return S;
 	return NULL;
 }
 
-text_stream *Str::new_from_ISO_string(char *C_string) {
+text_stream *Str::new_from_ISO_string(const char *C_string) {
 	text_stream *S = CREATE(text_stream);
 	if (Streams::open_from_ISO_string(S, C_string)) return S;
 	return NULL;
 }
 
-text_stream *Str::new_from_UTF8_string(char *C_string) {
+text_stream *Str::new_from_UTF8_string(const char *C_string) {
 	text_stream *S = CREATE(text_stream);
 	if (Streams::open_from_UTF8_string(S, C_string)) return S;
 	return NULL;
 }
 
-text_stream *Str::new_from_locale_string(char *C_string) {
+text_stream *Str::new_from_locale_string(const char *C_string) {
 	text_stream *S = CREATE(text_stream);
 	if (Streams::open_from_locale_string(S, C_string)) return S;
 	return NULL;
