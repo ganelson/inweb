@@ -110,19 +110,31 @@ Happily, the Inform tools make very little use of this.
 @h Shell commands.
 
 = (very early code)
+/* Check the first element of the command: if it has path separators in
+   it, we assume we are running one of our commands, otherwise it is a
+   Unix style command. */
+int Platform::Win32_is_unix_cmd(const char* cmd) {
+	char stop = ' ';
+	int i = 0;
+
+	if (cmd[0] == '\"') {
+		stop = '\"';
+		i = 1;
+	}
+	while ((cmd[i] != 0) && (cmd[i] != stop)) {
+		if ((cmd[i] == '/') || (cmd[i] == '\\'))
+			return 0;
+		i++;
+	}
+	return 1;
+}
+
 int Platform::system(const char *cmd) {
 	char cmd_line[10*MAX_PATH];
 
 	/* Check if the command should be executed with the Windows cmd interpreter
-	   or a Unix-like shell, depending on whether or not the executable to run is
-	   given with a quoted path. */
-	int unix = (cmd[0] != '\"');
-	if (!unix) {
-		/* This detects an awkward case of a command that runs MinGW Clang compiler
-		   under Cygwin. Really there needs to be a better solution than this. */
-		if (strncmp(cmd+1,"x86_64",6) == 0)
-			unix = 1;
-	}
+	   or a Unix-like shell. */
+	int unix = Platform::Win32_is_unix_cmd(cmd);
 	if (unix) {
 		/* For a Unix shell command, escape any double quotes and backslashes. */
 		char *pcl;
