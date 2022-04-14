@@ -404,9 +404,16 @@ to launch.
 
 =
 int Platform::get_core_count(void) {
+	int count = 0;
 	SYSTEM_INFO sysInfo;
 	GetSystemInfo(&sysInfo);
-	return (int) sysInfo.dwNumberOfProcessors;
+	count = (int) sysInfo.dwNumberOfProcessors;
+
+	/* Leave one core idle by default */
+	if (count > 1)
+		count--;
+
+	return count;
 }
 
 @h Timestamp and file size.
