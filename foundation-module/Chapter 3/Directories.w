@@ -42,3 +42,49 @@ int Directories::next(scan_directory *D, text_stream *leafname) {
 void Directories::close(scan_directory *D) {
 	Platform::closedir(D->directory_handle);
 }
+
+@ It turns out to be useful to scan the contents of a directory in an order
+which is predictable regardless of platform -- |Platform::readdir| works in a
+different order on MacOS, Windows and Linux, even given the same directory
+of files to work on. So the following returns a linked list of the contents,
+sorted into alphabetical order, but case-insensitively. For the Inform project,
+at least, we don't anticipate ever dealing with files whose names disagree only
+in casing, so this ordering is effectively deterministic.
+
+There's some time and memory overhead here, but unless we're dealing with
+directories holding upwards of 10,000 files or so, it'll be trivial.
+
+=
+linked_list *Directories::listing(pathname *P) {
+	int capacity = 4, used = 0;
+	text_stream **listing_array = (text_stream **)
+		(Memory::calloc(capacity, sizeof(text_stream *), ARRAY_SORTING_MREASON));
+	scan_directory *D = Directories::open(P);
+	if (D) {
+		text_stream *entry = Str::new();
+		while (Directories::next(D, entry)) {
+			if (used == capacity) {
+				int new_capacity = 4*capacity;
+				text_stream **new_listing_array = (text_stream **)
+					(Memory::calloc(new_capacity, sizeof(text_stream *), ARRAY_SORTING_MREASON));
+				for (int i=0; i<used; i++) new_listing_array[i] = listing_array[i];
+				listing_array = new_listing_array;
+				capacity = new_capacity;
+			}
+			listing_array[used++] = entry;
+			entry = Str::new();
+		}
+		Directories::close(D);
+	}
+	qsort(listing_array, (size_t) used, sizeof(text_stream *), Directories::compare_names);
+	linked_list *L = NEW_LINKED_LIST(text_stream);
+	for (int i=0; i<used; i++) ADD_TO_LINKED_LIST(listing_array[i], text_stream, L);
+	Memory::I7_free(listing_array, ARRAY_SORTING_MREASON, capacity*((int) sizeof(text_stream *)));
+	return L;
+}
+
+int Directories::compare_names(const void *ent1, const void *ent2) {
+	text_stream *tx1 = *((text_stream **) ent1);
+	text_stream *tx2 = *((text_stream **) ent2);
+	return Str::cmp_insensitive(tx1, tx2);
+}

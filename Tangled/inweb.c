@@ -3138,6 +3138,10 @@ scan_directory * Directories__open(pathname *P) ;
 int  Directories__next(scan_directory *D, text_stream *leafname) ;
 #line 42 "inweb/foundation-module/Chapter 3/Directories.w"
 void  Directories__close(scan_directory *D) ;
+#line 58 "inweb/foundation-module/Chapter 3/Directories.w"
+linked_list * Directories__listing(pathname *P) ;
+#line 86 "inweb/foundation-module/Chapter 3/Directories.w"
+int  Directories__compare_names(const void *ent1, const void *ent2) ;
 #line 13 "inweb/foundation-module/Chapter 3/Time.w"
 void  Time__begin(void) ;
 #line 26 "inweb/foundation-module/Chapter 3/Time.w"
@@ -8621,11 +8625,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A88";
+			char *svn = "7-alpha.1+1A89";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "13 April 2022";
+			char *d = "15 April 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -9854,6 +9858,41 @@ int Directories__next(scan_directory *D, text_stream *leafname) {
 
 void Directories__close(scan_directory *D) {
 	Platform__closedir(D->directory_handle);
+}
+
+#line 58 "inweb/foundation-module/Chapter 3/Directories.w"
+linked_list *Directories__listing(pathname *P) {
+	int capacity = 4, used = 0;
+	text_stream **listing_array = (text_stream **)
+		(Memory__calloc(capacity, sizeof(text_stream *), ARRAY_SORTING_MREASON));
+	scan_directory *D = Directories__open(P);
+	if (D) {
+		text_stream *entry = Str__new();
+		while (Directories__next(D, entry)) {
+			if (used == capacity) {
+				int new_capacity = 4*capacity;
+				text_stream **new_listing_array = (text_stream **)
+					(Memory__calloc(new_capacity, sizeof(text_stream *), ARRAY_SORTING_MREASON));
+				for (int i=0; i<used; i++) new_listing_array[i] = listing_array[i];
+				listing_array = new_listing_array;
+				capacity = new_capacity;
+			}
+			listing_array[used++] = entry;
+			entry = Str__new();
+		}
+		Directories__close(D);
+	}
+	qsort(listing_array, (size_t) used, sizeof(text_stream *), Directories__compare_names);
+	linked_list *L = NEW_LINKED_LIST(text_stream);
+	for (int i=0; i<used; i++) ADD_TO_LINKED_LIST(listing_array[i], text_stream, L);
+	Memory__I7_free(listing_array, ARRAY_SORTING_MREASON, capacity*((int) sizeof(text_stream *)));
+	return L;
+}
+
+int Directories__compare_names(const void *ent1, const void *ent2) {
+	text_stream *tx1 = *((text_stream **) ent1);
+	text_stream *tx2 = *((text_stream **) ent2);
+	return Str__cmp_insensitive(tx1, tx2);
 }
 
 #line 9 "inweb/foundation-module/Chapter 3/Time.w"
@@ -30963,7 +31002,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A88\t/built 13 April 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A89\t/built 15 April 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
