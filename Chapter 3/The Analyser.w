@@ -390,9 +390,17 @@ folder: failing that, we fall back on a default script belonging to Inweb.
 
 =
 void Analyser::write_makefile(web *W, filename *F, module_search *I) {
-	filename *prototype = Filenames::in(W->md->path_to_web, I"makescript.txt");
+	pathname *P = W->md->path_to_web;
+	text_stream *short_name = Pathnames::directory_name(P);
+	if ((Str::len(short_name) == 0) ||
+		(Str::eq(short_name, I".")) || (Str::eq(short_name, I"..")))
+		short_name = I"web";
+	TEMPORARY_TEXT(leafname)
+	WRITE_TO(leafname, "%S.mkscript", short_name);
+	filename *prototype = Filenames::in(P, leafname);
+	DISCARD_TEXT(leafname)
 	if (!(TextFiles::exists(prototype)))
-		prototype = Filenames::in(path_to_inweb_materials, I"makescript.txt");
+		prototype = Filenames::in(path_to_inweb_materials, I"default.mkscript");
 	Makefiles::write(W, prototype, F, I);
 }
 

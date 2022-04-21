@@ -1,6 +1,23 @@
 # This makefile was automatically written by inweb -makefile
 # and is not intended for human editing
 
+INWEBPLATFORM = macos
+
+INFORM6OS = MACOS
+
+GLULXEOS = OS_UNIX
+
+EXEEXTENSION = 
+
+INTEST = intest/Tangled/intest
+INWEB = inweb/Tangled/inweb
+
+CCOPTS = -DPLATFORM_MACOS=1 -mmacosx-version-min=10.6 -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+
+MANYWARNINGS = -Weverything -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return -ferror-limit=1000
+
+FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return
+
 ME = inweb
 FTEST = $(ME)/foundation-test
 SAFETYCOPY = $(ME)/Tangled/inweb_dev
@@ -24,47 +41,52 @@ force: $(ME)/platform-settings.mk
 	$(call make-me)
 	$(call make-ftest)
 
+.PHONY: makers
+makers:
+	$(INWEB) $(FTEST) -makefile $(FTEST)/foundation-test.mk
+	$(INWEB) -prototype $(ME)/Materials/platforms/macos.mkscript -makefile $(ME)/Materials/platforms/macos.mk
+	$(INWEB) -prototype $(ME)/Materials/platforms/macos32.mkscript -makefile $(ME)/Materials/platforms/macos32.mk
+	$(INWEB) -prototype $(ME)/Materials/platforms/windows.mkscript -makefile $(ME)/Materials/platforms/windows.mk
+	$(INWEB) -prototype $(ME)/Materials/platforms/linux.mkscript -makefile $(ME)/Materials/platforms/linux.mk
+	$(INWEB) -prototype $(ME)/Materials/platforms/unix.mkscript -makefile $(ME)/Materials/platforms/unix.mk
+
 .PHONY: macos
 macos: 
-	cp -f $(ME)/Materials/macos-make-settings.mk $(ME)/platform-settings.mk
-	echo "=== Platform set to 64-bit MacOS. Now: make -f inweb/inweb.mk initial ==="
+	cp -f $(ME)/Materials/platforms/macos.mk $(ME)/platform-settings.mk
+	echo "=== Platform set to 'macos'. Now: make -f inweb/inweb.mk initial ==="
 
 .PHONY: macos32
-macos32:
-	cp -f $(ME)/Materials/macos32-make-settings.mk $(ME)/platform-settings.mk
-	echo "=== Platform set to 32-bit MacOS. Now: make -f inweb/inweb.mk initial ==="
+macos32: 
+	cp -f $(ME)/Materials/platforms/macos32.mk $(ME)/platform-settings.mk
+	echo "=== Platform set to 'macos32'. Now: make -f inweb/inweb.mk initial ==="
 
 .PHONY: windows
 windows: 
-	cp -f $(ME)/Materials/windows-make-settings.mk $(ME)/platform-settings.mk
-	echo "=== Platform set to Windows. Now: make -f inweb/inweb.mk initial ==="
+	cp -f $(ME)/Materials/platforms/windows.mk $(ME)/platform-settings.mk
+	echo "=== Platform set to 'windows'. Now: make -f inweb/inweb.mk initial ==="
 
 .PHONY: linux
 linux: 
-	cp -f $(ME)/Materials/linux-make-settings.mk $(ME)/platform-settings.mk
-	echo "=== Platform set to Linux. Now: make -f inweb/inweb.mk initial ==="
+	cp -f $(ME)/Materials/platforms/linux.mk $(ME)/platform-settings.mk
+	echo "=== Platform set to 'linux'. Now: make -f inweb/inweb.mk initial ==="
 
 .PHONY: unix
 unix: 
-	cp -f $(ME)/Materials/unix-make-settings.mk $(ME)/platform-settings.mk
-	echo "=== Platform set to generic Unix (non-Linux, non-MacOS, non-Android). Now: make -f inweb/inweb.mk initial ==="
-
-.PHONY: android
-android: 
-	cp -f $(ME)/Materials/android-make-settings.mk $(ME)/platform-settings.mk
-	echo "=== Platform set to Android. Now: make -f inweb/inweb.mk initial ==="
+	cp -f $(ME)/Materials/platforms/unix.mk $(ME)/platform-settings.mk
+	echo "=== Platform set to 'unix'. Now: make -f inweb/inweb.mk initial ==="
 
 .PHONY: initial
 initial: $(ME)/platform-settings.mk
 	$(call make-me-once-tangled)
+	$(call make-ftest)
 
 .PHONY: safe
 safe:
 	$(call make-me-using-safety-copy)
 
 define make-me-once-tangled
-	$(CC) -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
-	$(LINK) -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o $(LINKEROPTS)
+	clang -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
+	clang $(CCOPTS) -g -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o 
 endef
 
 define make-me

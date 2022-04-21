@@ -1,0 +1,88 @@
+# This is "macos32.mkscript", a script which defines build settings used in
+# inweb, intest, inform and all of their subsidiary tools for the platform
+# "macos32". This is for making 32-bit executable tools on MacOS, though that
+# can now only be useful on very old versions of the operating system: use one
+# of the more modern MacOS platforms if possible.
+
+# The maintainer of this file is Graham Nelson.
+
+# The script is used for two purposes. Firstly, it is used to generate the
+# file "macos32.mk" of platform settings. If an inweb user selects macos32 as
+# platform on a first run, then this is the file copied into place as
+# inweb/platform-settings.mk. But secondly, it also defines macros which
+# can be used by any *.mkscript files being converted to *.mk files on
+# this platform.
+
+# Do not edit "macos32.mk" directly. Instead, edit this script, and then
+# rebuild "macos32.mk" by setting the current working directory to the directory
+# _above_ "inweb", and using the command:
+
+# inweb/Tangled/inweb inweb -prototype inweb/Materials/platforms/macos32.mkscript -makefile inweb/Materials/platforms/macos32.mk
+
+# Or simply:
+
+# make -f inweb/inweb.mk makers
+
+# which recreates all of the make-files in the inweb repository from their
+# scripts, including macos32.mk among them.
+
+# See the inweb manual for documentation on the *.mkscript file format, i.e.,
+# the format in which this file is written. But it is essentially just a makefile
+# with a number of special macro and loop features whose syntax involves braces
+# { ... }, so anywhere that you see braces, you're looking at something special
+# to *.mkscript; anything else is straightforward make syntax.
+
+# -----------------------------------------------------------------------------
+
+# The first definition in this file must set INWEBPLATFORM to the platform
+# name, which is the same as the leafname of this file without the ".mkscript"
+# file extension. So:
+
+INWEBPLATFORM = macos32
+
+# The I6 source code has its own set of symbolic names for operating systems,
+# not always the same as inweb's names for platforms, so:
+
+INFORM6OS = MACOS
+
+# And similarly for glulxe, which is used as part of the dumb-glulx interpreter,
+# which is used in testing Inform on the command line:
+
+GLULXEOS = OS_UNIX
+
+# On some platforms, executables have a specific file extension, which we define here:
+
+EXEEXTENSION = 
+
+# -----------------------------------------------------------------------------
+
+# These are likely to be the same on all platforms:
+
+INTEST = intest/Tangled/intest
+INWEB = inweb/Tangled/inweb
+
+# -----------------------------------------------------------------------------
+
+# Now three macro definitions: two for compiling C code to *.o object files
+# (one being strict about warnings, the other indulgently suppressing them);
+# and one for linking those *.o files into an executable.
+
+{define: compile to: TO from: FROM ?options: OPTS}
+	clang -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g {OPTS} -o {TO} {FROM}
+{end-define}
+
+{define: compile-indulgently to: TO from: FROM ?options: OPTS}
+	clang -std=c99 -c $(FEWERWARNINGS) $(CCOPTS) -g {OPTS} -o {TO} {FROM}
+{end-define}
+
+{define: link to: TO from: FROM ?options: OPTS}
+	clang $(CCOPTS) -g -o {TO} {FROM} {OPTS}
+{end-define}
+
+# Where:
+
+CCOPTS = -DPLATFORM_MACOS=1 -mmacosx-version-min=10.4 -arch i386 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+
+MANYWARNINGS = -Weverything -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -ferror-limit=1000
+
+FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format -Wno-extra-semi-stmt

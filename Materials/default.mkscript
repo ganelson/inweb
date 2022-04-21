@@ -1,0 +1,61 @@
+# This is "default.mkscript", a script which "inweb -makefile" uses in order to
+# generate makefiles for tools which do not provide a special script of their own.
+# In the Inform project, for example, it produces makefiles for the numerous
+# unit test tools.
+
+# See the inweb manual for documentation on the *.mkscript file format, i.e.,
+# the format in which this file is written. But it is essentially just a makefile
+# with a number of special macro and loop features whose syntax involves braces
+# { ... }, so anywhere that you see braces, you're looking at something special
+# to *.mkscript; anything else is straightforward make syntax.
+
+# -----------------------------------------------------------------------------
+
+{platform-settings}
+
+{identity-settings}
+
+# Making the program:
+
+$(ME)/Tangled/$(MYNAME): {dependent-files}
+	$(call make-me)
+
+.PHONY: force
+force:
+	$(call make-me)
+
+define make-me
+	$(INWEB) $(ME) -import-from modules -tangle
+	{compile from: $(ME)/Tangled/$(MYNAME).c   to:   $(ME)/Tangled/$(MYNAME).o}
+	{link from:    $(ME)/Tangled/$(MYNAME).o   to:   $(ME)/Tangled/$(MYNAME)$(EXEEXTENSION)}
+endef
+
+# Testing the program:
+
+.PHONY: test
+test:
+	$(INTEST) -from $(ME) all
+
+# Weaving the web for GitHub Pages:
+
+.PHONY: pages
+pages:
+	mkdir -p $(ME)/docs/$(MYNAME)
+	$(INWEB) $(ME) -weave-docs -weave-into $(ME)/docs/$(MYNAME)
+
+# Cleaning up:
+
+.PHONY: clean
+clean:
+	$(call clean-up)
+
+.PHONY: purge
+purge:
+	$(call clean-up)
+	rm -f $(ME)/Tangled/$(MYNAME)
+
+define clean-up
+	rm -f $(ME)/Tangled/*.o
+	rm -f $(ME)/Tangled/*.c
+	rm -f $(ME)/Tangled/*.h
+endef

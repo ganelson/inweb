@@ -5,11 +5,41 @@ Constructing a suitable makefile for a simple inweb project.
 @ This section offers just one function, which constructs a makefile by
 following a "prototype".
 
+@d MAX_MAKEFILE_MACRO_PARAMETERS 8
+@d MAX_MAKEFILE_MACRO_LINES 128
+
 =
+typedef struct makefile_macro {
+	struct text_stream *identifier;
+	struct makefile_macro_parameter *parameters[MAX_MAKEFILE_MACRO_PARAMETERS];
+	int no_parameters;
+	struct text_stream *lines[MAX_MAKEFILE_MACRO_LINES];
+	int no_lines;
+	CLASS_DEFINITION
+} makefile_macro;
+
+typedef struct makefile_macro_parameter {
+	struct text_stream *name;
+	struct text_stream *definition_token;
+	int optional;
+	CLASS_DEFINITION
+} makefile_macro_parameter;
+
+typedef struct makefile_macro_playback {
+	struct makefile_macro *which;
+	struct text_stream *parameter_values[MAX_MAKEFILE_MACRO_PARAMETERS];
+	int line_position;
+	struct makefile_macro_playback *prior_to_this;
+	struct text_stream *text_to_follow;
+	CLASS_DEFINITION
+} makefile_macro_playback;
+
 typedef struct makefile_state {
 	struct web *for_web;
 	struct text_stream to_makefile;
 	struct text_stream *repeat_block; /* a "repeatblock" body being scanned */
+	struct makefile_macro *defining; /* a "define" body being scanned */
+	struct makefile_macro_playback *playing_back;
 	int inside_block; /* scanning a "repeatblock" into that text? */
 	int last_line_was_blank; /* used to suppress runs of multiple blank lines */
 	int allow_commands; /* permit the prototype to use special commands */
@@ -26,6 +56,8 @@ void Makefiles::write(web *W, filename *prototype, filename *F, module_search *I
 	MS.for_web = W;
 	MS.last_line_was_blank = TRUE;
 	MS.repeat_block = Str::new();
+	MS.defining = NULL;
+	MS.playing_back = NULL;
 	MS.inside_block = FALSE;
 	MS.allow_commands = TRUE;
 	MS.tools_dictionary = Dictionaries::new(16, FALSE);
@@ -53,6 +85,10 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, line, L" *#%c*")) { Regexp::dispose_of(&mr); return; } // Skip comment lines
 	if (MS->allow_commands) {
+		if (Regexp::match(&mr, line, L" *{define: *(%C+) (%c*)} *")) @<Begin a definition@>;
+		if (Regexp::match(&mr, line, L" *{end-define} *")) @<End a definition@>;
+		if (MS->defining) @<Continue a definition@>;
+
 		if (Regexp::match(&mr, line, L" *{repeat-tools-block:(%C*)} *"))
 			@<Begin a repeat tool block@>;
 		if (Regexp::match(&mr, line, L" *{repeat-webs-block:(%C*)} *"))
@@ -83,11 +119,151 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 			@<Expand dependent-files-for-tool@>;
 		if (Regexp::match(&mr, line, L"(%c*?) *{dependent-files-for-module} *(%C+)"))
 			@<Expand dependent-files-for-module@>;
+		
+		if (Regexp::match(&mr, line, L"(%c*?) *{(%C+) *(%c+?)} *(%c*?)")) @<Expand a macro@>;
 	}
 	Regexp::dispose_of(&mr);
 
 	@<And otherwise copy the line straight through@>;
 }
+
+@<Begin a definition@> =
+	if (MS->defining) Errors::in_text_file("nested definitions are not allowed", tfp);
+	text_stream *name = mr.exp[0];
+	text_stream *parameter_specification = mr.exp[1];
+	makefile_macro *new_macro = CREATE(makefile_macro);
+	new_macro->identifier = Str::duplicate(name);
+	new_macro->no_parameters = 0;
+	new_macro->no_lines = 0;
+
+	match_results mr2 = Regexp::create_mr();
+	while (Regexp::match(&mr2, parameter_specification, L" *(%C+): *(%C+) *(%c*)")) {
+		if (new_macro->no_parameters >= MAX_MAKEFILE_MACRO_PARAMETERS) {
+			Errors::in_text_file("too many parameters in this definition", tfp);
+			break;
+		}
+		makefile_macro_parameter *new_parameter = CREATE(makefile_macro_parameter);
+		new_parameter->name = Str::duplicate(mr2.exp[0]);
+		new_parameter->definition_token = Str::duplicate(mr2.exp[1]);
+		new_parameter->optional = FALSE;
+		if (Str::get_first_char(new_parameter->name) == '?') {
+			new_parameter->optional = TRUE;
+			Str::delete_first_character(new_parameter->name);
+		}
+		new_macro->parameters[new_macro->no_parameters++] = new_parameter;
+		Str::clear(parameter_specification);
+		Str::copy(parameter_specification, mr2.exp[2]);
+	}
+	Regexp::dispose_of(&mr2);
+	if (Str::is_whitespace(parameter_specification) == FALSE)
+		Errors::in_text_file("parameter list for this definition is malformed", tfp);
+	
+	MS->defining = new_macro;
+	Regexp::dispose_of(&mr);
+	return;
+
+@<Continue a definition@> =
+	if (MS->defining->no_lines >= MAX_MAKEFILE_MACRO_LINES) {
+		Errors::in_text_file("too many lines in this definition", tfp);
+	} else {
+		MS->defining->lines[MS->defining->no_lines++] = Str::duplicate(line);
+	}
+	Regexp::dispose_of(&mr);
+	return;
+
+@<End a definition@> =
+	if (MS->defining == NULL) Errors::in_text_file("{end-define} without {define: ...}", tfp);
+	MS->defining = NULL;
+	Regexp::dispose_of(&mr);
+	return;
+
+@<Expand a macro@> =
+	text_stream *before_matter = mr.exp[0];
+	text_stream *identifier = mr.exp[1];
+	text_stream *parameter_settings = mr.exp[2];
+	text_stream *after_matter = mr.exp[3];
+	
+	makefile_macro_playback *playback = CREATE(makefile_macro_playback);
+	playback->which = NULL;
+	makefile_macro *mm;
+	LOOP_OVER(mm, makefile_macro)
+		if (Str::eq(mm->identifier, identifier))
+			playback->which = mm;
+	if (playback->which == NULL) {
+		Errors::in_text_file("unknown macro or command in braces", tfp);
+		Regexp::dispose_of(&mr);
+		return;
+	}
+	
+	for (int i=0; i<MAX_MAKEFILE_MACRO_PARAMETERS; i++)
+		playback->parameter_values[i] = NULL;
+
+	match_results mr2 = Regexp::create_mr();
+	while (Regexp::match(&mr2, parameter_settings, L" *(%C+): *(%C+) *(%c*)")) {
+		text_stream *setting = mr2.exp[0];
+		text_stream *value = mr2.exp[1];
+		text_stream *remainder = mr2.exp[2];
+		int found = FALSE;
+		for (int i=0; i<playback->which->no_parameters; i++)
+			if (Str::eq(setting, playback->which->parameters[i]->name)) {
+				found = TRUE;
+				playback->parameter_values[i] = Str::duplicate(value);
+			}
+		if (found == FALSE) Errors::in_text_file("unknown parameter in this macro", tfp);
+		Str::clear(parameter_settings);
+		Str::copy(parameter_settings, remainder);
+	}
+	Regexp::dispose_of(&mr2);
+	if (Str::is_whitespace(parameter_settings) == FALSE)
+		Errors::in_text_file("parameter list for this macro is malformed", tfp);
+	
+	for (int i=0; i<playback->which->no_parameters; i++)
+		if (playback->parameter_values[i] == NULL)
+			if (playback->which->parameters[i]->optional == FALSE)
+				Errors::in_text_file("compulsory macro parameter not given", tfp);
+
+	playback->line_position = 0;
+	playback->prior_to_this = MS->playing_back;
+	playback->text_to_follow = NULL;	
+	if (Str::is_whitespace(after_matter) == FALSE)
+		playback->text_to_follow = Str::duplicate(after_matter);
+
+	MS->playing_back = playback;
+	WRITE("%S", before_matter);
+	for (int i=0; i<playback->which->no_lines; i++) {
+		TEMPORARY_TEXT(line)
+		text_stream *from = playback->which->lines[i];
+		for (int j=0; j<Str::len(from); j++) {
+			if (Str::get_at(from, j) == '{') {
+				int closed = FALSE, old_j = j;
+				TEMPORARY_TEXT(token)
+				for (j++; j<Str::len(from); j++) {
+					if (Str::get_at(from, j) == '}') { closed = TRUE; break; }
+					PUT_TO(token, Str::get_at(from, j));
+				}
+				if (closed) {
+					int found = FALSE;
+					for (int i=0; i<playback->which->no_parameters; i++)
+						if (Str::eq(token, playback->which->parameters[i]->definition_token)) {
+							found = TRUE;
+							WRITE_TO(line, "%S", playback->parameter_values[i]);
+						}
+					if (found == FALSE) closed = FALSE;
+				}
+				DISCARD_TEXT(token)
+				if (closed == FALSE) { j = old_j; PUT_TO(line, '{'); }
+			} else {
+				PUT_TO(line, Str::get_at(from, j));
+			}
+		}
+		Makefiles::scan_makefile_line(line, tfp, (void *) MS);
+		DISCARD_TEXT(line)
+	}
+	MS->playing_back = playback->prior_to_this;
+	if (Str::is_whitespace(after_matter) == FALSE)
+		WRITE("%S\n", after_matter);
+	Regexp::dispose_of(&mr);
+	return;
 
 @<Begin a repeat tool block@> =
 	int marker = MAKEFILE_TOOL_MOM;
@@ -145,11 +321,22 @@ void Makefiles::scan_makefile_line(text_stream *line, text_file_position *tfp, v
 
 @<Expand platform-settings@> =
 	filename *prototype = Filenames::in(path_to_inweb, I"platform-settings.mk");
-	MS->allow_commands = FALSE;
-	TextFiles::read(prototype, FALSE, "can't open make settings file",
-		TRUE, Makefiles::scan_makefile_line, NULL, MS);
+	text_stream *INWEBPLATFORM = Str::new();
+	TextFiles::read(prototype, FALSE, "can't open platform settings file",
+		TRUE, Makefiles::seek_INWEBPLATFORM, NULL, INWEBPLATFORM);
+	if (Str::len(INWEBPLATFORM) == 0) {
+		Errors::in_text_file(
+			"found platform settings file, but it does not set INWEBPLATFORM", tfp);
+	} else {
+		pathname *P = Pathnames::down(path_to_inweb, I"Materials");
+		P = Pathnames::down(P, I"platforms");
+		WRITE_TO(INWEBPLATFORM, ".mkscript");
+		filename *F = Filenames::in(P, INWEBPLATFORM);
+		TextFiles::read(F, FALSE, "can't open platform definitions file",
+			TRUE, Makefiles::scan_makefile_line, NULL, MS);
+		WRITE_TO(STDOUT, "(Read definitions from %f)\n", F);
+	}
 	Regexp::dispose_of(&mr);
-	MS->allow_commands = TRUE;
 	return;
 
 @<Expand identity-settings@> =
@@ -341,4 +528,16 @@ void Makefiles::repeat(OUTPUT_STREAM, text_stream *prefix, int every_time, text_
 			if (suffix) WRITE("%S", suffix);
 		}
 	}
+}
+
+@ This is used to scan the platform settings file for a definition line in the
+shape INWEBPLATFORM = PLATFORM, in order to find out what PLATFORM the make file
+will be used on.
+
+=
+void Makefiles::seek_INWEBPLATFORM(text_stream *line, text_file_position *tfp, void *X) {
+	text_stream *OUT = (text_stream *) X;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, line, L" *INWEBPLATFORM = (%C+) *")) WRITE("%S", mr.exp[0]);
+	Regexp::dispose_of(&mr);
 }
