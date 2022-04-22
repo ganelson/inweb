@@ -7,12 +7,19 @@ INFORM6OS = LINUX
 
 GLULXEOS = OS_UNIX
 
-EXEEXTENSION = 
+EXEEXTENSION =
 
 INTEST = intest/Tangled/intest
 INWEB = inweb/Tangled/inweb
 
-GCCWARNINGS = -Wall -Wextra -Wno-pointer-to-int-cast -Wno-unused-parameter -Wno-unused-but-set-variable -Wno-unknown-pragmas
+CCOPTS = -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE -DPLATFORM_LINUX -fdiagnostics-color=auto -O2
+
+MANYWARNINGS = -Wall -Wextra -Wimplicit-fallthrough=2 -Wno-pointer-to-int-cast \
+    -Wno-unknown-pragmas -Wno-unused-but-set-parameter \
+    -Wno-unused-but-set-variable -Wno-unused-function -Wno-unused-parameter \
+    -Wno-unused-variable -fmax-errors=1000
+
+FEWERWARNINGS = -Wno-implicit-int
 
 ME = inweb
 FTEST = $(ME)/foundation-test
@@ -61,8 +68,8 @@ safe:
 	$(call make-me-using-safety-copy)
 
 define make-me-once-tangled
-	gcc -c -D_BSD_SOURCE -DPLATFORM_UNIX -fdiagnostics-color=auto $(GCCWARNINGS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
-	gcc -D_BSD_SOURCE -DPLATFORM_UNIX -fdiagnostics-color=auto -g -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o  -lm
+	gcc -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
+	gcc $(CCOPTS) -g -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o  -lm
 endef
 
 define make-me
