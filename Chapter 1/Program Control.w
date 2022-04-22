@@ -153,7 +153,7 @@ void Main::follow_instructions(inweb_instructions *ins) {
 @ But otherwise we do something with the given web:
 
 @<Analyse, tangle or weave an existing web@> =
-	Reader::print_web_statistics(W);
+	if (ins->inweb_mode != ANALYSE_MODE) Reader::print_web_statistics(W);
 	if (ins->inweb_mode == ANALYSE_MODE) @<Analyse the web@>;
 	if (ins->inweb_mode == TANGLE_MODE) @<Tangle the web@>;
 	if (ins->inweb_mode == WEAVE_MODE) @<Weave the web@>;

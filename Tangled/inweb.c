@@ -807,73 +807,74 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define macro_usage_CLASS 55
 #define makefile_macro_CLASS 56
 #define makefile_macro_parameter_CLASS 57
-#define makefile_macro_playback_CLASS 58
-#define nonterminal_variable_CLASS 59
-#define para_macro_CLASS 60
-#define paragraph_CLASS 61
-#define paragraph_tagging_CLASS 62
-#define preform_nonterminal_CLASS 63
-#define programming_language_CLASS 64
-#define reserved_word_CLASS 65
-#define section_CLASS 66
-#define source_line_CLASS 67
-#define structure_element_CLASS 68
-#define tangle_target_CLASS 69
-#define tex_results_CLASS 70
-#define text_literal_CLASS 71
-#define theme_tag_CLASS 72
-#define weave_format_CLASS 73
-#define weave_pattern_CLASS 74
-#define weave_plugin_CLASS 75
-#define weave_order_CLASS 76
-#define web_CLASS 77
-#define writeme_asset_CLASS 78
-#define weave_document_node_CLASS 79
-#define weave_head_node_CLASS 80
-#define weave_body_node_CLASS 81
-#define weave_tail_node_CLASS 82
-#define weave_section_header_node_CLASS 83
-#define weave_section_footer_node_CLASS 84
-#define weave_chapter_header_node_CLASS 85
-#define weave_chapter_footer_node_CLASS 86
-#define weave_verbatim_node_CLASS 87
-#define weave_section_purpose_node_CLASS 88
-#define weave_subheading_node_CLASS 89
-#define weave_bar_node_CLASS 90
-#define weave_linebreak_node_CLASS 91
-#define weave_pagebreak_node_CLASS 92
-#define weave_paragraph_heading_node_CLASS 93
-#define weave_endnote_node_CLASS 94
-#define weave_material_node_CLASS 95
-#define weave_figure_node_CLASS 96
-#define weave_extract_node_CLASS 97
-#define weave_audio_node_CLASS 98
-#define weave_download_node_CLASS 99
-#define weave_video_node_CLASS 100
-#define weave_embed_node_CLASS 101
-#define weave_pmac_node_CLASS 102
-#define weave_vskip_node_CLASS 103
-#define weave_chapter_node_CLASS 104
-#define weave_section_node_CLASS 105
-#define weave_code_line_node_CLASS 106
-#define weave_function_usage_node_CLASS 107
-#define weave_commentary_node_CLASS 108
-#define weave_carousel_slide_node_CLASS 109
-#define weave_toc_node_CLASS 110
-#define weave_toc_line_node_CLASS 111
-#define weave_chapter_title_page_node_CLASS 112
-#define weave_defn_node_CLASS 113
-#define weave_source_code_node_CLASS 114
-#define weave_url_node_CLASS 115
-#define weave_footnote_cue_node_CLASS 116
-#define weave_begin_footnote_text_node_CLASS 117
-#define weave_display_line_node_CLASS 118
-#define weave_function_defn_node_CLASS 119
-#define weave_item_node_CLASS 120
-#define weave_grammar_index_node_CLASS 121
-#define weave_inline_node_CLASS 122
-#define weave_locale_node_CLASS 123
-#define weave_maths_node_CLASS 124
+#define makefile_variable_CLASS 58
+#define makefile_variable_set_CLASS 59
+#define nonterminal_variable_CLASS 60
+#define para_macro_CLASS 61
+#define paragraph_CLASS 62
+#define paragraph_tagging_CLASS 63
+#define preform_nonterminal_CLASS 64
+#define programming_language_CLASS 65
+#define reserved_word_CLASS 66
+#define section_CLASS 67
+#define source_line_CLASS 68
+#define structure_element_CLASS 69
+#define tangle_target_CLASS 70
+#define tex_results_CLASS 71
+#define text_literal_CLASS 72
+#define theme_tag_CLASS 73
+#define weave_format_CLASS 74
+#define weave_pattern_CLASS 75
+#define weave_plugin_CLASS 76
+#define weave_order_CLASS 77
+#define web_CLASS 78
+#define writeme_asset_CLASS 79
+#define weave_document_node_CLASS 80
+#define weave_head_node_CLASS 81
+#define weave_body_node_CLASS 82
+#define weave_tail_node_CLASS 83
+#define weave_section_header_node_CLASS 84
+#define weave_section_footer_node_CLASS 85
+#define weave_chapter_header_node_CLASS 86
+#define weave_chapter_footer_node_CLASS 87
+#define weave_verbatim_node_CLASS 88
+#define weave_section_purpose_node_CLASS 89
+#define weave_subheading_node_CLASS 90
+#define weave_bar_node_CLASS 91
+#define weave_linebreak_node_CLASS 92
+#define weave_pagebreak_node_CLASS 93
+#define weave_paragraph_heading_node_CLASS 94
+#define weave_endnote_node_CLASS 95
+#define weave_material_node_CLASS 96
+#define weave_figure_node_CLASS 97
+#define weave_extract_node_CLASS 98
+#define weave_audio_node_CLASS 99
+#define weave_download_node_CLASS 100
+#define weave_video_node_CLASS 101
+#define weave_embed_node_CLASS 102
+#define weave_pmac_node_CLASS 103
+#define weave_vskip_node_CLASS 104
+#define weave_chapter_node_CLASS 105
+#define weave_section_node_CLASS 106
+#define weave_code_line_node_CLASS 107
+#define weave_function_usage_node_CLASS 108
+#define weave_commentary_node_CLASS 109
+#define weave_carousel_slide_node_CLASS 110
+#define weave_toc_node_CLASS 111
+#define weave_toc_line_node_CLASS 112
+#define weave_chapter_title_page_node_CLASS 113
+#define weave_defn_node_CLASS 114
+#define weave_source_code_node_CLASS 115
+#define weave_url_node_CLASS 116
+#define weave_footnote_cue_node_CLASS 117
+#define weave_begin_footnote_text_node_CLASS 118
+#define weave_display_line_node_CLASS 119
+#define weave_function_defn_node_CLASS 120
+#define weave_item_node_CLASS 121
+#define weave_grammar_index_node_CLASS 122
+#define weave_inline_node_CLASS 123
+#define weave_locale_node_CLASS 124
+#define weave_maths_node_CLASS 125
 #define NO_MODE 0
 #define ANALYSE_MODE 1
 #define TANGLE_MODE 2
@@ -1088,11 +1089,22 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define POST_PROCESS_REPORT_POS_MTID 41
 #define POST_PROCESS_SUBSTITUTE_POS_MTID 42
 #define PDFTEX_TEX_FORM 1
+#define MAX_MAKEFILE_REPEAT_DEPTH 8
 #define MAX_MAKEFILE_MACRO_PARAMETERS 8
 #define MAX_MAKEFILE_MACRO_LINES 128
+#define UNRESERVED_RMM 0
+#define PLATFORM_SETTINGS_RMM 1
+#define IDENTITY_SETTINGS_RMM 2
+#define COMPONENT_RMM 3
+#define DEPENDENT_FILES_RMM 4
+#define REPEAT_BLOCK_RMM 5
+#define END_BLOCK_RMM 6
+#define REPEAT_SPAN_RMM 7
+#define END_SPAN_RMM 8
+#define SET_RMM 9
 #define NO_DEFINED_CLSW_VALUES 38
 #define NO_DEFINED_DA_VALUES 4
-#define NO_DEFINED_CLASS_VALUES 125
+#define NO_DEFINED_CLASS_VALUES 126
 #define NO_DEFINED_MREASON_VALUES 5
 #define NO_DEFINED_LOCALE_VALUES 2
 #define NO_DEFINED_MTID_VALUES 42
@@ -1110,6 +1122,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define NO_DEFINED_SECTIONCAT_VALUES 3
 #define NO_DEFINED_MATERIAL_VALUES 6
 #define NO_DEFINED_FORM_VALUES 1
+#define NO_DEFINED_RMM_VALUES 10
 #line 41 "inweb/foundation-module/Chapter 2/Debugging Log.w"
 typedef struct debugging_aspect {
 	struct text_stream *hyphenated_name; /* e.g., "memory-usage" */
@@ -2340,48 +2353,64 @@ typedef struct tex_results {
 	struct filename *PDF_filename;
 	CLASS_DEFINITION
 } tex_results;
-#line 12 "inweb/Chapter 6/Makefiles.w"
+#line 20 "inweb/Chapter 6/Makefiles.w"
+typedef struct makefile_repeat {
+	int repeat_scope; /* during a repeat, either |MAKEFILE_TOOL_MOM| or |MAKEFILE_MODULE_MOM| */
+	struct text_stream *repeat_tag;
+	struct text_stream *repeat_with;
+	struct text_stream *repeat_in;
+	int repeat_is_block;
+	struct text_stream *repeat_saved_dest;
+} makefile_repeat;
+#line 29 "inweb/Chapter 6/Makefiles.w"
+typedef struct makefile_state {
+	struct web *for_web;
+	struct text_stream *dest;
+	struct makefile_macro *defining; /* a "define" body being scanned */
+	int repeat_sp;
+	int shadow_sp;
+	struct makefile_repeat repeat_data[MAX_MAKEFILE_REPEAT_DEPTH];
+	int suppress_newline; /* at the end of this line */
+	int last_line_was_blank; /* used to suppress runs of multiple blank lines */
+	struct dictionary *tools_dictionary;
+	struct dictionary *webs_dictionary;
+	struct dictionary *modules_dictionary;
+	struct module_search *search_path;
+	struct makefile_variable_set *global_variables;
+	struct makefile_variable_set *stack_frame;
+	struct linked_list *known_macros; /* of |makefile_macro| */
+} makefile_state;
+#line 349 "inweb/Chapter 6/Makefiles.w"
+typedef struct makefile_variable {
+	struct text_stream *name;
+	struct text_stream *value;
+	CLASS_DEFINITION
+} makefile_variable;
+#line 355 "inweb/Chapter 6/Makefiles.w"
+typedef struct makefile_variable_set {
+	struct linked_list *variables; /* of |makefile_variable| */
+	struct makefile_variable_set *outer;
+	CLASS_DEFINITION
+} makefile_variable_set;
+#line 441 "inweb/Chapter 6/Makefiles.w"
 typedef struct makefile_macro {
 	struct text_stream *identifier;
 	struct makefile_macro_parameter *parameters[MAX_MAKEFILE_MACRO_PARAMETERS];
 	int no_parameters;
 	struct text_stream *lines[MAX_MAKEFILE_MACRO_LINES];
 	int no_lines;
+	int reserved_macro_meaning;
+	int suppress_newline_after_expanding;
+	int suppress_whitespace_when_expanding;
 	CLASS_DEFINITION
 } makefile_macro;
-#line 21 "inweb/Chapter 6/Makefiles.w"
+#line 453 "inweb/Chapter 6/Makefiles.w"
 typedef struct makefile_macro_parameter {
 	struct text_stream *name;
 	struct text_stream *definition_token;
 	int optional;
 	CLASS_DEFINITION
 } makefile_macro_parameter;
-#line 28 "inweb/Chapter 6/Makefiles.w"
-typedef struct makefile_macro_playback {
-	struct makefile_macro *which;
-	struct text_stream *parameter_values[MAX_MAKEFILE_MACRO_PARAMETERS];
-	int line_position;
-	struct makefile_macro_playback *prior_to_this;
-	struct text_stream *text_to_follow;
-	CLASS_DEFINITION
-} makefile_macro_playback;
-#line 37 "inweb/Chapter 6/Makefiles.w"
-typedef struct makefile_state {
-	struct web *for_web;
-	struct text_stream to_makefile;
-	struct text_stream *repeat_block; /* a "repeatblock" body being scanned */
-	struct makefile_macro *defining; /* a "define" body being scanned */
-	struct makefile_macro_playback *playing_back;
-	int inside_block; /* scanning a "repeatblock" into that text? */
-	int last_line_was_blank; /* used to suppress runs of multiple blank lines */
-	int allow_commands; /* permit the prototype to use special commands */
-	int repeat_scope; /* during a repeat, either |MAKEFILE_TOOL_MOM| or |MAKEFILE_MODULE_MOM| */
-	struct text_stream *repeat_tag;
-	struct dictionary *tools_dictionary;
-	struct dictionary *webs_dictionary;
-	struct dictionary *modules_dictionary;
-	struct module_search *search_path;
-} makefile_state;
 #line 9 "inweb/Chapter 6/Git Support.w"
 typedef struct gitignore_state {
 	struct web *for_web;
@@ -4506,18 +4535,44 @@ int  TeXUtilities__substitute_post_processing_data(text_stream *to, weave_order 
 void  TeXUtilities__remove_math_mode(OUTPUT_STREAM, text_stream *text) ;
 #line 133 "inweb/Chapter 5/TeX Utilities.w"
 void  TeXUtilities__remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int from, int to) ;
-#line 54 "inweb/Chapter 6/Makefiles.w"
+#line 47 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__write(web *W, filename *prototype, filename *F, module_search *I) ;
-#line 81 "inweb/Chapter 6/Makefiles.w"
+#line 79 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, void *X) ;
-#line 451 "inweb/Chapter 6/Makefiles.w"
+#line 126 "inweb/Chapter 6/Makefiles.w"
+void  Makefiles__expand(text_stream *text, text_file_position *tfp, makefile_state *MS) ;
+#line 233 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) ;
-#line 462 "inweb/Chapter 6/Makefiles.w"
+#line 244 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) ;
-#line 501 "inweb/Chapter 6/Makefiles.w"
-void  Makefiles__repeat(OUTPUT_STREAM, text_stream *prefix, int every_time, text_stream *matter, 	int as_lines, text_stream *suffix, text_file_position *tfp, makefile_state *MS, int over, text_stream *tag) ;
-#line 538 "inweb/Chapter 6/Makefiles.w"
+#line 283 "inweb/Chapter 6/Makefiles.w"
+void  Makefiles__repeat(text_stream *matter, 	int as_lines, text_file_position *tfp, makefile_repeat *rep, makefile_state *MS) ;
+#line 339 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__seek_INWEBPLATFORM(text_stream *line, text_file_position *tfp, void *X) ;
+#line 361 "inweb/Chapter 6/Makefiles.w"
+makefile_variable_set * Makefiles__new_variable_set(makefile_variable_set *outer) ;
+#line 368 "inweb/Chapter 6/Makefiles.w"
+makefile_variable * Makefiles__find_variable_in_one(text_stream *name, makefile_variable_set *set) ;
+#line 377 "inweb/Chapter 6/Makefiles.w"
+makefile_variable * Makefiles__find_variable_in(text_stream *name, makefile_variable_set *set) ;
+#line 386 "inweb/Chapter 6/Makefiles.w"
+makefile_variable * Makefiles__ensure_variable(text_stream *name, makefile_variable_set *in_set) ;
+#line 398 "inweb/Chapter 6/Makefiles.w"
+int  Makefiles__acceptable_variable_name(text_stream *name) ;
+#line 464 "inweb/Chapter 6/Makefiles.w"
+makefile_macro * Makefiles__new_macro(linked_list *L, text_stream *name, 	text_stream *parameter_specification, text_file_position *tfp) ;
+#line 510 "inweb/Chapter 6/Makefiles.w"
+void  Makefiles__add_line_to_macro(makefile_macro *mm, text_stream *line, text_file_position *tfp) ;
+#line 533 "inweb/Chapter 6/Makefiles.w"
+linked_list * Makefiles__list_of_reserved_macros(void) ;
+#line 554 "inweb/Chapter 6/Makefiles.w"
+void  Makefiles__reserve_macro(linked_list *L, text_stream *name, 	text_stream *parameter_specification, int rmm) ;
+#line 561 "inweb/Chapter 6/Makefiles.w"
+void  Makefiles__reserve_span_macro(linked_list *L, text_stream *name, 	text_stream *parameter_specification, int rmm) ;
+#line 574 "inweb/Chapter 6/Makefiles.w"
+makefile_macro * Makefiles__find_macro(linked_list *L, text_stream *name) ;
+#line 585 "inweb/Chapter 6/Makefiles.w"
+void  Makefiles__expand_macro(makefile_state *MS, makefile_macro *mm, 	text_stream *parameter_settings, text_file_position *tfp) ;
 #line 15 "inweb/Chapter 6/Git Support.w"
 void  Git__write_gitignore(web *W, filename *prototype, filename *F) ;
 #line 31 "inweb/Chapter 6/Git Support.w"
@@ -5252,6 +5307,33 @@ text_stream *TL_IS_657 = NULL;
 text_stream *TL_IS_658 = NULL;
 text_stream *TL_IS_659 = NULL;
 text_stream *TL_IS_660 = NULL;
+text_stream *TL_IS_661 = NULL;
+text_stream *TL_IS_662 = NULL;
+text_stream *TL_IS_663 = NULL;
+text_stream *TL_IS_664 = NULL;
+text_stream *TL_IS_665 = NULL;
+text_stream *TL_IS_666 = NULL;
+text_stream *TL_IS_667 = NULL;
+text_stream *TL_IS_668 = NULL;
+text_stream *TL_IS_669 = NULL;
+text_stream *TL_IS_670 = NULL;
+text_stream *TL_IS_671 = NULL;
+text_stream *TL_IS_672 = NULL;
+text_stream *TL_IS_673 = NULL;
+text_stream *TL_IS_674 = NULL;
+text_stream *TL_IS_675 = NULL;
+text_stream *TL_IS_676 = NULL;
+text_stream *TL_IS_677 = NULL;
+text_stream *TL_IS_678 = NULL;
+text_stream *TL_IS_679 = NULL;
+text_stream *TL_IS_680 = NULL;
+text_stream *TL_IS_681 = NULL;
+text_stream *TL_IS_682 = NULL;
+text_stream *TL_IS_683 = NULL;
+text_stream *TL_IS_684 = NULL;
+text_stream *TL_IS_685 = NULL;
+text_stream *TL_IS_686 = NULL;
+text_stream *TL_IS_687 = NULL;
 void register_tangled_text_literals(void);
 #line 57 "inweb/foundation-module/Chapter 2/Streams.w"
 #define WRITE(args...) Writers__printf(OUT, args)
@@ -8663,11 +8745,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A90";
+			char *svn = "7-alpha.1+1A91";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "19 April 2022";
+			char *d = "22 April 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -16473,7 +16555,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 	if (Input_File) fclose(Input_File);
 }
 
-#line 105 "inweb/Chapter 1/Basics.w"
+#line 106 "inweb/Chapter 1/Basics.w"
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(source_line, 1000)
 DECLARE_CLASS(asset_rule)
 DECLARE_CLASS(breadcrumb_request)
@@ -16495,7 +16577,8 @@ DECLARE_CLASS(macro_usage)
 DECLARE_CLASS(macro)
 DECLARE_CLASS(makefile_macro)
 DECLARE_CLASS(makefile_macro_parameter)
-DECLARE_CLASS(makefile_macro_playback)
+DECLARE_CLASS(makefile_variable)
+DECLARE_CLASS(makefile_variable_set)
 DECLARE_CLASS(nonterminal_variable)
 DECLARE_CLASS(para_macro)
 DECLARE_CLASS(paragraph_tagging)
@@ -16681,7 +16764,7 @@ void Main__follow_instructions(inweb_instructions *ins) {
 		else if (ins->inweb_mode != NO_MODE) 
 {
 #line 156 "inweb/Chapter 1/Program Control.w"
-	Reader__print_web_statistics(W);
+	if (ins->inweb_mode != ANALYSE_MODE) Reader__print_web_statistics(W);
 	if (ins->inweb_mode == ANALYSE_MODE) 
 {
 #line 164 "inweb/Chapter 1/Program Control.w"
@@ -30448,599 +30531,210 @@ void TeXUtilities__remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int 
 	}
 }
 
-#line 20 "inweb/Chapter 6/Makefiles.w"
+#line 28 "inweb/Chapter 6/Makefiles.w"
 
-#line 27 "inweb/Chapter 6/Makefiles.w"
-
-#line 36 "inweb/Chapter 6/Makefiles.w"
-
-#line 53 "inweb/Chapter 6/Makefiles.w"
+#line 46 "inweb/Chapter 6/Makefiles.w"
 
 void Makefiles__write(web *W, filename *prototype, filename *F, module_search *I) {
+	struct text_stream makefile;
+	if (STREAM_OPEN_TO_FILE(&makefile, F, ISO_ENC) == FALSE)
+		Errors__fatal_with_file("unable to write tangled file", F);
+	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
+	text_stream *OUT = &makefile;
+
 	makefile_state MS;
+	MS.dest = OUT;
 	MS.for_web = W;
+	MS.suppress_newline = FALSE;
 	MS.last_line_was_blank = TRUE;
-	MS.repeat_block = Str__new();
 	MS.defining = NULL;
-	MS.playing_back = NULL;
-	MS.inside_block = FALSE;
-	MS.allow_commands = TRUE;
+	MS.repeat_sp = 0;
+	MS.shadow_sp = 0;
 	MS.tools_dictionary = Dictionaries__new(16, FALSE);
 	MS.webs_dictionary = Dictionaries__new(16, FALSE);
 	MS.modules_dictionary = Dictionaries__new(16, FALSE);
 	MS.search_path = I;
-	MS.repeat_scope = -1;
-	MS.repeat_tag = NULL;
-	text_stream *OUT = &(MS.to_makefile);
-	if (STREAM_OPEN_TO_FILE(OUT, F, ISO_ENC) == FALSE)
-		Errors__fatal_with_file("unable to write tangled file", F);
+	MS.global_variables = Makefiles__new_variable_set(NULL);
+	MS.stack_frame = MS.global_variables;
+	MS.known_macros = Makefiles__list_of_reserved_macros();
 	WRITE("# This makefile was automatically written by inweb -makefile\n");
 	WRITE("# and is not intended for human editing\n\n");
 	TextFiles__read(prototype, FALSE, "can't open prototype file",
 		TRUE, Makefiles__scan_makefile_line, NULL, &MS);
 	STREAM_CLOSE(OUT);
-	WRITE_TO(STDOUT, "Wrote makefile '%f' from script '%f'\n", F, prototype);
 }
 
-#line 81 "inweb/Chapter 6/Makefiles.w"
+#line 79 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__scan_makefile_line(text_stream *line, text_file_position *tfp, void *X) {
 	makefile_state *MS = (makefile_state *) X;
-	text_stream *OUT = &(MS->to_makefile);
-
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, line, L" *#%c*")) { Regexp__dispose_of(&mr); return; } // Skip comment lines
-	if (MS->allow_commands) {
-		if (Regexp__match(&mr, line, L" *{define: *(%C+) (%c*)} *")) 
+
+	if (Regexp__match(&mr, line, L" *{define: *(%C+) (%c*)} *")) 
 {
-#line 131 "inweb/Chapter 6/Makefiles.w"
-	if (MS->defining) Errors__in_text_file("nested definitions are not allowed", tfp);
+#line 105 "inweb/Chapter 6/Makefiles.w"
+	if (MS->defining)
+		Errors__in_text_file("nested definitions are not allowed", tfp);
 	text_stream *name = mr.exp[0];
 	text_stream *parameter_specification = mr.exp[1];
-	makefile_macro *new_macro = CREATE(makefile_macro);
-	new_macro->identifier = Str__duplicate(name);
-	new_macro->no_parameters = 0;
-	new_macro->no_lines = 0;
-
-	match_results mr2 = Regexp__create_mr();
-	while (Regexp__match(&mr2, parameter_specification, L" *(%C+): *(%C+) *(%c*)")) {
-		if (new_macro->no_parameters >= MAX_MAKEFILE_MACRO_PARAMETERS) {
-			Errors__in_text_file("too many parameters in this definition", tfp);
-			break;
-		}
-		makefile_macro_parameter *new_parameter = CREATE(makefile_macro_parameter);
-		new_parameter->name = Str__duplicate(mr2.exp[0]);
-		new_parameter->definition_token = Str__duplicate(mr2.exp[1]);
-		new_parameter->optional = FALSE;
-		if (Str__get_first_char(new_parameter->name) == '?') {
-			new_parameter->optional = TRUE;
-			Str__delete_first_character(new_parameter->name);
-		}
-		new_macro->parameters[new_macro->no_parameters++] = new_parameter;
-		Str__clear(parameter_specification);
-		Str__copy(parameter_specification, mr2.exp[2]);
-	}
-	Regexp__dispose_of(&mr2);
-	if (Str__is_whitespace(parameter_specification) == FALSE)
-		Errors__in_text_file("parameter list for this definition is malformed", tfp);
-
-	MS->defining = new_macro;
+	MS->defining = Makefiles__new_macro(MS->known_macros, name, parameter_specification, tfp);
 	Regexp__dispose_of(&mr);
 	return;
 
 }
-#line 88 "inweb/Chapter 6/Makefiles.w"
+#line 84 "inweb/Chapter 6/Makefiles.w"
 ;
-		if (Regexp__match(&mr, line, L" *{end-define} *")) 
+	if (Regexp__match(&mr, line, L" *{end-define} *")) 
 {
-#line 175 "inweb/Chapter 6/Makefiles.w"
-	if (MS->defining == NULL) Errors__in_text_file("{end-define} without {define: ...}", tfp);
+#line 119 "inweb/Chapter 6/Makefiles.w"
+	if (MS->defining == NULL)
+		Errors__in_text_file("{end-define} without {define: ...}", tfp);
 	MS->defining = NULL;
 	Regexp__dispose_of(&mr);
 	return;
 
 }
-#line 89 "inweb/Chapter 6/Makefiles.w"
+#line 85 "inweb/Chapter 6/Makefiles.w"
 ;
-		if (MS->defining) 
+	if (MS->defining) 
 {
-#line 166 "inweb/Chapter 6/Makefiles.w"
-	if (MS->defining->no_lines >= MAX_MAKEFILE_MACRO_LINES) {
-		Errors__in_text_file("too many lines in this definition", tfp);
-	} else {
-		MS->defining->lines[MS->defining->no_lines++] = Str__duplicate(line);
+#line 114 "inweb/Chapter 6/Makefiles.w"
+	Makefiles__add_line_to_macro(MS->defining, line, tfp);
+	Regexp__dispose_of(&mr);
+	return;
+
+}
+#line 86 "inweb/Chapter 6/Makefiles.w"
+;
+	Regexp__dispose_of(&mr);
+
+	Makefiles__expand(line, tfp, MS);
+
+	if (MS->suppress_newline == FALSE) {
+		text_stream *OUT = MS->dest;
+		if (Str__len(line) == 0) {
+			if (MS->last_line_was_blank == FALSE) WRITE("\n");
+			MS->last_line_was_blank = TRUE;
+		} else {
+			MS->last_line_was_blank = FALSE;
+			WRITE("\n");
+		}
 	}
-	Regexp__dispose_of(&mr);
-	return;
-
+	MS->suppress_newline = FALSE;
 }
-#line 90 "inweb/Chapter 6/Makefiles.w"
-;
 
-		if (Regexp__match(&mr, line, L" *{repeat-tools-block:(%C*)} *"))
-			
-{
-#line 269 "inweb/Chapter 6/Makefiles.w"
-	int marker = MAKEFILE_TOOL_MOM;
-	
-{
-#line 281 "inweb/Chapter 6/Makefiles.w"
-	if (MS->inside_block) Errors__in_text_file("nested repeat blocks are not allowed", tfp);
-	MS->inside_block = TRUE;
-	MS->repeat_scope = marker;
-	MS->repeat_tag = Str__duplicate(mr.exp[0]);
-	Str__clear(MS->repeat_block);
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 270 "inweb/Chapter 6/Makefiles.w"
-;
-
-}
-#line 93 "inweb/Chapter 6/Makefiles.w"
-;
-		if (Regexp__match(&mr, line, L" *{repeat-webs-block:(%C*)} *"))
-			
-{
-#line 273 "inweb/Chapter 6/Makefiles.w"
-	int marker = MAKEFILE_WEB_MOM;
-	
-{
-#line 281 "inweb/Chapter 6/Makefiles.w"
-	if (MS->inside_block) Errors__in_text_file("nested repeat blocks are not allowed", tfp);
-	MS->inside_block = TRUE;
-	MS->repeat_scope = marker;
-	MS->repeat_tag = Str__duplicate(mr.exp[0]);
-	Str__clear(MS->repeat_block);
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 274 "inweb/Chapter 6/Makefiles.w"
-;
-
-}
-#line 95 "inweb/Chapter 6/Makefiles.w"
-;
-		if (Regexp__match(&mr, line, L" *{repeat-modules-block:(%C*)} *"))
-			
-{
-#line 277 "inweb/Chapter 6/Makefiles.w"
-	int marker = MAKEFILE_MODULE_MOM;
-	
-{
-#line 281 "inweb/Chapter 6/Makefiles.w"
-	if (MS->inside_block) Errors__in_text_file("nested repeat blocks are not allowed", tfp);
-	MS->inside_block = TRUE;
-	MS->repeat_scope = marker;
-	MS->repeat_tag = Str__duplicate(mr.exp[0]);
-	Str__clear(MS->repeat_block);
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 278 "inweb/Chapter 6/Makefiles.w"
-;
-
-}
-#line 97 "inweb/Chapter 6/Makefiles.w"
-;
-		if (Regexp__match(&mr, line, L" *{end-block} *")) 
-{
-#line 294 "inweb/Chapter 6/Makefiles.w"
-	if (MS->inside_block == FALSE)
-		Errors__in_text_file("{endblock} without {repeatblock}", tfp);
-	MS->inside_block = FALSE;
-	Makefiles__repeat(OUT, NULL, TRUE, MS->repeat_block, TRUE, NULL, tfp, MS, MS->repeat_scope, MS->repeat_tag);
-	Str__clear(MS->repeat_block);
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 98 "inweb/Chapter 6/Makefiles.w"
-;
-		if (MS->inside_block) 
-{
-#line 290 "inweb/Chapter 6/Makefiles.w"
-	WRITE_TO(MS->repeat_block, "%S\n", line);
-	return;
-
-}
-#line 99 "inweb/Chapter 6/Makefiles.w"
-;
-
-		if (Regexp__match(&mr, line, L"(%c*){repeat-tools-span}(%c*?){end-span}(%c*)"))
-			
-{
-#line 303 "inweb/Chapter 6/Makefiles.w"
-	int marker = MAKEFILE_TOOL_MOM;
-	
-{
-#line 315 "inweb/Chapter 6/Makefiles.w"
-	WRITE("%S", mr.exp[0]);
-	Makefiles__repeat(OUT, TL_IS_628, FALSE, mr.exp[1], FALSE, NULL, tfp, MS, marker, TL_IS_629);
-	WRITE("%S\n", mr.exp[2]);
-	MS->last_line_was_blank = FALSE;
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 304 "inweb/Chapter 6/Makefiles.w"
-;
-
-}
-#line 102 "inweb/Chapter 6/Makefiles.w"
-;
-		if (Regexp__match(&mr, line, L"(%c*){repeat-webs-span}(%c*?){end-span}(%c*)"))
-			
-{
-#line 307 "inweb/Chapter 6/Makefiles.w"
-	int marker = MAKEFILE_WEB_MOM;
-	
-{
-#line 315 "inweb/Chapter 6/Makefiles.w"
-	WRITE("%S", mr.exp[0]);
-	Makefiles__repeat(OUT, TL_IS_628, FALSE, mr.exp[1], FALSE, NULL, tfp, MS, marker, TL_IS_629);
-	WRITE("%S\n", mr.exp[2]);
-	MS->last_line_was_blank = FALSE;
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 308 "inweb/Chapter 6/Makefiles.w"
-;
-
-}
-#line 104 "inweb/Chapter 6/Makefiles.w"
-;
-		if (Regexp__match(&mr, line, L"(%c*){repeat-modules-span}(%c*?){end-span}(%c*)"))
-			
-{
-#line 311 "inweb/Chapter 6/Makefiles.w"
-	int marker = MAKEFILE_MODULE_MOM;
-	
-{
-#line 315 "inweb/Chapter 6/Makefiles.w"
-	WRITE("%S", mr.exp[0]);
-	Makefiles__repeat(OUT, TL_IS_628, FALSE, mr.exp[1], FALSE, NULL, tfp, MS, marker, TL_IS_629);
-	WRITE("%S\n", mr.exp[2]);
-	MS->last_line_was_blank = FALSE;
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 312 "inweb/Chapter 6/Makefiles.w"
-;
-
-}
-#line 106 "inweb/Chapter 6/Makefiles.w"
-;
-
-		if (Regexp__match(&mr, line, L" *{identity-settings} *")) 
-{
-#line 343 "inweb/Chapter 6/Makefiles.w"
-	WRITE("INWEB = "); Makefiles__pathname_slashed(OUT, path_to_inweb); WRITE("/Tangled/inweb\n");
-	pathname *path_to_intest = Pathnames__down(Pathnames__up(path_to_inweb), TL_IS_633);
-	WRITE("INTEST = "); Makefiles__pathname_slashed(OUT, path_to_intest); WRITE("/Tangled/intest\n");
-	if (MS->for_web) {
-		WRITE("MYNAME = %S\n", Pathnames__directory_name(MS->for_web->md->path_to_web));
-		WRITE("ME = "); Makefiles__pathname_slashed(OUT, MS->for_web->md->path_to_web);
-		WRITE("\n");
-		MS->last_line_was_blank = FALSE;
+#line 126 "inweb/Chapter 6/Makefiles.w"
+void Makefiles__expand(text_stream *text, text_file_position *tfp, makefile_state *MS) {
+	TEMPORARY_TEXT(before_matter)
+	TEMPORARY_TEXT(braced_matter)
+	TEMPORARY_TEXT(after_matter)
+	int bl = 0, after_times = FALSE;
+	for (int i = 0; i < Str__len(text); i++) {
+		wchar_t c = Str__get_at(text, i);
+		if (after_times) PUT_TO(after_matter, c);
+		else if (c == '{') {
+			bl++;
+			if (bl > 1) PUT_TO(braced_matter, c);
+		} else if (c == '}') {
+			bl--;
+			if (bl == 0) after_times = TRUE;
+			else PUT_TO(braced_matter, c);
+		} else {
+			if (bl < 0) Errors__in_text_file("too many '}'s", tfp);
+			if (bl == 0) PUT_TO(before_matter, c);
+			else PUT_TO(braced_matter, c);
+		}
 	}
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 108 "inweb/Chapter 6/Makefiles.w"
-;
-		if (Regexp__match(&mr, line, L" *{platform-settings} *")) 
+	if (bl > 0) Errors__in_text_file("too many '{'s", tfp);
+	if (after_times) {
+		
 {
-#line 323 "inweb/Chapter 6/Makefiles.w"
-	filename *prototype = Filenames__in(path_to_inweb, TL_IS_630);
-	text_stream *INWEBPLATFORM = Str__new();
-	TextFiles__read(prototype, FALSE, "can't open platform settings file",
-		TRUE, Makefiles__seek_INWEBPLATFORM, NULL, INWEBPLATFORM);
-	if (Str__len(INWEBPLATFORM) == 0) {
-		Errors__in_text_file(
-			"found platform settings file, but it does not set INWEBPLATFORM", tfp);
-	} else {
-		pathname *P = Pathnames__down(path_to_inweb, TL_IS_631);
-		P = Pathnames__down(P, TL_IS_632);
-		WRITE_TO(INWEBPLATFORM, ".mkscript");
-		filename *F = Filenames__in(P, INWEBPLATFORM);
-		TextFiles__read(F, FALSE, "can't open platform definitions file",
-			TRUE, Makefiles__scan_makefile_line, NULL, MS);
-		WRITE_TO(STDOUT, "(Read definitions from %f)\n", F);
+#line 159 "inweb/Chapter 6/Makefiles.w"
+	text_stream *identifier = braced_matter;
+	text_stream *parameter_settings = NULL;
+	match_results mr = Regexp__create_mr();
+	if (Regexp__match(&mr, identifier, L"(%C+) (%c*)")) {
+		identifier = mr.exp[0];
+		parameter_settings = mr.exp[1];
 	}
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 109 "inweb/Chapter 6/Makefiles.w"
-;
-
-		if (Regexp__match(&mr, line, L" *{tool} *(%C+) (%C+) (%c+) (%C+) *")) 
-{
-#line 356 "inweb/Chapter 6/Makefiles.w"
-	int marker = MAKEFILE_TOOL_MOM;
-	dictionary *D = MS->tools_dictionary;
-	
-{
-#line 371 "inweb/Chapter 6/Makefiles.w"
-	WRITE("%SLEAF = %S\n", mr.exp[0], mr.exp[1]);
-	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
-	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", mr.exp[0], mr.exp[0], mr.exp[1]);
-	WRITE("%SX = $(%SWEB)/Tangled/%S\n", mr.exp[0], mr.exp[0], mr.exp[1]);
-	MS->last_line_was_blank = FALSE;
-	web_md *Wm = Reader__load_web_md(Pathnames__from_text(mr.exp[2]), NULL, MS->search_path, TRUE);
-	Wm->as_module->module_name = Str__duplicate(mr.exp[0]);
-	Wm->as_module->module_tag = Str__duplicate(mr.exp[3]);
-	Wm->as_module->origin_marker = marker;
-	Dictionaries__create(D, mr.exp[0]);
-	Dictionaries__write_value(D, mr.exp[0], Wm);
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 358 "inweb/Chapter 6/Makefiles.w"
-;
-
-}
-#line 111 "inweb/Chapter 6/Makefiles.w"
-;
-		if (Regexp__match(&mr, line, L" *{web} *(%C+) (%C+) (%c+) (%C+) *")) 
-{
-#line 361 "inweb/Chapter 6/Makefiles.w"
-	int marker = MAKEFILE_WEB_MOM;
-	dictionary *D = MS->webs_dictionary;
-	
-{
-#line 371 "inweb/Chapter 6/Makefiles.w"
-	WRITE("%SLEAF = %S\n", mr.exp[0], mr.exp[1]);
-	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
-	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", mr.exp[0], mr.exp[0], mr.exp[1]);
-	WRITE("%SX = $(%SWEB)/Tangled/%S\n", mr.exp[0], mr.exp[0], mr.exp[1]);
-	MS->last_line_was_blank = FALSE;
-	web_md *Wm = Reader__load_web_md(Pathnames__from_text(mr.exp[2]), NULL, MS->search_path, TRUE);
-	Wm->as_module->module_name = Str__duplicate(mr.exp[0]);
-	Wm->as_module->module_tag = Str__duplicate(mr.exp[3]);
-	Wm->as_module->origin_marker = marker;
-	Dictionaries__create(D, mr.exp[0]);
-	Dictionaries__write_value(D, mr.exp[0], Wm);
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 363 "inweb/Chapter 6/Makefiles.w"
-;
-
-}
-#line 112 "inweb/Chapter 6/Makefiles.w"
-;
-		if (Regexp__match(&mr, line, L" *{module} *(%C+) (%C+) (%c+) (%C+) *")) 
-{
-#line 366 "inweb/Chapter 6/Makefiles.w"
-	int marker = MAKEFILE_MODULE_MOM;
-	dictionary *D = MS->modules_dictionary;
-	
-{
-#line 371 "inweb/Chapter 6/Makefiles.w"
-	WRITE("%SLEAF = %S\n", mr.exp[0], mr.exp[1]);
-	WRITE("%SWEB = %S\n", mr.exp[0], mr.exp[2]);
-	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", mr.exp[0], mr.exp[0], mr.exp[1]);
-	WRITE("%SX = $(%SWEB)/Tangled/%S\n", mr.exp[0], mr.exp[0], mr.exp[1]);
-	MS->last_line_was_blank = FALSE;
-	web_md *Wm = Reader__load_web_md(Pathnames__from_text(mr.exp[2]), NULL, MS->search_path, TRUE);
-	Wm->as_module->module_name = Str__duplicate(mr.exp[0]);
-	Wm->as_module->module_tag = Str__duplicate(mr.exp[3]);
-	Wm->as_module->origin_marker = marker;
-	Dictionaries__create(D, mr.exp[0]);
-	Dictionaries__write_value(D, mr.exp[0], Wm);
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 368 "inweb/Chapter 6/Makefiles.w"
-;
-
-}
-#line 113 "inweb/Chapter 6/Makefiles.w"
-;
-
-		if (Regexp__match(&mr, line, L"(%c*?) *{dependent-files} *")) 
-{
-#line 386 "inweb/Chapter 6/Makefiles.w"
-	WRITE("%S", mr.exp[0]);
-	Makefiles__pattern(OUT, MS->for_web->md->sections_md, MS->for_web->md->contents_filename);
-	WRITE("\n");
-	MS->last_line_was_blank = FALSE;
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 115 "inweb/Chapter 6/Makefiles.w"
-;
-		if (Regexp__match(&mr, line, L"(%c*?) *{dependent-files-for-tool-alone} *(%C+)"))
-			
-{
-#line 411 "inweb/Chapter 6/Makefiles.w"
-	WRITE("%S", mr.exp[0]);
-	if (Dictionaries__find(MS->tools_dictionary, mr.exp[1])) {
-		web_md *Wm = Dictionaries__read_value(MS->tools_dictionary, mr.exp[1]);
-		Makefiles__pattern(OUT, Wm->as_module->sections_md, Wm->contents_filename);
-	} else if (Dictionaries__find(MS->webs_dictionary, mr.exp[1])) {
-		web_md *Wm = Dictionaries__read_value(MS->webs_dictionary, mr.exp[1]);
-		Makefiles__pattern(OUT, Wm->as_module->sections_md, Wm->contents_filename);
-	} else {
-		PRINT("Tool %S\n", mr.exp[0]);
-		Errors__in_text_file("unknown tool to find dependencies for", tfp);
+	if (Str__eq(identifier, TL_IS_628)) {
+		if (Str__is_whitespace(after_matter)) identifier = TL_IS_629;
+		else identifier = TL_IS_630;
 	}
-	WRITE("\n");
-	MS->last_line_was_blank = FALSE;
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 117 "inweb/Chapter 6/Makefiles.w"
-;
-		if (Regexp__match(&mr, line, L"(%c*?) *{dependent-files-for-tool-and-modules} *(%C+)"))
-			
-{
-#line 394 "inweb/Chapter 6/Makefiles.w"
-	WRITE("%S", mr.exp[0]);
-	if (Dictionaries__find(MS->tools_dictionary, mr.exp[1])) {
-		web_md *Wm = Dictionaries__read_value(MS->tools_dictionary, mr.exp[1]);
-		Makefiles__pattern(OUT, Wm->sections_md, Wm->contents_filename);
-	} else if (Dictionaries__find(MS->webs_dictionary, mr.exp[1])) {
-		web_md *Wm = Dictionaries__read_value(MS->webs_dictionary, mr.exp[1]);
-		Makefiles__pattern(OUT, Wm->sections_md, Wm->contents_filename);
-	} else {
-		PRINT("Tool %S\n", mr.exp[0]);
-		Errors__in_text_file("unknown tool to find dependencies for", tfp);
-	}
-	WRITE("\n");
-	MS->last_line_was_blank = FALSE;
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 119 "inweb/Chapter 6/Makefiles.w"
-;
-		if (Regexp__match(&mr, line, L"(%c*?) *{dependent-files-for-module} *(%C+)"))
-			
-{
-#line 428 "inweb/Chapter 6/Makefiles.w"
-	WRITE("%S", mr.exp[0]);
-	if (Dictionaries__find(MS->modules_dictionary, mr.exp[1])) {
-		web_md *Wm = Dictionaries__read_value(MS->modules_dictionary, mr.exp[1]);
-		Makefiles__pattern(OUT, Wm->sections_md, Wm->contents_filename);
-	} else {
-		Errors__in_text_file("unknown module to find dependencies for", tfp);
-		WRITE_TO(STDERR, "-- module name: %S\n", mr.exp[1]);
-	}
-	WRITE("\n");
-	MS->last_line_was_blank = FALSE;
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 121 "inweb/Chapter 6/Makefiles.w"
-;
-
-		if (Regexp__match(&mr, line, L"(%c*?) *{(%C+) *(%c+?)} *(%c*?)")) 
-{
-#line 181 "inweb/Chapter 6/Makefiles.w"
-	text_stream *before_matter = mr.exp[0];
-	text_stream *identifier = mr.exp[1];
-	text_stream *parameter_settings = mr.exp[2];
-	text_stream *after_matter = mr.exp[3];
-
-	makefile_macro_playback *playback = CREATE(makefile_macro_playback);
-	playback->which = NULL;
-	makefile_macro *mm;
-	LOOP_OVER(mm, makefile_macro)
-		if (Str__eq(mm->identifier, identifier))
-			playback->which = mm;
-	if (playback->which == NULL) {
-		Errors__in_text_file("unknown macro or command in braces", tfp);
-		Regexp__dispose_of(&mr);
-		return;
+	if (Str__eq(identifier, TL_IS_631)) {
+		if ((MS->repeat_sp > 0) && (MS->repeat_data[MS->repeat_sp-1].repeat_is_block))
+			identifier = TL_IS_632;
+		else
+			identifier = TL_IS_633;
 	}
 
-	for (int i=0; i<MAX_MAKEFILE_MACRO_PARAMETERS; i++)
-		playback->parameter_values[i] = NULL;
-
-	match_results mr2 = Regexp__create_mr();
-	while (Regexp__match(&mr2, parameter_settings, L" *(%C+): *(%C+) *(%c*)")) {
-		text_stream *setting = mr2.exp[0];
-		text_stream *value = mr2.exp[1];
-		text_stream *remainder = mr2.exp[2];
-		int found = FALSE;
-		for (int i=0; i<playback->which->no_parameters; i++)
-			if (Str__eq(setting, playback->which->parameters[i]->name)) {
-				found = TRUE;
-				playback->parameter_values[i] = Str__duplicate(value);
-			}
-		if (found == FALSE) Errors__in_text_file("unknown parameter in this macro", tfp);
-		Str__clear(parameter_settings);
-		Str__copy(parameter_settings, remainder);
-	}
-	Regexp__dispose_of(&mr2);
-	if (Str__is_whitespace(parameter_settings) == FALSE)
-		Errors__in_text_file("parameter list for this macro is malformed", tfp);
-
-	for (int i=0; i<playback->which->no_parameters; i++)
-		if (playback->parameter_values[i] == NULL)
-			if (playback->which->parameters[i]->optional == FALSE)
-				Errors__in_text_file("compulsory macro parameter not given", tfp);
-
-	playback->line_position = 0;
-	playback->prior_to_this = MS->playing_back;
-	playback->text_to_follow = NULL;
-	if (Str__is_whitespace(after_matter) == FALSE)
-		playback->text_to_follow = Str__duplicate(after_matter);
-
-	MS->playing_back = playback;
-	WRITE("%S", before_matter);
-	for (int i=0; i<playback->which->no_lines; i++) {
-		TEMPORARY_TEXT(line)
-		text_stream *from = playback->which->lines[i];
-		for (int j=0; j<Str__len(from); j++) {
-			if (Str__get_at(from, j) == '{') {
-				int closed = FALSE, old_j = j;
-				TEMPORARY_TEXT(token)
-				for (j++; j<Str__len(from); j++) {
-					if (Str__get_at(from, j) == '}') { closed = TRUE; break; }
-					PUT_TO(token, Str__get_at(from, j));
-				}
-				if (closed) {
-					int found = FALSE;
-					for (int i=0; i<playback->which->no_parameters; i++)
-						if (Str__eq(token, playback->which->parameters[i]->definition_token)) {
-							found = TRUE;
-							WRITE_TO(line, "%S", playback->parameter_values[i]);
-						}
-					if (found == FALSE) closed = FALSE;
-				}
-				DISCARD_TEXT(token)
-				if (closed == FALSE) { j = old_j; PUT_TO(line, '{'); }
+	if (Makefiles__acceptable_variable_name(identifier)) {
+		Makefiles__expand(before_matter, tfp, MS);
+		if (MS->repeat_sp > 0) {
+			WRITE_TO(MS->dest, "{%S}", identifier);
+		} else {
+			makefile_variable *var = Makefiles__find_variable_in(identifier, MS->stack_frame);
+			if (var) {
+				WRITE_TO(MS->dest, "%S", var->value);
 			} else {
-				PUT_TO(line, Str__get_at(from, j));
+				TEMPORARY_TEXT(erm)
+				WRITE_TO(erm, "unknown variable '%S'", identifier);
+				Errors__in_text_file_S(erm, tfp);
+				DISCARD_TEXT(erm)
 			}
 		}
-		Makefiles__scan_makefile_line(line, tfp, (void *) MS);
-		DISCARD_TEXT(line)
-	}
-	MS->playing_back = playback->prior_to_this;
-	if (Str__is_whitespace(after_matter) == FALSE)
-		WRITE("%S\n", after_matter);
-	Regexp__dispose_of(&mr);
-	return;
-
-}
-#line 123 "inweb/Chapter 6/Makefiles.w"
-;
-	}
-	Regexp__dispose_of(&mr);
-
-	
-{
-#line 442 "inweb/Chapter 6/Makefiles.w"
-	if (Str__len(line) == 0) {
-		if (MS->last_line_was_blank == FALSE) WRITE("\n");
-		MS->last_line_was_blank = TRUE;
+		Makefiles__expand(after_matter, tfp, MS);
 	} else {
-		MS->last_line_was_blank = FALSE;
-		WRITE("%S\n", line);
+		makefile_macro *mm = Makefiles__find_macro(MS->known_macros, identifier);
+		if (mm == NULL) {
+			TEMPORARY_TEXT(erm)
+			WRITE_TO(erm, "unknown macro '%S'", identifier);
+			Errors__in_text_file_S(erm, tfp);
+			DISCARD_TEXT(erm)
+		} else {
+			if (mm->suppress_whitespace_when_expanding) {
+				while (Characters__is_whitespace(Str__get_last_char(before_matter)))
+					Str__delete_last_character(before_matter);
+				while (Characters__is_whitespace(Str__get_first_char(after_matter)))
+					Str__delete_first_character(after_matter);
+			}
+			Makefiles__expand(before_matter, tfp, MS);
+			int divert_if_repeating = TRUE;
+			if ((mm) &&
+				((mm->reserved_macro_meaning == REPEAT_BLOCK_RMM) ||
+					(mm->reserved_macro_meaning == REPEAT_SPAN_RMM))) {
+				MS->shadow_sp++;
+			}
+			if ((mm) &&
+				((mm->reserved_macro_meaning == END_BLOCK_RMM) ||
+					(mm->reserved_macro_meaning == END_SPAN_RMM))) {
+				MS->shadow_sp--;
+				if (MS->shadow_sp == 0) divert_if_repeating = FALSE;
+			}
+
+			if ((divert_if_repeating) && (MS->repeat_sp > 0)) {
+				WRITE_TO(MS->dest, "{%S}", braced_matter);
+			} else {
+				Makefiles__expand_macro(MS, mm, parameter_settings, tfp);
+				if (mm->suppress_newline_after_expanding) MS->suppress_newline = TRUE;
+			}
+			Makefiles__expand(after_matter, tfp, MS);
+		}
 	}
+	Regexp__dispose_of(&mr);
 
 }
-#line 127 "inweb/Chapter 6/Makefiles.w"
+#line 149 "inweb/Chapter 6/Makefiles.w"
 ;
+	} else {
+		WRITE_TO(MS->dest, "%S", text);
+	}
+	DISCARD_TEXT(before_matter)
+	DISCARD_TEXT(braced_matter)
+	DISCARD_TEXT(after_matter)
 }
 
-#line 451 "inweb/Chapter 6/Makefiles.w"
+#line 233 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) {
 	TEMPORARY_TEXT(PT)
 	WRITE_TO(PT, "%p", P);
@@ -31056,7 +30750,7 @@ void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	dictionary *patterns_done = Dictionaries__new(16, TRUE);
 	if (F) 
 {
-#line 473 "inweb/Chapter 6/Makefiles.w"
+#line 255 "inweb/Chapter 6/Makefiles.w"
 	pathname *P = Filenames__up(F);
 	TEMPORARY_TEXT(leaf_pattern)
 	WRITE_TO(leaf_pattern, "%S", Pathnames__directory_name(P));
@@ -31083,14 +30777,14 @@ void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	DISCARD_TEXT(tester)
 
 }
-#line 464 "inweb/Chapter 6/Makefiles.w"
+#line 246 "inweb/Chapter 6/Makefiles.w"
 ;
 	section_md *Sm;
 	LOOP_OVER_LINKED_LIST(Sm, section_md, L) {
 		filename *F = Sm->source_file_for_section;
 		
 {
-#line 473 "inweb/Chapter 6/Makefiles.w"
+#line 255 "inweb/Chapter 6/Makefiles.w"
 	pathname *P = Filenames__up(F);
 	TEMPORARY_TEXT(leaf_pattern)
 	WRITE_TO(leaf_pattern, "%S", Pathnames__directory_name(P));
@@ -31117,50 +30811,721 @@ void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	DISCARD_TEXT(tester)
 
 }
-#line 468 "inweb/Chapter 6/Makefiles.w"
+#line 250 "inweb/Chapter 6/Makefiles.w"
 ;
 	}
 }
 
-#line 501 "inweb/Chapter 6/Makefiles.w"
-void Makefiles__repeat(OUTPUT_STREAM, text_stream *prefix, int every_time, text_stream *matter,
-	int as_lines, text_stream *suffix, text_file_position *tfp, makefile_state *MS, int over, text_stream *tag) {
-	module *M;
-	int c = 0;
-	LOOP_OVER(M, module) {
-		if ((M->origin_marker == over) &&
-			((Str__eq(tag, TL_IS_634)) || (Str__eq(tag, M->module_tag)))) {
-			if ((prefix) && ((c++ > 0) || (every_time))) WRITE("%S", prefix);
-			if (matter) {
-				TEMPORARY_TEXT(line)
-				LOOP_THROUGH_TEXT(pos, matter) {
-					if (Str__get(pos) == '\n') {
-						if (as_lines) {
-							Makefiles__scan_makefile_line(line, tfp, (void *) MS);
-							Str__clear(line);
-						}
-					} else {
-						if (Str__get(pos) == '@') {
-							WRITE_TO(line, "%S", M->module_name);
-						} else {
-							PUT_TO(line, Str__get(pos));
-						}
-					}
-				}
-				if (!as_lines) WRITE("%S", line);
-				DISCARD_TEXT(line)
+#line 283 "inweb/Chapter 6/Makefiles.w"
+void Makefiles__repeat(text_stream *matter,
+	int as_lines, text_file_position *tfp, makefile_repeat *rep, makefile_state *MS) {
+	int over = rep->repeat_scope;
+	text_stream *tag = rep->repeat_tag;
+	MS->stack_frame = Makefiles__new_variable_set(MS->stack_frame);
+	text_stream *loop_var_name = TL_IS_634;
+	if (Str__len(rep->repeat_with) > 0) loop_var_name = rep->repeat_with;
+	makefile_variable *loop_var = Makefiles__ensure_variable(loop_var_name, MS->stack_frame);
+	if (Str__len(rep->repeat_in) > 0) {
+		match_results mr = Regexp__create_mr();
+		while (Regexp__match(&mr, rep->repeat_in, L"(%c*?),(%c*)")) {
+			text_stream *value = mr.exp[0];
+			Str__trim_white_space(value);
+			
+{
+#line 318 "inweb/Chapter 6/Makefiles.w"
+	loop_var->value = value;
+	if (as_lines) {
+		TEMPORARY_TEXT(line)
+		LOOP_THROUGH_TEXT(pos, matter) {
+			if (Str__get(pos) == '\n') {
+				Makefiles__scan_makefile_line(line, tfp, (void *) MS);
+				Str__clear(line);
+			} else {
+				PUT_TO(line, Str__get(pos));
 			}
-			if (suffix) WRITE("%S", suffix);
+		}
+		DISCARD_TEXT(line)
+	} else {
+		Makefiles__expand(matter, tfp, MS);
+	}
+
+}
+#line 296 "inweb/Chapter 6/Makefiles.w"
+;
+			Str__clear(rep->repeat_in);
+			Str__copy(rep->repeat_in, mr.exp[1]);
+		}
+		Regexp__dispose_of(&mr);
+		text_stream *value = rep->repeat_in;
+		Str__trim_white_space(value);
+		
+{
+#line 318 "inweb/Chapter 6/Makefiles.w"
+	loop_var->value = value;
+	if (as_lines) {
+		TEMPORARY_TEXT(line)
+		LOOP_THROUGH_TEXT(pos, matter) {
+			if (Str__get(pos) == '\n') {
+				Makefiles__scan_makefile_line(line, tfp, (void *) MS);
+				Str__clear(line);
+			} else {
+				PUT_TO(line, Str__get(pos));
+			}
+		}
+		DISCARD_TEXT(line)
+	} else {
+		Makefiles__expand(matter, tfp, MS);
+	}
+
+}
+#line 303 "inweb/Chapter 6/Makefiles.w"
+;
+	} else {
+		module *M;
+		LOOP_OVER(M, module) {
+			if ((M->origin_marker == over) &&
+				((Str__eq(tag, TL_IS_635)) || (Str__eq(tag, M->module_tag)))) {
+				text_stream *value = M->module_name;
+				
+{
+#line 318 "inweb/Chapter 6/Makefiles.w"
+	loop_var->value = value;
+	if (as_lines) {
+		TEMPORARY_TEXT(line)
+		LOOP_THROUGH_TEXT(pos, matter) {
+			if (Str__get(pos) == '\n') {
+				Makefiles__scan_makefile_line(line, tfp, (void *) MS);
+				Str__clear(line);
+			} else {
+				PUT_TO(line, Str__get(pos));
+			}
+		}
+		DISCARD_TEXT(line)
+	} else {
+		Makefiles__expand(matter, tfp, MS);
+	}
+
+}
+#line 310 "inweb/Chapter 6/Makefiles.w"
+;
+			}
 		}
 	}
+	MS->stack_frame = MS->stack_frame->outer;
 }
 
-#line 538 "inweb/Chapter 6/Makefiles.w"
+#line 339 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__seek_INWEBPLATFORM(text_stream *line, text_file_position *tfp, void *X) {
 	text_stream *OUT = (text_stream *) X;
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, line, L" *INWEBPLATFORM = (%C+) *")) WRITE("%S", mr.exp[0]);
 	Regexp__dispose_of(&mr);
+}
+
+#line 354 "inweb/Chapter 6/Makefiles.w"
+
+#line 360 "inweb/Chapter 6/Makefiles.w"
+
+makefile_variable_set *Makefiles__new_variable_set(makefile_variable_set *outer) {
+	makefile_variable_set *set = CREATE(makefile_variable_set);
+	set->variables = NEW_LINKED_LIST(makefile_variable);
+	set->outer = outer;
+	return set;
+}
+
+makefile_variable *Makefiles__find_variable_in_one(text_stream *name, makefile_variable_set *set) {
+	if (set == NULL) return NULL;
+	makefile_variable *var;
+	LOOP_OVER_LINKED_LIST(var, makefile_variable, set->variables)
+		if (Str__eq(name, var->name))
+			return var;
+	return NULL;
+}
+
+makefile_variable *Makefiles__find_variable_in(text_stream *name, makefile_variable_set *set) {
+	while (set) {
+		makefile_variable *var = Makefiles__find_variable_in_one(name, set);
+		if (var) return var;
+		set = set->outer;
+	}
+	return NULL;
+}
+
+makefile_variable *Makefiles__ensure_variable(text_stream *name, makefile_variable_set *in_set) {
+	if (in_set == NULL) internal_error("variable without set");
+	makefile_variable *var = Makefiles__find_variable_in_one(name, in_set);
+	if (var == NULL) {
+		var = CREATE(makefile_variable);
+		var->name = Str__duplicate(name);
+		var->value = TL_IS_636;
+		ADD_TO_LINKED_LIST(var, makefile_variable, in_set->variables);
+	}
+	return var;
+}
+
+int Makefiles__acceptable_variable_name(text_stream *name) {
+	LOOP_THROUGH_TEXT(pos, name) {
+		wchar_t c = Str__get(pos);
+		if ((c >= '0') && (c <= '9')) continue;
+		if ((c >= 'A') && (c <= 'Z')) continue;
+		if (c == '_') continue;
+		return FALSE;
+	}
+	return TRUE;
+}
+
+#line 452 "inweb/Chapter 6/Makefiles.w"
+
+#line 459 "inweb/Chapter 6/Makefiles.w"
+
+#line 464 "inweb/Chapter 6/Makefiles.w"
+makefile_macro *Makefiles__new_macro(linked_list *L, text_stream *name,
+	text_stream *parameter_specification, text_file_position *tfp) {
+	if (Makefiles__find_macro(L, name))
+		Errors__in_text_file("a macro with this name already exists", tfp);
+
+	makefile_macro *new_macro = CREATE(makefile_macro);
+	new_macro->identifier = Str__duplicate(name);
+	new_macro->no_parameters = 0;
+	new_macro->no_lines = 0;
+	new_macro->reserved_macro_meaning = UNRESERVED_RMM;
+	new_macro->suppress_newline_after_expanding = TRUE;
+	new_macro->suppress_whitespace_when_expanding = TRUE;
+
+	match_results mr2 = Regexp__create_mr();
+	while (Regexp__match(&mr2, parameter_specification, L" *(%C+): *(%C+) *(%c*)")) {
+		text_stream *par_name = mr2.exp[0];
+		text_stream *token_name = mr2.exp[1];
+		Str__clear(parameter_specification);
+		Str__copy(parameter_specification, mr2.exp[2]);
+		if (new_macro->no_parameters >= MAX_MAKEFILE_MACRO_PARAMETERS) {
+			Errors__in_text_file("too many parameters in this definition", tfp);
+		} else {
+			
+{
+#line 497 "inweb/Chapter 6/Makefiles.w"
+	makefile_macro_parameter *new_parameter = CREATE(makefile_macro_parameter);
+	new_parameter->name = Str__duplicate(par_name);
+	new_parameter->definition_token = Str__duplicate(token_name);
+	new_parameter->optional = FALSE;
+	if (Str__get_first_char(new_parameter->name) == '?') {
+		new_parameter->optional = TRUE;
+		Str__delete_first_character(new_parameter->name);
+	}
+	new_macro->parameters[new_macro->no_parameters++] = new_parameter;
+
+}
+#line 486 "inweb/Chapter 6/Makefiles.w"
+;
+		}
+	}
+	Regexp__dispose_of(&mr2);
+	if (Str__is_whitespace(parameter_specification) == FALSE)
+		Errors__in_text_file("parameter list for this definition is malformed", tfp);
+	ADD_TO_LINKED_LIST(new_macro, makefile_macro, L);
+	return new_macro;
+}
+
+#line 510 "inweb/Chapter 6/Makefiles.w"
+void Makefiles__add_line_to_macro(makefile_macro *mm, text_stream *line, text_file_position *tfp) {
+	if (mm->no_lines >= MAX_MAKEFILE_MACRO_LINES) {
+		Errors__in_text_file("too many lines in this definition", tfp);
+	} else {
+		mm->lines[mm->no_lines++] = Str__duplicate(line);
+	}
+}
+
+#line 531 "inweb/Chapter 6/Makefiles.w"
+
+#line 533 "inweb/Chapter 6/Makefiles.w"
+linked_list *Makefiles__list_of_reserved_macros(void) {
+	linked_list *L = NEW_LINKED_LIST(makefile_macro);
+	Makefiles__reserve_macro(L, TL_IS_637, NULL, PLATFORM_SETTINGS_RMM);
+	Makefiles__reserve_macro(L, TL_IS_638, NULL, IDENTITY_SETTINGS_RMM);
+	Makefiles__reserve_macro(L, TL_IS_639,
+		TL_IS_640,
+		COMPONENT_RMM);
+	Makefiles__reserve_macro(L, TL_IS_641,
+		TL_IS_642,
+		DEPENDENT_FILES_RMM);
+	Makefiles__reserve_macro(L, TL_IS_643,
+		TL_IS_644, REPEAT_BLOCK_RMM);
+	Makefiles__reserve_macro(L, TL_IS_645, NULL, END_BLOCK_RMM);
+	Makefiles__reserve_span_macro(L, TL_IS_646,
+		TL_IS_647, REPEAT_SPAN_RMM);
+	Makefiles__reserve_span_macro(L, TL_IS_648, NULL, END_SPAN_RMM);
+	Makefiles__reserve_span_macro(L, TL_IS_649,
+		TL_IS_650, SET_RMM);
+	return L;
+}
+
+void Makefiles__reserve_macro(linked_list *L, text_stream *name,
+	text_stream *parameter_specification, int rmm) {
+	makefile_macro *reserved = Makefiles__new_macro(L, name,
+		Str__duplicate(parameter_specification), NULL);
+	reserved->reserved_macro_meaning = rmm;
+}
+
+void Makefiles__reserve_span_macro(linked_list *L, text_stream *name,
+	text_stream *parameter_specification, int rmm) {
+	makefile_macro *reserved = Makefiles__new_macro(L, name,
+		Str__duplicate(parameter_specification), NULL);
+	reserved->reserved_macro_meaning = rmm;
+	reserved->suppress_newline_after_expanding = FALSE;
+	reserved->suppress_whitespace_when_expanding = FALSE;
+}
+
+#line 574 "inweb/Chapter 6/Makefiles.w"
+makefile_macro *Makefiles__find_macro(linked_list *L, text_stream *name) {
+	makefile_macro *mm;
+	LOOP_OVER_LINKED_LIST(mm, makefile_macro, L)
+		if (Str__eq(mm->identifier, name))
+			return mm;
+	return NULL;
+}
+
+#line 585 "inweb/Chapter 6/Makefiles.w"
+void Makefiles__expand_macro(makefile_state *MS, makefile_macro *mm,
+	text_stream *parameter_settings, text_file_position *tfp) {
+	text_stream *OUT = MS->dest;
+	text_stream *parameter_values[MAX_MAKEFILE_MACRO_PARAMETERS];
+	for (int i=0; i<MAX_MAKEFILE_MACRO_PARAMETERS; i++) parameter_values[i] = NULL;
+
+	match_results mr2 = Regexp__create_mr();
+	while (Regexp__match(&mr2, parameter_settings, L" *(%C+): *(%c*)")) {
+		text_stream *setting = mr2.exp[0];
+		text_stream *value = mr2.exp[1];
+		text_stream *remainder = NULL;
+		match_results mr3 = Regexp__create_mr();
+		if (Regexp__match(&mr3, value, L"(%c+?) *(%C+: *%c*)")) {
+			value = mr3.exp[0];
+			remainder = mr3.exp[1];
+		}
+		int found = FALSE;
+		for (int i=0; i<mm->no_parameters; i++)
+			if (Str__eq(setting, mm->parameters[i]->name)) {
+				found = TRUE;
+				parameter_values[i] = Str__new();
+				text_stream *saved = MS->dest;
+				MS->dest = parameter_values[i];
+				Makefiles__expand(value, tfp, MS);
+				MS->dest = saved;
+			}
+		if (found == FALSE) {
+			TEMPORARY_TEXT(erm)
+			WRITE_TO(erm, "unknown parameter '%S'", setting);
+			Errors__in_text_file_S(erm, tfp);
+			DISCARD_TEXT(erm)
+		}
+		Str__clear(parameter_settings);
+		Str__copy(parameter_settings, remainder);
+		Regexp__dispose_of(&mr3);
+	}
+	Regexp__dispose_of(&mr2);
+	if (Str__is_whitespace(parameter_settings) == FALSE)
+		Errors__in_text_file("parameter list is malformed", tfp);
+
+	for (int i=0; i<mm->no_parameters; i++)
+		if (parameter_values[i] == NULL)
+			if (mm->parameters[i]->optional == FALSE) {
+				TEMPORARY_TEXT(erm)
+				WRITE_TO(erm, "compulsory parameter '%S' not given", mm->parameters[i]->name);
+				Errors__in_text_file_S(erm, tfp);
+				DISCARD_TEXT(erm)
+			}
+
+	switch (mm->reserved_macro_meaning) {
+		case UNRESERVED_RMM: 
+{
+#line 650 "inweb/Chapter 6/Makefiles.w"
+	MS->stack_frame = Makefiles__new_variable_set(MS->stack_frame);
+	for (int i=0; i<mm->no_parameters; i++) {
+		makefile_variable *var =
+			Makefiles__ensure_variable(mm->parameters[i]->definition_token, MS->stack_frame);
+		var->value = parameter_values[i];
+	}
+	for (int i=0; i<mm->no_lines; i++)
+		Makefiles__scan_makefile_line(mm->lines[i], tfp, (void *) MS);
+	MS->stack_frame = MS->stack_frame->outer;
+
+}
+#line 635 "inweb/Chapter 6/Makefiles.w"
+; break;
+		case PLATFORM_SETTINGS_RMM: 
+{
+#line 661 "inweb/Chapter 6/Makefiles.w"
+	filename *prototype = Filenames__in(path_to_inweb, TL_IS_651);
+	text_stream *INWEBPLATFORM = Str__new();
+	TextFiles__read(prototype, FALSE, "can't open platform settings file",
+		TRUE, Makefiles__seek_INWEBPLATFORM, NULL, INWEBPLATFORM);
+	if (Str__len(INWEBPLATFORM) == 0) {
+		Errors__in_text_file(
+			"found platform settings file, but it does not set INWEBPLATFORM", tfp);
+	} else {
+		pathname *P = Pathnames__down(path_to_inweb, TL_IS_652);
+		P = Pathnames__down(P, TL_IS_653);
+		WRITE_TO(INWEBPLATFORM, ".mkscript");
+		filename *F = Filenames__in(P, INWEBPLATFORM);
+		TextFiles__read(F, FALSE, "can't open platform definitions file",
+			TRUE, Makefiles__scan_makefile_line, NULL, MS);
+		WRITE_TO(STDOUT, "(Read definitions file '%S' from ", INWEBPLATFORM);
+		Pathnames__to_text_relative(STDOUT, path_to_inweb, P);
+		WRITE_TO(STDOUT, ")\n");
+	}
+
+}
+#line 636 "inweb/Chapter 6/Makefiles.w"
+; break;
+		case IDENTITY_SETTINGS_RMM: 
+{
+#line 681 "inweb/Chapter 6/Makefiles.w"
+	WRITE("INWEB = "); Makefiles__pathname_slashed(OUT, path_to_inweb); WRITE("/Tangled/inweb\n");
+	pathname *path_to_intest = Pathnames__down(Pathnames__up(path_to_inweb), TL_IS_654);
+	WRITE("INTEST = "); Makefiles__pathname_slashed(OUT, path_to_intest); WRITE("/Tangled/intest\n");
+	if (MS->for_web) {
+		WRITE("MYNAME = %S\n", Pathnames__directory_name(MS->for_web->md->path_to_web));
+		WRITE("ME = "); Makefiles__pathname_slashed(OUT, MS->for_web->md->path_to_web);
+		WRITE("\n");
+		MS->last_line_was_blank = FALSE;
+	}
+
+}
+#line 637 "inweb/Chapter 6/Makefiles.w"
+; break;
+		case COMPONENT_RMM: 
+{
+#line 692 "inweb/Chapter 6/Makefiles.w"
+	text_stream *symbol = parameter_values[0];
+	text_stream *webname = parameter_values[1];
+	text_stream *path = parameter_values[2];
+	text_stream *set = parameter_values[3];
+	text_stream *category = parameter_values[4];
+
+	int marker = -1;
+	dictionary *D = NULL;
+	if (Str__eq(category, TL_IS_655)) {
+		marker = MAKEFILE_TOOL_MOM;
+		D = MS->tools_dictionary;
+	} else if (Str__eq(category, TL_IS_656)) {
+		marker = MAKEFILE_WEB_MOM;
+		D = MS->webs_dictionary;
+	} else if (Str__eq(category, TL_IS_657)) {
+		marker = MAKEFILE_MODULE_MOM;
+		D = MS->modules_dictionary;
+	} else {
+		Errors__in_text_file("category should be 'tool', 'module' or 'web'", tfp);
+	}
+	if (D) {
+		WRITE("%SLEAF = %S\n", symbol, webname);
+		WRITE("%SWEB = %S\n", symbol, path);
+		WRITE("%SMAKER = $(%SWEB)/%S.mk\n", symbol, symbol, webname);
+		WRITE("%SX = $(%SWEB)/Tangled/%S\n", symbol, symbol, webname);
+		MS->last_line_was_blank = FALSE;
+		web_md *Wm = Reader__load_web_md(Pathnames__from_text(path), NULL, MS->search_path, TRUE);
+		Wm->as_module->module_name = Str__duplicate(symbol);
+		Wm->as_module->module_tag = Str__duplicate(set);
+		Wm->as_module->origin_marker = marker;
+		Dictionaries__create(D, symbol);
+		Dictionaries__write_value(D, symbol, Wm);
+	}
+
+}
+#line 638 "inweb/Chapter 6/Makefiles.w"
+; break;
+		case DEPENDENT_FILES_RMM: 
+{
+#line 727 "inweb/Chapter 6/Makefiles.w"
+	text_stream *tool = parameter_values[0];
+	text_stream *modules = parameter_values[1];
+	text_stream *both = parameter_values[2];
+	if (Str__len(tool) > 0) {
+		if (Dictionaries__find(MS->tools_dictionary, tool)) {
+			web_md *Wm = Dictionaries__read_value(MS->tools_dictionary, tool);
+			Makefiles__pattern(OUT, Wm->as_module->sections_md, Wm->contents_filename);
+		} else if (Dictionaries__find(MS->webs_dictionary, tool)) {
+			web_md *Wm = Dictionaries__read_value(MS->webs_dictionary, tool);
+			Makefiles__pattern(OUT, Wm->as_module->sections_md, Wm->contents_filename);
+		} else {
+			TEMPORARY_TEXT(erm)
+			WRITE_TO(erm, "unknown tool '%S' to find dependencies for", tool);
+			Errors__in_text_file_S(erm, tfp);
+			DISCARD_TEXT(erm)
+		}
+	} else if (Str__len(modules) > 0) {
+		if (Dictionaries__find(MS->modules_dictionary, modules)) {
+			web_md *Wm = Dictionaries__read_value(MS->modules_dictionary, modules);
+			Makefiles__pattern(OUT, Wm->sections_md, Wm->contents_filename);
+		} else {
+			TEMPORARY_TEXT(erm)
+			WRITE_TO(erm, "unknown module '%S' to find dependencies for", modules);
+			Errors__in_text_file_S(erm, tfp);
+			DISCARD_TEXT(erm)
+		}
+	} else if (Str__len(both) > 0) {
+		if (Dictionaries__find(MS->tools_dictionary, both)) {
+			web_md *Wm = Dictionaries__read_value(MS->tools_dictionary, both);
+			Makefiles__pattern(OUT, Wm->sections_md, Wm->contents_filename);
+		} else if (Dictionaries__find(MS->webs_dictionary, both)) {
+			web_md *Wm = Dictionaries__read_value(MS->webs_dictionary, both);
+			Makefiles__pattern(OUT, Wm->sections_md, Wm->contents_filename);
+		} else {
+			TEMPORARY_TEXT(erm)
+			WRITE_TO(erm, "unknown tool '%S' to find dependencies for", both);
+			Errors__in_text_file_S(erm, tfp);
+			DISCARD_TEXT(erm)
+		}
+	} else {
+		Makefiles__pattern(OUT, MS->for_web->md->sections_md, MS->for_web->md->contents_filename);
+	}
+	WRITE("\n");
+	MS->last_line_was_blank = FALSE;
+
+}
+#line 639 "inweb/Chapter 6/Makefiles.w"
+; break;
+		case REPEAT_BLOCK_RMM: 
+{
+#line 773 "inweb/Chapter 6/Makefiles.w"
+	if (MS->repeat_sp >= MAX_MAKEFILE_REPEAT_DEPTH) {
+		Errors__in_text_file("repetition too deep", tfp);
+	} else {
+		text_stream *category = parameter_values[0];
+		text_stream *set = parameter_values[1];
+		text_stream *with = parameter_values[2];
+		text_stream *in = parameter_values[3];
+		if (Str__len(set) == 0) set = TL_IS_658;
+		if (Str__eq(category, TL_IS_659)) {
+			int marker = MAKEFILE_TOOL_MOM;
+			
+{
+#line 800 "inweb/Chapter 6/Makefiles.w"
+	makefile_repeat *rep = &(MS->repeat_data[MS->repeat_sp++]);
+	MS->shadow_sp = 1;
+	rep->repeat_scope = marker;
+	rep->repeat_tag = Str__duplicate(set);
+	rep->repeat_with = NULL;
+	rep->repeat_in = NULL;
+	rep->repeat_is_block = TRUE;
+	if (mm->reserved_macro_meaning == REPEAT_SPAN_RMM) rep->repeat_is_block = FALSE;
+	rep->repeat_saved_dest = MS->dest;
+	MS->dest = Str__new();
+
+}
+#line 783 "inweb/Chapter 6/Makefiles.w"
+;
+		} else if (Str__eq(category, TL_IS_660)) {
+			int marker = MAKEFILE_WEB_MOM;
+			
+{
+#line 800 "inweb/Chapter 6/Makefiles.w"
+	makefile_repeat *rep = &(MS->repeat_data[MS->repeat_sp++]);
+	MS->shadow_sp = 1;
+	rep->repeat_scope = marker;
+	rep->repeat_tag = Str__duplicate(set);
+	rep->repeat_with = NULL;
+	rep->repeat_in = NULL;
+	rep->repeat_is_block = TRUE;
+	if (mm->reserved_macro_meaning == REPEAT_SPAN_RMM) rep->repeat_is_block = FALSE;
+	rep->repeat_saved_dest = MS->dest;
+	MS->dest = Str__new();
+
+}
+#line 786 "inweb/Chapter 6/Makefiles.w"
+;
+		} else if (Str__eq(category, TL_IS_661)) {
+			int marker = MAKEFILE_MODULE_MOM;
+			
+{
+#line 800 "inweb/Chapter 6/Makefiles.w"
+	makefile_repeat *rep = &(MS->repeat_data[MS->repeat_sp++]);
+	MS->shadow_sp = 1;
+	rep->repeat_scope = marker;
+	rep->repeat_tag = Str__duplicate(set);
+	rep->repeat_with = NULL;
+	rep->repeat_in = NULL;
+	rep->repeat_is_block = TRUE;
+	if (mm->reserved_macro_meaning == REPEAT_SPAN_RMM) rep->repeat_is_block = FALSE;
+	rep->repeat_saved_dest = MS->dest;
+	MS->dest = Str__new();
+
+}
+#line 789 "inweb/Chapter 6/Makefiles.w"
+;
+		} else if (Str__len(category) > 0) {
+			Errors__in_text_file("category should be 'tool', 'module' or 'web'", tfp);
+		} else {
+			if ((Str__len(with) == 0) || (Str__len(in) == 0))
+				Errors__in_text_file("should give both with: VAR and in: LIST", tfp);
+			
+{
+#line 812 "inweb/Chapter 6/Makefiles.w"
+	makefile_repeat *rep = &(MS->repeat_data[MS->repeat_sp++]);
+	MS->shadow_sp = 1;
+	rep->repeat_scope = -1;
+	rep->repeat_tag = NULL;
+	rep->repeat_with = Str__duplicate(with);
+	rep->repeat_in = Str__duplicate(in);
+	rep->repeat_is_block = TRUE;
+	if (mm->reserved_macro_meaning == REPEAT_SPAN_RMM) rep->repeat_is_block = FALSE;
+	rep->repeat_saved_dest = MS->dest;
+	MS->dest = Str__new();
+
+}
+#line 795 "inweb/Chapter 6/Makefiles.w"
+;
+		}
+	}
+
+}
+#line 640 "inweb/Chapter 6/Makefiles.w"
+; break;
+		case END_BLOCK_RMM: 
+{
+#line 824 "inweb/Chapter 6/Makefiles.w"
+	MS->shadow_sp = 0;
+	if (MS->repeat_sp == 0) Errors__in_text_file("end without repeat", tfp);
+	else {
+		makefile_repeat *rep = &(MS->repeat_data[--(MS->repeat_sp)]);
+		int as_lines = TRUE;
+		if (mm->reserved_macro_meaning == END_SPAN_RMM) as_lines = FALSE;
+		text_stream *matter = MS->dest;
+		MS->dest = rep->repeat_saved_dest;
+		Makefiles__repeat(matter, as_lines, tfp, rep, MS);
+	}
+
+}
+#line 641 "inweb/Chapter 6/Makefiles.w"
+; break;
+		case REPEAT_SPAN_RMM: 
+{
+#line 773 "inweb/Chapter 6/Makefiles.w"
+	if (MS->repeat_sp >= MAX_MAKEFILE_REPEAT_DEPTH) {
+		Errors__in_text_file("repetition too deep", tfp);
+	} else {
+		text_stream *category = parameter_values[0];
+		text_stream *set = parameter_values[1];
+		text_stream *with = parameter_values[2];
+		text_stream *in = parameter_values[3];
+		if (Str__len(set) == 0) set = TL_IS_658;
+		if (Str__eq(category, TL_IS_659)) {
+			int marker = MAKEFILE_TOOL_MOM;
+			
+{
+#line 800 "inweb/Chapter 6/Makefiles.w"
+	makefile_repeat *rep = &(MS->repeat_data[MS->repeat_sp++]);
+	MS->shadow_sp = 1;
+	rep->repeat_scope = marker;
+	rep->repeat_tag = Str__duplicate(set);
+	rep->repeat_with = NULL;
+	rep->repeat_in = NULL;
+	rep->repeat_is_block = TRUE;
+	if (mm->reserved_macro_meaning == REPEAT_SPAN_RMM) rep->repeat_is_block = FALSE;
+	rep->repeat_saved_dest = MS->dest;
+	MS->dest = Str__new();
+
+}
+#line 783 "inweb/Chapter 6/Makefiles.w"
+;
+		} else if (Str__eq(category, TL_IS_660)) {
+			int marker = MAKEFILE_WEB_MOM;
+			
+{
+#line 800 "inweb/Chapter 6/Makefiles.w"
+	makefile_repeat *rep = &(MS->repeat_data[MS->repeat_sp++]);
+	MS->shadow_sp = 1;
+	rep->repeat_scope = marker;
+	rep->repeat_tag = Str__duplicate(set);
+	rep->repeat_with = NULL;
+	rep->repeat_in = NULL;
+	rep->repeat_is_block = TRUE;
+	if (mm->reserved_macro_meaning == REPEAT_SPAN_RMM) rep->repeat_is_block = FALSE;
+	rep->repeat_saved_dest = MS->dest;
+	MS->dest = Str__new();
+
+}
+#line 786 "inweb/Chapter 6/Makefiles.w"
+;
+		} else if (Str__eq(category, TL_IS_661)) {
+			int marker = MAKEFILE_MODULE_MOM;
+			
+{
+#line 800 "inweb/Chapter 6/Makefiles.w"
+	makefile_repeat *rep = &(MS->repeat_data[MS->repeat_sp++]);
+	MS->shadow_sp = 1;
+	rep->repeat_scope = marker;
+	rep->repeat_tag = Str__duplicate(set);
+	rep->repeat_with = NULL;
+	rep->repeat_in = NULL;
+	rep->repeat_is_block = TRUE;
+	if (mm->reserved_macro_meaning == REPEAT_SPAN_RMM) rep->repeat_is_block = FALSE;
+	rep->repeat_saved_dest = MS->dest;
+	MS->dest = Str__new();
+
+}
+#line 789 "inweb/Chapter 6/Makefiles.w"
+;
+		} else if (Str__len(category) > 0) {
+			Errors__in_text_file("category should be 'tool', 'module' or 'web'", tfp);
+		} else {
+			if ((Str__len(with) == 0) || (Str__len(in) == 0))
+				Errors__in_text_file("should give both with: VAR and in: LIST", tfp);
+			
+{
+#line 812 "inweb/Chapter 6/Makefiles.w"
+	makefile_repeat *rep = &(MS->repeat_data[MS->repeat_sp++]);
+	MS->shadow_sp = 1;
+	rep->repeat_scope = -1;
+	rep->repeat_tag = NULL;
+	rep->repeat_with = Str__duplicate(with);
+	rep->repeat_in = Str__duplicate(in);
+	rep->repeat_is_block = TRUE;
+	if (mm->reserved_macro_meaning == REPEAT_SPAN_RMM) rep->repeat_is_block = FALSE;
+	rep->repeat_saved_dest = MS->dest;
+	MS->dest = Str__new();
+
+}
+#line 795 "inweb/Chapter 6/Makefiles.w"
+;
+		}
+	}
+
+}
+#line 642 "inweb/Chapter 6/Makefiles.w"
+; break;
+		case END_SPAN_RMM: 
+{
+#line 824 "inweb/Chapter 6/Makefiles.w"
+	MS->shadow_sp = 0;
+	if (MS->repeat_sp == 0) Errors__in_text_file("end without repeat", tfp);
+	else {
+		makefile_repeat *rep = &(MS->repeat_data[--(MS->repeat_sp)]);
+		int as_lines = TRUE;
+		if (mm->reserved_macro_meaning == END_SPAN_RMM) as_lines = FALSE;
+		text_stream *matter = MS->dest;
+		MS->dest = rep->repeat_saved_dest;
+		Makefiles__repeat(matter, as_lines, tfp, rep, MS);
+	}
+
+}
+#line 643 "inweb/Chapter 6/Makefiles.w"
+; break;
+		case SET_RMM: 
+{
+#line 836 "inweb/Chapter 6/Makefiles.w"
+	text_stream *name = parameter_values[0];
+	text_stream *value = parameter_values[1];
+
+	if (Makefiles__acceptable_variable_name(name) == FALSE)
+		Errors__in_text_file("improper variable name", tfp);
+
+	makefile_variable *var = Makefiles__ensure_variable(name, MS->stack_frame);
+	var->value = Str__duplicate(value);
+
+}
+#line 644 "inweb/Chapter 6/Makefiles.w"
+; break;
+		default: internal_error("unimplemented reserved macro");
+	}
 }
 
 #line 14 "inweb/Chapter 6/Git Support.w"
@@ -31191,7 +31556,7 @@ void Git__copy_gitignore_line(text_stream *line, text_file_position *tfp, void *
 {
 #line 44 "inweb/Chapter 6/Git Support.w"
 	filename *prototype =
-		Filenames__in(path_to_inweb_materials, TL_IS_635);
+		Filenames__in(path_to_inweb_materials, TL_IS_662);
 	TextFiles__read(prototype, FALSE, "can't open make settings file",
 		TRUE, Git__copy_gitignore_line, NULL, MS);
 	Regexp__dispose_of(&mr);
@@ -31226,7 +31591,7 @@ void Ctags__write(web *W, filename *F) {
 		P = Filenames__up(F);
 	} else {
 		P = W->md->path_to_web;
-		F = Filenames__in(P, TL_IS_636);
+		F = Filenames__in(P, TL_IS_663);
 	}
 	text_stream *OUT = &ctags_file;
 	if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE)
@@ -31238,7 +31603,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A90\t/built 19 April 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A91\t/built 22 April 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
@@ -31332,11 +31697,11 @@ void Readme__write(filename *from, filename *to) {
 	write_state ws;
 	ws.current_definition = NULL;
 	ws.known_macros = NEW_LINKED_LIST(macro);
-	macro *V = Readme__new_macro(TL_IS_637, NULL, NULL);
+	macro *V = Readme__new_macro(TL_IS_664, NULL, NULL);
 	ADD_TO_LINKED_LIST(V, macro, ws.known_macros);
-	macro *P = Readme__new_macro(TL_IS_638, NULL, NULL);
+	macro *P = Readme__new_macro(TL_IS_665, NULL, NULL);
 	ADD_TO_LINKED_LIST(P, macro, ws.known_macros);
-	macro *A = Readme__new_macro(TL_IS_639, NULL, NULL);
+	macro *A = Readme__new_macro(TL_IS_666, NULL, NULL);
 	ADD_TO_LINKED_LIST(A, macro, ws.known_macros);
 	ws.stack_frame = NULL;
 	text_stream file_to;
@@ -31372,7 +31737,7 @@ void Readme__write_helper(text_stream *text, text_file_position *tfp, void *stat
 		}
 	} else {
 		Readme__expand_material(ws, OUT, text, tfp);
-		Readme__expand_material(ws, OUT, TL_IS_640, tfp);
+		Readme__expand_material(ws, OUT, TL_IS_667, tfp);
 	}
 	Regexp__dispose_of(&mr);
 }
@@ -31503,7 +31868,7 @@ void Readme__expand_at(write_state *ws, text_stream *OUT, text_stream *macro_nam
 
 #line 204 "inweb/Chapter 6/Readme Writeme.w"
 void Readme__expand_macro(write_state *ws, text_stream *OUT, macro *M, text_file_position *tfp) {
-	if (Str__eq(M->name, TL_IS_641)) 
+	if (Str__eq(M->name, TL_IS_668)) 
 {
 #line 215 "inweb/Chapter 6/Readme Writeme.w"
 	if (ws->stack_frame->no_pars != 1)
@@ -31511,14 +31876,14 @@ void Readme__expand_macro(write_state *ws, text_stream *OUT, macro *M, text_file
 	else {
 		TEMPORARY_TEXT(program)
 		Readme__expand_material(ws, program, ws->stack_frame->pars[0], tfp);
-		Readme__write_var(OUT, program, TL_IS_644);
+		Readme__write_var(OUT, program, TL_IS_671);
 		DISCARD_TEXT(program)
 	}
 
 }
 #line 205 "inweb/Chapter 6/Readme Writeme.w"
 
-	else if (Str__eq(M->name, TL_IS_642)) 
+	else if (Str__eq(M->name, TL_IS_669)) 
 {
 #line 225 "inweb/Chapter 6/Readme Writeme.w"
 	if (ws->stack_frame->no_pars != 1)
@@ -31526,14 +31891,14 @@ void Readme__expand_macro(write_state *ws, text_stream *OUT, macro *M, text_file
 	else {
 		TEMPORARY_TEXT(program)
 		Readme__expand_material(ws, program, ws->stack_frame->pars[0], tfp);
-		Readme__write_var(OUT, program, TL_IS_645);
+		Readme__write_var(OUT, program, TL_IS_672);
 		DISCARD_TEXT(program)
 	}
 
 }
 #line 206 "inweb/Chapter 6/Readme Writeme.w"
 
-	else if (Str__eq(M->name, TL_IS_643)) 
+	else if (Str__eq(M->name, TL_IS_670)) 
 {
 #line 235 "inweb/Chapter 6/Readme Writeme.w"
 	if (ws->stack_frame->no_pars != 2)
@@ -31562,8 +31927,8 @@ void Readme__expand_macro(write_state *ws, text_stream *OUT, macro *M, text_file
 void Readme__write_var(text_stream *OUT, text_stream *program, text_stream *datum) {
 	writeme_asset *A = Readme__find_asset(program);
 	if (A->if_web) WRITE("%S", Bibliographic__get_datum(A->if_web, datum));
-	else if (Str__eq(datum, TL_IS_646)) WRITE("%S", A->date);
-	else if (Str__eq(datum, TL_IS_647)) WRITE("%S", A->version);
+	else if (Str__eq(datum, TL_IS_673)) WRITE("%S", A->date);
+	else if (Str__eq(datum, TL_IS_674)) WRITE("%S", A->version);
 }
 
 #line 273 "inweb/Chapter 6/Readme Writeme.w"
@@ -31594,7 +31959,7 @@ writeme_asset *Readme__find_asset(text_stream *program) {
 			A->if_web = WebMetadata__get_without_modules(Pathnames__from_text(program), NULL);
 		} else {
 			filename *I6_vn = Filenames__in(
-				Pathnames__down(Pathnames__from_text(program), TL_IS_648), TL_IS_649);
+				Pathnames__down(Pathnames__from_text(program), TL_IS_675), TL_IS_676);
 			if (TextFiles__exists(I6_vn)) 
 {
 #line 310 "inweb/Chapter 6/Readme Writeme.w"
@@ -31604,7 +31969,7 @@ writeme_asset *Readme__find_asset(text_stream *program) {
 }
 #line 295 "inweb/Chapter 6/Readme Writeme.w"
 ;
-			filename *template_vn = Filenames__in(Pathnames__from_text(program), TL_IS_650);
+			filename *template_vn = Filenames__in(Pathnames__from_text(program), TL_IS_677);
 			if (TextFiles__exists(template_vn)) 
 {
 #line 314 "inweb/Chapter 6/Readme Writeme.w"
@@ -31614,7 +31979,7 @@ writeme_asset *Readme__find_asset(text_stream *program) {
 }
 #line 297 "inweb/Chapter 6/Readme Writeme.w"
 ;
-			filename *rmt_vn = Filenames__in(Pathnames__from_text(program), TL_IS_651);
+			filename *rmt_vn = Filenames__in(Pathnames__from_text(program), TL_IS_678);
 			if (TextFiles__exists(rmt_vn)) 
 {
 #line 318 "inweb/Chapter 6/Readme Writeme.w"
@@ -31624,7 +31989,7 @@ writeme_asset *Readme__find_asset(text_stream *program) {
 }
 #line 299 "inweb/Chapter 6/Readme Writeme.w"
 ;
-			rmt_vn = Filenames__in(Pathnames__from_text(program), TL_IS_652);
+			rmt_vn = Filenames__in(Pathnames__from_text(program), TL_IS_679);
 			if (TextFiles__exists(rmt_vn)) 
 {
 #line 318 "inweb/Chapter 6/Readme Writeme.w"
@@ -31699,7 +32064,7 @@ void Readme__readme_harvester(text_stream *text, text_file_position *tfp, void *
 void Colonies__load(filename *F) {
 	colony *C = CREATE(colony);
 	C->members = NEW_LINKED_LIST(colony_member);
-	C->home = TL_IS_653;
+	C->home = TL_IS_680;
 	C->assets_path = NULL;
 	C->patterns_path = NULL;
 	colony_reader_state crs;
@@ -31723,8 +32088,8 @@ void Colonies__read_line(text_stream *line, text_file_position *tfp, void *v_crs
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, line, L"(%c*?): \"*(%C+)\" at \"(%c*)\" in \"(%c*)\"")) {
 		colony_member *CM = CREATE(colony_member);
-		if (Str__eq(mr.exp[0], TL_IS_654)) CM->web_rather_than_module = TRUE;
-		else if (Str__eq(mr.exp[0], TL_IS_655)) CM->web_rather_than_module = FALSE;
+		if (Str__eq(mr.exp[0], TL_IS_681)) CM->web_rather_than_module = TRUE;
+		else if (Str__eq(mr.exp[0], TL_IS_682)) CM->web_rather_than_module = FALSE;
 		else {
 			CM->web_rather_than_module = FALSE;
 			Errors__in_text_file("text before ':' must be 'web' or 'module'", tfp);
@@ -31732,7 +32097,7 @@ void Colonies__read_line(text_stream *line, text_file_position *tfp, void *v_crs
 		CM->name = Str__duplicate(mr.exp[1]);
 		CM->path = Str__duplicate(mr.exp[2]);
 		CM->home_leaf = Str__new();
-		if (Str__suffix_eq(CM->path, TL_IS_656, 6)) {
+		if (Str__suffix_eq(CM->path, TL_IS_683, 6)) {
 			filename *F = Filenames__from_text(CM->path);
 			Filenames__write_unextended_leafname(CM->home_leaf, F);
 			WRITE_TO(CM->home_leaf, ".html");
@@ -31872,7 +32237,7 @@ module *Colonies__as_module(colony_member *CM, source_line *L, web_md *Wm) {
 #line 254 "inweb/Chapter 6/Colonies.w"
 	filename *F = NULL;
 	pathname *P = NULL;
-	if (Str__suffix_eq(CM->path, TL_IS_657, 6))
+	if (Str__suffix_eq(CM->path, TL_IS_684, 6))
 		F = Filenames__from_text(CM->path);
 	else
 		P = Pathnames__from_text(CM->path);
@@ -31899,7 +32264,7 @@ text_stream *Colonies__home(void) {
 	colony *C;
 	LOOP_OVER(C, colony)
 		return C->home;
-	return TL_IS_658;
+	return TL_IS_685;
 }
 
 pathname *Colonies__assets_path(void) {
@@ -32091,7 +32456,7 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 		return FALSE;
 	}
 	if (N > 1) {
-		Main__error_in_web(TL_IS_659, L);
+		Main__error_in_web(TL_IS_686, L);
 		WebModules__named_reference(&found_M, &found_Sm, &bare_module_name,
 			title, search_M, text, TRUE, FALSE);
 		return FALSE;
@@ -32173,7 +32538,7 @@ void Colonies__paragraph_URL(OUTPUT_STREAM, paragraph *P, filename *from) {
 	if (P == NULL) internal_error("no para");
 	section *to_S = P->under_section;
 	module *to_M = to_S->md->owning_module;
-	if (Str__ne(to_M->module_name, TL_IS_660)) {
+	if (Str__ne(to_M->module_name, TL_IS_687)) {
 		colony_member *to_C = Colonies__find(to_M->module_name);
 		if (to_C) {
 			pathname *from_path = Filenames__up(from);
@@ -32830,37 +33195,64 @@ void register_tangled_text_literals(void) {
     TL_IS_625 = Str__literal(L"t");
     TL_IS_626 = Str__literal(L"exists");
     TL_IS_627 = Str__literal(L"forall");
-    TL_IS_628 = Str__literal(L" ");
-    TL_IS_629 = Str__literal(L"all");
-    TL_IS_630 = Str__literal(L"platform-settings.mk");
-    TL_IS_631 = Str__literal(L"Materials");
-    TL_IS_632 = Str__literal(L"platforms");
-    TL_IS_633 = Str__literal(L"intest");
-    TL_IS_634 = Str__literal(L"all");
-    TL_IS_635 = Str__literal(L"gitignorescript.txt");
-    TL_IS_636 = Str__literal(L"tags");
-    TL_IS_637 = Str__literal(L"version");
-    TL_IS_638 = Str__literal(L"purpose");
-    TL_IS_639 = Str__literal(L"var");
-    TL_IS_640 = Str__literal(L"\n");
-    TL_IS_641 = Str__literal(L"version");
-    TL_IS_642 = Str__literal(L"purpose");
-    TL_IS_643 = Str__literal(L"var");
-    TL_IS_644 = Str__literal(L"Version Number");
-    TL_IS_645 = Str__literal(L"Purpose");
-    TL_IS_646 = Str__literal(L"Build Date");
-    TL_IS_647 = Str__literal(L"Version Number");
-    TL_IS_648 = Str__literal(L"inform6");
-    TL_IS_649 = Str__literal(L"header.h");
-    TL_IS_650 = Str__literal(L"(manifest).txt");
-    TL_IS_651 = Str__literal(L"README.txt");
-    TL_IS_652 = Str__literal(L"README.md");
-    TL_IS_653 = Str__literal(L"docs");
-    TL_IS_654 = Str__literal(L"web");
-    TL_IS_655 = Str__literal(L"module");
-    TL_IS_656 = Str__literal(L".inweb");
-    TL_IS_657 = Str__literal(L".inweb");
-    TL_IS_658 = Str__literal(L"docs");
-    TL_IS_659 = Str__literal(L"Multiple cross-references might be meant here");
-    TL_IS_660 = Str__literal(L"(main)");
+    TL_IS_628 = Str__literal(L"repeat");
+    TL_IS_629 = Str__literal(L"repeat-block");
+    TL_IS_630 = Str__literal(L"repeat-span");
+    TL_IS_631 = Str__literal(L"end-repeat");
+    TL_IS_632 = Str__literal(L"end-block");
+    TL_IS_633 = Str__literal(L"end-span");
+    TL_IS_634 = Str__literal(L"NAME");
+    TL_IS_635 = Str__literal(L"all");
+    TL_IS_636 = Str__literal(L"");
+    TL_IS_637 = Str__literal(L"platform-settings");
+    TL_IS_638 = Str__literal(L"identity-settings");
+    TL_IS_639 = Str__literal(L"component");
+    TL_IS_640 = Str__literal(L"symbol: SYMBOL webname: WEBNAME path: PATH set: SET category: CATEGORY");
+    TL_IS_641 = Str__literal(L"dependent-files");
+    TL_IS_642 = Str__literal(L"?tool: TOOL ?module: MODULES ?tool-and-modules: BOTH");
+    TL_IS_643 = Str__literal(L"repeat-block");
+    TL_IS_644 = Str__literal(L"?over: CATEGORY ?set: SET ?with: WITH ?in: IN");
+    TL_IS_645 = Str__literal(L"end-block");
+    TL_IS_646 = Str__literal(L"repeat-span");
+    TL_IS_647 = Str__literal(L"?over: CATEGORY ?set: SET ?with: WITH ?in: IN");
+    TL_IS_648 = Str__literal(L"end-span");
+    TL_IS_649 = Str__literal(L"set");
+    TL_IS_650 = Str__literal(L"name: NAME value: VALUE");
+    TL_IS_651 = Str__literal(L"platform-settings.mk");
+    TL_IS_652 = Str__literal(L"Materials");
+    TL_IS_653 = Str__literal(L"platforms");
+    TL_IS_654 = Str__literal(L"intest");
+    TL_IS_655 = Str__literal(L"tool");
+    TL_IS_656 = Str__literal(L"web");
+    TL_IS_657 = Str__literal(L"module");
+    TL_IS_658 = Str__literal(L"all");
+    TL_IS_659 = Str__literal(L"tool");
+    TL_IS_660 = Str__literal(L"web");
+    TL_IS_661 = Str__literal(L"module");
+    TL_IS_662 = Str__literal(L"gitignorescript.txt");
+    TL_IS_663 = Str__literal(L"tags");
+    TL_IS_664 = Str__literal(L"version");
+    TL_IS_665 = Str__literal(L"purpose");
+    TL_IS_666 = Str__literal(L"var");
+    TL_IS_667 = Str__literal(L"\n");
+    TL_IS_668 = Str__literal(L"version");
+    TL_IS_669 = Str__literal(L"purpose");
+    TL_IS_670 = Str__literal(L"var");
+    TL_IS_671 = Str__literal(L"Version Number");
+    TL_IS_672 = Str__literal(L"Purpose");
+    TL_IS_673 = Str__literal(L"Build Date");
+    TL_IS_674 = Str__literal(L"Version Number");
+    TL_IS_675 = Str__literal(L"inform6");
+    TL_IS_676 = Str__literal(L"header.h");
+    TL_IS_677 = Str__literal(L"(manifest).txt");
+    TL_IS_678 = Str__literal(L"README.txt");
+    TL_IS_679 = Str__literal(L"README.md");
+    TL_IS_680 = Str__literal(L"docs");
+    TL_IS_681 = Str__literal(L"web");
+    TL_IS_682 = Str__literal(L"module");
+    TL_IS_683 = Str__literal(L".inweb");
+    TL_IS_684 = Str__literal(L".inweb");
+    TL_IS_685 = Str__literal(L"docs");
+    TL_IS_686 = Str__literal(L"Multiple cross-references might be meant here");
+    TL_IS_687 = Str__literal(L"(main)");
 }

@@ -30,7 +30,8 @@ see //foundation: A Brief Guide to Foundation//.
 @e macro_usage_CLASS
 @e makefile_macro_CLASS
 @e makefile_macro_parameter_CLASS
-@e makefile_macro_playback_CLASS
+@e makefile_variable_CLASS
+@e makefile_variable_set_CLASS
 @e nonterminal_variable_CLASS
 @e para_macro_CLASS
 @e paragraph_CLASS
@@ -123,7 +124,8 @@ DECLARE_CLASS(macro_usage)
 DECLARE_CLASS(macro)
 DECLARE_CLASS(makefile_macro)
 DECLARE_CLASS(makefile_macro_parameter)
-DECLARE_CLASS(makefile_macro_playback)
+DECLARE_CLASS(makefile_variable)
+DECLARE_CLASS(makefile_variable_set)
 DECLARE_CLASS(nonterminal_variable)
 DECLARE_CLASS(para_macro)
 DECLARE_CLASS(paragraph_tagging)
