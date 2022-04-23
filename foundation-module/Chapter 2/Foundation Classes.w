@@ -33,6 +33,10 @@ here we are.
 @e module_CLASS
 @e module_search_CLASS
 @e pathname_CLASS
+@e preprocessor_macro_CLASS
+@e preprocessor_macro_parameter_CLASS
+@e preprocessor_variable_CLASS
+@e preprocessor_variable_set_CLASS
 @e scan_directory_CLASS
 @e section_md_CLASS
 @e semantic_version_number_holder_CLASS
@@ -67,6 +71,10 @@ DECLARE_CLASS(method)
 DECLARE_CLASS(module_search)
 DECLARE_CLASS(module)
 DECLARE_CLASS(pathname)
+DECLARE_CLASS(preprocessor_macro)
+DECLARE_CLASS(preprocessor_macro_parameter)
+DECLARE_CLASS(preprocessor_variable)
+DECLARE_CLASS(preprocessor_variable_set)
 DECLARE_CLASS(scan_directory)
 DECLARE_CLASS(section_md)
 DECLARE_CLASS(semantic_version_number_holder)

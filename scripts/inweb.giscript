@@ -1,5 +1,8 @@
-# Because inweb needs to be bootstrapped, we unusually preserve the current
-# tangled C file in the repository:
+# This is "inweb.giscript", a script used to generate the ".gitignore" file
+# in the inweb repository. Do not edit ".gitignore" directly. Instead,
+# edit this script, and then rebuild ".gitignore" with the command:
+
+# inweb/Tangled/inweb -prototype inweb/scripts/inweb.giscript -gitignore inweb/.gitignore
 
 .DS_Store
 Manual.html
@@ -9,6 +12,7 @@ Woven/
 Tangled/inweb
 Tangled/inweb_dev*
 Tangled/inweb.o
+Tangled/inweb.exe
 Tests/intest-history.txt
 Tests/Transient/
 Tests/hashes.intest

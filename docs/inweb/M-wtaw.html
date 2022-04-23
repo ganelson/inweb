@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -43,7 +48,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">inweb</a></li><li><a href="index.html#M">Manual</a></li><li><b>Webs, Tangling and Weaving</b></li></ul></div>
 <p class="purpose">How to use Inweb to weave or tangle a web already written.</p>
 
-<ul class="toc"><li><a href="M-wtaw.html#SP1">&#167;1. All-in-one webs</a></li><li><a href="M-wtaw.html#SP4">&#167;4. Multi-section webs</a></li><li><a href="M-wtaw.html#SP7">&#167;7. Tangling</a></li><li><a href="M-wtaw.html#SP10">&#167;10. Weaving</a></li><li><a href="M-wtaw.html#SP13">&#167;13. Weave tags</a></li><li><a href="M-wtaw.html#SP14">&#167;14. Modules</a></li><li><a href="M-wtaw.html#SP17">&#167;17. The section catalogue</a></li><li><a href="M-wtaw.html#SP18">&#167;18. Makefile</a></li><li><a href="M-wtaw.html#SP19">&#167;19. Gitignore</a></li><li><a href="M-wtaw.html#SP20">&#167;20. Ctags</a></li><li><a href="M-wtaw.html#SP21">&#167;21. README files</a></li><li><a href="M-wtaw.html#SP24">&#167;24. Semantic version numbering and build metadata</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-wtaw.html#SP1">&#167;1. All-in-one webs</a></li><li><a href="M-wtaw.html#SP4">&#167;4. Multi-section webs</a></li><li><a href="M-wtaw.html#SP7">&#167;7. Tangling</a></li><li><a href="M-wtaw.html#SP10">&#167;10. Weaving</a></li><li><a href="M-wtaw.html#SP13">&#167;13. Weave tags</a></li><li><a href="M-wtaw.html#SP14">&#167;14. Modules</a></li><li><a href="M-wtaw.html#SP17">&#167;17. The section catalogue</a></li><li><a href="M-wtaw.html#SP18">&#167;18. Makefile</a></li><li><a href="M-wtaw.html#SP25">&#167;25. Gitignore</a></li><li><a href="M-wtaw.html#SP26">&#167;26. Ctags</a></li><li><a href="M-wtaw.html#SP27">&#167;27. README files</a></li><li><a href="M-wtaw.html#SP30">&#167;30. Semantic version numbering and build metadata</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. All-in-one webs. </b>A program written for use with Inweb is called a "web". Inweb was primarily
 designed for large, multisection webs, but it can also be used in a much
@@ -613,25 +618,176 @@ Ordinarily the script used will be the one stored in
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    W/makescript.txt</span>
+<span class="plain-syntax">    W/W.mkscript</span>
 </pre>
 <p class="commentary">or, if no such file exists, the default one stored in Inweb:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    inweb/Materials/makescript.txt</span>
+<span class="plain-syntax">    inweb/Materials/default.mkscript</span>
 </pre>
 <p class="commentary">but this can be changed by using <span class="extract"><span class="extract-syntax">-prototype S</span></span>, which tells Inweb to use
 <span class="extract"><span class="extract-syntax">S</span></span> as the script. If a <span class="extract"><span class="extract-syntax">-prototype</span></span> is given, then there's no need to
 specify any one web for Inweb to use: this allows Inweb to construct more
-elaborate makefiles for multi-web projects. (This is how the main makefile
-for the Inform project is constructed.)
+elaborate makefiles for multi-web projects.
 </p>
 
-<p class="commentary">To see how makescripts work, it's easiest simply to look at the default one.
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>A makescript is really just copied out to produce the makefile, except that:
 </p>
 
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Gitignore. </b>A similar convenience exists for users who want to use the git source control
+<ul class="items"><li>&#9679; Comment lines, those beginning with <span class="extract"><span class="extract-syntax">#</span></span>, are stripped out.
+</li><li>&#9679; Material in balanced braces <span class="extract"><span class="extract-syntax">{ ... }</span></span> is expanded into something more
+interesting.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Makescripts support variables, whose names have to be in capital letters,
+perhaps with underscores and digits added. For example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">{set name: SUPPORTED_BUILDS value: 6L02, 6L38, 6M62}</span>
+<span class="plain-syntax">...</span>
+<span class="plain-syntax">    echo "I support any of {SUPPORTED_BUILDS}."</span>
+</pre>
+<p class="commentary">expands to
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    echo "I support any of 6L02, 6L38, 6M62."</span>
+</pre>
+<p class="commentary">What happens is that the <span class="extract"><span class="extract-syntax">set</span></span> macro sets the variable <span class="extract"><span class="extract-syntax">SUPPORTED_BUILDS</span></span> and
+gives it the value <span class="extract"><span class="extract-syntax">6L02, 6L38, 6M62</span></span>. Anywhere below this in the file,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
+<span class="extract"><span class="extract-syntax">{SUPPORTED_BUILDS}</span></span> is replaced by that value.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> If you set a variable inside a repeat loop, it will exist only in the loop.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Makescripts support repetition. For example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">{repeat with: BUILD in: 6L02, 6L38, 6M62}</span>
+<span class="plain-syntax">    echo "I support {BUILD}."</span>
+<span class="plain-syntax">{end-repeat}</span>
+</pre>
+<p class="commentary">produces:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    echo "I support 6L02."</span>
+<span class="plain-syntax">    echo "I support 6L38."</span>
+<span class="plain-syntax">    echo "I support 6M62."</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Like <span class="extract"><span class="extract-syntax">set</span></span>, <span class="extract"><span class="extract-syntax">repeat</span></span> is a "macro". This has two parameters, <span class="extract"><span class="extract-syntax">with:</span></span>, naming
+the loop variable, and <span class="extract"><span class="extract-syntax">in:</span></span>, giving a comma-separated list of values for it
+to run through in order. In some macros parameters are optional, but not these.
+</p>
+
+<p class="commentary">Note that variables can be used within the parameters of macros, as in this example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">{repeat with: BUILD in: {SUPPORTED_BUILDS}}</span>
+<span class="plain-syntax">    echo "I support {BUILD}."</span>
+<span class="plain-syntax">{end-repeat}</span>
+</pre>
+<p class="commentary">Loops can be nested, for those who like to live on the edge. So:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">{repeat with: X in: alpha, beta, gamma}</span>
+<span class="plain-syntax">{repeat with: Y in: 5, 11}</span>
+<span class="plain-syntax">    echo "Greetings, Agent {X}-{Y}."</span>
+<span class="plain-syntax">{end-repeat}</span>
+<span class="plain-syntax">{end-repeat}</span>
+</pre>
+<p class="commentary">produces:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    echo "Greetings, Agent alpha-5."</span>
+<span class="plain-syntax">    echo "Greetings, Agent alpha-11."</span>
+<span class="plain-syntax">    echo "Greetings, Agent beta-5."</span>
+<span class="plain-syntax">    echo "Greetings, Agent beta-11."</span>
+<span class="plain-syntax">    echo "Greetings, Agent gamma-5."</span>
+<span class="plain-syntax">    echo "Greetings, Agent gamma-11."</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>You can also define your own macros, as in this example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">{define: link to: TO from: FROM ?options: OPTS}</span>
+<span class="plain-syntax">    clang $(CCOPTS) -g -o {TO} {FROM} {OPTS}</span>
+<span class="plain-syntax">{end-define}</span>
+</pre>
+<p class="commentary">And here is a usage of it:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    {link from: frog.o to: frog.c}</span>
+</pre>
+<p class="commentary">This doesn't specify "options: ...", but doesn't have to, because that's optional &mdash;
+note the question mark in the macro declaration. But it does specify "from: ..."
+and "to: ...", which are compulsory. Parameters are always named, as this example
+suggests, and can be given in any order so long as all the non-optional ones are
+present.
+</p>
+
+<p class="commentary">This usage results in the following line in the final makefile:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    clang $(CCOPTS) -g -o frog.c frog.o</span>
+</pre>
+<p class="commentary">Note the difference between <span class="extract"><span class="extract-syntax">$(CCOPTS)</span></span>, which is a make variable, and the braced
+tokens <span class="extract"><span class="extract-syntax">{TO}</span></span>, <span class="extract"><span class="extract-syntax">{FROM}</span></span> and <span class="extract"><span class="extract-syntax">{OPTS}</span></span>, which are makescript variables (which exist
+only inside the definition).
+</p>
+
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>A few more built-in macros special to makefiles may be useful:
+</p>
+
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">{platform-settings}</span></span> (which has no parameters) includes a file of makescript
+material useful for compiling C-based tools on your current operating system or
+"platform". It gets this file at <span class="extract"><span class="extract-syntax">inweb/Materials/platforms/YOURPLATFORM.mkscript</span></span>,
+where <span class="extract"><span class="extract-syntax">YOURPLATFORM</span></span> may be <span class="extract"><span class="extract-syntax">macos</span></span>, <span class="extract"><span class="extract-syntax">windows</span></span>, <span class="extract"><span class="extract-syntax">linux</span></span> and so on.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">{identity-settings}</span></span> (which has no parameters) writes out make declarations
+for make variables <span class="extract"><span class="extract-syntax">INWEB</span></span>, <span class="extract"><span class="extract-syntax">INTEST</span></span>, <span class="extract"><span class="extract-syntax">MYNAME</span></span> and <span class="extract"><span class="extract-syntax">ME</span></span>. The first two are paths
+to the inweb and intest tools respectivly. <span class="extract"><span class="extract-syntax">MYNAME</span></span> and <span class="extract"><span class="extract-syntax">ME</span></span> are set only if
+inweb has been given a specific web <span class="extract"><span class="extract-syntax">W</span></span> to work with at the command line, and
+are then expanded to the directory name and web name respectively for <span class="extract"><span class="extract-syntax">W</span></span>. (These
+are very often the same name, e.g., <span class="extract"><span class="extract-syntax">inform7</span></span>.)
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">{component symbol: SYMBOL webname: WEBNAME path: PATH set: SET type: TYPE}</span></span>
+is used only in a makescript for a makefile trying to orchestrate complicated
+operations on colonies of large numbers of webs. (See the <span class="extract"><span class="extract-syntax">inform.mkscript</span></span>
+script in the main Inform repository for an example.) This macro says that one
+of the webs it will talk about is called <span class="extract"><span class="extract-syntax">WEBNAME</span></span>, located at <span class="extract"><span class="extract-syntax">PATH</span></span> in the
+file system, belongs to a set you want to call <span class="extract"><span class="extract-syntax">SET</span></span>, has the <span class="extract"><span class="extract-syntax">TYPE</span></span> of one
+of <span class="extract"><span class="extract-syntax">tool</span></span>, <span class="extract"><span class="extract-syntax">web</span></span> or <span class="extract"><span class="extract-syntax">module</span></span>. (A <span class="extract"><span class="extract-syntax">tool</span></span> is the main web for an executable;
+a <span class="extract"><span class="extract-syntax">module</span></span> for one of the modules making up an executable; a <span class="extract"><span class="extract-syntax">web</span></span> for some
+other kind of resource tangled by Inweb but which doesn't make an executable.)
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">{dependent-files tool: WEBNAME}</span></span> then expands to a list of source files
+inside the web <span class="extract"><span class="extract-syntax">WEBNAME</span></span> on which its tangled output depends, written in the
+usual make-file way, i.e., divided by spaces. <span class="extract"><span class="extract-syntax">WEBNAME</span></span> has to be one which
+has already been declared as having <span class="extract"><span class="extract-syntax">type: tool</span></span> in a <span class="extract"><span class="extract-syntax">{component ...}</span></span> line.
+</li><li>&#9679; And similarly <span class="extract"><span class="extract-syntax">{dependent-files module: WEBNAME}</span></span>.
+</li><li>&#9679; More elaborately, <span class="extract"><span class="extract-syntax">{dependent-files tool-and-modules: WEBNAME}</span></span> lists the
+dependent files not only in the main web for a tool, which also in any of the
+modules which it includes.
+</li><li>&#9679; A form of loop, <span class="extract"><span class="extract-syntax">{components type: TYPE set: SET} ... {end-components}</span></span>
+repeats through all the declared components with the given type and set. (The
+set is optional: if not given, the repetition is over everything with that type.)
+As before, <span class="extract"><span class="extract-syntax">TYPE</span></span> must be one of <span class="extract"><span class="extract-syntax">tool</span></span>, <span class="extract"><span class="extract-syntax">web</span></span> or <span class="extract"><span class="extract-syntax">module</span></span>. Inside the loop,
+<span class="extract"><span class="extract-syntax">{NAME}</span></span> expands to the <span class="extract"><span class="extract-syntax">SYMBOL</span></span> which the component was declared with. For
+example:
+</li></ul>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">.PHONY: versions</span>
+<span class="plain-syntax">versions:</span>
+<span class="plain-syntax">    {components type: tool}</span>
+<span class="plain-syntax">    $({SYMBOL}X) -version</span>
+<span class="plain-syntax">    {end-components}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Gitignore. </b>A similar convenience exists for users who want to use the git source control
 tool with a web: for example, uploading it to Github.
 </p>
 
@@ -644,11 +800,18 @@ specifies the files to be ignored. The following does so for a web <span class="
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -gitignore</span><span class="ConsoleText-plain-syntax"> W/.gitignore</span>
 </pre>
-<p class="commentary">Once again, Inweb does this by working from a script, this time called
-<span class="extract"><span class="ConsoleText-extract-syntax">gitignorescript.txt</span></span>.
+<p class="commentary">Once again, Inweb does this by working from a script, and the rules are almost
+exactly the same as for makefiles except that the file extension is <span class="extract"><span class="ConsoleText-extract-syntax">.giscript</span></span>,
+not <span class="extract"><span class="ConsoleText-extract-syntax">.mkscript</span></span>, and:
 </p>
 
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Ctags. </b>Each time a web is tangled, Inweb writes a <span class="extract"><span class="ConsoleText-extract-syntax">tags</span></span> file to the web's home
+<ul class="items"><li>&#9679; The special makefile macros are not available, though <span class="extract"><span class="ConsoleText-extract-syntax">set</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">repeat</span></span> are;
+</li><li>&#9679; The special macro <span class="extract"><span class="ConsoleText-extract-syntax">{basics}</span></span> expands to the contents of the file
+<span class="extract"><span class="ConsoleText-extract-syntax">inweb/Materials/default.giscript</span></span>. This does the same thing as would be done
+if the web provided no script of its own; the idea is that you can then list
+some additional things to ignore.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Ctags. </b>Each time a web is tangled, Inweb writes a <span class="extract"><span class="ConsoleText-extract-syntax">tags</span></span> file to the web's home
 directory, containing a list of <a href="https://ctags.io" class="external">Universal ctags</a>
 for any structures, functions or constant definitions found in the web. You
 need do nothing to make this happen, and can ignore the file if it's of no
@@ -669,7 +832,7 @@ should make code completion and definition lookup features work.
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -tangle -no-ctags</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. README files. </b>Repositories at Github customarily have <span class="extract"><span class="ConsoleText-extract-syntax">README.mk</span></span> files, in Markdown
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. README files. </b>Repositories at Github customarily have <span class="extract"><span class="ConsoleText-extract-syntax">README.mk</span></span> files, in Markdown
 syntax, explaining what they are. These of course should probably include
 current version numbers, and it's a pain keeping that up to date. For
 really complicated repositories, containing multiple webs, some automation
@@ -686,7 +849,7 @@ the script can be specified explicitly:
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -prototype</span><span class="ConsoleText-plain-syntax"> MySpecialThang.txt</span><span class="ConsoleText-identifier-syntax"> -write-me</span><span class="ConsoleText-plain-syntax"> W/README.mk</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Everything in the script is copied over verbatim except where the <span class="extract"><span class="ConsoleText-extract-syntax">@</span></span> character
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>Everything in the script is copied over verbatim except where the <span class="extract"><span class="ConsoleText-extract-syntax">@</span></span> character
 is used, which was chosen because it isn't significant in Github's form of
 Markdown. <span class="extract"><span class="ConsoleText-extract-syntax">@name(args)</span></span> is like a function call (or, in more traditional
 language, a macro): it expands out to something depending on the arguments.
@@ -708,7 +871,7 @@ the web indicated by <span class="extract"><span class="ConsoleText-extract-synt
 <span class="extract"><span class="ConsoleText-extract-syntax">@var(A,Version Number)</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">@purpose(A)</span></span> for <span class="extract"><span class="ConsoleText-extract-syntax">@var(A,Purpose)</span></span>, so this
 is really the only one needed.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>It is also possible to define new functions. For example:
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>It is also possible to define new functions. For example:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -733,7 +896,7 @@ function <span class="extract"><span class="extract-syntax">B</span></span> not 
 both <span class="extract"><span class="extract-syntax">A</span></span> and <span class="extract"><span class="extract-syntax">B</span></span> have been defined. So, basically, declare before use.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Semantic version numbering and build metadata. </b>When Inweb reads in a web, it also looks for a file called <span class="extract"><span class="extract-syntax">build.txt</span></span> in
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. Semantic version numbering and build metadata. </b>When Inweb reads in a web, it also looks for a file called <span class="extract"><span class="extract-syntax">build.txt</span></span> in
 the web's directory; if that isn't there, it looks for the same file in the
 current working directory; if that's not there either, never mind.
 </p>
@@ -766,7 +929,7 @@ the web as the variable <span class="extract"><span class="extract-syntax">Seman
 <p class="commentary">For more on semvers, see: <a href="https://semver.org" class="external">https://semver.org</a>
 </p>
 
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>A special advancing mechanism exists to update build numbers and dates.
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>A special advancing mechanism exists to update build numbers and dates.
 Running Inweb with <span class="extract"><span class="extract-syntax">-advance-build W</span></span> checks the build date for web <span class="extract"><span class="extract-syntax">W</span></span>:
 if it differs from today, then it is changed to today, and the build code
 is advanced by one.

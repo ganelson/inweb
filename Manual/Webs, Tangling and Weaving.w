@@ -483,19 +483,155 @@ creates a makefile for the web |W| and stores it in |M|. For example,
 The makefile is constructed using a prototype file called a "makescript".
 Ordinarily the script used will be the one stored in
 = (text)
-	W/makescript.txt
+	W/W.mkscript
 =
 or, if no such file exists, the default one stored in Inweb:
 = (text)
-	inweb/Materials/makescript.txt
+	inweb/Materials/default.mkscript
 =
 but this can be changed by using |-prototype S|, which tells Inweb to use
 |S| as the script. If a |-prototype| is given, then there's no need to
 specify any one web for Inweb to use: this allows Inweb to construct more
-elaborate makefiles for multi-web projects. (This is how the main makefile
-for the Inform project is constructed.)
+elaborate makefiles for multi-web projects.
 
-To see how makescripts work, it's easiest simply to look at the default one.
+@ A makescript is really just copied out to produce the makefile, except that:
+
+(*) Comment lines, those beginning with |#|, are stripped out.
+
+(*) Material in balanced braces |{ ... }| is expanded into something more
+interesting.
+
+@ Makescripts support variables, whose names have to be in capital letters,
+perhaps with underscores and digits added. For example:
+= (text)
+{set name: SUPPORTED_BUILDS value: 6L02, 6L38, 6M62}
+...
+	echo "I support any of {SUPPORTED_BUILDS}."
+=
+expands to
+= (text)
+	echo "I support any of 6L02, 6L38, 6M62."
+=
+What happens is that the |set| macro sets the variable |SUPPORTED_BUILDS| and
+gives it the value |6L02, 6L38, 6M62|. Anywhere below this in the file,[1]
+|{SUPPORTED_BUILDS}| is replaced by that value.
+
+[1] If you set a variable inside a repeat loop, it will exist only in the loop.
+
+@ Makescripts support repetition. For example:
+= (text)
+{repeat with: BUILD in: 6L02, 6L38, 6M62}
+	echo "I support {BUILD}."
+{end-repeat}
+=
+produces:
+= (text)
+	echo "I support 6L02."
+	echo "I support 6L38."
+	echo "I support 6M62."
+=
+
+@ Like |set|, |repeat| is a "macro". This has two parameters, |with:|, naming
+the loop variable, and |in:|, giving a comma-separated list of values for it
+to run through in order. In some macros parameters are optional, but not these.
+
+Note that variables can be used within the parameters of macros, as in this example:
+= (text)
+{repeat with: BUILD in: {SUPPORTED_BUILDS}}
+	echo "I support {BUILD}."
+{end-repeat}
+=
+
+Loops can be nested, for those who like to live on the edge. So:
+= (text)
+{repeat with: X in: alpha, beta, gamma}
+{repeat with: Y in: 5, 11}
+	echo "Greetings, Agent {X}-{Y}."
+{end-repeat}
+{end-repeat}
+=
+produces:
+= (text)
+	echo "Greetings, Agent alpha-5."
+	echo "Greetings, Agent alpha-11."
+	echo "Greetings, Agent beta-5."
+	echo "Greetings, Agent beta-11."
+	echo "Greetings, Agent gamma-5."
+	echo "Greetings, Agent gamma-11."
+=
+
+@ You can also define your own macros, as in this example:
+= (text)
+{define: link to: TO from: FROM ?options: OPTS}
+	clang $(CCOPTS) -g -o {TO} {FROM} {OPTS}
+{end-define}
+=
+And here is a usage of it:
+= (text)
+	{link from: frog.o to: frog.c}
+=
+This doesn't specify "options: ...", but doesn't have to, because that's optional --
+note the question mark in the macro declaration. But it does specify "from: ..."
+and "to: ...", which are compulsory. Parameters are always named, as this example
+suggests, and can be given in any order so long as all the non-optional ones are
+present.
+
+This usage results in the following line in the final makefile:
+= (text)
+	clang $(CCOPTS) -g -o frog.c frog.o 
+=
+Note the difference between |$(CCOPTS)|, which is a make variable, and the braced
+tokens |{TO}|, |{FROM}| and |{OPTS}|, which are makescript variables (which exist
+only inside the definition).
+
+@ A few more built-in macros special to makefiles may be useful:
+
+(*) |{platform-settings}| (which has no parameters) includes a file of makescript
+material useful for compiling C-based tools on your current operating system or
+"platform". It gets this file at |inweb/Materials/platforms/YOURPLATFORM.mkscript|,
+where |YOURPLATFORM| may be |macos|, |windows|, |linux| and so on.
+
+(*) |{identity-settings}| (which has no parameters) writes out make declarations
+for make variables |INWEB|, |INTEST|, |MYNAME| and |ME|. The first two are paths
+to the inweb and intest tools respectivly. |MYNAME| and |ME| are set only if
+inweb has been given a specific web |W| to work with at the command line, and
+are then expanded to the directory name and web name respectively for |W|. (These
+are very often the same name, e.g., |inform7|.)
+
+(*) |{component symbol: SYMBOL webname: WEBNAME path: PATH set: SET type: TYPE}|
+is used only in a makescript for a makefile trying to orchestrate complicated
+operations on colonies of large numbers of webs. (See the |inform.mkscript|
+script in the main Inform repository for an example.) This macro says that one
+of the webs it will talk about is called |WEBNAME|, located at |PATH| in the
+file system, belongs to a set you want to call |SET|, has the |TYPE| of one
+of |tool|, |web| or |module|. (A |tool| is the main web for an executable;
+a |module| for one of the modules making up an executable; a |web| for some
+other kind of resource tangled by Inweb but which doesn't make an executable.)
+
+(*) |{dependent-files tool: WEBNAME}| then expands to a list of source files
+inside the web |WEBNAME| on which its tangled output depends, written in the
+usual make-file way, i.e., divided by spaces. |WEBNAME| has to be one which
+has already been declared as having |type: tool| in a |{component ...}| line.
+
+(*) And similarly |{dependent-files module: WEBNAME}|.
+
+(*) More elaborately, |{dependent-files tool-and-modules: WEBNAME}| lists the
+dependent files not only in the main web for a tool, which also in any of the
+modules which it includes.
+
+(*) A form of loop, |{components type: TYPE set: SET} ... {end-components}|
+repeats through all the declared components with the given type and set. (The
+set is optional: if not given, the repetition is over everything with that type.)
+As before, |TYPE| must be one of |tool|, |web| or |module|. Inside the loop,
+|{NAME}| expands to the |SYMBOL| which the component was declared with. For
+example:
+= (text)
+.PHONY: versions
+versions:
+	{components type: tool}
+	$({SYMBOL}X) -version
+	{end-components}
+=
 
 @h Gitignore.
 A similar convenience exists for users who want to use the git source control
@@ -508,8 +644,16 @@ specifies the files to be ignored. The following does so for a web |W|:
 = (text as ConsoleText)
 	$ inweb/Tangled/inweb W -gitignore W/.gitignore
 =
-Once again, Inweb does this by working from a script, this time called
-|gitignorescript.txt|.
+Once again, Inweb does this by working from a script, and the rules are almost
+exactly the same as for makefiles except that the file extension is |.giscript|,
+not |.mkscript|, and:
+
+(*) The special makefile macros are not available, though |set| and |repeat| are;
+
+(*) The special macro |{basics}| expands to the contents of the file
+|inweb/Materials/default.giscript|. This does the same thing as would be done
+if the web provided no script of its own; the idea is that you can then list
+some additional things to ignore.
 
 @h Ctags.
 Each time a web is tangled, Inweb writes a |tags| file to the web's home

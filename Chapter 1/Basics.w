@@ -21,6 +21,7 @@ see //foundation: A Brief Guide to Foundation//.
 @e defined_constant_CLASS
 @e enumeration_set_CLASS
 @e footnote_CLASS
+@e gitignore_state_CLASS
 @e hash_table_entry_CLASS
 @e hash_table_entry_usage_CLASS
 @e language_function_CLASS
@@ -28,10 +29,7 @@ see //foundation: A Brief Guide to Foundation//.
 @e macro_CLASS
 @e macro_tokens_CLASS
 @e macro_usage_CLASS
-@e makefile_macro_CLASS
-@e makefile_macro_parameter_CLASS
-@e makefile_variable_CLASS
-@e makefile_variable_set_CLASS
+@e makefile_specifics_CLASS
 @e nonterminal_variable_CLASS
 @e para_macro_CLASS
 @e paragraph_CLASS
@@ -115,6 +113,7 @@ DECLARE_CLASS(colouring_rule)
 DECLARE_CLASS(defined_constant)
 DECLARE_CLASS(enumeration_set)
 DECLARE_CLASS(footnote)
+DECLARE_CLASS(gitignore_state)
 DECLARE_CLASS(hash_table_entry_usage)
 DECLARE_CLASS(hash_table_entry)
 DECLARE_CLASS(language_function)
@@ -122,10 +121,7 @@ DECLARE_CLASS(language_type)
 DECLARE_CLASS(macro_tokens)
 DECLARE_CLASS(macro_usage)
 DECLARE_CLASS(macro)
-DECLARE_CLASS(makefile_macro)
-DECLARE_CLASS(makefile_macro_parameter)
-DECLARE_CLASS(makefile_variable)
-DECLARE_CLASS(makefile_variable_set)
+DECLARE_CLASS(makefile_specifics)
 DECLARE_CLASS(nonterminal_variable)
 DECLARE_CLASS(para_macro)
 DECLARE_CLASS(paragraph_tagging)
