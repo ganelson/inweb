@@ -131,7 +131,7 @@ test:
 .PHONY: commit
 commit:
 	$(INWEB) -advance-build-file $(ME)/build.txt
-	$(INWEB) -prototype inweb/scripts/READMEscript.txt -write-me inweb/README.md
+	$(INWEB) -prototype inweb/scripts/inweb.rmscript -write-me inweb/README.md
 	cd $(ME); git commit -a
 
 # Weaving the web for GitHub Pages:
@@ -152,7 +152,7 @@ pages:
 	rm -f $(ME)/docs/docs-assets/*.png
 	rm -f $(ME)/docs/docs-assets/*.gif
 	cp -f $(ME)/docs-src/Octagram.png $(ME)/docs/docs-assets/Octagram.png
-	$(INWEB) -prototype inweb/scripts/READMEscript.txt -write-me inweb/README.md
+	$(INWEB) -prototype inweb/scripts/inweb.rmscript -write-me inweb/README.md
 	mkdir -p $(ME)/docs/inweb
 	rm -f $(ME)/docs/inweb/*.html
 	mkdir -p $(ME)/docs/goldbach

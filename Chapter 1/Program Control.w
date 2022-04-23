@@ -113,11 +113,11 @@ void Main::follow_instructions(inweb_instructions *ins) {
 
 @<Translate a makefile@> =
 	if ((ins->makefile_setting) && (ins->prototype_setting == NULL))
-		ins->prototype_setting = Filenames::from_text(I"makescript.txt");
+		ins->prototype_setting = Filenames::from_text(I"script.mkscript");
 	if ((ins->gitignore_setting) && (ins->prototype_setting == NULL))
-		ins->prototype_setting = Filenames::from_text(I"gitignorescript.txt");
+		ins->prototype_setting = Filenames::from_text(I"script.giscript");
 	if ((ins->writeme_setting) && (ins->prototype_setting == NULL))
-		ins->prototype_setting = Filenames::from_text(I"READMEscript.txt");
+		ins->prototype_setting = Filenames::from_text(I"script.rmscript");
 	if (ins->makefile_setting)
 		Makefiles::write(W, ins->prototype_setting, ins->makefile_setting,
 			WebModules::make_search_path(ins->import_setting));

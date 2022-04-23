@@ -35,7 +35,8 @@ void Makefiles::write(web *W, filename *prototype, filename *F, module_search *I
 	WRITE_TO(header, "# and is not intended for human editing\n\n");
 	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
 
-	Preprocessor::preprocess(prototype, F, header, L, STORE_POINTER_makefile_specifics(specifics));
+	Preprocessor::preprocess(prototype, F, header, L,
+		STORE_POINTER_makefile_specifics(specifics), '#');
 }
 
 @ We will allow a makescript to declare "components" (webs, really), so we need

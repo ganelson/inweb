@@ -48,7 +48,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">inweb</a></li><li><a href="index.html#M">Manual</a></li><li><b>Webs, Tangling and Weaving</b></li></ul></div>
 <p class="purpose">How to use Inweb to weave or tangle a web already written.</p>
 
-<ul class="toc"><li><a href="M-wtaw.html#SP1">&#167;1. All-in-one webs</a></li><li><a href="M-wtaw.html#SP4">&#167;4. Multi-section webs</a></li><li><a href="M-wtaw.html#SP7">&#167;7. Tangling</a></li><li><a href="M-wtaw.html#SP10">&#167;10. Weaving</a></li><li><a href="M-wtaw.html#SP13">&#167;13. Weave tags</a></li><li><a href="M-wtaw.html#SP14">&#167;14. Modules</a></li><li><a href="M-wtaw.html#SP17">&#167;17. The section catalogue</a></li><li><a href="M-wtaw.html#SP18">&#167;18. Makefile</a></li><li><a href="M-wtaw.html#SP25">&#167;25. Gitignore</a></li><li><a href="M-wtaw.html#SP26">&#167;26. Ctags</a></li><li><a href="M-wtaw.html#SP27">&#167;27. README files</a></li><li><a href="M-wtaw.html#SP30">&#167;30. Semantic version numbering and build metadata</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-wtaw.html#SP1">&#167;1. All-in-one webs</a></li><li><a href="M-wtaw.html#SP4">&#167;4. Multi-section webs</a></li><li><a href="M-wtaw.html#SP7">&#167;7. Tangling</a></li><li><a href="M-wtaw.html#SP10">&#167;10. Weaving</a></li><li><a href="M-wtaw.html#SP13">&#167;13. Weave tags</a></li><li><a href="M-wtaw.html#SP14">&#167;14. Modules</a></li><li><a href="M-wtaw.html#SP17">&#167;17. The section catalogue</a></li><li><a href="M-wtaw.html#SP18">&#167;18. Makefile</a></li><li><a href="M-wtaw.html#SP25">&#167;25. Gitignore</a></li><li><a href="M-wtaw.html#SP26">&#167;26. README files</a></li><li><a href="M-wtaw.html#SP27">&#167;27. Semantic version numbering and build metadata</a></li><li><a href="M-wtaw.html#SP29">&#167;29. Ctags</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. All-in-one webs. </b>A program written for use with Inweb is called a "web". Inweb was primarily
 designed for large, multisection webs, but it can also be used in a much
@@ -811,28 +811,7 @@ not <span class="extract"><span class="ConsoleText-extract-syntax">.mkscript</sp
 if the web provided no script of its own; the idea is that you can then list
 some additional things to ignore.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Ctags. </b>Each time a web is tangled, Inweb writes a <span class="extract"><span class="ConsoleText-extract-syntax">tags</span></span> file to the web's home
-directory, containing a list of <a href="https://ctags.io" class="external">Universal ctags</a>
-for any structures, functions or constant definitions found in the web. You
-need do nothing to make this happen, and can ignore the file if it's of no
-use. If you are editing a web in certain text editors, though, such as
-<a href="https://www.barebones.com/products/bbedit" class="external">BBEdit</a> for MacOS, then this
-should make code completion and definition lookup features work.
-</p>
-
-<p class="commentary">You can however write the file elsewhere:
-</p>
-
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -tangle -ctags-to</span><span class="ConsoleText-plain-syntax"> secret_lair/my_nifty.ctags</span>
-</pre>
-<p class="commentary">or not at all:
-</p>
-
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -tangle -no-ctags</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. README files. </b>Repositories at Github customarily have <span class="extract"><span class="ConsoleText-extract-syntax">README.mk</span></span> files, in Markdown
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. README files. </b>Repositories at Github customarily have <span class="extract"><span class="ConsoleText-extract-syntax">README.mk</span></span> files, in Markdown
 syntax, explaining what they are. These of course should probably include
 current version numbers, and it's a pain keeping that up to date. For
 really complicated repositories, containing multiple webs, some automation
@@ -840,63 +819,22 @@ is essential, and once again Inweb can oblige.
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -write-me</span><span class="ConsoleText-plain-syntax"> W/README.mk</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -prototype</span><span class="ConsoleText-plain-syntax"> W/W.rmscript</span><span class="ConsoleText-identifier-syntax"> -write-me</span><span class="ConsoleText-plain-syntax"> W/README.mk</span>
 </pre>
-<p class="commentary">expands a script called <span class="extract"><span class="ConsoleText-extract-syntax">READMEscript.txt</span></span> into <span class="extract"><span class="ConsoleText-extract-syntax">README.mk</span></span>. Alternatively,
-the script can be specified explicitly:
+<p class="commentary">The same conventions and notations are used here as for makefiles and gitignores
+(see above), except that the comment character is no longer <span class="extract"><span class="ConsoleText-extract-syntax">#</span></span>, since a <span class="extract"><span class="ConsoleText-extract-syntax">#</span></span>
+at the start of a line means a heading in Markdown. Instead, a line is a comment
+if its first non-whitespace character is a forward-slash <span class="extract"><span class="ConsoleText-extract-syntax">/</span></span>.
 </p>
 
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -prototype</span><span class="ConsoleText-plain-syntax"> MySpecialThang.txt</span><span class="ConsoleText-identifier-syntax"> -write-me</span><span class="ConsoleText-plain-syntax"> W/README.mk</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>Everything in the script is copied over verbatim except where the <span class="extract"><span class="ConsoleText-extract-syntax">@</span></span> character
-is used, which was chosen because it isn't significant in Github's form of
-Markdown. <span class="extract"><span class="ConsoleText-extract-syntax">@name(args)</span></span> is like a function call (or, in more traditional
-language, a macro): it expands out to something depending on the arguments.
-<span class="extract"><span class="ConsoleText-extract-syntax">args</span></span> is a comma-separated list of fragments of text, which can themselves
-contain further uses of <span class="extract"><span class="ConsoleText-extract-syntax">@</span></span>. (If these fragments of text need to contain
-commas or brackets, they can be put into single quotes: <span class="extract"><span class="ConsoleText-extract-syntax">@thus(4,',')</span></span> has
-two arguments, <span class="extract"><span class="ConsoleText-extract-syntax">4</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">,</span></span>.) Three functions are built in:
-</p>
-
-<ul class="items"><li>(a) <span class="extract"><span class="ConsoleText-extract-syntax">@version(A)</span></span> expands to the version number of <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span>, which is normally the
-path to a web; it then produces the value of the <span class="extract"><span class="ConsoleText-extract-syntax">[[Version Number]]</span></span> for
-that web. But <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span> can also be the filename of an Inform extension, provided
-that it ends in <span class="extract"><span class="ConsoleText-extract-syntax">.i7x</span></span>, or a few other Inform-specific things for which
-Inweb is able to deduce a version number.
-</li><li>(b) <span class="extract"><span class="ConsoleText-extract-syntax">@purpose(A)</span></span> is the same, but for the <span class="extract"><span class="ConsoleText-extract-syntax">[[Purpose]]</span></span> of a web. It's
-blank for everything else.
-</li><li>(c) <span class="extract"><span class="ConsoleText-extract-syntax">@var(A,D)</span></span> is more general, and reads the bibliographic datum <span class="extract"><span class="ConsoleText-extract-syntax">D</span></span> from
-the web indicated by <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span>. In fact, <span class="extract"><span class="ConsoleText-extract-syntax">@version(A)</span></span> is an abbreviation for
-<span class="extract"><span class="ConsoleText-extract-syntax">@var(A,Version Number)</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">@purpose(A)</span></span> for <span class="extract"><span class="ConsoleText-extract-syntax">@var(A,Purpose)</span></span>, so this
-is really the only one needed.
+<ul class="items"><li>&#9679; The special makefile macros are not available, though <span class="extract"><span class="ConsoleText-extract-syntax">set</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">repeat</span></span> are;
+</li><li>&#9679; The special macro <span class="extract"><span class="ConsoleText-extract-syntax">{bibliographic datum: ... of: ...}</span></span> expands to the value
+of the named bibliographic datum for the program named. <span class="extract"><span class="ConsoleText-extract-syntax">Version Number</span></span> is
+especially useful, and is available even for some Inform assets which are not
+webs and do not therefore have bibliographic data of their own &mdash; interpreter
+templates and Inform 7 extensions, for example.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>It is also possible to define new functions. For example:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @define book(title, path, topic)</span>
-<span class="plain-syntax">    * @title - @topic. Ebook in Indoc format, stored at path @path.</span>
-<span class="plain-syntax">    @end</span>
-</pre>
-<p class="commentary">The definition lies between <span class="extract"><span class="extract-syntax">@define</span></span> and <span class="extract"><span class="extract-syntax">@end</span></span> commands. This one takes
-three parameters, and inside the definition, their values can be referred
-to as <span class="extract"><span class="extract-syntax">@title</span></span>, <span class="extract"><span class="extract-syntax">@path</span></span> and <span class="extract"><span class="extract-syntax">@topic</span></span>. Functions are free to use other
-functions:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    @define primary(program, language)</span>
-<span class="plain-syntax">    * @program - @purpose(@program) - __@version(@program)__</span>
-<span class="plain-syntax">    @end</span>
-</pre>
-<p class="commentary">However, each function needs to have been defined before any line on which
-it is actually expanded. A definition of one function <span class="extract"><span class="extract-syntax">A</span></span> can refer to another
-function <span class="extract"><span class="extract-syntax">B</span></span> not yet defined; but any actual use of <span class="extract"><span class="extract-syntax">A</span></span> must be made after
-both <span class="extract"><span class="extract-syntax">A</span></span> and <span class="extract"><span class="extract-syntax">B</span></span> have been defined. So, basically, declare before use.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. Semantic version numbering and build metadata. </b>When Inweb reads in a web, it also looks for a file called <span class="extract"><span class="extract-syntax">build.txt</span></span> in
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Semantic version numbering and build metadata. </b>When Inweb reads in a web, it also looks for a file called <span class="extract"><span class="ConsoleText-extract-syntax">build.txt</span></span> in
 the web's directory; if that isn't there, it looks for the same file in the
 current working directory; if that's not there either, never mind.
 </p>
@@ -929,7 +867,7 @@ the web as the variable <span class="extract"><span class="extract-syntax">Seman
 <p class="commentary">For more on semvers, see: <a href="https://semver.org" class="external">https://semver.org</a>
 </p>
 
-<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>A special advancing mechanism exists to update build numbers and dates.
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>A special advancing mechanism exists to update build numbers and dates.
 Running Inweb with <span class="extract"><span class="extract-syntax">-advance-build W</span></span> checks the build date for web <span class="extract"><span class="extract-syntax">W</span></span>:
 if it differs from today, then it is changed to today, and the build code
 is advanced by one.
@@ -939,6 +877,27 @@ is advanced by one.
 without need of a web.
 </p>
 
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. Ctags. </b>Each time a web is tangled, Inweb writes a <span class="extract"><span class="extract-syntax">tags</span></span> file to the web's home
+directory, containing a list of <a href="https://ctags.io" class="external">Universal ctags</a>
+for any structures, functions or constant definitions found in the web. You
+need do nothing to make this happen, and can ignore the file if it's of no
+use. If you are editing a web in certain text editors, though, such as
+<a href="https://www.barebones.com/products/bbedit" class="external">BBEdit</a> for MacOS, then this
+should make code completion and definition lookup features work.
+</p>
+
+<p class="commentary">You can however write the file elsewhere:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -tangle -ctags-to</span><span class="ConsoleText-plain-syntax"> secret_lair/my_nifty.ctags</span>
+</pre>
+<p class="commentary">or not at all:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -tangle -no-ctags</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-iti.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-iti.html">iti</a></li><li class="progresscurrent">wtaw</li><li class="progresssection"><a href="M-htwaw.html">htwaw</a></li><li class="progresssection"><a href="M-mwiw.html">mwiw</a></li><li class="progresssection"><a href="M-awwp.html">awwp</a></li><li class="progresssection"><a href="M-spl.html">spl</a></li><li class="progresssection"><a href="M-tid.html">tid</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-tr.html">2</a></li><li class="progresschapter"><a href="3-ta.html">3</a></li><li class="progresschapter"><a href="4-pl.html">4</a></li><li class="progresschapter"><a href="5-wt.html">5</a></li><li class="progresschapter"><a href="6-mkf.html">6</a></li><li class="progressnext"><a href="M-htwaw.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

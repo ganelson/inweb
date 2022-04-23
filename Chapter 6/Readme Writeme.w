@@ -2,247 +2,34 @@
 
 To construct Readme and similar files.
 
-@ This is a very simple generator for |README.md| files, written in Markdown
-syntax, but with a few macro expansions of our own. The prototype file, which
-uses these extra macros, is expanded to the final file, which does not.
-
-As we scan through the prototype file, we keep track of this:
+@ This is a simple use of //foundation: Preprocessor//. Note that we use a
+non-standard comment syntax (i.e., |/| at start of line, not |#|) to avoid
+colliding with Markdown's heading syntax.
 
 =
-typedef struct write_state {
-	struct text_stream *OUT;
-	struct linked_list *known_macros; /* of |macro| */
-	struct macro *current_definition;
-	struct macro_tokens *stack_frame;
-} write_state;
-
-void Readme::write(filename *from, filename *to) {
-	WRITE_TO(STDOUT, "write-me: %f --> %f\n", from, to);
-	write_state ws;
-	ws.current_definition = NULL;
-	ws.known_macros = NEW_LINKED_LIST(macro);
-	macro *V = Readme::new_macro(I"version", NULL, NULL);
-	ADD_TO_LINKED_LIST(V, macro, ws.known_macros);
-	macro *P = Readme::new_macro(I"purpose", NULL, NULL);
-	ADD_TO_LINKED_LIST(P, macro, ws.known_macros);
-	macro *A = Readme::new_macro(I"var", NULL, NULL);
-	ADD_TO_LINKED_LIST(A, macro, ws.known_macros);
-	ws.stack_frame = NULL;
-	text_stream file_to;
-	if (Streams::open_to_file(&file_to, to, UTF8_ENC) == FALSE)
-		Errors::fatal_with_file("can't write readme file", to);
-	ws.OUT = &file_to;
-	TextFiles::read(from, FALSE, "unable to read template file", TRUE,
-		&Readme::write_helper, NULL, (void *) &ws);
-	Streams::close(&file_to);
+void Readme::write(filename *prototype, filename *F) {
+	linked_list *L = NEW_LINKED_LIST(preprocessor_macro);
+	preprocessor_macro *mm = Preprocessor::new_macro(L,
+		I"bibliographic", I"datum: DATUM of: ASSET",
+		Readme::bibliographic_expander, NULL);
+	Preprocessor::do_not_suppress_whitespace(mm);
+	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
+	Preprocessor::preprocess(prototype, F, NULL, L, NULL_GENERAL_POINTER, '/');
 }
 
-@ The file consists of definitions of macros, made one at a time, and
-starting with |@define| and finishing with |@end|, and actual material.
+@ And this is the one domain-specific macro:
 
 =
-void Readme::write_helper(text_stream *text, text_file_position *tfp, void *state) {
-	write_state *ws = (write_state *) state;
-	text_stream *OUT = ws->OUT;
-
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L" *@end *")) {
-		if (ws->current_definition == NULL)
-			Errors::in_text_file("@end without @define", tfp);
-		else ws->current_definition = NULL;
-	} else if (ws->current_definition) {
-		if (Str::len(ws->current_definition->content) > 0)
-			WRITE_TO(ws->current_definition->content, "\n");
-		WRITE_TO(ws->current_definition->content, "%S", text);
-	} else if (Regexp::match(&mr, text, L" *@define (%i+)(%c*)")) {
-		if (ws->current_definition)
-			Errors::in_text_file("@define without @end", tfp);
-		else {
-			macro *M = Readme::new_macro(mr.exp[0], mr.exp[1], tfp);
-			ws->current_definition = M;
-			ADD_TO_LINKED_LIST(M, macro, ws->known_macros);
-		}
-	} else {
-		Readme::expand_material(ws, OUT, text, tfp);
-		Readme::expand_material(ws, OUT, I"\n", tfp);
-	}
-	Regexp::dispose_of(&mr);
+void Readme::bibliographic_expander(preprocessor_macro *mm, preprocessor_state *PPS,
+	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
+	text_stream *datum = parameter_values[0];
+	text_stream *asset_name = parameter_values[1];
+	text_stream *OUT = PPS->dest;
+	writeme_asset *A = Readme::find_asset(asset_name);
+	if (A->if_web) WRITE("%S", Bibliographic::get_datum(A->if_web, datum));
+	else if (Str::eq(datum, I"Build Date")) WRITE("%S", A->date);
+	else if (Str::eq(datum, I"Version Number")) WRITE("%S", A->version);
 }
-
-@ The "content" of a macro is its definition, and the tokens are named
-parameters.
-
-=
-typedef struct macro {
-	struct text_stream *name;
-	struct text_stream *content;
-	struct macro_tokens tokens;
-	CLASS_DEFINITION
-} macro;
-
-macro *Readme::new_macro(text_stream *name, text_stream *tokens, text_file_position *tfp) {
-	macro *M = CREATE(macro);
-	M->name = Str::duplicate(name);
-	M->tokens = Readme::parse_token_list(tokens, tfp);
-	M->content = Str::new();
-	return M;
-}
-
-typedef struct macro_tokens {
-	struct macro *bound_to;
-	struct text_stream *pars[8];
-	int no_pars;
-	struct macro_tokens *down;
-	CLASS_DEFINITION
-} macro_tokens;
-
-@ =
-macro_tokens Readme::parse_token_list(text_stream *chunk, text_file_position *tfp) {
-	macro_tokens mt;
-	mt.no_pars = 0;
-	mt.down = NULL;
-	mt.bound_to = NULL;
-	if (Str::get_first_char(chunk) == '(') {
-		int x = 1, bl = 1, from = 1, quoted = FALSE;
-		while ((bl > 0) && (Str::get_at(chunk, x) != 0)) {
-			wchar_t c = Str::get_at(chunk, x);
-			if (c == '\'') {
-				quoted = quoted?FALSE:TRUE;
-			} else if (quoted == FALSE) {
-				if (c == '(') bl++;
-				else if (c == ')') {
-					bl--;
-					if (bl == 0) @<Recognise token@>;
-				} else if ((c == ',') && (bl == 1)) @<Recognise token@>;
-			}
-			x++;
-		}
-		Str::delete_n_characters(chunk, x);
-	}
-	return mt;
-}
-
-@ Quotes can be used in token lists so that literal commas and brackets can
-be used without breaking the flow.
-
-@<Recognise token@> =
-	int n = mt.no_pars;
-	if (n >= 8) Errors::in_text_file("too many parameters", tfp);
-	else {
-		mt.pars[n] = Str::new();
-		for (int j=from; j<x; j++) PUT_TO(mt.pars[n], Str::get_at(chunk, j));
-		Str::trim_white_space(mt.pars[n]);
-		if ((Str::get_first_char(mt.pars[n]) == '\'') &&
-			(Str::get_last_char(mt.pars[n]) == '\'')) {
-			Str::delete_first_character(mt.pars[n]);
-			Str::delete_last_character(mt.pars[n]);
-		}
-		mt.no_pars++;
-	}
-	from = x+1;
-
-@ So much for creating macros. Now we can write the actual expander. As can
-be seen, it passes material straight through, except for instances of the
-notation |@name|, possibly followed by a bracketed list of parameters.
-
-=
-void Readme::expand_material(write_state *ws, text_stream *OUT, text_stream *text,
-	text_file_position *tfp) {
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L"(%c*?)@(%i+)(%c*)")) {
-		Readme::expand_material(ws, OUT, mr.exp[0], tfp);
-		macro_tokens mt = Readme::parse_token_list(mr.exp[2], tfp);
-		mt.down = ws->stack_frame;
-		ws->stack_frame = &mt;
-		Readme::expand_at(ws, OUT, mr.exp[1], tfp);
-		ws->stack_frame = mt.down;
-		Readme::expand_material(ws, OUT, mr.exp[2], tfp);
-	} else {
-		WRITE("%S", text);
-	}
-	Regexp::dispose_of(&mr);
-}
-
-@ If we run into the notation |@something|, it's possible that |something| is
-the name of a parameter somewhere in the current stack, either on the top
-frame or on frames lower down. The first match wins... and if there are no
-matches, then it must be a macro name.
-
-=
-void Readme::expand_at(write_state *ws, text_stream *OUT, text_stream *macro_name,
-	text_file_position *tfp) {
-	macro_tokens *stack = ws->stack_frame;
-	while (stack) {
-		macro *in = stack->bound_to;
-		if (in)
-			for (int n = 0; n < in->tokens.no_pars; n++)
-				if (Str::eq(in->tokens.pars[n], macro_name)) {
-					if (n < stack->no_pars) {
-						Readme::expand_material(ws, OUT, stack->pars[n], tfp);
-						return;
-					}
-				}
-		stack = stack->down;
-	}
-
-	macro *M;
-	LOOP_OVER_LINKED_LIST(M, macro, ws->known_macros)
-		if (Str::eq(M->name, macro_name)) {
-			ws->stack_frame->bound_to = M;
-			Readme::expand_macro(ws, OUT, M, tfp);
-			return;
-		}
-	Errors::in_text_file("no such @-command", tfp);
-	WRITE_TO(STDERR, "(command is '%S')\n", macro_name);
-}
-
-@ So, then: suppose we have to expand |@example(5, gold rings)|. Then the
-|macro_name| below is set to |example|, and the current stack frame contains the
-values |5| and |gold rings|.
-
-=
-void Readme::expand_macro(write_state *ws, text_stream *OUT, macro *M, text_file_position *tfp) {
-	if (Str::eq(M->name, I"version")) @<Perform built-in expansion of version macro@>
-	else if (Str::eq(M->name, I"purpose")) @<Perform built-in expansion of purpose macro@>
-	else if (Str::eq(M->name, I"var")) @<Perform built-in expansion of var macro@>
-	else {
-		ws->stack_frame->bound_to = M;
-		Readme::expand_material(ws, OUT, M->content, tfp);
-	}
-}
-
-@<Perform built-in expansion of version macro@> =
-	if (ws->stack_frame->no_pars != 1)
-		Errors::in_text_file("@version takes 1 parameter", tfp);
-	else {
-		TEMPORARY_TEXT(program)
-		Readme::expand_material(ws, program, ws->stack_frame->pars[0], tfp);
-		Readme::write_var(OUT, program, I"Version Number");
-		DISCARD_TEXT(program)
-	}
-
-@<Perform built-in expansion of purpose macro@> =
-	if (ws->stack_frame->no_pars != 1)
-		Errors::in_text_file("@purpose takes 1 parameter", tfp);
-	else {
-		TEMPORARY_TEXT(program)
-		Readme::expand_material(ws, program, ws->stack_frame->pars[0], tfp);
-		Readme::write_var(OUT, program, I"Purpose");
-		DISCARD_TEXT(program)
-	}
-
-@<Perform built-in expansion of var macro@> =
-	if (ws->stack_frame->no_pars != 2)
-		Errors::in_text_file("@var takes 2 parameters", tfp);
-	else {
-		TEMPORARY_TEXT(program)
-		TEMPORARY_TEXT(bibv)
-		Readme::expand_material(ws, program, ws->stack_frame->pars[0], tfp);
-		Readme::expand_material(ws, bibv, ws->stack_frame->pars[1], tfp);
-		Readme::write_var(OUT, program, bibv);
-		DISCARD_TEXT(program)
-		DISCARD_TEXT(bibv)
-	}
 
 @ An "asset" here is something for which we might want to write the version
 number of, or some similar metadata for. Assets are usually webs, but can

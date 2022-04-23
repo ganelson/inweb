@@ -655,24 +655,6 @@ not |.mkscript|, and:
 if the web provided no script of its own; the idea is that you can then list
 some additional things to ignore.
 
-@h Ctags.
-Each time a web is tangled, Inweb writes a |tags| file to the web's home
-directory, containing a list of //Universal ctags -> https://ctags.io//
-for any structures, functions or constant definitions found in the web. You
-need do nothing to make this happen, and can ignore the file if it's of no
-use. If you are editing a web in certain text editors, though, such as
-//BBEdit -> https://www.barebones.com/products/bbedit// for MacOS, then this
-should make code completion and definition lookup features work.
-
-You can however write the file elsewhere:
-= (text as ConsoleText)
-	$ inweb/Tangled/inweb W -tangle -ctags-to secret_lair/my_nifty.ctags
-=
-or not at all:
-= (text as ConsoleText)
-	$ inweb/Tangled/inweb W -tangle -no-ctags
-=
-
 @h README files.
 Repositories at Github customarily have |README.mk| files, in Markdown
 syntax, explaining what they are. These of course should probably include
@@ -680,55 +662,20 @@ current version numbers, and it's a pain keeping that up to date. For
 really complicated repositories, containing multiple webs, some automation
 is essential, and once again Inweb can oblige.
 = (text as ConsoleText)
-	$ inweb/Tangled/inweb W -write-me W/README.mk
+	$ inweb/Tangled/inweb W -prototype W/W.rmscript -write-me W/README.mk
 =
-expands a script called |READMEscript.txt| into |README.mk|. Alternatively,
-the script can be specified explicitly:
-= (text as ConsoleText)
-	$ inweb/Tangled/inweb W -prototype MySpecialThang.txt -write-me W/README.mk
-=
-@ Everything in the script is copied over verbatim except where the |@| character
-is used, which was chosen because it isn't significant in Github's form of
-Markdown. |@name(args)| is like a function call (or, in more traditional
-language, a macro): it expands out to something depending on the arguments.
-|args| is a comma-separated list of fragments of text, which can themselves
-contain further uses of |@|. (If these fragments of text need to contain
-commas or brackets, they can be put into single quotes: |@thus(4,',')| has
-two arguments, |4| and |,|.) Three functions are built in:
+The same conventions and notations are used here as for makefiles and gitignores
+(see above), except that the comment character is no longer |#|, since a |#|
+at the start of a line means a heading in Markdown. Instead, a line is a comment
+if its first non-whitespace character is a forward-slash |/|.
 
-(a) |@version(A)| expands to the version number of |A|, which is normally the
-path to a web; it then produces the value of the |[[Version Number]]| for
-that web. But |A| can also be the filename of an Inform extension, provided
-that it ends in |.i7x|, or a few other Inform-specific things for which
-Inweb is able to deduce a version number.
+(*) The special makefile macros are not available, though |set| and |repeat| are;
 
-(b) |@purpose(A)| is the same, but for the |[[Purpose]]| of a web. It's
-blank for everything else.
-
-(c) |@var(A,D)| is more general, and reads the bibliographic datum |D| from
-the web indicated by |A|. In fact, |@version(A)| is an abbreviation for
-|@var(A,Version Number)| and |@purpose(A)| for |@var(A,Purpose)|, so this
-is really the only one needed.
-
-@ It is also possible to define new functions. For example:
-= (text)
-	@define book(title, path, topic)
-	* @title - @topic. Ebook in Indoc format, stored at path @path.
-	@end
-=
-The definition lies between |@define| and |@end| commands. This one takes
-three parameters, and inside the definition, their values can be referred
-to as |@title|, |@path| and |@topic|. Functions are free to use other
-functions:
-= (text)
-	@define primary(program, language)
-	* @program - @purpose(@program) - __@version(@program)__
-	@end
-=
-However, each function needs to have been defined before any line on which
-it is actually expanded. A definition of one function |A| can refer to another
-function |B| not yet defined; but any actual use of |A| must be made after
-both |A| and |B| have been defined. So, basically, declare before use.
+(*) The special macro |{bibliographic datum: ... of: ...}| expands to the value
+of the named bibliographic datum for the program named. |Version Number| is
+especially useful, and is available even for some Inform assets which are not
+webs and do not therefore have bibliographic data of their own -- interpreter
+templates and Inform 7 extensions, for example.
 
 @h Semantic version numbering and build metadata.
 When Inweb reads in a web, it also looks for a file called |build.txt| in
@@ -763,3 +710,21 @@ is advanced by one.
 
 Running |-advance-build-file B| does this for a stand-alone build file |B|,
 without need of a web.
+
+@h Ctags.
+Each time a web is tangled, Inweb writes a |tags| file to the web's home
+directory, containing a list of //Universal ctags -> https://ctags.io//
+for any structures, functions or constant definitions found in the web. You
+need do nothing to make this happen, and can ignore the file if it's of no
+use. If you are editing a web in certain text editors, though, such as
+//BBEdit -> https://www.barebones.com/products/bbedit// for MacOS, then this
+should make code completion and definition lookup features work.
+
+You can however write the file elsewhere:
+= (text as ConsoleText)
+	$ inweb/Tangled/inweb W -tangle -ctags-to secret_lair/my_nifty.ctags
+=
+or not at all:
+= (text as ConsoleText)
+	$ inweb/Tangled/inweb W -tangle -no-ctags
+=

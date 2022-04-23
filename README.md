@@ -85,5 +85,5 @@ If you have also built Intest as "work/intest", then you can try these:
 ### Colophon
 
 This README.mk file was generated automatically by Inweb, and should not
-be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
+be edited. To make changes, edit inweb.rmscript and re-generate.
 

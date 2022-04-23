@@ -25,8 +25,6 @@ see //foundation: A Brief Guide to Foundation//.
 @e hash_table_entry_usage_CLASS
 @e language_function_CLASS
 @e language_type_CLASS
-@e macro_CLASS
-@e macro_tokens_CLASS
 @e macro_usage_CLASS
 @e makefile_specifics_CLASS
 @e nonterminal_variable_CLASS
@@ -116,9 +114,7 @@ DECLARE_CLASS(hash_table_entry_usage)
 DECLARE_CLASS(hash_table_entry)
 DECLARE_CLASS(language_function)
 DECLARE_CLASS(language_type)
-DECLARE_CLASS(macro_tokens)
 DECLARE_CLASS(macro_usage)
-DECLARE_CLASS(macro)
 DECLARE_CLASS(makefile_specifics)
 DECLARE_CLASS(nonterminal_variable)
 DECLARE_CLASS(para_macro)

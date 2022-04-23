@@ -809,76 +809,74 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define hash_table_entry_usage_CLASS 54
 #define language_function_CLASS 55
 #define language_type_CLASS 56
-#define macro_CLASS 57
-#define macro_tokens_CLASS 58
-#define macro_usage_CLASS 59
-#define makefile_specifics_CLASS 60
-#define nonterminal_variable_CLASS 61
-#define para_macro_CLASS 62
-#define paragraph_CLASS 63
-#define paragraph_tagging_CLASS 64
-#define preform_nonterminal_CLASS 65
-#define programming_language_CLASS 66
-#define reserved_word_CLASS 67
-#define section_CLASS 68
-#define source_line_CLASS 69
-#define structure_element_CLASS 70
-#define tangle_target_CLASS 71
-#define tex_results_CLASS 72
-#define text_literal_CLASS 73
-#define theme_tag_CLASS 74
-#define weave_format_CLASS 75
-#define weave_pattern_CLASS 76
-#define weave_plugin_CLASS 77
-#define weave_order_CLASS 78
-#define web_CLASS 79
-#define writeme_asset_CLASS 80
-#define weave_document_node_CLASS 81
-#define weave_head_node_CLASS 82
-#define weave_body_node_CLASS 83
-#define weave_tail_node_CLASS 84
-#define weave_section_header_node_CLASS 85
-#define weave_section_footer_node_CLASS 86
-#define weave_chapter_header_node_CLASS 87
-#define weave_chapter_footer_node_CLASS 88
-#define weave_verbatim_node_CLASS 89
-#define weave_section_purpose_node_CLASS 90
-#define weave_subheading_node_CLASS 91
-#define weave_bar_node_CLASS 92
-#define weave_linebreak_node_CLASS 93
-#define weave_pagebreak_node_CLASS 94
-#define weave_paragraph_heading_node_CLASS 95
-#define weave_endnote_node_CLASS 96
-#define weave_material_node_CLASS 97
-#define weave_figure_node_CLASS 98
-#define weave_extract_node_CLASS 99
-#define weave_audio_node_CLASS 100
-#define weave_download_node_CLASS 101
-#define weave_video_node_CLASS 102
-#define weave_embed_node_CLASS 103
-#define weave_pmac_node_CLASS 104
-#define weave_vskip_node_CLASS 105
-#define weave_chapter_node_CLASS 106
-#define weave_section_node_CLASS 107
-#define weave_code_line_node_CLASS 108
-#define weave_function_usage_node_CLASS 109
-#define weave_commentary_node_CLASS 110
-#define weave_carousel_slide_node_CLASS 111
-#define weave_toc_node_CLASS 112
-#define weave_toc_line_node_CLASS 113
-#define weave_chapter_title_page_node_CLASS 114
-#define weave_defn_node_CLASS 115
-#define weave_source_code_node_CLASS 116
-#define weave_url_node_CLASS 117
-#define weave_footnote_cue_node_CLASS 118
-#define weave_begin_footnote_text_node_CLASS 119
-#define weave_display_line_node_CLASS 120
-#define weave_function_defn_node_CLASS 121
-#define weave_item_node_CLASS 122
-#define weave_grammar_index_node_CLASS 123
-#define weave_inline_node_CLASS 124
-#define weave_locale_node_CLASS 125
-#define weave_maths_node_CLASS 126
+#define macro_usage_CLASS 57
+#define makefile_specifics_CLASS 58
+#define nonterminal_variable_CLASS 59
+#define para_macro_CLASS 60
+#define paragraph_CLASS 61
+#define paragraph_tagging_CLASS 62
+#define preform_nonterminal_CLASS 63
+#define programming_language_CLASS 64
+#define reserved_word_CLASS 65
+#define section_CLASS 66
+#define source_line_CLASS 67
+#define structure_element_CLASS 68
+#define tangle_target_CLASS 69
+#define tex_results_CLASS 70
+#define text_literal_CLASS 71
+#define theme_tag_CLASS 72
+#define weave_format_CLASS 73
+#define weave_pattern_CLASS 74
+#define weave_plugin_CLASS 75
+#define weave_order_CLASS 76
+#define web_CLASS 77
+#define writeme_asset_CLASS 78
+#define weave_document_node_CLASS 79
+#define weave_head_node_CLASS 80
+#define weave_body_node_CLASS 81
+#define weave_tail_node_CLASS 82
+#define weave_section_header_node_CLASS 83
+#define weave_section_footer_node_CLASS 84
+#define weave_chapter_header_node_CLASS 85
+#define weave_chapter_footer_node_CLASS 86
+#define weave_verbatim_node_CLASS 87
+#define weave_section_purpose_node_CLASS 88
+#define weave_subheading_node_CLASS 89
+#define weave_bar_node_CLASS 90
+#define weave_linebreak_node_CLASS 91
+#define weave_pagebreak_node_CLASS 92
+#define weave_paragraph_heading_node_CLASS 93
+#define weave_endnote_node_CLASS 94
+#define weave_material_node_CLASS 95
+#define weave_figure_node_CLASS 96
+#define weave_extract_node_CLASS 97
+#define weave_audio_node_CLASS 98
+#define weave_download_node_CLASS 99
+#define weave_video_node_CLASS 100
+#define weave_embed_node_CLASS 101
+#define weave_pmac_node_CLASS 102
+#define weave_vskip_node_CLASS 103
+#define weave_chapter_node_CLASS 104
+#define weave_section_node_CLASS 105
+#define weave_code_line_node_CLASS 106
+#define weave_function_usage_node_CLASS 107
+#define weave_commentary_node_CLASS 108
+#define weave_carousel_slide_node_CLASS 109
+#define weave_toc_node_CLASS 110
+#define weave_toc_line_node_CLASS 111
+#define weave_chapter_title_page_node_CLASS 112
+#define weave_defn_node_CLASS 113
+#define weave_source_code_node_CLASS 114
+#define weave_url_node_CLASS 115
+#define weave_footnote_cue_node_CLASS 116
+#define weave_begin_footnote_text_node_CLASS 117
+#define weave_display_line_node_CLASS 118
+#define weave_function_defn_node_CLASS 119
+#define weave_item_node_CLASS 120
+#define weave_grammar_index_node_CLASS 121
+#define weave_inline_node_CLASS 122
+#define weave_locale_node_CLASS 123
+#define weave_maths_node_CLASS 124
 #define NO_MODE 0
 #define ANALYSE_MODE 1
 #define TANGLE_MODE 2
@@ -1095,7 +1093,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define PDFTEX_TEX_FORM 1
 #define NO_DEFINED_CLSW_VALUES 38
 #define NO_DEFINED_DA_VALUES 4
-#define NO_DEFINED_CLASS_VALUES 127
+#define NO_DEFINED_CLASS_VALUES 125
 #define NO_DEFINED_MREASON_VALUES 5
 #define NO_DEFINED_LOCALE_VALUES 2
 #define NO_DEFINED_MTID_VALUES 42
@@ -1311,7 +1309,7 @@ typedef struct text_file_position {
 	int skip_terminator;
 	int actively_scanning; /* whether we are still interested in the rest of the file */
 } text_file_position;
-#line 58 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 59 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 typedef struct preprocessor_loop {
 	struct text_stream *loop_var_name;
 	struct linked_list *iterations; /* of |text_stream| */
@@ -1331,20 +1329,21 @@ typedef struct preprocessor_state {
 	struct preprocessor_variable_set *stack_frame;
 	struct linked_list *known_macros; /* of |preprocessor_macro| */
 	struct general_pointer specifics;
+	wchar_t comment_character;
 } preprocessor_state;
-#line 413 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 422 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 typedef struct preprocessor_variable {
 	struct text_stream *name;
 	struct text_stream *value;
 	CLASS_DEFINITION
 } preprocessor_variable;
-#line 433 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 442 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 typedef struct preprocessor_variable_set {
 	struct linked_list *variables; /* of |preprocessor_variable| */
 	struct preprocessor_variable_set *outer;
 	CLASS_DEFINITION
 } preprocessor_variable_set;
-#line 506 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 515 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 typedef struct preprocessor_macro {
 	/* syntax */
 	struct text_stream *identifier;
@@ -1368,7 +1367,7 @@ typedef struct preprocessor_macro {
 
 	CLASS_DEFINITION
 } preprocessor_macro;
-#line 530 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 539 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 typedef struct preprocessor_macro_parameter {
 	struct text_stream *name;
 	struct text_stream *definition_token;
@@ -2407,7 +2406,7 @@ typedef struct tex_results {
 	struct filename *PDF_filename;
 	CLASS_DEFINITION
 } tex_results;
-#line 45 "inweb/Chapter 6/Makefiles.w"
+#line 46 "inweb/Chapter 6/Makefiles.w"
 typedef struct makefile_specifics {
 	struct web *for_web; /* if one has been set at the command line */
 	struct dictionary *tools_dictionary;   /* components with |type: tool| */
@@ -2422,29 +2421,7 @@ typedef struct defined_constant {
 	struct source_line *at;
 	CLASS_DEFINITION
 } defined_constant;
-#line 12 "inweb/Chapter 6/Readme Writeme.w"
-typedef struct write_state {
-	struct text_stream *OUT;
-	struct linked_list *known_macros; /* of |macro| */
-	struct macro *current_definition;
-	struct macro_tokens *stack_frame;
-} write_state;
-#line 91 "inweb/Chapter 6/Readme Writeme.w"
-typedef struct macro_tokens {
-	struct macro *bound_to;
-	struct text_stream *pars[8];
-	int no_pars;
-	struct macro_tokens *down;
-	CLASS_DEFINITION
-} macro_tokens;
-#line 76 "inweb/Chapter 6/Readme Writeme.w"
-typedef struct macro {
-	struct text_stream *name;
-	struct text_stream *content;
-	struct macro_tokens tokens;
-	CLASS_DEFINITION
-} macro;
-#line 254 "inweb/Chapter 6/Readme Writeme.w"
+#line 41 "inweb/Chapter 6/Readme Writeme.w"
 typedef struct writeme_asset {
 	struct text_stream *name;
 	struct web_md *if_web;
@@ -3439,46 +3416,48 @@ unicode_file_buffer  TextFiles__create_ufb(void) ;
 #line 226 "inweb/foundation-module/Chapter 4/Text Files.w"
 int  TextFiles__utf8_fgetc(FILE *from, const char **or_from, int escape_oddities, 	unicode_file_buffer *ufb) ;
 #line 23 "inweb/foundation-module/Chapter 4/Preprocessor.w"
-void  Preprocessor__preprocess(filename *prototype, filename *F, text_stream *header, 	linked_list *special_macros, general_pointer specifics) ;
-#line 81 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+void  Preprocessor__preprocess(filename *prototype, filename *F, text_stream *header, 	linked_list *special_macros, general_pointer specifics, wchar_t comment_char) ;
+#line 83 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__set_loop_var_name(preprocessor_loop *loop, text_stream *name) ;
-#line 84 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 86 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__add_loop_iteration(preprocessor_loop *loop, text_stream *value) ;
-#line 96 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 98 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__scan_line(text_stream *line, text_file_position *tfp, void *X) ;
-#line 160 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 169 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocessor_state *PPS) ;
-#line 399 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 408 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 int  Preprocessor__acceptable_variable_name(text_stream *name) ;
-#line 419 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 428 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 text_stream * Preprocessor__read_variable(preprocessor_variable *var) ;
-#line 423 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 432 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__write_variable(preprocessor_variable *var, text_stream *val) ;
-#line 439 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 448 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_variable_set * Preprocessor__new_variable_set(preprocessor_variable_set *outer) ;
-#line 446 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 455 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_variable * Preprocessor__find_variable_in_one(text_stream *name, 	preprocessor_variable_set *set) ;
-#line 456 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 465 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_variable * Preprocessor__find_variable(text_stream *name, 	preprocessor_variable_set *set) ;
-#line 470 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 479 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_variable * Preprocessor__ensure_variable(text_stream *name, 	preprocessor_variable_set *in_set) ;
-#line 547 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 556 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_macro * Preprocessor__new_macro(linked_list *L, text_stream *name, 	text_stream *parameter_specification, 	void (*expander)(preprocessor_macro *, preprocessor_state *, text_stream **, preprocessor_loop *, text_file_position *), 	text_file_position *tfp) ;
-#line 607 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 616 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__add_line_to_macro(preprocessor_macro *mm, text_stream *line, 	text_file_position *tfp) ;
-#line 625 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 634 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 linked_list * Preprocessor__list_of_reserved_macros(linked_list *special_macros) ;
-#line 638 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 647 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+void  Preprocessor__do_not_suppress_whitespace(preprocessor_macro *mm) ;
+#line 652 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__new_loop_macro(linked_list *L, text_stream *name, 	text_stream *parameter_specification, 	void (*expander)(preprocessor_macro *, preprocessor_state *, text_stream **, preprocessor_loop *, text_file_position *), 	text_file_position *tfp) ;
-#line 679 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 691 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_macro * Preprocessor__find_macro(linked_list *L, text_stream *name) ;
-#line 694 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 706 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__default_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 711 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 723 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__set_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 726 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 738 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__repeat_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 755 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 767 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__end_loop_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
 #line 77 "inweb/foundation-module/Chapter 4/Tries and Avinues.w"
 wchar_t * Tries__search(match_trie *T, text_stream *p, wchar_t *add_outcome) ;
@@ -4578,21 +4557,21 @@ void  TeXUtilities__remove_math_mode(OUTPUT_STREAM, text_stream *text) ;
 void  TeXUtilities__remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int from, int to) ;
 #line 12 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__write(web *W, filename *prototype, filename *F, module_search *I) ;
-#line 64 "inweb/Chapter 6/Makefiles.w"
+#line 65 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__identity_settings_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 86 "inweb/Chapter 6/Makefiles.w"
+#line 87 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__platform_settings_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 108 "inweb/Chapter 6/Makefiles.w"
+#line 109 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__seek_INWEBPLATFORM(text_stream *line, text_file_position *tfp, void *X) ;
-#line 118 "inweb/Chapter 6/Makefiles.w"
+#line 119 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 168 "inweb/Chapter 6/Makefiles.w"
+#line 169 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 201 "inweb/Chapter 6/Makefiles.w"
+#line 202 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__dependent_files_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 257 "inweb/Chapter 6/Makefiles.w"
+#line 258 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) ;
-#line 298 "inweb/Chapter 6/Makefiles.w"
+#line 299 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) ;
 #line 8 "inweb/Chapter 6/Git Support.w"
 void  Git__write_gitignore(web *W, filename *prototype, filename *F) ;
@@ -4604,31 +4583,21 @@ void  Ctags__write(web *W, filename *F) ;
 void  Ctags__write_line_ref(OUTPUT_STREAM, source_line *L, pathname *P) ;
 #line 182 "inweb/Chapter 6/Ctags Support.w"
 void  Ctags__note_defined_constant(source_line *L, text_stream *name) ;
-#line 19 "inweb/Chapter 6/Readme Writeme.w"
-void  Readme__write(filename *from, filename *to) ;
-#line 44 "inweb/Chapter 6/Readme Writeme.w"
-void  Readme__write_helper(text_stream *text, text_file_position *tfp, void *state) ;
-#line 83 "inweb/Chapter 6/Readme Writeme.w"
-macro * Readme__new_macro(text_stream *name, text_stream *tokens, text_file_position *tfp) ;
-#line 100 "inweb/Chapter 6/Readme Writeme.w"
-macro_tokens  Readme__parse_token_list(text_stream *chunk, text_file_position *tfp) ;
-#line 149 "inweb/Chapter 6/Readme Writeme.w"
-void  Readme__expand_material(write_state *ws, text_stream *OUT, text_stream *text, 	text_file_position *tfp) ;
-#line 172 "inweb/Chapter 6/Readme Writeme.w"
-void  Readme__expand_at(write_state *ws, text_stream *OUT, text_stream *macro_name, 	text_file_position *tfp) ;
-#line 204 "inweb/Chapter 6/Readme Writeme.w"
-void  Readme__expand_macro(write_state *ws, text_stream *OUT, macro *M, text_file_position *tfp) ;
-#line 263 "inweb/Chapter 6/Readme Writeme.w"
+#line 10 "inweb/Chapter 6/Readme Writeme.w"
+void  Readme__write(filename *prototype, filename *F) ;
+#line 23 "inweb/Chapter 6/Readme Writeme.w"
+void  Readme__bibliographic_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
+#line 50 "inweb/Chapter 6/Readme Writeme.w"
 void  Readme__write_var(text_stream *OUT, text_stream *program, text_stream *datum) ;
-#line 273 "inweb/Chapter 6/Readme Writeme.w"
+#line 60 "inweb/Chapter 6/Readme Writeme.w"
 writeme_asset * Readme__find_asset(text_stream *program) ;
-#line 324 "inweb/Chapter 6/Readme Writeme.w"
+#line 111 "inweb/Chapter 6/Readme Writeme.w"
 void  Readme__extension_harvester(text_stream *text, text_file_position *tfp, void *state) ;
-#line 336 "inweb/Chapter 6/Readme Writeme.w"
+#line 123 "inweb/Chapter 6/Readme Writeme.w"
 void  Readme__header_harvester(text_stream *text, text_file_position *tfp, void *state) ;
-#line 350 "inweb/Chapter 6/Readme Writeme.w"
+#line 137 "inweb/Chapter 6/Readme Writeme.w"
 void  Readme__template_harvester(text_stream *text, text_file_position *tfp, void *state) ;
-#line 366 "inweb/Chapter 6/Readme Writeme.w"
+#line 153 "inweb/Chapter 6/Readme Writeme.w"
 void  Readme__readme_harvester(text_stream *text, text_file_position *tfp, void *state) ;
 #line 66 "inweb/Chapter 6/Colonies.w"
 void  Colonies__load(filename *F) ;
@@ -5346,11 +5315,6 @@ text_stream *TL_IS_675 = NULL;
 text_stream *TL_IS_676 = NULL;
 text_stream *TL_IS_677 = NULL;
 text_stream *TL_IS_678 = NULL;
-text_stream *TL_IS_679 = NULL;
-text_stream *TL_IS_680 = NULL;
-text_stream *TL_IS_681 = NULL;
-text_stream *TL_IS_682 = NULL;
-text_stream *TL_IS_683 = NULL;
 void register_tangled_text_literals(void);
 #line 57 "inweb/foundation-module/Chapter 2/Streams.w"
 #define WRITE(args...) Writers__printf(OUT, args)
@@ -11215,7 +11179,7 @@ int TextFiles__utf8_fgetc(FILE *from, const char **or_from, int escape_oddities,
 
 #line 23 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__preprocess(filename *prototype, filename *F, text_stream *header,
-	linked_list *special_macros, general_pointer specifics) {
+	linked_list *special_macros, general_pointer specifics, wchar_t comment_char) {
 	struct text_stream processed_file;
 	if (STREAM_OPEN_TO_FILE(&processed_file, F, ISO_ENC) == FALSE)
 		Errors__fatal_with_file("unable to write tangled file", F);
@@ -11225,7 +11189,7 @@ void Preprocessor__preprocess(filename *prototype, filename *F, text_stream *hea
 	preprocessor_state PPS;
 	
 {
-#line 66 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 67 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	PPS.dest = OUT;
 	PPS.suppress_newline = FALSE;
 	PPS.last_line_was_blank = TRUE;
@@ -11236,6 +11200,7 @@ void Preprocessor__preprocess(filename *prototype, filename *F, text_stream *hea
 	PPS.stack_frame = PPS.global_variables;
 	PPS.known_macros = Preprocessor__list_of_reserved_macros(special_macros);
 	PPS.specifics = specifics;
+	PPS.comment_character = comment_char;
 
 }
 #line 32 "inweb/foundation-module/Chapter 4/Preprocessor.w"
@@ -11245,11 +11210,11 @@ void Preprocessor__preprocess(filename *prototype, filename *F, text_stream *hea
 	STREAM_CLOSE(OUT);
 }
 
-#line 57 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 58 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 
-#line 64 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 65 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 
-#line 81 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 83 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__set_loop_var_name(preprocessor_loop *loop, text_stream *name) {
 	loop->loop_var_name = Str__duplicate(name);
 }
@@ -11257,24 +11222,28 @@ void Preprocessor__add_loop_iteration(preprocessor_loop *loop, text_stream *valu
 	ADD_TO_LINKED_LIST(Str__duplicate(value), text_stream, loop->iterations);
 }
 
-#line 96 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 98 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__scan_line(text_stream *line, text_file_position *tfp, void *X) {
 	preprocessor_state *PPS = (preprocessor_state *) X;
-	match_results mr = Regexp__create_mr();
 	
 {
-#line 106 "inweb/foundation-module/Chapter 4/Preprocessor.w"
-	if (Regexp__match(&mr, line, L" *#%c*")) { Regexp__dispose_of(&mr); return; }
+#line 110 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+	LOOP_THROUGH_TEXT(pos, line) {
+		wchar_t c = Str__get(pos);
+		if (c == PPS->comment_character) return;
+		if (Characters__is_whitespace(c) == FALSE) break;
+	}
 
 }
-#line 99 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 100 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	
 {
-#line 109 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 117 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, line, L" *{define: *(%C+) (%c*)} *")) 
 {
-#line 115 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 124 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	if (PPS->defining)
 		Errors__in_text_file("nested definitions are not allowed", tfp);
 	text_stream *name = mr.exp[0];
@@ -11285,11 +11254,11 @@ void Preprocessor__scan_line(text_stream *line, text_file_position *tfp, void *X
 	return;
 
 }
-#line 109 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 118 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	if (Regexp__match(&mr, line, L" *{end-define} *")) 
 {
-#line 130 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 139 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	if (PPS->defining == NULL)
 		Errors__in_text_file("{end-define} without {define: ...}", tfp);
 	PPS->defining = NULL;
@@ -11297,27 +11266,27 @@ void Preprocessor__scan_line(text_stream *line, text_file_position *tfp, void *X
 	return;
 
 }
-#line 110 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 119 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	if (PPS->defining) 
 {
-#line 125 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 134 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	Preprocessor__add_line_to_macro(PPS->defining, line, tfp);
 	Regexp__dispose_of(&mr);
 	return;
 
 }
-#line 111 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 120 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	Regexp__dispose_of(&mr);
 
 }
-#line 100 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 101 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	Preprocessor__expand(line, tfp, PPS);
 	
 {
-#line 137 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 146 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	if (PPS->suppress_newline == FALSE) {
 		text_stream *OUT = PPS->dest;
 		if (Str__len(line) == 0) {
@@ -11331,11 +11300,11 @@ void Preprocessor__scan_line(text_stream *line, text_file_position *tfp, void *X
 	PPS->suppress_newline = FALSE;
 
 }
-#line 102 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 103 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 }
 
-#line 160 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 169 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocessor_state *PPS) {
 	TEMPORARY_TEXT(before_matter)
 	TEMPORARY_TEXT(braced_matter)
@@ -11361,18 +11330,18 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 	if (after_times) {
 		
 {
-#line 197 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 206 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	if (Preprocessor__acceptable_variable_name(braced_matter)) {
 		
 {
-#line 258 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 267 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	Preprocessor__expand(before_matter, tfp, PPS);
 	if (PPS->repeat_sp > 0) {
 		WRITE_TO(PPS->dest, "{%S}", braced_matter);
 	} else {
 		
 {
-#line 303 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 312 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	preprocessor_variable *var =
 		Preprocessor__find_variable(braced_matter, PPS->stack_frame);
 	if (var) {
@@ -11385,13 +11354,13 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 	}
 
 }
-#line 262 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 271 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	}
 	Preprocessor__expand(after_matter, tfp, PPS);
 
 }
-#line 198 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 207 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	} else {
 		text_stream *identifier = braced_matter;
@@ -11403,7 +11372,7 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 		}
 		
 {
-#line 225 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 234 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	preprocessor_macro *loop_mm;
 	LOOP_OVER_LINKED_LIST(loop_mm, preprocessor_macro, PPS->known_macros)
 		if (Str__len(loop_mm->loop_name) > 0) {
@@ -11432,7 +11401,7 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 		}
 
 }
-#line 207 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 216 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 
 		preprocessor_macro *mm = Preprocessor__find_macro(PPS->known_macros, identifier);
@@ -11444,7 +11413,7 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 		} else {
 			
 {
-#line 274 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 283 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	if (mm->suppress_whitespace_when_expanding) {
 		while (Characters__is_whitespace(Str__get_last_char(before_matter)))
 			Str__delete_last_character(before_matter);
@@ -11466,12 +11435,12 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 	} else {
 		
 {
-#line 318 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 327 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	text_stream *parameter_values[MAX_PP_MACRO_PARAMETERS];
 	for (int i=0; i<MAX_PP_MACRO_PARAMETERS; i++) parameter_values[i] = NULL;
 	
 {
-#line 333 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 342 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	match_results mr = Regexp__create_mr();
 	while (Regexp__match(&mr, parameter_settings, L" *(%C+): *(%c*)")) {
 		text_stream *setting = mr.exp[0];
@@ -11507,11 +11476,11 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 		Errors__in_text_file("parameter list is malformed", tfp);
 
 }
-#line 320 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 329 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	
 {
-#line 368 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 377 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	for (int i=0; i<mm->no_parameters; i++)
 		if (parameter_values[i] == NULL)
 			if (mm->parameters[i]->optional == FALSE) {
@@ -11522,13 +11491,13 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 			}
 
 }
-#line 321 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 330 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 
 	preprocessor_loop *loop = NULL;
 	if (mm->begins_loop) 
 {
-#line 382 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 391 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	if (PPS->repeat_sp >= MAX_PREPROCESSOR_LOOP_DEPTH) {
 		Errors__in_text_file("repetition too deep", tfp);
 	} else {
@@ -11543,27 +11512,27 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 	}
 
 }
-#line 324 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 333 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 
 	(*(mm->expander))(mm, PPS, parameter_values, loop, tfp);
 
 }
-#line 293 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 302 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 		if (mm->suppress_newline_after_expanding) PPS->suppress_newline = TRUE;
 	}
 	Preprocessor__expand(after_matter, tfp, PPS);
 
 }
-#line 216 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 225 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 		}
 		Regexp__dispose_of(&mr);
 	}
 
 }
-#line 183 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 192 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	} else {
 		WRITE_TO(PPS->dest, "%S", text);
@@ -11573,7 +11542,7 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 	DISCARD_TEXT(after_matter)
 }
 
-#line 399 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 408 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 int Preprocessor__acceptable_variable_name(text_stream *name) {
 	LOOP_THROUGH_TEXT(pos, name) {
 		wchar_t c = Str__get(pos);
@@ -11585,7 +11554,7 @@ int Preprocessor__acceptable_variable_name(text_stream *name) {
 	return TRUE;
 }
 
-#line 418 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 427 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 
 text_stream *Preprocessor__read_variable(preprocessor_variable *var) {
 	if (var == NULL) internal_error("no such pp variable");
@@ -11596,7 +11565,7 @@ void Preprocessor__write_variable(preprocessor_variable *var, text_stream *val) 
 	var->value = Str__duplicate(val);
 }
 
-#line 438 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 447 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 
 preprocessor_variable_set *Preprocessor__new_variable_set(preprocessor_variable_set *outer) {
 	preprocessor_variable_set *set = CREATE(preprocessor_variable_set);
@@ -11625,7 +11594,7 @@ preprocessor_variable *Preprocessor__find_variable(text_stream *name,
 	return NULL;
 }
 
-#line 470 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 479 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_variable *Preprocessor__ensure_variable(text_stream *name,
 	preprocessor_variable_set *in_set) {
 	if (in_set == NULL) internal_error("variable without set");
@@ -11639,11 +11608,11 @@ preprocessor_variable *Preprocessor__ensure_variable(text_stream *name,
 	return var;
 }
 
-#line 529 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 538 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 
-#line 536 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 545 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 
-#line 547 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 556 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_macro *Preprocessor__new_macro(linked_list *L, text_stream *name,
 	text_stream *parameter_specification,
 	void (*expander)(preprocessor_macro *, preprocessor_state *, text_stream **, preprocessor_loop *, text_file_position *),
@@ -11653,7 +11622,7 @@ preprocessor_macro *Preprocessor__new_macro(linked_list *L, text_stream *name,
 	preprocessor_macro *new_macro = CREATE(preprocessor_macro);
 	
 {
-#line 561 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 570 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	new_macro->identifier = Str__duplicate(name);
 	new_macro->no_parameters = 0;
 
@@ -11668,11 +11637,11 @@ preprocessor_macro *Preprocessor__new_macro(linked_list *L, text_stream *name,
 	new_macro->suppress_whitespace_when_expanding = TRUE;
 
 }
-#line 554 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 563 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	
 {
-#line 575 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 584 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	text_stream *spec = Str__duplicate(parameter_specification);
 	match_results mr = Regexp__create_mr();
 	while (Regexp__match(&mr, spec, L" *(%C+): *(%C+) *(%c*)")) {
@@ -11685,7 +11654,7 @@ preprocessor_macro *Preprocessor__new_macro(linked_list *L, text_stream *name,
 		} else {
 			
 {
-#line 593 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 602 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	preprocessor_macro_parameter *new_parameter = CREATE(preprocessor_macro_parameter);
 	new_parameter->name = Str__duplicate(par_name);
 	new_parameter->definition_token = Str__duplicate(token_name);
@@ -11697,7 +11666,7 @@ preprocessor_macro *Preprocessor__new_macro(linked_list *L, text_stream *name,
 	new_macro->parameters[new_macro->no_parameters++] = new_parameter;
 
 }
-#line 585 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 594 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 		}
 	}
@@ -11706,13 +11675,13 @@ preprocessor_macro *Preprocessor__new_macro(linked_list *L, text_stream *name,
 		Errors__in_text_file("parameter list for this definition is malformed", tfp);
 
 }
-#line 555 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 564 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	ADD_TO_LINKED_LIST(new_macro, preprocessor_macro, L);
 	return new_macro;
 }
 
-#line 607 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 616 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__add_line_to_macro(preprocessor_macro *mm, text_stream *line,
 	text_file_position *tfp) {
 	if (mm->no_lines >= MAX_PP_MACRO_LINES) {
@@ -11722,7 +11691,7 @@ void Preprocessor__add_line_to_macro(preprocessor_macro *mm, text_stream *line,
 	}
 }
 
-#line 625 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 634 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 linked_list *Preprocessor__list_of_reserved_macros(linked_list *special_macros) {
 	linked_list *L = NEW_LINKED_LIST(preprocessor_macro);
 	Preprocessor__new_loop_macro(L, TL_IS_5, TL_IS_6,
@@ -11734,6 +11703,11 @@ linked_list *Preprocessor__list_of_reserved_macros(linked_list *special_macros) 
 	LOOP_OVER_LINKED_LIST(mm, preprocessor_macro, special_macros)
 		ADD_TO_LINKED_LIST(mm, preprocessor_macro, L);
 	return L;
+}
+
+void Preprocessor__do_not_suppress_whitespace(preprocessor_macro *mm) {
+	mm->suppress_newline_after_expanding = FALSE;
+	mm->suppress_whitespace_when_expanding = FALSE;
 }
 
 void Preprocessor__new_loop_macro(linked_list *L, text_stream *name,
@@ -11758,23 +11732,21 @@ void Preprocessor__new_loop_macro(linked_list *L, text_stream *name,
 	mm = Preprocessor__new_macro(L, subname, parameter_specification, expander, tfp);
 	mm->begins_loop = TRUE;
 	mm->loop_name = Str__duplicate(name);
-	mm->suppress_newline_after_expanding = FALSE;
-	mm->suppress_whitespace_when_expanding = FALSE;
 	mm->span = TRUE;
+	Preprocessor__do_not_suppress_whitespace(mm);
 
 	Str__clear(subname);
 	WRITE_TO(subname, "end-%S-span", name);
 	mm = Preprocessor__new_macro(L, subname, NULL, Preprocessor__end_loop_expander, tfp);
 	mm->ends_loop = TRUE;
 	mm->loop_name = Str__duplicate(name);
-	mm->suppress_newline_after_expanding = FALSE;
-	mm->suppress_whitespace_when_expanding = FALSE;
 	mm->span = TRUE;
+	Preprocessor__do_not_suppress_whitespace(mm);
 
 	DISCARD_TEXT(subname)
 }
 
-#line 679 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 691 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_macro *Preprocessor__find_macro(linked_list *L, text_stream *name) {
 	preprocessor_macro *mm;
 	LOOP_OVER_LINKED_LIST(mm, preprocessor_macro, L)
@@ -11783,7 +11755,7 @@ preprocessor_macro *Preprocessor__find_macro(linked_list *L, text_stream *name) 
 	return NULL;
 }
 
-#line 694 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 706 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__default_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	PPS->stack_frame = Preprocessor__new_variable_set(PPS->stack_frame);
@@ -11797,7 +11769,7 @@ void Preprocessor__default_expander(preprocessor_macro *mm, preprocessor_state *
 	PPS->stack_frame = PPS->stack_frame->outer;
 }
 
-#line 711 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 723 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__set_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	text_stream *name = parameter_values[0];
@@ -11810,7 +11782,7 @@ void Preprocessor__set_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	Preprocessor__write_variable(var, value);
 }
 
-#line 726 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 738 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__repeat_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	text_stream *with = parameter_values[0];
@@ -11830,7 +11802,7 @@ void Preprocessor__repeat_expander(preprocessor_macro *mm, preprocessor_state *P
 	Preprocessor__add_loop_iteration(loop, value);
 }
 
-#line 755 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 767 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__end_loop_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	PPS->shadow_sp = 0;
@@ -11846,7 +11818,7 @@ void Preprocessor__end_loop_expander(preprocessor_macro *mm, preprocessor_state 
 		LOOP_OVER_LINKED_LIST(value, text_stream, loop->iterations)
 			
 {
-#line 774 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 786 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	Preprocessor__write_variable(loop_var, value);
 	if (mm->span) {
 		Preprocessor__expand(matter, tfp, PPS);
@@ -11864,7 +11836,7 @@ void Preprocessor__end_loop_expander(preprocessor_macro *mm, preprocessor_state 
 	}
 
 }
-#line 768 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 780 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 		PPS->stack_frame = PPS->stack_frame->outer;
 	}
@@ -17233,7 +17205,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 	if (Input_File) fclose(Input_File);
 }
 
-#line 103 "inweb/Chapter 1/Basics.w"
+#line 101 "inweb/Chapter 1/Basics.w"
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(source_line, 1000)
 DECLARE_CLASS(asset_rule)
 DECLARE_CLASS(breadcrumb_request)
@@ -17250,9 +17222,7 @@ DECLARE_CLASS(hash_table_entry_usage)
 DECLARE_CLASS(hash_table_entry)
 DECLARE_CLASS(language_function)
 DECLARE_CLASS(language_type)
-DECLARE_CLASS(macro_tokens)
 DECLARE_CLASS(macro_usage)
-DECLARE_CLASS(macro)
 DECLARE_CLASS(makefile_specifics)
 DECLARE_CLASS(nonterminal_variable)
 DECLARE_CLASS(para_macro)
@@ -31236,7 +31206,7 @@ void Makefiles__write(web *W, filename *prototype, filename *F, module_search *I
 	makefile_specifics *specifics = CREATE(makefile_specifics);
 	
 {
-#line 55 "inweb/Chapter 6/Makefiles.w"
+#line 56 "inweb/Chapter 6/Makefiles.w"
 	specifics->for_web = W;
 	specifics->tools_dictionary = Dictionaries__new(16, FALSE);
 	specifics->webs_dictionary = Dictionaries__new(16, FALSE);
@@ -31252,12 +31222,13 @@ void Makefiles__write(web *W, filename *prototype, filename *F, module_search *I
 	WRITE_TO(header, "# and is not intended for human editing\n\n");
 	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
 
-	Preprocessor__preprocess(prototype, F, header, L, STORE_POINTER_makefile_specifics(specifics));
+	Preprocessor__preprocess(prototype, F, header, L,
+		STORE_POINTER_makefile_specifics(specifics), '#');
 }
 
-#line 53 "inweb/Chapter 6/Makefiles.w"
+#line 54 "inweb/Chapter 6/Makefiles.w"
 
-#line 64 "inweb/Chapter 6/Makefiles.w"
+#line 65 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__identity_settings_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	makefile_specifics *specifics = RETRIEVE_POINTER_makefile_specifics(PPS->specifics);
@@ -31273,7 +31244,7 @@ void Makefiles__identity_settings_expander(preprocessor_macro *mm, preprocessor_
 	}
 }
 
-#line 86 "inweb/Chapter 6/Makefiles.w"
+#line 87 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__platform_settings_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	filename *prototype = Filenames__in(path_to_inweb, TL_IS_645);
@@ -31303,7 +31274,7 @@ void Makefiles__seek_INWEBPLATFORM(text_stream *line, text_file_position *tfp, v
 	Regexp__dispose_of(&mr);
 }
 
-#line 118 "inweb/Chapter 6/Makefiles.w"
+#line 119 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	makefile_specifics *specifics = RETRIEVE_POINTER_makefile_specifics(PPS->specifics);
@@ -31320,7 +31291,7 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 		dictionary *D = specifics->tools_dictionary;
 		
 {
-#line 151 "inweb/Chapter 6/Makefiles.w"
+#line 152 "inweb/Chapter 6/Makefiles.w"
 	web_md *Wm = Reader__load_web_md(Pathnames__from_text(path), NULL,
 		specifics->search_path, TRUE);
 	Wm->as_module->module_name = Str__duplicate(symbol);
@@ -31330,25 +31301,25 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 	Dictionaries__write_value(D, symbol, Wm);
 
 }
-#line 132 "inweb/Chapter 6/Makefiles.w"
+#line 133 "inweb/Chapter 6/Makefiles.w"
 ;
 		
 {
-#line 160 "inweb/Chapter 6/Makefiles.w"
+#line 161 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%SLEAF = %S\n", symbol, webname);
 	WRITE("%SWEB = %S\n", symbol, path);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", symbol, symbol, webname);
 	WRITE("%SX = $(%SWEB)/Tangled/%S\n", symbol, symbol, webname);
 
 }
-#line 133 "inweb/Chapter 6/Makefiles.w"
+#line 134 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else if (Str__eq(category, TL_IS_649)) {
 		int marker = MAKEFILE_WEB_MOM;
 		dictionary *D = specifics->webs_dictionary;
 		
 {
-#line 151 "inweb/Chapter 6/Makefiles.w"
+#line 152 "inweb/Chapter 6/Makefiles.w"
 	web_md *Wm = Reader__load_web_md(Pathnames__from_text(path), NULL,
 		specifics->search_path, TRUE);
 	Wm->as_module->module_name = Str__duplicate(symbol);
@@ -31358,25 +31329,25 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 	Dictionaries__write_value(D, symbol, Wm);
 
 }
-#line 137 "inweb/Chapter 6/Makefiles.w"
+#line 138 "inweb/Chapter 6/Makefiles.w"
 ;
 		
 {
-#line 160 "inweb/Chapter 6/Makefiles.w"
+#line 161 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%SLEAF = %S\n", symbol, webname);
 	WRITE("%SWEB = %S\n", symbol, path);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", symbol, symbol, webname);
 	WRITE("%SX = $(%SWEB)/Tangled/%S\n", symbol, symbol, webname);
 
 }
-#line 138 "inweb/Chapter 6/Makefiles.w"
+#line 139 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else if (Str__eq(category, TL_IS_650)) {
 		int marker = MAKEFILE_MODULE_MOM;
 		dictionary *D = specifics->modules_dictionary;
 		
 {
-#line 151 "inweb/Chapter 6/Makefiles.w"
+#line 152 "inweb/Chapter 6/Makefiles.w"
 	web_md *Wm = Reader__load_web_md(Pathnames__from_text(path), NULL,
 		specifics->search_path, TRUE);
 	Wm->as_module->module_name = Str__duplicate(symbol);
@@ -31386,18 +31357,18 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 	Dictionaries__write_value(D, symbol, Wm);
 
 }
-#line 142 "inweb/Chapter 6/Makefiles.w"
+#line 143 "inweb/Chapter 6/Makefiles.w"
 ;
 		
 {
-#line 160 "inweb/Chapter 6/Makefiles.w"
+#line 161 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%SLEAF = %S\n", symbol, webname);
 	WRITE("%SWEB = %S\n", symbol, path);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", symbol, symbol, webname);
 	WRITE("%SX = $(%SWEB)/Tangled/%S\n", symbol, symbol, webname);
 
 }
-#line 143 "inweb/Chapter 6/Makefiles.w"
+#line 144 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else {
 		Errors__in_text_file("category should be 'tool', 'module' or 'web'", tfp);
@@ -31405,7 +31376,7 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 	PPS->last_line_was_blank = FALSE;
 }
 
-#line 168 "inweb/Chapter 6/Makefiles.w"
+#line 169 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	Preprocessor__set_loop_var_name(loop, TL_IS_651);
@@ -31416,7 +31387,7 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 		int marker = MAKEFILE_TOOL_MOM;
 		
 {
-#line 189 "inweb/Chapter 6/Makefiles.w"
+#line 190 "inweb/Chapter 6/Makefiles.w"
 	module *M;
 	LOOP_OVER(M, module) {
 		if ((M->origin_marker == marker) &&
@@ -31427,13 +31398,13 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 	}
 
 }
-#line 176 "inweb/Chapter 6/Makefiles.w"
+#line 177 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else if (Str__eq(category, TL_IS_654)) {
 		int marker = MAKEFILE_WEB_MOM;
 		
 {
-#line 189 "inweb/Chapter 6/Makefiles.w"
+#line 190 "inweb/Chapter 6/Makefiles.w"
 	module *M;
 	LOOP_OVER(M, module) {
 		if ((M->origin_marker == marker) &&
@@ -31444,13 +31415,13 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 	}
 
 }
-#line 179 "inweb/Chapter 6/Makefiles.w"
+#line 180 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else if (Str__eq(category, TL_IS_655)) {
 		int marker = MAKEFILE_MODULE_MOM;
 		
 {
-#line 189 "inweb/Chapter 6/Makefiles.w"
+#line 190 "inweb/Chapter 6/Makefiles.w"
 	module *M;
 	LOOP_OVER(M, module) {
 		if ((M->origin_marker == marker) &&
@@ -31461,14 +31432,14 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 	}
 
 }
-#line 182 "inweb/Chapter 6/Makefiles.w"
+#line 183 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else {
 		Errors__in_text_file("category should be 'tool', 'module' or 'web'", tfp);
 	}
 }
 
-#line 201 "inweb/Chapter 6/Makefiles.w"
+#line 202 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__dependent_files_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	makefile_specifics *specifics = RETRIEVE_POINTER_makefile_specifics(PPS->specifics);
@@ -31521,12 +31492,12 @@ void Makefiles__dependent_files_expander(preprocessor_macro *mm, preprocessor_st
 	PPS->last_line_was_blank = FALSE;
 }
 
-#line 257 "inweb/Chapter 6/Makefiles.w"
+#line 258 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	dictionary *patterns_done = Dictionaries__new(16, TRUE);
 	if (F) 
 {
-#line 268 "inweb/Chapter 6/Makefiles.w"
+#line 269 "inweb/Chapter 6/Makefiles.w"
 	pathname *P = Filenames__up(F);
 	TEMPORARY_TEXT(leaf_pattern)
 	WRITE_TO(leaf_pattern, "%S", Pathnames__directory_name(P));
@@ -31553,14 +31524,14 @@ void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	DISCARD_TEXT(tester)
 
 }
-#line 259 "inweb/Chapter 6/Makefiles.w"
+#line 260 "inweb/Chapter 6/Makefiles.w"
 ;
 	section_md *Sm;
 	LOOP_OVER_LINKED_LIST(Sm, section_md, L) {
 		filename *F = Sm->source_file_for_section;
 		
 {
-#line 268 "inweb/Chapter 6/Makefiles.w"
+#line 269 "inweb/Chapter 6/Makefiles.w"
 	pathname *P = Filenames__up(F);
 	TEMPORARY_TEXT(leaf_pattern)
 	WRITE_TO(leaf_pattern, "%S", Pathnames__directory_name(P));
@@ -31587,12 +31558,12 @@ void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	DISCARD_TEXT(tester)
 
 }
-#line 263 "inweb/Chapter 6/Makefiles.w"
+#line 264 "inweb/Chapter 6/Makefiles.w"
 ;
 	}
 }
 
-#line 298 "inweb/Chapter 6/Makefiles.w"
+#line 299 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) {
 	TEMPORARY_TEXT(PT)
 	WRITE_TO(PT, "%p", P);
@@ -31612,7 +31583,7 @@ void Git__write_gitignore(web *W, filename *prototype, filename *F) {
 	WRITE_TO(header, "# This gitignore was automatically written by inweb -gitignore\n");
 	WRITE_TO(header, "# and is not intended for human editing\n\n");
 	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
-	Preprocessor__preprocess(prototype, F, header, L, NULL_GENERAL_POINTER);
+	Preprocessor__preprocess(prototype, F, header, L, NULL_GENERAL_POINTER, '#');
 }
 
 #line 22 "inweb/Chapter 6/Git Support.w"
@@ -31733,248 +31704,39 @@ void Ctags__note_defined_constant(source_line *L, text_stream *name) {
 	dc->at = L;
 }
 
-#line 18 "inweb/Chapter 6/Readme Writeme.w"
-
-void Readme__write(filename *from, filename *to) {
-	WRITE_TO(STDOUT, "write-me: %f --> %f\n", from, to);
-	write_state ws;
-	ws.current_definition = NULL;
-	ws.known_macros = NEW_LINKED_LIST(macro);
-	macro *V = Readme__new_macro(TL_IS_660, NULL, NULL);
-	ADD_TO_LINKED_LIST(V, macro, ws.known_macros);
-	macro *P = Readme__new_macro(TL_IS_661, NULL, NULL);
-	ADD_TO_LINKED_LIST(P, macro, ws.known_macros);
-	macro *A = Readme__new_macro(TL_IS_662, NULL, NULL);
-	ADD_TO_LINKED_LIST(A, macro, ws.known_macros);
-	ws.stack_frame = NULL;
-	text_stream file_to;
-	if (Streams__open_to_file(&file_to, to, UTF8_ENC) == FALSE)
-		Errors__fatal_with_file("can't write readme file", to);
-	ws.OUT = &file_to;
-	TextFiles__read(from, FALSE, "unable to read template file", TRUE,
-		&Readme__write_helper, NULL, (void *) &ws);
-	Streams__close(&file_to);
+#line 10 "inweb/Chapter 6/Readme Writeme.w"
+void Readme__write(filename *prototype, filename *F) {
+	linked_list *L = NEW_LINKED_LIST(preprocessor_macro);
+	preprocessor_macro *mm = Preprocessor__new_macro(L,
+		TL_IS_660, TL_IS_661,
+		Readme__bibliographic_expander, NULL);
+	Preprocessor__do_not_suppress_whitespace(mm);
+	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
+	Preprocessor__preprocess(prototype, F, NULL, L, NULL_GENERAL_POINTER, '/');
 }
 
-#line 44 "inweb/Chapter 6/Readme Writeme.w"
-void Readme__write_helper(text_stream *text, text_file_position *tfp, void *state) {
-	write_state *ws = (write_state *) state;
-	text_stream *OUT = ws->OUT;
-
-	match_results mr = Regexp__create_mr();
-	if (Regexp__match(&mr, text, L" *@end *")) {
-		if (ws->current_definition == NULL)
-			Errors__in_text_file("@end without @define", tfp);
-		else ws->current_definition = NULL;
-	} else if (ws->current_definition) {
-		if (Str__len(ws->current_definition->content) > 0)
-			WRITE_TO(ws->current_definition->content, "\n");
-		WRITE_TO(ws->current_definition->content, "%S", text);
-	} else if (Regexp__match(&mr, text, L" *@define (%i+)(%c*)")) {
-		if (ws->current_definition)
-			Errors__in_text_file("@define without @end", tfp);
-		else {
-			macro *M = Readme__new_macro(mr.exp[0], mr.exp[1], tfp);
-			ws->current_definition = M;
-			ADD_TO_LINKED_LIST(M, macro, ws->known_macros);
-		}
-	} else {
-		Readme__expand_material(ws, OUT, text, tfp);
-		Readme__expand_material(ws, OUT, TL_IS_663, tfp);
-	}
-	Regexp__dispose_of(&mr);
+#line 23 "inweb/Chapter 6/Readme Writeme.w"
+void Readme__bibliographic_expander(preprocessor_macro *mm, preprocessor_state *PPS,
+	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
+	text_stream *datum = parameter_values[0];
+	text_stream *asset_name = parameter_values[1];
+	text_stream *OUT = PPS->dest;
+	writeme_asset *A = Readme__find_asset(asset_name);
+	if (A->if_web) WRITE("%S", Bibliographic__get_datum(A->if_web, datum));
+	else if (Str__eq(datum, TL_IS_662)) WRITE("%S", A->date);
+	else if (Str__eq(datum, TL_IS_663)) WRITE("%S", A->version);
 }
 
-#line 82 "inweb/Chapter 6/Readme Writeme.w"
-
-macro *Readme__new_macro(text_stream *name, text_stream *tokens, text_file_position *tfp) {
-	macro *M = CREATE(macro);
-	M->name = Str__duplicate(name);
-	M->tokens = Readme__parse_token_list(tokens, tfp);
-	M->content = Str__new();
-	return M;
-}
-
-#line 98 "inweb/Chapter 6/Readme Writeme.w"
-
-#line 100 "inweb/Chapter 6/Readme Writeme.w"
-macro_tokens Readme__parse_token_list(text_stream *chunk, text_file_position *tfp) {
-	macro_tokens mt;
-	mt.no_pars = 0;
-	mt.down = NULL;
-	mt.bound_to = NULL;
-	if (Str__get_first_char(chunk) == '(') {
-		int x = 1, bl = 1, from = 1, quoted = FALSE;
-		while ((bl > 0) && (Str__get_at(chunk, x) != 0)) {
-			wchar_t c = Str__get_at(chunk, x);
-			if (c == '\'') {
-				quoted = quoted?FALSE:TRUE;
-			} else if (quoted == FALSE) {
-				if (c == '(') bl++;
-				else if (c == ')') {
-					bl--;
-					if (bl == 0) 
-{
-#line 129 "inweb/Chapter 6/Readme Writeme.w"
-	int n = mt.no_pars;
-	if (n >= 8) Errors__in_text_file("too many parameters", tfp);
-	else {
-		mt.pars[n] = Str__new();
-		for (int j=from; j<x; j++) PUT_TO(mt.pars[n], Str__get_at(chunk, j));
-		Str__trim_white_space(mt.pars[n]);
-		if ((Str__get_first_char(mt.pars[n]) == '\'') &&
-			(Str__get_last_char(mt.pars[n]) == '\'')) {
-			Str__delete_first_character(mt.pars[n]);
-			Str__delete_last_character(mt.pars[n]);
-		}
-		mt.no_pars++;
-	}
-	from = x+1;
-
-}
-#line 115 "inweb/Chapter 6/Readme Writeme.w"
-;
-				} else if ((c == ',') && (bl == 1)) 
-{
-#line 129 "inweb/Chapter 6/Readme Writeme.w"
-	int n = mt.no_pars;
-	if (n >= 8) Errors__in_text_file("too many parameters", tfp);
-	else {
-		mt.pars[n] = Str__new();
-		for (int j=from; j<x; j++) PUT_TO(mt.pars[n], Str__get_at(chunk, j));
-		Str__trim_white_space(mt.pars[n]);
-		if ((Str__get_first_char(mt.pars[n]) == '\'') &&
-			(Str__get_last_char(mt.pars[n]) == '\'')) {
-			Str__delete_first_character(mt.pars[n]);
-			Str__delete_last_character(mt.pars[n]);
-		}
-		mt.no_pars++;
-	}
-	from = x+1;
-
-}
-#line 116 "inweb/Chapter 6/Readme Writeme.w"
-;
-			}
-			x++;
-		}
-		Str__delete_n_characters(chunk, x);
-	}
-	return mt;
-}
-
-#line 149 "inweb/Chapter 6/Readme Writeme.w"
-void Readme__expand_material(write_state *ws, text_stream *OUT, text_stream *text,
-	text_file_position *tfp) {
-	match_results mr = Regexp__create_mr();
-	if (Regexp__match(&mr, text, L"(%c*?)@(%i+)(%c*)")) {
-		Readme__expand_material(ws, OUT, mr.exp[0], tfp);
-		macro_tokens mt = Readme__parse_token_list(mr.exp[2], tfp);
-		mt.down = ws->stack_frame;
-		ws->stack_frame = &mt;
-		Readme__expand_at(ws, OUT, mr.exp[1], tfp);
-		ws->stack_frame = mt.down;
-		Readme__expand_material(ws, OUT, mr.exp[2], tfp);
-	} else {
-		WRITE("%S", text);
-	}
-	Regexp__dispose_of(&mr);
-}
-
-#line 172 "inweb/Chapter 6/Readme Writeme.w"
-void Readme__expand_at(write_state *ws, text_stream *OUT, text_stream *macro_name,
-	text_file_position *tfp) {
-	macro_tokens *stack = ws->stack_frame;
-	while (stack) {
-		macro *in = stack->bound_to;
-		if (in)
-			for (int n = 0; n < in->tokens.no_pars; n++)
-				if (Str__eq(in->tokens.pars[n], macro_name)) {
-					if (n < stack->no_pars) {
-						Readme__expand_material(ws, OUT, stack->pars[n], tfp);
-						return;
-					}
-				}
-		stack = stack->down;
-	}
-
-	macro *M;
-	LOOP_OVER_LINKED_LIST(M, macro, ws->known_macros)
-		if (Str__eq(M->name, macro_name)) {
-			ws->stack_frame->bound_to = M;
-			Readme__expand_macro(ws, OUT, M, tfp);
-			return;
-		}
-	Errors__in_text_file("no such @-command", tfp);
-	WRITE_TO(STDERR, "(command is '%S')\n", macro_name);
-}
-
-#line 204 "inweb/Chapter 6/Readme Writeme.w"
-void Readme__expand_macro(write_state *ws, text_stream *OUT, macro *M, text_file_position *tfp) {
-	if (Str__eq(M->name, TL_IS_664)) 
-{
-#line 215 "inweb/Chapter 6/Readme Writeme.w"
-	if (ws->stack_frame->no_pars != 1)
-		Errors__in_text_file("@version takes 1 parameter", tfp);
-	else {
-		TEMPORARY_TEXT(program)
-		Readme__expand_material(ws, program, ws->stack_frame->pars[0], tfp);
-		Readme__write_var(OUT, program, TL_IS_667);
-		DISCARD_TEXT(program)
-	}
-
-}
-#line 205 "inweb/Chapter 6/Readme Writeme.w"
-
-	else if (Str__eq(M->name, TL_IS_665)) 
-{
-#line 225 "inweb/Chapter 6/Readme Writeme.w"
-	if (ws->stack_frame->no_pars != 1)
-		Errors__in_text_file("@purpose takes 1 parameter", tfp);
-	else {
-		TEMPORARY_TEXT(program)
-		Readme__expand_material(ws, program, ws->stack_frame->pars[0], tfp);
-		Readme__write_var(OUT, program, TL_IS_668);
-		DISCARD_TEXT(program)
-	}
-
-}
-#line 206 "inweb/Chapter 6/Readme Writeme.w"
-
-	else if (Str__eq(M->name, TL_IS_666)) 
-{
-#line 235 "inweb/Chapter 6/Readme Writeme.w"
-	if (ws->stack_frame->no_pars != 2)
-		Errors__in_text_file("@var takes 2 parameters", tfp);
-	else {
-		TEMPORARY_TEXT(program)
-		TEMPORARY_TEXT(bibv)
-		Readme__expand_material(ws, program, ws->stack_frame->pars[0], tfp);
-		Readme__expand_material(ws, bibv, ws->stack_frame->pars[1], tfp);
-		Readme__write_var(OUT, program, bibv);
-		DISCARD_TEXT(program)
-		DISCARD_TEXT(bibv)
-	}
-
-}
-#line 207 "inweb/Chapter 6/Readme Writeme.w"
-
-	else {
-		ws->stack_frame->bound_to = M;
-		Readme__expand_material(ws, OUT, M->content, tfp);
-	}
-}
-
-#line 262 "inweb/Chapter 6/Readme Writeme.w"
+#line 49 "inweb/Chapter 6/Readme Writeme.w"
 
 void Readme__write_var(text_stream *OUT, text_stream *program, text_stream *datum) {
 	writeme_asset *A = Readme__find_asset(program);
 	if (A->if_web) WRITE("%S", Bibliographic__get_datum(A->if_web, datum));
-	else if (Str__eq(datum, TL_IS_669)) WRITE("%S", A->date);
-	else if (Str__eq(datum, TL_IS_670)) WRITE("%S", A->version);
+	else if (Str__eq(datum, TL_IS_664)) WRITE("%S", A->date);
+	else if (Str__eq(datum, TL_IS_665)) WRITE("%S", A->version);
 }
 
-#line 273 "inweb/Chapter 6/Readme Writeme.w"
+#line 60 "inweb/Chapter 6/Readme Writeme.w"
 writeme_asset *Readme__find_asset(text_stream *program) {
 	writeme_asset *A;
 	LOOP_OVER(A, writeme_asset) if (Str__eq(program, A->name)) return A;
@@ -31986,72 +31748,72 @@ writeme_asset *Readme__find_asset(text_stream *program) {
 	A->next_is_version = FALSE;
 	
 {
-#line 287 "inweb/Chapter 6/Readme Writeme.w"
+#line 74 "inweb/Chapter 6/Readme Writeme.w"
 	if (Str__ends_with_wide_string(program, L".i7x")) {
 		
 {
-#line 306 "inweb/Chapter 6/Readme Writeme.w"
+#line 93 "inweb/Chapter 6/Readme Writeme.w"
 	TextFiles__read(Filenames__from_text(program), FALSE, "unable to read extension", TRUE,
 		&Readme__extension_harvester, NULL, A);
 
 }
-#line 288 "inweb/Chapter 6/Readme Writeme.w"
+#line 75 "inweb/Chapter 6/Readme Writeme.w"
 ;
 	} else {
 		if (WebMetadata__directory_looks_like_a_web(Pathnames__from_text(program))) {
 			A->if_web = WebMetadata__get_without_modules(Pathnames__from_text(program), NULL);
 		} else {
 			filename *I6_vn = Filenames__in(
-				Pathnames__down(Pathnames__from_text(program), TL_IS_671), TL_IS_672);
+				Pathnames__down(Pathnames__from_text(program), TL_IS_666), TL_IS_667);
 			if (TextFiles__exists(I6_vn)) 
 {
-#line 310 "inweb/Chapter 6/Readme Writeme.w"
+#line 97 "inweb/Chapter 6/Readme Writeme.w"
 	TextFiles__read(I6_vn, FALSE, "unable to read header file from I6 source", TRUE,
 		&Readme__header_harvester, NULL, A);
 
 }
-#line 295 "inweb/Chapter 6/Readme Writeme.w"
+#line 82 "inweb/Chapter 6/Readme Writeme.w"
 ;
-			filename *template_vn = Filenames__in(Pathnames__from_text(program), TL_IS_673);
+			filename *template_vn = Filenames__in(Pathnames__from_text(program), TL_IS_668);
 			if (TextFiles__exists(template_vn)) 
 {
-#line 314 "inweb/Chapter 6/Readme Writeme.w"
+#line 101 "inweb/Chapter 6/Readme Writeme.w"
 	TextFiles__read(template_vn, FALSE, "unable to read manifest file from website template", TRUE,
 		&Readme__template_harvester, NULL, A);
 
 }
-#line 297 "inweb/Chapter 6/Readme Writeme.w"
+#line 84 "inweb/Chapter 6/Readme Writeme.w"
 ;
-			filename *rmt_vn = Filenames__in(Pathnames__from_text(program), TL_IS_674);
+			filename *rmt_vn = Filenames__in(Pathnames__from_text(program), TL_IS_669);
 			if (TextFiles__exists(rmt_vn)) 
 {
-#line 318 "inweb/Chapter 6/Readme Writeme.w"
+#line 105 "inweb/Chapter 6/Readme Writeme.w"
 	TextFiles__read(rmt_vn, FALSE, "unable to read README file from website template", TRUE,
 		&Readme__readme_harvester, NULL, A);
 
 }
-#line 299 "inweb/Chapter 6/Readme Writeme.w"
+#line 86 "inweb/Chapter 6/Readme Writeme.w"
 ;
-			rmt_vn = Filenames__in(Pathnames__from_text(program), TL_IS_675);
+			rmt_vn = Filenames__in(Pathnames__from_text(program), TL_IS_670);
 			if (TextFiles__exists(rmt_vn)) 
 {
-#line 318 "inweb/Chapter 6/Readme Writeme.w"
+#line 105 "inweb/Chapter 6/Readme Writeme.w"
 	TextFiles__read(rmt_vn, FALSE, "unable to read README file from website template", TRUE,
 		&Readme__readme_harvester, NULL, A);
 
 }
-#line 301 "inweb/Chapter 6/Readme Writeme.w"
+#line 88 "inweb/Chapter 6/Readme Writeme.w"
 ;
 		}
 	}
 
 }
-#line 282 "inweb/Chapter 6/Readme Writeme.w"
+#line 69 "inweb/Chapter 6/Readme Writeme.w"
 ;
 	return A;
 }
 
-#line 324 "inweb/Chapter 6/Readme Writeme.w"
+#line 111 "inweb/Chapter 6/Readme Writeme.w"
 void Readme__extension_harvester(text_stream *text, text_file_position *tfp, void *state) {
 	writeme_asset *A = (writeme_asset *) state;
 	match_results mr = Regexp__create_mr();
@@ -32061,7 +31823,7 @@ void Readme__extension_harvester(text_stream *text, text_file_position *tfp, voi
 	Regexp__dispose_of(&mr);
 }
 
-#line 336 "inweb/Chapter 6/Readme Writeme.w"
+#line 123 "inweb/Chapter 6/Readme Writeme.w"
 void Readme__header_harvester(text_stream *text, text_file_position *tfp, void *state) {
 	writeme_asset *A = (writeme_asset *) state;
 	match_results mr = Regexp__create_mr();
@@ -32073,7 +31835,7 @@ void Readme__header_harvester(text_stream *text, text_file_position *tfp, void *
 	Regexp__dispose_of(&mr);
 }
 
-#line 350 "inweb/Chapter 6/Readme Writeme.w"
+#line 137 "inweb/Chapter 6/Readme Writeme.w"
 void Readme__template_harvester(text_stream *text, text_file_position *tfp, void *state) {
 	writeme_asset *A = (writeme_asset *) state;
 	match_results mr = Regexp__create_mr();
@@ -32087,7 +31849,7 @@ void Readme__template_harvester(text_stream *text, text_file_position *tfp, void
 	Regexp__dispose_of(&mr);
 }
 
-#line 366 "inweb/Chapter 6/Readme Writeme.w"
+#line 153 "inweb/Chapter 6/Readme Writeme.w"
 void Readme__readme_harvester(text_stream *text, text_file_position *tfp, void *state) {
 	writeme_asset *A = (writeme_asset *) state;
 	match_results mr = Regexp__create_mr();
@@ -32107,7 +31869,7 @@ void Readme__readme_harvester(text_stream *text, text_file_position *tfp, void *
 void Colonies__load(filename *F) {
 	colony *C = CREATE(colony);
 	C->members = NEW_LINKED_LIST(colony_member);
-	C->home = TL_IS_676;
+	C->home = TL_IS_671;
 	C->assets_path = NULL;
 	C->patterns_path = NULL;
 	colony_reader_state crs;
@@ -32131,8 +31893,8 @@ void Colonies__read_line(text_stream *line, text_file_position *tfp, void *v_crs
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, line, L"(%c*?): \"*(%C+)\" at \"(%c*)\" in \"(%c*)\"")) {
 		colony_member *CM = CREATE(colony_member);
-		if (Str__eq(mr.exp[0], TL_IS_677)) CM->web_rather_than_module = TRUE;
-		else if (Str__eq(mr.exp[0], TL_IS_678)) CM->web_rather_than_module = FALSE;
+		if (Str__eq(mr.exp[0], TL_IS_672)) CM->web_rather_than_module = TRUE;
+		else if (Str__eq(mr.exp[0], TL_IS_673)) CM->web_rather_than_module = FALSE;
 		else {
 			CM->web_rather_than_module = FALSE;
 			Errors__in_text_file("text before ':' must be 'web' or 'module'", tfp);
@@ -32140,7 +31902,7 @@ void Colonies__read_line(text_stream *line, text_file_position *tfp, void *v_crs
 		CM->name = Str__duplicate(mr.exp[1]);
 		CM->path = Str__duplicate(mr.exp[2]);
 		CM->home_leaf = Str__new();
-		if (Str__suffix_eq(CM->path, TL_IS_679, 6)) {
+		if (Str__suffix_eq(CM->path, TL_IS_674, 6)) {
 			filename *F = Filenames__from_text(CM->path);
 			Filenames__write_unextended_leafname(CM->home_leaf, F);
 			WRITE_TO(CM->home_leaf, ".html");
@@ -32280,7 +32042,7 @@ module *Colonies__as_module(colony_member *CM, source_line *L, web_md *Wm) {
 #line 254 "inweb/Chapter 6/Colonies.w"
 	filename *F = NULL;
 	pathname *P = NULL;
-	if (Str__suffix_eq(CM->path, TL_IS_680, 6))
+	if (Str__suffix_eq(CM->path, TL_IS_675, 6))
 		F = Filenames__from_text(CM->path);
 	else
 		P = Pathnames__from_text(CM->path);
@@ -32307,7 +32069,7 @@ text_stream *Colonies__home(void) {
 	colony *C;
 	LOOP_OVER(C, colony)
 		return C->home;
-	return TL_IS_681;
+	return TL_IS_676;
 }
 
 pathname *Colonies__assets_path(void) {
@@ -32499,7 +32261,7 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 		return FALSE;
 	}
 	if (N > 1) {
-		Main__error_in_web(TL_IS_682, L);
+		Main__error_in_web(TL_IS_677, L);
 		WebModules__named_reference(&found_M, &found_Sm, &bare_module_name,
 			title, search_M, text, TRUE, FALSE);
 		return FALSE;
@@ -32581,7 +32343,7 @@ void Colonies__paragraph_URL(OUTPUT_STREAM, paragraph *P, filename *from) {
 	if (P == NULL) internal_error("no para");
 	section *to_S = P->under_section;
 	module *to_M = to_S->md->owning_module;
-	if (Str__ne(to_M->module_name, TL_IS_683)) {
+	if (Str__ne(to_M->module_name, TL_IS_678)) {
 		colony_member *to_C = Colonies__find(to_M->module_name);
 		if (to_C) {
 			pathname *from_path = Filenames__up(from);
@@ -32707,9 +32469,9 @@ void register_tangled_text_literals(void) {
     TL_IS_94 = Str__literal(L"inweb");
     TL_IS_95 = Str__literal(L"Patterns");
     TL_IS_96 = Str__literal(L"Materials");
-    TL_IS_97 = Str__literal(L"makescript.txt");
-    TL_IS_98 = Str__literal(L"gitignorescript.txt");
-    TL_IS_99 = Str__literal(L"READMEscript.txt");
+    TL_IS_97 = Str__literal(L"script.mkscript");
+    TL_IS_98 = Str__literal(L"script.giscript");
+    TL_IS_99 = Str__literal(L"script.rmscript");
     TL_IS_100 = Str__literal(L"Short Title");
     TL_IS_101 = Str__literal(L"Short Title");
     TL_IS_102 = Str__literal(L"Title");
@@ -33270,28 +33032,23 @@ void register_tangled_text_literals(void) {
     TL_IS_657 = Str__literal(L"basics");
     TL_IS_658 = Str__literal(L"default.giscript");
     TL_IS_659 = Str__literal(L"tags");
-    TL_IS_660 = Str__literal(L"version");
-    TL_IS_661 = Str__literal(L"purpose");
-    TL_IS_662 = Str__literal(L"var");
-    TL_IS_663 = Str__literal(L"\n");
-    TL_IS_664 = Str__literal(L"version");
-    TL_IS_665 = Str__literal(L"purpose");
-    TL_IS_666 = Str__literal(L"var");
-    TL_IS_667 = Str__literal(L"Version Number");
-    TL_IS_668 = Str__literal(L"Purpose");
-    TL_IS_669 = Str__literal(L"Build Date");
-    TL_IS_670 = Str__literal(L"Version Number");
-    TL_IS_671 = Str__literal(L"inform6");
-    TL_IS_672 = Str__literal(L"header.h");
-    TL_IS_673 = Str__literal(L"(manifest).txt");
-    TL_IS_674 = Str__literal(L"README.txt");
-    TL_IS_675 = Str__literal(L"README.md");
+    TL_IS_660 = Str__literal(L"bibliographic");
+    TL_IS_661 = Str__literal(L"datum: DATUM of: ASSET");
+    TL_IS_662 = Str__literal(L"Build Date");
+    TL_IS_663 = Str__literal(L"Version Number");
+    TL_IS_664 = Str__literal(L"Build Date");
+    TL_IS_665 = Str__literal(L"Version Number");
+    TL_IS_666 = Str__literal(L"inform6");
+    TL_IS_667 = Str__literal(L"header.h");
+    TL_IS_668 = Str__literal(L"(manifest).txt");
+    TL_IS_669 = Str__literal(L"README.txt");
+    TL_IS_670 = Str__literal(L"README.md");
+    TL_IS_671 = Str__literal(L"docs");
+    TL_IS_672 = Str__literal(L"web");
+    TL_IS_673 = Str__literal(L"module");
+    TL_IS_674 = Str__literal(L".inweb");
+    TL_IS_675 = Str__literal(L".inweb");
     TL_IS_676 = Str__literal(L"docs");
-    TL_IS_677 = Str__literal(L"web");
-    TL_IS_678 = Str__literal(L"module");
-    TL_IS_679 = Str__literal(L".inweb");
-    TL_IS_680 = Str__literal(L".inweb");
-    TL_IS_681 = Str__literal(L"docs");
-    TL_IS_682 = Str__literal(L"Multiple cross-references might be meant here");
-    TL_IS_683 = Str__literal(L"(main)");
+    TL_IS_677 = Str__literal(L"Multiple cross-references might be meant here");
+    TL_IS_678 = Str__literal(L"(main)");
 }

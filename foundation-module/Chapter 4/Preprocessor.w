@@ -21,7 +21,7 @@ pointer to any data those special meanings need to use.
 
 =
 void Preprocessor::preprocess(filename *prototype, filename *F, text_stream *header,
-	linked_list *special_macros, general_pointer specifics) {
+	linked_list *special_macros, general_pointer specifics, wchar_t comment_char) {
 	struct text_stream processed_file;
 	if (STREAM_OPEN_TO_FILE(&processed_file, F, ISO_ENC) == FALSE)
 		Errors::fatal_with_file("unable to write tangled file", F);
@@ -53,6 +53,7 @@ typedef struct preprocessor_state {
 	struct preprocessor_variable_set *stack_frame;
 	struct linked_list *known_macros; /* of |preprocessor_macro| */
 	struct general_pointer specifics;
+	wchar_t comment_character;
 } preprocessor_state;
 
 typedef struct preprocessor_loop {
@@ -73,6 +74,7 @@ typedef struct preprocessor_loop {
 	PPS.stack_frame = PPS.global_variables;
 	PPS.known_macros = Preprocessor::list_of_reserved_macros(special_macros);
 	PPS.specifics = specifics;
+	PPS.comment_character = comment_char;
 
 @ Conceptually, each loop runs a variable with a given name through a series
 of textual values in sequence, and we store that data here:
@@ -95,17 +97,24 @@ parametrised names: but then, nor should you.
 =
 void Preprocessor::scan_line(text_stream *line, text_file_position *tfp, void *X) {
 	preprocessor_state *PPS = (preprocessor_state *) X;
-	match_results mr = Regexp::create_mr();
 	@<Skip comments@>;
 	@<Deal with textual definitions of new macros@>;
 	Preprocessor::expand(line, tfp, PPS);
 	@<Sometimes, but only sometimes, output a newline@>;
 }
 
+@ A line is a comment to the preprocessor if its first non-whitespace character
+is the special comment character: often |#|, but not necessarily.
+
 @<Skip comments@> =
-	if (Regexp::match(&mr, line, L" *#%c*")) { Regexp::dispose_of(&mr); return; }
+	LOOP_THROUGH_TEXT(pos, line) {
+		wchar_t c = Str::get(pos);
+		if (c == PPS->comment_character) return;
+		if (Characters::is_whitespace(c) == FALSE) break;
+	}
 	
 @<Deal with textual definitions of new macros@> =
+	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, line, L" *{define: *(%C+) (%c*)} *")) @<Begin a definition@>;
 	if (Regexp::match(&mr, line, L" *{end-define} *")) @<End a definition@>;
 	if (PPS->defining) @<Continue a definition@>;
@@ -635,6 +644,11 @@ linked_list *Preprocessor::list_of_reserved_macros(linked_list *special_macros) 
 	return L;
 }
 
+void Preprocessor::do_not_suppress_whitespace(preprocessor_macro *mm) {
+	mm->suppress_newline_after_expanding = FALSE;
+	mm->suppress_whitespace_when_expanding = FALSE;
+}
+
 void Preprocessor::new_loop_macro(linked_list *L, text_stream *name,
 	text_stream *parameter_specification,
 	void (*expander)(preprocessor_macro *, preprocessor_state *, text_stream **, preprocessor_loop *, text_file_position *),
@@ -657,18 +671,16 @@ void Preprocessor::new_loop_macro(linked_list *L, text_stream *name,
 	mm = Preprocessor::new_macro(L, subname, parameter_specification, expander, tfp);
 	mm->begins_loop = TRUE;
 	mm->loop_name = Str::duplicate(name);
-	mm->suppress_newline_after_expanding = FALSE;
-	mm->suppress_whitespace_when_expanding = FALSE;
 	mm->span = TRUE;
+	Preprocessor::do_not_suppress_whitespace(mm);
 
 	Str::clear(subname);
 	WRITE_TO(subname, "end-%S-span", name);
 	mm = Preprocessor::new_macro(L, subname, NULL, Preprocessor::end_loop_expander, tfp);
 	mm->ends_loop = TRUE;
 	mm->loop_name = Str::duplicate(name);
-	mm->suppress_newline_after_expanding = FALSE;
-	mm->suppress_whitespace_when_expanding = FALSE;
 	mm->span = TRUE;
+	Preprocessor::do_not_suppress_whitespace(mm);
 
 	DISCARD_TEXT(subname)
 }
