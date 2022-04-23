@@ -2,6 +2,8 @@
 # and is not intended for human editing
 
 .DS_Store
+inweb.mk
+platform-settings.mk
 Manual.html
 debug-log.txt
 tags
@@ -16,7 +18,6 @@ Tests/hashes.intest
 Tests/_Results_Actual/
 foundation-test/foundation-test.mk
 foundation-test/Tests/Test Cases/_Results_Actual/
-platform-settings.mk
 foundation-module/Woven/
 Examples/*.o
 Examples/*.pdf

@@ -9,7 +9,8 @@ special loop construct.
 For the syntax being worked through, see //Webs, Tangling and Weaving//.
 
 =
-void Makefiles::write(web *W, filename *prototype, filename *F, module_search *I) {
+void Makefiles::write(web *W, filename *prototype, filename *F, module_search *I,
+	text_stream *platform) {
 	linked_list *L = NEW_LINKED_LIST(preprocessor_macro);
 	Preprocessor::new_macro(L,
 		I"platform-settings", NULL,
@@ -49,6 +50,7 @@ typedef struct makefile_specifics {
 	struct dictionary *webs_dictionary;    /* components with |type: web| */
 	struct dictionary *modules_dictionary; /* components with |type: module| */
 	struct module_search *search_path;
+	struct text_stream *which_platform;
 	CLASS_DEFINITION
 } makefile_specifics;
 
@@ -58,6 +60,7 @@ typedef struct makefile_specifics {
 	specifics->webs_dictionary = Dictionaries::new(16, FALSE);
 	specifics->modules_dictionary = Dictionaries::new(16, FALSE);
 	specifics->search_path = I;
+	specifics->which_platform = platform;
 
 @h The identity-settings expander.
 
@@ -86,10 +89,13 @@ for that platform.
 =
 void Makefiles::platform_settings_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
-	filename *prototype = Filenames::in(path_to_inweb, I"platform-settings.mk");
-	text_stream *INWEBPLATFORM = Str::new();
-	TextFiles::read(prototype, FALSE, "can't open platform settings file",
-		TRUE, Makefiles::seek_INWEBPLATFORM, NULL, INWEBPLATFORM);
+	makefile_specifics *specifics = RETRIEVE_POINTER_makefile_specifics(PPS->specifics);
+	text_stream *INWEBPLATFORM = Str::duplicate(specifics->which_platform);
+	if (Str::len(INWEBPLATFORM) == 0) {
+		filename *ps = Filenames::in(path_to_inweb, I"platform-settings.mk");
+		TextFiles::read(ps, FALSE, "can't open platform settings file",
+			TRUE, Makefiles::seek_INWEBPLATFORM, NULL, INWEBPLATFORM);
+	}
 	if (Str::len(INWEBPLATFORM) == 0) {
 		Errors::in_text_file(
 			"found platform settings file, but it does not set INWEBPLATFORM", tfp);

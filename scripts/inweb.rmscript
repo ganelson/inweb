@@ -51,17 +51,25 @@ though only because its build settings are currently missing from the inweb
 distribution. The older macos32 platform won't build with the MacOS SDK from
 10.14 onwards, and in any case 32-bit executables won't run from 10.15 onwards:
 so use the default macos unless you need to build for an old version of MacOS.
-	* "make -f inweb/inweb.mk macos"
-	* "make -f inweb/inweb.mk macos32"
-	* "make -f inweb/inweb.mk linux"
-	* "make -f inweb/inweb.mk windows"
-	* "make -f inweb/inweb.mk unix"
-	* "make -f inweb/inweb.mk android"
-* Perform the initial compilation: "make -f inweb/inweb.mk initial"
+	* "bash inweb/scripts/first.sh linux"
+	* "bash inweb/scripts/first.sh macos"
+	* "bash inweb/scripts/first.sh macos32"
+	* "bash inweb/scripts/first.sh unix"
+	* "bash inweb/scripts/first.sh windows"
 * Test that all is well: "inweb/Tangled/inweb -help"
 
-You should now have a working copy of Inweb. To build it again, no need to
-use "initial", and you should just: "make -f inweb/inweb.mk"
+You should now have a working copy of Inweb, with its own makefile tailored
+to your platform now in place (at inweb/inweb.mk). To build inweb again, e.g.
+after editing inweb's source code, do not run the shell script first.sh again.
+Instead, you must use the makefile:
+
+	* make -f inweb/inweb.mk
+
+If you wish to tweak the makefile, do not edit it directly. Instead,
+edit inweb/scripts/inweb.mkscript and inweb/Materials/platforms/PLATFORM.mkscript,
+where PLATFORM is your choice as above (e.g., 'macos'). Then run "make -f inweb/inweb.mk makers"
+to rebuild all these makefiles with your changes incorporated; and try running
+the shell script "inweb/scripts/first.sh" again.
 
 ## Also Included
 

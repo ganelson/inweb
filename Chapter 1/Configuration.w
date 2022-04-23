@@ -40,6 +40,7 @@ typedef struct inweb_instructions {
 	struct filename *colony_setting; /* |-colony X|: the filename X, if supplied */
 	struct text_stream *member_setting; /* |-member X|: sets web to member X of colony */
 	struct linked_list *breadcrumb_setting; /* of |breadcrumb_request| */
+	struct text_stream *platform_setting; /* |-platform X|: sets prevailing platform to X */
 	int verbose_switch; /* |-verbose|: print names of files read to stdout */
 	int targets; /* used only for parsing */
 
@@ -102,6 +103,7 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.colony_setting = NULL;
 	args.member_setting = NULL;
 	args.breadcrumb_setting = NEW_LINKED_LIST(breadcrumb_request);
+	args.platform_setting = NULL;
 	args.tag_setting = Str::new();
 	args.weave_pattern = Str::new();
 	args.import_setting = NULL;
@@ -133,6 +135,7 @@ provides automatically.
 @e GITIGNORE_CLSW
 @e MAKEFILE_CLSW
 @e WRITEME_CLSW
+@e PLATFORM_CLSW
 @e ADVANCE_FILE_CLSW
 @e PROTOTYPE_CLSW
 @e SCAN_CLSW
@@ -203,6 +206,8 @@ provides automatically.
 		L"increment daily build code in file X");
 	CommandLine::declare_switch(WRITEME_CLSW, L"write-me", 2,
 		L"write a read-me file following instructions in file X");
+	CommandLine::declare_switch(PLATFORM_CLSW, L"platform", 2,
+		L"use platform X (e.g. 'windows') when making e.g. makefiles");
 	CommandLine::declare_switch(PROTOTYPE_CLSW, L"prototype", 2,
 		L"translate makefile from prototype X");
 	CommandLine::declare_switch(FUNCTIONS_CLSW, L"functions", 1,
@@ -306,6 +311,9 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 			args->gitignore_setting = Filenames::from_text(arg);
 			if (args->inweb_mode != TRANSLATE_MODE)
 				Configuration::set_fundamental_mode(args, ANALYSE_MODE);
+			break;
+		case PLATFORM_CLSW:
+			args->platform_setting = Str::duplicate(arg);
 			break;
 		case ADVANCE_FILE_CLSW:
 			args->advance_setting = Filenames::from_text(arg);

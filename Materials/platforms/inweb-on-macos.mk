@@ -45,35 +45,15 @@ force: $(ME)/platform-settings.mk
 makers:
 	$(INWEB) $(FTEST) -makefile $(FTEST)/foundation-test.mk
 	$(INWEB) -prototype $(ME)/Materials/platforms/macos.mkscript -makefile $(ME)/Materials/platforms/macos.mk
+	$(INWEB) -platform macos -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macos.mk
 	$(INWEB) -prototype $(ME)/Materials/platforms/macos32.mkscript -makefile $(ME)/Materials/platforms/macos32.mk
+	$(INWEB) -platform macos32 -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macos32.mk
 	$(INWEB) -prototype $(ME)/Materials/platforms/windows.mkscript -makefile $(ME)/Materials/platforms/windows.mk
+	$(INWEB) -platform windows -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-windows.mk
 	$(INWEB) -prototype $(ME)/Materials/platforms/linux.mkscript -makefile $(ME)/Materials/platforms/linux.mk
+	$(INWEB) -platform linux -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-linux.mk
 	$(INWEB) -prototype $(ME)/Materials/platforms/unix.mkscript -makefile $(ME)/Materials/platforms/unix.mk
-
-.PHONY: macos
-macos: 
-	cp -f $(ME)/Materials/platforms/macos.mk $(ME)/platform-settings.mk
-	echo "=== Platform set to 'macos'. Now: make -f inweb/inweb.mk initial ==="
-
-.PHONY: macos32
-macos32: 
-	cp -f $(ME)/Materials/platforms/macos32.mk $(ME)/platform-settings.mk
-	echo "=== Platform set to 'macos32'. Now: make -f inweb/inweb.mk initial ==="
-
-.PHONY: windows
-windows: 
-	cp -f $(ME)/Materials/platforms/windows.mk $(ME)/platform-settings.mk
-	echo "=== Platform set to 'windows'. Now: make -f inweb/inweb.mk initial ==="
-
-.PHONY: linux
-linux: 
-	cp -f $(ME)/Materials/platforms/linux.mk $(ME)/platform-settings.mk
-	echo "=== Platform set to 'linux'. Now: make -f inweb/inweb.mk initial ==="
-
-.PHONY: unix
-unix: 
-	cp -f $(ME)/Materials/platforms/unix.mk $(ME)/platform-settings.mk
-	echo "=== Platform set to 'unix'. Now: make -f inweb/inweb.mk initial ==="
+	$(INWEB) -platform unix -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-unix.mk
 
 .PHONY: initial
 initial: $(ME)/platform-settings.mk
@@ -101,7 +81,7 @@ endef
 
 define make-ftest
 	$(INWEB) $(FTEST) -makefile $(FTEST)/foundation-test.mk
-	make -f $(FTEST)/foundation-test.mk
+	make -f $(FTEST)/foundation-test.mk force
 endef
 
 .PHONY: test

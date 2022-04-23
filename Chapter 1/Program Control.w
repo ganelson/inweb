@@ -120,7 +120,7 @@ void Main::follow_instructions(inweb_instructions *ins) {
 		ins->prototype_setting = Filenames::from_text(I"script.rmscript");
 	if (ins->makefile_setting)
 		Makefiles::write(W, ins->prototype_setting, ins->makefile_setting,
-			WebModules::make_search_path(ins->import_setting));
+			WebModules::make_search_path(ins->import_setting), ins->platform_setting);
 	else if (ins->gitignore_setting)
 		Git::write_gitignore(W, ins->prototype_setting, ins->gitignore_setting);
 	else if (ins->advance_setting)
@@ -171,7 +171,7 @@ void Main::follow_instructions(inweb_instructions *ins) {
 		Analyser::catalogue_the_sections(W, ins->chosen_range, STRUCTURES_SECTIONCAT);
 	if (ins->makefile_setting)
 		Analyser::write_makefile(W, ins->makefile_setting,
-			WebModules::make_search_path(ins->import_setting));
+			WebModules::make_search_path(ins->import_setting), ins->platform_setting);
 	if (ins->gitignore_setting)
 		Analyser::write_gitignore(W, ins->gitignore_setting);
 	if (ins->advance_switch)
