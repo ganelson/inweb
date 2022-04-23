@@ -61,14 +61,12 @@ so use the default macos unless you need to build for an old version of MacOS.
 You should now have a working copy of Inweb, with its own makefile tailored
 to your platform now in place (at inweb/inweb.mk). To build inweb again, e.g.
 after editing inweb's source code, do not run the shell script first.sh again.
-Instead, you must use the makefile:
-
-	* make -f inweb/inweb.mk
+Instead, you must use: "make -f inweb/inweb.mk"
 
 If you wish to tweak the makefile, do not edit it directly. Instead,
 edit inweb/scripts/inweb.mkscript and inweb/Materials/platforms/PLATFORM.mkscript,
 where PLATFORM is your choice as above (e.g., 'macos'). Then run "make -f inweb/inweb.mk makers"
-to rebuild all these makefiles with your changes incorporated; and try running
+to rebuild all these makefiles with your changes incorporated; and then run
 the shell script "inweb/scripts/first.sh" again.
 
 ## Also Included
