@@ -21,7 +21,6 @@ see //foundation: A Brief Guide to Foundation//.
 @e defined_constant_CLASS
 @e enumeration_set_CLASS
 @e footnote_CLASS
-@e gitignore_state_CLASS
 @e hash_table_entry_CLASS
 @e hash_table_entry_usage_CLASS
 @e language_function_CLASS
@@ -113,7 +112,6 @@ DECLARE_CLASS(colouring_rule)
 DECLARE_CLASS(defined_constant)
 DECLARE_CLASS(enumeration_set)
 DECLARE_CLASS(footnote)
-DECLARE_CLASS(gitignore_state)
 DECLARE_CLASS(hash_table_entry_usage)
 DECLARE_CLASS(hash_table_entry)
 DECLARE_CLASS(language_function)

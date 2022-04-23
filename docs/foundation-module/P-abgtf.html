@@ -56,7 +56,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">foundation</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>A Brief Guide to Foundation</b></li></ul></div>
 <p class="purpose">Notes on getting started with the Foundation library.</p>
 
-<ul class="toc"><li><a href="P-abgtf.html#SP1">&#167;1. Introduction</a></li><li><a href="P-abgtf.html#SP3">&#167;3. Truth</a></li><li><a href="P-abgtf.html#SP4">&#167;4. Text streams and formatted output</a></li><li><a href="P-abgtf.html#SP10">&#167;10. Objects</a></li><li><a href="P-abgtf.html#SP11">&#167;11. Methods</a></li><li><a href="P-abgtf.html#SP13">&#167;13. Collections</a></li><li><a href="P-abgtf.html#SP15">&#167;15. Files and paths</a></li><li><a href="P-abgtf.html#SP19">&#167;19. Handling webs</a></li><li><a href="P-abgtf.html#SP20">&#167;20. Miscellaneous other features</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-abgtf.html#SP1">&#167;1. Introduction</a></li><li><a href="P-abgtf.html#SP3">&#167;3. Truth</a></li><li><a href="P-abgtf.html#SP4">&#167;4. Text streams and formatted output</a></li><li><a href="P-abgtf.html#SP10">&#167;10. Objects</a></li><li><a href="P-abgtf.html#SP11">&#167;11. Methods</a></li><li><a href="P-abgtf.html#SP13">&#167;13. Collections</a></li><li><a href="P-abgtf.html#SP15">&#167;15. Files and paths</a></li><li><a href="P-abgtf.html#SP20">&#167;20. Handling webs</a></li><li><a href="P-abgtf.html#SP21">&#167;21. Miscellaneous other features</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b>The Foundation module supplies some of the conveniences of more modern
 programming languages to ANSI C. It offers the usual stuff of standard
@@ -512,7 +512,11 @@ functions from <a href="3-em.html" class="internal">Error Messages</a> can then 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">Errors::in_text_file</span><span class="plain-syntax">(</span><span class="string-syntax">"bad syntax here"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Handling webs. </b>Foundation provides routines which can read the metadata of a web, i.e., a
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>The <a href="4-prp.html" class="internal">Preprocessor</a> provides simple iteration and macro expansion in order
+to turn a marked-up script into a plain text file.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Handling webs. </b>Foundation provides routines which can read the metadata of a web, i.e., a
 literate program in the <a href="../inweb/index.html" class="internal">inweb</a> format, from a copy in the file system.
 The main function here is <a href="8-ws.html#SP5" class="internal">WebMetadata::get</a>, which returns a <a href="8-ws.html#SP2" class="internal">web_md</a>
 object. You can then access its bibliographic data using
@@ -521,7 +525,7 @@ its modules (instances of <a href="8-wm.html#SP1" class="internal">module</a>), 
 sections (of <a href="8-ws.html#SP4" class="internal">section_md</a>).
 </p>
 
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Miscellaneous other features. </b>What else? Well:
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Miscellaneous other features. </b>What else? Well:
 </p>
 
 <ul class="items"><li>(a) <a href="3-tm.html" class="internal">Time</a> for the time of day and the date of Easter (no, really), and
