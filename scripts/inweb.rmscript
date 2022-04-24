@@ -24,7 +24,7 @@ enabled yet. As a result links marked &#9733; lead only to raw HTML
 source, not to served web pages. They can in the mean time be browsed offline
 as static HTML files stored in "docs".
 
-## Licence
+## Licence and copyright
 
 Except as noted, copyright in material in this repository (the "Package") is
 held by Graham Nelson (the "Author"), who retains copyright so that there is
@@ -33,6 +33,11 @@ becoming public, the Package is placed under the [Artistic License 2.0](https://
 This is a highly permissive licence, used by Perl among other notable projects,
 recognised by the Open Source Initiative as open and by the Free Software
 Foundation as free in both senses.
+
+A condition of any pull-request being made (i.e., to make suggested amendments
+to this software) is that, if the request is accepted, copyright on any contribution
+made by it immediately transfers to the project's copyright-holder, Graham Nelson.
+This is in order that there can be clear ownership.
 
 ## Build Instructions
 
@@ -68,6 +73,43 @@ edit inweb/scripts/inweb.mkscript and inweb/Materials/platforms/PLATFORM.mkscrip
 where PLATFORM is your choice as above (e.g., 'macos'). Then run "make -f inweb/inweb.mk makers"
 to rebuild all these makefiles with your changes incorporated; and then run
 the shell script "inweb/scripts/first.sh" again.
+
+## Reporting Issues
+
+The bug tracker for Inweb is powered by Jira and hosted
+[at the Atlassian website](https://inform7.atlassian.net/jira/software/c/projects/INWEB/issues).
+(Note that Inform, Inweb and Intest are three different projects in Jira: please
+do not report Inweb issues on the Inform bug tracker or vice versa.)
+
+The curator of the bug tracker is Brian Rushton, and the administrator is
+Hugo Labrande.
+
+## Pull Requests and Adding Features
+
+Substantially different versions of Inweb have been open-source before, but this
+version is essentially a fresh reimplementation with a different design. It is
+the curse of literate-programming tools that they serve only their own authors,
+that is, few LP tools please users other than the creators: thus, only Knuth
+really uses CWEB, for example. But perhaps that will change. It's time for LP
+to be tried again, and Inweb may be a start.
+
+For the moment, however, Inweb's future direction remains in the hands of the
+original author. It needs to be reliable and to keep the Inform and Intest projects
+working, as well as itself.
+
+At some point a more formal process may emerge, but for now community discussion
+of possible features is best kept to the IF forum. In particular, please do not
+use the bug trackers to propose new features.
+
+Pull requests adding functionality or making any significant changes are therefore
+not likely to be accepted from non-members of the wider Inform team without prior
+agreement, unless they are clear-cut bug fixes or corrections of typos, broken
+links, or similar. See also the note about copyright above.
+
+The Inweb licence is highly permissive, and forks which develop in quite different
+ways are entirely within the rules. (But one of the few requirements of the
+Artistic Licence is that such forks be given a name which is not simply "Inweb",
+to avoid confusion.)
 
 ## Also Included
 
