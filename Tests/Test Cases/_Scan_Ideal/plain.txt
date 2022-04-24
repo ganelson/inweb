@@ -1,4 +1,3 @@
-web "plain": 1 section : 3 paragraphs : 25 lines
 Scan of source lines for '0'
 0000001  SECTION_HEADING.....  Main.
 0000002  COMMENT_BODY........  

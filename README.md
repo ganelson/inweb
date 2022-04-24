@@ -14,9 +14,9 @@ where it manages a 300,000-line code base.
 Literate programming is a methodology created by Donald Knuth in the late
 1970s. A literate program, or "web", is written as a narrative intended to
 be readable by humans as well as by other programs. Inweb is itself written as
-a web, and its human-readable form is a [companion website to this one](blob/master/docs/index.html).
+a web, and its human-readable form is a [companion website to this one](docs/index.html).
 
-For the Inweb manual, see [&#9733;&nbsp;inweb/Preliminaries](blob/master/docs/inweb/M-iti).
+For the Inweb manual, see [&#9733;&nbsp;inweb/Preliminaries](docs/inweb/M-iti).
 
 __Disclaimer__. Because this is a private repository (until the next public
 release of Inform, when it will open), its GitHub pages server cannot be
@@ -118,10 +118,10 @@ programs, such as the [Intest testing tool](https://github.com/ganelson/intest)
 and the [Inform compiler and related tools](https://github.com/ganelson/inform).
 
 This library is called "Foundation", and has its own web
-here: [&#9733;&nbsp;foundation-module](blob/master/docs/foundation-module/index.html).
+here: [&#9733;&nbsp;foundation-module](docs/foundation-module/index.html).
 
 A small executable for running unit tests against Foundation is also included:
-[&#9733;&nbsp;foundation-test](blob/master/docs/foundation-test/index.html).
+[&#9733;&nbsp;foundation-test](docs/foundation-test/index.html).
 
 ## Testing Inweb
 

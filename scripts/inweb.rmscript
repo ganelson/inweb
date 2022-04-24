@@ -11,7 +11,7 @@ programs than CWEB, and since 2004 has been the tool used by the
 [Inform programming language project](https://github.com/ganelson/inform),
 where it manages a 300,000-line code base.
 
-{set name: GITHUBPAGESLINK value: blob/master/docs}
+{set name: GITHUBPAGESLINK value: docs}
 {set name: WEBICON value: &#9733;}
 {set name: DOCICON value: &#9654;}
 

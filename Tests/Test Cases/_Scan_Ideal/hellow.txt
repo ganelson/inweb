@@ -1,4 +1,3 @@
-web "hellow": 1 section : 1 paragraph : 12 lines
 Scan of source lines for '0'
 0000001  SECTION_HEADING.....  Main.
 0000002  COMMENT_BODY........  
