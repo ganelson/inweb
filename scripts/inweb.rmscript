@@ -11,16 +11,20 @@ programs than CWEB, and since 2004 has been the tool used by the
 [Inform programming language project](https://github.com/ganelson/inform),
 where it manages a 300,000-line code base.
 
+{set name: GITHUBPAGESLINK value: blob/master/docs}
+{set name: WEBICON value: &#9733;}
+{set name: DOCICON value: &#9654;}
+
 Literate programming is a methodology created by Donald Knuth in the late
 1970s. A literate program, or "web", is written as a narrative intended to
-be readable by humans as well as by other programs. The human-readable form
-for Inweb (which is itself a web) is here: [&#9733;&nbsp;inweb](docs/inweb/index.html).
+be readable by humans as well as by other programs. Inweb is itself written as
+a web, and its human-readable form is a [companion website to this one]({GITHUBPAGESLINK}/index.html).
 
-For the Inweb manual, see [&#9733;&nbsp;inweb/Preliminaries](docs/inweb/M-iti).
+For the Inweb manual, see [{WEBICON}&nbsp;inweb/Preliminaries]({GITHUBPAGESLINK}/inweb/M-iti).
 
 __Disclaimer__. Because this is a private repository (until the next public
 release of Inform, when it will open), its GitHub pages server cannot be
-enabled yet. As a result links marked &#9733; lead only to raw HTML
+enabled yet. As a result links marked {WEBICON} lead only to raw HTML
 source, not to served web pages. They can in the mean time be browsed offline
 as static HTML files stored in "docs".
 
@@ -118,10 +122,10 @@ programs, such as the [Intest testing tool](https://github.com/ganelson/intest)
 and the [Inform compiler and related tools](https://github.com/ganelson/inform).
 
 This library is called "Foundation", and has its own web
-here: [&#9733;&nbsp;foundation-module](docs/foundation-module/index.html).
+here: [{WEBICON}&nbsp;foundation-module]({GITHUBPAGESLINK}/foundation-module/index.html).
 
 A small executable for running unit tests against Foundation is also included:
-[&#9733;&nbsp;foundation-test](docs/foundation-test/index.html).
+[{WEBICON}&nbsp;foundation-test]({GITHUBPAGESLINK}/foundation-test/index.html).
 
 ## Testing Inweb
 
