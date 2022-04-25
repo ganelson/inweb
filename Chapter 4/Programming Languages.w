@@ -203,7 +203,7 @@ programming_language *Languages::read_definition(filename *F) {
 	pl->function_notation[0] = 0;
 
 	pl->reserved_words = NEW_LINKED_LIST(reserved_word);
-	pl->built_in_keywords.analysis_hash_initialised = FALSE;
+	Analyser::initialise_hash_table(&(pl->built_in_keywords));
 	pl->program = NULL;
 	pl->methods = Methods::new_set();
 

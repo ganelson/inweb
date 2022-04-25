@@ -391,8 +391,8 @@ typedef struct tangle_target {
 tangle_target *Reader::add_tangle_target(web *W, programming_language *language) {
 	tangle_target *tt = CREATE(tangle_target);
 	tt->tangle_language = language;
+	Analyser::initialise_hash_table(&(tt->symbols));
 	ADD_TO_LINKED_LIST(tt, tangle_target, W->tangle_targets);
-	tt->symbols.analysis_hash_initialised = FALSE;
 	return tt;
 }
 

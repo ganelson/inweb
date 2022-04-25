@@ -251,18 +251,25 @@ int Analyser::hash_code_from_word(text_stream *text) {
 
 @ The actual table is stored here:
 
+@d HASH_SAFETY_CODE 0x31415927
+
 =
 typedef struct hash_table {
 	struct linked_list *analysis_hash[HASH_TAB_SIZE]; /* of |hash_table_entry| */
-	int analysis_hash_initialised; /* when we start up, array's contents are undefined */
+	int safety_code; /* when we start up, array's contents are undefined, so... */
 } hash_table;
+
+void Analyser::initialise_hash_table(hash_table *HT) {
+	HT->safety_code = HASH_SAFETY_CODE;
+	for (int i=0; i<HASH_TAB_SIZE; i++) HT->analysis_hash[i] = NULL;
+}
 
 @ Where we define:
 
 =
 typedef struct hash_table_entry {
 	text_stream *hash_key;
-	int reserved_word; /* in the language currently being woven, that is */
+	int language_reserved_word; /* in the language currently being woven, that is */
 	struct linked_list *usages; /* of |hash_table_entry_usage| */
 	struct source_line *definition_line; /* or null, if it's not a constant, function or type name */
 	struct language_function *as_function; /* for function names only */
@@ -278,20 +285,22 @@ of each C function.
 hash_table_entry *Analyser::find_hash_entry(hash_table *HT, text_stream *text, int create) {
 	int h = Analyser::hash_code_from_word(text);
 	if (h == NUMBER_HASH) return NULL;
-	if (HT->analysis_hash_initialised == FALSE) {
-		for (int i=0; i<HASH_TAB_SIZE; i++) HT->analysis_hash[i] = NULL;
-		HT->analysis_hash_initialised = TRUE;
-	}
+	if ((h<0) || (h>=HASH_TAB_SIZE)) internal_error("hash code out of range");
+	if (HT->safety_code != HASH_SAFETY_CODE) internal_error("uninitialised HT");
 	if (HT->analysis_hash[h] != NULL) {
 		hash_table_entry *hte = NULL;
-		LOOP_OVER_LINKED_LIST(hte, hash_table_entry, HT->analysis_hash[h])
+		LOOP_OVER_LINKED_LIST(hte, hash_table_entry, HT->analysis_hash[h]) {
 			if (Str::eq(hte->hash_key, text))
 				return hte;
+		}
 	}
 	if (create) {
 		hash_table_entry *hte = CREATE(hash_table_entry);
+		hte->language_reserved_word = 0;
 		hte->hash_key = Str::duplicate(text);
 		hte->usages = NEW_LINKED_LIST(hash_table_entry_usage);
+		hte->definition_line = NULL;
+		hte->as_function = NULL;
 		if (HT->analysis_hash[h] == NULL)
 			HT->analysis_hash[h] = NEW_LINKED_LIST(hash_table_entry);
 		ADD_TO_LINKED_LIST(hte, hash_table_entry, HT->analysis_hash[h]);
@@ -310,7 +319,7 @@ hash_table_entry *Analyser::find_hash_entry_for_section(section *S, text_stream 
 =
 hash_table_entry *Analyser::mark_reserved_word(hash_table *HT, text_stream *p, int e) {
 	hash_table_entry *hte = Analyser::find_hash_entry(HT, p, TRUE);
-	hte->reserved_word |= (1 << e);
+	hte->language_reserved_word |= (1 << (e % 32));
 	hte->definition_line = NULL;
 	hte->as_function = NULL;
 	return hte;
@@ -330,7 +339,7 @@ hash_table_entry *Analyser::mark_reserved_word_at_line(source_line *L, text_stre
 
 int Analyser::is_reserved_word(hash_table *HT, text_stream *p, int e) {
 	hash_table_entry *hte = Analyser::find_hash_entry(HT, p, FALSE);
-	if ((hte) && (hte->reserved_word & (1 << e))) return TRUE;
+	if ((hte) && (hte->language_reserved_word & (1 << (e % 32)))) return TRUE;
 	return FALSE;
 }
 
@@ -340,13 +349,13 @@ int Analyser::is_reserved_word_for_section(section *S, text_stream *p, int e) {
 
 source_line *Analyser::get_defn_line(section *S, text_stream *p, int e) {
 	hash_table_entry *hte = Analyser::find_hash_entry(&(S->sect_target->symbols), p, FALSE);
-	if ((hte) && (hte->reserved_word & (1 << e))) return hte->definition_line;
+	if ((hte) && (hte->language_reserved_word & (1 << (e % 32)))) return hte->definition_line;
 	return NULL;
 }
 
 language_function *Analyser::get_function(section *S, text_stream *p, int e) {
 	hash_table_entry *hte = Analyser::find_hash_entry(&(S->sect_target->symbols), p, FALSE);
-	if ((hte) && (hte->reserved_word & (1 << e))) return hte->as_function;
+	if ((hte) && (hte->language_reserved_word & (1 << (e % 32)))) return hte->as_function;
 	return NULL;
 }
 
@@ -371,10 +380,11 @@ void Analyser::analyse_find(web *W, source_line *L, text_stream *identifier, int
 	hash_table_entry *hte =
 		Analyser::find_hash_entry_for_section(L->owning_section, identifier, FALSE);
 	if (hte == NULL) return;
-	hash_table_entry_usage *hteu = NULL;
-	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
-		if (L->owning_paragraph == hteu->usage_recorded_at)
-			break;
+	hash_table_entry_usage *hteu = NULL, *loop = NULL;
+	LOOP_OVER_LINKED_LIST(loop, hash_table_entry_usage, hte->usages)
+		if (L->owning_paragraph == loop->usage_recorded_at) {
+			hteu = loop; break;
+		}
 	if (hteu == NULL) {
 		hteu = CREATE(hash_table_entry_usage);
 		hteu->form_of_usage = 0;
