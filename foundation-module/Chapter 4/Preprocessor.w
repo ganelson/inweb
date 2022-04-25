@@ -115,10 +115,21 @@ is the special comment character: often |#|, but not necessarily.
 	
 @<Deal with textual definitions of new macros@> =
 	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, line, L" *{define: *(%C+) *} *")) @<Begin a bare definition@>;
 	if (Regexp::match(&mr, line, L" *{define: *(%C+) (%c*)} *")) @<Begin a definition@>;
 	if (Regexp::match(&mr, line, L" *{end-define} *")) @<End a definition@>;
 	if (PPS->defining) @<Continue a definition@>;
 	Regexp::dispose_of(&mr);
+
+@<Begin a bare definition@> =
+	if (PPS->defining)
+		Errors::in_text_file("nested definitions are not allowed", tfp);
+	text_stream *name = mr.exp[0];
+	text_stream *parameter_specification = Str::new();
+	PPS->defining = Preprocessor::new_macro(PPS->known_macros, name,
+		parameter_specification, Preprocessor::default_expander, tfp);
+	Regexp::dispose_of(&mr);
+	return;
 
 @<Begin a definition@> =
 	if (PPS->defining)

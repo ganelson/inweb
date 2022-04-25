@@ -16,4 +16,4 @@ web: "twinprimes" at "inweb/Examples/twinprimes.inweb" in "inweb/docs/twinprimes
 web: "eastertide" at "inweb/Examples/eastertide" in "inweb/docs/eastertide"
 
 web: "intest" at "intest" in "intest/docs"
-web: "inform" at "inform/docs-src/index.inweb" in "inform/docs"
+web: "inform" at "inform/docs-src/overview.inweb" in "inform/docs"

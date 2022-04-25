@@ -33,6 +33,7 @@ for analysing a web:
   -functions             catalogue the functions in the web
   -gitignore X           write a .gitignore file for this web and store it in X
   -makefile X            write a makefile for this web and store it in X
+  -platform X            use platform X (e.g. 'windows') when making e.g. makefiles
   -prototype X           translate makefile from prototype X
   -scan                  scan the web
   -structures            catalogue the structures in the web

@@ -1332,19 +1332,19 @@ typedef struct preprocessor_state {
 	struct general_pointer specifics;
 	wchar_t comment_character;
 } preprocessor_state;
-#line 422 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 433 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 typedef struct preprocessor_variable {
 	struct text_stream *name;
 	struct text_stream *value;
 	CLASS_DEFINITION
 } preprocessor_variable;
-#line 442 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 453 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 typedef struct preprocessor_variable_set {
 	struct linked_list *variables; /* of |preprocessor_variable| */
 	struct preprocessor_variable_set *outer;
 	CLASS_DEFINITION
 } preprocessor_variable_set;
-#line 515 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 526 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 typedef struct preprocessor_macro {
 	/* syntax */
 	struct text_stream *identifier;
@@ -1368,7 +1368,7 @@ typedef struct preprocessor_macro {
 
 	CLASS_DEFINITION
 } preprocessor_macro;
-#line 539 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 550 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 typedef struct preprocessor_macro_parameter {
 	struct text_stream *name;
 	struct text_stream *definition_token;
@@ -3426,41 +3426,41 @@ void  Preprocessor__set_loop_var_name(preprocessor_loop *loop, text_stream *name
 void  Preprocessor__add_loop_iteration(preprocessor_loop *loop, text_stream *value) ;
 #line 98 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__scan_line(text_stream *line, text_file_position *tfp, void *X) ;
-#line 169 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 180 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocessor_state *PPS) ;
-#line 408 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 419 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 int  Preprocessor__acceptable_variable_name(text_stream *name) ;
-#line 428 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 439 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 text_stream * Preprocessor__read_variable(preprocessor_variable *var) ;
-#line 432 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 443 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__write_variable(preprocessor_variable *var, text_stream *val) ;
-#line 448 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 459 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_variable_set * Preprocessor__new_variable_set(preprocessor_variable_set *outer) ;
-#line 455 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 466 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_variable * Preprocessor__find_variable_in_one(text_stream *name, 	preprocessor_variable_set *set) ;
-#line 465 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 476 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_variable * Preprocessor__find_variable(text_stream *name, 	preprocessor_variable_set *set) ;
-#line 479 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 490 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_variable * Preprocessor__ensure_variable(text_stream *name, 	preprocessor_variable_set *in_set) ;
-#line 556 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 567 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_macro * Preprocessor__new_macro(linked_list *L, text_stream *name, 	text_stream *parameter_specification, 	void (*expander)(preprocessor_macro *, preprocessor_state *, text_stream **, preprocessor_loop *, text_file_position *), 	text_file_position *tfp) ;
-#line 616 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 627 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__add_line_to_macro(preprocessor_macro *mm, text_stream *line, 	text_file_position *tfp) ;
-#line 634 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 645 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 linked_list * Preprocessor__list_of_reserved_macros(linked_list *special_macros) ;
-#line 647 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 658 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__do_not_suppress_whitespace(preprocessor_macro *mm) ;
-#line 652 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 663 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__new_loop_macro(linked_list *L, text_stream *name, 	text_stream *parameter_specification, 	void (*expander)(preprocessor_macro *, preprocessor_state *, text_stream **, preprocessor_loop *, text_file_position *), 	text_file_position *tfp) ;
-#line 691 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 702 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_macro * Preprocessor__find_macro(linked_list *L, text_stream *name) ;
-#line 706 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 717 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__default_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 723 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 734 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__set_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 738 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 749 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__repeat_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 767 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 778 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__end_loop_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
 #line 77 "inweb/foundation-module/Chapter 4/Tries and Avinues.w"
 wchar_t * Tries__search(match_trie *T, text_stream *p, wchar_t *add_outcome) ;
@@ -8733,11 +8733,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A92";
+			char *svn = "7-alpha.1+1A93";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "23 April 2022";
+			char *d = "24 April 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -11244,9 +11244,24 @@ void Preprocessor__scan_line(text_stream *line, text_file_position *tfp, void *X
 {
 #line 117 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	match_results mr = Regexp__create_mr();
+	if (Regexp__match(&mr, line, L" *{define: *(%C+) *} *")) 
+{
+#line 125 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+	if (PPS->defining)
+		Errors__in_text_file("nested definitions are not allowed", tfp);
+	text_stream *name = mr.exp[0];
+	text_stream *parameter_specification = Str__new();
+	PPS->defining = Preprocessor__new_macro(PPS->known_macros, name,
+		parameter_specification, Preprocessor__default_expander, tfp);
+	Regexp__dispose_of(&mr);
+	return;
+
+}
+#line 118 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+;
 	if (Regexp__match(&mr, line, L" *{define: *(%C+) (%c*)} *")) 
 {
-#line 124 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 135 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	if (PPS->defining)
 		Errors__in_text_file("nested definitions are not allowed", tfp);
 	text_stream *name = mr.exp[0];
@@ -11257,11 +11272,11 @@ void Preprocessor__scan_line(text_stream *line, text_file_position *tfp, void *X
 	return;
 
 }
-#line 118 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 119 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	if (Regexp__match(&mr, line, L" *{end-define} *")) 
 {
-#line 139 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 150 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	if (PPS->defining == NULL)
 		Errors__in_text_file("{end-define} without {define: ...}", tfp);
 	PPS->defining = NULL;
@@ -11269,17 +11284,17 @@ void Preprocessor__scan_line(text_stream *line, text_file_position *tfp, void *X
 	return;
 
 }
-#line 119 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 120 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	if (PPS->defining) 
 {
-#line 134 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 145 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	Preprocessor__add_line_to_macro(PPS->defining, line, tfp);
 	Regexp__dispose_of(&mr);
 	return;
 
 }
-#line 120 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 121 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	Regexp__dispose_of(&mr);
 
@@ -11289,7 +11304,7 @@ void Preprocessor__scan_line(text_stream *line, text_file_position *tfp, void *X
 	Preprocessor__expand(line, tfp, PPS);
 	
 {
-#line 146 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 157 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	if (PPS->suppress_newline == FALSE) {
 		text_stream *OUT = PPS->dest;
 		if (Str__len(line) == 0) {
@@ -11307,7 +11322,7 @@ void Preprocessor__scan_line(text_stream *line, text_file_position *tfp, void *X
 ;
 }
 
-#line 169 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 180 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocessor_state *PPS) {
 	TEMPORARY_TEXT(before_matter)
 	TEMPORARY_TEXT(braced_matter)
@@ -11333,18 +11348,18 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 	if (after_times) {
 		
 {
-#line 206 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 217 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	if (Preprocessor__acceptable_variable_name(braced_matter)) {
 		
 {
-#line 267 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 278 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	Preprocessor__expand(before_matter, tfp, PPS);
 	if (PPS->repeat_sp > 0) {
 		WRITE_TO(PPS->dest, "{%S}", braced_matter);
 	} else {
 		
 {
-#line 312 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 323 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	preprocessor_variable *var =
 		Preprocessor__find_variable(braced_matter, PPS->stack_frame);
 	if (var) {
@@ -11357,13 +11372,13 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 	}
 
 }
-#line 271 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 282 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	}
 	Preprocessor__expand(after_matter, tfp, PPS);
 
 }
-#line 207 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 218 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	} else {
 		text_stream *identifier = braced_matter;
@@ -11375,7 +11390,7 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 		}
 		
 {
-#line 234 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 245 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	preprocessor_macro *loop_mm;
 	LOOP_OVER_LINKED_LIST(loop_mm, preprocessor_macro, PPS->known_macros)
 		if (Str__len(loop_mm->loop_name) > 0) {
@@ -11404,7 +11419,7 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 		}
 
 }
-#line 216 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 227 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 
 		preprocessor_macro *mm = Preprocessor__find_macro(PPS->known_macros, identifier);
@@ -11416,7 +11431,7 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 		} else {
 			
 {
-#line 283 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 294 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	if (mm->suppress_whitespace_when_expanding) {
 		while (Characters__is_whitespace(Str__get_last_char(before_matter)))
 			Str__delete_last_character(before_matter);
@@ -11438,12 +11453,12 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 	} else {
 		
 {
-#line 327 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 338 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	text_stream *parameter_values[MAX_PP_MACRO_PARAMETERS];
 	for (int i=0; i<MAX_PP_MACRO_PARAMETERS; i++) parameter_values[i] = NULL;
 	
 {
-#line 342 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 353 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	match_results mr = Regexp__create_mr();
 	while (Regexp__match(&mr, parameter_settings, L" *(%C+): *(%c*)")) {
 		text_stream *setting = mr.exp[0];
@@ -11479,11 +11494,11 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 		Errors__in_text_file("parameter list is malformed", tfp);
 
 }
-#line 329 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 340 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	
 {
-#line 377 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 388 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	for (int i=0; i<mm->no_parameters; i++)
 		if (parameter_values[i] == NULL)
 			if (mm->parameters[i]->optional == FALSE) {
@@ -11494,13 +11509,13 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 			}
 
 }
-#line 330 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 341 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 
 	preprocessor_loop *loop = NULL;
 	if (mm->begins_loop) 
 {
-#line 391 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 402 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	if (PPS->repeat_sp >= MAX_PREPROCESSOR_LOOP_DEPTH) {
 		Errors__in_text_file("repetition too deep", tfp);
 	} else {
@@ -11515,27 +11530,27 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 	}
 
 }
-#line 333 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 344 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 
 	(*(mm->expander))(mm, PPS, parameter_values, loop, tfp);
 
 }
-#line 302 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 313 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 		if (mm->suppress_newline_after_expanding) PPS->suppress_newline = TRUE;
 	}
 	Preprocessor__expand(after_matter, tfp, PPS);
 
 }
-#line 225 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 236 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 		}
 		Regexp__dispose_of(&mr);
 	}
 
 }
-#line 192 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 203 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	} else {
 		WRITE_TO(PPS->dest, "%S", text);
@@ -11545,7 +11560,7 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 	DISCARD_TEXT(after_matter)
 }
 
-#line 408 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 419 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 int Preprocessor__acceptable_variable_name(text_stream *name) {
 	LOOP_THROUGH_TEXT(pos, name) {
 		wchar_t c = Str__get(pos);
@@ -11557,7 +11572,7 @@ int Preprocessor__acceptable_variable_name(text_stream *name) {
 	return TRUE;
 }
 
-#line 427 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 438 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 
 text_stream *Preprocessor__read_variable(preprocessor_variable *var) {
 	if (var == NULL) internal_error("no such pp variable");
@@ -11568,7 +11583,7 @@ void Preprocessor__write_variable(preprocessor_variable *var, text_stream *val) 
 	var->value = Str__duplicate(val);
 }
 
-#line 447 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 458 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 
 preprocessor_variable_set *Preprocessor__new_variable_set(preprocessor_variable_set *outer) {
 	preprocessor_variable_set *set = CREATE(preprocessor_variable_set);
@@ -11597,7 +11612,7 @@ preprocessor_variable *Preprocessor__find_variable(text_stream *name,
 	return NULL;
 }
 
-#line 479 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 490 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_variable *Preprocessor__ensure_variable(text_stream *name,
 	preprocessor_variable_set *in_set) {
 	if (in_set == NULL) internal_error("variable without set");
@@ -11611,11 +11626,11 @@ preprocessor_variable *Preprocessor__ensure_variable(text_stream *name,
 	return var;
 }
 
-#line 538 "inweb/foundation-module/Chapter 4/Preprocessor.w"
-
-#line 545 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 549 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 
 #line 556 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+
+#line 567 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_macro *Preprocessor__new_macro(linked_list *L, text_stream *name,
 	text_stream *parameter_specification,
 	void (*expander)(preprocessor_macro *, preprocessor_state *, text_stream **, preprocessor_loop *, text_file_position *),
@@ -11625,7 +11640,7 @@ preprocessor_macro *Preprocessor__new_macro(linked_list *L, text_stream *name,
 	preprocessor_macro *new_macro = CREATE(preprocessor_macro);
 	
 {
-#line 570 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 581 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	new_macro->identifier = Str__duplicate(name);
 	new_macro->no_parameters = 0;
 
@@ -11640,11 +11655,11 @@ preprocessor_macro *Preprocessor__new_macro(linked_list *L, text_stream *name,
 	new_macro->suppress_whitespace_when_expanding = TRUE;
 
 }
-#line 563 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 574 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	
 {
-#line 584 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 595 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	text_stream *spec = Str__duplicate(parameter_specification);
 	match_results mr = Regexp__create_mr();
 	while (Regexp__match(&mr, spec, L" *(%C+): *(%C+) *(%c*)")) {
@@ -11657,7 +11672,7 @@ preprocessor_macro *Preprocessor__new_macro(linked_list *L, text_stream *name,
 		} else {
 			
 {
-#line 602 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 613 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	preprocessor_macro_parameter *new_parameter = CREATE(preprocessor_macro_parameter);
 	new_parameter->name = Str__duplicate(par_name);
 	new_parameter->definition_token = Str__duplicate(token_name);
@@ -11669,7 +11684,7 @@ preprocessor_macro *Preprocessor__new_macro(linked_list *L, text_stream *name,
 	new_macro->parameters[new_macro->no_parameters++] = new_parameter;
 
 }
-#line 594 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 605 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 		}
 	}
@@ -11678,13 +11693,13 @@ preprocessor_macro *Preprocessor__new_macro(linked_list *L, text_stream *name,
 		Errors__in_text_file("parameter list for this definition is malformed", tfp);
 
 }
-#line 564 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 575 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 	ADD_TO_LINKED_LIST(new_macro, preprocessor_macro, L);
 	return new_macro;
 }
 
-#line 616 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 627 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__add_line_to_macro(preprocessor_macro *mm, text_stream *line,
 	text_file_position *tfp) {
 	if (mm->no_lines >= MAX_PP_MACRO_LINES) {
@@ -11694,7 +11709,7 @@ void Preprocessor__add_line_to_macro(preprocessor_macro *mm, text_stream *line,
 	}
 }
 
-#line 634 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 645 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 linked_list *Preprocessor__list_of_reserved_macros(linked_list *special_macros) {
 	linked_list *L = NEW_LINKED_LIST(preprocessor_macro);
 	Preprocessor__new_loop_macro(L, TL_IS_5, TL_IS_6,
@@ -11749,7 +11764,7 @@ void Preprocessor__new_loop_macro(linked_list *L, text_stream *name,
 	DISCARD_TEXT(subname)
 }
 
-#line 691 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 702 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 preprocessor_macro *Preprocessor__find_macro(linked_list *L, text_stream *name) {
 	preprocessor_macro *mm;
 	LOOP_OVER_LINKED_LIST(mm, preprocessor_macro, L)
@@ -11758,7 +11773,7 @@ preprocessor_macro *Preprocessor__find_macro(linked_list *L, text_stream *name) 
 	return NULL;
 }
 
-#line 706 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 717 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__default_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	PPS->stack_frame = Preprocessor__new_variable_set(PPS->stack_frame);
@@ -11772,7 +11787,7 @@ void Preprocessor__default_expander(preprocessor_macro *mm, preprocessor_state *
 	PPS->stack_frame = PPS->stack_frame->outer;
 }
 
-#line 723 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 734 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__set_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	text_stream *name = parameter_values[0];
@@ -11785,7 +11800,7 @@ void Preprocessor__set_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	Preprocessor__write_variable(var, value);
 }
 
-#line 738 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 749 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__repeat_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	text_stream *with = parameter_values[0];
@@ -11805,7 +11820,7 @@ void Preprocessor__repeat_expander(preprocessor_macro *mm, preprocessor_state *P
 	Preprocessor__add_loop_iteration(loop, value);
 }
 
-#line 767 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 778 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void Preprocessor__end_loop_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	PPS->shadow_sp = 0;
@@ -11821,7 +11836,7 @@ void Preprocessor__end_loop_expander(preprocessor_macro *mm, preprocessor_state 
 		LOOP_OVER_LINKED_LIST(value, text_stream, loop->iterations)
 			
 {
-#line 786 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 797 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 	Preprocessor__write_variable(loop_var, value);
 	if (mm->span) {
 		Preprocessor__expand(matter, tfp, PPS);
@@ -11839,7 +11854,7 @@ void Preprocessor__end_loop_expander(preprocessor_macro *mm, preprocessor_state 
 	}
 
 }
-#line 780 "inweb/foundation-module/Chapter 4/Preprocessor.w"
+#line 791 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 ;
 		PPS->stack_frame = PPS->stack_frame->outer;
 	}
@@ -31631,7 +31646,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A92\t/built 23 April 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A93\t/built 24 April 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
