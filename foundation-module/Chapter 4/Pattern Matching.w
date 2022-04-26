@@ -209,7 +209,6 @@ int Regexp::match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 	match_position at;
 	if (scan_from) at = *scan_from;
 	else { at.tpos = 0; at.ppos = 0; at.bc = 0; at.bl = 0; }
-
 	while ((Str::get_at(text, at.tpos)) || (pattern[at.ppos])) {
 		if ((allow_partial) && (pattern[at.ppos] == 0)) break;
 		@<Parentheses in the match pattern set up substrings to extract@>;
@@ -257,9 +256,11 @@ int Regexp::match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 	}
 
 @<Extract the character class to match from the pattern@> =
-	int len;
+	if (pattern[at.ppos] == 0) return -1;
+	int len = 0;
 	chcl = Regexp::get_cclass(pattern, at.ppos, &len, &range_from, &range_to, &reverse);
-	at.ppos += len;
+	if (at.ppos+len > Wide::len(pattern)) internal_error("Yikes");
+	else at.ppos += len;
 
 @ This is standard regular-expression notation, except that I haven't bothered
 to implement numeric repetition counts, which we won't need:
