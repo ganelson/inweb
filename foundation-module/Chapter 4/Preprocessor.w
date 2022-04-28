@@ -356,7 +356,7 @@ So you can have |in: {WHATEVER}| but not |{WHATEVER}: this|.
 		text_stream *value = mr.exp[1];
 		text_stream *remainder = NULL;
 		match_results mr3 = Regexp::create_mr();
-		if (Regexp::match(&mr3, value, L"(%c+?) *(%C+: *%c*)")) {
+		if (Regexp::match(&mr3, value, L"(%c+?) *(%C+:[^/]%c*)")) {
 			value = mr3.exp[0];
 			remainder = mr3.exp[1];
 		}

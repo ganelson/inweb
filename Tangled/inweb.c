@@ -11471,7 +11471,7 @@ void Preprocessor__expand(text_stream *text, text_file_position *tfp, preprocess
 		text_stream *value = mr.exp[1];
 		text_stream *remainder = NULL;
 		match_results mr3 = Regexp__create_mr();
-		if (Regexp__match(&mr3, value, L"(%c+?) *(%C+: *%c*)")) {
+		if (Regexp__match(&mr3, value, L"(%c+?) *(%C+:[^/]%c*)")) {
 			value = mr3.exp[0];
 			remainder = mr3.exp[1];
 		}
