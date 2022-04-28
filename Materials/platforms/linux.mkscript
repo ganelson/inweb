@@ -49,7 +49,7 @@ GLULXEOS = OS_UNIX
 
 # On some platforms, executables have a specific file extension, which we define here:
 
-EXEEXTENSION = 
+EXEEXTENSION =
 
 # -----------------------------------------------------------------------------
 
@@ -65,23 +65,34 @@ INWEB = inweb/Tangled/inweb
 # and one for linking those *.o files into an executable.
 
 {define: compile to: TO from: FROM ?options: OPTS}
-	gcc -c -D_BSD_SOURCE -DPLATFORM_UNIX -fdiagnostics-color=auto $(GCCWARNINGS) -g {OPTS} -o {TO} {FROM}
+	gcc -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g {OPTS} -o {TO} {FROM}
 {end-define}
 
 {define: compile-indulgently to: TO from: FROM ?options: OPTS}
-	gcc -c -D_BSD_SOURCE -DPLATFORM_UNIX -fdiagnostics-color=auto $(GCCWARNINGS) -g {OPTS} -o {TO} {FROM}
+	gcc -std=c99 -c $(FEWERWARNINGS) $(CCOPTS) -g {OPTS} -o {TO} {FROM}
 {end-define}
 
 {define: link to: TO from: FROM ?options: OPTS}
-	gcc -D_BSD_SOURCE -DPLATFORM_UNIX -fdiagnostics-color=auto -g -o {TO} {FROM} {OPTS} -lm
+	gcc $(CCOPTS) -g -o {TO} {FROM} {OPTS} -lm
 {end-define}
 
-# On this platform we use the same set of warnings whichever way we compile. To
-# excuse these warning waivers:
+# Where:
 
-GCCWARNINGS = -Wall -Wextra -Wno-pointer-to-int-cast -Wno-unused-parameter -Wno-unused-but-set-variable -Wno-unknown-pragmas
+# Basic options; color error messages and optimization; _POSIX_C_SOURCE is
+# necessary for readlink().
 
+CCOPTS = -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE -DPLATFORM_LINUX -fdiagnostics-color=auto -O2
+
+MANYWARNINGS = -Wall -Wextra -Wimplicit-fallthrough=2 -Wno-pointer-to-int-cast \
+    -Wno-unknown-pragmas -Wno-unused-but-set-parameter \
+    -Wno-unused-but-set-variable -Wno-unused-function -Wno-unused-parameter \
+    -Wno-unused-variable -fmax-errors=1000
+
+# To explain those:
+
+#     -Wimplicit-fallthrough=2: comments are fallthrough comments as long as they contain the words "fall through"
 #     -Wno-pointer-to-int-cast: we use the gcc extension allowing (void *) pointers to increment
-#     -Wno-unused-parameter: we don't much care if a function argument isn't used
-#     -Wno-unused-but-set-variable: we don't much care about this either
 #     -Wno-unknown-pragmas: there is plenty of #pragma clang and we don't want a warning every time it is encountered
+#     -Wno-unused-*: we don't much care if a function argument, etc. isn't used
+
+FEWERWARNINGS = -Wno-implicit-int
