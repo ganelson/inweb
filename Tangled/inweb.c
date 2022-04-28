@@ -240,7 +240,7 @@ int Platform__system(const char *cmd) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 372 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 375 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 typedef HANDLE foundation_thread;
 typedef int foundation_thread_attributes;
 
@@ -248,7 +248,7 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 473 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 476 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
 #endif /* PLATFORM_WINDOWS */
@@ -2640,55 +2640,55 @@ void  Platform__closedir(void *D) ;
 void  Platform__path_add(const char* base, const char* add, char* path) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 229 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 234 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 310 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 313 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__sleep(int seconds) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 317 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 320 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 335 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 338 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__Win32_ResetConsole(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 344 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 347 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 386 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 389 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__create_thread(foundation_thread *pt, const foundation_thread_attributes *pa, 	void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 401 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 404 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 405 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 408 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__init_thread(foundation_thread_attributes* pa, size_t size) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 408 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 411 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes* pa) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 418 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 421 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 439 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 442 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 443 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 446 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 449 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 452 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #line 64 "inweb/foundation-module/Chapter 2/Debugging Log.w"
@@ -3505,11 +3505,11 @@ int  Regexp__match_from(match_results *mr, text_stream *text, wchar_t *pattern, 
 void  Regexp__prepare(match_results *mr) ;
 #line 207 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int  Regexp__match_r(match_results *mr, text_stream *text, wchar_t *pattern, 	match_position *scan_from, int allow_partial) ;
-#line 337 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 338 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int  Regexp__get_cclass(wchar_t *pattern, int ppos, int *len, int *from, int *to, int *reverse) ;
-#line 367 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 368 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int  Regexp__test_cclass(int c, int chcl, int range_from, int range_to, wchar_t *drawn_from, int reverse) ;
-#line 414 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 415 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int  Regexp__replace(text_stream *text, wchar_t *pattern, wchar_t *replacement, int options) ;
 #line 8 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__header(OUTPUT_STREAM, text_stream *title, filename *css, filename *js, void *state) ;
@@ -5809,15 +5809,20 @@ void Platform__closedir(void *D) {
 #ifdef PLATFORM_WINDOWS
 #line 224 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__path_add(const char* base, const char* add, char* path) {
+  char last;
+
   strcpy(path, base);
-  PathAppendA(path, add);
+  last = path[strlen(path) - 1];
+  if ((last != '/') && (last != '\\'))
+    strcat(path, "\\");
+  strcat(path, add);
 }
 
 void Platform__rsync(char *transcoded_source, char *transcoded_dest) {
-	CreateDirectoryA(transcoded_dest, 0);
-
 	char srcPath[MAX_PATH], destPath[MAX_PATH];
 	WIN32_FIND_DATA findData = { 0 };
+
+	SHCreateDirectoryExA(0, transcoded_dest, NULL);
 
 	Platform__path_add(transcoded_dest, "*", destPath);
 	HANDLE findHandle = FindFirstFileA(destPath, &findData);
@@ -5839,8 +5844,6 @@ void Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 			if (remove) {
 				Platform__path_add(transcoded_dest, findData.cFileName, destPath);
 				if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-					destPath[strlen(destPath) + 1] = 0;
-
 					SHFILEOPSTRUCTA oper = { 0 };
 					oper.wFunc = FO_DELETE;
 					oper.pFrom = destPath;
@@ -5892,20 +5895,20 @@ void Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 310 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 313 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__sleep(int seconds) {
 	Sleep((DWORD)(1000*seconds));
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 317 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 320 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__notification(text_stream *text, int happy) {
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 328 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 331 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 #define WIN32CONS_RESET_MODE 1
 #define WIN32CONS_RESET_OUTCP 2
 
@@ -5949,7 +5952,7 @@ void Platform__configure_terminal(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 379 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 382 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 DWORD WINAPI Platform__Win32_Thread_Func(LPVOID param) {
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*)param;
 	(start->fn)(start->arg);
@@ -5985,7 +5988,7 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes* pa) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 418 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 421 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__get_core_count(void) {
 	int count = 0;
 	SYSTEM_INFO sysInfo;
@@ -6001,7 +6004,7 @@ int Platform__get_core_count(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 439 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 442 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
@@ -8736,11 +8739,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7-alpha.1+1A94";
+			char *svn = "7.1.0-beta+1A96";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "25 April 2022";
+			char *d = "28 April 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -12286,12 +12289,11 @@ int Regexp__match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 	match_position at;
 	if (scan_from) at = *scan_from;
 	else { at.tpos = 0; at.ppos = 0; at.bc = 0; at.bl = 0; }
-
 	while ((Str__get_at(text, at.tpos)) || (pattern[at.ppos])) {
 		if ((allow_partial) && (pattern[at.ppos] == 0)) break;
 		
 {
-#line 242 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 241 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 	if (pattern[at.ppos] == '(') {
 		if (at.bl < MAX_BRACKETED_SUBEXPRESSIONS) at.bracket_nesting[at.bl] = -1;
 		if (at.bc < MAX_BRACKETED_SUBEXPRESSIONS) {
@@ -12310,7 +12312,7 @@ int Regexp__match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 	}
 
 }
-#line 215 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 214 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 ;
 
 		int chcl, /* what class of characters to match: a |*_CHARCLASS| value */
@@ -12318,20 +12320,22 @@ int Regexp__match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 			reverse = FALSE; /* require a non-match rather than a match */
 		
 {
-#line 260 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
-	int len;
+#line 259 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+	if (pattern[at.ppos] == 0) return -1;
+	int len = 0;
 	chcl = Regexp__get_cclass(pattern, at.ppos, &len, &range_from, &range_to, &reverse);
-	at.ppos += len;
+	if (at.ppos+len > Wide__len(pattern)) internal_error("Yikes");
+	else at.ppos += len;
 
 }
-#line 220 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 219 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 ;
 
 		int rep_from = 1, rep_to = 1; /* minimum and maximum number of repetitions */
 		int greedy = TRUE; /* go for a maximal-length match if possible */
 		
 {
-#line 268 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 269 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 	if (chcl == WHITESPACE_CHARCLASS) {
 		rep_from = 1; rep_to = Str__len(text)-at.tpos;
 	}
@@ -12343,20 +12347,20 @@ int Regexp__match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 	if (pattern[at.ppos] == '?') { greedy = FALSE; at.ppos++; }
 
 }
-#line 224 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 223 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 ;
 
 		int reps = 0;
 		
 {
-#line 279 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 280 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 	for (reps = 0; ((Str__get_at(text, at.tpos+reps)) && (reps < rep_to)); reps++)
 		if (Regexp__test_cclass(Str__get_at(text, at.tpos+reps), chcl,
 			range_from, range_to, pattern, reverse) == FALSE)
 			break;
 
 }
-#line 227 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 226 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 ;
 		if (reps < rep_from) return -1;
 
@@ -12364,7 +12368,7 @@ int Regexp__match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 		if (rep_from == reps) { at.tpos += reps; continue; }
 		
 {
-#line 285 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 286 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 	int from = rep_from, to = reps, dj = 1, from_tpos = at.tpos;
 	if (greedy) { from = reps; to = rep_from; dj = -1; }
 	for (int j = from; j != to+dj; j += dj) {
@@ -12374,7 +12378,7 @@ int Regexp__match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 	}
 
 }
-#line 232 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 231 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 ;
 
 		/* no match length worked, so no match */
@@ -12382,7 +12386,7 @@ int Regexp__match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 	}
 	
 {
-#line 294 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 295 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 	if (mr) {
 		for (int i=0; i<at.bc; i++) {
 			Str__clear(mr->exp[i]);
@@ -12394,12 +12398,12 @@ int Regexp__match_r(match_results *mr, text_stream *text, wchar_t *pattern,
 	}
 
 }
-#line 237 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 236 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 ;
 	return at.tpos;
 }
 
-#line 337 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 338 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int Regexp__get_cclass(wchar_t *pattern, int ppos, int *len, int *from, int *to, int *reverse) {
 	if (pattern[ppos] == '^') { ppos++; *reverse = TRUE; } else { *reverse = FALSE; }
 	switch (pattern[ppos]) {
@@ -12429,7 +12433,7 @@ int Regexp__get_cclass(wchar_t *pattern, int ppos, int *len, int *from, int *to,
 	*len = 1; *from = ppos; *to = ppos; return LITERAL_CHARCLASS;
 }
 
-#line 367 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 368 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int Regexp__test_cclass(int c, int chcl, int range_from, int range_to, wchar_t *drawn_from, int reverse) {
 	int match = FALSE;
 	switch (chcl) {
@@ -12463,7 +12467,7 @@ int Regexp__test_cclass(int c, int chcl, int range_from, int range_to, wchar_t *
 	return match;
 }
 
-#line 414 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 415 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int Regexp__replace(text_stream *text, wchar_t *pattern, wchar_t *replacement, int options) {
 	TEMPORARY_TEXT(altered)
 	match_results mr = Regexp__create_mr();
@@ -12493,23 +12497,23 @@ int Regexp__replace(text_stream *text, wchar_t *pattern, wchar_t *replacement, i
 			L = Str__len(text); i = L-left-1;
 			if ((options & REP_REPEATING) == 0) { 
 {
-#line 453 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 454 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 	for (i++; i<L; i++)
 		PUT_TO(altered, Str__get_at(text, i));
 
 }
-#line 441 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 442 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 ; break; }
 			continue;
 		} else PUT_TO(altered, Str__get_at(text, i));
 		if (options & REP_ATSTART) { 
 {
-#line 453 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 454 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 	for (i++; i<L; i++)
 		PUT_TO(altered, Str__get_at(text, i));
 
 }
-#line 444 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 445 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 ; break; }
 	}
 	Regexp__dispose_of(&mr);
@@ -18866,7 +18870,7 @@ web *Reader__load_web(pathname *P, filename *alt_F, module_search *I,
 {
 #line 134 "inweb/Chapter 2/The Reader.w"
 	TEMPORARY_TEXT(IB)
-	WRITE_TO(IB, "7");
+	WRITE_TO(IB, "7.1.0");
 	web_bibliographic_datum *bd = Bibliographic__set_datum(W->md, TL_IS_162, IB);
 	bd->declaration_permitted = FALSE;
 	DISCARD_TEXT(IB)
@@ -31657,7 +31661,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7-alpha.1+1A94\t/built 25 April 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.1.0-beta+1A96\t/built 28 April 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"

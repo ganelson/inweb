@@ -2,4 +2,4 @@
 	4	5Z71	April 2009	
 The Web Planet	5	6H66	April 2011	Ported to C
 The Zarbi		6	6L02	May 2014
-Escape to Danger	7	*9Z99	31 December 9999	Unicode support
+Escape to Danger	7.1	*	28 April 2022	Modernised throughout
