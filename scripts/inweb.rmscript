@@ -33,7 +33,8 @@ as static HTML files stored in "docs".
 Except as noted, copyright in material in this repository (the "Package") is
 held by Graham Nelson (the "Author"), who retains copyright so that there is
 a single point of reference. As from the first date of this repository
-becoming public, the Package is placed under the [Artistic License 2.0](https://opensource.org/licenses/Artistic-2.0).
+becoming public, 28 April 2022, the Package is placed under the
+[Artistic License 2.0](https://opensource.org/licenses/Artistic-2.0).
 This is a highly permissive licence, used by Perl among other notable projects,
 recognised by the Open Source Initiative as open and by the Free Software
 Foundation as free in both senses.
@@ -60,6 +61,8 @@ though only because its build settings are currently missing from the inweb
 distribution. The older macos32 platform won't build with the MacOS SDK from
 10.14 onwards, and in any case 32-bit executables won't run from 10.15 onwards:
 so use the default macos unless you need to build for an old version of MacOS.
+(Settings for making Apple Silicon and universal binaries on MacOS will follow,
+but are not yet ready.)
 	* "bash inweb/scripts/first.sh linux"
 	* "bash inweb/scripts/first.sh macos"
 	* "bash inweb/scripts/first.sh macos32"
