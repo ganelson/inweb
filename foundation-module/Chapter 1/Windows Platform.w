@@ -222,15 +222,20 @@ void Platform::closedir(void *D) {
 
 =
 void Platform::path_add(const char* base, const char* add, char* path) {
+  char last;
+
   strcpy(path, base);
-  PathAppendA(path, add);
+  last = path[strlen(path) - 1];
+  if ((last != '/') && (last != '\\'))
+    strcat(path, "\\");
+  strcat(path, add);
 }
 
 void Platform::rsync(char *transcoded_source, char *transcoded_dest) {
-	CreateDirectoryA(transcoded_dest, 0);
-
 	char srcPath[MAX_PATH], destPath[MAX_PATH];
 	WIN32_FIND_DATA findData = { 0 };
+
+	SHCreateDirectoryExA(0, transcoded_dest, NULL);
 
 	Platform::path_add(transcoded_dest, "*", destPath);
 	HANDLE findHandle = FindFirstFileA(destPath, &findData);
@@ -252,8 +257,6 @@ void Platform::rsync(char *transcoded_source, char *transcoded_dest) {
 			if (remove) {
 				Platform::path_add(transcoded_dest, findData.cFileName, destPath);
 				if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-					destPath[strlen(destPath) + 1] = 0;
-
 					SHFILEOPSTRUCTA oper = { 0 };
 					oper.wFunc = FO_DELETE;
 					oper.pFrom = destPath;
