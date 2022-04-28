@@ -12,7 +12,8 @@ EXEEXTENSION =
 INTEST = intest/Tangled/intest
 INWEB = inweb/Tangled/inweb
 
-CCOPTS = -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE -DPLATFORM_LINUX -fdiagnostics-color=auto -O2
+CCOPTS = -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE -DPLATFORM_LINUX \
+	-fdiagnostics-color=auto $(CFLAGS)
 
 MANYWARNINGS = -Wall -Wextra -Wimplicit-fallthrough=2 -Wno-pointer-to-int-cast \
     -Wno-unknown-pragmas -Wno-unused-but-set-parameter \
@@ -69,7 +70,7 @@ safe:
 
 define make-me-once-tangled
 	gcc -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
-	gcc $(CCOPTS) -g -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o  -lm
+	gcc $(CCOPTS) -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o  -lm -pthread $(LDFLAGS)
 endef
 
 define make-me

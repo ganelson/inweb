@@ -73,15 +73,17 @@ INWEB = inweb/Tangled/inweb
 {end-define}
 
 {define: link to: TO from: FROM ?options: OPTS}
-	gcc $(CCOPTS) -g -o {TO} {FROM} {OPTS} -lm
+	gcc $(CCOPTS) -o {TO} {FROM} {OPTS} -lm -pthread $(LDFLAGS)
 {end-define}
 
 # Where:
 
-# Basic options; color error messages and optimization; _POSIX_C_SOURCE is
-# necessary for readlink().
+# Source options (_POSIX_C_SOURCE is necessary for readlink()); color error
+# messages; pull in optimization and debug flags from whatever is defined in the
+# CFLAGS and LDFLAGS environment variables by the Linux packaging config.
 
-CCOPTS = -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE -DPLATFORM_LINUX -fdiagnostics-color=auto -O2
+CCOPTS = -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE -DPLATFORM_LINUX \
+	-fdiagnostics-color=auto $(CFLAGS)
 
 MANYWARNINGS = -Wall -Wextra -Wimplicit-fallthrough=2 -Wno-pointer-to-int-cast \
     -Wno-unknown-pragmas -Wno-unused-but-set-parameter \
