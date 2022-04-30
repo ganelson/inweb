@@ -167,7 +167,7 @@ int Time::stop_stopwatch(stopwatch_timer *st) {
 	if (st->running == FALSE) internal_error("already stopped");
 	st->running = FALSE;
 	st->end_time = clock();
-	st->time_taken += ((int) (st->end_time - st->start_time)) / (CLOCKS_PER_SEC/100);
+	st->time_taken += (((int) (st->end_time)) - ((int) (st->start_time))) / (CLOCKS_PER_SEC/100);
 	int N = LinkedLists::len(st->stages_chronological);
 	if (N > 0) @<Sort the subtasks in descreasing order of how much time they took@>;
 	return st->time_taken;
