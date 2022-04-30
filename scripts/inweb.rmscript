@@ -49,20 +49,28 @@ Make a directory in which to work: let's call this "work". Then:
 
 * Change the current directory to this: "cd work"
 * Clone Inweb: "git clone https://github.com/ganelson/inweb.git"
-* Run **one of the following commands**. Unix is for any generic version of Unix,
-non-Linux, non-MacOS: Solaris, for example. Android support is currently disabled,
-though only because its build settings are currently missing from the inweb
-distribution. The older macos32 platform won't build with the MacOS SDK from
-10.14 onwards, and in any case 32-bit executables won't run from 10.15 onwards:
-so use the default macos unless you need to build for an old version of MacOS.
-(Settings for making Apple Silicon and universal binaries on MacOS will follow,
-but are not yet ready.)
+* Run **one of the following commands**.
 	* "bash inweb/scripts/first.sh linux"
 	* "bash inweb/scripts/first.sh macos"
 	* "bash inweb/scripts/first.sh macos32"
+	* "bash inweb/scripts/first.sh macosarm"
+	* "bash inweb/scripts/first.sh macosuniv"
 	* "bash inweb/scripts/first.sh unix"
 	* "bash inweb/scripts/first.sh windows"
 * Test that all is well: "inweb/Tangled/inweb -help"
+
+Some notes on which platform to choose:
+* For Intel Macs running MacOS 10.13 ("High Sierra") or earlier, use macos32.
+This will produce 32-bit x86 executables; we are no longer really supporting this.
+* For Intel Macs running MacOS 10.14 ("Mojave"), use macos. This will produce
+64-bit x86 executables.
+* For Apple Silicon Macs, use macosarm. This will produce 64-bit ARM executables.
+* To produce universal binaries (64-bit x86 and ARM combined) on Apple Silicon
+Macs, use macosuniv, but expect your compilation times to double, of course.
+* For a generic version of Unix where the Linux settings do not work, try using
+unix. (For Solaris, for example.)
+* Android support has existed in the past, but the Android Inform community
+has not yet an opportunity to contribute build settings.
 
 You should now have a working copy of Inweb, with its own makefile tailored
 to your platform now in place (at inweb/inweb.mk). To build inweb again, e.g.

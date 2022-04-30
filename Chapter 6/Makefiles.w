@@ -167,10 +167,9 @@ void Makefiles::modify_filenames_expander(preprocessor_macro *mm, preprocessor_s
 			if (Str::get_at(captured, i) == '/')
 				last_slash = i;
 		int last_dot = Str::len(captured);
-		if (last_slash >= 0)
-			for (int i=last_slash; i<Str::len(captured); i++)
-				if (Str::get_at(captured, i) == '.')
-					last_dot = i;
+		for (int i=last_slash+1; i<Str::len(captured); i++)
+			if (Str::get_at(captured, i) == '.')
+				last_dot = i;
 		for (int i=0; i<=last_slash; i++) PUT(Str::get_at(captured, i));
 		WRITE("%S", prefix);
 		for (int i=last_slash+1; i<last_dot; i++) PUT(Str::get_at(captured, i));

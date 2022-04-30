@@ -4568,15 +4568,15 @@ void  Makefiles__platform_settings_expander(preprocessor_macro *mm, preprocessor
 void  Makefiles__seek_INWEBPLATFORM(text_stream *line, text_file_position *tfp, void *X) ;
 #line 129 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__modify_filenames_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 186 "inweb/Chapter 6/Makefiles.w"
+#line 185 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 236 "inweb/Chapter 6/Makefiles.w"
+#line 235 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 269 "inweb/Chapter 6/Makefiles.w"
+#line 268 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__dependent_files_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 325 "inweb/Chapter 6/Makefiles.w"
+#line 324 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) ;
-#line 366 "inweb/Chapter 6/Makefiles.w"
+#line 365 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) ;
 #line 8 "inweb/Chapter 6/Git Support.w"
 void  Git__write_gitignore(web *W, filename *prototype, filename *F) ;
@@ -31353,10 +31353,9 @@ void Makefiles__modify_filenames_expander(preprocessor_macro *mm, preprocessor_s
 			if (Str__get_at(captured, i) == '/')
 				last_slash = i;
 		int last_dot = Str__len(captured);
-		if (last_slash >= 0)
-			for (int i=last_slash; i<Str__len(captured); i++)
-				if (Str__get_at(captured, i) == '.')
-					last_dot = i;
+		for (int i=last_slash+1; i<Str__len(captured); i++)
+			if (Str__get_at(captured, i) == '.')
+				last_dot = i;
 		for (int i=0; i<=last_slash; i++) PUT(Str__get_at(captured, i));
 		WRITE("%S", prefix);
 		for (int i=last_slash+1; i<last_dot; i++) PUT(Str__get_at(captured, i));
@@ -31391,10 +31390,9 @@ void Makefiles__modify_filenames_expander(preprocessor_macro *mm, preprocessor_s
 			if (Str__get_at(captured, i) == '/')
 				last_slash = i;
 		int last_dot = Str__len(captured);
-		if (last_slash >= 0)
-			for (int i=last_slash; i<Str__len(captured); i++)
-				if (Str__get_at(captured, i) == '.')
-					last_dot = i;
+		for (int i=last_slash+1; i<Str__len(captured); i++)
+			if (Str__get_at(captured, i) == '.')
+				last_dot = i;
 		for (int i=0; i<=last_slash; i++) PUT(Str__get_at(captured, i));
 		WRITE("%S", prefix);
 		for (int i=last_slash+1; i<last_dot; i++) PUT(Str__get_at(captured, i));
@@ -31410,7 +31408,7 @@ void Makefiles__modify_filenames_expander(preprocessor_macro *mm, preprocessor_s
 	DISCARD_TEXT(captured)
 }
 
-#line 186 "inweb/Chapter 6/Makefiles.w"
+#line 185 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	makefile_specifics *specifics = RETRIEVE_POINTER_makefile_specifics(PPS->specifics);
@@ -31427,7 +31425,7 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 		dictionary *D = specifics->tools_dictionary;
 		
 {
-#line 219 "inweb/Chapter 6/Makefiles.w"
+#line 218 "inweb/Chapter 6/Makefiles.w"
 	web_md *Wm = Reader__load_web_md(Pathnames__from_text(path), NULL,
 		specifics->search_path, TRUE);
 	Wm->as_module->module_name = Str__duplicate(symbol);
@@ -31437,25 +31435,25 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 	Dictionaries__write_value(D, symbol, Wm);
 
 }
-#line 200 "inweb/Chapter 6/Makefiles.w"
+#line 199 "inweb/Chapter 6/Makefiles.w"
 ;
 		
 {
-#line 228 "inweb/Chapter 6/Makefiles.w"
+#line 227 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%SLEAF = %S\n", symbol, webname);
 	WRITE("%SWEB = %S\n", symbol, path);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", symbol, symbol, webname);
 	WRITE("%SX = $(%SWEB)/Tangled/%S\n", symbol, symbol, webname);
 
 }
-#line 201 "inweb/Chapter 6/Makefiles.w"
+#line 200 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else if (Str__eq(category, TL_IS_651)) {
 		int marker = MAKEFILE_WEB_MOM;
 		dictionary *D = specifics->webs_dictionary;
 		
 {
-#line 219 "inweb/Chapter 6/Makefiles.w"
+#line 218 "inweb/Chapter 6/Makefiles.w"
 	web_md *Wm = Reader__load_web_md(Pathnames__from_text(path), NULL,
 		specifics->search_path, TRUE);
 	Wm->as_module->module_name = Str__duplicate(symbol);
@@ -31465,25 +31463,25 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 	Dictionaries__write_value(D, symbol, Wm);
 
 }
-#line 205 "inweb/Chapter 6/Makefiles.w"
+#line 204 "inweb/Chapter 6/Makefiles.w"
 ;
 		
 {
-#line 228 "inweb/Chapter 6/Makefiles.w"
+#line 227 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%SLEAF = %S\n", symbol, webname);
 	WRITE("%SWEB = %S\n", symbol, path);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", symbol, symbol, webname);
 	WRITE("%SX = $(%SWEB)/Tangled/%S\n", symbol, symbol, webname);
 
 }
-#line 206 "inweb/Chapter 6/Makefiles.w"
+#line 205 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else if (Str__eq(category, TL_IS_652)) {
 		int marker = MAKEFILE_MODULE_MOM;
 		dictionary *D = specifics->modules_dictionary;
 		
 {
-#line 219 "inweb/Chapter 6/Makefiles.w"
+#line 218 "inweb/Chapter 6/Makefiles.w"
 	web_md *Wm = Reader__load_web_md(Pathnames__from_text(path), NULL,
 		specifics->search_path, TRUE);
 	Wm->as_module->module_name = Str__duplicate(symbol);
@@ -31493,18 +31491,18 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 	Dictionaries__write_value(D, symbol, Wm);
 
 }
-#line 210 "inweb/Chapter 6/Makefiles.w"
+#line 209 "inweb/Chapter 6/Makefiles.w"
 ;
 		
 {
-#line 228 "inweb/Chapter 6/Makefiles.w"
+#line 227 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%SLEAF = %S\n", symbol, webname);
 	WRITE("%SWEB = %S\n", symbol, path);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", symbol, symbol, webname);
 	WRITE("%SX = $(%SWEB)/Tangled/%S\n", symbol, symbol, webname);
 
 }
-#line 211 "inweb/Chapter 6/Makefiles.w"
+#line 210 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else {
 		Errors__in_text_file("category should be 'tool', 'module' or 'web'", tfp);
@@ -31512,7 +31510,7 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 	PPS->last_line_was_blank = FALSE;
 }
 
-#line 236 "inweb/Chapter 6/Makefiles.w"
+#line 235 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	Preprocessor__set_loop_var_name(loop, TL_IS_653);
@@ -31523,7 +31521,7 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 		int marker = MAKEFILE_TOOL_MOM;
 		
 {
-#line 257 "inweb/Chapter 6/Makefiles.w"
+#line 256 "inweb/Chapter 6/Makefiles.w"
 	module *M;
 	LOOP_OVER(M, module) {
 		if ((M->origin_marker == marker) &&
@@ -31534,13 +31532,13 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 	}
 
 }
-#line 244 "inweb/Chapter 6/Makefiles.w"
+#line 243 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else if (Str__eq(category, TL_IS_656)) {
 		int marker = MAKEFILE_WEB_MOM;
 		
 {
-#line 257 "inweb/Chapter 6/Makefiles.w"
+#line 256 "inweb/Chapter 6/Makefiles.w"
 	module *M;
 	LOOP_OVER(M, module) {
 		if ((M->origin_marker == marker) &&
@@ -31551,13 +31549,13 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 	}
 
 }
-#line 247 "inweb/Chapter 6/Makefiles.w"
+#line 246 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else if (Str__eq(category, TL_IS_657)) {
 		int marker = MAKEFILE_MODULE_MOM;
 		
 {
-#line 257 "inweb/Chapter 6/Makefiles.w"
+#line 256 "inweb/Chapter 6/Makefiles.w"
 	module *M;
 	LOOP_OVER(M, module) {
 		if ((M->origin_marker == marker) &&
@@ -31568,14 +31566,14 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 	}
 
 }
-#line 250 "inweb/Chapter 6/Makefiles.w"
+#line 249 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else {
 		Errors__in_text_file("category should be 'tool', 'module' or 'web'", tfp);
 	}
 }
 
-#line 269 "inweb/Chapter 6/Makefiles.w"
+#line 268 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__dependent_files_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	makefile_specifics *specifics = RETRIEVE_POINTER_makefile_specifics(PPS->specifics);
@@ -31628,12 +31626,12 @@ void Makefiles__dependent_files_expander(preprocessor_macro *mm, preprocessor_st
 	PPS->last_line_was_blank = FALSE;
 }
 
-#line 325 "inweb/Chapter 6/Makefiles.w"
+#line 324 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	dictionary *patterns_done = Dictionaries__new(16, TRUE);
 	if (F) 
 {
-#line 336 "inweb/Chapter 6/Makefiles.w"
+#line 335 "inweb/Chapter 6/Makefiles.w"
 	pathname *P = Filenames__up(F);
 	TEMPORARY_TEXT(leaf_pattern)
 	WRITE_TO(leaf_pattern, "%S", Pathnames__directory_name(P));
@@ -31660,14 +31658,14 @@ void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	DISCARD_TEXT(tester)
 
 }
-#line 327 "inweb/Chapter 6/Makefiles.w"
+#line 326 "inweb/Chapter 6/Makefiles.w"
 ;
 	section_md *Sm;
 	LOOP_OVER_LINKED_LIST(Sm, section_md, L) {
 		filename *F = Sm->source_file_for_section;
 		
 {
-#line 336 "inweb/Chapter 6/Makefiles.w"
+#line 335 "inweb/Chapter 6/Makefiles.w"
 	pathname *P = Filenames__up(F);
 	TEMPORARY_TEXT(leaf_pattern)
 	WRITE_TO(leaf_pattern, "%S", Pathnames__directory_name(P));
@@ -31694,12 +31692,12 @@ void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	DISCARD_TEXT(tester)
 
 }
-#line 331 "inweb/Chapter 6/Makefiles.w"
+#line 330 "inweb/Chapter 6/Makefiles.w"
 ;
 	}
 }
 
-#line 366 "inweb/Chapter 6/Makefiles.w"
+#line 365 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) {
 	TEMPORARY_TEXT(PT)
 	WRITE_TO(PT, "%p", P);

@@ -15,9 +15,9 @@ INWEB = inweb/Tangled/inweb
 CCOPTSX = -DPLATFORM_MACOS=1 -target x86_64-apple-macos10.12 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 CCOPTSA = -DPLATFORM_MACOS=1 -target arm64-apple-macos11 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
-MANYWARNINGS = -Weverything -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return -ferror-limit=1000
+MANYWARNINGS = -Weverything -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return -Wno-unused-but-set-variable -ferror-limit=1000
 
-FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return
+FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return -Wno-unused-but-set-variable
 
 ME = inweb
 FTEST = $(ME)/foundation-test
@@ -70,7 +70,12 @@ safe:
 	$(call make-me-using-safety-copy)
 
 define make-me-once-tangled
-	clang -std=c11 -c $(MANYWARNINGS) $(CCOPTSX) -g  -o$(ME)/Tangled/$(ME)_x86.o$(ME)/Tangled/$(ME)_x86.c	clang -std=c11 -c $(MANYWARNINGS) $(CCOPTSA) -g  -o$(ME)/Tangled/$(ME)_arm.o$(ME)/Tangled/$(ME)_arm.c	clang $(CCOPTSX) -g -o$(ME)/Tangled/$(ME)$(EXEEXTENSION)_x86$(ME)/Tangled/$(ME)_x86.o	clang $(CCOPTSA) -g -o$(ME)/Tangled/$(ME)$(EXEEXTENSION)_arm$(ME)/Tangled/$(ME)_arm.o	lipo -create -output $(ME)/Tangled/$(ME)$(EXEEXTENSION)$(ME)/Tangled/$(ME)$(EXEEXTENSION)_x86$(ME)/Tangled/$(ME)$(EXEEXTENSION)_armendef
+	clang -std=c11 -c $(MANYWARNINGS) $(CCOPTSX) -g  -o $(ME)/Tangled/$(ME)_x86.o $(ME)/Tangled/$(ME).c
+	clang -std=c11 -c $(MANYWARNINGS) $(CCOPTSA) -g  -o $(ME)/Tangled/$(ME)_arm.o $(ME)/Tangled/$(ME).c
+	clang $(CCOPTSX) -g -o $(ME)/Tangled/$(ME)$(EXEEXTENSION)_x86 $(ME)/Tangled/$(ME)_x86.o 
+	clang $(CCOPTSA) -g -o $(ME)/Tangled/$(ME)$(EXEEXTENSION)_arm $(ME)/Tangled/$(ME)_arm.o 
+	lipo -create -output $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME)$(EXEEXTENSION)_x86 $(ME)/Tangled/$(ME)$(EXEEXTENSION)_arm
+endef
 
 define make-me
 	$(ME)/Tangled/$(ME) $(ME) -tangle
