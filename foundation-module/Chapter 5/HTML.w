@@ -252,12 +252,7 @@ void HTML::open_javascript(OUTPUT_STREAM, int define_project) {
 	HTML_OPEN_WITH("script", "type=\"text/javascript\"");
 	if (define_project) {
 		WRITE("function project() {\n"); INDENT;
-		#ifdef WINDOWS_JAVASCRIPT
-		WRITE("return external.Project;\n");
-		#endif
-		#ifndef WINDOWS_JAVASCRIPT
 		WRITE("return window.Project;\n");
-		#endif
 		OUTDENT; WRITE("}\n");
 	}
 }
