@@ -37,7 +37,7 @@
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inform/docs/overview.html">inform</a></li>
+<li><a href="../../../inform/docs/index.html">inform</a></li>
 <li><a href="../../../intest/docs/index.html">intest</a></li>
 
 </ul>
@@ -756,6 +756,13 @@ to the inweb and intest tools respectivly. <span class="extract"><span class="ex
 inweb has been given a specific web <span class="extract"><span class="extract-syntax">W</span></span> to work with at the command line, and
 are then expanded to the directory name and web name respectively for <span class="extract"><span class="extract-syntax">W</span></span>. (These
 are very often the same name, e.g., <span class="extract"><span class="extract-syntax">inform7</span></span>.)
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">{modify-filenames original: ORIGINAL suffix: SUFFIX prefix: PREFIX}</span></span>. Here
+both <span class="extract"><span class="extract-syntax">suffix:</span></span> and <span class="extract"><span class="extract-syntax">prefix:</span></span> are optional, but if neither is given then the result
+is that no modification occurs. The idea here is that ORIGINAL is a whitespace-divided
+list of filenames, as typically appears in a makefile, and that we modify each
+filename by applying the prefix or suffix to its unextended leafname. So, for
+example, <span class="extract"><span class="extract-syntax">{modify-filenames original: peach.o others/*.o prefix: x86_ suffix: _v12}</span></span> would
+expand to <span class="extract"><span class="extract-syntax">x86_peach_v12.o others/x86_*_v12.o</span></span>.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">{component symbol: SYMBOL webname: WEBNAME path: PATH set: SET type: TYPE}</span></span>
 is used only in a makescript for a makefile trying to orchestrate complicated
 operations on colonies of large numbers of webs. (See the <span class="extract"><span class="extract-syntax">inform.mkscript</span></span>

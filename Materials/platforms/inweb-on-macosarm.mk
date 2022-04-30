@@ -1,46 +1,30 @@
-# This is "inweb.mkscript", a script used to generate the makefile "inweb.mk"
-# used to build the tool "inweb". Do not edit "inweb.mk" directly. Instead,
-# edit this script, and then rebuild "inweb.mk" with the command:
+# This makefile was automatically written by inweb -makefile
+# and is not intended for human editing
 
-# inweb/Tangled/inweb inweb -prototype inweb/scripts/inweb.mkscript -makefile inweb/inweb.mk
+INWEBPLATFORM = macosarm
 
-# See the inweb manual for documentation on the *.mkscript file format, i.e.,
-# the format in which this file is written. But it is essentially just a makefile
-# with a number of special macro and loop features whose syntax involves braces
-# { ... }, so anywhere that you see braces, you're looking at something special
-# to *.mkscript; anything else is straightforward make syntax.
+INFORM6OS = MACOS
 
-# -----------------------------------------------------------------------------
+GLULXEOS = OS_UNIX
 
-# Note that the resulting makescript expects to be used from a current working
-# directory which is the _one above_ "inweb", _not_ from "inweb" itself. So it
-# should usually be invoked as e.g. "make -f inweb/inweb.mk".
+EXEEXTENSION = 
 
-# -----------------------------------------------------------------------------
+INTEST = intest/Tangled/intest
+INWEB = inweb/Tangled/inweb
 
-# Variants of this file exist for each of the following supported platforms,
-# generated from inweb.mkscript and Materials/platforms/PLATFORM.mkscript in
-# each case; when a platform is selected by the scripts/first.sh shell script,
-# the relevant one is copied to become inweb/inweb.mk.
+CCOPTS = -DPLATFORM_MACOS=1 -target arm64-apple-macos11 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
-{set name: PLATFORMS value: macos, macos32, macosarm, macosuniv, windows, linux, unix}
+MANYWARNINGS = -Weverything -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return -ferror-limit=1000
 
-# -----------------------------------------------------------------------------
-
-{platform-settings}
+FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return
 
 ME = inweb
 FTEST = $(ME)/foundation-test
 SAFETYCOPY = $(ME)/Tangled/inweb_dev
 
-# The colony file for this collection of webs contains information about their
-# paths, where they are woven to, and so on
-
 COLONY = $(ME)/colony.txt
 
 -include $(ME)/platform-settings.mk
-
-# Making the program:
 
 .PHONY: all
 
@@ -57,17 +41,23 @@ force: $(ME)/platform-settings.mk
 	$(call make-me)
 	$(call make-ftest)
 
-{define: make-settings platform: PLATFORM}
-	$(INWEB) -prototype $(ME)/Materials/platforms/{PLATFORM}.mkscript -makefile $(ME)/Materials/platforms/{PLATFORM}.mk
-	$(INWEB) -platform {PLATFORM} -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-{PLATFORM}.mk
-{end-define}
-
 .PHONY: makers
 makers:
 	$(INWEB) $(FTEST) -makefile $(FTEST)/foundation-test.mk
-	{repeat with: PLATFORM in: {PLATFORMS}}
-	{make-settings platform: {PLATFORM}}
-	{end-repeat}
+	$(INWEB) -prototype $(ME)/Materials/platforms/macos.mkscript -makefile $(ME)/Materials/platforms/macos.mk
+	$(INWEB) -platform macos -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macos.mk
+	$(INWEB) -prototype $(ME)/Materials/platforms/macos32.mkscript -makefile $(ME)/Materials/platforms/macos32.mk
+	$(INWEB) -platform macos32 -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macos32.mk
+	$(INWEB) -prototype $(ME)/Materials/platforms/macosarm.mkscript -makefile $(ME)/Materials/platforms/macosarm.mk
+	$(INWEB) -platform macosarm -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macosarm.mk
+	$(INWEB) -prototype $(ME)/Materials/platforms/macosuniv.mkscript -makefile $(ME)/Materials/platforms/macosuniv.mk
+	$(INWEB) -platform macosuniv -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macosuniv.mk
+	$(INWEB) -prototype $(ME)/Materials/platforms/windows.mkscript -makefile $(ME)/Materials/platforms/windows.mk
+	$(INWEB) -platform windows -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-windows.mk
+	$(INWEB) -prototype $(ME)/Materials/platforms/linux.mkscript -makefile $(ME)/Materials/platforms/linux.mk
+	$(INWEB) -platform linux -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-linux.mk
+	$(INWEB) -prototype $(ME)/Materials/platforms/unix.mkscript -makefile $(ME)/Materials/platforms/unix.mk
+	$(INWEB) -platform unix -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-unix.mk
 
 .PHONY: initial
 initial: $(ME)/platform-settings.mk
@@ -78,57 +68,35 @@ initial: $(ME)/platform-settings.mk
 safe:
 	$(call make-me-using-safety-copy)
 
-# One of inweb's tasks is to tangle webs: but since inweb is itself a web,
-# that means it can only be compiled using itself. To avoid a logical
-# impossibility, a ready-tangled inweb.c is supplied as part of the Core
-# Inform tarball. The following builds inweb from this:
-
 define make-me-once-tangled
-	{compile from: $(ME)/Tangled/$(ME).c   to:   $(ME)/Tangled/$(ME).o}
-	{link    from: $(ME)/Tangled/$(ME).o   to:   $(ME)/Tangled/$(ME)$(EXEEXTENSION)}
+	clang -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
+	clang $(CCOPTS) -g -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o 
 endef
-
-# If inweb exists already, we can compile it using itself like so:
 
 define make-me
 	$(ME)/Tangled/$(ME) $(ME) -tangle
 	$(call make-me-once-tangled)
 endef
 
-# When developing inweb, it's all too easy to break it and therefore to get
-# into a cleft stick: inweb has a bug, so it can't tangle inweb any more, and
-# therefore the bug can't be fixed. To get around this, we maintain a spare
-# copy of the inweb executable which is known to work. "make inwebdev" uses
-# the safety copy of inweb to recompile inweb.
-
 define make-me-using-safety-copy
 	$(SAFETYCOPY) $(ME) -tangle
 	$(call make-me-once-tangled)
 endef
-
-# Now foundation-test...
 
 define make-ftest
 	$(INWEB) $(FTEST) -makefile $(FTEST)/foundation-test.mk
 	make -f $(FTEST)/foundation-test.mk force
 endef
 
-# Testing the program - which requires intest to be installed too.
-
 .PHONY: test
 test:
 	$(INTEST) -from $(ME) all
-
-# "make commit" should be used only by the Benevolent Overlord of Inweb.
-# It updates the build code and commits to the repository.
 
 .PHONY: commit
 commit:
 	$(INWEB) -advance-build-file $(ME)/build.txt
 	$(INWEB) -prototype inweb/scripts/inweb.rmscript -write-me inweb/README.md
 	cd $(ME); git commit -a
-
-# Weaving the web for GitHub Pages:
 
 .PHONY: pages
 pages:
@@ -171,8 +139,6 @@ pages:
 	$(INWEB) -colony $(COLONY) -member foundation -weave
 	$(INWEB) -colony $(COLONY) -member foundation-test -weave
 
-# Cleaning up:
-
 .PHONY: clean
 clean:
 	$(call clean-up)
@@ -181,11 +147,8 @@ clean:
 purge:
 	$(call clean-up)
 
-# Note that the tangled inweb.c is not cleaned up: it's needed to bootstrap
-# the use of inweb from a fresh installation where there's no executable
-# inweb yet with which to tangle inweb.c (see below).
-
 define clean-up
 	rm -f $(ME)/Tangled/*.o
 	rm -f $(ME)/Tangled/*.h
 endef
+

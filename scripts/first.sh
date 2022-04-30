@@ -3,7 +3,7 @@ echo "(A script to make a first build of Inweb)"
 PLATFORM="$1"
 
 if [ "$PLATFORM" = "" ]; then
-	echo "This script needs a parameter for the platform you are working on: macos, macos32, linux, windows, unix"
+	echo "This script needs a parameter for the platform you are working on: macos, macos32, macosarm, macosuniv, linux, windows, unix"
 	exit 1
 fi
 

@@ -598,6 +598,14 @@ inweb has been given a specific web |W| to work with at the command line, and
 are then expanded to the directory name and web name respectively for |W|. (These
 are very often the same name, e.g., |inform7|.)
 
+(*) |{modify-filenames original: ORIGINAL suffix: SUFFIX prefix: PREFIX}|. Here
+both |suffix:| and |prefix:| are optional, but if neither is given then the result
+is that no modification occurs. The idea here is that ORIGINAL is a whitespace-divided
+list of filenames, as typically appears in a makefile, and that we modify each
+filename by applying the prefix or suffix to its unextended leafname. So, for
+example, |{modify-filenames original: peach.o others/*.o prefix: x86_ suffix: _v12}| would
+expand to |x86_peach_v12.o others/x86_*_v12.o|.
+
 (*) |{component symbol: SYMBOL webname: WEBNAME path: PATH set: SET type: TYPE}|
 is used only in a makescript for a makefile trying to orchestrate complicated
 operations on colonies of large numbers of webs. (See the |inform.mkscript|

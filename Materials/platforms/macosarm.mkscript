@@ -1,0 +1,109 @@
+# This is "macosarm.mkscript", a script which defines build settings used in
+# inweb, intest, inform and all of their subsidiary tools for the platform
+# "macos". The maintainer of this file is Graham Nelson.
+
+# The script is used for two purposes. Firstly, it is used to generate the
+# file "macosarm.mk" of platform settings. If an inweb user selects macos as
+# platform on a first run, then this is the file copied into place as
+# inweb/platform-settings.mk. But secondly, it also defines macros which
+# can be used by any *.mkscript files being converted to *.mk files on
+# this platform.
+
+# Do not edit "macosarm.mk" directly. Instead, edit this script, and then
+# rebuild "macosarm.mk" by setting the current working directory to the directory
+# _above_ "inweb", and using the command:
+
+# inweb/Tangled/inweb inweb -prototype inweb/Materials/platforms/macosarm.mkscript -makefile inweb/Materials/platforms/macosarm.mk
+
+# Or simply:
+
+# make -f inweb/inweb.mk makers
+
+# which recreates all of the make-files in the inweb repository from their
+# scripts, including macosarm.mk among them.
+
+# See the inweb manual for documentation on the *.mkscript file format, i.e.,
+# the format in which this file is written. But it is essentially just a makefile
+# with a number of special macro and loop features whose syntax involves braces
+# { ... }, so anywhere that you see braces, you're looking at something special
+# to *.mkscript; anything else is straightforward make syntax.
+
+# -----------------------------------------------------------------------------
+
+# The first definition in this file should set INWEBPLATFORM to the platform
+# name, which is the same as the leafname of this file without the ".mkscript"
+# file extension. So:
+
+INWEBPLATFORM = macosarm
+
+# The I6 source code has its own set of symbolic names for operating systems,
+# not always the same as inweb's names for platforms, so:
+
+INFORM6OS = MACOS
+
+# And similarly for glulxe, which is used as part of the dumb-glulx interpreter,
+# which is used in testing Inform on the command line:
+
+GLULXEOS = OS_UNIX
+
+# On some platforms, executables have a specific file extension, which we define here:
+
+EXEEXTENSION = 
+
+# -----------------------------------------------------------------------------
+
+# These are likely to be the same on all platforms:
+
+INTEST = intest/Tangled/intest
+INWEB = inweb/Tangled/inweb
+
+# -----------------------------------------------------------------------------
+
+# Now three macro definitions: two for compiling C code to *.o object files
+# (one being strict about warnings, the other indulgently suppressing them);
+# and one for linking those *.o files into an executable.
+
+{define: compile to: TO from: FROM ?options: OPTS}
+	clang -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g {OPTS} -o {TO} {FROM}
+{end-define}
+
+{define: compile-indulgently to: TO from: FROM ?options: OPTS}
+	clang -std=c99 -c $(FEWERWARNINGS) $(CCOPTS) -g {OPTS} -o {TO} {FROM}
+{end-define}
+
+{define: link to: TO from: FROM ?options: OPTS}
+	clang $(CCOPTS) -g -o {TO} {FROM} {OPTS}
+{end-define}
+
+# Where:
+
+CCOPTS = -DPLATFORM_MACOS=1 -target arm64-apple-macos11 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+
+MANYWARNINGS = -Weverything -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return -ferror-limit=1000
+
+# To explain those:
+
+#     -Wno-pointer-arith: we use the gcc extension allowing (void *) pointers to increment, don't complain
+#     -Wno-variadic-macros: we use the gcc extension for variadic macros, don't complain
+#     -Wno-cast-align, -Wno-padded: we don't care about address alignments of structure elements
+#     -Wno-missing-noreturn: a few fatal-error functions could be marked with
+#          __attribute__((noreturn)) to prevent this, but gcc doesn't accept
+#          this except in a predeclaration, which is inconvenient for us
+#     -Wno-shadow: we don't care if an inner block defines a variable of the same name
+#     -Wno-unused-macros: a few constants are defined to document external formats rather than for use here
+#     -Wno-unused-parameter: we don't much care if a function argument isn't used
+#     -Wno-missing-prototypes: because Preform-defined routines aren't predeclared with prototypes
+#     -Wno-missing-variable-declarations: these are not for linking, so don't care about extern/static
+#     -Wno-unreachable-code-break: these derive from Preform-compiled switches, and are harmless
+#	  -Wno-class-varargs: for some reason clang thinks structs shouldn't be passed to variable-argument functions
+#     -Wno-format-nonliteral: similarly, it thinks all format strings in |printf| should be literals
+#     -Wno-cast-qual: in OS X 10.11, clang became bothered by casts from (void *) if it thought they were const
+#     -Wno-double-promotion: in OS X 10.12, clang began warning of possible precision loss: we only need about 1% accuracy anyway
+#	  -Wno-commas: in OS X 10.13, clang began warning about "possible misuse of comma operator" - by misuse, it means use
+#	  -Wno-strict-prototypes: in OS X 10.13, clang began objecting to (some) function prototypes generated by macros
+#	  -Wno-extra-semi-stmt: in OS X 10.15, clang began objecting to redundant semicolons after macros had expanded,
+#          which is a little tiresome: though it's off by default (on MacOS with -Weverything), we explicitly disable it
+#     -Wno-c11-extensions: we want to allow ourselves use of _Noreturn, a C11 annotation...
+#     -Wno-unreachable-code-return: ...which means some compilers can prove some of our return statements unnecessary
+
+FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return

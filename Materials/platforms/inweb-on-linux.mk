@@ -52,6 +52,10 @@ makers:
 	$(INWEB) -platform macos -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macos.mk
 	$(INWEB) -prototype $(ME)/Materials/platforms/macos32.mkscript -makefile $(ME)/Materials/platforms/macos32.mk
 	$(INWEB) -platform macos32 -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macos32.mk
+	$(INWEB) -prototype $(ME)/Materials/platforms/macosarm.mkscript -makefile $(ME)/Materials/platforms/macosarm.mk
+	$(INWEB) -platform macosarm -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macosarm.mk
+	$(INWEB) -prototype $(ME)/Materials/platforms/macosuniv.mkscript -makefile $(ME)/Materials/platforms/macosuniv.mk
+	$(INWEB) -platform macosuniv -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macosuniv.mk
 	$(INWEB) -prototype $(ME)/Materials/platforms/windows.mkscript -makefile $(ME)/Materials/platforms/windows.mk
 	$(INWEB) -platform windows -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-windows.mk
 	$(INWEB) -prototype $(ME)/Materials/platforms/linux.mkscript -makefile $(ME)/Materials/platforms/linux.mk

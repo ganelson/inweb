@@ -18,6 +18,10 @@ void Makefiles::write(web *W, filename *prototype, filename *F, module_search *I
 	Preprocessor::new_macro(L,
 		I"identity-settings", NULL,
 		Makefiles::identity_settings_expander, NULL);
+	preprocessor_macro *mf = Preprocessor::new_macro(L,
+		I"modify-filenames", I"original: ORIGINAL ?suffix: SUFFIX ?prefix: PREFIX",
+		Makefiles::modify_filenames_expander, NULL);
+	Preprocessor::do_not_suppress_whitespace(mf);
 	Preprocessor::new_macro(L,
 		I"component", I"symbol: SYMBOL webname: WEBNAME path: PATH set: SET type: TYPE",
 		Makefiles::component_expander, NULL);
@@ -118,6 +122,63 @@ void Makefiles::seek_INWEBPLATFORM(text_stream *line, text_file_position *tfp, v
 	if (Regexp::match(&mr, line, L" *INWEBPLATFORM = (%C+) *")) WRITE("%S", mr.exp[0]);
 	Regexp::dispose_of(&mr);
 }
+
+@h The modify filename expander.
+
+=
+void Makefiles::modify_filenames_expander(preprocessor_macro *mm, preprocessor_state *PPS,
+	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
+	text_stream *OUT = PPS->dest;
+
+	text_stream *original = parameter_values[0];
+	text_stream *suffix = parameter_values[1];
+	text_stream *prefix = parameter_values[2];
+
+	wchar_t previous = 'X'; int quoted = FALSE, boundary = FALSE;
+	TEMPORARY_TEXT(captured)
+	LOOP_THROUGH_TEXT(pos, original) {
+		wchar_t c = Str::get(pos);
+		if (c == '\'') { quoted = quoted?FALSE:TRUE; }
+		if (Characters::is_whitespace(c)) {
+			if ((previous != '\\') && (quoted == FALSE)) boundary = TRUE;
+		} else {
+			if (boundary) @<Captured a name@>;
+			boundary = FALSE;
+		}
+		PUT_TO(captured, c);
+		previous = c;
+	}
+	@<Captured a name@>
+	DISCARD_TEXT(captured)
+}
+
+@<Captured a name@> =
+	Str::trim_white_space(captured);
+	if (Str::len(captured) > 0) {
+		int in_quotes = FALSE;
+		if ((Str::get_first_char(captured) == '\'') && (Str::get_last_char(captured) == '\'')) {
+			Str::delete_first_character(captured);
+			Str::delete_last_character(captured);
+			in_quotes = TRUE;
+		}
+		if (in_quotes) WRITE("'");
+		int last_slash = -1;
+		for (int i=0; i<Str::len(captured); i++)
+			if (Str::get_at(captured, i) == '/')
+				last_slash = i;
+		int last_dot = Str::len(captured);
+		if (last_slash >= 0)
+			for (int i=last_slash; i<Str::len(captured); i++)
+				if (Str::get_at(captured, i) == '.')
+					last_dot = i;
+		for (int i=0; i<=last_slash; i++) PUT(Str::get_at(captured, i));
+		WRITE("%S", prefix);
+		for (int i=last_slash+1; i<last_dot; i++) PUT(Str::get_at(captured, i));
+		WRITE("%S", suffix);
+		for (int i=last_dot; i<Str::len(captured); i++) PUT(Str::get_at(captured, i));
+		if (in_quotes) WRITE("'");
+		Str::clear(captured);
+	}
 
 @h The component expander.
 
