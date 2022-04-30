@@ -160,14 +160,15 @@ stopwatch_timer *Time::start_stopwatch(stopwatch_timer *within, text_stream *nam
 }
 
 @ Every started stopwatch must be stopped in order to register time having
-been used. Once this is done
+been used. Once this is done, we sort:
 
 =
 int Time::stop_stopwatch(stopwatch_timer *st) {
 	if (st->running == FALSE) internal_error("already stopped");
 	st->running = FALSE;
 	st->end_time = clock();
-	st->time_taken += (((int) (st->end_time)) - ((int) (st->start_time))) / (CLOCKS_PER_SEC/100);
+	st->time_taken +=
+		(((int) (st->end_time)) - ((int) (st->start_time))) / ((int) (CLOCKS_PER_SEC/100));
 	int N = LinkedLists::len(st->stages_chronological);
 	if (N > 0) @<Sort the subtasks in descreasing order of how much time they took@>;
 	return st->time_taken;

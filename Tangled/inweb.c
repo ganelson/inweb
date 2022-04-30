@@ -3194,11 +3194,11 @@ int  Time__feast(void) ;
 stopwatch_timer * Time__start_stopwatch(stopwatch_timer *within, text_stream *name) ;
 #line 166 "inweb/foundation-module/Chapter 3/Time.w"
 int  Time__stop_stopwatch(stopwatch_timer *st) ;
-#line 192 "inweb/foundation-module/Chapter 3/Time.w"
+#line 193 "inweb/foundation-module/Chapter 3/Time.w"
 int  Time__compare_watches(const void *w1, const void *w2) ;
-#line 207 "inweb/foundation-module/Chapter 3/Time.w"
+#line 208 "inweb/foundation-module/Chapter 3/Time.w"
 void  Time__resume_stopwatch(stopwatch_timer *st) ;
-#line 219 "inweb/foundation-module/Chapter 3/Time.w"
+#line 220 "inweb/foundation-module/Chapter 3/Time.w"
 void  Time__log_timing(stopwatch_timer *st, int total) ;
 #line 8 "inweb/foundation-module/Chapter 4/Characters.w"
 wchar_t  Characters__tolower(wchar_t c) ;
@@ -10097,11 +10097,12 @@ int Time__stop_stopwatch(stopwatch_timer *st) {
 	if (st->running == FALSE) internal_error("already stopped");
 	st->running = FALSE;
 	st->end_time = clock();
-	st->time_taken += (((int) (st->end_time)) - ((int) (st->start_time))) / (CLOCKS_PER_SEC/100);
+	st->time_taken +=
+		(((int) (st->end_time)) - ((int) (st->start_time))) / ((int) (CLOCKS_PER_SEC/100));
 	int N = LinkedLists__len(st->stages_chronological);
 	if (N > 0) 
 {
-#line 177 "inweb/foundation-module/Chapter 3/Time.w"
+#line 178 "inweb/foundation-module/Chapter 3/Time.w"
 	st->stages_sorted = NEW_LINKED_LIST(stopwatch_timer);
 	stopwatch_timer **as_array = (stopwatch_timer **)
 		(Memory__calloc(N, sizeof(stopwatch_timer *), ARRAY_SORTING_MREASON));
@@ -10115,12 +10116,12 @@ int Time__stop_stopwatch(stopwatch_timer *st) {
 		ARRAY_SORTING_MREASON, N, sizeof(stopwatch_timer *));
 
 }
-#line 172 "inweb/foundation-module/Chapter 3/Time.w"
+#line 173 "inweb/foundation-module/Chapter 3/Time.w"
 ;
 	return st->time_taken;
 }
 
-#line 192 "inweb/foundation-module/Chapter 3/Time.w"
+#line 193 "inweb/foundation-module/Chapter 3/Time.w"
 int Time__compare_watches(const void *w1, const void *w2) {
 	const stopwatch_timer **st1 = (const stopwatch_timer **) w1;
 	const stopwatch_timer **st2 = (const stopwatch_timer **) w2;
@@ -10132,7 +10133,7 @@ int Time__compare_watches(const void *w1, const void *w2) {
 	return Str__cmp((*st1)->event, (*st2)->event);
 }
 
-#line 207 "inweb/foundation-module/Chapter 3/Time.w"
+#line 208 "inweb/foundation-module/Chapter 3/Time.w"
 void Time__resume_stopwatch(stopwatch_timer *st) {
 	if (st->running) internal_error("already running");
 	st->running = TRUE;
@@ -10140,7 +10141,7 @@ void Time__resume_stopwatch(stopwatch_timer *st) {
 	st->end_time = st->start_time;
 }
 
-#line 219 "inweb/foundation-module/Chapter 3/Time.w"
+#line 220 "inweb/foundation-module/Chapter 3/Time.w"
 void Time__log_timing(stopwatch_timer *st, int total) {
 	if (st) {
 		int N = 1000*st->time_taken/total;
