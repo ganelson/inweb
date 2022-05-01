@@ -7123,9 +7123,9 @@ void Streams__write_as_locale_string(char *C_string, text_stream *stream, int bu
 }
 
 void Streams__write_locale_string(text_stream *stream, char *C_string) {
-	if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
+	if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
 		Streams__write_UTF8_string(stream, C_string);
-	else if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
+	else if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
 		Streams__write_ISO_string(stream, C_string);
 	else Errors__fatal("unknown command line locale");
 }

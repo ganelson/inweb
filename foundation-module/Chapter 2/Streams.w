@@ -614,9 +614,9 @@ void Streams::write_as_locale_string(char *C_string, text_stream *stream, int bu
 }
 
 void Streams::write_locale_string(text_stream *stream, char *C_string) {
-	if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
+	if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
 		Streams::write_UTF8_string(stream, C_string);
-	else if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
+	else if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
 		Streams::write_ISO_string(stream, C_string);
 	else Errors::fatal("unknown command line locale");
 }
