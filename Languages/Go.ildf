@@ -1,0 +1,61 @@
+Name: "Go"
+Details: "The Go programming language"
+Extension: ".go"
+Multiline Comment Open: "/*"
+Multiline Comment Close: "*/"
+Line Comment: "//"
+String Literal: "\""
+String Literal Escape: "\\"
+Character Literal: "'"
+Character Literal Escape: "\\"
+C-Like: true
+
+Octal Literal Prefix: "0"
+Hexadecimal Literal Prefix: "0x"
+Binary Literal Prefix: "0b"
+Negative Literal Prefix: "-"
+
+Before Named Paragraph Expansion: "{\n"
+After Named Paragraph Expansion: "}\n"
+
+keyword break
+keyword case
+keyword chan
+keyword const
+keyword continue
+keyword default
+keyword defer
+keyword else
+keyword fallthrough
+keyword for
+keyword func
+keyword go
+keyword goto
+keyword if
+keyword import
+keyword interface
+# "Hack": We define main as a keyword to avoid automatic hyperlinks when package and func are both "main". 
+keyword main
+keyword map
+keyword package
+keyword range
+keyword return
+keyword select
+keyword struct
+keyword switch
+keyword type
+keyword var
+
+colouring {
+	runs of unquoted {
+		runs of !identifier {
+			keyword of !reserved => !reserved
+			keyword of !function => !function
+			keyword of !constant => !constant
+			keyword of !element => {
+				optionally spaced prefix . => !element
+				optionally spaced prefix -> => !element
+			}
+		}
+	}
+}
