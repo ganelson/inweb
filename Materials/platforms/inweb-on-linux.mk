@@ -73,8 +73,8 @@ safe:
 	$(call make-me-using-safety-copy)
 
 define make-me-once-tangled
-	gcc -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
-	gcc $(CCOPTS) -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o  -lm -pthread $(LDFLAGS)
+	$(CC) -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
+	$(CC) $(CCOPTS) -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o  -lm -pthread $(LDFLAGS)
 endef
 
 define make-me

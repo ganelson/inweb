@@ -597,18 +597,18 @@ void Streams::write_as_UTF8_string(char *C_string, text_stream *stream, int buff
 
 =
 int Streams::open_from_locale_string(text_stream *stream, const char *C_string) {
-	if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
-		return Streams::open_from_UTF8_string(stream, C_string);
 	if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
+		return Streams::open_from_UTF8_string(stream, C_string);
+	if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
 		return Streams::open_from_ISO_string(stream, C_string);
 	Errors::fatal("unknown command line locale");
 	return FALSE;
 }
 
 void Streams::write_as_locale_string(char *C_string, text_stream *stream, int buffer_size) {
-	if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
+	if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
 		Streams::write_as_UTF8_string(C_string, stream, buffer_size);
-	else if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
+	else if (Locales::get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
 		Streams::write_as_ISO_string(C_string, stream, buffer_size);
 	else Errors::fatal("unknown command line locale");
 }

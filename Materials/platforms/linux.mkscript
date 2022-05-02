@@ -65,15 +65,15 @@ INWEB = inweb/Tangled/inweb
 # and one for linking those *.o files into an executable.
 
 {define: compile to: TO from: FROM ?options: OPTS}
-	gcc -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g {OPTS} -o {TO} {FROM}
+	$(CC) -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g {OPTS} -o {TO} {FROM}
 {end-define}
 
 {define: compile-indulgently to: TO from: FROM ?options: OPTS}
-	gcc -std=c99 -c $(FEWERWARNINGS) $(CCOPTS) -g {OPTS} -o {TO} {FROM}
+	$(CC) -std=c99 -c $(FEWERWARNINGS) $(CCOPTS) -g {OPTS} -o {TO} {FROM}
 {end-define}
 
 {define: link to: TO from: FROM ?options: OPTS}
-	gcc $(CCOPTS) -o {TO} {FROM} {OPTS} -lm -pthread $(LDFLAGS)
+	$(CC) $(CCOPTS) -o {TO} {FROM} {OPTS} -lm -pthread $(LDFLAGS)
 {end-define}
 
 # Where:
