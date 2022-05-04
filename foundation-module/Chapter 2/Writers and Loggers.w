@@ -240,14 +240,14 @@ file encodings, but expanding |%s| does not.
 		case 'c': case 'd': case 'i': case 'x': { /* |char| is promoted to |int| in variable arguments */
 			int ival = va_arg(ap, int);
 			char temp[256];
-			if (PLATFORM_SNPRINTF(temp, 255, format_string, ival) >= 255) strcpy(temp, "?");
+			if (snprintf(temp, 255, format_string, ival) >= 255) strcpy(temp, "?");
 			for (int j = 0; temp[j]; j++) Streams::putc(temp[j], stream);
 			break;
 		}
 		case 'g': {
 			double dval = va_arg(ap, double);
 			char temp[256];
-			if (PLATFORM_SNPRINTF(temp, 255, format_string, dval) >= 255) strcpy(temp, "?");
+			if (snprintf(temp, 255, format_string, dval) >= 255) strcpy(temp, "?");
 			for (int j = 0; temp[j]; j++) Streams::putc(temp[j], stream);
 			break;
 		}
