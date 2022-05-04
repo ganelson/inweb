@@ -62,6 +62,10 @@ void CStrings::copy(char *to, char *from) {
 @ String comparisons will be done with the following, not |strcmp| directly:
 
 =
+int CStrings::eq(char *A, char *B) {
+	return (CStrings::cmp(A, B) == 0)?TRUE:FALSE;
+}
+
 int CStrings::ne(char *A, char *B) {
 	return (CStrings::cmp(A, B) == 0)?FALSE:TRUE;
 }
