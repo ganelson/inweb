@@ -758,10 +758,20 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define QUOTE_CHARCLASS 10
 #define REP_REPEATING 1
 #define REP_ATSTART 2
-#define tag_error(x) { LOG("Tag error: %s\n", x); }
+#define tag_error(x) {\
+    	LOG("Tag error: %s\n", x);\
+    	HTML_tag *ht;\
+    	int i = 1;\
+    	LOG("HTML tag stack:\n");\
+    	LOOP_DOWN_LIFO_STACK(ht, HTML_tag, hs->tag_stack) {\
+    		LOG("    %d. %s (opened at line %d of '%s')\n", i++,\
+    			ht->tag_name, ht->from_line, ht->from_filename);\
+    	}\
+    	LOG("\n\n");\
+    }
 #define HTML_TAG(tag) HTML__tag(OUT, tag, NULL);
-#define HTML_OPEN(tag) HTML__open(OUT, tag, NULL);
-#define HTML_CLOSE(tag) HTML__close(OUT, tag);
+#define HTML_OPEN(tag) HTML__open(OUT, tag, NULL, __FILE__, __LINE__);
+#define HTML_CLOSE(tag) HTML__close(OUT, tag, __FILE__, __LINE__);
 #define CORNER_SIZE 8 /* measured in pixels */
 #define ROUND_BOX_TOP 1
 #define ROUND_BOX_BOTTOM 2
@@ -1282,7 +1292,7 @@ typedef struct stopwatch_timer {
 	linked_list *stages_sorted; /* of |stopwatch_timer| */
 	CLASS_DEFINITION
 } stopwatch_timer;
-#line 119 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 123 "inweb/foundation-module/Chapter 4/C Strings.w"
 typedef struct string_storage_area {
 	char *storage_at;
 	int capacity;
@@ -1409,7 +1419,7 @@ typedef struct match_results {
 	struct text_stream *exp[MAX_BRACKETED_SUBEXPRESSIONS];
 	int exp_at[MAX_BRACKETED_SUBEXPRESSIONS];
 } match_results;
-#line 43 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 56 "inweb/foundation-module/Chapter 5/HTML.w"
 typedef struct HTML_file_state {
 	int XHTML_flag; /* writing strict XHTML for use in epubs */
 	struct lifo_stack *tag_stack; /* of |HTML_tag|: those currently open */
@@ -1417,13 +1427,15 @@ typedef struct HTML_file_state {
 	int JS_included;
 	CLASS_DEFINITION
 } HTML_file_state;
-#line 66 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 79 "inweb/foundation-module/Chapter 5/HTML.w"
 typedef struct HTML_tag {
 	char *tag_name;
 	int tag_xref;
+	char *from_filename;
+	int from_line;
 	CLASS_DEFINITION
 } HTML_tag;
-#line 712 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 721 "inweb/foundation-module/Chapter 5/HTML.w"
 typedef struct colour_translation {
 	wchar_t *chip_name;
 	wchar_t *html_colour;
@@ -3243,16 +3255,18 @@ int  CStrings__len(char *str) ;
 #line 55 "inweb/foundation-module/Chapter 4/C Strings.w"
 void  CStrings__copy(char *to, char *from) ;
 #line 65 "inweb/foundation-module/Chapter 4/C Strings.w"
+int  CStrings__eq(char *A, char *B) ;
+#line 69 "inweb/foundation-module/Chapter 4/C Strings.w"
 int  CStrings__ne(char *A, char *B) ;
-#line 72 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 76 "inweb/foundation-module/Chapter 4/C Strings.w"
 int  CStrings__cmp(char *A, char *B) ;
-#line 85 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 89 "inweb/foundation-module/Chapter 4/C Strings.w"
 void  CStrings__transcode_ISO_string_to_UTF8(char *p, char *dest) ;
-#line 106 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 110 "inweb/foundation-module/Chapter 4/C Strings.w"
 void  CStrings__truncated_strcpy(char *to, char *from, int max) ;
-#line 126 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 130 "inweb/foundation-module/Chapter 4/C Strings.w"
 char * CStrings__park_string(char *from) ;
-#line 137 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 141 "inweb/foundation-module/Chapter 4/C Strings.w"
 void  CStrings__free_ssas(void) ;
 #line 14 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 int  Wide__len(wchar_t *p) ;
@@ -3509,162 +3523,162 @@ int  Regexp__test_cclass(int c, int chcl, int range_from, int range_to, wchar_t 
 #line 415 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int  Regexp__replace(text_stream *text, wchar_t *pattern, wchar_t *replacement, int options) ;
 #line 8 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__header(OUTPUT_STREAM, text_stream *title, filename *css, filename *js, void *state) ;
-#line 22 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__header(OUTPUT_STREAM, text_stream *title, filename *css1, filename *css2, 	filename *js1, filename *js2, void *state) ;
+#line 25 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__footer(OUTPUT_STREAM) ;
-#line 51 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 64 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__declare_as_HTML(OUTPUT_STREAM, int XHTML) ;
-#line 72 "inweb/foundation-module/Chapter 5/HTML.w"
-int  HTML__push_tag(OUTPUT_STREAM, char *tag) ;
-#line 85 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__pop_tag(OUTPUT_STREAM, char *tag) ;
-#line 106 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 87 "inweb/foundation-module/Chapter 5/HTML.w"
+int  HTML__push_tag(OUTPUT_STREAM, char *tag, char *fn, int lc) ;
+#line 102 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__pop_tag(OUTPUT_STREAM, char *tag, char *fn, int lc) ;
+#line 122 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__completed(OUTPUT_STREAM) ;
-#line 146 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 154 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__tag(OUTPUT_STREAM, char *tag, text_stream *details) ;
-#line 155 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 163 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__tag_sc(OUTPUT_STREAM, char *tag, text_stream *details) ;
-#line 162 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 170 "inweb/foundation-module/Chapter 5/HTML.w"
 int  HTML__tag_formatting(char *tag) ;
-#line 171 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__open(OUTPUT_STREAM, char *tag, text_stream *details) ;
-#line 180 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__close(OUTPUT_STREAM, char *tag) ;
-#line 189 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__open_indented_p(OUTPUT_STREAM, int depth, char *class) ;
+#line 179 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__open(OUTPUT_STREAM, char *tag, text_stream *details, char *fn, int lc) ;
+#line 188 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__close(OUTPUT_STREAM, char *tag, char *fn, int lc) ;
 #line 197 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__open_indented_p(OUTPUT_STREAM, int depth, char *class) ;
+#line 205 "inweb/foundation-module/Chapter 5/HTML.w"
 int  HTML__pair_formatting(char *tag) ;
-#line 219 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 227 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_head(OUTPUT_STREAM, filename *CSS_file) ;
-#line 237 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 245 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__end_head(OUTPUT_STREAM) ;
-#line 242 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 250 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__title(OUTPUT_STREAM, text_stream *title) ;
-#line 251 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 259 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__open_javascript(OUTPUT_STREAM, int define_project) ;
-#line 260 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 268 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__close_javascript(OUTPUT_STREAM) ;
-#line 266 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 274 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__incorporate_javascript(OUTPUT_STREAM, int define_project, filename *M) ;
-#line 286 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 294 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__incorporate_javascript_from_file(OUTPUT_STREAM, filename *M) ;
-#line 293 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 301 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__open_CSS(OUTPUT_STREAM) ;
-#line 298 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 306 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__close_CSS(OUTPUT_STREAM) ;
-#line 303 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 311 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__incorporate_CSS(OUTPUT_STREAM, filename *M) ;
-#line 321 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 329 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__incorporate_CSS_from_file(OUTPUT_STREAM, filename *M) ;
-#line 328 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 336 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__incorporate_HTML(OUTPUT_STREAM, filename *M) ;
-#line 344 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__incorporate_HTML_from_file(OUTPUT_STREAM, filename *M) ;
 #line 352 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__incorporate_helper(text_stream *line_of_template, 	text_file_position *tfp, void *OUT) ;
+void  HTML__incorporate_HTML_from_file(OUTPUT_STREAM, filename *M) ;
 #line 360 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__incorporate_helper(text_stream *line_of_template, 	text_file_position *tfp, void *OUT) ;
+#line 368 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_body(OUTPUT_STREAM, text_stream *class) ;
-#line 365 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__end_body(OUTPUT_STREAM) ;
 #line 373 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__begin_div_with_id(OUTPUT_STREAM, char *id) ;
-#line 377 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__begin_div_with_class(OUTPUT_STREAM, char *cl) ;
+void  HTML__end_body(OUTPUT_STREAM) ;
 #line 381 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__begin_div_with_id(OUTPUT_STREAM, char *id) ;
+#line 385 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__begin_div_with_class(OUTPUT_STREAM, char *cl) ;
+#line 389 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_div_with_class_and_id(OUTPUT_STREAM, char *cl, char *id, int hide) ;
-#line 386 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__begin_div_with_id_S(OUTPUT_STREAM, text_stream *id) ;
-#line 393 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__begin_div_with_class_S(OUTPUT_STREAM, text_stream *cl) ;
-#line 400 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__begin_div_with_class_and_id_S(OUTPUT_STREAM, text_stream *cl, text_stream *id, int hide) ;
+#line 394 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__begin_div_with_id_S(OUTPUT_STREAM, text_stream *id, char *fn, int lc) ;
+#line 401 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__begin_div_with_class_S(OUTPUT_STREAM, text_stream *cl, char *fn, int lc) ;
 #line 408 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__begin_div_with_class_and_id_S(OUTPUT_STREAM, text_stream *cl, 	text_stream *id, int hide, char *fn, int lc) ;
+#line 417 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__end_div(OUTPUT_STREAM) ;
-#line 415 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 424 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__image(OUTPUT_STREAM, filename *F) ;
-#line 419 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 428 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__image_to_dimensions(OUTPUT_STREAM, filename *F, int w, int h) ;
-#line 440 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 449 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__icon_with_tooltip(OUTPUT_STREAM, text_stream *icon_name, 	text_stream *tip, text_stream *tip2) ;
-#line 456 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 465 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__anchor(OUTPUT_STREAM, text_stream *id) ;
-#line 460 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 469 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__anchor_with_class(OUTPUT_STREAM, text_stream *id, text_stream *cl) ;
-#line 464 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 473 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_link(OUTPUT_STREAM, text_stream *to) ;
-#line 468 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 477 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_download_link(OUTPUT_STREAM, text_stream *to) ;
-#line 472 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 481 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_link_with_class(OUTPUT_STREAM, text_stream *cl, text_stream *to) ;
-#line 476 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 485 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_link_with_class_title(OUTPUT_STREAM, text_stream *cl, text_stream *to, text_stream *ti) ;
-#line 480 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 489 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_link_with_class_onclick(OUTPUT_STREAM, text_stream *cl, text_stream *to, text_stream *on) ;
-#line 484 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 493 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_link_with_class_title_onclick(OUTPUT_STREAM, text_stream *cl, text_stream *to, text_stream *ti, text_stream *on) ;
-#line 491 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__end_link(OUTPUT_STREAM) ;
 #line 500 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__end_link(OUTPUT_STREAM) ;
+#line 509 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__set_link_abbreviation_path(pathname *P) ;
-#line 503 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 512 "inweb/foundation-module/Chapter 5/HTML.w"
 pathname * HTML__get_link_abbreviation_path(void) ;
-#line 511 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 520 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_plain_html_table(OUTPUT_STREAM) ;
-#line 515 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 524 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_wide_html_table(OUTPUT_STREAM) ;
-#line 522 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 531 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_html_table(OUTPUT_STREAM, char *colour, int full_width, 	int border, int cellspacing, int cellpadding, int height, int width) ;
-#line 539 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 548 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_html_table_bg(OUTPUT_STREAM, char *colour, int full_width, 	int border, int cellspacing, int cellpadding, int height, int width, char *bg) ;
-#line 552 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 561 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__first_html_column(OUTPUT_STREAM, int width) ;
-#line 557 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 566 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__first_html_column_nowrap(OUTPUT_STREAM, int width, char *colour) ;
-#line 565 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 574 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__first_html_column_spaced(OUTPUT_STREAM, int width) ;
-#line 573 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__first_html_column_coloured(OUTPUT_STREAM, int width, char *colour, int cs) ;
 #line 582 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__first_html_column_coloured(OUTPUT_STREAM, int width, char *colour, int cs) ;
+#line 591 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__next_html_column(OUTPUT_STREAM, int width) ;
-#line 588 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 597 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__next_html_column_centred(OUTPUT_STREAM, int width) ;
-#line 594 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 603 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__next_html_column_spanning(OUTPUT_STREAM, int width, int sp) ;
-#line 600 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 609 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__next_html_column_nowrap(OUTPUT_STREAM, int width) ;
-#line 606 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 615 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__next_html_column_spaced(OUTPUT_STREAM, int width) ;
-#line 612 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 621 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__next_html_column_nw(OUTPUT_STREAM, int width) ;
-#line 618 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 627 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__next_html_column_w(OUTPUT_STREAM, int width) ;
-#line 624 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__next_html_column_right_justified(OUTPUT_STREAM, int width) ;
-#line 629 "inweb/foundation-module/Chapter 5/HTML.w"
-void  HTML__end_html_row(OUTPUT_STREAM) ;
 #line 633 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__next_html_column_right_justified(OUTPUT_STREAM, int width) ;
+#line 638 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__end_html_row(OUTPUT_STREAM) ;
+#line 642 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__end_html_table(OUTPUT_STREAM) ;
-#line 644 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 653 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__open_coloured_box(OUTPUT_STREAM, char *html_colour, int rounding) ;
-#line 664 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 673 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__close_coloured_box(OUTPUT_STREAM, char *html_colour, int rounding) ;
-#line 682 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 691 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__box_corner(OUTPUT_STREAM, char *html_colour, char *corner) ;
-#line 692 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 701 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__comment(OUTPUT_STREAM, text_stream *text) ;
-#line 696 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 705 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__heading(OUTPUT_STREAM, char *tag, text_stream *text) ;
-#line 703 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 712 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__hr(OUTPUT_STREAM, char *class) ;
-#line 868 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 877 "inweb/foundation-module/Chapter 5/HTML.w"
 wchar_t * HTML__translate_colour_name(wchar_t *original) ;
-#line 876 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 885 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__begin_colour(OUTPUT_STREAM, text_stream *col) ;
-#line 879 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 888 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__end_colour(OUTPUT_STREAM) ;
-#line 887 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 896 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__write_xml_safe_text(OUTPUT_STREAM, text_stream *txt) ;
-#line 918 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 927 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__put(OUTPUT_STREAM, int charcode) ;
 #line 106 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
 ebook * Epub__new(text_stream *title, char *prefix) ;
@@ -7106,18 +7120,18 @@ void Streams__write_as_UTF8_string(char *C_string, text_stream *stream, int buff
 
 #line 599 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__open_from_locale_string(text_stream *stream, const char *C_string) {
-	if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
-		return Streams__open_from_UTF8_string(stream, C_string);
 	if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
+		return Streams__open_from_UTF8_string(stream, C_string);
+	if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
 		return Streams__open_from_ISO_string(stream, C_string);
 	Errors__fatal("unknown command line locale");
 	return FALSE;
 }
 
 void Streams__write_as_locale_string(char *C_string, text_stream *stream, int buffer_size) {
-	if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
+	if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
 		Streams__write_as_UTF8_string(C_string, stream, buffer_size);
-	else if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_UTF8_STRF)
+	else if (Locales__get(SHELL_LOCALE) == FILE_ENCODING_ISO_STRF)
 		Streams__write_as_ISO_string(C_string, stream, buffer_size);
 	else Errors__fatal("unknown command line locale");
 }
@@ -8740,11 +8754,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.1.0-beta+1A98";
+			char *svn = "7.1.0-beta+1B02";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "30 April 2022";
+			char *d = "4 May 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -10341,11 +10355,15 @@ void CStrings__copy(char *to, char *from) {
 }
 
 #line 65 "inweb/foundation-module/Chapter 4/C Strings.w"
+int CStrings__eq(char *A, char *B) {
+	return (CStrings__cmp(A, B) == 0)?TRUE:FALSE;
+}
+
 int CStrings__ne(char *A, char *B) {
 	return (CStrings__cmp(A, B) == 0)?FALSE:TRUE;
 }
 
-#line 72 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 76 "inweb/foundation-module/Chapter 4/C Strings.w"
 int CStrings__cmp(char *A, char *B) {
 	if ((A == NULL) || (A[0] == 0)) {
 		if ((B == NULL) || (B[0] == 0)) return 0;
@@ -10355,7 +10373,7 @@ int CStrings__cmp(char *A, char *B) {
 	return strcmp(A, B);
 }
 
-#line 85 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 89 "inweb/foundation-module/Chapter 4/C Strings.w"
 void CStrings__transcode_ISO_string_to_UTF8(char *p, char *dest) {
 	int i, j;
 	for (i=0, j=0; p[i]; i++) {
@@ -10370,16 +10388,16 @@ void CStrings__transcode_ISO_string_to_UTF8(char *p, char *dest) {
 	dest[j] = 0;
 }
 
-#line 106 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 110 "inweb/foundation-module/Chapter 4/C Strings.w"
 void CStrings__truncated_strcpy(char *to, char *from, int max) {
 	int i;
 	for (i=0; ((from[i]) && (i<max-1)); i++) to[i] = from[i];
 	to[i] = 0;
 }
 
-#line 124 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 128 "inweb/foundation-module/Chapter 4/C Strings.w"
 
-#line 126 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 130 "inweb/foundation-module/Chapter 4/C Strings.w"
 char *CStrings__park_string(char *from) {
 	string_storage_area *ssa = CREATE(string_storage_area);
 	ssa->capacity = (int) CStrings__strlen_unbounded(from) + 1;
@@ -10388,7 +10406,7 @@ char *CStrings__park_string(char *from) {
 	return ssa->storage_at;
 }
 
-#line 137 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 141 "inweb/foundation-module/Chapter 4/C Strings.w"
 void CStrings__free_ssas(void) {
 	string_storage_area *ssa;
 	LOOP_OVER(ssa, string_storage_area)
@@ -12525,12 +12543,15 @@ int Regexp__replace(text_stream *text, wchar_t *pattern, wchar_t *replacement, i
 }
 
 #line 8 "inweb/foundation-module/Chapter 5/HTML.w"
-void HTML__header(OUTPUT_STREAM, text_stream *title, filename *css, filename *js, void *state) {
+void HTML__header(OUTPUT_STREAM, text_stream *title, filename *css1, filename *css2,
+	filename *js1, filename *js2, void *state) {
 	HTML__declare_as_HTML(OUT, FALSE);
 	HTML__begin_head(OUT, NULL);
 	HTML__title(OUT, title);
-	HTML__incorporate_CSS(OUT, css);
-	HTML__incorporate_javascript(OUT, TRUE, js);
+	if (css1) HTML__incorporate_CSS(OUT, css1);
+	if (css2) HTML__incorporate_CSS(OUT, css2);
+	if (js1) HTML__incorporate_javascript(OUT, TRUE, js1);
+	if (js2) HTML__incorporate_javascript(OUT, TRUE, js2);
 	#ifdef ADDITIONAL_SCRIPTING_HTML_CALLBACK
 	ADDITIONAL_SCRIPTING_HTML_CALLBACK(OUT, state);
 	#endif
@@ -12545,7 +12566,7 @@ void HTML__footer(OUTPUT_STREAM) {
 	HTML__end_body(OUT);
 }
 
-#line 50 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 63 "inweb/foundation-module/Chapter 5/HTML.w"
 
 void HTML__declare_as_HTML(OUTPUT_STREAM, int XHTML) {
 	HTML_file_state *hs = CREATE(HTML_file_state);
@@ -12556,34 +12577,35 @@ void HTML__declare_as_HTML(OUTPUT_STREAM, int XHTML) {
 	Streams__declare_as_HTML(OUT, hs);
 }
 
-#line 65 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 78 "inweb/foundation-module/Chapter 5/HTML.w"
 int unique_xref = 0;
-#line 71 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 86 "inweb/foundation-module/Chapter 5/HTML.w"
 
-int HTML__push_tag(OUTPUT_STREAM, char *tag) {
+int HTML__push_tag(OUTPUT_STREAM, char *tag, char *fn, int lc) {
 	int u = unique_xref++;
 	HTML_file_state *hs = Streams__get_HTML_file_state(OUT);
 	if (hs) {
 		HTML_tag *ht = CREATE(HTML_tag);
 		ht->tag_name = tag;
 		ht->tag_xref = u;
+		ht->from_filename = fn;
+		ht->from_line = lc;
 		PUSH_TO_LIFO_STACK(ht, HTML_tag, hs->tag_stack);
 	}
 	return u;
 }
 
-#line 85 "inweb/foundation-module/Chapter 5/HTML.w"
-void HTML__pop_tag(OUTPUT_STREAM, char *tag) {
+#line 102 "inweb/foundation-module/Chapter 5/HTML.w"
+void HTML__pop_tag(OUTPUT_STREAM, char *tag, char *fn, int lc) {
 	HTML_file_state *hs = Streams__get_HTML_file_state(OUT);
 	if (hs) {
 		if (LIFO_STACK_EMPTY(HTML_tag, hs->tag_stack)) {
-			LOG("{tag: %s}\n", tag);
+			LOG("Trying to close %s at line %d of '%s', but:\n", tag, lc, fn);
 			tag_error("closed HTML tag which wasn't open");
 		} else {
 			HTML_tag *ht = TOP_OF_LIFO_STACK(HTML_tag, hs->tag_stack);
-			if (strcmp(tag, ht->tag_name) != 0) {
-				LOG("{expected to close tag %s (%d), but actually closed %s}\n",
-					ht->tag_name, ht->tag_xref, tag);
+			if ((ht == NULL) || (strcmp(tag, ht->tag_name) != 0)) {
+				LOG("Trying to close %s at line %d of '%s', but:\n", tag, lc, fn);
 				tag_error("closed HTML tag which wasn't open");
 			}
 			POP_LIFO_STACK(HTML_tag, hs->tag_stack);
@@ -12591,23 +12613,15 @@ void HTML__pop_tag(OUTPUT_STREAM, char *tag) {
 	}
 }
 
-#line 106 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 122 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__completed(OUTPUT_STREAM) {
 	HTML_file_state *hs = Streams__get_HTML_file_state(OUT);
 	if ((hs) && (LIFO_STACK_EMPTY(HTML_tag, hs->tag_stack) == FALSE)) {
-		HTML_tag *ht;
-		int i = 0;
-		LOG("HTML tag stack: ");
-		LOOP_DOWN_LIFO_STACK(ht, HTML_tag, hs->tag_stack) {
-			if (i++ > 0) LOG(" in ");
-			LOG("%s (%d)", ht->tag_name, ht->tag_xref);
-		}
-		LOG("\n");
 		tag_error("HTML tags still open");
 	}
 }
 
-#line 129 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 137 "inweb/foundation-module/Chapter 5/HTML.w"
 #define HTML_TAG_WITH(tag, args...) { \
 	TEMPORARY_TEXT(details) \
 	WRITE_TO(details, args); \
@@ -12618,11 +12632,11 @@ void HTML__completed(OUTPUT_STREAM) {
 #define HTML_OPEN_WITH(tag, args...) { \
 	TEMPORARY_TEXT(details) \
 	WRITE_TO(details, args); \
-	HTML__open(OUT, tag, details); \
+	HTML__open(OUT, tag, details, __FILE__, __LINE__); \
 	DISCARD_TEXT(details) \
 }
 
-#line 146 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 154 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__tag(OUTPUT_STREAM, char *tag, text_stream *details) {
 	WRITE("<%s", tag);
 	if (Str__len(details) > 0) WRITE(" %S", details);
@@ -12648,21 +12662,21 @@ int HTML__tag_formatting(char *tag) {
 	return 0;
 }
 
-void HTML__open(OUTPUT_STREAM, char *tag, text_stream *details) {
+void HTML__open(OUTPUT_STREAM, char *tag, text_stream *details, char *fn, int lc) {
 	int f = HTML__pair_formatting(tag);
-	HTML__push_tag(OUT, tag);
+	HTML__push_tag(OUT, tag, fn, lc);
 	WRITE("<%s", tag);
 	if (Str__len(details) > 0) WRITE(" %S", details);
 	WRITE(">");
 	if (f >= 2) { WRITE("\n"); INDENT; }
 }
 
-void HTML__close(OUTPUT_STREAM, char *tag) {
+void HTML__close(OUTPUT_STREAM, char *tag, char *fn, int lc) {
 	int f = HTML__pair_formatting(tag);
 	if (f >= 3) WRITE("\n");
 	if (f >= 2) OUTDENT;
 	WRITE("</%s>", tag);
-	HTML__pop_tag(OUT, tag);
+	HTML__pop_tag(OUT, tag, fn, lc);
 	if (f >= 1) WRITE("\n");
 }
 
@@ -12693,7 +12707,7 @@ int HTML__pair_formatting(char *tag) {
 	return 0;
 }
 
-#line 219 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 227 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__begin_head(OUTPUT_STREAM, filename *CSS_file) {
 	HTML_file_state *hs = Streams__get_HTML_file_state(OUT);
 	if ((hs) && (hs->XHTML_flag)) {
@@ -12716,14 +12730,14 @@ void HTML__end_head(OUTPUT_STREAM) {
 	HTML_CLOSE("head");
 }
 
-#line 242 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 250 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__title(OUTPUT_STREAM, text_stream *title) {
 	HTML_OPEN("title");
 	WRITE("%S", title);
 	HTML_CLOSE("title");
 }
 
-#line 251 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 259 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__open_javascript(OUTPUT_STREAM, int define_project) {
 	HTML_OPEN_WITH("script", "type=\"text/javascript\"");
 	if (define_project) {
@@ -12822,13 +12836,13 @@ void HTML__incorporate_HTML_from_file(OUTPUT_STREAM, filename *M) {
 		internal_error("Unable to open model HTML material for reading");
 }
 
-#line 352 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 360 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__incorporate_helper(text_stream *line_of_template,
 	text_file_position *tfp, void *OUT) {
 	WRITE("%S\n", line_of_template);
 }
 
-#line 360 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 368 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__begin_body(OUTPUT_STREAM, text_stream *class) {
 	if (class) HTML_OPEN_WITH("body", "class=\"%S\"", class)
 	else HTML_OPEN("body");
@@ -12839,7 +12853,7 @@ void HTML__end_body(OUTPUT_STREAM) {
 	HTML_CLOSE("html");
 }
 
-#line 373 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 381 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__begin_div_with_id(OUTPUT_STREAM, char *id) {
 	HTML_OPEN_WITH("div", "id=\"%s\"", id);
 }
@@ -12853,25 +12867,26 @@ void HTML__begin_div_with_class_and_id(OUTPUT_STREAM, char *cl, char *id, int hi
 	else HTML_OPEN_WITH("div", "class=\"%s\" id=\"%s\"", cl, id);
 }
 
-void HTML__begin_div_with_id_S(OUTPUT_STREAM, text_stream *id) {
+void HTML__begin_div_with_id_S(OUTPUT_STREAM, text_stream *id, char *fn, int lc) {
 	TEMPORARY_TEXT(details)
 	WRITE_TO(details, "id=\"%S\"", id);
-	HTML__open(OUT, "div", details);
+	HTML__open(OUT, "div", details, fn, lc);
 	DISCARD_TEXT(details)
 }
 
-void HTML__begin_div_with_class_S(OUTPUT_STREAM, text_stream *cl) {
+void HTML__begin_div_with_class_S(OUTPUT_STREAM, text_stream *cl, char *fn, int lc) {
 	TEMPORARY_TEXT(details)
 	WRITE_TO(details, "class=\"%S\"", cl);
-	HTML__open(OUT, "div", details);
+	HTML__open(OUT, "div", details, fn, lc);
 	DISCARD_TEXT(details)
 }
 
-void HTML__begin_div_with_class_and_id_S(OUTPUT_STREAM, text_stream *cl, text_stream *id, int hide) {
+void HTML__begin_div_with_class_and_id_S(OUTPUT_STREAM, text_stream *cl,
+	text_stream *id, int hide, char *fn, int lc) {
 	TEMPORARY_TEXT(details)
 	WRITE_TO(details, "class=\"%S\" id=\"%S\"", cl, id);
 	if (hide) WRITE_TO(details, " style=\"display: none;\"");
-	HTML__open(OUT, "div", details);
+	HTML__open(OUT, "div", details, fn, lc);
 	DISCARD_TEXT(details)
 }
 
@@ -12879,7 +12894,7 @@ void HTML__end_div(OUTPUT_STREAM) {
 	HTML_CLOSE("div");
 }
 
-#line 415 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 424 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__image(OUTPUT_STREAM, filename *F) {
 	HTML_TAG_WITH("img", "src=\"%/f\"", F);
 }
@@ -12900,7 +12915,7 @@ void HTML__image_to_dimensions(OUTPUT_STREAM, filename *F, int w, int h) {
 	}
 }
 
-#line 440 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 449 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__icon_with_tooltip(OUTPUT_STREAM, text_stream *icon_name,
 	text_stream *tip, text_stream *tip2) {
 	TEMPORARY_TEXT(img)
@@ -12914,7 +12929,7 @@ void HTML__icon_with_tooltip(OUTPUT_STREAM, text_stream *icon_name,
 	DISCARD_TEXT(img)
 }
 
-#line 456 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 465 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__anchor(OUTPUT_STREAM, text_stream *id) {
 	HTML_OPEN_WITH("a", "id=\"%S\"", id); HTML_CLOSE("a");
 }
@@ -12954,7 +12969,7 @@ void HTML__end_link(OUTPUT_STREAM) {
 	HTML_CLOSE("a");
 }
 
-#line 499 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 508 "inweb/foundation-module/Chapter 5/HTML.w"
 pathname *abbreviate_links_within = NULL;
 void HTML__set_link_abbreviation_path(pathname *P) {
 	abbreviate_links_within = P;
@@ -12963,7 +12978,7 @@ pathname *HTML__get_link_abbreviation_path(void) {
 	return abbreviate_links_within;
 }
 
-#line 511 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 520 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__begin_plain_html_table(OUTPUT_STREAM) {
 	HTML__begin_html_table(OUT, NULL, FALSE, 0, 0, 0, 0, 0);
 }
@@ -12972,7 +12987,7 @@ void HTML__begin_wide_html_table(OUTPUT_STREAM) {
 	HTML__begin_html_table(OUT, NULL, TRUE, 0, 0, 0, 0, 0);
 }
 
-#line 522 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 531 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__begin_html_table(OUTPUT_STREAM, char *colour, int full_width,
 	int border, int cellspacing, int cellpadding, int height, int width) {
 	TEMPORARY_TEXT(tab)
@@ -13088,7 +13103,7 @@ void HTML__end_html_table(OUTPUT_STREAM) {
 	HTML_CLOSE("table");
 }
 
-#line 644 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 653 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__open_coloured_box(OUTPUT_STREAM, char *html_colour, int rounding) {
 	HTML_OPEN_WITH("table",
 		"width=\"100%%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" "
@@ -13134,7 +13149,7 @@ void HTML__box_corner(OUTPUT_STREAM, char *html_colour, char *corner) {
 		corner, html_colour, CORNER_SIZE, CORNER_SIZE);
 }
 
-#line 692 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 701 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__comment(OUTPUT_STREAM, text_stream *text) {
 	WRITE("<!--%S-->\n", text);
 }
@@ -13151,7 +13166,7 @@ void HTML__hr(OUTPUT_STREAM, char *class) {
 	else HTML_TAG("hr");
 }
 
-#line 716 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 725 "inweb/foundation-module/Chapter 5/HTML.w"
 
 colour_translation table_of_translations[] = {
 	{ L"Alice Blue", L"F0F8FF" },
@@ -13300,7 +13315,7 @@ colour_translation table_of_translations[] = {
 	{ L"", L"" }
 };
 
-#line 868 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 877 "inweb/foundation-module/Chapter 5/HTML.w"
 wchar_t *HTML__translate_colour_name(wchar_t *original) {
 	for (int j=0; Wide__cmp(table_of_translations[j].chip_name, L""); j++)
 		if (Wide__cmp(table_of_translations[j].chip_name, original) == 0)
@@ -13308,7 +13323,7 @@ wchar_t *HTML__translate_colour_name(wchar_t *original) {
 	return NULL;
 }
 
-#line 876 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 885 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__begin_colour(OUTPUT_STREAM, text_stream *col) {
 	HTML_OPEN_WITH("span", "style='color:#%S'", col);
 }
@@ -13316,7 +13331,7 @@ void HTML__end_colour(OUTPUT_STREAM) {
 	HTML_CLOSE("span");
 }
 
-#line 887 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 896 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__write_xml_safe_text(OUTPUT_STREAM, text_stream *txt) {
 	LOOP_THROUGH_TEXT(pos, txt) {
 		wchar_t c = Str__get(pos);
@@ -13329,20 +13344,20 @@ void HTML__write_xml_safe_text(OUTPUT_STREAM, text_stream *txt) {
 	}
 }
 
-#line 915 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 924 "inweb/foundation-module/Chapter 5/HTML.w"
 text_stream *source_ref_fields[3] = { NULL, NULL, NULL }; /* paraphrase, filename, line */
 int source_ref_field = -1; /* which field we are buffering */
 
 void HTML__put(OUTPUT_STREAM, int charcode) {
 	
 {
-#line 942 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 951 "inweb/foundation-module/Chapter 5/HTML.w"
 	if ((source_ref_field >= 0) && (charcode != SOURCE_REF_CHAR)) {
 		PUT_TO(source_ref_fields[source_ref_field], charcode); return;
 	}
 
 }
-#line 919 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 928 "inweb/foundation-module/Chapter 5/HTML.w"
 ;
 	switch(charcode) {
 		case '"': WRITE("&quot;"); break;
@@ -13360,7 +13375,7 @@ void HTML__put(OUTPUT_STREAM, int charcode) {
 		#ifdef WORDS_MODULE
 		case SOURCE_REF_CHAR: 
 {
-#line 947 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 956 "inweb/foundation-module/Chapter 5/HTML.w"
 	source_ref_field++;
 	if (source_ref_field == 3) {
 		source_ref_field = -1;
@@ -13377,7 +13392,7 @@ void HTML__put(OUTPUT_STREAM, int charcode) {
 	}
 
 }
-#line 934 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 943 "inweb/foundation-module/Chapter 5/HTML.w"
 ; break;
 		#endif
 
@@ -31751,7 +31766,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.1.0-beta+1A98\t/built 30 April 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.1.0-beta+1B02\t/built 4 May 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"

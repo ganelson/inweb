@@ -5,12 +5,15 @@ Utility functions for writing HTML.
 @h Header and footer.
 
 =
-void HTML::header(OUTPUT_STREAM, text_stream *title, filename *css, filename *js, void *state) {
+void HTML::header(OUTPUT_STREAM, text_stream *title, filename *css1, filename *css2,
+	filename *js1, filename *js2, void *state) {
 	HTML::declare_as_HTML(OUT, FALSE);
 	HTML::begin_head(OUT, NULL);
 	HTML::title(OUT, title);
-	HTML::incorporate_CSS(OUT, css);
-	HTML::incorporate_javascript(OUT, TRUE, js);
+	if (css1) HTML::incorporate_CSS(OUT, css1);
+	if (css2) HTML::incorporate_CSS(OUT, css2);
+	if (js1) HTML::incorporate_javascript(OUT, TRUE, js1);
+	if (js2) HTML::incorporate_javascript(OUT, TRUE, js2);
 	#ifdef ADDITIONAL_SCRIPTING_HTML_CALLBACK
 	ADDITIONAL_SCRIPTING_HTML_CALLBACK(OUT, state);
 	#endif
@@ -33,7 +36,17 @@ allowed to open a |p| tag, then open a |b| tag, then close the |p|, then
 close the |b|: that would be wrongly nested. We want to throw errors like
 that into the debugging log, so:
 
-@d tag_error(x) { LOG("Tag error: %s\n", x); }
+@d tag_error(x) {
+	LOG("Tag error: %s\n", x);
+	HTML_tag *ht;
+	int i = 1;
+	LOG("HTML tag stack:\n");
+	LOOP_DOWN_LIFO_STACK(ht, HTML_tag, hs->tag_stack) {
+		LOG("    %d. %s (opened at line %d of '%s')\n", i++,
+			ht->tag_name, ht->from_line, ht->from_filename);
+	}
+	LOG("\n\n");
+}
  
 @ Any text stream can be declared as being HTML, and therefore subject to
 this auditing. To do that, we atach an |HTML_file_state| object to the
@@ -66,33 +79,36 @@ int unique_xref = 0;
 typedef struct HTML_tag {
 	char *tag_name;
 	int tag_xref;
+	char *from_filename;
+	int from_line;
 	CLASS_DEFINITION
 } HTML_tag;
 
-int HTML::push_tag(OUTPUT_STREAM, char *tag) {
+int HTML::push_tag(OUTPUT_STREAM, char *tag, char *fn, int lc) {
 	int u = unique_xref++;
 	HTML_file_state *hs = Streams::get_HTML_file_state(OUT);
 	if (hs) {
 		HTML_tag *ht = CREATE(HTML_tag);
 		ht->tag_name = tag;
 		ht->tag_xref = u;
+		ht->from_filename = fn;
+		ht->from_line = lc;
 		PUSH_TO_LIFO_STACK(ht, HTML_tag, hs->tag_stack);
 	}
 	return u;
 }
 
 @ =
-void HTML::pop_tag(OUTPUT_STREAM, char *tag) {
+void HTML::pop_tag(OUTPUT_STREAM, char *tag, char *fn, int lc) {
 	HTML_file_state *hs = Streams::get_HTML_file_state(OUT);
 	if (hs) {
 		if (LIFO_STACK_EMPTY(HTML_tag, hs->tag_stack)) {
-			LOG("{tag: %s}\n", tag);
+			LOG("Trying to close %s at line %d of '%s', but:\n", tag, lc, fn);
 			tag_error("closed HTML tag which wasn't open");
 		} else {
 			HTML_tag *ht = TOP_OF_LIFO_STACK(HTML_tag, hs->tag_stack);
-			if (strcmp(tag, ht->tag_name) != 0) {
-				LOG("{expected to close tag %s (%d), but actually closed %s}\n",
-					ht->tag_name, ht->tag_xref, tag);
+			if ((ht == NULL) || (strcmp(tag, ht->tag_name) != 0)) {
+				LOG("Trying to close %s at line %d of '%s', but:\n", tag, lc, fn);
 				tag_error("closed HTML tag which wasn't open");
 			}
 			POP_LIFO_STACK(HTML_tag, hs->tag_stack);
@@ -106,14 +122,6 @@ void HTML::pop_tag(OUTPUT_STREAM, char *tag) {
 void HTML::completed(OUTPUT_STREAM) {
 	HTML_file_state *hs = Streams::get_HTML_file_state(OUT);
 	if ((hs) && (LIFO_STACK_EMPTY(HTML_tag, hs->tag_stack) == FALSE)) {
-		HTML_tag *ht;
-		int i = 0;
-		LOG("HTML tag stack: ");
-		LOOP_DOWN_LIFO_STACK(ht, HTML_tag, hs->tag_stack) {
-			if (i++ > 0) LOG(" in ");
-			LOG("%s (%d)", ht->tag_name, ht->tag_xref);
-		}
-		LOG("\n");
 		tag_error("HTML tags still open");
 	}
 }
@@ -122,8 +130,8 @@ void HTML::completed(OUTPUT_STREAM) {
 of which are variadic and have to be written out the old-fashioned way:
 
 @d HTML_TAG(tag) HTML::tag(OUT, tag, NULL);
-@d HTML_OPEN(tag) HTML::open(OUT, tag, NULL);
-@d HTML_CLOSE(tag) HTML::close(OUT, tag);
+@d HTML_OPEN(tag) HTML::open(OUT, tag, NULL, __FILE__, __LINE__);
+@d HTML_CLOSE(tag) HTML::close(OUT, tag, __FILE__, __LINE__);
 
 =
 #define HTML_TAG_WITH(tag, args...) { \
@@ -136,7 +144,7 @@ of which are variadic and have to be written out the old-fashioned way:
 #define HTML_OPEN_WITH(tag, args...) { \
 	TEMPORARY_TEXT(details) \
 	WRITE_TO(details, args); \
-	HTML::open(OUT, tag, details); \
+	HTML::open(OUT, tag, details, __FILE__, __LINE__); \
 	DISCARD_TEXT(details) \
 }
 
@@ -168,21 +176,21 @@ int HTML::tag_formatting(char *tag) {
 	return 0;
 }
 
-void HTML::open(OUTPUT_STREAM, char *tag, text_stream *details) {
+void HTML::open(OUTPUT_STREAM, char *tag, text_stream *details, char *fn, int lc) {
 	int f = HTML::pair_formatting(tag);
-	HTML::push_tag(OUT, tag);
+	HTML::push_tag(OUT, tag, fn, lc);
 	WRITE("<%s", tag);
 	if (Str::len(details) > 0) WRITE(" %S", details);
 	WRITE(">");
 	if (f >= 2) { WRITE("\n"); INDENT; }
 }
 
-void HTML::close(OUTPUT_STREAM, char *tag) {
+void HTML::close(OUTPUT_STREAM, char *tag, char *fn, int lc) {
 	int f = HTML::pair_formatting(tag);
 	if (f >= 3) WRITE("\n");
 	if (f >= 2) OUTDENT;
 	WRITE("</%s>", tag);
-	HTML::pop_tag(OUT, tag);
+	HTML::pop_tag(OUT, tag, fn, lc);
 	if (f >= 1) WRITE("\n");
 }
 
@@ -383,25 +391,26 @@ void HTML::begin_div_with_class_and_id(OUTPUT_STREAM, char *cl, char *id, int hi
 	else HTML_OPEN_WITH("div", "class=\"%s\" id=\"%s\"", cl, id);
 }
 
-void HTML::begin_div_with_id_S(OUTPUT_STREAM, text_stream *id) {
+void HTML::begin_div_with_id_S(OUTPUT_STREAM, text_stream *id, char *fn, int lc) {
 	TEMPORARY_TEXT(details)
 	WRITE_TO(details, "id=\"%S\"", id);
-	HTML::open(OUT, "div", details);
+	HTML::open(OUT, "div", details, fn, lc);
 	DISCARD_TEXT(details)
 }
 
-void HTML::begin_div_with_class_S(OUTPUT_STREAM, text_stream *cl) {
+void HTML::begin_div_with_class_S(OUTPUT_STREAM, text_stream *cl, char *fn, int lc) {
 	TEMPORARY_TEXT(details)
 	WRITE_TO(details, "class=\"%S\"", cl);
-	HTML::open(OUT, "div", details);
+	HTML::open(OUT, "div", details, fn, lc);
 	DISCARD_TEXT(details)
 }
 
-void HTML::begin_div_with_class_and_id_S(OUTPUT_STREAM, text_stream *cl, text_stream *id, int hide) {
+void HTML::begin_div_with_class_and_id_S(OUTPUT_STREAM, text_stream *cl,
+	text_stream *id, int hide, char *fn, int lc) {
 	TEMPORARY_TEXT(details)
 	WRITE_TO(details, "class=\"%S\" id=\"%S\"", cl, id);
 	if (hide) WRITE_TO(details, " style=\"display: none;\"");
-	HTML::open(OUT, "div", details);
+	HTML::open(OUT, "div", details, fn, lc);
 	DISCARD_TEXT(details)
 }
 
