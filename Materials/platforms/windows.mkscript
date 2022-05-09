@@ -74,7 +74,7 @@ INWEB = inweb/Tangled/inweb
 {end-define}
 
 {define: link to: TO from: FROM ?options: OPTS}
-	x86_64-w64-mingw32-clang $(CCOPTS) -g -o {TO} {FROM} -lshlwapi {OPTS}
+	x86_64-w64-mingw32-clang $(CCOPTS) -g -o {TO} {FROM} {OPTS}
 {end-define}
 
 # Where:
