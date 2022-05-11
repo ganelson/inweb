@@ -4,28 +4,28 @@ v7.1.0-beta+1B02 'Escape to Danger' (4 May 2022)
 
 ## About Inweb
 
-Inweb offers a modern approach to literate programming. Unlike the original
+Inweb offers a modern approach to literate programming (LP). Unlike the original
 LP tools of the late 1970s, led by Donald Knuth, or of the 1990s revival,
 Inweb aims to serve programmers in the Github age. It scales to much larger
-programs than CWEB, and since 2004 has been the tool used by the
+programs than [CWEB](https://en.wikipedia.org/wiki/Web_(programming_system)#CWEB), and since 2004 has been the tool used by the
 [Inform programming language project](https://github.com/ganelson/inform),
 where it manages a 300,000-line code base.
 
-Literate programming is a methodology created by Donald Knuth in the late
+Literate programming is a methodology created by [Donald Knuth](https://en.wikipedia.org/wiki/Donald_Knuth) in the late
 1970s. A literate program, or "web", is written as a narrative intended to
 be readable by humans as well as by other programs. Inweb is itself written as
-a web, and its human-readable form is a [companion website to this one](https://ganelson.github.io/inweb/index.html).
+a web, and its human-readable form is a [compan[ion website to this one](https://ganelson.github.io/inweb/index.html).
 
 For the Inweb manual, see [&#9733;&nbsp;inweb/Preliminaries](https://ganelson.github.io/inweb/inweb/M-iti).
 
 ## Licence and copyright
 
 Except as noted, copyright in material in this repository (the "Package") is
-held by Graham Nelson (the "Author"), who retains copyright so that there is
+held by [Graham Nelson](https://en.wikipedia.org/wiki/Graham_Nelson) (the "Author"), who retains copyright so that there is
 a single point of reference. As from the first date of this repository
 becoming public, 28 April 2022, the Package is placed under the
 [Artistic License 2.0](https://opensource.org/licenses/Artistic-2.0).
-This is a highly permissive licence, used by Perl among other notable projects,
+This is a highly permissive licence, used by [Perl](https://en.wikipedia.org/wiki/Perl) among other notable projects,
 recognised by the Open Source Initiative as open and by the Free Software
 Foundation as free in both senses.
 
