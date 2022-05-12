@@ -70,7 +70,7 @@ safe:
 
 define make-me-once-tangled
 	x86_64-w64-mingw32-clang -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
-	x86_64-w64-mingw32-clang $(CCOPTS) -g -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o -lshlwapi 
+	x86_64-w64-mingw32-clang $(CCOPTS) -g -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o 
 endef
 
 define make-me
