@@ -59,11 +59,24 @@ standard way to read in and iterate through lines of a text file.
 </p>
 
 <p class="commentary">First, though, here is a perhaps clumsy but effective way to test if a
-file actually exists on disc at a given filename:
+file actually exists on disc at a given filename. Note that under the C standard,
+it's entirely legal for <span class="extract"><span class="extract-syntax">fopen</span></span> to behave more or less as it likes if asked to
+open a directory as a file; and on MacOS, it sometimes opens a directory exactly
+as if it were an empty text file. The safest way to ensure that a directory is
+never confused with a file seems to be to try <span class="extract"><span class="extract-syntax">opendir</span></span> on it, and the following
+does essentially that.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TextFiles::exists</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">TextFiles::exists</span></span>:<br/>Web Structure - <a href="8-ws.html#SP7_2_2_4">&#167;7.2.2.4</a>, <a href="8-ws.html#SP8">&#167;8</a><br/>Build Files - <a href="8-bf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">, </span><span class="string-syntax">"%f"</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">scan_directory</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><a href="3-drc.html#SP2" class="function-link"><span class="function-syntax">Directories::open_from</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pn</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">D</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><a href="3-drc.html#SP2" class="function-link"><span class="function-syntax">Directories::close</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HANDLE</span><span class="plain-syntax"> = </span><a href="3-fln.html#SP10" class="function-link"><span class="function-syntax">Filenames::fopen</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="string-syntax">"rb"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">HANDLE</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">fclose</span><span class="plain-syntax">(</span><span class="identifier-syntax">HANDLE</span><span class="plain-syntax">);</span>

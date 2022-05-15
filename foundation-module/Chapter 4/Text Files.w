@@ -9,10 +9,23 @@ files, HTML, XML and so on. The main aim of this section is to provide a
 standard way to read in and iterate through lines of a text file.
 
 First, though, here is a perhaps clumsy but effective way to test if a
-file actually exists on disc at a given filename:
+file actually exists on disc at a given filename. Note that under the C standard,
+it's entirely legal for |fopen| to behave more or less as it likes if asked to
+open a directory as a file; and on MacOS, it sometimes opens a directory exactly
+as if it were an empty text file. The safest way to ensure that a directory is
+never confused with a file seems to be to try |opendir| on it, and the following
+does essentially that.
 
 =
 int TextFiles::exists(filename *F) {
+	TEMPORARY_TEXT(pn)
+	WRITE_TO(pn, "%f", F);
+	scan_directory *D = Directories::open_from(pn);
+	DISCARD_TEXT(pn)
+	if (D) {
+		Directories::close(D);
+		return FALSE;
+	}
 	FILE *HANDLE = Filenames::fopen(F, "rb");
 	if (HANDLE == NULL) return FALSE;
 	fclose(HANDLE);

@@ -16,14 +16,19 @@ whatever the locale encoding is; the filenames coming back have to be
 transcoded the other way.
 
 =
-scan_directory *Directories::open(pathname *P) {
+scan_directory *Directories::open_from(text_stream *name) {
 	scan_directory *D = CREATE(scan_directory);
-	TEMPORARY_TEXT(pn)
-	WRITE_TO(pn, "%p", P);
-	Str::copy_to_locale_string(D->directory_name_written_out, pn, 4*MAX_FILENAME_LENGTH);
-	DISCARD_TEXT(pn)
+	Str::copy_to_locale_string(D->directory_name_written_out, name, 4*MAX_FILENAME_LENGTH);
 	D->directory_handle = Platform::opendir(D->directory_name_written_out);
 	if (D->directory_handle == NULL) return NULL;
+	return D;
+}
+
+scan_directory *Directories::open(pathname *P) {
+	TEMPORARY_TEXT(pn)
+	WRITE_TO(pn, "%p", P);
+	scan_directory *D = Directories::open_from(pn);
+	DISCARD_TEXT(pn)
 	return D;
 }
 
@@ -41,6 +46,17 @@ int Directories::next(scan_directory *D, text_stream *leafname) {
 
 void Directories::close(scan_directory *D) {
 	Platform::closedir(D->directory_handle);
+}
+
+@ Incredibly, this seems to be the most portable method for testing whether a
+directory exists in the file system:
+
+=
+int Directories::exists(pathname *P) {
+	scan_directory *TRY = Directories::open(P);
+	if (TRY == NULL) return FALSE;
+	Directories::close(TRY);
+	return TRUE;
 }
 
 @ It turns out to be useful to scan the contents of a directory in an order
