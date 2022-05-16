@@ -505,13 +505,6 @@ void TeX::source_code(text_stream *OUT, weave_order *wv,
 	colour_wanted = PLAIN_COLOUR; @<Adjust code colour as necessary@>;
 }
 
-@ We actually use |\qquad| horizontal spaces rather than risk using TeX's
-messy alignment system:
-
-@<Weave a suitable horizontal advance for that many tab stops@> =
-	int tab_stops_of_indentation = Str::remove_indentation(matter, 4);
-	for (int i=0; i<tab_stops_of_indentation; i++) WRITE("\\qquad");
-
 @<Adjust code colour as necessary@> =
 	if (colour_wanted != current_colour) {
 		TeX::change_colour_PDF(OUT, colour_wanted, TRUE);

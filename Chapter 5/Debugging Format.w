@@ -179,9 +179,6 @@ int Debugging::render_visit(tree_node *N, void *state, int L) {
 	weave_vskip_node *C = RETRIEVE_POINTER_weave_vskip_node(N->content);
 	if (C->in_comment) WRITE(" (in comment)");
 
-@<Render apres-defn@> =
-	;
-
 @<Render chapter@> =
 	weave_chapter_node *C = RETRIEVE_POINTER_weave_chapter_node(N->content);
 	WRITE(" <%S>", C->chap->md->ch_title);

@@ -928,6 +928,7 @@ void Streams::set_position(text_stream *stream, int position) {
 =
 void Streams::copy(text_stream *to, text_stream *from) {
 	if ((from == NULL) || (to == NULL)) return;
+	if (from == to) internal_error("tried to copy a stream to itself");
 	if (from->write_to_file) internal_error("stream_copy from file stream");
 	if (from->write_to_memory) {
 		for (int i=0; i<from->chars_written; i++) {

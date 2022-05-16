@@ -142,13 +142,12 @@ typedef pthread_attr_t foundation_thread_attributes;
 #include <windows.h>
 #include <shellapi.h>
 #include <shlobj.h>
-#include <shlwapi.h>
 #undef IN
 #undef OUT
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 68 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 67 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 char *Platform__getenv(const char *name) {
 	char *env = getenv(name);
 	if (env == 0) {
@@ -167,7 +166,7 @@ char *Platform__getenv(const char *name) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 101 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 100 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 /* Check the first element of the command: if it has path separators in
    it, we assume we are running one of our commands, otherwise it is a
    Unix style command. */
@@ -240,7 +239,7 @@ int Platform__system(const char *cmd) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 363 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 362 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 typedef HANDLE foundation_thread;
 typedef int foundation_thread_attributes;
 
@@ -248,7 +247,7 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 464 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 463 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
 #endif /* PLATFORM_WINDOWS */
@@ -2611,87 +2610,87 @@ int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_ANDROID */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_WINDOWS
-#line 49 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 48 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__Windows_isdigit(int c) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 61 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 60 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__is_folder_separator(wchar_t c) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 93 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 92 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__where_am_i(wchar_t *p, size_t length) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 174 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 173 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__mkdir(char *transcoded_pathname) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 182 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 181 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void * Platform__opendir(char *dir_name) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 187 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 186 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__readdir(void *D, char *dir_name, 	char *leafname) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 204 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 203 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__closedir(void *D) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 212 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 211 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__path_add(const char* base, const char* add, char* path) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 222 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 221 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 301 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 300 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__sleep(int seconds) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 308 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 307 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 326 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 325 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__Win32_ResetConsole(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 335 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 334 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 377 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 376 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__create_thread(foundation_thread *pt, const foundation_thread_attributes *pa, 	void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 392 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 391 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 396 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 395 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__init_thread(foundation_thread_attributes* pa, size_t size) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 399 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 398 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes* pa) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 409 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 408 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 430 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 429 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 434 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 433 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 440 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 439 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #line 64 "inweb/foundation-module/Chapter 2/Debugging Log.w"
@@ -2870,7 +2869,7 @@ void  Streams__put_char_at_index(text_stream *stream, int position, wchar_t C) ;
 void  Streams__set_position(text_stream *stream, int position) ;
 #line 929 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__copy(text_stream *to, text_stream *from) ;
-#line 945 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 946 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__writer(OUTPUT_STREAM, char *format_string, void *vS) ;
 #line 51 "inweb/foundation-module/Chapter 2/Writers and Loggers.w"
 void  Writers__log_escape_usage(void) ;
@@ -4028,8 +4027,10 @@ void  Enumerations__define(OUTPUT_STREAM, text_stream *symbol, 	text_stream *fro
 void  Enumerations__define_extents(OUTPUT_STREAM, tangle_target *target, programming_language *lang) ;
 #line 19 "inweb/Chapter 2/Paragraph Numbering.w"
 void  Numbering__number_web(web *W) ;
-#line 146 "inweb/Chapter 2/Paragraph Numbering.w"
+#line 149 "inweb/Chapter 2/Paragraph Numbering.w"
 void  Numbering__settle_paragraph_number(paragraph *P) ;
+#line 160 "inweb/Chapter 2/Paragraph Numbering.w"
+void  Numbering__set_parent(paragraph *of, paragraph *to) ;
 #line 11 "inweb/Chapter 3/The Analyser.w"
 void  Analyser__scan_line_categories(web *W, text_stream *range) ;
 #line 52 "inweb/Chapter 3/The Analyser.w"
@@ -4512,13 +4513,13 @@ int  TeX__render_visit(tree_node *N, void *state, int L) ;
 void  TeX__general_heading(text_stream *OUT, weave_order *wv, 	section *S, paragraph *P, text_stream *heading_text, int weight, int no_skip) ;
 #line 496 "inweb/Chapter 5/TeX Format.w"
 void  TeX__source_code(text_stream *OUT, weave_order *wv, 	text_stream *matter, text_stream *colouring, int starts) ;
-#line 522 "inweb/Chapter 5/TeX Format.w"
+#line 515 "inweb/Chapter 5/TeX Format.w"
 void  TeX__change_colour_PDF(text_stream *OUT, int col, int in_code) ;
-#line 545 "inweb/Chapter 5/TeX Format.w"
+#line 538 "inweb/Chapter 5/TeX Format.w"
 void  TeX__para_macro(text_stream *OUT, weave_order *wv, para_macro *pmac, int defn) ;
-#line 565 "inweb/Chapter 5/TeX Format.w"
+#line 558 "inweb/Chapter 5/TeX Format.w"
 void  TeX__commentary_text(text_stream *OUT, weave_order *wv, text_stream *id) ;
-#line 590 "inweb/Chapter 5/TeX Format.w"
+#line 583 "inweb/Chapter 5/TeX Format.w"
 int  TeX__preform_document(weave_format *self, text_stream *OUT, web *W, 	weave_order *wv, chapter *C, section *S, source_line *L, text_stream *matter, 	text_stream *concluding_comment) ;
 #line 9 "inweb/Chapter 5/HTML Formats.w"
 void  HTMLFormat__create(void) ;
@@ -4550,11 +4551,11 @@ void  Debugging__create(void) ;
 void  Debugging__render(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) ;
 #line 31 "inweb/Chapter 5/Debugging Format.w"
 int  Debugging__render_visit(tree_node *N, void *state, int L) ;
-#line 277 "inweb/Chapter 5/Debugging Format.w"
+#line 274 "inweb/Chapter 5/Debugging Format.w"
 void  Debugging__show_text(text_stream *OUT, text_stream *text, int limit) ;
-#line 288 "inweb/Chapter 5/Debugging Format.w"
+#line 285 "inweb/Chapter 5/Debugging Format.w"
 void  Debugging__show_para(text_stream *OUT, paragraph *P) ;
-#line 293 "inweb/Chapter 5/Debugging Format.w"
+#line 290 "inweb/Chapter 5/Debugging Format.w"
 void  Debugging__show_mat(text_stream *OUT, int m) ;
 #line 30 "inweb/Chapter 5/TeX Utilities.w"
 tex_results * TeXUtilities__new_results(weave_order *wv, filename *CF) ;
@@ -5756,21 +5757,21 @@ int Platform__get_core_count(void) {
 #ifdef PLATFORM_WINDOWS
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 49 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 48 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__Windows_isdigit(int c) {
 	return ((c >= '0') && (c <= '9')) ? 1 : 0;
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 61 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 60 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__is_folder_separator(wchar_t c) {
 	return ((c == '\\') || (c == '/'));
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 93 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 92 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__where_am_i(wchar_t *p, size_t length) {
 	DWORD result = GetModuleFileNameW(NULL, p, (DWORD)length);
 	if ((result == 0) || (result == length)) p[0] = 0;
@@ -5778,7 +5779,7 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 174 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 173 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__mkdir(char *transcoded_pathname) {
 	errno = 0;
 	int rv = mkdir(transcoded_pathname);
@@ -5816,7 +5817,7 @@ void Platform__closedir(void *D) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 212 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 211 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__path_add(const char* base, const char* add, char* path) {
   char last;
 
@@ -5904,20 +5905,20 @@ void Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 301 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 300 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__sleep(int seconds) {
 	Sleep((DWORD)(1000*seconds));
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 308 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 307 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__notification(text_stream *text, int happy) {
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 319 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 318 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 #define WIN32CONS_RESET_MODE 1
 #define WIN32CONS_RESET_OUTCP 2
 
@@ -5961,7 +5962,7 @@ void Platform__configure_terminal(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 370 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 369 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 DWORD WINAPI Platform__Win32_Thread_Func(LPVOID param) {
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*)param;
 	(start->fn)(start->arg);
@@ -5997,7 +5998,7 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes* pa) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 409 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 408 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__get_core_count(void) {
 	int count = 0;
 	SYSTEM_INFO sysInfo;
@@ -6013,7 +6014,7 @@ int Platform__get_core_count(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 430 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 429 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
@@ -7393,6 +7394,7 @@ void Streams__set_position(text_stream *stream, int position) {
 #line 929 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__copy(text_stream *to, text_stream *from) {
 	if ((from == NULL) || (to == NULL)) return;
+	if (from == to) internal_error("tried to copy a stream to itself");
 	if (from->write_to_file) internal_error("stream_copy from file stream");
 	if (from->write_to_memory) {
 		for (int i=0; i<from->chars_written; i++) {
@@ -7403,7 +7405,7 @@ void Streams__copy(text_stream *to, text_stream *from) {
 	}
 }
 
-#line 945 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 946 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__writer(OUTPUT_STREAM, char *format_string, void *vS) {
 	text_stream *S = (text_stream *) vS;
 	Streams__copy(OUT, S);
@@ -8748,11 +8750,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.1.0-beta+1B02";
+			char *svn = "7.1.0-beta+1B04";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "4 May 2022";
+			char *d = "16 May 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -20938,9 +20940,12 @@ void Numbering__number_web(web *W) {
 	paragraph *P;
 	LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
 		if (P->defines_macro) {
-			macro_usage *mu =
-				FIRST_IN_LINKED_LIST(macro_usage, P->defines_macro->macro_usages);
-			if (mu) P->parent_paragraph = mu->used_in_paragraph;
+			macro_usage *mu;
+			LOOP_OVER_LINKED_LIST(mu, macro_usage, P->defines_macro->macro_usages)
+				if (P != mu->used_in_paragraph) {
+					Numbering__set_parent(P, mu->used_in_paragraph);
+					break;
+				}
 		}
 
 }
@@ -20948,7 +20953,7 @@ void Numbering__number_web(web *W) {
 ;
 	
 {
-#line 104 "inweb/Chapter 2/Paragraph Numbering.w"
+#line 107 "inweb/Chapter 2/Paragraph Numbering.w"
 	paragraph *P;
 	LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
 		if (P->parent_paragraph == NULL)
@@ -20956,7 +20961,7 @@ void Numbering__number_web(web *W) {
 				paragraph *P2 = CONTENT_IN_ITEM(P2_item, paragraph);
 				if (P2->parent_paragraph) {
 					if (P2->parent_paragraph->allocation_id < P->allocation_id)
-						P->parent_paragraph = P2->parent_paragraph;
+						Numbering__set_parent(P, P2->parent_paragraph);
 					break;
 				}
 			}
@@ -20966,7 +20971,7 @@ void Numbering__number_web(web *W) {
 ;
 	
 {
-#line 117 "inweb/Chapter 2/Paragraph Numbering.w"
+#line 120 "inweb/Chapter 2/Paragraph Numbering.w"
 	paragraph *P;
 	LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
 		P->paragraph_number = Str__new();
@@ -20976,7 +20981,7 @@ void Numbering__number_web(web *W) {
 ;
 	
 {
-#line 126 "inweb/Chapter 2/Paragraph Numbering.w"
+#line 129 "inweb/Chapter 2/Paragraph Numbering.w"
 	int top_level = 1;
 	paragraph *P;
 	LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
@@ -20991,7 +20996,7 @@ void Numbering__number_web(web *W) {
 ;
 	
 {
-#line 136 "inweb/Chapter 2/Paragraph Numbering.w"
+#line 139 "inweb/Chapter 2/Paragraph Numbering.w"
 	paragraph *P;
 	LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
 		Numbering__settle_paragraph_number(P);
@@ -21009,15 +21014,22 @@ void Numbering__number_web(web *W) {
 
 #line 66 "inweb/Chapter 2/Paragraph Numbering.w"
 
-#line 146 "inweb/Chapter 2/Paragraph Numbering.w"
+#line 149 "inweb/Chapter 2/Paragraph Numbering.w"
 void Numbering__settle_paragraph_number(paragraph *P) {
 	if (Str__len(P->paragraph_number) > 0) return;
 	WRITE_TO(P->paragraph_number, "X"); /* to prevent malformed sections hanging this */
 	if (P->parent_paragraph) Numbering__settle_paragraph_number(P->parent_paragraph);
+	if (P == P->parent_paragraph) internal_error("paragraph is its own parent");
 	Str__clear(P->paragraph_number);
 	WRITE_TO(P->paragraph_number, "%S.%d", P->parent_paragraph->paragraph_number,
 			P->parent_paragraph->next_child_number++);
 	P->next_child_number = 1;
+}
+
+void Numbering__set_parent(paragraph *of, paragraph *to) {
+	if (of == NULL) internal_error("no paragraph");
+	if (to == of) internal_error("paragraph parent set to itself");
+	of->parent_paragraph = to;
 }
 
 #line 11 "inweb/Chapter 3/The Analyser.w"
@@ -28907,7 +28919,7 @@ void TeX__source_code(text_stream *OUT, weave_order *wv,
 		colour_wanted = Str__get_at(colouring, i);
 		
 {
-#line 516 "inweb/Chapter 5/TeX Format.w"
+#line 509 "inweb/Chapter 5/TeX Format.w"
 	if (colour_wanted != current_colour) {
 		TeX__change_colour_PDF(OUT, colour_wanted, TRUE);
 		current_colour = colour_wanted;
@@ -28921,7 +28933,7 @@ void TeX__source_code(text_stream *OUT, weave_order *wv,
 	}
 	colour_wanted = PLAIN_COLOUR; 
 {
-#line 516 "inweb/Chapter 5/TeX Format.w"
+#line 509 "inweb/Chapter 5/TeX Format.w"
 	if (colour_wanted != current_colour) {
 		TeX__change_colour_PDF(OUT, colour_wanted, TRUE);
 		current_colour = colour_wanted;
@@ -28932,7 +28944,7 @@ void TeX__source_code(text_stream *OUT, weave_order *wv,
 ;
 }
 
-#line 522 "inweb/Chapter 5/TeX Format.w"
+#line 515 "inweb/Chapter 5/TeX Format.w"
 void TeX__change_colour_PDF(text_stream *OUT, int col, int in_code) {
 	char *inout = "";
 	if (in_code) inout = "|";
@@ -28948,7 +28960,7 @@ void TeX__change_colour_PDF(text_stream *OUT, int col, int in_code) {
 	}
 }
 
-#line 545 "inweb/Chapter 5/TeX Format.w"
+#line 538 "inweb/Chapter 5/TeX Format.w"
 void TeX__para_macro(text_stream *OUT, weave_order *wv, para_macro *pmac, int defn) {
 	if (defn)
 		WRITE("|\\pdfdest num %d fit ",
@@ -28968,7 +28980,7 @@ void TeX__para_macro(text_stream *OUT, weave_order *wv, para_macro *pmac, int de
 		WRITE("\\pdfendlink|");
 }
 
-#line 565 "inweb/Chapter 5/TeX Format.w"
+#line 558 "inweb/Chapter 5/TeX Format.w"
 void TeX__commentary_text(text_stream *OUT, weave_order *wv, text_stream *id) {
 	int math_mode = FALSE;
 	for (int i=0; i < Str__len(id); i++) {
@@ -28990,7 +29002,7 @@ void TeX__commentary_text(text_stream *OUT, weave_order *wv, text_stream *id) {
 	}
 }
 
-#line 590 "inweb/Chapter 5/TeX Format.w"
+#line 583 "inweb/Chapter 5/TeX Format.w"
 int TeX__preform_document(weave_format *self, text_stream *OUT, web *W,
 	weave_order *wv, chapter *C, section *S, source_line *L, text_stream *matter,
 	text_stream *concluding_comment) {
@@ -28998,7 +29010,7 @@ int TeX__preform_document(weave_format *self, text_stream *OUT, web *W,
 		preform_production_count = 0;
 		
 {
-#line 607 "inweb/Chapter 5/TeX Format.w"
+#line 600 "inweb/Chapter 5/TeX Format.w"
 	WRITE("\\nonterminal{%S} |::=|",
 		L->preform_nonterminal_defined->unangled_name);
 	if (L->preform_nonterminal_defined->as_function) {
@@ -29015,14 +29027,14 @@ int TeX__preform_document(weave_format *self, text_stream *OUT, web *W,
 	WRITE("\n");
 
 }
-#line 595 "inweb/Chapter 5/TeX Format.w"
+#line 588 "inweb/Chapter 5/TeX Format.w"
 ;
 		return TRUE;
 	} else {
 		if (L->category == PREFORM_GRAMMAR_LCAT) {
 			
 {
-#line 623 "inweb/Chapter 5/TeX Format.w"
+#line 616 "inweb/Chapter 5/TeX Format.w"
 	TEMPORARY_TEXT(problem)
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, matter, L"Issue (%c*?) problem"))
@@ -29071,7 +29083,7 @@ int TeX__preform_document(weave_format *self, text_stream *OUT, web *W,
 	Regexp__dispose_of(&mr);
 
 }
-#line 599 "inweb/Chapter 5/TeX Format.w"
+#line 592 "inweb/Chapter 5/TeX Format.w"
 ;
 			return TRUE;
 		}
@@ -30670,7 +30682,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_chapter_node_type) 
 {
-#line 186 "inweb/Chapter 5/Debugging Format.w"
+#line 183 "inweb/Chapter 5/Debugging Format.w"
 	weave_chapter_node *C = RETRIEVE_POINTER_weave_chapter_node(N->content);
 	WRITE(" <%S>", C->chap->md->ch_title);
 
@@ -30679,7 +30691,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_section_node_type) 
 {
-#line 190 "inweb/Chapter 5/Debugging Format.w"
+#line 187 "inweb/Chapter 5/Debugging Format.w"
 	weave_section_node *C = RETRIEVE_POINTER_weave_section_node(N->content);
 	WRITE(" <%S>", C->sect->md->sect_title);
 
@@ -30688,7 +30700,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_code_line_node_type) 
 {
-#line 194 "inweb/Chapter 5/Debugging Format.w"
+#line 191 "inweb/Chapter 5/Debugging Format.w"
 	;
 
 }
@@ -30696,7 +30708,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_function_usage_node_type) 
 {
-#line 197 "inweb/Chapter 5/Debugging Format.w"
+#line 194 "inweb/Chapter 5/Debugging Format.w"
 	weave_function_usage_node *C = RETRIEVE_POINTER_weave_function_usage_node(N->content);
 	WRITE(" <%S>", C->fn->function_name);
 
@@ -30705,7 +30717,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_commentary_node_type) 
 {
-#line 201 "inweb/Chapter 5/Debugging Format.w"
+#line 198 "inweb/Chapter 5/Debugging Format.w"
 	weave_commentary_node *C = RETRIEVE_POINTER_weave_commentary_node(N->content);
 	Debugging__show_text(OUT, C->text, 80);
 	if (C->in_code) WRITE(" (code)");
@@ -30715,7 +30727,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_carousel_slide_node_type) 
 {
-#line 206 "inweb/Chapter 5/Debugging Format.w"
+#line 203 "inweb/Chapter 5/Debugging Format.w"
 	weave_carousel_slide_node *C = RETRIEVE_POINTER_weave_carousel_slide_node(N->content);
 	WRITE(" caption <%S>", C->caption);
 
@@ -30724,7 +30736,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_toc_node_type) 
 {
-#line 210 "inweb/Chapter 5/Debugging Format.w"
+#line 207 "inweb/Chapter 5/Debugging Format.w"
 	weave_toc_node *C = RETRIEVE_POINTER_weave_toc_node(N->content);
 	WRITE(" - <%S>", C->text1);
 
@@ -30733,7 +30745,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_toc_line_node_type) 
 {
-#line 214 "inweb/Chapter 5/Debugging Format.w"
+#line 211 "inweb/Chapter 5/Debugging Format.w"
 	weave_toc_line_node *C = RETRIEVE_POINTER_weave_toc_line_node(N->content);
 	WRITE(" - <%S, %S>", C->text1, C->text2);
 	if (C->para) Debugging__show_para(OUT, C->para);
@@ -30743,7 +30755,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_chapter_title_page_node_type) 
 {
-#line 219 "inweb/Chapter 5/Debugging Format.w"
+#line 216 "inweb/Chapter 5/Debugging Format.w"
 	weave_chapter_title_page_node *C = RETRIEVE_POINTER_weave_chapter_title_page_node(N->content);
 	WRITE(" - something %d", C->allocation_id);
 
@@ -30752,7 +30764,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_defn_node_type) 
 {
-#line 223 "inweb/Chapter 5/Debugging Format.w"
+#line 220 "inweb/Chapter 5/Debugging Format.w"
 	weave_defn_node *C = RETRIEVE_POINTER_weave_defn_node(N->content);
 	WRITE(" <%S>", C->keyword);
 
@@ -30761,7 +30773,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_source_code_node_type) 
 {
-#line 227 "inweb/Chapter 5/Debugging Format.w"
+#line 224 "inweb/Chapter 5/Debugging Format.w"
 	weave_source_code_node *C = RETRIEVE_POINTER_weave_source_code_node(N->content);
 	WRITE(" <%S>\n", C->matter);
 	for (int i=0; i<L; i++) WRITE("  ");
@@ -30773,7 +30785,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_url_node_type) 
 {
-#line 234 "inweb/Chapter 5/Debugging Format.w"
+#line 231 "inweb/Chapter 5/Debugging Format.w"
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
 	WRITE(" content <%S> url <%S>", C->content, C->url);
 
@@ -30782,7 +30794,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_footnote_cue_node_type) 
 {
-#line 238 "inweb/Chapter 5/Debugging Format.w"
+#line 235 "inweb/Chapter 5/Debugging Format.w"
 	weave_footnote_cue_node *C = RETRIEVE_POINTER_weave_footnote_cue_node(N->content);
 	WRITE(" [%S]", C->cue_text);
 
@@ -30791,7 +30803,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_begin_footnote_text_node_type) 
 {
-#line 242 "inweb/Chapter 5/Debugging Format.w"
+#line 239 "inweb/Chapter 5/Debugging Format.w"
 	weave_begin_footnote_text_node *C = RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
 	WRITE(" [%S]", C->cue_text);
 
@@ -30800,7 +30812,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_display_line_node_type) 
 {
-#line 246 "inweb/Chapter 5/Debugging Format.w"
+#line 243 "inweb/Chapter 5/Debugging Format.w"
 	weave_display_line_node *C = RETRIEVE_POINTER_weave_display_line_node(N->content);
 	WRITE(" <%S>", C->text);
 
@@ -30809,7 +30821,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_function_defn_node_type) 
 {
-#line 250 "inweb/Chapter 5/Debugging Format.w"
+#line 247 "inweb/Chapter 5/Debugging Format.w"
 	weave_function_defn_node *C = RETRIEVE_POINTER_weave_function_defn_node(N->content);
 	WRITE(" <%S>", C->fn->function_name);
 
@@ -30818,7 +30830,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_item_node_type) 
 {
-#line 254 "inweb/Chapter 5/Debugging Format.w"
+#line 251 "inweb/Chapter 5/Debugging Format.w"
 	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
 	WRITE(" depth %d label <%S>", C->depth, C->label);
 
@@ -30827,7 +30839,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_grammar_index_node_type) 
 {
-#line 258 "inweb/Chapter 5/Debugging Format.w"
+#line 255 "inweb/Chapter 5/Debugging Format.w"
 	;
 
 }
@@ -30835,7 +30847,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_inline_node_type) 
 {
-#line 261 "inweb/Chapter 5/Debugging Format.w"
+#line 258 "inweb/Chapter 5/Debugging Format.w"
 	;
 
 }
@@ -30843,7 +30855,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_locale_node_type) 
 {
-#line 264 "inweb/Chapter 5/Debugging Format.w"
+#line 261 "inweb/Chapter 5/Debugging Format.w"
 	weave_locale_node *C = RETRIEVE_POINTER_weave_locale_node(N->content);
 	Debugging__show_para(OUT, C->par1);
 	if (C->par2) {
@@ -30856,7 +30868,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_maths_node_type) 
 {
-#line 272 "inweb/Chapter 5/Debugging Format.w"
+#line 269 "inweb/Chapter 5/Debugging Format.w"
 	weave_maths_node *C = RETRIEVE_POINTER_weave_maths_node(N->content);
 	WRITE(" <%S>", C->content);
 	if (C->displayed) WRITE(" (displayed)");
@@ -30869,7 +30881,7 @@ int Debugging__render_visit(tree_node *N, void *state, int L) {
 	return TRUE;
 }
 
-#line 277 "inweb/Chapter 5/Debugging Format.w"
+#line 274 "inweb/Chapter 5/Debugging Format.w"
 void Debugging__show_text(text_stream *OUT, text_stream *text, int limit) {
 	WRITE(" <");
 	for (int i=0; (i<limit) && (i<Str__len(text)); i++)
@@ -31781,7 +31793,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.1.0-beta+1B02\t/built 4 May 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.1.0-beta+1B04\t/built 16 May 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"

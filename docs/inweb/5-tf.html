@@ -749,18 +749,6 @@ mode once again:
 <span class="plain-syntax">    </span><span class="identifier-syntax">colour_wanted</span><span class="plain-syntax"> = </span><span class="constant-syntax">PLAIN_COLOUR</span><span class="plain-syntax">; </span><span class="named-paragraph-container code-font"><a href="5-tf.html#SP6_1" class="named-paragraph-link"><span class="named-paragraph">Adjust code colour as necessary</span><span class="named-paragraph-number">6.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP_1" class="paragraph-anchor"></a><b>&#167;.1.  </b>We actually use <span class="extract"><span class="extract-syntax">\qquad</span></span> horizontal spaces rather than risk using TeX's
-messy alignment system:
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Weave a suitable horizontal advance for that many tab stops</span><span class="named-paragraph-number">.1</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">tab_stops_of_indentation</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP16" class="function-link"><span class="function-syntax">Str::remove_indentation</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="constant-syntax">4</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">tab_stops_of_indentation</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\\qquad"</span><span class="plain-syntax">);</span>
-</pre>
-<ul class="endnotetexts"><li>This code is never used.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6_1" class="paragraph-anchor"></a><b>&#167;6.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Adjust code colour as necessary</span><span class="named-paragraph-number">6.1</span></span><span class="comment-syntax"> =</span>
 </p>
 

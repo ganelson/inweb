@@ -95,9 +95,12 @@ other nodes a bit speculatively.
 	paragraph *P;
 	LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
 		if (P->defines_macro) {
-			macro_usage *mu =
-				FIRST_IN_LINKED_LIST(macro_usage, P->defines_macro->macro_usages);
-			if (mu) P->parent_paragraph = mu->used_in_paragraph;
+			macro_usage *mu;
+			LOOP_OVER_LINKED_LIST(mu, macro_usage, P->defines_macro->macro_usages)
+				if (P != mu->used_in_paragraph) {
+					Numbering::set_parent(P, mu->used_in_paragraph);
+					break;
+				}
 		}
 
 @<Otherwise share the parent of a following paragraph, provided it precedes us@> =
@@ -108,7 +111,7 @@ other nodes a bit speculatively.
 				paragraph *P2 = CONTENT_IN_ITEM(P2_item, paragraph);
 				if (P2->parent_paragraph) {
 					if (P2->parent_paragraph->allocation_id < P->allocation_id)
-						P->parent_paragraph = P2->parent_paragraph;
+						Numbering::set_parent(P, P2->parent_paragraph);
 					break;
 				}
 			}
@@ -147,8 +150,15 @@ void Numbering::settle_paragraph_number(paragraph *P) {
 	if (Str::len(P->paragraph_number) > 0) return;
 	WRITE_TO(P->paragraph_number, "X"); /* to prevent malformed sections hanging this */
 	if (P->parent_paragraph) Numbering::settle_paragraph_number(P->parent_paragraph);
+	if (P == P->parent_paragraph) internal_error("paragraph is its own parent");
 	Str::clear(P->paragraph_number);
 	WRITE_TO(P->paragraph_number, "%S.%d", P->parent_paragraph->paragraph_number,
 			P->parent_paragraph->next_child_number++);
 	P->next_child_number = 1;
+}
+
+void Numbering::set_parent(paragraph *of, paragraph *to) {
+	if (of == NULL) internal_error("no paragraph");
+	if (to == of) internal_error("paragraph parent set to itself");
+	of->parent_paragraph = to;
 }
