@@ -79,7 +79,7 @@ INWEB = inweb/Tangled/inweb
 
 # Where:
 
-CCOPTS = -DPLATFORM_WINDOWS=1 -D_WIN32_WINNT=0x0600
+CCOPTS = -DPLATFORM_WINDOWS=1 -D_WIN32_WINNT=0x0600 $(CFLAGS)
 
 MANYWARNINGS = -Weverything -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -Wno-used-but-marked-unused -Wno-unreachable-code-return -ferror-limit=1000
 
