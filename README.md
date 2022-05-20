@@ -1,6 +1,6 @@
 # Inweb 7.1.0
 
-v7.1.0-beta+1B04 'Escape to Danger' (16 May 2022)
+v7.1.0-beta+1B05 'Escape to Danger' (20 May 2022)
 
 ## About Inweb
 
@@ -78,6 +78,13 @@ edit inweb/scripts/inweb.mkscript and inweb/Materials/platforms/PLATFORM.mkscrip
 where PLATFORM is your choice as above (e.g., 'macos'). Then run "make -f inweb/inweb.mk makers"
 to rebuild all these makefiles with your changes incorporated; and then run
 the shell script "inweb/scripts/first.sh" again.
+
+A few features of inweb used when integrating the core Inform software into its
+apps rely on having the standard Unix tool "rsync" installed: so on Linux, where
+not all installations provide rsync by default, you may want to install this if
+you are intending to do development work with the Inform apps. But since rsync
+is not needed for the core literate-programming functions of inweb, most users
+will have no need.
 
 ## Reporting Issues
 

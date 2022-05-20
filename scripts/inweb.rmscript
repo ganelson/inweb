@@ -83,6 +83,13 @@ where PLATFORM is your choice as above (e.g., 'macos'). Then run "make -f inweb/
 to rebuild all these makefiles with your changes incorporated; and then run
 the shell script "inweb/scripts/first.sh" again.
 
+A few features of inweb used when integrating the core Inform software into its
+apps rely on having the standard Unix tool "rsync" installed: so on Linux, where
+not all installations provide rsync by default, you may want to install this if
+you are intending to do development work with the Inform apps. But since rsync
+is not needed for the core literate-programming functions of inweb, most users
+will have no need.
+
 ## Reporting Issues
 
 The bug tracker for Inweb is powered by Jira and hosted
