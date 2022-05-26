@@ -92,16 +92,15 @@ time of the Reykjavik summit between Presidents Gorbachev and Reagan:
 <p class="commentary">Story file collectors customarily abbreviate this in catalogues to <span class="extract"><span class="extract-syntax">9/861022</span></span>.
 </p>
 
-<p class="commentary">We will therefore allow this notation, and convert it silently each way.
-<span class="extract"><span class="extract-syntax">N/DDDDDD</span></span> is equivalent to <span class="extract"><span class="extract-syntax">N.DDDDDD</span></span>. Thus, <span class="extract"><span class="extract-syntax">9/861022</span></span> means 9.861022.0 in
+<p class="commentary">So we will allow this notation, but will convert <span class="extract"><span class="extract-syntax">N/DDDDDD</span></span> to <span class="extract"><span class="extract-syntax">N.0.DDDDDD</span></span>,
+pushing the six date digits into the minor patch. (See the discussion of the
+bug report I7-2130, where users curating old extensions recommended this as
+easier to deal with than <span class="extract"><span class="extract-syntax">N.DDDDDD</span></span>.) So, then, <span class="extract"><span class="extract-syntax">9/861022</span></span> means 9.0.861022 in
 semver precedence order.
 </p>
 
 <p class="commentary">In all non-textual respects, and in particular on precedence rules, we follow
-the standard exactly. The only reason we allow these abbreviations is because
-we don't want to force Inform extension writers to type "Version 3.4.1 of
-Such-and-Such by Me begins here", and so on: it would break all existing
-extensions, for one thing, and it looks unfriendly.
+the standard exactly.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>In the array below, unspecified numbers are stored as <span class="extract"><span class="extract-syntax">-1</span></span>. The three
@@ -251,6 +250,8 @@ optional, but if both are given, they must be in that order.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">slashes_used</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">component</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="7-vn.html#SP4" class="function-link"><span class="function-syntax">VersionNumbers::null</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> != </span><span class="constant-syntax">6</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="7-vn.html#SP4" class="function-link"><span class="function-syntax">VersionNumbers::null</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">V</span><span class="plain-syntax">.</span><span class="identifier-syntax">version_numbers</span><span class="plain-syntax">[1] = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">component</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">part</span><span class="plain-syntax"> == </span><span class="constant-syntax">MMP_SEMVERPART</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">val</span><span class="plain-syntax"> == -1) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="7-vn.html#SP4" class="function-link"><span class="function-syntax">VersionNumbers::null</span></a><span class="plain-syntax">();</span>

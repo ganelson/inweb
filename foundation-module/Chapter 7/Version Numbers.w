@@ -37,15 +37,14 @@ time of the Reykjavik summit between Presidents Gorbachev and Reagan:
 =
 Story file collectors customarily abbreviate this in catalogues to |9/861022|.
 
-We will therefore allow this notation, and convert it silently each way.
-|N/DDDDDD| is equivalent to |N.DDDDDD|. Thus, |9/861022| means 9.861022.0 in
+So we will allow this notation, but will convert |N/DDDDDD| to |N.0.DDDDDD|,
+pushing the six date digits into the minor patch. (See the discussion of the
+bug report I7-2130, where users curating old extensions recommended this as
+easier to deal with than |N.DDDDDD|.) So, then, |9/861022| means 9.0.861022 in
 semver precedence order.
 
 In all non-textual respects, and in particular on precedence rules, we follow
-the standard exactly. The only reason we allow these abbreviations is because
-we don't want to force Inform extension writers to type "Version 3.4.1 of
-Such-and-Such by Me begins here", and so on: it would break all existing
-extensions, for one thing, and it looks unfriendly.
+the standard exactly.
 
 @ In the array below, unspecified numbers are stored as |-1|. The three
 components are otherwise required to be non-negative integers.
@@ -188,6 +187,8 @@ semantic_version_number VersionNumbers::from_text(text_stream *T) {
 	if (slashes_used > 0) {
 		if (component > 1) return VersionNumbers::null();
 		if (count != 6) return VersionNumbers::null();
+		V.version_numbers[1] = 0;
+		component = 2;
 	}
 	if (part == MMP_SEMVERPART) {
 		if (val == -1) return VersionNumbers::null();
