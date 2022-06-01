@@ -1,6 +1,6 @@
 # Inweb 7.1.0
 
-v7.1.0-beta+1B07 'Escape to Danger' (1 June 2022)
+v7.1.0-beta+1B08 'Escape to Danger' (2 June 2022)
 
 ## About Inweb
 

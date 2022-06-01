@@ -137,6 +137,44 @@ number
 ----
 number
 --------
+JSON requirement <optionalint> set to:
+( number | null )
+----
+( number | null )
+--------
+JSON requirement <enum> set to:
+( "alpha" | "beta" | 3 | 5 | false | true | null )
+----
+( "alpha" | "beta" | 3 | 5 | false | true | null )
+--------
+JSON verification test on:
+"beta"
+-- to match --
+<enum>
+----
+Verifies
+--------
+JSON verification test on:
+"gamma"
+-- to match --
+<enum>
+----
+value "gamma" not one of those allowed
+--------
+JSON verification test on:
+5
+-- to match --
+<enum>
+----
+Verifies
+--------
+JSON verification test on:
+null
+-- to match --
+<enum>
+----
+Verifies
+--------
 JSON requirement <record> set to:
 { "coordinates": [ double, double, string ], ?"jurisdiction": string, "journal": [ { "date": number, "entry": string }* ] }
 ----

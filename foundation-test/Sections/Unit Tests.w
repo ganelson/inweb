@@ -437,10 +437,8 @@ void Unit::test_JSON_helper(text_stream *text, text_file_position *tfp, void *st
 			text_stream *rname = mr.exp[0];
 			text_stream *rtext = mr.exp[1];
 			WRITE_TO(STDOUT, "JSON requirement <%S> set to:\n%S----\n", rname, rtext);
-			JSON_requirement *req = JSON::decode_req(rtext, known_JSON_reqs);
-			if ((req) && (req->JSON_type == ERROR_JSONTYPE))
-				WRITE_TO(STDOUT, "JSON requirement error: %S", req->if_error);
-			else {
+			JSON_requirement *req = JSON::decode_printing_errors(rtext, known_JSON_reqs, tfp);
+			if (req) {
 				dict_entry *de = Dictionaries::create(known_JSON_reqs, rname);
 				if (de) de->value = req;
 				JSON::encode_req(STDOUT, req);
@@ -450,11 +448,9 @@ void Unit::test_JSON_helper(text_stream *text, text_file_position *tfp, void *st
 			text_stream *material = mr.exp[1];
 			WRITE_TO(STDOUT, "JSON verification test on:\n%S-- to match --\n%S\n----\n",
 				material, rtext);
-			JSON_requirement *req = JSON::decode_req(rtext, known_JSON_reqs);
-			if ((req) && (req->JSON_type == ERROR_JSONTYPE))
-				WRITE_TO(STDOUT, "JSON requirement error: %S", req->if_error);
-			else {
-				JSON_value *value = JSON::decode(material);
+			JSON_requirement *req = JSON::decode_printing_errors(rtext, known_JSON_reqs, tfp);
+			if (req) {
+				JSON_value *value = JSON::decode(material, tfp);
 				if ((value) && (value->JSON_type == ERROR_JSONTYPE))
 					WRITE_TO(STDOUT, "JSON error: %S", value->if_error);
 				else {
@@ -474,7 +470,7 @@ void Unit::test_JSON_helper(text_stream *text, text_file_position *tfp, void *st
 			}
 		} else {
 			WRITE_TO(STDOUT, "JSON test on:\n%S----\n", JSON);
-			JSON_value *value = JSON::decode(JSON);
+			JSON_value *value = JSON::decode(JSON, tfp);
 			if ((value) && (value->JSON_type == ERROR_JSONTYPE))
 				WRITE_TO(STDOUT, "JSON error: %S", value->if_error);
 			else

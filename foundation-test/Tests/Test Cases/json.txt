@@ -59,6 +59,18 @@ null
 ----
 <int> = number
 ----
+<optionalint> = ( number | null )
+----
+<enum> = ( "alpha" | "beta" | 3 | 5 | false | true | null )
+----
+<enum> against "beta"
+----
+<enum> against "gamma"
+----
+<enum> against 5
+----
+<enum> against null
+----
 <record> = { "coordinates": [ double, double, string ], ?"jurisdiction": string, "journal": [ { "date": number, "entry": string }* ] }
 ----
 <int> against 217
