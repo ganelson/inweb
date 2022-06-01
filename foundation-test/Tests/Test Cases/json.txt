@@ -1,0 +1,85 @@
+234
+----
+-45
+----
+true
+----
+   false     
+----
+null
+----
+"Plain text."
+----
+"Encoded text,\nwith\ttabs and all, including \u0040\u004A\u004b."
+----
+"Text with
+		carriage return and tabs in it."
+----
+[]
+----
+[     ]
+----
+[ 23, 1, 456 ]
+----
+[ "fish", 22, true, [ 3, 6, 9 ], null ]
+----
+{
+}
+----
+{ "name": "Jemima", "lives": 9 }
+----
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "isAlive": true,
+  "age": 27,
+  "address": {
+    "streetAddress": "21 2nd Street",
+    "city": "New York",
+    "state": "NY",
+    "postalCode": "10021-3100"
+  },
+  "phoneNumbers": [
+    {
+      "type": "home",
+      "number": "212 555-1234"
+    },
+    {
+      "type": "office",
+      "number": "646 555-4567"
+    }
+  ],
+  "children": [],
+  "spouse": null
+}
+----
+3.141592653
+----
+-45.2E+34
+----
+<int> = number
+----
+<record> = { "coordinates": [ double, double, string ], ?"jurisdiction": string, "journal": [ { "date": number, "entry": string }* ] }
+----
+<int> against 217
+----
+<int> against "six"
+----
+<pair> = [ double, string ]
+----
+<pair> against [ 0.15, "sky" ]
+----
+<pair> against [ "clouds", "sky" ]
+----
+<record> against { "coordinates": [ 3.14, 2.17, "gamma" ] }
+----
+<record> against {
+	"coordinates": [ 3.14, 2.17, "gamma" ],
+	"journal": [ { "date": 1210, "entry": "Another cloudy day." } ]
+}
+----
+<record> against {
+	"coordinates": [ 3.14, 2.17, "gamma" ],
+	"journal": [ { "date": 1210 } ]
+}
+----

@@ -380,6 +380,9 @@ functions from //Error Messages// can then report errors where they occur:
 @ The //Preprocessor// provides simple iteration and macro expansion in order
 to turn a marked-up script into a plain text file.
 
+@ See //JSON// for convenient ways to encode and decode data to the JSON
+interchange format.
+
 @h Handling webs.
 Foundation provides routines which can read the metadata of a web, i.e., a
 literate program in the //inweb// format, from a copy in the file system.

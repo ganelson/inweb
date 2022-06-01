@@ -47,6 +47,7 @@ Chapter 4: Text Handling
 	Preprocessor
 	Tries and Avinues
 	Pattern Matching
+	JSON
 
 Chapter 5: Generating Websites
 "For making individual web pages, or gathering them into mini-sites or ebooks."

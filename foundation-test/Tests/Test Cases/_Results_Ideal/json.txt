@@ -1,0 +1,211 @@
+JSON test on:
+234
+----
+234
+--------
+JSON test on:
+-45
+----
+-45
+--------
+JSON test on:
+true
+----
+true
+--------
+JSON test on:
+   false     
+----
+false
+--------
+JSON test on:
+null
+----
+null
+--------
+JSON test on:
+"Plain text."
+----
+"Plain text."
+--------
+JSON test on:
+"Encoded text,\nwith\ttabs and all, including \u0040\u004A\u004b."
+----
+"Encoded text,\nwith\ttabs and all, including @JK."
+--------
+JSON test on:
+"Text with
+		carriage return and tabs in it."
+----
+"Text with\n\t\tcarriage return and tabs in it."
+--------
+JSON test on:
+[]
+----
+[]
+--------
+JSON test on:
+[     ]
+----
+[]
+--------
+JSON test on:
+[ 23, 1, 456 ]
+----
+[ 23, 1, 456 ]
+--------
+JSON test on:
+[ "fish", 22, true, [ 3, 6, 9 ], null ]
+----
+[ "fish", 22, true, [ 3, 6, 9 ], null ]
+--------
+JSON test on:
+{
+}
+----
+{
+}
+--------
+JSON test on:
+{ "name": "Jemima", "lives": 9 }
+----
+{
+    "name": "Jemima",
+    "lives": 9
+}
+--------
+JSON test on:
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "isAlive": true,
+  "age": 27,
+  "address": {
+    "streetAddress": "21 2nd Street",
+    "city": "New York",
+    "state": "NY",
+    "postalCode": "10021-3100"
+  },
+  "phoneNumbers": [
+    {
+      "type": "home",
+      "number": "212 555-1234"
+    },
+    {
+      "type": "office",
+      "number": "646 555-4567"
+    }
+  ],
+  "children": [],
+  "spouse": null
+}
+----
+{
+    "firstName": "John",
+    "lastName": "Smith",
+    "isAlive": true,
+    "age": 27,
+    "address": {
+        "streetAddress": "21 2nd Street",
+        "city": "New York",
+        "state": "NY",
+        "postalCode": "10021-3100"
+    },
+    "phoneNumbers": [ {
+        "type": "home",
+        "number": "212 555-1234"
+    }, {
+        "type": "office",
+        "number": "646 555-4567"
+    } ],
+    "children": [],
+    "spouse": null
+}
+--------
+JSON test on:
+3.141592653
+----
+3.14159
+--------
+JSON test on:
+-45.2E+34
+----
+-4.52e+35
+--------
+JSON requirement <int> set to:
+number
+----
+number
+--------
+JSON requirement <record> set to:
+{ "coordinates": [ double, double, string ], ?"jurisdiction": string, "journal": [ { "date": number, "entry": string }* ] }
+----
+{
+    "coordinates": [ double, double, string ],
+    ?"jurisdiction": string,
+    "journal": [ {
+        "date": number,
+        "entry": string
+    }* ]
+}
+--------
+JSON verification test on:
+217
+-- to match --
+<int>
+----
+Verifies
+--------
+JSON verification test on:
+"six"
+-- to match --
+<int>
+----
+expected number but found string
+--------
+JSON requirement <pair> set to:
+[ double, string ]
+----
+[ double, string ]
+--------
+JSON verification test on:
+[ 0.15, "sky" ]
+-- to match --
+<pair>
+----
+Verifies
+--------
+JSON verification test on:
+[ "clouds", "sky" ]
+-- to match --
+<pair>
+----
+array[0]: expected double but found string
+--------
+JSON verification test on:
+{ "coordinates": [ 3.14, 2.17, "gamma" ] }
+-- to match --
+<record>
+----
+object: member 'journal' missing
+--------
+JSON verification test on:
+{
+	"coordinates": [ 3.14, 2.17, "gamma" ],
+	"journal": [ { "date": 1210, "entry": "Another cloudy day." } ]
+}
+-- to match --
+<record>
+----
+Verifies
+--------
+JSON verification test on:
+{
+	"coordinates": [ 3.14, 2.17, "gamma" ],
+	"journal": [ { "date": 1210 } ]
+}
+-- to match --
+<record>
+----
+object.journal[0]: member 'entry' missing
+--------

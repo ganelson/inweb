@@ -414,3 +414,76 @@ int Unit::visit(tree_node *N, void *state, int L) {
 	} else WRITE("Unknown node\n");
 	return TRUE;
 }
+
+@h JSON.
+
+=
+dictionary *known_JSON_reqs = NULL;
+
+void Unit::test_JSON(text_stream *arg) {
+	known_JSON_reqs = Dictionaries::new(32, FALSE);
+	filename *F = Filenames::from_text(arg);
+	TEMPORARY_TEXT(JSON)
+	TextFiles::read(F, FALSE, "unable to read file of JSON", TRUE,
+		&Unit::test_JSON_helper, NULL, JSON);
+	DISCARD_TEXT(JSON)
+}
+
+void Unit::test_JSON_helper(text_stream *text, text_file_position *tfp, void *state) {
+	text_stream *JSON = (text_stream *) state;
+	if (Str::eq(text, I"----")) {
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, JSON, L" *<(%C+)> *= *(%c+)")) {
+			text_stream *rname = mr.exp[0];
+			text_stream *rtext = mr.exp[1];
+			WRITE_TO(STDOUT, "JSON requirement <%S> set to:\n%S----\n", rname, rtext);
+			JSON_requirement *req = JSON::decode_req(rtext, known_JSON_reqs);
+			if ((req) && (req->JSON_type == ERROR_JSONTYPE))
+				WRITE_TO(STDOUT, "JSON requirement error: %S", req->if_error);
+			else {
+				dict_entry *de = Dictionaries::create(known_JSON_reqs, rname);
+				if (de) de->value = req;
+				JSON::encode_req(STDOUT, req);
+			}
+		} else if (Regexp::match(&mr, JSON, L" *(%c+?) against *(%c+)")) {
+			text_stream *rtext = mr.exp[0];
+			text_stream *material = mr.exp[1];
+			WRITE_TO(STDOUT, "JSON verification test on:\n%S-- to match --\n%S\n----\n",
+				material, rtext);
+			JSON_requirement *req = JSON::decode_req(rtext, known_JSON_reqs);
+			if ((req) && (req->JSON_type == ERROR_JSONTYPE))
+				WRITE_TO(STDOUT, "JSON requirement error: %S", req->if_error);
+			else {
+				JSON_value *value = JSON::decode(material);
+				if ((value) && (value->JSON_type == ERROR_JSONTYPE))
+					WRITE_TO(STDOUT, "JSON error: %S", value->if_error);
+				else {
+					linked_list *errs = NEW_LINKED_LIST(text_stream);
+					int v = JSON::verify(value, req, errs);
+					if (v) {
+						WRITE_TO(STDOUT, "Verifies");
+					} else {
+						int c = 0;
+						text_stream *err;
+						LOOP_OVER_LINKED_LIST(err, text_stream, errs) {
+							if (c++ > 0) WRITE_TO(STDOUT, "\n");
+							WRITE_TO(STDOUT, "%S", err);
+						}
+					}
+				}
+			}
+		} else {
+			WRITE_TO(STDOUT, "JSON test on:\n%S----\n", JSON);
+			JSON_value *value = JSON::decode(JSON);
+			if ((value) && (value->JSON_type == ERROR_JSONTYPE))
+				WRITE_TO(STDOUT, "JSON error: %S", value->if_error);
+			else
+				JSON::encode(STDOUT, value);
+		}	
+		Regexp::dispose_of(&mr);
+		WRITE_TO(STDOUT, "\n--------\n");
+		Str::clear(JSON);
+	} else {
+		WRITE_TO(JSON, "%S\n", text);
+	}
+}

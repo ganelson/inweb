@@ -223,7 +223,7 @@ points to |P|. This allows us to iterate despite the comments above.
 The above gives us an almost free implementation of LIFO, last-in-first-out,
 stacks, where we represent a stack as a linked list whose first entry is at
 the front. To push an item, we add it at the front; to pull, we remove the
-front iten.
+front item.
 
 We provide an abstract type name for these stacks, even though they're the
 exact same structure. For reasons to do with the way |typedef| works in C,
