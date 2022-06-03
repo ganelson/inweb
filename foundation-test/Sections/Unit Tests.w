@@ -455,7 +455,7 @@ void Unit::test_JSON_helper(text_stream *text, text_file_position *tfp, void *st
 					WRITE_TO(STDOUT, "JSON error: %S", value->if_error);
 				else {
 					linked_list *errs = NEW_LINKED_LIST(text_stream);
-					int v = JSON::verify(value, req, errs);
+					int v = JSON::validate(value, req, errs);
 					if (v) {
 						WRITE_TO(STDOUT, "Verifies");
 					} else {

@@ -1,6 +1,6 @@
 [JSON::] JSON.
 
-To read and write JSON data interchange material.
+To read, validate and write JSON data interchange material.
 
 @h Introduction.
 JSON (Douglas Crockford, c. 2000) stands for "JavaScript Object Notation", but is
@@ -581,11 +581,11 @@ void JSON::encode_string(OUTPUT_STREAM, text_stream *T) {
 @h Requirements.
 Of course, the trouble with JSON is that it's a soup of undifferentiated data.
 Just because you're expecting a pair of numbers, there's no reason to suppose
-that's what you've been given, even if what you were given has parsed successfully.
+that's what you've been given.
 
-The following is an intentionally similar tree structure to //JSON_value//,
-but with requirements in place of values throughout, and with each member of
-an object marked as optional or mandatory.
+A //JSON_requirement// is a sort of JSON schema: a specification for the structure
+of a //JSON_value//. At the top level, it's a list of one or more equally
+good alternative specifications. Note that the empty list is not allowed.
 
 =
 typedef struct JSON_requirement {
@@ -607,18 +607,61 @@ JSON_requirement *JSON::add_alternative(JSON_requirement *so_far,
 	return so_far;
 }	
 
+@ A "single requirement" is a little more than what a type would be in Javascript,
+if Javascript actually had types. It can communicate something like "a number"
+or "a list of strings"; but it can also say "the value has to be exactly this".
+
+=
 typedef struct JSON_single_requirement {
-	int JSON_type;
 	struct JSON_requirement *this_requirement;
 	struct JSON_value *this_value;
-	struct JSON_requirement *all_if_list;
-	struct linked_list *if_list; /* of |JSON_requirement| */
-	struct dictionary *dictionary_if_object; /* to |JSON_pair_requirement| */
-	struct linked_list *list_if_object; /* of |text_stream| */
-	struct text_stream *if_error;
-	int encoding_number;
+	struct JSON_type *this_type;
 	CLASS_DEFINITION
 } JSON_single_requirement;
+
+@ Exactly one of |this_requirement|, |this_value| and |this_type| should be
+non-|NULL|, so we have one constructor function for each case:
+
+=
+JSON_single_requirement *JSON::require_requirement(JSON_requirement *req) {
+	JSON_single_requirement *sing = CREATE(JSON_single_requirement);
+	sing->this_requirement = req;
+	sing->this_value = NULL;
+	sing->this_type = NULL;
+	return sing;
+}
+
+JSON_single_requirement *JSON::require_value(JSON_value *value) {
+	JSON_single_requirement *sing = CREATE(JSON_single_requirement);
+	sing->this_requirement = NULL;
+	sing->this_value = value;
+	sing->this_type = NULL;
+	return sing;
+}
+
+JSON_single_requirement *JSON::require_type(int t) {
+	JSON_single_requirement *sing = CREATE(JSON_single_requirement);
+	sing->this_requirement = NULL;
+	sing->this_value = NULL;
+	sing->this_type = JSON::new_type_requirement(t);
+	return sing;
+}
+
+@ JSON types, in our model, look very like //JSON_value//s.
+
+=
+typedef struct JSON_type {
+	int JSON_type;
+
+	struct linked_list *if_list; /* of |JSON_requirement| */
+	struct JSON_requirement *all_if_list;
+
+	struct dictionary *dictionary_if_object; /* to |JSON_pair_requirement| */
+	struct linked_list *list_if_object; /* of |text_stream| */
+
+	struct text_stream *if_error;
+	CLASS_DEFINITION
+} JSON_type;
 
 typedef struct JSON_pair_requirement {
 	struct JSON_requirement *req;
@@ -626,84 +669,77 @@ typedef struct JSON_pair_requirement {
 	CLASS_DEFINITION
 } JSON_pair_requirement;
 
-@ The following constructors are used for everything...
+JSON_type *JSON::new_type_requirement(int t) {
+	JSON_type *type = CREATE(JSON_type);
+	type->JSON_type = t;
 
-=
-JSON_single_requirement *JSON::require(int t) {
-	JSON_single_requirement *req = CREATE(JSON_single_requirement);
-	req->JSON_type = t;
-	req->this_requirement = NULL;
-	req->this_value = NULL;
-	req->all_if_list = NULL;
-	req->if_list = NULL;
-	if (t == ARRAY_JSONTYPE) req->if_list = NEW_LINKED_LIST(JSON_requirement);
-	req->dictionary_if_object = NULL;
-	req->list_if_object = NULL;
-	if (t == OBJECT_JSONTYPE) {
-		req->dictionary_if_object = Dictionaries::new(16, FALSE);
-		req->list_if_object = NEW_LINKED_LIST(text_stream);
+	if (t == ARRAY_JSONTYPE) {
+		type->if_list = NEW_LINKED_LIST(JSON_requirement);
+		type->all_if_list = NULL;
+	} else {
+		type->if_list = NULL;
+		type->all_if_list = NULL;
 	}
-	req->if_error = NULL;
-	req->encoding_number = 0;
-	return req;
+
+	if (t == OBJECT_JSONTYPE) {
+		type->dictionary_if_object = Dictionaries::new(16, FALSE);
+		type->list_if_object = NEW_LINKED_LIST(text_stream);
+	} else {
+		type->dictionary_if_object = NULL;
+		type->list_if_object = NULL;
+	}
+
+	type->if_error = NULL;
+	return type;
 }
 
-JSON_single_requirement *JSON::require_known(JSON_requirement *req) {
-	JSON_single_requirement *sing = JSON::require(-1);
-	sing->this_requirement = req;
-	return sing;
-}
-
-JSON_single_requirement *JSON::require_value(JSON_value *value) {
-	JSON_single_requirement *sing = JSON::require(-1);
-	sing->this_value = value;
-	return sing;
-}
-
-@ ...except for "array of any number of entries each matching this":
+@ A convenience for "the value must be an array of any number of entries, each
+of which meets the requirement |E_req|":
 
 =
 JSON_single_requirement *JSON::require_array_of(JSON_requirement *E_req) {
-	JSON_single_requirement *req = JSON::require(ARRAY_JSONTYPE);
-	req->all_if_list = E_req;
+	JSON_single_requirement *req = JSON::require_type(ARRAY_JSONTYPE);
+	req->this_type->all_if_list = E_req;
 	return req;
 }
 
 @ If an array wants to be a tuple with a fixed number of entries, each with
-its own requirement, then instead call |JSON::require(ARRAY_JSONTYPE)| and
+its own requirement, then instead call |JSON::require_type(ARRAY_JSONTYPE)| and
 then make a number of calls to the following in sequence:
 
 =
-void JSON::require_entry(JSON_single_requirement *req_array, JSON_requirement *req_entry) {
-	if (req_array == NULL) internal_error("no array");
-	if (req_array->JSON_type != ARRAY_JSONTYPE) internal_error("not an array requirement");
-	if (req_entry == NULL) internal_error("no new entry");
-	ADD_TO_LINKED_LIST(req_entry, JSON_requirement, req_array->if_list);
+void JSON::require_entry(JSON_single_requirement *array_sr, JSON_requirement *entry_sr) {
+	if (array_sr == NULL) internal_error("no array");
+	if ((array_sr->this_type == NULL) ||
+		(array_sr->this_type->JSON_type != ARRAY_JSONTYPE)) internal_error("not an array");
+	if (entry_sr == NULL) internal_error("no new entry");
+	ADD_TO_LINKED_LIST(entry_sr, JSON_requirement, array_sr->this_type->if_list);
 }
 
-@ Similarly, create an object requirement with |JSON::require(OBJECT_JSONTYPE)|
+@ Similarly, create an object requirement with |JSON::require_type(OBJECT_JSONTYPE)|
 and then either require or allow key-value pairs with:
 
 =
-void JSON::require_pair(JSON_single_requirement *req_obj, text_stream *key, JSON_requirement *req) {
-	JSON::require_pair_inner(req_obj, key, req, FALSE);
+void JSON::require_pair(JSON_single_requirement *obj_sr, text_stream *key, JSON_requirement *req) {
+	JSON::require_pair_inner(obj_sr, key, req, FALSE);
 }
 
-void JSON::allow_pair(JSON_single_requirement *req_obj, text_stream *key, JSON_requirement *req) {
-	JSON::require_pair_inner(req_obj, key, req, TRUE);
+void JSON::allow_pair(JSON_single_requirement *obj_sr, text_stream *key, JSON_requirement *req) {
+	JSON::require_pair_inner(obj_sr, key, req, TRUE);
 }
 
-void JSON::require_pair_inner(JSON_single_requirement *req_obj, text_stream *key,
+void JSON::require_pair_inner(JSON_single_requirement *obj_sr, text_stream *key,
 	JSON_requirement *req, int opt) {
-	if (req_obj == NULL) internal_error("no object");
-	if (req_obj->JSON_type != OBJECT_JSONTYPE) internal_error("not an object requirement");
+	if (obj_sr == NULL) internal_error("no object");
+	if ((obj_sr->this_type == NULL) ||
+		(obj_sr->this_type->JSON_type != OBJECT_JSONTYPE)) internal_error("not an object");
 	if (req == NULL) internal_error("no val req");
 	key = Str::duplicate(key);
-	ADD_TO_LINKED_LIST(key, text_stream, req_obj->list_if_object);
+	ADD_TO_LINKED_LIST(key, text_stream, obj_sr->this_type->list_if_object);
 	JSON_pair_requirement *pr = CREATE(JSON_pair_requirement);
 	pr->req = req;
 	pr->optional = opt;
-	dict_entry *de = Dictionaries::create(req_obj->dictionary_if_object, key);
+	dict_entry *de = Dictionaries::create(obj_sr->this_type->dictionary_if_object, key);
 	if (de) de->value = pr;
 }
 
@@ -711,24 +747,29 @@ void JSON::require_pair_inner(JSON_single_requirement *req_obj, text_stream *key
 is not permitted:
 
 =
-JSON_pair_requirement *JSON::look_up_pair(JSON_single_requirement *req_obj, text_stream *key) {
-	if (req_obj == NULL) internal_error("no object");
-	if (req_obj->JSON_type != OBJECT_JSONTYPE) internal_error("not an object");
-	dict_entry *de = Dictionaries::find(req_obj->dictionary_if_object, key);
+JSON_pair_requirement *JSON::look_up_pair(JSON_single_requirement *obj_sr, text_stream *key) {
+	if (obj_sr == NULL) internal_error("no object");
+	if ((obj_sr->this_type == NULL) ||
+		(obj_sr->this_type->JSON_type != OBJECT_JSONTYPE)) internal_error("not an object");
+	dict_entry *de = Dictionaries::find(obj_sr->this_type->dictionary_if_object, key);
 	if (de == NULL) return NULL;
 	return de->value;
 }
 
-@ This is used when parsing textual requirements, to indicate a syntax error:
+@ This is used when parsing textual requirements, to indicate a syntax error;
+but it is not valid as a requirement itself.
 
 =
-JSON_single_requirement *JSON::error_req(text_stream *msg) {
-	JSON_single_requirement *req = JSON::require(ERROR_JSONTYPE);
-	req->if_error = Str::duplicate(msg);
+JSON_single_requirement *JSON::error_sr(text_stream *msg) {
+	JSON_single_requirement *req = JSON::require_type(ERROR_JSONTYPE);
+	req->this_type->if_error = Str::duplicate(msg);
 	return req;
 }
 
-@ The following returns |TRUE| if the value meets the requirement in full;
+@h Validation.
+To "validate" a JSON value is to determine that it meets some //JSON_requirement//.
+
+The following returns |TRUE| if the value meets the requirement in full;
 if not, |FALSE|, and then if |errs| is not null, a list of error messages is
 appended to the linked list |errs|.
 
@@ -737,7 +778,7 @@ problem was: e.g. |"object.coordinates[1]"| is the result of the stack
 holding |"object" > ".cooordinates" > "[1]"|.
 
 =
-int JSON::verify(JSON_value *val, JSON_requirement *req, linked_list *errs) {
+int JSON::validate(JSON_value *val, JSON_requirement *req, linked_list *errs) {
 	lifo_stack *location = NEW_LIFO_STACK(text_stream);
 	if ((val) && (val->JSON_type == ARRAY_JSONTYPE)) {
 		PUSH_TO_LIFO_STACK(I"array", text_stream, location);
@@ -745,10 +786,10 @@ int JSON::verify(JSON_value *val, JSON_requirement *req, linked_list *errs) {
 	if ((val) && (val->JSON_type == OBJECT_JSONTYPE)) {
 		PUSH_TO_LIFO_STACK(I"object", text_stream, location);
 	}
-	return JSON::verify_r(val, req, errs, location);
+	return JSON::validate_r(val, req, errs, location);
 }
 
-void JSON::verify_error(linked_list *errs, text_stream *err, lifo_stack *location) {
+void JSON::validation_error(linked_list *errs, text_stream *err, lifo_stack *location) {
 	if (errs) {
 		text_stream *msg = Str::new();
 		int S = LinkedLists::len(location);
@@ -765,63 +806,77 @@ void JSON::verify_error(linked_list *errs, text_stream *err, lifo_stack *locatio
 	}
 }
 
-@ So this is the recursive verification function:
+@ So this is the recursive verification function. At the top level, it says the
+value must match one of the single requirements in the list. (We can stop as
+soon as it has met one.) If it meets none of them, we produce error messages
+for the reason it fails just the first.
 
 =
-int JSON::verify_r(JSON_value *val, JSON_requirement *req, linked_list *errs,
+int JSON::validate_r(JSON_value *val, JSON_requirement *req, linked_list *errs,
 	lifo_stack *location) {
 	if (val == NULL) internal_error("no value");
 	if (req == NULL) internal_error("no req");
 	JSON_single_requirement *sing;
 	LOOP_OVER_LINKED_LIST(sing, JSON_single_requirement, req->alternatives) {
-		int rv = JSON::verify_sr(val, sing, NULL, location);
+		int rv = JSON::validate_single_r(val, sing, NULL, location);
 		if (rv) return TRUE;
 	}
 	LOOP_OVER_LINKED_LIST(sing, JSON_single_requirement, req->alternatives) {
-		JSON::verify_sr(val, sing, errs, location);
+		JSON::validate_single_r(val, sing, errs, location);
 		break;
 	}
 	return FALSE;
 }
 
-int JSON::verify_sr(JSON_value *val, JSON_single_requirement *req, linked_list *errs,
-	lifo_stack *location) {
-	if (req->this_requirement)
-		return JSON::verify_r(val, req->this_requirement, errs, location);
-	if (req->this_value) {
-		if (JSON::eq(val, req->this_value) == FALSE) {
-			TEMPORARY_TEXT(msg)
-			WRITE_TO(msg, "value ");
-			JSON::encode(msg, val);
-			WRITE_TO(msg, " not one of those allowed");
-			JSON::verify_error(errs, msg, location);
-			DISCARD_TEXT(msg)
-			return FALSE;
-		}
-		return TRUE;
-	}
+@ Bad data always fails, and otherwise we split into the three cases.
+
+=
+int JSON::validate_single_r(JSON_value *val, JSON_single_requirement *req,
+	linked_list *errs, lifo_stack *location) {
 	if (val->JSON_type == ERROR_JSONTYPE) {
-		JSON::verify_error(errs, I"erroneous JSON value from parsing bad text", location);
+		JSON::validation_error(errs,
+			I"erroneous JSON value from parsing bad text", location);
 		return FALSE;
 	}
-	@<Verify that the JSON type is correct@>;
+	if (req->this_requirement) @<Validate against this requirement@>;
+	if (req->this_value) @<Validate against this value@>;
+	if (req->this_type) @<Validate against this type@>;
+	internal_error("bad single requirement");
+}
+
+@<Validate against this requirement@> =
+	return JSON::validate_r(val, req->this_requirement, errs, location);
+
+@<Validate against this value@> =
+	if (JSON::eq(val, req->this_value) == FALSE) {
+		TEMPORARY_TEXT(msg)
+		WRITE_TO(msg, "value ");
+		JSON::encode(msg, val);
+		WRITE_TO(msg, " not one of those allowed");
+		JSON::validation_error(errs, msg, location);
+		DISCARD_TEXT(msg)
+		return FALSE;
+	}
+	return TRUE;
+
+@<Validate against this type@> =
+	@<Verify that the JSON type constructors match@>;
 	int outcome = TRUE;
 	if (val->JSON_type == ARRAY_JSONTYPE)
 		@<Verify that the array entries meet requirements@>;
 	if (val->JSON_type == OBJECT_JSONTYPE)
 		@<Verify that the object members meet requirements@>;
 	return outcome;
-}
 
-@<Verify that the JSON type is correct@> =
-	if (val->JSON_type != req->JSON_type) {
+@<Verify that the JSON type constructors match@> =
+	if (val->JSON_type != req->this_type->JSON_type) {
 		if (errs) {
 			TEMPORARY_TEXT(msg)
 			WRITE_TO(msg, "expected ");
-			JSON::write_type(msg, req->JSON_type);
+			JSON::write_type(msg, req->this_type->JSON_type);
 			WRITE_TO(msg, " but found ");
 			JSON::write_type(msg, val->JSON_type);
-			JSON::verify_error(errs, msg, location);
+			JSON::validation_error(errs, msg, location);
 			DISCARD_TEXT(msg)
 		}
 		return FALSE;
@@ -831,11 +886,11 @@ int JSON::verify_sr(JSON_value *val, JSON_single_requirement *req, linked_list *
 	int count = 0;
 	JSON_value *E;
 	LOOP_OVER_LINKED_LIST(E, JSON_value, val->if_list) {
-		JSON_requirement *E_req = req->all_if_list;
+		JSON_requirement *E_req = req->this_type->all_if_list;
 		if (E_req == NULL) {
 			JSON_requirement *A_req;
 			int rcount = 0;
-			LOOP_OVER_LINKED_LIST(A_req, JSON_requirement, req->if_list)
+			LOOP_OVER_LINKED_LIST(A_req, JSON_requirement, req->this_type->if_list)
 				if (rcount++ == count)
 					E_req = A_req;
 		}
@@ -843,10 +898,10 @@ int JSON::verify_sr(JSON_value *val, JSON_single_requirement *req, linked_list *
 		WRITE_TO(at, "[%d]", count);
 		PUSH_TO_LIFO_STACK(at, text_stream, location);
 		if (E_req == NULL) {
-			JSON::verify_error(errs, I"unexpected array entry", location);
+			JSON::validation_error(errs, I"unexpected array entry", location);
 			outcome = FALSE;
 		} else {
-			if (JSON::verify_r(E, E_req, errs, location) == FALSE) outcome = FALSE;
+			if (JSON::validate_r(E, E_req, errs, location) == FALSE) outcome = FALSE;
 		}
 		POP_LIFO_STACK(text_stream, location);
 		DISCARD_TEXT(at)
@@ -855,38 +910,43 @@ int JSON::verify_sr(JSON_value *val, JSON_single_requirement *req, linked_list *
 
 @<Verify that the object members meet requirements@> =
 	text_stream *key;
-	LOOP_OVER_LINKED_LIST(key, text_stream, val->list_if_object) {
-		JSON_value *E = Dictionaries::read_value(val->dictionary_if_object, key);
-		if (E == NULL) internal_error("broken JSON object dictionary");
-		JSON_pair_requirement *pr = JSON::look_up_pair(req, key);
-		TEMPORARY_TEXT(at)
-		WRITE_TO(at, ".%S", key);
-		PUSH_TO_LIFO_STACK(at, text_stream, location);
-		if (pr == NULL) {
-			TEMPORARY_TEXT(msg)
-			WRITE_TO(msg, "unexpected member '%S'", key);
-			JSON::verify_error(errs, msg, location);
-			DISCARD_TEXT(msg)
-			outcome = FALSE;
-		} else {
-			if (JSON::verify_r(E, pr->req, errs, location) == FALSE) outcome = FALSE;
-		}
-		POP_LIFO_STACK(text_stream, location);
-		DISCARD_TEXT(at)
-	}
-	LOOP_OVER_LINKED_LIST(key, text_stream, req->list_if_object) {
-		JSON_pair_requirement *pr = Dictionaries::read_value(req->dictionary_if_object, key);
+	LOOP_OVER_LINKED_LIST(key, text_stream, val->list_if_object)
+		@<Verify that the member with this key is allowed and contains the right data@>;
+	LOOP_OVER_LINKED_LIST(key, text_stream, req->this_type->list_if_object) {
+		JSON_pair_requirement *pr =
+			Dictionaries::read_value(req->this_type->dictionary_if_object, key);
 		if (pr == NULL) internal_error("broken JSON object requirement");
-		if (pr->optional == FALSE) {
-			JSON_value *E = JSON::look_up_object(val, key);
-			if (E == NULL) {
-				TEMPORARY_TEXT(msg)
-				WRITE_TO(msg, "member '%S' missing", key);
-				JSON::verify_error(errs, msg, location);
-				DISCARD_TEXT(msg)
-				outcome = FALSE;
-			}
-		}
+		if (pr->optional == FALSE)
+			@<Verify that the value object does provide this mandatory member@>;
+	}
+
+@<Verify that the member with this key is allowed and contains the right data@> =
+	JSON_value *E = Dictionaries::read_value(val->dictionary_if_object, key);
+	if (E == NULL) internal_error("broken JSON object dictionary");
+	JSON_pair_requirement *pr = JSON::look_up_pair(req, key);
+	TEMPORARY_TEXT(at)
+	WRITE_TO(at, ".%S", key);
+	PUSH_TO_LIFO_STACK(at, text_stream, location);
+	if (pr == NULL) {
+		TEMPORARY_TEXT(msg)
+		WRITE_TO(msg, "unexpected member '%S'", key);
+		JSON::validation_error(errs, msg, location);
+		DISCARD_TEXT(msg)
+		outcome = FALSE;
+	} else {
+		if (JSON::validate_r(E, pr->req, errs, location) == FALSE) outcome = FALSE;
+	}
+	POP_LIFO_STACK(text_stream, location);
+	DISCARD_TEXT(at)
+
+@<Verify that the value object does provide this mandatory member@> =
+	JSON_value *E = JSON::look_up_object(val, key);
+	if (E == NULL) {
+		TEMPORARY_TEXT(msg)
+		WRITE_TO(msg, "member '%S' missing", key);
+		JSON::validation_error(errs, msg, location);
+		DISCARD_TEXT(msg)
+		outcome = FALSE;
 	}
 
 @h Decoding JSON requirements.
@@ -915,9 +975,10 @@ For example:
 =
 
 This function is essentially the same as //JSON::decode//, but returning a
-requirement rather than a value, and therefore a little simpler. Note that
-|known_names| can be |NULL| to have it not recognise any such names; there's
-no need to create an empty dictionary in this case.
+requirement rather than a value.
+
+Note that |known_names| can be |NULL| to have it not recognise any such names;
+there's no need to create an empty dictionary if this feature is unwanted.
 
 =
 JSON_requirement *JSON::decode_req(text_stream *T, dictionary *known_names) {
@@ -933,7 +994,8 @@ JSON_requirement *JSON::decode_req_range(text_stream *T, int from, int to,
 	int first_nws = -1, last_nws = -1, first_c = 0, last_c = 0;
 	@<Find the first and last non-whitespace character in requirement@>;
 	if (first_c == '(') {
-		if (last_c != ')') return JSON::single_choice(JSON::error_req(I"mismatched '(' ... ')'"));
+		if (last_c != ')')
+			return JSON::single_choice(JSON::error_sr(I"mismatched '(' ... ')'"));
 		from = first_nws + 1;
 		to = last_nws;
 		JSON_requirement *req = NULL;
@@ -965,35 +1027,41 @@ JSON_requirement *JSON::decode_req_alternative(JSON_requirement *req, text_strea
 	return JSON::add_alternative(req, sing);
 }
 
+@ Note that the keyword |null| is ambiguous in the grammar for JSON requirements:
+does it mean "the value |null|", or does it mean "any value of the type |null|"?
+This makes no difference because the type |null| admits only the value |null|, but
+for what it's worth, we opt for the value.
+
+=
 JSON_single_requirement *JSON::decode_sreq_range(text_stream *T, int from, int to,
 	dictionary *known_names) {
 	int first_nws = -1, last_nws = -1, first_c = 0, last_c = 0;
 	@<Find the first and last non-whitespace character in requirement@>;
-	if (first_nws < 0) return JSON::error_req(I"whitespace where requirement expected");
+	if (first_nws < 0) return JSON::error_sr(I"whitespace where requirement expected");
 	switch (first_c) {
 		case '[':
-			if (last_c != ']') return JSON::error_req(I"mismatched '[' ... ']'");
-			JSON_single_requirement *array = JSON::require(ARRAY_JSONTYPE);
-			return JSON::decode_req_array(array, T, first_nws+1, last_nws, known_names);
+			if (last_c != ']') return JSON::error_sr(I"mismatched '[' ... ']'");
+			JSON_single_requirement *array_sr = JSON::require_type(ARRAY_JSONTYPE);
+			return JSON::decode_req_array(array_sr, T, first_nws+1, last_nws, known_names);
 		case '{':
-			if (last_c != '}') return JSON::error_req(I"mismatched '{' ... '}'");
-			JSON_single_requirement *obj = JSON::require(OBJECT_JSONTYPE);
-			return JSON::decode_req_object(obj, T, first_nws+1, last_nws, known_names);
+			if (last_c != '}') return JSON::error_sr(I"mismatched '{' ... '}'");
+			JSON_single_requirement *obj_sr = JSON::require_type(OBJECT_JSONTYPE);
+			return JSON::decode_req_object(obj_sr, T, first_nws+1, last_nws, known_names);
 		case '<':
-			if (last_c != '>') return JSON::error_req(I"mismatched '<' ... '>'");
+			if (last_c != '>') return JSON::error_sr(I"mismatched '<' ... '>'");
 			JSON_requirement *known = NULL;
 			TEMPORARY_TEXT(name)
 			for (int i = first_nws+1; i<last_nws; i++)
 				PUT_TO(name, Str::get_at(T, i));
 			if (known_names) {
 				dict_entry *de = Dictionaries::find(known_names, name);
-				if (de == NULL) return JSON::error_req(I"unknown '<name>'");
+				if (de == NULL) return JSON::error_sr(I"unknown '<name>'");
 				known = de->value;
 			} else {
-				return JSON::error_req(I"'<' ... '>' not allowed");
+				return JSON::error_sr(I"'<' ... '>' not allowed");
 			}
 			DISCARD_TEXT(name)
-			if (known) return JSON::require_known(known);
+			if (known) return JSON::require_requirement(known);
 			return NULL;
 	}
 
@@ -1013,7 +1081,7 @@ JSON_single_requirement *JSON::decode_sreq_range(text_stream *T, int from, int t
 		if (value->JSON_type == ERROR_JSONTYPE) {
 			TEMPORARY_TEXT(err)
 			WRITE_TO(err, "JSON value error: %S", value->if_error);
-			JSON_single_requirement *sing = JSON::error_req(err);
+			JSON_single_requirement *sing = JSON::error_sr(err);
 			DISCARD_TEXT(err)
 			return sing;
 		}
@@ -1021,21 +1089,19 @@ JSON_single_requirement *JSON::decode_sreq_range(text_stream *T, int from, int t
 	}
 
 	if ((Str::includes_at(T, first_nws, I"number")) && (last_nws - first_nws == 5))
-		return JSON::require(NUMBER_JSONTYPE);
+		return JSON::require_type(NUMBER_JSONTYPE);
 	if ((Str::includes_at(T, first_nws, I"double")) && (last_nws - first_nws == 5))
-		return JSON::require(DOUBLE_JSONTYPE);
+		return JSON::require_type(DOUBLE_JSONTYPE);
 	if ((Str::includes_at(T, first_nws, I"string")) && (last_nws - first_nws == 5))
-		return JSON::require(STRING_JSONTYPE);
+		return JSON::require_type(STRING_JSONTYPE);
 	if ((Str::includes_at(T, first_nws, I"boolean")) && (last_nws - first_nws == 6))
-		return JSON::require(BOOLEAN_JSONTYPE);
-	if ((Str::includes_at(T, first_nws, I"null")) && (last_nws - first_nws == 3))
-		return JSON::require(NULL_JSONTYPE);
+		return JSON::require_type(BOOLEAN_JSONTYPE);
 
 	text_stream *msg = Str::new();
 	WRITE_TO(msg, "unknown JSON type '");
 	for (int i=first_nws; i<last_nws; i++) PUT_TO(msg, Str::get_at(T, i));
 	WRITE_TO(msg, "'");
-	return JSON::error_req(msg);
+	return JSON::error_sr(msg);
 }
 
 @<Find the first and last non-whitespace character in requirement@> =
@@ -1053,13 +1119,13 @@ JSON_single_requirement *JSON::decode_sreq_range(text_stream *T, int from, int t
 @ Array requirements:
 
 =
-JSON_single_requirement *JSON::decode_req_array(JSON_single_requirement *array, text_stream *T, 
-	int from, int to, dictionary *known_names) {
+JSON_single_requirement *JSON::decode_req_array(JSON_single_requirement *array_sr,
+	text_stream *T, int from, int to, dictionary *known_names) {
 	int content = FALSE;
 	for (int i=from; i<to; i++)
 		if (Characters::is_whitespace(Str::get_at(T, i)) == FALSE)
 			content = TRUE;
-	if (content == FALSE) return array;
+	if (content == FALSE) return array_sr;
 	while ((to > from) && (Characters::is_whitespace(Str::get_at(T, to-1)))) to--;
 	if (Str::get_at(T, to-1) == '*') {
 		to--;
@@ -1078,25 +1144,25 @@ JSON_single_requirement *JSON::decode_req_array(JSON_single_requirement *array, 
 		}
 	}
 	if (first_comma >= 0) {
-		array = JSON::decode_req_array_entry(array, T, from, first_comma, known_names);
+		array_sr = JSON::decode_req_array_entry(array_sr, T, from, first_comma, known_names);
 		from = first_comma + 1;
 		goto NextEntry;
 	}
-	return JSON::decode_req_array_entry(array, T, from, to, known_names);
+	return JSON::decode_req_array_entry(array_sr, T, from, to, known_names);
 }
 
-JSON_single_requirement *JSON::decode_req_array_entry(JSON_single_requirement *array, text_stream *T,
-	int from, int to, dictionary *known_names) {
+JSON_single_requirement *JSON::decode_req_array_entry(JSON_single_requirement *array_sr,
+	text_stream *T, int from, int to, dictionary *known_names) {
 	JSON_requirement *req = JSON::decode_req_range(T, from, to, known_names);
-	JSON::require_entry(array, req);
-	return array;
+	JSON::require_entry(array_sr, req);
+	return array_sr;
 }
 
 @ And similarly for objects.
 
 =
-JSON_single_requirement *JSON::decode_req_object(JSON_single_requirement *obj, text_stream *T, 
-	int from, int to, dictionary *known_names) {
+JSON_single_requirement *JSON::decode_req_object(JSON_single_requirement *obj,
+	text_stream *T, int from, int to, dictionary *known_names) {
 	int content = FALSE;
 	for (int i=from; i<to; i++)
 		if (Characters::is_whitespace(Str::get_at(T, i)) == FALSE)
@@ -1122,14 +1188,14 @@ JSON_single_requirement *JSON::decode_req_object(JSON_single_requirement *obj, t
 	return JSON::decode_req_object_entry(obj, T, from, to, known_names);
 }
 
-JSON_single_requirement *JSON::decode_req_object_entry(JSON_single_requirement *obj, text_stream *T, 
-	int from, int to, dictionary *known_names) {
+JSON_single_requirement *JSON::decode_req_object_entry(JSON_single_requirement *obj,
+	text_stream *T, int from, int to, dictionary *known_names) {
 	int optional = FALSE;
 	while (Characters::is_whitespace(Str::get_at(T, from))) from++;
 	if (Str::get_at(T, from) == '?') { optional = TRUE; from++; }
 	while (Characters::is_whitespace(Str::get_at(T, from))) from++;
 	if (Str::get_at(T, from) != '"')
-		return JSON::error_req(I"key does not begin with quotation mark");
+		return JSON::error_sr(I"key does not begin with quotation mark");
 	from++;
 	int ended = FALSE;
 	TEMPORARY_TEXT(key)
@@ -1142,12 +1208,12 @@ JSON_single_requirement *JSON::decode_req_object_entry(JSON_single_requirement *
 			PUT_TO(key, c);
 		}
 	}
-	if (ended == FALSE) return JSON::error_req(I"key does not end with quotation mark");
+	if (ended == FALSE) return JSON::error_sr(I"key does not end with quotation mark");
 	while (Characters::is_whitespace(Str::get_at(T, from))) from++;
 	if ((from >= to) || (Str::get_at(T, from) != ':'))
-		return JSON::error_req(I"key is not followed by ':'");
+		return JSON::error_sr(I"key is not followed by ':'");
 	from++;
-	if (JSON::look_up_pair(obj, key)) return JSON::error_req(I"duplicate key");
+	if (JSON::look_up_pair(obj, key)) return JSON::error_sr(I"duplicate key");
 	JSON_requirement *req = JSON::decode_req_range(T, from, to, known_names);
 	if (optional) JSON::allow_pair(obj, key, req);
 	else JSON::require_pair(obj, key, req);
@@ -1160,22 +1226,21 @@ This is now simple, with one caveat. It's possible to set up requirement trees
 so that they are not well-founded. For example:
 
 = (text as InC)
-	JSON_single_requirement *set = JSON::require(ARRAY_JSONTYPE);
+	JSON_single_requirement *set = JSON::require_type(ARRAY_JSONTYPE);
 	set->all_if_list = JSON::single_choice(set);
 =
 
 This is not useless: it matches, say, |[]|, |[ [] ]| and |[ [], [ [] ] ]|
 and other constructions giving amusement to set theorists. But it would cause
-the following to hang without the check on "encoding numbers", which in effect
-detect whether a requirement has already been printed in this round.
+the following to hang. Note that requirements read in from files (see below)
+are always well-founded, and so do not have this issue.
 
 =
-int unique_JSON_encoding = 1;
 void JSON::encode_req(OUTPUT_STREAM, JSON_requirement *req) {
-	JSON::encode_req_r(OUT, req, ++unique_JSON_encoding);
+	JSON::encode_req_r(OUT, req);
 }
 
-void JSON::encode_req_r(OUTPUT_STREAM, JSON_requirement *req, int uniq) {
+void JSON::encode_req_r(OUTPUT_STREAM, JSON_requirement *req) {
 	if (req == NULL) internal_error("no JSON value supplied");
 	int L = LinkedLists::len(req->alternatives);
 	if (L > 1) WRITE("( ");
@@ -1183,69 +1248,85 @@ void JSON::encode_req_r(OUTPUT_STREAM, JSON_requirement *req, int uniq) {
 	JSON_single_requirement *sing;
 	LOOP_OVER_LINKED_LIST(sing, JSON_single_requirement, req->alternatives) {
 		if (c++ > 0) WRITE(" | ");
-		JSON::encode_sreq_r(OUT, sing, uniq);
+		JSON::encode_sreq_r(OUT, sing);
 	}
 	if (L > 1) WRITE(" )");
 }
 
-void JSON::encode_sreq_r(OUTPUT_STREAM, JSON_single_requirement *req, int uniq) {
-	if (req->encoding_number == uniq) {
-		WRITE("<req %d>", req->allocation_id);
-	} else {
-		req->encoding_number = uniq;
-		if (req->this_requirement) {
-			JSON::encode_req_r(OUT, req->this_requirement, uniq);
-			return;
-		}
-		if (req->this_value) {
-			JSON::encode(OUT, req->this_value);
-			return;
-		}
-		switch (req->JSON_type) {
-			case ARRAY_JSONTYPE: {
-				WRITE("[");
-				if (req->all_if_list) {
-					WRITE(" ");
-					JSON::encode_req_r(OUT, req->all_if_list, uniq);
-					WRITE("* ");
-				} else {
-					int count = 0;
-					JSON_requirement *E_req;
-					LOOP_OVER_LINKED_LIST(E_req, JSON_requirement, req->if_list) {
-						if (count++ > 0) WRITE(",");
-						WRITE(" ");
-						JSON::encode_req_r(OUT, E_req, uniq);
-					}
-					if (count > 0) WRITE(" ");
-				}
-				WRITE("]");
-				break;
-			}
-			case OBJECT_JSONTYPE: {
-				WRITE("{\n"); INDENT;
+void JSON::encode_sreq_r(OUTPUT_STREAM, JSON_single_requirement *sing) {
+	if (sing->this_requirement) JSON::encode_req_r(OUT, sing->this_requirement);
+	if (sing->this_value) JSON::encode(OUT, sing->this_value);
+	if (sing->this_type) JSON::encode_type(OUT, sing->this_type);
+}
+
+void JSON::encode_type(OUTPUT_STREAM, JSON_type *type) {
+	switch (type->JSON_type) {
+		case ARRAY_JSONTYPE: {
+			WRITE("[");
+			if (type->all_if_list) {
+				WRITE(" ");
+				JSON::encode_req_r(OUT, type->all_if_list);
+				WRITE("* ");
+			} else {
 				int count = 0;
-				text_stream *key;
-				LOOP_OVER_LINKED_LIST(key, text_stream, req->list_if_object) {
-					if (count++ > 0) WRITE(",\n");
-					JSON_pair_requirement *pr =
-						Dictionaries::read_value(req->dictionary_if_object, key);
-					if (pr == NULL) internal_error("broken JSON req dictionary");
-					if (pr->optional) WRITE("?");
-					WRITE("\"");
-					JSON::encode_string(OUT, key);
-					WRITE("\": ");
-					JSON::encode_req_r(OUT, pr->req, uniq);
+				JSON_requirement *E_req;
+				LOOP_OVER_LINKED_LIST(E_req, JSON_requirement, type->if_list) {
+					if (count++ > 0) WRITE(",");
+					WRITE(" ");
+					JSON::encode_req_r(OUT, E_req);
 				}
-				if (count > 0) WRITE("\n");
-				OUTDENT; WRITE("}");
-				break;
+				if (count > 0) WRITE(" ");
 			}
-			default: JSON::write_type(OUT, req->JSON_type);
+			WRITE("]");
+			break;
 		}
+		case OBJECT_JSONTYPE: {
+			WRITE("{\n"); INDENT;
+			int count = 0;
+			text_stream *key;
+			LOOP_OVER_LINKED_LIST(key, text_stream, type->list_if_object) {
+				if (count++ > 0) WRITE(",\n");
+				JSON_pair_requirement *pr =
+					Dictionaries::read_value(type->dictionary_if_object, key);
+				if (pr == NULL) internal_error("broken JSON req dictionary");
+				if (pr->optional) WRITE("?");
+				WRITE("\"");
+				JSON::encode_string(OUT, key);
+				WRITE("\": ");
+				JSON::encode_req_r(OUT, pr->req);
+			}
+			if (count > 0) WRITE("\n");
+			OUTDENT; WRITE("}");
+			break;
+		}
+		default: JSON::write_type(OUT, type->JSON_type);
 	}
 }
 
 @h Reading requirements files.
+This convenient function reads in a set of requirements from a text file. Each
+requirement should begin |<name> ::=|, and then continues until the next such
+header, or the end of the file. So for example:
+= (text)
+	! My scheme for JSON files describing geographical locations
+	
+	<optional-letter> ::= ( "alpha" | "beta" | null )
+	
+	<position> ::= {
+		"category": <optional-letter>,
+		"latitude": double,
+		"longitude": double,
+	}
+=
+is a valid file declaring two requirements. Forward references are not allowed --
+e.g., <position> can refer to <optional-letter> but not vice versa -- and
+therefore the requirements read in will always be well-founded. Comments are
+lines beginning with |!|; other than comments, only white space is permitted
+before the first requirement begins.
+
+Note that the function //JSON::read_requirements_file// returns a dictionary
+of the requirements it has read, by name (but without their angle-brackets):
+here, it would have two keys, |optional-letter| and |position|.
 
 =
 typedef struct JSON_rrf_state {
@@ -1287,9 +1368,14 @@ void JSON::read_requirements_file_helper(text_stream *text, text_file_position *
 	}
 }
 
+@ This is called when the end of a definition is reached, either because another
+is about to start, or because the end of the file has come:
+
+=
 void JSON::process_req_defn(JSON_rrf_state *state) {
 	if (Str::len(state->name) > 0) {
-		JSON_requirement *req = JSON::decode_printing_errors(state->defn, state->dict, &(state->at));
+		JSON_requirement *req =
+			JSON::decode_printing_errors(state->defn, state->dict, &(state->at));
 		if (req) {
 			dict_entry *de = Dictionaries::create(state->dict, state->name);
 			if (de) de->value = req;
@@ -1306,9 +1392,9 @@ JSON_requirement *JSON::decode_printing_errors(text_stream *defn, dictionary *di
 	int errors_found = FALSE;
 	JSON_single_requirement *sing;
 	LOOP_OVER_LINKED_LIST(sing, JSON_single_requirement, req->alternatives) {
-		if (sing->JSON_type == ERROR_JSONTYPE) {
+		if ((sing->this_type) && (sing->this_type->JSON_type == ERROR_JSONTYPE)) {
 			TEMPORARY_TEXT(err)
-			WRITE_TO(err, "JSON requirement error: %S", sing->if_error);
+			WRITE_TO(err, "JSON requirement error: %S", sing->this_type->if_error);
 			Errors::in_text_file_S(err, tfp);
 			errors_found = TRUE;
 			DISCARD_TEXT(err)

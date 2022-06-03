@@ -27,6 +27,7 @@ here we are.
 @e JSON_pair_requirement_CLASS
 @e JSON_requirement_CLASS
 @e JSON_single_requirement_CLASS
+@e JSON_type_CLASS
 @e JSON_value_CLASS
 @e linked_list_CLASS
 @e linked_list_item_CLASS
@@ -72,6 +73,7 @@ DECLARE_CLASS(HTML_file_state)
 DECLARE_CLASS(JSON_pair_requirement)
 DECLARE_CLASS(JSON_requirement)
 DECLARE_CLASS(JSON_single_requirement)
+DECLARE_CLASS(JSON_type)
 DECLARE_CLASS(JSON_value)
 DECLARE_CLASS(linked_list)
 DECLARE_CLASS(method_set)
