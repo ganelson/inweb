@@ -26,6 +26,10 @@ int Characters::islower(wchar_t c) {
 int Characters::isalnum(wchar_t c) {
 	return isalnum((int) c);
 }
+int Characters::iscntrl(wchar_t c) {
+	int i = c;
+	return ((i >= 0) && (i < 32));
+}
 int Characters::vowel(wchar_t c) {
 	if ((c == 'a') || (c == 'e') || (c == 'i') || (c == 'o') || (c == 'u')) return TRUE;
 	return FALSE;
