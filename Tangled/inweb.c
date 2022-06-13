@@ -3856,9 +3856,13 @@ wchar_t * HTML__translate_colour_name(wchar_t *original) ;
 void  HTML__begin_colour(OUTPUT_STREAM, text_stream *col) ;
 #line 888 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__end_colour(OUTPUT_STREAM) ;
-#line 896 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 895 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__begin_span(OUTPUT_STREAM, text_stream *class_name) ;
+#line 902 "inweb/foundation-module/Chapter 5/HTML.w"
+void  HTML__end_span(OUTPUT_STREAM) ;
+#line 910 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__write_xml_safe_text(OUTPUT_STREAM, text_stream *txt) ;
-#line 927 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 941 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__put(OUTPUT_STREAM, int charcode) ;
 #line 106 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
 ebook * Epub__new(text_stream *title, char *prefix) ;
@@ -8981,11 +8985,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.1.0-beta+1B08";
+			char *svn = "7.1.0-beta+1B09";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "2 June 2022";
+			char *d = "3 June 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -14758,7 +14762,19 @@ void HTML__end_colour(OUTPUT_STREAM) {
 	HTML_CLOSE("span");
 }
 
-#line 896 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 895 "inweb/foundation-module/Chapter 5/HTML.w"
+void HTML__begin_span(OUTPUT_STREAM, text_stream *class_name) {
+	if (Str__len(class_name) > 0) {
+		HTML_OPEN_WITH("span", "class=\"%S\"", class_name);
+	} else {
+		HTML_OPEN("span");
+	}
+}
+void HTML__end_span(OUTPUT_STREAM) {
+	HTML_CLOSE("span");
+}
+
+#line 910 "inweb/foundation-module/Chapter 5/HTML.w"
 void HTML__write_xml_safe_text(OUTPUT_STREAM, text_stream *txt) {
 	LOOP_THROUGH_TEXT(pos, txt) {
 		wchar_t c = Str__get(pos);
@@ -14771,20 +14787,20 @@ void HTML__write_xml_safe_text(OUTPUT_STREAM, text_stream *txt) {
 	}
 }
 
-#line 924 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 938 "inweb/foundation-module/Chapter 5/HTML.w"
 text_stream *source_ref_fields[3] = { NULL, NULL, NULL }; /* paraphrase, filename, line */
 int source_ref_field = -1; /* which field we are buffering */
 
 void HTML__put(OUTPUT_STREAM, int charcode) {
 	
 {
-#line 951 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 965 "inweb/foundation-module/Chapter 5/HTML.w"
 	if ((source_ref_field >= 0) && (charcode != SOURCE_REF_CHAR)) {
 		PUT_TO(source_ref_fields[source_ref_field], charcode); return;
 	}
 
 }
-#line 928 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 942 "inweb/foundation-module/Chapter 5/HTML.w"
 ;
 	switch(charcode) {
 		case '"': WRITE("&quot;"); break;
@@ -14802,7 +14818,7 @@ void HTML__put(OUTPUT_STREAM, int charcode) {
 		#ifdef WORDS_MODULE
 		case SOURCE_REF_CHAR: 
 {
-#line 956 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 970 "inweb/foundation-module/Chapter 5/HTML.w"
 	source_ref_field++;
 	if (source_ref_field == 3) {
 		source_ref_field = -1;
@@ -14819,7 +14835,7 @@ void HTML__put(OUTPUT_STREAM, int charcode) {
 	}
 
 }
-#line 943 "inweb/foundation-module/Chapter 5/HTML.w"
+#line 957 "inweb/foundation-module/Chapter 5/HTML.w"
 ; break;
 		#endif
 
@@ -33205,7 +33221,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.1.0-beta+1B08\t/built 2 June 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.1.0-beta+1B09\t/built 3 June 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
