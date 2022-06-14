@@ -889,6 +889,20 @@ void HTML::end_colour(OUTPUT_STREAM) {
 	HTML_CLOSE("span");
 }
 
+@h Spans by class.
+
+=
+void HTML::begin_span(OUTPUT_STREAM, text_stream *class_name) {
+	if (Str::len(class_name) > 0) {
+		HTML_OPEN_WITH("span", "class=\"%S\"", class_name);
+	} else {
+		HTML_OPEN("span");
+	}
+}
+void HTML::end_span(OUTPUT_STREAM) {
+	HTML_CLOSE("span");
+}
+
 @h Writing text.
 To begin with, to XML:
 
