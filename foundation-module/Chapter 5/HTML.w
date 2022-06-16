@@ -528,30 +528,25 @@ void HTML::begin_wide_html_table(OUTPUT_STREAM) {
 @ And some more general code:
 
 =
-void HTML::begin_html_table(OUTPUT_STREAM, char *colour, int full_width,
+void HTML::begin_html_table(OUTPUT_STREAM, text_stream *classname, int full_width,
 	int border, int cellspacing, int cellpadding, int height, int width) {
 	TEMPORARY_TEXT(tab)
 	WRITE_TO(tab, "border=\"%d\" cellspacing=\"%d\" cellpadding=\"%d\"",
 		border, cellspacing, cellpadding);
-	if (colour) {
-		if (*colour == '*')
-			WRITE_TO(tab, "  style=\"background-image:url('inform:/%s');\"", colour+1);
-		else
-			WRITE_TO(tab, " bgcolor=\"%s\"", colour);
-	}
+	if (Str::len(classname) > 0) WRITE_TO(tab, " class=\"%S\"", classname);
 	if (full_width) WRITE_TO(tab, " width=100%%");
 	if (width > 0) WRITE_TO(tab, " width=\"%d\"", width);
 	if (height > 0) WRITE_TO(tab, " height=\"%d\"", height);
 	HTML_OPEN_WITH("table", "%S", tab);
 	DISCARD_TEXT(tab)
 }
-void HTML::begin_html_table_bg(OUTPUT_STREAM, char *colour, int full_width,
-	int border, int cellspacing, int cellpadding, int height, int width, char *bg) {
+void HTML::begin_html_table_bg(OUTPUT_STREAM, text_stream *classname, int full_width,
+	int border, int cellspacing, int cellpadding, int height, int width, text_stream *bg) {
 	TEMPORARY_TEXT(tab)
 	WRITE_TO(tab, "border=\"%d\" cellspacing=\"%d\" cellpadding=\"%d\"",
 		border, cellspacing, cellpadding);
-	if (bg) WRITE_TO(tab, " background=\"inform:/map_icons/%s\"", bg);
-	if (colour) WRITE_TO(tab, " bgcolor=\"%s\"", colour);
+	if (Str::len(bg) > 0) WRITE_TO(tab, " background=\"inform:/%S\"", bg);
+	if (Str::len(classname) > 0) WRITE_TO(tab, " class=\"%S\"", classname);
 	if (full_width) WRITE_TO(tab, " width=100%%");
 	if (width > 0) WRITE_TO(tab, " width=\"%d\"", width);
 	if (height > 0) WRITE_TO(tab, " height=\"%d\"", height);
@@ -563,8 +558,11 @@ void HTML::first_html_column(OUTPUT_STREAM, int width) {
 	if (width > 0) HTML_OPEN_WITH("td", "align=\"left\" valign=\"top\" width=\"%d\"", width)
 	else HTML_OPEN_WITH("td", "align=\"left\" valign=\"top\"");
 }
-void HTML::first_html_column_nowrap(OUTPUT_STREAM, int width, char *colour) {
-	if (colour) HTML_OPEN_WITH("tr", "bgcolor=\"%s\"", colour) else HTML_OPEN("tr");
+void HTML::first_html_column_nowrap(OUTPUT_STREAM, int width, text_stream *classname) {
+	if (Str::len(classname) > 0)
+		HTML_OPEN_WITH("tr", "class=\"%S\"", classname)
+	else
+		HTML_OPEN("tr");
 	TEMPORARY_TEXT(col)
 	WRITE_TO(col, "style=\"white-space:nowrap;\" align=\"left\" valign=\"top\" height=\"20\"");
 	if (width > 0) WRITE_TO(col, " width=\"%d\"", width);
@@ -579,8 +577,12 @@ void HTML::first_html_column_spaced(OUTPUT_STREAM, int width) {
 	HTML_OPEN_WITH("td", "%S", col);
 	DISCARD_TEXT(col)
 }
-void HTML::first_html_column_coloured(OUTPUT_STREAM, int width, char *colour, int cs) {
-	if (colour) HTML_OPEN_WITH("tr", "bgcolor=\"%s\"", colour) else HTML_OPEN("tr");
+void HTML::first_html_column_coloured(OUTPUT_STREAM, int width, text_stream *classname,
+	int cs) {
+	if (Str::len(classname) > 0)
+		HTML_OPEN_WITH("tr", "class=\"%S\"", classname)
+	else
+		HTML_OPEN("tr");
 	TEMPORARY_TEXT(col)
 	WRITE_TO(col, "nowrap=\"nowrap\" align=\"left\" valign=\"top\"");
 	if (width > 0) WRITE_TO(col, " width=\"%d\"", width);
@@ -650,18 +652,18 @@ void HTML::end_html_table(OUTPUT_STREAM) {
 @d ROUND_BOX_BOTTOM 2
 
 =
-void HTML::open_coloured_box(OUTPUT_STREAM, char *html_colour, int rounding) {
+void HTML::open_coloured_box(OUTPUT_STREAM, text_stream *classname, int rounding) {
 	HTML_OPEN_WITH("table",
 		"width=\"100%%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" "
-		"style=\"background-color: #%s\"", html_colour);
+		"class=\"%S\"", classname);
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "width=\"%d\"", CORNER_SIZE);
-	if (rounding & ROUND_BOX_TOP) HTML::box_corner(OUT, html_colour, "tl");
+	if (rounding & ROUND_BOX_TOP) HTML::box_corner(OUT, classname, I"tl");
 	HTML_CLOSE("td");
 	HTML_OPEN("td");
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "width=\"%d\"", CORNER_SIZE);
-	if (rounding & ROUND_BOX_TOP) HTML::box_corner(OUT, html_colour, "tr");
+	if (rounding & ROUND_BOX_TOP) HTML::box_corner(OUT, classname, I"tr");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTML_OPEN("tr");
@@ -670,29 +672,29 @@ void HTML::open_coloured_box(OUTPUT_STREAM, char *html_colour, int rounding) {
 	HTML_OPEN("td");
 }
 
-void HTML::close_coloured_box(OUTPUT_STREAM, char *html_colour, int rounding) {
+void HTML::close_coloured_box(OUTPUT_STREAM, text_stream *classname, int rounding) {
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "width=\"%d\"", CORNER_SIZE);
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "width=\"%d\"", CORNER_SIZE);
-	if (rounding & ROUND_BOX_BOTTOM) HTML::box_corner(OUT, html_colour, "bl");
+	if (rounding & ROUND_BOX_BOTTOM) HTML::box_corner(OUT, classname, I"bl");
 	HTML_CLOSE("td");
 	HTML_OPEN("td");
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "width=\"%d\"", CORNER_SIZE);
-	if (rounding & ROUND_BOX_BOTTOM) HTML::box_corner(OUT, html_colour, "br");
+	if (rounding & ROUND_BOX_BOTTOM) HTML::box_corner(OUT, classname, I"br");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTML::end_html_table(OUT);
 }
 
-void HTML::box_corner(OUTPUT_STREAM, char *html_colour, char *corner) {
+void HTML::box_corner(OUTPUT_STREAM, text_stream *classname, text_stream *corner) {
 	HTML_TAG_WITH("img",
-		"src=\"inform:/bg_images/%s_corner_%s.gif\" "
+		"src=\"inform:/bg_images/%S_corner_%S.gif\" "
 		"width=\"%d\" height=\"%d\" border=\"0\" alt=\"...\"",
-		corner, html_colour, CORNER_SIZE, CORNER_SIZE);
+		corner, classname, CORNER_SIZE, CORNER_SIZE);
 }
 
 @h Miscellaneous.
