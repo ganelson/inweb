@@ -258,7 +258,8 @@ the JSON standard), and the special cases |true|, |false| and |null|.
 
 =
 JSON_value *JSON::decode_range(text_stream *T, int from, int to, text_file_position *tfp) {
-	int first_nws = -1, last_nws = -1, first_c = 0, last_c = 0;
+	int first_nws = -1, last_nws = -1;
+	wchar_t first_c = 0, last_c = 0;
 	@<Find the first and last non-whitespace character@>;
 	switch (first_c) {
 		case '[':
@@ -456,7 +457,7 @@ JSON_value *JSON::decode_string(text_stream *T, int from, int to, text_file_posi
 		if (c == '\\') {
 			i++;
 			c = Str::get_at(T, i);
-			if ((c >= 0) && (c < 32)) return JSON::decode_error(I"unescaped control character", tfp);
+			if (Characters::iscntrl(c)) return JSON::decode_error(I"unescaped control character", tfp);
 			switch (c) {
 				case 'b': c = 8; break;
 				case 't': c = 9; break;
@@ -571,7 +572,7 @@ void JSON::encode_string(OUTPUT_STREAM, text_stream *T) {
 			case 12: WRITE("\\f"); break;
 			case 13: WRITE("\\r"); break;
 			default:
-				if ((c >= 0) && (c < 32)) WRITE("\\u%04x", c);
+				if (Characters::iscntrl(c)) WRITE("\\u%04x", (int)c);
 				else PUT(c);
 				break;
 		}
@@ -991,7 +992,8 @@ JSON requirement.
 =
 JSON_requirement *JSON::decode_req_range(text_stream *T, int from, int to,
 	dictionary *known_names) {
-	int first_nws = -1, last_nws = -1, first_c = 0, last_c = 0;
+	int first_nws = -1, last_nws = -1;
+	wchar_t first_c = 0, last_c = 0;
 	@<Find the first and last non-whitespace character in requirement@>;
 	if (first_c == '(') {
 		if (last_c != ')')
@@ -1035,7 +1037,8 @@ for what it's worth, we opt for the value.
 =
 JSON_single_requirement *JSON::decode_sreq_range(text_stream *T, int from, int to,
 	dictionary *known_names) {
-	int first_nws = -1, last_nws = -1, first_c = 0, last_c = 0;
+	int first_nws = -1, last_nws = -1;
+	wchar_t first_c = 0, last_c = 0;
 	@<Find the first and last non-whitespace character in requirement@>;
 	if (first_nws < 0) return JSON::error_sr(I"whitespace where requirement expected");
 	switch (first_c) {
