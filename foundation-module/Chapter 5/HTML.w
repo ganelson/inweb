@@ -47,7 +47,7 @@ that into the debugging log, so:
 	}
 	LOG("\n\n");
 }
- 
+
 @ Any text stream can be declared as being HTML, and therefore subject to
 this auditing. To do that, we atach an |HTML_file_state| object to the
 text stream.
@@ -654,37 +654,13 @@ void HTML::end_html_table(OUTPUT_STREAM) {
 =
 void HTML::open_coloured_box(OUTPUT_STREAM, text_stream *classname, int rounding) {
 	HTML_OPEN_WITH("table",
-		"width=\"100%%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" "
+		"width=\"100%%\" cellpadding=\"6\" cellspacing=\"0\" border=\"0\" "
 		"class=\"%S\"", classname);
 	HTML_OPEN("tr");
-	HTML_OPEN_WITH("td", "width=\"%d\"", CORNER_SIZE);
-	if (rounding & ROUND_BOX_TOP) HTML::box_corner(OUT, classname, I"tl");
-	HTML_CLOSE("td");
-	HTML_OPEN("td");
-	HTML_CLOSE("td");
-	HTML_OPEN_WITH("td", "width=\"%d\"", CORNER_SIZE);
-	if (rounding & ROUND_BOX_TOP) HTML::box_corner(OUT, classname, I"tr");
-	HTML_CLOSE("td");
-	HTML_CLOSE("tr");
-	HTML_OPEN("tr");
-	HTML_OPEN_WITH("td", "width=\"%d\"", CORNER_SIZE);
-	HTML_CLOSE("td");
 	HTML_OPEN("td");
 }
 
 void HTML::close_coloured_box(OUTPUT_STREAM, text_stream *classname, int rounding) {
-	HTML_CLOSE("td");
-	HTML_OPEN_WITH("td", "width=\"%d\"", CORNER_SIZE);
-	HTML_CLOSE("td");
-	HTML_CLOSE("tr");
-	HTML_OPEN("tr");
-	HTML_OPEN_WITH("td", "width=\"%d\"", CORNER_SIZE);
-	if (rounding & ROUND_BOX_BOTTOM) HTML::box_corner(OUT, classname, I"bl");
-	HTML_CLOSE("td");
-	HTML_OPEN("td");
-	HTML_CLOSE("td");
-	HTML_OPEN_WITH("td", "width=\"%d\"", CORNER_SIZE);
-	if (rounding & ROUND_BOX_BOTTOM) HTML::box_corner(OUT, classname, I"br");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTML::end_html_table(OUT);
