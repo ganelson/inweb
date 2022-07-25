@@ -501,6 +501,11 @@ elaborate makefiles for multi-web projects.
 (*) Material in balanced braces |{ ... }| is expanded into something more
 interesting.
 
+(*) Literal braces can be written with a backslash, |\{| and |\}|, which
+expand just into |{| and |}|. Literal backslashes are written |\\|, which
+"expands" to |\|. A backslash is not allowed to precede any other character,
+so something like |\fish| produces an error message.
+
 @ Makescripts support variables, whose names have to be in capital letters,
 perhaps with underscores and digits added. For example:
 = (text)

@@ -14,7 +14,7 @@ void Readme::write(filename *prototype, filename *F) {
 		Readme::bibliographic_expander, NULL);
 	Preprocessor::do_not_suppress_whitespace(mm);
 	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
-	Preprocessor::preprocess(prototype, F, NULL, L, NULL_GENERAL_POINTER, '/');
+	Preprocessor::preprocess(prototype, F, NULL, L, NULL_GENERAL_POINTER, '/', ISO_ENC);
 }
 
 @ And this is the one domain-specific macro:

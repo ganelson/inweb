@@ -12,18 +12,24 @@ For documentation on the markup notation, see //inweb: Webs, Tangling and Weavin
 
 To use the preprocessor, call:
 = (text as InC)
-Preprocessor::preprocess(from, to, header, special_macros, specifics)
+Preprocessor::preprocess(from, to, header, special_macros, specifics, encoding)
 =
 where |from| and |to| are filenames, |header| is text to place at the top of
 the file (if any), |special_macros| is a |linked_list| of |preprocessor_macro|s
 set up with special meanings to the situation, and |specifics| is a general
-pointer to any data those special meanings need to use.
+pointer to any data those special meanings need to use. |encoding| should be
+one of |UTF8_ENC| or |ISO_ENC|.
+
+@d PROTECTED_OPEN_BRACE_PPCHAR 0x25A0
+@d PROTECTED_CLOSE_BRACE_PPCHAR 0x25A1
+@d PROTECTED_BLANK_PPCHAR 0x25A2
 
 =
 void Preprocessor::preprocess(filename *prototype, filename *F, text_stream *header,
-	linked_list *special_macros, general_pointer specifics, wchar_t comment_char) {
+	linked_list *special_macros, general_pointer specifics, wchar_t comment_char,
+	int encoding) {
 	struct text_stream processed_file;
-	if (STREAM_OPEN_TO_FILE(&processed_file, F, ISO_ENC) == FALSE)
+	if (STREAM_OPEN_TO_FILE(&processed_file, F, encoding) == FALSE)
 		Errors::fatal_with_file("unable to write tangled file", F);
 	text_stream *OUT = &processed_file;
 	WRITE("%S", header);
@@ -32,6 +38,12 @@ void Preprocessor::preprocess(filename *prototype, filename *F, text_stream *hea
 	@<Initialise the preprocessor state@>;
 	TextFiles::read(prototype, FALSE, "can't open prototype file",
 		TRUE, Preprocessor::scan_line, NULL, &PPS);
+	for (int i=0; i<Str::len(PPS.dest); i++) {
+		wchar_t c = Str::get_at(PPS.dest, i);
+		if (c == PROTECTED_OPEN_BRACE_PPCHAR) PUT('{');
+		else if (c == PROTECTED_CLOSE_BRACE_PPCHAR) PUT('}');
+		else if (c != PROTECTED_BLANK_PPCHAR) PUT(c);
+	}
 	STREAM_CLOSE(OUT);
 }
 
@@ -64,7 +76,7 @@ typedef struct preprocessor_loop {
 } preprocessor_loop;
 
 @<Initialise the preprocessor state@> =
-	PPS.dest = OUT;
+	PPS.dest = Str::new();
 	PPS.suppress_newline = FALSE;
 	PPS.last_line_was_blank = TRUE;
 	PPS.defining = NULL;
@@ -98,6 +110,7 @@ parametrised names: but then, nor should you.
 void Preprocessor::scan_line(text_stream *line, text_file_position *tfp, void *X) {
 	preprocessor_state *PPS = (preprocessor_state *) X;
 	@<Skip comments@>;
+	@<Make backslash literals safe@>;
 	@<Deal with textual definitions of new macros@>;
 	Preprocessor::expand(line, tfp, PPS);
 	@<Sometimes, but only sometimes, output a newline@>;
@@ -112,7 +125,31 @@ is the special comment character: often |#|, but not necessarily.
 		if (c == PPS->comment_character) return;
 		if (Characters::is_whitespace(c) == FALSE) break;
 	}
-	
+
+@<Make backslash literals safe@> =
+	for (int i = 0; i < Str::len(line); i++) {
+		wchar_t c = Str::get_at(line, i);
+		if (c == '\\') {
+			wchar_t d = Str::get_at(line, i+1);
+			switch (d) {
+				case '{':
+					Str::put_at(line, i, PROTECTED_OPEN_BRACE_PPCHAR);
+					Str::put_at(line, i+1, PROTECTED_BLANK_PPCHAR);
+					break;
+				case '}':
+					Str::put_at(line, i, PROTECTED_CLOSE_BRACE_PPCHAR);
+					Str::put_at(line, i+1, PROTECTED_BLANK_PPCHAR);
+					break;
+				case '\\':
+					Str::put_at(line, i+1, PROTECTED_BLANK_PPCHAR);
+					break;
+				default:
+					Errors::in_text_file("backslash '\\' must be followed by '{', '}' or '\\'", tfp);
+					break;
+			}
+		}
+	}			
+
 @<Deal with textual definitions of new macros@> =
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, line, L" *{define: *(%C+) *} *")) @<Begin a bare definition@>;
@@ -173,7 +210,7 @@ is the special comment character: often |#|, but not necessarily.
 (ii) Contains braces |{ ... }| used in nested pairs (unless there is a syntax
 error in the prototype, in which case we must complain).
 
-The idea is the pass everything straight through except any braced matter,
+The idea is to pass everything straight through except any braced matter,
 which needs special attention.
 
 =

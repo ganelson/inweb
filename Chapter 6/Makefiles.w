@@ -41,7 +41,7 @@ void Makefiles::write(web *W, filename *prototype, filename *F, module_search *I
 	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
 
 	Preprocessor::preprocess(prototype, F, header, L,
-		STORE_POINTER_makefile_specifics(specifics), '#');
+		STORE_POINTER_makefile_specifics(specifics), '#', ISO_ENC);
 }
 
 @ We will allow a makescript to declare "components" (webs, really), so we need

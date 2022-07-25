@@ -318,7 +318,8 @@ JSON_value *JSON::decode_array(JSON_value *array, text_stream *T, int from, int 
 		switch (c) {
 			case '"': quoted = (quoted)?FALSE:TRUE; break;
 			case '\\': if (quoted) i++; break;
-			case ',': if ((first_comma < 0) && (bl == 0)) first_comma = i; break;
+			case ',': if ((quoted == FALSE) && ((first_comma < 0) && (bl == 0)))
+				first_comma = i; break;
 			case '[': case '{': if (quoted == FALSE) bl++; break;
 			case ']': case '}': if (quoted == FALSE) bl--; break;
 		}
@@ -354,7 +355,8 @@ JSON_value *JSON::decode_object(JSON_value *obj, text_stream *T, int from, int t
 		switch (c) {
 			case '"': quoted = (quoted)?FALSE:TRUE; break;
 			case '\\': if (quoted) i++; break;
-			case ',': if ((first_comma < 0) && (bl == 0)) first_comma = i; break;
+			case ',': if ((quoted == FALSE) && ((first_comma < 0) && (bl == 0)))
+				first_comma = i; break;
 			case '[': case '{': if (quoted == FALSE) bl++; break;
 			case ']': case '}': if (quoted == FALSE) bl--; break;
 		}
@@ -1141,7 +1143,8 @@ JSON_single_requirement *JSON::decode_req_array(JSON_single_requirement *array_s
 		switch (c) {
 			case '"': quoted = (quoted)?FALSE:TRUE; break;
 			case '\\': if (quoted) i++; break;
-			case ',': if ((first_comma < 0) && (bl == 0)) first_comma = i; break;
+			case ',': if ((quoted == FALSE) && ((first_comma < 0) && (bl == 0)))
+				first_comma = i; break;
 			case '[': case '{': case '(': if (quoted == FALSE) bl++; break;
 			case ']': case '}': case ')': if (quoted == FALSE) bl--; break;
 		}
@@ -1178,7 +1181,8 @@ JSON_single_requirement *JSON::decode_req_object(JSON_single_requirement *obj,
 		switch (c) {
 			case '"': quoted = (quoted)?FALSE:TRUE; break;
 			case '\\': if (quoted) i++; break;
-			case ',': if ((first_comma < 0) && (bl == 0)) first_comma = i; break;
+			case ',': if ((quoted == FALSE) && ((first_comma < 0) && (bl == 0)))
+				first_comma = i; break;
 			case '[': case '{': case '(': if (quoted == FALSE) bl++; break;
 			case ']': case '}': case ')': if (quoted == FALSE) bl--; break;
 		}

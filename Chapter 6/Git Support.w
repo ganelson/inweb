@@ -12,7 +12,7 @@ void Git::write_gitignore(web *W, filename *prototype, filename *F) {
 	WRITE_TO(header, "# This gitignore was automatically written by inweb -gitignore\n");
 	WRITE_TO(header, "# and is not intended for human editing\n\n");
 	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
-	Preprocessor::preprocess(prototype, F, header, L, NULL_GENERAL_POINTER, '#');
+	Preprocessor::preprocess(prototype, F, header, L, NULL_GENERAL_POINTER, '#', ISO_ENC);
 }
 
 @ Our one non-standard macro simply includes a file of standing material which

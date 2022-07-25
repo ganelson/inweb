@@ -638,6 +638,10 @@ elaborate makefiles for multi-web projects.
 <ul class="items"><li>&#9679; Comment lines, those beginning with <span class="extract"><span class="extract-syntax">#</span></span>, are stripped out.
 </li><li>&#9679; Material in balanced braces <span class="extract"><span class="extract-syntax">{ ... }</span></span> is expanded into something more
 interesting.
+</li><li>&#9679; Literal braces can be written with a backslash, <span class="extract"><span class="extract-syntax">\{</span></span> and <span class="extract"><span class="extract-syntax">\}</span></span>, which
+expand just into <span class="extract"><span class="extract-syntax">{</span></span> and <span class="extract"><span class="extract-syntax">}</span></span>. Literal backslashes are written <span class="extract"><span class="extract-syntax">\\</span></span>, which
+"expands" to <span class="extract"><span class="extract-syntax">\</span></span>. A backslash is not allowed to precede any other character,
+so something like <span class="extract"><span class="extract-syntax">\fish</span></span> produces an error message.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Makescripts support variables, whose names have to be in capital letters,
 perhaps with underscores and digits added. For example:
