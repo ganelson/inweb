@@ -143,6 +143,7 @@ is the special comment character: often |#|, but not necessarily.
 				case '\\':
 					Str::put_at(line, i+1, PROTECTED_BLANK_PPCHAR);
 					break;
+				case ' ': case '\t': case '\n': case '\r': case 0: break;
 				default:
 					Errors::in_text_file("backslash '\\' must be followed by '{', '}' or '\\'", tfp);
 					break;
