@@ -468,6 +468,7 @@ JSON_value *JSON::decode_string(text_stream *T, int from, int to, text_file_posi
 				case 'r': c = 13; break;
 				case '\\': break;
 				case '/': break;
+				case '"': break;
 				case 'u': @<Decode a hexadecimal Unicode escape@>; break;
 				default: return JSON::decode_error(I"bad '\\' escape in string", tfp);
 			}

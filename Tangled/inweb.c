@@ -1442,19 +1442,19 @@ typedef struct JSON_value {
 	struct text_stream *if_error;
 	CLASS_DEFINITION
 } JSON_value;
-#line 594 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 595 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_requirement {
 	struct linked_list *alternatives; /* of |JSON_single_requirement| */
 	CLASS_DEFINITION
 } JSON_requirement;
-#line 618 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 619 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_single_requirement {
 	struct JSON_requirement *this_requirement;
 	struct JSON_value *this_value;
 	struct JSON_type *this_type;
 	CLASS_DEFINITION
 } JSON_single_requirement;
-#line 656 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 657 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_type {
 	int JSON_type;
 
@@ -1467,13 +1467,13 @@ typedef struct JSON_type {
 	struct text_stream *if_error;
 	CLASS_DEFINITION
 } JSON_type;
-#line 669 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 670 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_pair_requirement {
 	struct JSON_requirement *req;
 	int optional;
 	CLASS_DEFINITION
 } JSON_pair_requirement;
-#line 1339 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1340 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_rrf_state {
 	struct text_stream *name;
 	struct text_stream *defn;
@@ -3635,77 +3635,77 @@ JSON_value * JSON__decode_object_entry(JSON_value *obj, text_stream *T, int from
 JSON_value * JSON__decode_number(text_stream *T, int from, int to, text_file_position *tfp) ;
 #line 455 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__decode_string(text_stream *T, int from, int to, text_file_position *tfp) ;
-#line 506 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 507 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode(OUTPUT_STREAM, JSON_value *J) ;
-#line 566 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 567 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode_string(OUTPUT_STREAM, text_stream *T) ;
-#line 599 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 600 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__single_choice(JSON_single_requirement *sing) ;
-#line 606 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 607 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__add_alternative(JSON_requirement *so_far, 	JSON_single_requirement *sing) ;
-#line 629 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 630 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__require_requirement(JSON_requirement *req) ;
-#line 637 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 638 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__require_value(JSON_value *value) ;
-#line 645 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 646 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__require_type(int t) ;
-#line 675 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 676 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_type * JSON__new_type_requirement(int t) ;
-#line 703 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 704 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__require_array_of(JSON_requirement *E_req) ;
-#line 714 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 715 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__require_entry(JSON_single_requirement *array_sr, JSON_requirement *entry_sr) ;
-#line 726 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 727 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__require_pair(JSON_single_requirement *obj_sr, text_stream *key, JSON_requirement *req) ;
-#line 730 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 731 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__allow_pair(JSON_single_requirement *obj_sr, text_stream *key, JSON_requirement *req) ;
-#line 734 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 735 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__require_pair_inner(JSON_single_requirement *obj_sr, text_stream *key, 	JSON_requirement *req, int opt) ;
-#line 753 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 754 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_pair_requirement * JSON__look_up_pair(JSON_single_requirement *obj_sr, text_stream *key) ;
-#line 766 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 767 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__error_sr(text_stream *msg) ;
-#line 784 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 785 "inweb/foundation-module/Chapter 4/JSON.w"
 int  JSON__validate(JSON_value *val, JSON_requirement *req, linked_list *errs) ;
-#line 795 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 796 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__validation_error(linked_list *errs, text_stream *err, lifo_stack *location) ;
-#line 818 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 819 "inweb/foundation-module/Chapter 4/JSON.w"
 int  JSON__validate_r(JSON_value *val, JSON_requirement *req, linked_list *errs, 	lifo_stack *location) ;
-#line 837 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 838 "inweb/foundation-module/Chapter 4/JSON.w"
 int  JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req, 	linked_list *errs, lifo_stack *location) ;
-#line 987 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 988 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__decode_req(text_stream *T, dictionary *known_names) ;
-#line 995 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 996 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__decode_req_range(text_stream *T, int from, int to, 	dictionary *known_names) ;
-#line 1028 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1029 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__decode_req_alternative(JSON_requirement *req, text_stream *T, 	int from, int to, dictionary *known_names) ;
-#line 1040 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1041 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__decode_sreq_range(text_stream *T, int from, int to, 	dictionary *known_names) ;
-#line 1127 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1128 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__decode_req_array(JSON_single_requirement *array_sr, 	text_stream *T, int from, int to, dictionary *known_names) ;
-#line 1160 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1161 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__decode_req_array_entry(JSON_single_requirement *array_sr, 	text_stream *T, int from, int to, dictionary *known_names) ;
-#line 1170 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1171 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__decode_req_object(JSON_single_requirement *obj, 	text_stream *T, int from, int to, dictionary *known_names) ;
-#line 1198 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1199 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__decode_req_object_entry(JSON_single_requirement *obj, 	text_stream *T, int from, int to, dictionary *known_names) ;
-#line 1246 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1247 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode_req(OUTPUT_STREAM, JSON_requirement *req) ;
-#line 1250 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1251 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode_req_r(OUTPUT_STREAM, JSON_requirement *req) ;
-#line 1263 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1264 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode_sreq_r(OUTPUT_STREAM, JSON_single_requirement *sing) ;
-#line 1269 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1270 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode_type(OUTPUT_STREAM, JSON_type *type) ;
-#line 1346 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1347 "inweb/foundation-module/Chapter 4/JSON.w"
 dictionary * JSON__read_requirements_file(dictionary *known, filename *F) ;
-#line 1358 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1359 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__read_requirements_file_helper(text_stream *text, text_file_position *tfp, 	void *v_state) ;
-#line 1382 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1383 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__process_req_defn(JSON_rrf_state *state) ;
-#line 1395 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1396 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__decode_printing_errors(text_stream *defn, dictionary *dict, 	text_file_position *tfp) ;
-#line 1414 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1415 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__look_up_requirements(dictionary *known, text_stream *name) ;
 #line 8 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__header(OUTPUT_STREAM, text_stream *title, filename *css1, filename *css2, 	filename *js1, filename *js2, void *state) ;
@@ -8990,11 +8990,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.1.0-beta+1B12";
+			char *svn = "7.1.0-beta+1B13";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "25 July 2022";
+			char *d = "28 July 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -13199,9 +13199,10 @@ JSON_value *JSON__decode_string(text_stream *T, int from, int to, text_file_posi
 				case 'r': c = 13; break;
 				case '\\': break;
 				case '/': break;
+				case '"': break;
 				case 'u': 
 {
-#line 489 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 490 "inweb/foundation-module/Chapter 4/JSON.w"
 	if (i+4 >= to) return JSON__decode_error(TL_IS_27, tfp);
 	int hex = 0;
 	for (int j=0; j<4; j++) {
@@ -13217,7 +13218,7 @@ JSON_value *JSON__decode_string(text_stream *T, int from, int to, text_file_posi
 	i += 4;
 
 }
-#line 471 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 472 "inweb/foundation-module/Chapter 4/JSON.w"
 ; break;
 				default: return JSON__decode_error(TL_IS_26, tfp);
 			}
@@ -13231,7 +13232,7 @@ JSON_value *JSON__decode_string(text_stream *T, int from, int to, text_file_posi
 	return val;
 }
 
-#line 506 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 507 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__encode(OUTPUT_STREAM, JSON_value *J) {
 	if (J == NULL) internal_error("no JSON value supplied");
 	switch (J->JSON_type) {
@@ -13288,7 +13289,7 @@ void JSON__encode(OUTPUT_STREAM, JSON_value *J) {
 	}
 }
 
-#line 566 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 567 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__encode_string(OUTPUT_STREAM, text_stream *T) {
 	LOOP_THROUGH_TEXT(pos, T) {
 		wchar_t c = Str__get(pos);
@@ -13307,7 +13308,7 @@ void JSON__encode_string(OUTPUT_STREAM, text_stream *T) {
 	}
 }
 
-#line 598 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 599 "inweb/foundation-module/Chapter 4/JSON.w"
 
 JSON_requirement *JSON__single_choice(JSON_single_requirement *sing) {
 	JSON_requirement *req = CREATE(JSON_requirement);
@@ -13323,9 +13324,9 @@ JSON_requirement *JSON__add_alternative(JSON_requirement *so_far,
 	return so_far;
 }
 
-#line 624 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 625 "inweb/foundation-module/Chapter 4/JSON.w"
 
-#line 629 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 630 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__require_requirement(JSON_requirement *req) {
 	JSON_single_requirement *sing = CREATE(JSON_single_requirement);
 	sing->this_requirement = req;
@@ -13350,9 +13351,9 @@ JSON_single_requirement *JSON__require_type(int t) {
 	return sing;
 }
 
-#line 668 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 669 "inweb/foundation-module/Chapter 4/JSON.w"
 
-#line 674 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 675 "inweb/foundation-module/Chapter 4/JSON.w"
 
 JSON_type *JSON__new_type_requirement(int t) {
 	JSON_type *type = CREATE(JSON_type);
@@ -13378,14 +13379,14 @@ JSON_type *JSON__new_type_requirement(int t) {
 	return type;
 }
 
-#line 703 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 704 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__require_array_of(JSON_requirement *E_req) {
 	JSON_single_requirement *req = JSON__require_type(ARRAY_JSONTYPE);
 	req->this_type->all_if_list = E_req;
 	return req;
 }
 
-#line 714 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 715 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__require_entry(JSON_single_requirement *array_sr, JSON_requirement *entry_sr) {
 	if (array_sr == NULL) internal_error("no array");
 	if ((array_sr->this_type == NULL) ||
@@ -13394,7 +13395,7 @@ void JSON__require_entry(JSON_single_requirement *array_sr, JSON_requirement *en
 	ADD_TO_LINKED_LIST(entry_sr, JSON_requirement, array_sr->this_type->if_list);
 }
 
-#line 726 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 727 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__require_pair(JSON_single_requirement *obj_sr, text_stream *key, JSON_requirement *req) {
 	JSON__require_pair_inner(obj_sr, key, req, FALSE);
 }
@@ -13418,7 +13419,7 @@ void JSON__require_pair_inner(JSON_single_requirement *obj_sr, text_stream *key,
 	if (de) de->value = pr;
 }
 
-#line 753 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 754 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_pair_requirement *JSON__look_up_pair(JSON_single_requirement *obj_sr, text_stream *key) {
 	if (obj_sr == NULL) internal_error("no object");
 	if ((obj_sr->this_type == NULL) ||
@@ -13428,14 +13429,14 @@ JSON_pair_requirement *JSON__look_up_pair(JSON_single_requirement *obj_sr, text_
 	return de->value;
 }
 
-#line 766 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 767 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__error_sr(text_stream *msg) {
 	JSON_single_requirement *req = JSON__require_type(ERROR_JSONTYPE);
 	req->this_type->if_error = Str__duplicate(msg);
 	return req;
 }
 
-#line 784 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 785 "inweb/foundation-module/Chapter 4/JSON.w"
 int JSON__validate(JSON_value *val, JSON_requirement *req, linked_list *errs) {
 	lifo_stack *location = NEW_LIFO_STACK(text_stream);
 	if ((val) && (val->JSON_type == ARRAY_JSONTYPE)) {
@@ -13464,7 +13465,7 @@ void JSON__validation_error(linked_list *errs, text_stream *err, lifo_stack *loc
 	}
 }
 
-#line 818 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 819 "inweb/foundation-module/Chapter 4/JSON.w"
 int JSON__validate_r(JSON_value *val, JSON_requirement *req, linked_list *errs,
 	lifo_stack *location) {
 	if (val == NULL) internal_error("no value");
@@ -13481,7 +13482,7 @@ int JSON__validate_r(JSON_value *val, JSON_requirement *req, linked_list *errs,
 	return FALSE;
 }
 
-#line 837 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 838 "inweb/foundation-module/Chapter 4/JSON.w"
 int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	linked_list *errs, lifo_stack *location) {
 	if (val->JSON_type == ERROR_JSONTYPE) {
@@ -13491,15 +13492,15 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	}
 	if (req->this_requirement) 
 {
-#line 851 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 852 "inweb/foundation-module/Chapter 4/JSON.w"
 	return JSON__validate_r(val, req->this_requirement, errs, location);
 
 }
-#line 844 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 845 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	if (req->this_value) 
 {
-#line 854 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 855 "inweb/foundation-module/Chapter 4/JSON.w"
 	if (JSON__eq(val, req->this_value) == FALSE) {
 		TEMPORARY_TEXT(msg)
 		WRITE_TO(msg, "value ");
@@ -13512,14 +13513,14 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	return TRUE;
 
 }
-#line 845 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 846 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	if (req->this_type) 
 {
-#line 866 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 867 "inweb/foundation-module/Chapter 4/JSON.w"
 	
 {
-#line 875 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 876 "inweb/foundation-module/Chapter 4/JSON.w"
 	if (val->JSON_type != req->this_type->JSON_type) {
 		if (errs) {
 			TEMPORARY_TEXT(msg)
@@ -13534,13 +13535,13 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	}
 
 }
-#line 866 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 867 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	int outcome = TRUE;
 	if (val->JSON_type == ARRAY_JSONTYPE)
 		
 {
-#line 889 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 890 "inweb/foundation-module/Chapter 4/JSON.w"
 	int count = 0;
 	JSON_value *E;
 	LOOP_OVER_LINKED_LIST(E, JSON_value, val->if_list) {
@@ -13567,17 +13568,17 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	}
 
 }
-#line 869 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 870 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	if (val->JSON_type == OBJECT_JSONTYPE)
 		
 {
-#line 915 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 916 "inweb/foundation-module/Chapter 4/JSON.w"
 	text_stream *key;
 	LOOP_OVER_LINKED_LIST(key, text_stream, val->list_if_object)
 		
 {
-#line 927 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 928 "inweb/foundation-module/Chapter 4/JSON.w"
 	JSON_value *E = Dictionaries__read_value(val->dictionary_if_object, key);
 	if (E == NULL) internal_error("broken JSON object dictionary");
 	JSON_pair_requirement *pr = JSON__look_up_pair(req, key);
@@ -13597,7 +13598,7 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	DISCARD_TEXT(at)
 
 }
-#line 917 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 918 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	LOOP_OVER_LINKED_LIST(key, text_stream, req->this_type->list_if_object) {
 		JSON_pair_requirement *pr =
@@ -13606,7 +13607,7 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 		if (pr->optional == FALSE)
 			
 {
-#line 946 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 947 "inweb/foundation-module/Chapter 4/JSON.w"
 	JSON_value *E = JSON__look_up_object(val, key);
 	if (E == NULL) {
 		TEMPORARY_TEXT(msg)
@@ -13617,34 +13618,34 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	}
 
 }
-#line 923 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 924 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	}
 
 }
-#line 871 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 872 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	return outcome;
 
 }
-#line 846 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 847 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	internal_error("bad single requirement");
 }
 
-#line 987 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 988 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement *JSON__decode_req(text_stream *T, dictionary *known_names) {
 	return JSON__decode_req_range(T, 0, Str__len(T), known_names);
 }
 
-#line 995 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 996 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement *JSON__decode_req_range(text_stream *T, int from, int to,
 	dictionary *known_names) {
 	int first_nws = -1, last_nws = -1;
 	wchar_t first_c = 0, last_c = 0;
 	
 {
-#line 1113 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1114 "inweb/foundation-module/Chapter 4/JSON.w"
 	for (int i=from; i<to; i++)
 		if (Characters__is_whitespace(Str__get_at(T, i)) == FALSE) {
 			first_nws = i; break;
@@ -13657,7 +13658,7 @@ JSON_requirement *JSON__decode_req_range(text_stream *T, int from, int to,
 	last_c = Str__get_at(T, last_nws);
 
 }
-#line 999 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1000 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	if (first_c == '(') {
 		if (last_c != ')')
@@ -13693,14 +13694,14 @@ JSON_requirement *JSON__decode_req_alternative(JSON_requirement *req, text_strea
 	return JSON__add_alternative(req, sing);
 }
 
-#line 1040 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1041 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__decode_sreq_range(text_stream *T, int from, int to,
 	dictionary *known_names) {
 	int first_nws = -1, last_nws = -1;
 	wchar_t first_c = 0, last_c = 0;
 	
 {
-#line 1113 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1114 "inweb/foundation-module/Chapter 4/JSON.w"
 	for (int i=from; i<to; i++)
 		if (Characters__is_whitespace(Str__get_at(T, i)) == FALSE) {
 			first_nws = i; break;
@@ -13713,7 +13714,7 @@ JSON_single_requirement *JSON__decode_sreq_range(text_stream *T, int from, int t
 	last_c = Str__get_at(T, last_nws);
 
 }
-#line 1044 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1045 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	if (first_nws < 0) return JSON__error_sr(TL_IS_34);
 	switch (first_c) {
@@ -13782,7 +13783,7 @@ JSON_single_requirement *JSON__decode_sreq_range(text_stream *T, int from, int t
 	return JSON__error_sr(msg);
 }
 
-#line 1127 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1128 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__decode_req_array(JSON_single_requirement *array_sr,
 	text_stream *T, int from, int to, dictionary *known_names) {
 	int content = FALSE;
@@ -13823,7 +13824,7 @@ JSON_single_requirement *JSON__decode_req_array_entry(JSON_single_requirement *a
 	return array_sr;
 }
 
-#line 1170 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1171 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__decode_req_object(JSON_single_requirement *obj,
 	text_stream *T, int from, int to, dictionary *known_names) {
 	int content = FALSE;
@@ -13885,7 +13886,7 @@ JSON_single_requirement *JSON__decode_req_object_entry(JSON_single_requirement *
 	return obj;
 }
 
-#line 1246 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1247 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__encode_req(OUTPUT_STREAM, JSON_requirement *req) {
 	JSON__encode_req_r(OUT, req);
 }
@@ -13953,7 +13954,7 @@ void JSON__encode_type(OUTPUT_STREAM, JSON_type *type) {
 	}
 }
 
-#line 1345 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1346 "inweb/foundation-module/Chapter 4/JSON.w"
 
 dictionary *JSON__read_requirements_file(dictionary *known, filename *F) {
 	if (known == NULL) known = Dictionaries__new(32, FALSE);
@@ -13987,7 +13988,7 @@ void JSON__read_requirements_file_helper(text_stream *text, text_file_position *
 	}
 }
 
-#line 1382 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1383 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__process_req_defn(JSON_rrf_state *state) {
 	if (Str__len(state->name) > 0) {
 		JSON_requirement *req =
@@ -33252,7 +33253,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.1.0-beta+1B12\t/built 25 July 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.1.0-beta+1B13\t/built 28 July 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
