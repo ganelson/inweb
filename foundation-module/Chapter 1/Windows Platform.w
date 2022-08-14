@@ -123,14 +123,30 @@ int Platform::system(const char *cmd) {
 	   or a Unix-like shell. */
 	int unix = Platform::Win32_is_unix_cmd(cmd);
 	if (unix) {
+		/* Some Cygwin commands cannot handle backslashes in paths. */
+		int forward_slash = 0;
+		if (strncmp(cmd,"pdftex ",7) == 0)
+			forward_slash = 1;
+
 		/* For a Unix shell command, escape any double quotes and backslashes. */
 		char *pcl;
 		const char *pc;
 		strcpy(cmd_line, "sh -c \"");
 		for (pc = cmd, pcl = cmd_line+strlen(cmd_line); *pc != 0; ++pc, ++pcl) {
-			if ((*pc == '\\') || (*pc == '\"'))
+			if (*pc == '\"') {
 				*(pcl++) = '\\';
-			*pcl = *pc;
+				*pcl = *pc;
+			}
+			else if (*pc == '\\') {
+				if (forward_slash)
+					*pcl = '/';
+				else {
+					*(pcl++) = '\\';
+					*pcl = *pc;
+				}
+			}
+			else
+				*pcl = *pc;
 		}
 		*(pcl++) = '\"';
 		*(pcl++) = 0;
@@ -209,13 +225,13 @@ void Platform::closedir(void *D) {
 
 =
 void Platform::path_add(const char* base, const char* add, char* path) {
-  char last;
+	char last;
 
-  strcpy(path, base);
-  last = path[strlen(path) - 1];
-  if ((last != '/') && (last != '\\'))
-    strcat(path, "\\");
-  strcat(path, add);
+	strcpy(path, base);
+	last = path[strlen(path) - 1];
+	if ((last != '/') && (last != '\\'))
+		strcat(path, "\\");
+	strcat(path, add);
 }
 
 void Platform::rsync(char *transcoded_source, char *transcoded_dest) {
