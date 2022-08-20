@@ -85,7 +85,7 @@ to look at that this seems a good point to switch to |inweb/Examples/twinprimes.
 a C program to find twin prime numbers. If we weave:
 = (text as ConsoleText)
 	$ inweb/Tangled/inweb inweb/Examples/twinprimes.inweb -weave
-	web "twinprimes": 1 section(s) : 4 paragraph(s) : 48 line(s)
+	web "twinprimes": 1 section(s) : 3 paragraph(s) : 55 line(s)
 	[Complete Program: HTML -> inweb/Examples/twinprimes.html]
 =
 As with tangling, we can override this destination with |-weave-to F|, telling
@@ -99,14 +99,14 @@ web, with multiple sections, it would make a set of linked pages, but here
 there's just one.) This can then be looked at with a browser such as Chrome or
 Safari. HTML is not the only format we can produce. Inweb performs the weave
 by following a "pattern", and it has several patterns built in, notably |HTML|,
-|Ebook| and |TeX|.
+|Ebook|, |TeX| and |PDFTeX|.
 
 Running Inweb with |-weave-as P| tells it to weave with pattern |P|; the
 plain command |-weave| is equivalent to |-weave-as HTML|. The |Ebook| pattern
 makes an EPUB file suitable for readers such as Apple's Books app, but that
 would be overkill for such a tiny program. Instead:
 = (text as ConsoleText)
-	$ inweb/Tangled/inweb inweb/Examples/twinprimes.inweb -weave-as TeX
+	$ inweb/Tangled/inweb inweb/Examples/twinprimes.inweb -weave-as PDFTeX
 =
 This will only work if you have the mathematical typesetting system TeX
 installed, and in particular, the |pdftex| tool. (This comes as part of
@@ -114,8 +114,8 @@ the standard TeXLive distribution, so simply "installing TeX" on your
 platform will probably install |pdftex| automatically.) Now the response
 is like so:
 = (text as ConsoleText)
-	$ inweb/Tangled/inweb inweb/Examples/twinprimes.inweb -weave-as TeX
-	web "twinprimes": 1 section(s) : 4 paragraph(s) : 48 line(s)
+	$ inweb/Tangled/inweb inweb/Examples/twinprimes.inweb -weave-as PDFTeX
+	web "twinprimes": 1 section(s) : 3 paragraph(s) : 55 line(s)
 	[Complete Program: PDF -> inweb/Examples/twinprimes.tex: 1pp 103K]
 =
 Inweb automatically creates |twinprimes.tex| and runs it through |pdftex|
@@ -298,7 +298,7 @@ module used this to bring in a Windows-only header file.)
 As with all-in-one webs, the commands for weaving are like so:
 = (text as ConsoleText)
 	$ inweb inweb/Examples/goldbach -weave
-	$ inweb inweb/Examples/goldbach -weave-as TeX
+	$ inweb inweb/Examples/goldbach -weave-as PDFTeX
 =
 This will produce single HTML or PDF files of the woven form of the whole
 program. (Note that the PDF file now has a cover page: on a web with just
@@ -310,7 +310,7 @@ range. The default range is |all|, so up to now we have implicitly
 been running weaves like these:
 = (text as ConsoleText)
 	$ inweb inweb/Examples/goldbach -weave all
-	$ inweb inweb/Examples/goldbach -weave-as TeX all
+	$ inweb inweb/Examples/goldbach -weave-as PDFTeX all
 =
 The opposite extreme from |all| is |sections|. This still weaves the entire
 web, but now cuts it up into individual files, one for each section. For
@@ -328,7 +328,7 @@ Those abbreviated names |S-tgc| and |S-tsoe| are cut down from the full
 names of the sections involved, "The Goldbach Conjecture" and "The Sieve
 of Eratosthenes". Similarly,
 = (text as ConsoleText)
-	$ inweb inweb/Examples/goldbach -weave-as TeX sections
+	$ inweb inweb/Examples/goldbach -weave-as PDFTeX sections
 =
 creates the files:
 = (text)
