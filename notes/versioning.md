@@ -15,9 +15,11 @@ source it was compiled from. This one is clearly unstable:
 	$ inweb/Tangled/inweb -version
 	inweb version 7.1.0-beta+1B14 'Escape to Danger' (9 August 2022)
 
-(At some point, major versions of Inweb were given code-names according to the
+(Since around 2011, major versions of Inweb have been given code-names according to the
 episodes of the 1964 Doctor Who serial [The Web Planet](https://en.wikipedia.org/wiki/The_Web_Planet).
 Major version 8 will be "Crater of Needles".)
+
+Release notes for releases since 2022 can be found [here](version_history.md).
 
 ## Branching
 
