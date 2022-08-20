@@ -1,6 +1,6 @@
-# Inweb 7.1.0
+# Inweb 7.1.1
 
-v7.1.0-beta+1B14 'Escape to Danger' (9 August 2022)
+[Version](notes/versioning.md): 7.1.1-beta+1B15 'Escape to Danger' (20 August 2022)
 
 ## About Inweb
 
@@ -36,24 +36,27 @@ This is in order that there can be clear ownership.
 
 ## Build Instructions
 
+**Caution**: The `main` branch of this repository generally holds "unstable", that is,
+unreleased work-in-progress versions of Inform. See [notes/versioning.md](notes/versioning.md).
+
 Inweb is intentionally self-sufficient, with no dependencies on any other
 software beyond a modern C compiler. However, it does in a sense depend on
 itself: because Inweb is itself a web, you need Inweb to compile Inweb.
 Getting around that circularity means that the initial setup takes a few steps.
 
-Make a directory in which to work: let's call this "work". Then:
+Make a directory in which to work: let's call this `work`. Then:
 
-* Change the current directory to this: "cd work"
-* Clone Inweb: "git clone https://github.com/ganelson/inweb.git"
+* Change the current directory to this: `cd work`
+* Clone Inweb: `git clone https://github.com/ganelson/inweb.git`
 * Run **one of the following commands**.
-	* "bash inweb/scripts/first.sh linux"
-	* "bash inweb/scripts/first.sh macos"
-	* "bash inweb/scripts/first.sh macos32"
-	* "bash inweb/scripts/first.sh macosarm"
-	* "bash inweb/scripts/first.sh macosuniv"
-	* "bash inweb/scripts/first.sh unix"
-	* "bash inweb/scripts/first.sh windows"
-* Test that all is well: "inweb/Tangled/inweb -help"
+	* `bash inweb/scripts/first.sh linux`
+	* `bash inweb/scripts/first.sh macos`
+	* `bash inweb/scripts/first.sh macos32`
+	* `bash inweb/scripts/first.sh macosarm`
+	* `bash inweb/scripts/first.sh macosuniv`
+	* `bash inweb/scripts/first.sh unix`
+	* `bash inweb/scripts/first.sh windows`
+* Test that all is well: `inweb/Tangled/inweb -help`
 
 Some notes on which platform to choose:
 * For Intel Macs running MacOS 10.13 ("High Sierra") or earlier, use macos32.
@@ -71,13 +74,13 @@ has not yet an opportunity to contribute build settings.
 You should now have a working copy of Inweb, with its own makefile tailored
 to your platform now in place (at inweb/inweb.mk). To build inweb again, e.g.
 after editing inweb's source code, do not run the shell script first.sh again.
-Instead, you must use: "make -f inweb/inweb.mk"
+Instead, you must use: `make -f inweb/inweb.mk`
 
 If you wish to tweak the makefile, do not edit it directly. Instead,
 edit inweb/scripts/inweb.mkscript and inweb/Materials/platforms/PLATFORM.mkscript,
-where PLATFORM is your choice as above (e.g., 'macos'). Then run "make -f inweb/inweb.mk makers"
+where PLATFORM is your choice as above (e.g., 'macos'). Then run `make -f inweb/inweb.mk makers`
 to rebuild all these makefiles with your changes incorporated; and then run
-the shell script "inweb/scripts/first.sh" again.
+the shell script `inweb/scripts/first.sh` again.
 
 A few features of inweb used when integrating the core Inform software into its
 apps rely on having the standard Unix tool "rsync" installed: so on Linux, where
@@ -137,7 +140,7 @@ A small executable for running unit tests against Foundation is also included:
 
 ## Testing Inweb
 
-If you have also built Intest as "work/intest", then you can try these:
+If you have also built Intest as `work/intest`, then you can try these:
 
 * intest/Tangled/intest inweb all
 * intest/Tangled/intest inweb/foundation-test all

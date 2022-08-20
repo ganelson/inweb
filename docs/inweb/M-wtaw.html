@@ -141,7 +141,7 @@ a C program to find twin prime numbers. If we weave:
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/twinprimes.inweb</span><span class="ConsoleText-identifier-syntax"> -weave</span>
-<span class="ConsoleText-plain-syntax">    web "twinprimes": 1 section(s) : 4 paragraph(s) : 48 line(s)</span>
+<span class="ConsoleText-plain-syntax">    web "twinprimes": 1 section(s) : 3 paragraph(s) : 55 line(s)</span>
 <span class="ConsoleText-plain-syntax">    [Complete Program: HTML -&gt; inweb/Examples/twinprimes.html]</span>
 </pre>
 <p class="commentary">As with tangling, we can override this destination with <span class="extract"><span class="ConsoleText-extract-syntax">-weave-to F</span></span>, telling
@@ -156,7 +156,7 @@ web, with multiple sections, it would make a set of linked pages, but here
 there's just one.) This can then be looked at with a browser such as Chrome or
 Safari. HTML is not the only format we can produce. Inweb performs the weave
 by following a "pattern", and it has several patterns built in, notably <span class="extract"><span class="ConsoleText-extract-syntax">HTML</span></span>,
-<span class="extract"><span class="ConsoleText-extract-syntax">Ebook</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">TeX</span></span>.
+<span class="extract"><span class="ConsoleText-extract-syntax">Ebook</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">TeX</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">PDFTeX</span></span>.
 </p>
 
 <p class="commentary">Running Inweb with <span class="extract"><span class="ConsoleText-extract-syntax">-weave-as P</span></span> tells it to weave with pattern <span class="extract"><span class="ConsoleText-extract-syntax">P</span></span>; the
@@ -166,7 +166,7 @@ would be overkill for such a tiny program. Instead:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/twinprimes.inweb</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> TeX</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/twinprimes.inweb</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> PDFTeX</span>
 </pre>
 <p class="commentary">This will only work if you have the mathematical typesetting system TeX
 installed, and in particular, the <span class="extract"><span class="ConsoleText-extract-syntax">pdftex</span></span> tool. (This comes as part of
@@ -176,8 +176,8 @@ is like so:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/twinprimes.inweb</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> TeX</span>
-<span class="ConsoleText-plain-syntax">    web "twinprimes": 1 section(s) : 4 paragraph(s) : 48 line(s)</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/twinprimes.inweb</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> PDFTeX</span>
+<span class="ConsoleText-plain-syntax">    web "twinprimes": 1 section(s) : 3 paragraph(s) : 55 line(s)</span>
 <span class="ConsoleText-plain-syntax">    [Complete Program: PDF -&gt; inweb/Examples/twinprimes.tex: 1pp 103K]</span>
 </pre>
 <p class="commentary">Inweb automatically creates <span class="extract"><span class="ConsoleText-extract-syntax">twinprimes.tex</span></span> and runs it through <span class="extract"><span class="ConsoleText-extract-syntax">pdftex</span></span>
@@ -397,7 +397,7 @@ module used this to bring in a Windows-only header file.)
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> TeX</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> PDFTeX</span>
 </pre>
 <p class="commentary">This will produce single HTML or PDF files of the woven form of the whole
 program. (Note that the PDF file now has a cover page: on a web with just
@@ -412,7 +412,7 @@ been running weaves like these:
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave</span><span class="ConsoleText-plain-syntax"> all</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> TeX all</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> PDFTeX all</span>
 </pre>
 <p class="commentary">The opposite extreme from <span class="extract"><span class="ConsoleText-extract-syntax">all</span></span> is <span class="extract"><span class="ConsoleText-extract-syntax">sections</span></span>. This still weaves the entire
 web, but now cuts it up into individual files, one for each section. For
@@ -436,7 +436,7 @@ of Eratosthenes". Similarly,
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> TeX sections</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> PDFTeX sections</span>
 </pre>
 <p class="commentary">creates the files:
 </p>
