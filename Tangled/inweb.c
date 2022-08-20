@@ -9006,11 +9006,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.1.1-beta+1B14";
+			char *svn = "7.2.1-beta+1B15";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "9 August 2022";
+			char *d = "20 August 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -20375,7 +20375,7 @@ web *Reader__load_web(pathname *P, filename *alt_F, module_search *I,
 {
 #line 134 "inweb/Chapter 2/The Reader.w"
 	TEMPORARY_TEXT(IB)
-	WRITE_TO(IB, "7.1.1");
+	WRITE_TO(IB, "7.2.1");
 	web_bibliographic_datum *bd = Bibliographic__set_datum(W->md, TL_IS_205, IB);
 	bd->declaration_permitted = FALSE;
 	DISCARD_TEXT(IB)
@@ -33269,7 +33269,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.1.1-beta+1B14\t/built 9 August 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B15\t/built 20 August 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"

@@ -5,7 +5,7 @@ Language: InC
 Web Syntax Version: 2
 Licence: This is a free, open-source program published under the Artistic License 2.0.
 Version Name: Escape to Danger
-Version Number: 7.1.1
+Version Number: 7.2.1
 
 Import: foundation
 
