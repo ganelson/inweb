@@ -1,6 +1,6 @@
 # Version history
 
-See [versions](versions.md) for details of Inweb's version numbering.
+See [versioning](versioning.md) for details of Inweb's version numbering.
 
 Links in the following table are to the archive of release notes, which
 covers only the open-source era of Inform. (Earlier versions of Inweb were
