@@ -1,6 +1,6 @@
 # Inweb 7.2.1
 
-[Version](notes/versioning.md): 7.2.1-beta+1B15 'Escape to Danger' (20 August 2022)
+[Version](notes/versioning.md): 7.2.1-beta+1B16 'Escape to Danger' (21 August 2022)
 
 ## About Inweb
 
@@ -37,7 +37,7 @@ This is in order that there can be clear ownership.
 ## Build Instructions
 
 **Caution**: The `main` branch of this repository generally holds "unstable", that is,
-unreleased work-in-progress versions of Inform. See [notes/versioning.md](notes/versioning.md).
+unreleased work-in-progress versions of Inweb. See [notes/versioning.md](notes/versioning.md).
 
 Inweb is intentionally self-sufficient, with no dependencies on any other
 software beyond a modern C compiler. However, it does in a sense depend on

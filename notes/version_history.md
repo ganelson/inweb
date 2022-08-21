@@ -3,8 +3,8 @@
 See [versioning](versioning.md) for details of Inweb's version numbering.
 
 Links in the following table are to the archive of release notes, which
-covers only the open-source era of Inform. (Earlier versions of Inweb were
-sufficiently different to be not worth covering here.)
+covers only the post-2022 open-source era of Inweb. (Earlier versions of Inweb
+were sufficiently different to be not worth covering here.)
 
 Version                     | Build | Date           | Highlights
 --------------------------- | ----- | -------------- | ----------
