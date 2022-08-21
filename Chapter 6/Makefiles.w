@@ -177,6 +177,7 @@ void Makefiles::modify_filenames_expander(preprocessor_macro *mm, preprocessor_s
 		for (int i=last_dot; i<Str::len(captured); i++) PUT(Str::get_at(captured, i));
 		if (in_quotes) WRITE("'");
 		Str::clear(captured);
+		WRITE(" ");
 	}
 
 @h The component expander.

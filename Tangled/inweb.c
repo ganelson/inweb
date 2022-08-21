@@ -4789,15 +4789,15 @@ void  Makefiles__platform_settings_expander(preprocessor_macro *mm, preprocessor
 void  Makefiles__seek_INWEBPLATFORM(text_stream *line, text_file_position *tfp, void *X) ;
 #line 129 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__modify_filenames_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 185 "inweb/Chapter 6/Makefiles.w"
+#line 186 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 235 "inweb/Chapter 6/Makefiles.w"
+#line 236 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 268 "inweb/Chapter 6/Makefiles.w"
+#line 269 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__dependent_files_expander(preprocessor_macro *mm, preprocessor_state *PPS, 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) ;
-#line 324 "inweb/Chapter 6/Makefiles.w"
+#line 325 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) ;
-#line 365 "inweb/Chapter 6/Makefiles.w"
+#line 366 "inweb/Chapter 6/Makefiles.w"
 void  Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) ;
 #line 8 "inweb/Chapter 6/Git Support.w"
 void  Git__write_gitignore(web *W, filename *prototype, filename *F) ;
@@ -9006,11 +9006,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.2.1-beta+1B15";
+			char *svn = "7.2.1-beta+1B16";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "20 August 2022";
+			char *d = "21 August 2022";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -32881,6 +32881,7 @@ void Makefiles__modify_filenames_expander(preprocessor_macro *mm, preprocessor_s
 		for (int i=last_dot; i<Str__len(captured); i++) PUT(Str__get_at(captured, i));
 		if (in_quotes) WRITE("'");
 		Str__clear(captured);
+		WRITE(" ");
 	}
 
 }
@@ -32918,6 +32919,7 @@ void Makefiles__modify_filenames_expander(preprocessor_macro *mm, preprocessor_s
 		for (int i=last_dot; i<Str__len(captured); i++) PUT(Str__get_at(captured, i));
 		if (in_quotes) WRITE("'");
 		Str__clear(captured);
+		WRITE(" ");
 	}
 
 }
@@ -32926,7 +32928,7 @@ void Makefiles__modify_filenames_expander(preprocessor_macro *mm, preprocessor_s
 	DISCARD_TEXT(captured)
 }
 
-#line 185 "inweb/Chapter 6/Makefiles.w"
+#line 186 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	makefile_specifics *specifics = RETRIEVE_POINTER_makefile_specifics(PPS->specifics);
@@ -32943,7 +32945,7 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 		dictionary *D = specifics->tools_dictionary;
 		
 {
-#line 218 "inweb/Chapter 6/Makefiles.w"
+#line 219 "inweb/Chapter 6/Makefiles.w"
 	web_md *Wm = Reader__load_web_md(Pathnames__from_text(path), NULL,
 		specifics->search_path, TRUE);
 	Wm->as_module->module_name = Str__duplicate(symbol);
@@ -32953,25 +32955,25 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 	Dictionaries__write_value(D, symbol, Wm);
 
 }
-#line 199 "inweb/Chapter 6/Makefiles.w"
+#line 200 "inweb/Chapter 6/Makefiles.w"
 ;
 		
 {
-#line 227 "inweb/Chapter 6/Makefiles.w"
+#line 228 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%SLEAF = %S\n", symbol, webname);
 	WRITE("%SWEB = %S\n", symbol, path);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", symbol, symbol, webname);
 	WRITE("%SX = $(%SWEB)/Tangled/%S\n", symbol, symbol, webname);
 
 }
-#line 200 "inweb/Chapter 6/Makefiles.w"
+#line 201 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else if (Str__eq(category, TL_IS_694)) {
 		int marker = MAKEFILE_WEB_MOM;
 		dictionary *D = specifics->webs_dictionary;
 		
 {
-#line 218 "inweb/Chapter 6/Makefiles.w"
+#line 219 "inweb/Chapter 6/Makefiles.w"
 	web_md *Wm = Reader__load_web_md(Pathnames__from_text(path), NULL,
 		specifics->search_path, TRUE);
 	Wm->as_module->module_name = Str__duplicate(symbol);
@@ -32981,25 +32983,25 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 	Dictionaries__write_value(D, symbol, Wm);
 
 }
-#line 204 "inweb/Chapter 6/Makefiles.w"
+#line 205 "inweb/Chapter 6/Makefiles.w"
 ;
 		
 {
-#line 227 "inweb/Chapter 6/Makefiles.w"
+#line 228 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%SLEAF = %S\n", symbol, webname);
 	WRITE("%SWEB = %S\n", symbol, path);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", symbol, symbol, webname);
 	WRITE("%SX = $(%SWEB)/Tangled/%S\n", symbol, symbol, webname);
 
 }
-#line 205 "inweb/Chapter 6/Makefiles.w"
+#line 206 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else if (Str__eq(category, TL_IS_695)) {
 		int marker = MAKEFILE_MODULE_MOM;
 		dictionary *D = specifics->modules_dictionary;
 		
 {
-#line 218 "inweb/Chapter 6/Makefiles.w"
+#line 219 "inweb/Chapter 6/Makefiles.w"
 	web_md *Wm = Reader__load_web_md(Pathnames__from_text(path), NULL,
 		specifics->search_path, TRUE);
 	Wm->as_module->module_name = Str__duplicate(symbol);
@@ -33009,18 +33011,18 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 	Dictionaries__write_value(D, symbol, Wm);
 
 }
-#line 209 "inweb/Chapter 6/Makefiles.w"
+#line 210 "inweb/Chapter 6/Makefiles.w"
 ;
 		
 {
-#line 227 "inweb/Chapter 6/Makefiles.w"
+#line 228 "inweb/Chapter 6/Makefiles.w"
 	WRITE("%SLEAF = %S\n", symbol, webname);
 	WRITE("%SWEB = %S\n", symbol, path);
 	WRITE("%SMAKER = $(%SWEB)/%S.mk\n", symbol, symbol, webname);
 	WRITE("%SX = $(%SWEB)/Tangled/%S\n", symbol, symbol, webname);
 
 }
-#line 210 "inweb/Chapter 6/Makefiles.w"
+#line 211 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else {
 		Errors__in_text_file("category should be 'tool', 'module' or 'web'", tfp);
@@ -33028,7 +33030,7 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 	PPS->last_line_was_blank = FALSE;
 }
 
-#line 235 "inweb/Chapter 6/Makefiles.w"
+#line 236 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	Preprocessor__set_loop_var_name(loop, TL_IS_696);
@@ -33039,7 +33041,7 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 		int marker = MAKEFILE_TOOL_MOM;
 		
 {
-#line 256 "inweb/Chapter 6/Makefiles.w"
+#line 257 "inweb/Chapter 6/Makefiles.w"
 	module *M;
 	LOOP_OVER(M, module) {
 		if ((M->origin_marker == marker) &&
@@ -33050,13 +33052,13 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 	}
 
 }
-#line 243 "inweb/Chapter 6/Makefiles.w"
+#line 244 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else if (Str__eq(category, TL_IS_699)) {
 		int marker = MAKEFILE_WEB_MOM;
 		
 {
-#line 256 "inweb/Chapter 6/Makefiles.w"
+#line 257 "inweb/Chapter 6/Makefiles.w"
 	module *M;
 	LOOP_OVER(M, module) {
 		if ((M->origin_marker == marker) &&
@@ -33067,13 +33069,13 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 	}
 
 }
-#line 246 "inweb/Chapter 6/Makefiles.w"
+#line 247 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else if (Str__eq(category, TL_IS_700)) {
 		int marker = MAKEFILE_MODULE_MOM;
 		
 {
-#line 256 "inweb/Chapter 6/Makefiles.w"
+#line 257 "inweb/Chapter 6/Makefiles.w"
 	module *M;
 	LOOP_OVER(M, module) {
 		if ((M->origin_marker == marker) &&
@@ -33084,14 +33086,14 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 	}
 
 }
-#line 249 "inweb/Chapter 6/Makefiles.w"
+#line 250 "inweb/Chapter 6/Makefiles.w"
 ;
 	} else {
 		Errors__in_text_file("category should be 'tool', 'module' or 'web'", tfp);
 	}
 }
 
-#line 268 "inweb/Chapter 6/Makefiles.w"
+#line 269 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__dependent_files_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	makefile_specifics *specifics = RETRIEVE_POINTER_makefile_specifics(PPS->specifics);
@@ -33144,12 +33146,12 @@ void Makefiles__dependent_files_expander(preprocessor_macro *mm, preprocessor_st
 	PPS->last_line_was_blank = FALSE;
 }
 
-#line 324 "inweb/Chapter 6/Makefiles.w"
+#line 325 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	dictionary *patterns_done = Dictionaries__new(16, TRUE);
 	if (F) 
 {
-#line 335 "inweb/Chapter 6/Makefiles.w"
+#line 336 "inweb/Chapter 6/Makefiles.w"
 	pathname *P = Filenames__up(F);
 	TEMPORARY_TEXT(leaf_pattern)
 	WRITE_TO(leaf_pattern, "%S", Pathnames__directory_name(P));
@@ -33176,14 +33178,14 @@ void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	DISCARD_TEXT(tester)
 
 }
-#line 326 "inweb/Chapter 6/Makefiles.w"
+#line 327 "inweb/Chapter 6/Makefiles.w"
 ;
 	section_md *Sm;
 	LOOP_OVER_LINKED_LIST(Sm, section_md, L) {
 		filename *F = Sm->source_file_for_section;
 		
 {
-#line 335 "inweb/Chapter 6/Makefiles.w"
+#line 336 "inweb/Chapter 6/Makefiles.w"
 	pathname *P = Filenames__up(F);
 	TEMPORARY_TEXT(leaf_pattern)
 	WRITE_TO(leaf_pattern, "%S", Pathnames__directory_name(P));
@@ -33210,12 +33212,12 @@ void Makefiles__pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	DISCARD_TEXT(tester)
 
 }
-#line 330 "inweb/Chapter 6/Makefiles.w"
+#line 331 "inweb/Chapter 6/Makefiles.w"
 ;
 	}
 }
 
-#line 365 "inweb/Chapter 6/Makefiles.w"
+#line 366 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) {
 	TEMPORARY_TEXT(PT)
 	WRITE_TO(PT, "%p", P);
@@ -33269,7 +33271,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B15\t/built 20 August 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B16\t/built 21 August 2022/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
