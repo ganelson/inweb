@@ -145,7 +145,7 @@ reparsing from there.
 	Regexp::dispose_of(&mr);
 	continue;
 
-@h Categorisatiom.
+@h Categorisation.
 This is where the work is really done. We have a source line: is it comment,
 code, definition, what?
 
