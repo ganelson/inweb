@@ -4,7 +4,7 @@ To work through the program read in, assigning each line its category,
 and noting down other useful information as we go.
 
 @h Sequence of parsing.
-At this point, thw web has been read into memory. It's a linked list of
+At this point, the web has been read into memory. It's a linked list of
 chapters, each of which is a linked list of sections, each of which must
 be parsed in turn.
 
