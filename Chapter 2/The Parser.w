@@ -52,7 +52,7 @@ markup syntax, and trying to detect incorrect uses of one within the other.
 	@<If the section as a whole is tagged, apply that tag to each paragraph in it@>;
 	@<Work out footnote numbering for this section@>;
 
-@ In versiom 2 syntax, the notation for tags was clarified. The tag list
+@ In version 2 syntax, the notation for tags was clarified. The tag list
 for a paragraph is the run of |^"This"| and |^"That"| markers at the end of
 the line introducing that paragraph. They can only occur, therefore, on a
 line beginning with an |@|. We extract them into a string called |tag_list|.
