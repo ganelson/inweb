@@ -827,6 +827,11 @@ void Streams::set_indentation(text_stream *stream, int N) {
 	stream->stream_flags += N*INDENTATION_BASE_STRF;
 }
 
+int Streams::get_indentation(text_stream *stream) {
+	if (stream == NULL) return 0;
+	return (stream->stream_flags & INDENTATION_MASK_STRF)/INDENTATION_BASE_STRF;
+}
+
 @ We can read the position for any stream, including |NULL|, but no matter
 how much is written to |NULL| this position never budges.
 

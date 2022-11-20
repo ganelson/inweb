@@ -176,7 +176,9 @@ commands can be used, at least.
 	while (TRUE) {
 		@<Read next character@>;
 		if ((committed == FALSE) && ((cr == 10) || (cr == 13) || (cr == ' '))) {
-			if (Str::eq_wide_string(at_cmd, L"p"))
+			if (Str::eq_wide_string(at_cmd, L""))
+				inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
+			else if (Str::eq_wide_string(at_cmd, L"p"))
 				inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
 			else if (Str::eq_wide_string(at_cmd, L"h"))
 				inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
