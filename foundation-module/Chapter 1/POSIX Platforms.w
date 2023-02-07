@@ -263,6 +263,21 @@ void Platform::closedir(void *D) {
 	closedir(dirp);
 }
 
+@h Renaming.
+
+=
+int Platform::rename_file(char *old_transcoded_pathname, char *new_transcoded_pathname) {
+	if (rename(old_transcoded_pathname, new_transcoded_pathname) != 0)
+		return FALSE;
+	return TRUE;
+}
+
+int Platform::rename_directory(char *old_transcoded_pathname, char *new_transcoded_pathname) {
+	if (rename(old_transcoded_pathname, new_transcoded_pathname) != 0)
+		return FALSE;
+	return TRUE;
+}
+
 @h Timestamp and file size.
 There are implementations of the C standard library where |time_t| has
 super-weird behaviour, but on almost all POSIX systems, time 0 corresponds to

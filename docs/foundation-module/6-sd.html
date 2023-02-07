@@ -275,9 +275,6 @@ officially support MIDI, which makes the question moot.
 <span class="plain-syntax">        </span><span class="identifier-syntax">frames_per_second</span><span class="plain-syntax">    = (256 - (</span><span class="identifier-syntax">pulses</span><span class="plain-syntax"> &amp; </span><span class="constant-syntax">0xff</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">subframes_per_frame</span><span class="plain-syntax">  = (</span><span class="identifier-syntax">pulses</span><span class="plain-syntax"> &gt;&gt; </span><span class="constant-syntax">8</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">clocks_per_second</span><span class="plain-syntax">    = </span><span class="identifier-syntax">frames_per_second</span><span class="plain-syntax"> * </span><span class="identifier-syntax">subframes_per_frame</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"frames_per_second   = %d\n"</span><span class="plain-syntax">,   </span><span class="identifier-syntax">frames_per_second</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"subframes_per_frame = %d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">subframes_per_frame</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"clocks_per_second   = %d\n"</span><span class="plain-syntax">,   </span><span class="identifier-syntax">clocks_per_second</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">        </span><span class="comment-syntax"> Number of pulses per quarter note unknown</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">pulses</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -286,7 +283,6 @@ officially support MIDI, which makes the question moot.
 <span class="plain-syntax">        </span><span class="identifier-syntax">frames_per_second</span><span class="plain-syntax">    = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">subframes_per_frame</span><span class="plain-syntax">  = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">clocks_per_second</span><span class="plain-syntax">    = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"pulses per quarter note = %d\n"</span><span class="plain-syntax">,   </span><span class="identifier-syntax">pulses</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax"> Skip any remaining bytes in the MThd chunk</span>
@@ -304,7 +300,6 @@ officially support MIDI, which makes the question moot.
 <span class="plain-syntax">        </span><span class="identifier-syntax">start_of_chunk_data</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">unsigned</span><span class="plain-syntax"> </span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><span class="identifier-syntax">ftell</span><span class="plain-syntax">(</span><span class="identifier-syntax">pFile</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">sig</span><span class="plain-syntax"> == </span><span class="constant-syntax">0x4D54726B</span><span class="plain-syntax">) { </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">"MTrk"</span></span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"track starts\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="comment-syntax"> Read each event, looking for information before the real tune starts, e.g., tempo</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">do</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">                </span><span class="comment-syntax"> Read the number of clocks since the previous event</span>
@@ -340,7 +335,6 @@ officially support MIDI, which makes the question moot.
 <span class="plain-syntax">                            </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">text</span><span class="plain-syntax">[257];</span>
 <span class="plain-syntax">                            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!</span><a href="6-bf.html#SP6" class="function-link"><span class="function-syntax">BinaryFiles::read_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pFile</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">non_midi_event_length</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">                                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                            </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"%d: %s\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">non_midi_event</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                        }</span>
 

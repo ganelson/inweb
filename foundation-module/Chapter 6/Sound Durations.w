@@ -233,9 +233,6 @@ int SoundFiles::get_MIDI_information(FILE *pFile, unsigned int *pType,
         frames_per_second    = (256 - (pulses & 0xff));
         subframes_per_frame  = (pulses >> 8);
         clocks_per_second    = frames_per_second * subframes_per_frame;
-        LOG("frames_per_second   = %d\n",   frames_per_second);
-        LOG("subframes_per_frame = %d\n", subframes_per_frame);
-        LOG("clocks_per_second   = %d\n",   clocks_per_second);
 
         /* Number of pulses per quarter note unknown */
         pulses = 0;
@@ -244,7 +241,6 @@ int SoundFiles::get_MIDI_information(FILE *pFile, unsigned int *pType,
         frames_per_second    = 0;
         subframes_per_frame  = 0;
         clocks_per_second    = 0;
-        LOG("pulses per quarter note = %d\n",   pulses);
     }
 
     /* Skip any remaining bytes in the MThd chunk */
@@ -262,7 +258,6 @@ int SoundFiles::get_MIDI_information(FILE *pFile, unsigned int *pType,
         start_of_chunk_data = (unsigned int) ftell(pFile);
 
         if (sig == 0x4D54726B) { /* |"MTrk"| */
-            LOG("track starts\n");
             /* Read each event, looking for information before the real tune starts, e.g., tempo */
             do {
                 /* Read the number of clocks since the previous event */
@@ -298,7 +293,6 @@ int SoundFiles::get_MIDI_information(FILE *pFile, unsigned int *pType,
                             char text[257];
                             if (!BinaryFiles::read_string(pFile, text, non_midi_event_length))
                             	return FALSE;
-                            LOG("%d: %s\n", non_midi_event, text);
                             break;
                         }
 

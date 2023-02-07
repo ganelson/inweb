@@ -104,3 +104,31 @@ int Directories::compare_names(const void *ent1, const void *ent2) {
 	text_stream *tx2 = *((text_stream **) ent2);
 	return Str::cmp_insensitive(tx1, tx2);
 }
+
+@ This is intentionally limited so that it can only rename a directory in place,
+that is, change its leafname: it cannot move a directory elsewhere in the file system.
+If it succeeds, the pathname |P| is altered to match the new directory name, and
+the function returns |TRUE|; if not, |P| is unchanged, and |FALSE|.
+
+=
+int Directories::rename(pathname *P, text_stream *new_name) {
+	text_stream *old_name = Pathnames::directory_name(P);
+	if (Str::eq(old_name, new_name)) return TRUE;
+	pathname *Q = Pathnames::down(Pathnames::up(P), new_name);
+	TEMPORARY_TEXT(old_path)
+	TEMPORARY_TEXT(new_path)
+	WRITE_TO(old_path, "%p", P);
+	WRITE_TO(new_path, "%p", Q);
+	char old_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str::copy_to_locale_string(old_name_written_out, old_path, 4*MAX_FILENAME_LENGTH);
+	char new_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str::copy_to_locale_string(new_name_written_out, new_path, 4*MAX_FILENAME_LENGTH);
+	int rv = Platform::rename_directory(old_name_written_out, new_name_written_out);
+	if (rv) {
+		Str::clear(P->intermediate);
+		Str::copy(P->intermediate, new_name);
+	}
+	DISCARD_TEXT(old_path)
+	DISCARD_TEXT(new_path)
+	return rv;
+}
