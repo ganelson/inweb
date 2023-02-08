@@ -358,7 +358,7 @@ memory space. Using <span class="extract"><span class="extract-syntax">posix_spa
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::rename_file is used in Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>).</li><li>The function Platform::rename_directory is used in Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>), Directories (<a href="3-drc.html#SP5">&#167;5</a>).</li></ul>
+<ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_POSIX is defined.</li><li>The function Platform::rename_file is used in Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>), Filenames (<a href="3-fln.html#SP13">&#167;13</a>).</li><li>The function Platform::rename_directory is used in Windows Platform (<a href="1-wp.html#SP9">&#167;9</a>), Directories (<a href="3-drc.html#SP5">&#167;5</a>).</li></ul>
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Timestamp and file size. </b>There are implementations of the C standard library where <span class="extract"><span class="extract-syntax">time_t</span></span> has
 super-weird behaviour, but on almost all POSIX systems, time 0 corresponds to
 midnight on 1 January 1970. All we really need is that the "never" value
