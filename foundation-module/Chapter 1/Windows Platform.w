@@ -12,7 +12,6 @@ on a POSIX operating system.
 @d LOCALE_IS_ISO
 @d FOLDER_SEPARATOR '\\'
 @d SHELL_QUOTE_CHARACTER '\"'
-@d WINDOWS_JAVASCRIPT
 @d INFORM_FOLDER_RELATIVE_TO_HOME ""
 
 = (very early code)
