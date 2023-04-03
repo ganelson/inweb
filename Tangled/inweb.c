@@ -112,29 +112,29 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 373 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 388 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 typedef pthread_t foundation_thread;
 typedef pthread_attr_t foundation_thread_attributes;
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_LINUX
 #ifdef PLATFORM_POSIX
-#line 408 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 423 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 #include <sys/sysinfo.h>
 
 #endif /* PLATFORM_LINUX */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 422 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 437 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 #include <sys/sysctl.h>
 
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_WINDOWS
-#line 19 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 18 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 #include <dirent.h>
-#line 21 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 20 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 #include <io.h>
 #include <sys/stat.h>
 
@@ -147,7 +147,7 @@ typedef pthread_attr_t foundation_thread_attributes;
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 67 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 66 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 char *Platform__getenv(const char *name) {
 	char *env = getenv(name);
 	if (env == 0) {
@@ -166,7 +166,7 @@ char *Platform__getenv(const char *name) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 100 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 99 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 /* Check the first element of the command: if it has path separators in
    it, we assume we are running one of our commands, otherwise it is a
    Unix style command. */
@@ -255,7 +255,7 @@ int Platform__system(const char *cmd) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 378 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 392 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 typedef HANDLE foundation_thread;
 typedef int foundation_thread_attributes;
 
@@ -263,7 +263,7 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 479 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 493 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
 #endif /* PLATFORM_WINDOWS */
@@ -357,9 +357,6 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
 #define SHELL_QUOTE_CHARACTER '\"'
-#endif /* PLATFORM_WINDOWS */
-#ifdef PLATFORM_WINDOWS
-#define WINDOWS_JAVASCRIPT 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
 #define INFORM_FOLDER_RELATIVE_TO_HOME ""
@@ -1458,19 +1455,19 @@ typedef struct JSON_value {
 	struct text_stream *if_error;
 	CLASS_DEFINITION
 } JSON_value;
-#line 595 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 607 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_requirement {
 	struct linked_list *alternatives; /* of |JSON_single_requirement| */
 	CLASS_DEFINITION
 } JSON_requirement;
-#line 619 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 631 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_single_requirement {
 	struct JSON_requirement *this_requirement;
 	struct JSON_value *this_value;
 	struct JSON_type *this_type;
 	CLASS_DEFINITION
 } JSON_single_requirement;
-#line 657 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 669 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_type {
 	int JSON_type;
 
@@ -1483,13 +1480,13 @@ typedef struct JSON_type {
 	struct text_stream *if_error;
 	CLASS_DEFINITION
 } JSON_type;
-#line 670 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 682 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_pair_requirement {
 	struct JSON_requirement *req;
 	int optional;
 	CLASS_DEFINITION
 } JSON_pair_requirement;
-#line 1340 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1352 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_rrf_state {
 	struct text_stream *name;
 	struct text_stream *defn;
@@ -2620,161 +2617,177 @@ int  Platform__readdir(void *D, char *dir_name, char *leafname) ;
 void  Platform__closedir(void *D) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 274 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 269 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+int  Platform__rename_file(char *old_transcoded_pathname, char *new_transcoded_pathname) ;
+#endif /* PLATFORM_POSIX */
+#ifdef PLATFORM_POSIX
+#line 275 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+int  Platform__rename_directory(char *old_transcoded_pathname, char *new_transcoded_pathname) ;
+#endif /* PLATFORM_POSIX */
+#ifdef PLATFORM_POSIX
+#line 289 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 278 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 293 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 284 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 299 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 298 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 313 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 307 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 322 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__quote_text(char *quoted, char *raw, int terminate) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 323 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 338 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__sleep(int seconds) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 339 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 354 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 352 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 367 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 365 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 380 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 377 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 392 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__create_thread(foundation_thread *pt, 	const foundation_thread_attributes *pa, void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 382 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 397 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 386 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 401 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__init_thread(foundation_thread_attributes *pa, size_t size) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 391 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 406 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes *pa) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_LINUX
 #ifdef PLATFORM_POSIX
-#line 412 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 427 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_LINUX */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 426 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 441 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_ANDROID
 #ifdef PLATFORM_POSIX
-#line 438 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 453 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_ANDROID */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_WINDOWS
-#line 48 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 47 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__Windows_isdigit(int c) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 60 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 59 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__is_folder_separator(wchar_t c) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 92 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 91 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__where_am_i(wchar_t *p, size_t length) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 189 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 188 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__mkdir(char *transcoded_pathname) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 197 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 196 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void * Platform__opendir(char *dir_name) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 202 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 201 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__readdir(void *D, char *dir_name, 	char *leafname) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 219 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 218 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__closedir(void *D) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 227 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 226 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+int  Platform__rename_file(char *old_transcoded_pathname, char *new_transcoded_pathname) ;
+#endif /* PLATFORM_WINDOWS */
+#ifdef PLATFORM_WINDOWS
+#line 232 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+int  Platform__rename_directory(char *old_transcoded_pathname, char *new_transcoded_pathname) ;
+#endif /* PLATFORM_WINDOWS */
+#ifdef PLATFORM_WINDOWS
+#line 241 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__path_add(const char* base, const char* add, char* path) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 237 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 251 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 316 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 330 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__sleep(int seconds) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 323 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 337 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 341 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 355 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__Win32_ResetConsole(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 350 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 364 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 392 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 406 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__create_thread(foundation_thread *pt, const foundation_thread_attributes *pa, 	void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 407 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 421 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 411 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 425 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__init_thread(foundation_thread_attributes* pa, size_t size) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 414 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 428 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes* pa) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 424 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 438 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 445 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 459 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 449 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 463 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 455 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 469 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #line 64 "inweb/foundation-module/Chapter 2/Debugging Log.w"
@@ -2941,19 +2954,21 @@ void  Streams__indent(text_stream *stream) ;
 void  Streams__outdent(text_stream *stream) ;
 #line 823 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__set_indentation(text_stream *stream, int N) ;
-#line 837 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 830 "inweb/foundation-module/Chapter 2/Streams.w"
+int  Streams__get_indentation(text_stream *stream) ;
+#line 842 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__get_position(text_stream *stream) ;
-#line 851 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 856 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__latest(text_stream *stream) ;
-#line 867 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 872 "inweb/foundation-module/Chapter 2/Streams.w"
 wchar_t  Streams__get_char_at_index(text_stream *stream, int position) ;
-#line 879 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 884 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__put_char_at_index(text_stream *stream, int position, wchar_t C) ;
-#line 905 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 910 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__set_position(text_stream *stream, int position) ;
-#line 929 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 934 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__copy(text_stream *to, text_stream *from) ;
-#line 946 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 951 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__writer(OUTPUT_STREAM, char *format_string, void *vS) ;
 #line 51 "inweb/foundation-module/Chapter 2/Writers and Loggers.w"
 void  Writers__log_escape_usage(void) ;
@@ -3223,6 +3238,8 @@ int  Filenames__eq(filename *F1, filename *F2) ;
 time_t  Filenames__timestamp(filename *F) ;
 #line 283 "inweb/foundation-module/Chapter 3/Filenames.w"
 int  Filenames__size(filename *F) ;
+#line 298 "inweb/foundation-module/Chapter 3/Filenames.w"
+int  Filenames__rename(filename *F, text_stream *new_name) ;
 #ifdef PLATFORM_POSIX
 #line 50 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
 FILE * CIFilingSystem__fopen(const char *path, const char *mode) ;
@@ -3273,6 +3290,8 @@ int  Directories__exists(pathname *P) ;
 linked_list * Directories__listing(pathname *P) ;
 #line 102 "inweb/foundation-module/Chapter 3/Directories.w"
 int  Directories__compare_names(const void *ent1, const void *ent2) ;
+#line 114 "inweb/foundation-module/Chapter 3/Directories.w"
+int  Directories__rename(pathname *P, text_stream *new_name) ;
 #line 13 "inweb/foundation-module/Chapter 3/Time.w"
 void  Time__begin(void) ;
 #line 26 "inweb/foundation-module/Chapter 3/Time.w"
@@ -3627,101 +3646,103 @@ JSON_value * JSON__new_object(void) ;
 JSON_value * JSON__add_to_object(JSON_value *obj, text_stream *key, JSON_value *value) ;
 #line 173 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__look_up_object(JSON_value *obj, text_stream *key) ;
-#line 186 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 185 "inweb/foundation-module/Chapter 4/JSON.w"
+void  JSON__change_object(JSON_value *obj, text_stream *key, JSON_value *val) ;
+#line 198 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__error(text_stream *msg) ;
-#line 197 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 209 "inweb/foundation-module/Chapter 4/JSON.w"
 int  JSON__eq(JSON_value *val1, JSON_value *val2) ;
-#line 221 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 233 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__decode(text_stream *T, text_file_position *tfp) ;
-#line 225 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 237 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__decode_error(text_stream *err, text_file_position *tfp) ;
-#line 234 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 246 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__decode_error_q(text_stream *err, text_file_position *tfp, 	text_stream *T, int from, int to) ;
-#line 260 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 272 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__decode_range(text_stream *T, int from, int to, text_file_position *tfp) ;
-#line 307 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 319 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__decode_array(JSON_value *array, text_stream *T, int from, int to, 	text_file_position *tfp) ;
-#line 335 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 347 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__decode_array_entry(JSON_value *array, text_stream *T, int from, int to, 	text_file_position *tfp) ;
-#line 344 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 356 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__decode_object(JSON_value *obj, text_stream *T, int from, int to, 	text_file_position *tfp) ;
-#line 380 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 392 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__decode_object_entry(JSON_value *obj, text_stream *T, int from, int to, 	text_file_position *tfp) ;
-#line 418 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 430 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__decode_number(text_stream *T, int from, int to, text_file_position *tfp) ;
-#line 455 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 467 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__decode_string(text_stream *T, int from, int to, text_file_position *tfp) ;
-#line 507 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 519 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode(OUTPUT_STREAM, JSON_value *J) ;
-#line 567 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 579 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode_string(OUTPUT_STREAM, text_stream *T) ;
-#line 600 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 612 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__single_choice(JSON_single_requirement *sing) ;
-#line 607 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 619 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__add_alternative(JSON_requirement *so_far, 	JSON_single_requirement *sing) ;
-#line 630 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 642 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__require_requirement(JSON_requirement *req) ;
-#line 638 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 650 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__require_value(JSON_value *value) ;
-#line 646 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 658 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__require_type(int t) ;
-#line 676 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 688 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_type * JSON__new_type_requirement(int t) ;
-#line 704 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 716 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__require_array_of(JSON_requirement *E_req) ;
-#line 715 "inweb/foundation-module/Chapter 4/JSON.w"
-void  JSON__require_entry(JSON_single_requirement *array_sr, JSON_requirement *entry_sr) ;
 #line 727 "inweb/foundation-module/Chapter 4/JSON.w"
+void  JSON__require_entry(JSON_single_requirement *array_sr, JSON_requirement *entry_sr) ;
+#line 739 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__require_pair(JSON_single_requirement *obj_sr, text_stream *key, JSON_requirement *req) ;
-#line 731 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 743 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__allow_pair(JSON_single_requirement *obj_sr, text_stream *key, JSON_requirement *req) ;
-#line 735 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 747 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__require_pair_inner(JSON_single_requirement *obj_sr, text_stream *key, 	JSON_requirement *req, int opt) ;
-#line 754 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 766 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_pair_requirement * JSON__look_up_pair(JSON_single_requirement *obj_sr, text_stream *key) ;
-#line 767 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 779 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__error_sr(text_stream *msg) ;
-#line 785 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 797 "inweb/foundation-module/Chapter 4/JSON.w"
 int  JSON__validate(JSON_value *val, JSON_requirement *req, linked_list *errs) ;
-#line 796 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 808 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__validation_error(linked_list *errs, text_stream *err, lifo_stack *location) ;
-#line 819 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 831 "inweb/foundation-module/Chapter 4/JSON.w"
 int  JSON__validate_r(JSON_value *val, JSON_requirement *req, linked_list *errs, 	lifo_stack *location) ;
-#line 838 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 850 "inweb/foundation-module/Chapter 4/JSON.w"
 int  JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req, 	linked_list *errs, lifo_stack *location) ;
-#line 988 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1000 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__decode_req(text_stream *T, dictionary *known_names) ;
-#line 996 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1008 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__decode_req_range(text_stream *T, int from, int to, 	dictionary *known_names) ;
-#line 1029 "inweb/foundation-module/Chapter 4/JSON.w"
-JSON_requirement * JSON__decode_req_alternative(JSON_requirement *req, text_stream *T, 	int from, int to, dictionary *known_names) ;
 #line 1041 "inweb/foundation-module/Chapter 4/JSON.w"
+JSON_requirement * JSON__decode_req_alternative(JSON_requirement *req, text_stream *T, 	int from, int to, dictionary *known_names) ;
+#line 1053 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__decode_sreq_range(text_stream *T, int from, int to, 	dictionary *known_names) ;
-#line 1128 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1140 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__decode_req_array(JSON_single_requirement *array_sr, 	text_stream *T, int from, int to, dictionary *known_names) ;
-#line 1161 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1173 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__decode_req_array_entry(JSON_single_requirement *array_sr, 	text_stream *T, int from, int to, dictionary *known_names) ;
-#line 1171 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1183 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__decode_req_object(JSON_single_requirement *obj, 	text_stream *T, int from, int to, dictionary *known_names) ;
-#line 1199 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1211 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__decode_req_object_entry(JSON_single_requirement *obj, 	text_stream *T, int from, int to, dictionary *known_names) ;
-#line 1247 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1259 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode_req(OUTPUT_STREAM, JSON_requirement *req) ;
-#line 1251 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1263 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode_req_r(OUTPUT_STREAM, JSON_requirement *req) ;
-#line 1264 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1276 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode_sreq_r(OUTPUT_STREAM, JSON_single_requirement *sing) ;
-#line 1270 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1282 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode_type(OUTPUT_STREAM, JSON_type *type) ;
-#line 1347 "inweb/foundation-module/Chapter 4/JSON.w"
-dictionary * JSON__read_requirements_file(dictionary *known, filename *F) ;
 #line 1359 "inweb/foundation-module/Chapter 4/JSON.w"
+dictionary * JSON__read_requirements_file(dictionary *known, filename *F) ;
+#line 1371 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__read_requirements_file_helper(text_stream *text, text_file_position *tfp, 	void *v_state) ;
-#line 1383 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1395 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__process_req_defn(JSON_rrf_state *state) ;
-#line 1396 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1408 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__decode_printing_errors(text_stream *defn, dictionary *dict, 	text_file_position *tfp) ;
-#line 1415 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1427 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__look_up_requirements(dictionary *known, text_stream *name) ;
 #line 8 "inweb/foundation-module/Chapter 5/HTML.w"
 void  HTML__header(OUTPUT_STREAM, text_stream *title, filename *css1, filename *css2, 	filename *js1, filename *js2, void *state) ;
@@ -5868,7 +5889,22 @@ void Platform__closedir(void *D) {
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 274 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 269 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+int Platform__rename_file(char *old_transcoded_pathname, char *new_transcoded_pathname) {
+	if (rename(old_transcoded_pathname, new_transcoded_pathname) != 0)
+		return FALSE;
+	return TRUE;
+}
+
+int Platform__rename_directory(char *old_transcoded_pathname, char *new_transcoded_pathname) {
+	if (rename(old_transcoded_pathname, new_transcoded_pathname) != 0)
+		return FALSE;
+	return TRUE;
+}
+
+#endif /* PLATFORM_POSIX */
+#ifdef PLATFORM_POSIX
+#line 289 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
@@ -5887,7 +5923,7 @@ off_t Platform__size(char *transcoded_filename) {
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 298 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 313 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 	char rsync_command[10*MAX_FILENAME_LENGTH];
 	sprintf(rsync_command, "rsync -a --delete ");
@@ -5912,7 +5948,7 @@ void Platform__quote_text(char *quoted, char *raw, int terminate) {
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 323 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 338 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__sleep(int seconds) {
 	sleep((unsigned int) seconds);
 }
@@ -5920,7 +5956,7 @@ void Platform__sleep(int seconds) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 339 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 354 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__notification(text_stream *text, int happy) {
 	char *sound_name = "Bell.aiff";
 	if (happy == FALSE) sound_name = "Submarine.aiff";
@@ -5935,20 +5971,20 @@ void Platform__notification(text_stream *text, int happy) {
 #endif /* PLATFORM_POSIX */
 #ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 352 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 367 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__notification(text_stream *text, int happy) {
 }
 
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 365 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 380 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__configure_terminal(void) {
 }
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 377 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 392 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__create_thread(foundation_thread *pt,
 	const foundation_thread_attributes *pa, void *(*fn)(void *), void *arg) {
 	return pthread_create(pt, pa, fn, arg);
@@ -5972,7 +6008,7 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes *pa) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_LINUX
 #ifdef PLATFORM_POSIX
-#line 412 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 427 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__get_core_count(void) {
 	int N = get_nprocs();
 	if (N < 1) return 1;
@@ -5983,7 +6019,7 @@ int Platform__get_core_count(void) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 426 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 441 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__get_core_count(void) {
 	int N;
 	size_t N_size = sizeof(int);
@@ -5996,7 +6032,7 @@ int Platform__get_core_count(void) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_ANDROID
 #ifdef PLATFORM_POSIX
-#line 438 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 453 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__get_core_count(void) {
 	return 1;
 }
@@ -6008,21 +6044,21 @@ int Platform__get_core_count(void) {
 #ifdef PLATFORM_WINDOWS
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 48 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 47 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__Windows_isdigit(int c) {
 	return ((c >= '0') && (c <= '9')) ? 1 : 0;
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 60 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 59 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__is_folder_separator(wchar_t c) {
 	return ((c == '\\') || (c == '/'));
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 92 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 91 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__where_am_i(wchar_t *p, size_t length) {
 	DWORD result = GetModuleFileNameW(NULL, p, (DWORD)length);
 	if ((result == 0) || (result == length)) p[0] = 0;
@@ -6030,7 +6066,7 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 189 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 188 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__mkdir(char *transcoded_pathname) {
 	errno = 0;
 	int rv = mkdir(transcoded_pathname);
@@ -6068,7 +6104,22 @@ void Platform__closedir(void *D) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 227 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 226 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+int Platform__rename_file(char *old_transcoded_pathname, char *new_transcoded_pathname) {
+	if (rename(old_transcoded_pathname, new_transcoded_pathname) != 0)
+		return FALSE;
+	return TRUE;
+}
+
+int Platform__rename_directory(char *old_transcoded_pathname, char *new_transcoded_pathname) {
+	if (rename(old_transcoded_pathname, new_transcoded_pathname) != 0)
+		return FALSE;
+	return TRUE;
+}
+
+#endif /* PLATFORM_WINDOWS */
+#ifdef PLATFORM_WINDOWS
+#line 241 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__path_add(const char* base, const char* add, char* path) {
 	char last;
 
@@ -6156,20 +6207,20 @@ void Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 316 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 330 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__sleep(int seconds) {
 	Sleep((DWORD)(1000*seconds));
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 323 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 337 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__notification(text_stream *text, int happy) {
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 334 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 348 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 #define WIN32CONS_RESET_MODE 1
 #define WIN32CONS_RESET_OUTCP 2
 
@@ -6213,7 +6264,7 @@ void Platform__configure_terminal(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 385 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 399 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 DWORD WINAPI Platform__Win32_Thread_Func(LPVOID param) {
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*)param;
 	(start->fn)(start->arg);
@@ -6249,7 +6300,7 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes* pa) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 424 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 438 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__get_core_count(void) {
 	int count = 0;
 	SYSTEM_INFO sysInfo;
@@ -6265,7 +6316,7 @@ int Platform__get_core_count(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 445 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 459 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
@@ -7571,7 +7622,12 @@ void Streams__set_indentation(text_stream *stream, int N) {
 	stream->stream_flags += N*INDENTATION_BASE_STRF;
 }
 
-#line 837 "inweb/foundation-module/Chapter 2/Streams.w"
+int Streams__get_indentation(text_stream *stream) {
+	if (stream == NULL) return 0;
+	return (stream->stream_flags & INDENTATION_MASK_STRF)/INDENTATION_BASE_STRF;
+}
+
+#line 842 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__get_position(text_stream *stream) {
 	int t = 0;
 	while (stream) {
@@ -7581,7 +7637,7 @@ int Streams__get_position(text_stream *stream) {
 	return t;
 }
 
-#line 851 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 856 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__latest(text_stream *stream) {
 	if (stream == NULL) return 0;
 	if (stream->write_to_file) internal_error("stream_latest on file stream");
@@ -7594,7 +7650,7 @@ int Streams__latest(text_stream *stream) {
 	return 0;
 }
 
-#line 867 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 872 "inweb/foundation-module/Chapter 2/Streams.w"
 wchar_t Streams__get_char_at_index(text_stream *stream, int position) {
 	if (stream == NULL) internal_error("examining null stream");
 	if (stream->write_to_file) internal_error("examining file stream");
@@ -7626,7 +7682,7 @@ void Streams__put_char_at_index(text_stream *stream, int position, wchar_t C) {
 	}
 }
 
-#line 905 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 910 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__set_position(text_stream *stream, int position) {
 	if (stream == NULL) return;
 	if (position < 0) position = 0; /* to simplify the implementation of backspacing */
@@ -7647,7 +7703,7 @@ void Streams__set_position(text_stream *stream, int position) {
 	}
 }
 
-#line 929 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 934 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__copy(text_stream *to, text_stream *from) {
 	if ((from == NULL) || (to == NULL)) return;
 	if (from == to) internal_error("tried to copy a stream to itself");
@@ -7661,7 +7717,7 @@ void Streams__copy(text_stream *to, text_stream *from) {
 	}
 }
 
-#line 946 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 951 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__writer(OUTPUT_STREAM, char *format_string, void *vS) {
 	text_stream *S = (text_stream *) vS;
 	Streams__copy(OUT, S);
@@ -9006,11 +9062,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.2.1-beta+1B16";
+			char *svn = "7.2.1-beta+1B19";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "21 August 2022";
+			char *d = "8 February 2023";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -9593,6 +9649,29 @@ int Filenames__size(filename *F) {
 	int t = (int) Platform__size(transcoded_pathname);
 	DISCARD_TEXT(FN)
 	return t;
+}
+
+#line 298 "inweb/foundation-module/Chapter 3/Filenames.w"
+int Filenames__rename(filename *F, text_stream *new_name) {
+	text_stream *old_name = Filenames__get_leafname(F);
+	if (Str__eq(old_name, new_name)) return TRUE;
+	filename *G = Filenames__in(Filenames__up(F), new_name);
+	TEMPORARY_TEXT(old_path)
+	TEMPORARY_TEXT(new_path)
+	WRITE_TO(old_path, "%f", F);
+	WRITE_TO(new_path, "%f", G);
+	char old_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str__copy_to_locale_string(old_name_written_out, old_path, 4*MAX_FILENAME_LENGTH);
+	char new_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str__copy_to_locale_string(new_name_written_out, new_path, 4*MAX_FILENAME_LENGTH);
+	int rv = Platform__rename_file(old_name_written_out, new_name_written_out);
+	if (rv) {
+		Str__clear(F->leafname);
+		Str__copy(F->leafname, new_name);
+	}
+	DISCARD_TEXT(old_path)
+	DISCARD_TEXT(new_path)
+	return rv;
 }
 
 #ifdef PLATFORM_POSIX
@@ -10287,6 +10366,29 @@ int Directories__compare_names(const void *ent1, const void *ent2) {
 	text_stream *tx1 = *((text_stream **) ent1);
 	text_stream *tx2 = *((text_stream **) ent2);
 	return Str__cmp_insensitive(tx1, tx2);
+}
+
+#line 114 "inweb/foundation-module/Chapter 3/Directories.w"
+int Directories__rename(pathname *P, text_stream *new_name) {
+	text_stream *old_name = Pathnames__directory_name(P);
+	if (Str__eq(old_name, new_name)) return TRUE;
+	pathname *Q = Pathnames__down(Pathnames__up(P), new_name);
+	TEMPORARY_TEXT(old_path)
+	TEMPORARY_TEXT(new_path)
+	WRITE_TO(old_path, "%p", P);
+	WRITE_TO(new_path, "%p", Q);
+	char old_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str__copy_to_locale_string(old_name_written_out, old_path, 4*MAX_FILENAME_LENGTH);
+	char new_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str__copy_to_locale_string(new_name_written_out, new_path, 4*MAX_FILENAME_LENGTH);
+	int rv = Platform__rename_directory(old_name_written_out, new_name_written_out);
+	if (rv) {
+		Str__clear(P->intermediate);
+		Str__copy(P->intermediate, new_name);
+	}
+	DISCARD_TEXT(old_path)
+	DISCARD_TEXT(new_path)
+	return rv;
 }
 
 #line 9 "inweb/foundation-module/Chapter 3/Time.w"
@@ -12967,7 +13069,17 @@ JSON_value *JSON__look_up_object(JSON_value *obj, text_stream *key) {
 	return de->value;
 }
 
-#line 186 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 185 "inweb/foundation-module/Chapter 4/JSON.w"
+void JSON__change_object(JSON_value *obj, text_stream *key, JSON_value *val) {
+	if (obj == NULL) internal_error("no object");
+	if (obj->JSON_type == ERROR_JSONTYPE) internal_error("erroneous object");
+	if (obj->JSON_type != OBJECT_JSONTYPE) internal_error("not an object");
+	dict_entry *de = Dictionaries__find(obj->dictionary_if_object, key);
+	if (de == NULL) JSON__add_to_object(obj, key, val);
+	else de->value = val;
+}
+
+#line 198 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value *JSON__error(text_stream *msg) {
 	JSON_value *value = JSON__new_null();
 	value->JSON_type = ERROR_JSONTYPE;
@@ -12975,7 +13087,7 @@ JSON_value *JSON__error(text_stream *msg) {
 	return value;
 }
 
-#line 197 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 209 "inweb/foundation-module/Chapter 4/JSON.w"
 int JSON__eq(JSON_value *val1, JSON_value *val2) {
 	if ((val1 == NULL) && (val2)) return FALSE;
 	if ((val1) && (val2 == NULL)) return FALSE;
@@ -12990,7 +13102,7 @@ int JSON__eq(JSON_value *val1, JSON_value *val2) {
 	return FALSE;
 }
 
-#line 221 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 233 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value *JSON__decode(text_stream *T, text_file_position *tfp) {
 	return JSON__decode_range(T, 0, Str__len(T), tfp);
 }
@@ -13021,13 +13133,13 @@ JSON_value *JSON__decode_error_q(text_stream *err, text_file_position *tfp,
 	return value;
 }
 
-#line 260 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 272 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value *JSON__decode_range(text_stream *T, int from, int to, text_file_position *tfp) {
 	int first_nws = -1, last_nws = -1;
 	wchar_t first_c = 0, last_c = 0;
 	
 {
-#line 289 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 301 "inweb/foundation-module/Chapter 4/JSON.w"
 	for (int i=from; i<to; i++)
 		if (Characters__is_whitespace(Str__get_at(T, i)) == FALSE) {
 			first_nws = i; break;
@@ -13041,7 +13153,7 @@ JSON_value *JSON__decode_range(text_stream *T, int from, int to, text_file_posit
 	last_c = Str__get_at(T, last_nws);
 
 }
-#line 263 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 275 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	switch (first_c) {
 		case '[':
@@ -13067,7 +13179,7 @@ JSON_value *JSON__decode_range(text_stream *T, int from, int to, text_file_posit
 	return JSON__decode_error(TL_IS_15, tfp);
 }
 
-#line 307 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 319 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value *JSON__decode_array(JSON_value *array, text_stream *T, int from, int to,
 	text_file_position *tfp) {
 	int content = FALSE;
@@ -13102,7 +13214,7 @@ JSON_value *JSON__decode_array_entry(JSON_value *array, text_stream *T, int from
 	return JSON__add_to_array(array, value);
 }
 
-#line 344 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 356 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value *JSON__decode_object(JSON_value *obj, text_stream *T, int from, int to,
 	text_file_position *tfp) {
 	int content = FALSE;
@@ -13131,7 +13243,7 @@ JSON_value *JSON__decode_object(JSON_value *obj, text_stream *T, int from, int t
 	return JSON__decode_object_entry(obj, T, from, to, tfp);
 }
 
-#line 380 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 392 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value *JSON__decode_object_entry(JSON_value *obj, text_stream *T, int from, int to,
 	text_file_position *tfp) {
 	while (Characters__is_whitespace(Str__get_at(T, from))) from++;
@@ -13164,7 +13276,7 @@ JSON_value *JSON__decode_object_entry(JSON_value *obj, text_stream *T, int from,
 	return obj;
 }
 
-#line 418 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 430 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value *JSON__decode_number(text_stream *T, int from, int to, text_file_position *tfp) {
 	while (Characters__is_whitespace(Str__get_at(T, from))) from++;
 	while ((to > from) && (Characters__is_whitespace(Str__get_at(T, to-1)))) to--;
@@ -13198,7 +13310,7 @@ JSON_value *JSON__decode_number(text_stream *T, int from, int to, text_file_posi
 	return value;
 }
 
-#line 455 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 467 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value *JSON__decode_string(text_stream *T, int from, int to, text_file_position *tfp) {
 	TEMPORARY_TEXT(string)
 	for (int i=from; i<to; i++) {
@@ -13218,7 +13330,7 @@ JSON_value *JSON__decode_string(text_stream *T, int from, int to, text_file_posi
 				case '"': break;
 				case 'u': 
 {
-#line 490 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 502 "inweb/foundation-module/Chapter 4/JSON.w"
 	if (i+4 >= to) return JSON__decode_error(TL_IS_27, tfp);
 	int hex = 0;
 	for (int j=0; j<4; j++) {
@@ -13234,7 +13346,7 @@ JSON_value *JSON__decode_string(text_stream *T, int from, int to, text_file_posi
 	i += 4;
 
 }
-#line 472 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 484 "inweb/foundation-module/Chapter 4/JSON.w"
 ; break;
 				default: return JSON__decode_error(TL_IS_26, tfp);
 			}
@@ -13248,7 +13360,7 @@ JSON_value *JSON__decode_string(text_stream *T, int from, int to, text_file_posi
 	return val;
 }
 
-#line 507 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 519 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__encode(OUTPUT_STREAM, JSON_value *J) {
 	if (J == NULL) internal_error("no JSON value supplied");
 	switch (J->JSON_type) {
@@ -13305,7 +13417,7 @@ void JSON__encode(OUTPUT_STREAM, JSON_value *J) {
 	}
 }
 
-#line 567 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 579 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__encode_string(OUTPUT_STREAM, text_stream *T) {
 	LOOP_THROUGH_TEXT(pos, T) {
 		wchar_t c = Str__get(pos);
@@ -13324,7 +13436,7 @@ void JSON__encode_string(OUTPUT_STREAM, text_stream *T) {
 	}
 }
 
-#line 599 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 611 "inweb/foundation-module/Chapter 4/JSON.w"
 
 JSON_requirement *JSON__single_choice(JSON_single_requirement *sing) {
 	JSON_requirement *req = CREATE(JSON_requirement);
@@ -13340,9 +13452,9 @@ JSON_requirement *JSON__add_alternative(JSON_requirement *so_far,
 	return so_far;
 }
 
-#line 625 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 637 "inweb/foundation-module/Chapter 4/JSON.w"
 
-#line 630 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 642 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__require_requirement(JSON_requirement *req) {
 	JSON_single_requirement *sing = CREATE(JSON_single_requirement);
 	sing->this_requirement = req;
@@ -13367,9 +13479,9 @@ JSON_single_requirement *JSON__require_type(int t) {
 	return sing;
 }
 
-#line 669 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 681 "inweb/foundation-module/Chapter 4/JSON.w"
 
-#line 675 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 687 "inweb/foundation-module/Chapter 4/JSON.w"
 
 JSON_type *JSON__new_type_requirement(int t) {
 	JSON_type *type = CREATE(JSON_type);
@@ -13395,14 +13507,14 @@ JSON_type *JSON__new_type_requirement(int t) {
 	return type;
 }
 
-#line 704 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 716 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__require_array_of(JSON_requirement *E_req) {
 	JSON_single_requirement *req = JSON__require_type(ARRAY_JSONTYPE);
 	req->this_type->all_if_list = E_req;
 	return req;
 }
 
-#line 715 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 727 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__require_entry(JSON_single_requirement *array_sr, JSON_requirement *entry_sr) {
 	if (array_sr == NULL) internal_error("no array");
 	if ((array_sr->this_type == NULL) ||
@@ -13411,7 +13523,7 @@ void JSON__require_entry(JSON_single_requirement *array_sr, JSON_requirement *en
 	ADD_TO_LINKED_LIST(entry_sr, JSON_requirement, array_sr->this_type->if_list);
 }
 
-#line 727 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 739 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__require_pair(JSON_single_requirement *obj_sr, text_stream *key, JSON_requirement *req) {
 	JSON__require_pair_inner(obj_sr, key, req, FALSE);
 }
@@ -13435,7 +13547,7 @@ void JSON__require_pair_inner(JSON_single_requirement *obj_sr, text_stream *key,
 	if (de) de->value = pr;
 }
 
-#line 754 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 766 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_pair_requirement *JSON__look_up_pair(JSON_single_requirement *obj_sr, text_stream *key) {
 	if (obj_sr == NULL) internal_error("no object");
 	if ((obj_sr->this_type == NULL) ||
@@ -13445,14 +13557,14 @@ JSON_pair_requirement *JSON__look_up_pair(JSON_single_requirement *obj_sr, text_
 	return de->value;
 }
 
-#line 767 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 779 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__error_sr(text_stream *msg) {
 	JSON_single_requirement *req = JSON__require_type(ERROR_JSONTYPE);
 	req->this_type->if_error = Str__duplicate(msg);
 	return req;
 }
 
-#line 785 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 797 "inweb/foundation-module/Chapter 4/JSON.w"
 int JSON__validate(JSON_value *val, JSON_requirement *req, linked_list *errs) {
 	lifo_stack *location = NEW_LIFO_STACK(text_stream);
 	if ((val) && (val->JSON_type == ARRAY_JSONTYPE)) {
@@ -13481,7 +13593,7 @@ void JSON__validation_error(linked_list *errs, text_stream *err, lifo_stack *loc
 	}
 }
 
-#line 819 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 831 "inweb/foundation-module/Chapter 4/JSON.w"
 int JSON__validate_r(JSON_value *val, JSON_requirement *req, linked_list *errs,
 	lifo_stack *location) {
 	if (val == NULL) internal_error("no value");
@@ -13498,7 +13610,7 @@ int JSON__validate_r(JSON_value *val, JSON_requirement *req, linked_list *errs,
 	return FALSE;
 }
 
-#line 838 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 850 "inweb/foundation-module/Chapter 4/JSON.w"
 int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	linked_list *errs, lifo_stack *location) {
 	if (val->JSON_type == ERROR_JSONTYPE) {
@@ -13508,15 +13620,15 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	}
 	if (req->this_requirement) 
 {
-#line 852 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 864 "inweb/foundation-module/Chapter 4/JSON.w"
 	return JSON__validate_r(val, req->this_requirement, errs, location);
 
 }
-#line 845 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 857 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	if (req->this_value) 
 {
-#line 855 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 867 "inweb/foundation-module/Chapter 4/JSON.w"
 	if (JSON__eq(val, req->this_value) == FALSE) {
 		TEMPORARY_TEXT(msg)
 		WRITE_TO(msg, "value ");
@@ -13529,14 +13641,14 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	return TRUE;
 
 }
-#line 846 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 858 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	if (req->this_type) 
 {
-#line 867 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 879 "inweb/foundation-module/Chapter 4/JSON.w"
 	
 {
-#line 876 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 888 "inweb/foundation-module/Chapter 4/JSON.w"
 	if (val->JSON_type != req->this_type->JSON_type) {
 		if (errs) {
 			TEMPORARY_TEXT(msg)
@@ -13551,13 +13663,13 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	}
 
 }
-#line 867 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 879 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	int outcome = TRUE;
 	if (val->JSON_type == ARRAY_JSONTYPE)
 		
 {
-#line 890 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 902 "inweb/foundation-module/Chapter 4/JSON.w"
 	int count = 0;
 	JSON_value *E;
 	LOOP_OVER_LINKED_LIST(E, JSON_value, val->if_list) {
@@ -13584,17 +13696,17 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	}
 
 }
-#line 870 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 882 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	if (val->JSON_type == OBJECT_JSONTYPE)
 		
 {
-#line 916 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 928 "inweb/foundation-module/Chapter 4/JSON.w"
 	text_stream *key;
 	LOOP_OVER_LINKED_LIST(key, text_stream, val->list_if_object)
 		
 {
-#line 928 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 940 "inweb/foundation-module/Chapter 4/JSON.w"
 	JSON_value *E = Dictionaries__read_value(val->dictionary_if_object, key);
 	if (E == NULL) internal_error("broken JSON object dictionary");
 	JSON_pair_requirement *pr = JSON__look_up_pair(req, key);
@@ -13614,7 +13726,7 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	DISCARD_TEXT(at)
 
 }
-#line 918 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 930 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	LOOP_OVER_LINKED_LIST(key, text_stream, req->this_type->list_if_object) {
 		JSON_pair_requirement *pr =
@@ -13623,7 +13735,7 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 		if (pr->optional == FALSE)
 			
 {
-#line 947 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 959 "inweb/foundation-module/Chapter 4/JSON.w"
 	JSON_value *E = JSON__look_up_object(val, key);
 	if (E == NULL) {
 		TEMPORARY_TEXT(msg)
@@ -13634,34 +13746,34 @@ int JSON__validate_single_r(JSON_value *val, JSON_single_requirement *req,
 	}
 
 }
-#line 924 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 936 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	}
 
 }
-#line 872 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 884 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	return outcome;
 
 }
-#line 847 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 859 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	internal_error("bad single requirement");
 }
 
-#line 988 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1000 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement *JSON__decode_req(text_stream *T, dictionary *known_names) {
 	return JSON__decode_req_range(T, 0, Str__len(T), known_names);
 }
 
-#line 996 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1008 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement *JSON__decode_req_range(text_stream *T, int from, int to,
 	dictionary *known_names) {
 	int first_nws = -1, last_nws = -1;
 	wchar_t first_c = 0, last_c = 0;
 	
 {
-#line 1114 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1126 "inweb/foundation-module/Chapter 4/JSON.w"
 	for (int i=from; i<to; i++)
 		if (Characters__is_whitespace(Str__get_at(T, i)) == FALSE) {
 			first_nws = i; break;
@@ -13674,7 +13786,7 @@ JSON_requirement *JSON__decode_req_range(text_stream *T, int from, int to,
 	last_c = Str__get_at(T, last_nws);
 
 }
-#line 1000 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1012 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	if (first_c == '(') {
 		if (last_c != ')')
@@ -13710,14 +13822,14 @@ JSON_requirement *JSON__decode_req_alternative(JSON_requirement *req, text_strea
 	return JSON__add_alternative(req, sing);
 }
 
-#line 1041 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1053 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__decode_sreq_range(text_stream *T, int from, int to,
 	dictionary *known_names) {
 	int first_nws = -1, last_nws = -1;
 	wchar_t first_c = 0, last_c = 0;
 	
 {
-#line 1114 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1126 "inweb/foundation-module/Chapter 4/JSON.w"
 	for (int i=from; i<to; i++)
 		if (Characters__is_whitespace(Str__get_at(T, i)) == FALSE) {
 			first_nws = i; break;
@@ -13730,7 +13842,7 @@ JSON_single_requirement *JSON__decode_sreq_range(text_stream *T, int from, int t
 	last_c = Str__get_at(T, last_nws);
 
 }
-#line 1045 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1057 "inweb/foundation-module/Chapter 4/JSON.w"
 ;
 	if (first_nws < 0) return JSON__error_sr(TL_IS_34);
 	switch (first_c) {
@@ -13799,7 +13911,7 @@ JSON_single_requirement *JSON__decode_sreq_range(text_stream *T, int from, int t
 	return JSON__error_sr(msg);
 }
 
-#line 1128 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1140 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__decode_req_array(JSON_single_requirement *array_sr,
 	text_stream *T, int from, int to, dictionary *known_names) {
 	int content = FALSE;
@@ -13840,7 +13952,7 @@ JSON_single_requirement *JSON__decode_req_array_entry(JSON_single_requirement *a
 	return array_sr;
 }
 
-#line 1171 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1183 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__decode_req_object(JSON_single_requirement *obj,
 	text_stream *T, int from, int to, dictionary *known_names) {
 	int content = FALSE;
@@ -13902,7 +14014,7 @@ JSON_single_requirement *JSON__decode_req_object_entry(JSON_single_requirement *
 	return obj;
 }
 
-#line 1247 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1259 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__encode_req(OUTPUT_STREAM, JSON_requirement *req) {
 	JSON__encode_req_r(OUT, req);
 }
@@ -13970,7 +14082,7 @@ void JSON__encode_type(OUTPUT_STREAM, JSON_type *type) {
 	}
 }
 
-#line 1346 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1358 "inweb/foundation-module/Chapter 4/JSON.w"
 
 dictionary *JSON__read_requirements_file(dictionary *known, filename *F) {
 	if (known == NULL) known = Dictionaries__new(32, FALSE);
@@ -14004,7 +14116,7 @@ void JSON__read_requirements_file_helper(text_stream *text, text_file_position *
 	}
 }
 
-#line 1383 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 1395 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__process_req_defn(JSON_rrf_state *state) {
 	if (Str__len(state->name) > 0) {
 		JSON_requirement *req =
@@ -16617,9 +16729,6 @@ int SoundFiles__get_MIDI_information(FILE *pFile, unsigned int *pType,
         frames_per_second    = (256 - (pulses & 0xff));
         subframes_per_frame  = (pulses >> 8);
         clocks_per_second    = frames_per_second * subframes_per_frame;
-        LOG("frames_per_second   = %d\n",   frames_per_second);
-        LOG("subframes_per_frame = %d\n", subframes_per_frame);
-        LOG("clocks_per_second   = %d\n",   clocks_per_second);
 
         /* Number of pulses per quarter note unknown */
         pulses = 0;
@@ -16628,7 +16737,6 @@ int SoundFiles__get_MIDI_information(FILE *pFile, unsigned int *pType,
         frames_per_second    = 0;
         subframes_per_frame  = 0;
         clocks_per_second    = 0;
-        LOG("pulses per quarter note = %d\n",   pulses);
     }
 
     /* Skip any remaining bytes in the MThd chunk */
@@ -16646,7 +16754,6 @@ int SoundFiles__get_MIDI_information(FILE *pFile, unsigned int *pType,
         start_of_chunk_data = (unsigned int) ftell(pFile);
 
         if (sig == 0x4D54726B) { /* |"MTrk"| */
-            LOG("track starts\n");
             /* Read each event, looking for information before the real tune starts, e.g., tempo */
             do {
                 /* Read the number of clocks since the previous event */
@@ -16682,7 +16789,6 @@ int SoundFiles__get_MIDI_information(FILE *pFile, unsigned int *pType,
                             char text[257];
                             if (!BinaryFiles__read_string(pFile, text, non_midi_event_length))
                             	return FALSE;
-                            LOG("%d: %s\n", non_midi_event, text);
                             break;
                         }
 
@@ -18486,7 +18592,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 			int inweb_syntax = -1;
 			if (cr == '=') 
 {
-#line 214 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
+#line 216 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 	TEMPORARY_TEXT(equals_cmd)
 	while (TRUE) {
 		
@@ -18499,7 +18605,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 	col++; if ((cr == 10) || (cr == 13)) col = 0;
 
 }
-#line 216 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
+#line 218 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 ;
 		if ((cr == 10) || (cr == 13)) break;
 		PUT_TO(equals_cmd, cr);
@@ -18540,7 +18646,9 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 #line 177 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 ;
 		if ((committed == FALSE) && ((cr == 10) || (cr == 13) || (cr == ' '))) {
-			if (Str__eq_wide_string(at_cmd, L"p"))
+			if (Str__eq_wide_string(at_cmd, L""))
+				inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
+			else if (Str__eq_wide_string(at_cmd, L"p"))
 				inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
 			else if (Str__eq_wide_string(at_cmd, L"h"))
 				inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
@@ -18579,7 +18687,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 ;
 			
 {
-#line 235 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
+#line 237 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 	switch (inweb_syntax) {
 		case INWEB_PARAGRAPH_SYNTAX: {
 			TEMPORARY_TEXT(heading_name)
@@ -18621,7 +18729,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 		}
 		if (comment == FALSE) 
 {
-#line 270 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
+#line 272 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 	if (cr == '{') {
 		
 {
@@ -18633,12 +18741,12 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 	col++; if ((cr == 10) || (cr == 13)) col = 0;
 
 }
-#line 271 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
+#line 273 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 ;
 		if ((cr == '-') && (docket->command_callback)) {
 			
 {
-#line 299 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
+#line 301 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 	Str__clear(command);
 	Str__clear(argument);
 	int com_mode = TRUE;
@@ -18653,7 +18761,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 	col++; if ((cr == 10) || (cr == 13)) col = 0;
 
 }
-#line 303 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
+#line 305 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 ;
 		if ((cr == '}') || (cr == EOF)) break;
 		if ((cr == ':') && (com_mode)) { com_mode = FALSE; continue; }
@@ -18662,7 +18770,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 	}
 
 }
-#line 273 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
+#line 275 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 ;
 			if (Str__get_first_char(command) == '!') continue;
 			(*(docket->command_callback))(OUT, command, argument, docket);
@@ -18683,12 +18791,12 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 	col++; if ((cr == 10) || (cr == 13)) col = 0;
 
 }
-#line 283 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
+#line 285 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 ;
 		if (cr == '+') {
 			
 {
-#line 314 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
+#line 316 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 	TEMPORARY_TEXT(material)
 	while (TRUE) {
 		
@@ -18701,7 +18809,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 	col++; if ((cr == 10) || (cr == 13)) col = 0;
 
 }
-#line 316 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
+#line 318 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 ;
 		if (cr == EOF) break;
 		if ((cr == ')') && (Str__get_last_char(material) == '+')) {
@@ -18712,7 +18820,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 	DISCARD_TEXT(material)
 
 }
-#line 285 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
+#line 287 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 ;
 			continue;
 		} else { /* otherwise the open bracket was a literal */
@@ -33271,7 +33379,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B16\t/built 21 August 2022/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B19\t/built 8 February 2023/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"

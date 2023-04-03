@@ -179,6 +179,18 @@ JSON_value *JSON::look_up_object(JSON_value *obj, text_stream *key) {
 	return de->value;
 }
 
+@ The following changes the value for a key in an object, creating if necessary:
+
+=
+void JSON::change_object(JSON_value *obj, text_stream *key, JSON_value *val) {
+	if (obj == NULL) internal_error("no object");
+	if (obj->JSON_type == ERROR_JSONTYPE) internal_error("erroneous object");
+	if (obj->JSON_type != OBJECT_JSONTYPE) internal_error("not an object");
+	dict_entry *de = Dictionaries::find(obj->dictionary_if_object, key);
+	if (de == NULL) JSON::add_to_object(obj, key, val);
+	else de->value = val;
+}
+
 @ One last constructor creates an invalid JSON value resulting from incorrect
 JSON input:
 
