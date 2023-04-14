@@ -201,14 +201,15 @@ affects the reports in the woven code about where structures are used.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">language_function</span><span class="plain-syntax"> *</span><span class="function-syntax">Functions::new_function</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Functions::new_function</span></span>:<br/>ACME Support - <a href="4-as.html#SP5">&#167;5</a>, <a href="4-as.html#SP6">&#167;6</a><br/>C-Like Languages - <a href="4-cl.html#SP3_2_2">&#167;3.2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fname</span><span class="plain-syntax">, </span><span class="reserved-syntax">source_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-taf.html#SP7_2" class="named-paragraph-link"><span class="named-paragraph">Check the function is not a duplicate definition within the same paragraph</span><span class="named-paragraph-number">7.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">hash_table_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">hte</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">        </span><a href="3-ta.html#SP10" class="function-link"><span class="function-syntax">Analyser::mark_reserved_word_at_line</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">fname</span><span class="plain-syntax">, </span><span class="constant-syntax">FUNCTION_COLOUR</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">language_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">language_function</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">hte</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_function</span><span class="plain-syntax"> = </span><span class="identifier-syntax">fn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-taf.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph">Initialise the function structure</span><span class="named-paragraph-number">7.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-taf.html#SP7_2" class="named-paragraph-link"><span class="named-paragraph">Add the function to its paragraph and line</span><span class="named-paragraph-number">7.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-taf.html#SP7_3" class="named-paragraph-link"><span class="named-paragraph">Add the function to its paragraph and line</span><span class="named-paragraph-number">7.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">owning_section</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sect_language</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">supports_namespaces</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-taf.html#SP7_3" class="named-paragraph-link"><span class="named-paragraph">Check that the function has its namespace correctly declared</span><span class="named-paragraph-number">7.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-taf.html#SP7_4" class="named-paragraph-link"><span class="named-paragraph">Check that the function has its namespace correctly declared</span><span class="named-paragraph-number">7.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">fn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -234,7 +235,28 @@ part of the function structure. We'll need it when predeclaring the function.
 <span class="plain-syntax">    </span><span class="identifier-syntax">fn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">no_conditionals</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-taf.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the function to its paragraph and line</span><span class="named-paragraph-number">7.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_2" class="paragraph-anchor"></a><b>&#167;7.2.  </b>The following would become inefficient if there were enormous numbers of
+functions defined in the same paragraph, but for now the overhead of creating
+a dictionary with hash-lookup seems greater than the plausible saving of time.
+The point of this check is to handle situations where the code in the web is
+offering alternative definitions of the same function, within some form of
+conditional compilation preprocessing &mdash; if this, define <span class="extract"><span class="extract-syntax">f</span></span> as this; otherwise,
+define <span class="extract"><span class="extract-syntax">f</span></span> as that &mdash; which can otherwise be read as two declarations of <span class="extract"><span class="extract-syntax">f</span></span>,
+leading to spurious extra text at the weaving stage.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check the function is not a duplicate definition within the same paragraph</span><span class="named-paragraph-number">7.2</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">owning_paragraph</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">language_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">fn</span><span class="plain-syntax">, </span><span class="reserved-syntax">language_function</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">functions</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">fname</span><span class="plain-syntax">, </span><span class="identifier-syntax">fn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">function_name</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">fn</span><span class="plain-syntax">;</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="4-taf.html#SP7">&#167;7</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP7_3" class="paragraph-anchor"></a><b>&#167;7.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the function to its paragraph and line</span><span class="named-paragraph-number">7.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -243,7 +265,7 @@ part of the function structure. We'll need it when predeclaring the function.
 <span class="plain-syntax">    </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">function_defined</span><span class="plain-syntax"> = </span><span class="identifier-syntax">fn</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-taf.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_3" class="paragraph-anchor"></a><b>&#167;7.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that the function has its namespace correctly declared</span><span class="named-paragraph-number">7.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP7_4" class="paragraph-anchor"></a><b>&#167;7.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that the function has its namespace correctly declared</span><span class="named-paragraph-number">7.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
