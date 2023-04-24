@@ -4410,9 +4410,9 @@ structure_element * Functions__new_element(language_type *str, text_stream *elna
 language_type * Functions__find_structure(web *W, text_stream *name) ;
 #line 127 "inweb/Chapter 4/Types and Functions.w"
 language_function * Functions__new_function(text_stream *fname, source_line *L) ;
-#line 192 "inweb/Chapter 4/Types and Functions.w"
+#line 209 "inweb/Chapter 4/Types and Functions.w"
 int  Functions__used_elsewhere(language_function *fn) ;
-#line 213 "inweb/Chapter 4/Types and Functions.w"
+#line 230 "inweb/Chapter 4/Types and Functions.w"
 void  Functions__catalogue(section *S, int functions_too) ;
 #line 37 "inweb/Chapter 4/Language Methods.w"
 void  LanguageMethods__parse_types(web *W, programming_language *pl) ;
@@ -9062,11 +9062,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.2.1-beta+1B19";
+			char *svn = "7.2.1-beta+1B20";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "8 February 2023";
+			char *d = "3 April 2023";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -26322,13 +26322,25 @@ language_type *Functions__find_structure(web *W, text_stream *name) {
 
 #line 127 "inweb/Chapter 4/Types and Functions.w"
 language_function *Functions__new_function(text_stream *fname, source_line *L) {
+	
+{
+#line 167 "inweb/Chapter 4/Types and Functions.w"
+	paragraph *P = L->owning_paragraph;
+	language_function *fn;
+	LOOP_OVER_LINKED_LIST(fn, language_function, P->functions)
+		if (Str__eq(fname, fn->function_name))
+			return fn;
+
+}
+#line 128 "inweb/Chapter 4/Types and Functions.w"
+;
 	hash_table_entry *hte =
 		Analyser__mark_reserved_word_at_line(L, fname, FUNCTION_COLOUR);
 	language_function *fn = CREATE(language_function);
 	hte->as_function = fn;
 	
 {
-#line 143 "inweb/Chapter 4/Types and Functions.w"
+#line 144 "inweb/Chapter 4/Types and Functions.w"
 	fn->function_name = Str__duplicate(fname);
 	fn->function_arguments = Str__new();
 	fn->function_type = Str__new();
@@ -26343,22 +26355,22 @@ language_function *Functions__new_function(text_stream *fname, source_line *L) {
 	fn->no_conditionals = 0;
 
 }
-#line 132 "inweb/Chapter 4/Types and Functions.w"
+#line 133 "inweb/Chapter 4/Types and Functions.w"
 ;
 	
 {
-#line 157 "inweb/Chapter 4/Types and Functions.w"
+#line 174 "inweb/Chapter 4/Types and Functions.w"
 	paragraph *P = L->owning_paragraph;
 	if (P) ADD_TO_LINKED_LIST(fn, language_function, P->functions);
 	L->function_defined = fn;
 
 }
-#line 133 "inweb/Chapter 4/Types and Functions.w"
+#line 134 "inweb/Chapter 4/Types and Functions.w"
 ;
 	if (L->owning_section->sect_language->supports_namespaces)
 		
 {
-#line 162 "inweb/Chapter 4/Types and Functions.w"
+#line 179 "inweb/Chapter 4/Types and Functions.w"
 	text_stream *declared_namespace = NULL;
 	text_stream *ambient_namespace = L->owning_section->sect_namespace;
 	match_results mr = Regexp__create_mr();
@@ -26386,12 +26398,12 @@ language_function *Functions__new_function(text_stream *fname, source_line *L) {
 	Regexp__dispose_of(&mr);
 
 }
-#line 135 "inweb/Chapter 4/Types and Functions.w"
+#line 136 "inweb/Chapter 4/Types and Functions.w"
 ;
 	return fn;
 }
 
-#line 192 "inweb/Chapter 4/Types and Functions.w"
+#line 209 "inweb/Chapter 4/Types and Functions.w"
 int Functions__used_elsewhere(language_function *fn) {
 	paragraph *P = fn->function_header_at->owning_paragraph;
 	hash_table_entry *hte =
@@ -26408,7 +26420,7 @@ int Functions__used_elsewhere(language_function *fn) {
 	return FALSE;
 }
 
-#line 213 "inweb/Chapter 4/Types and Functions.w"
+#line 230 "inweb/Chapter 4/Types and Functions.w"
 void Functions__catalogue(section *S, int functions_too) {
 	language_type *str;
 	LOOP_OVER(str, language_type)
@@ -33379,7 +33391,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B19\t/built 8 February 2023/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B20\t/built 3 April 2023/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"

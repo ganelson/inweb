@@ -125,6 +125,7 @@ typedef struct language_function {
 
 @ =
 language_function *Functions::new_function(text_stream *fname, source_line *L) {
+	@<Check the function is not a duplicate definition within the same paragraph@>;
 	hash_table_entry *hte =
 		Analyser::mark_reserved_word_at_line(L, fname, FUNCTION_COLOUR);
 	language_function *fn = CREATE(language_function);
@@ -152,6 +153,22 @@ part of the function structure. We'll need it when predeclaring the function.
 		(L->owning_section->sect_language->C_like))
 		fn->usage_described = TRUE;
 	fn->no_conditionals = 0;
+
+@ The following would become inefficient if there were enormous numbers of
+functions defined in the same paragraph, but for now the overhead of creating
+a dictionary with hash-lookup seems greater than the plausible saving of time.
+The point of this check is to handle situations where the code in the web is
+offering alternative definitions of the same function, within some form of
+conditional compilation preprocessing -- if this, define |f| as this; otherwise,
+define |f| as that -- which can otherwise be read as two declarations of |f|,
+leading to spurious extra text at the weaving stage.
+
+@<Check the function is not a duplicate definition within the same paragraph@> =
+	paragraph *P = L->owning_paragraph;
+	language_function *fn;
+	LOOP_OVER_LINKED_LIST(fn, language_function, P->functions)
+		if (Str::eq(fname, fn->function_name))
+			return fn;
 
 @<Add the function to its paragraph and line@> =
 	paragraph *P = L->owning_paragraph;
