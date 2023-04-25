@@ -22,9 +22,12 @@ typedef struct simple_tangle_docket {
 	void (*command_callback)(struct text_stream *, struct text_stream *,
 		struct text_stream *, struct simple_tangle_docket *);
 	void (*bplus_callback)(struct text_stream *, struct simple_tangle_docket *);
+	void (*source_marker_callback)(struct text_stream *, struct simple_tangle_docket *);
 	void (*error_callback)(char *, struct text_stream *);
 	void *state;
 	struct pathname *web_path;
+	struct filename *current_filename;
+	int current_start_line;
 } simple_tangle_docket;
 
 @ =
@@ -33,15 +36,19 @@ simple_tangle_docket SimpleTangler::new_docket(
 	void (*B)(struct text_stream *, struct text_stream *,
 		struct text_stream *, struct simple_tangle_docket *),
 	void (*C)(struct text_stream *, struct simple_tangle_docket *),
-	void (*D)(char *, struct text_stream *),
+	void (*D)(struct text_stream *, struct simple_tangle_docket *),
+	void (*E)(char *, struct text_stream *),
 	pathname *web_path, void *initial_state) {
 	simple_tangle_docket docket;
 	docket.raw_callback = A;
 	docket.command_callback = B;
 	docket.bplus_callback = C;
-	docket.error_callback = D;
+	docket.source_marker_callback = D;
+	docket.error_callback = E;
 	docket.state = initial_state;
 	docket.web_path = web_path;
+	docket.current_filename = NULL;
+	docket.current_start_line = 0;
 	return docket;
 }
 
@@ -116,10 +123,12 @@ from a web |W|, we translate that into the path |W/Sections/Juggling.i6t|.
 
 @<Open the file@> =
 	if (F) {
+		docket->current_filename = F;
 		Input_File = Filenames::fopen(F, "r");
 	} else if (Str::len(leafname) > 0) {
 		pathname *P = Pathnames::down(docket->web_path, I"Sections");
-		Input_File = Filenames::fopen(Filenames::in(P, leafname), "r");
+		docket->current_filename = Filenames::in(P, leafname);
+		Input_File = Filenames::fopen(docket->current_filename, "r");
 	}
 	if (Input_File == NULL)
 		(*(docket->error_callback))("unable to open the file '%S'", leafname);
@@ -128,7 +137,7 @@ from a web |W|, we translate that into the path |W/Sections/Juggling.i6t|.
 	TEMPORARY_TEXT(command)
 	TEMPORARY_TEXT(argument)
 	int skip_part = FALSE, extract = FALSE;
-	int col = 1, cr, sfp = 0;
+	int col = 1, cr, prev_cr = 0, line_count = 1, sfp = 0;
 	do {
 		Str::clear(command);
 		Str::clear(argument);
@@ -149,15 +158,21 @@ from a web |W|, we translate that into the path |W/Sections/Juggling.i6t|.
 @ Our text files are encoded as ISO Latin-1, not as Unicode UTF-8, so ordinary
 |fgetc| is used, and no BOM marker is parsed. Lines are assumed to be terminated
 with either |0x0a| or |0x0d|. (Since blank lines are harmless, we take no
-trouble over |0a0d| or |0d0a| combinations.) The built-in template files, almost
-always the only ones used, are line terminated |0x0a| in Unix fashion.
+trouble over |0a0d| or |0d0a| combinations except to make sure we don't doubly
+increment the line count in such cases.)
 
 @<Read next character@> =
 	if (Input_File) cr = fgetc(Input_File);
 	else if (text) {
 		cr = Str::get_at(text, sfp); if (cr == 0) cr = EOF; else sfp++;
 	} else cr = EOF;
-	col++; if ((cr == 10) || (cr == 13)) col = 0;
+	col++;
+	if ((cr == 10) || (cr == 13)) {
+		col = 0;
+		if ((cr == 10) && (prev_cr != 13)) line_count++;
+		if ((cr == 13) && (prev_cr != 10)) line_count++;
+	}
+	prev_cr = cr;
 
 @ Here we see the limited range of Inweb syntaxes allowed; but some |@| and |=|
 commands can be used, at least.
@@ -250,14 +265,13 @@ commands can be used, at least.
 			break;
 		}
 		case INWEB_CODE_SYNTAX:
-			extract = FALSE; 
-			if (skip_part == FALSE) comment = FALSE;
+			@<Begin some code here@>;
 			break;
 		case INWEB_EQUALS_SYNTAX:
 			if (extract) {
 				comment = TRUE; extract = FALSE;
 			} else {
-				if (skip_part == FALSE) comment = FALSE;
+				@<Begin some code here@>;
 			}
 			break;
 		case INWEB_EXTRACT_SYNTAX:
@@ -266,6 +280,14 @@ commands can be used, at least.
 		case INWEB_DASH_SYNTAX: break;
 		case INWEB_PURPOSE_SYNTAX: break;
 		case INWEB_FIGURE_SYNTAX: break;
+	}
+
+@<Begin some code here@> =
+	extract = FALSE; 
+	if (skip_part == FALSE) {
+		comment = FALSE;
+		docket->current_start_line = line_count;
+		(*(docket->source_marker_callback))(OUT, docket);
 	}
 
 @<Deal with material which isn't commentary@> =
