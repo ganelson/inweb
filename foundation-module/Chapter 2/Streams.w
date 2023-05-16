@@ -513,7 +513,7 @@ int Streams::open_from_UTF8_string(text_stream *stream, const char *c_string) {
 void Streams::write_UTF8_string(text_stream *stream, const char *c_string) {
 	unicode_file_buffer ufb = TextFiles::create_ufb();
 	int c;
-	while ((c = TextFiles::utf8_fgetc(NULL, &c_string, FALSE, &ufb)) != 0)
+	while ((c = TextFiles::utf8_fgetc(NULL, &c_string, &ufb)) != 0)
 		Streams::putc(c, stream);
 }
 

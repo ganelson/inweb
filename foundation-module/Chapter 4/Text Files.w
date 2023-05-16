@@ -85,7 +85,8 @@ int TextFiles::read(filename *F, int escape_oddities, char *message, int serious
 	void (iterator)(text_stream *, text_file_position *, void *),
 	text_file_position *start_at, void *state) {
 	text_file_position tfp;
-	tfp.ufb = TextFiles::create_ufb();
+	if (escape_oddities) tfp.ufb = TextFiles::create_filtered_ufb(UNICODE_UFBHM);
+	else tfp.ufb = TextFiles::create_ufb();
 	@<Open the text file@>;
 	@<Set the initial position, seeking it in the file if need be@>;
 	@<Read in lines and send them one by one to the iterator@>;
@@ -129,7 +130,7 @@ values returned by |ftell| into this field.
 	TEMPORARY_TEXT(line)
 	int i = 0, c = ' ';
 	while ((c != EOF) && (tfp.actively_scanning)) {
-		c = TextFiles::utf8_fgetc(tfp.handle_when_open, NULL, escape_oddities, &tfp.ufb);
+		c = TextFiles::utf8_fgetc(tfp.handle_when_open, NULL, &tfp.ufb);
 		if ((c == EOF) || (c == '\x0a') || (c == '\x0d')) {
 			Str::put_at(line, i, 0);
 			if ((i > 0) || (c != tfp.skip_terminator)) {
@@ -177,7 +178,7 @@ void TextFiles::read_line(OUTPUT_STREAM, int escape_oddities, text_file_position
 	Str::clear(OUT);
 	int i = 0, c = ' ';
 	while ((c != EOF) && (tfp->actively_scanning)) {
-		c = TextFiles::utf8_fgetc(tfp->handle_when_open, NULL, escape_oddities, &tfp->ufb);
+		c = TextFiles::utf8_fgetc(tfp->handle_when_open, NULL, &tfp->ufb);
 		if ((c == EOF) || (c == '\x0a') || (c == '\x0d')) {
 			Str::put_at(OUT, i, 0);
 			if ((i > 0) || (c != tfp->skip_terminator)) {
@@ -224,21 +225,32 @@ required by the UTF-8 specification). Anyone calling |TextFiles::utf8_fgetc| mus
 check the return value for |EOF| every time, and for |0xFEFF| every time we
 might be at the start of the file being read.
 
+@e NONE_UFBHM from 1
+@e ZSCII_UFBHM
+@e UNICODE_UFBHM
+
 =
 typedef struct unicode_file_buffer {
 	char unicode_feed_buffer[32]; /* holds a single escape such as "[unicode 3106]" */
 	int ufb_counter; /* position in the unicode feed buffer */
+	int handling_mode; /* one of the above */
 } unicode_file_buffer;
 
 unicode_file_buffer TextFiles::create_ufb(void) {
 	unicode_file_buffer ufb;
 	ufb.ufb_counter = -1;
+	ufb.handling_mode = NONE_UFBHM;
 	return ufb;
 }
 
-int TextFiles::utf8_fgetc(FILE *from, const char **or_from, int escape_oddities,
-	unicode_file_buffer *ufb) {
-	int c = EOF, conts;
+unicode_file_buffer TextFiles::create_filtered_ufb(int mode) {
+	unicode_file_buffer ufb = TextFiles::create_ufb();
+	ufb.handling_mode = mode;
+	return ufb;
+}
+
+int TextFiles::utf8_fgetc(FILE *from, const char **or_from, unicode_file_buffer *ufb) {
+	int c = EOF, conts, mode = (ufb)?ufb->handling_mode:NONE_UFBHM;
 	if ((ufb) && (ufb->ufb_counter >= 0)) {
 		if (ufb->unicode_feed_buffer[ufb->ufb_counter] == 0) ufb->ufb_counter = -1;
 		else return ufb->unicode_feed_buffer[ufb->ufb_counter++];
@@ -248,18 +260,20 @@ int TextFiles::utf8_fgetc(FILE *from, const char **or_from, int escape_oddities,
 	if (c<0x80) return c; /* in all other cases, a UTF-8 continuation sequence begins */
 
 	@<Unpack one to five continuation bytes to obtain the Unicode character code@>;
-    @<Return non-ASCII codes in the intersection of ISO Latin-1 and ZSCII as literals@>;
-    if (escape_oddities) @<Return Unicode fancy equivalents as simpler literals@>;
-
 	if (c == 0xFEFF) return c; /* the Unicode BOM non-character */
 
-	if (escape_oddities == FALSE) return c;
-	if (ufb) {
-		sprintf(ufb->unicode_feed_buffer, "[unicode %d]", c);
-		ufb->ufb_counter = 1;
-		return '[';
+    if (mode != NONE_UFBHM) @<Return Unicode fancy equivalents as simpler literals@>;
+
+	if (mode == ZSCII_UFBHM) {
+	    @<Return non-ASCII codes in the intersection of ISO Latin-1 and ZSCII as literals@>;
+		if (ufb) {
+			sprintf(ufb->unicode_feed_buffer, "[unicode %d]", c);
+			ufb->ufb_counter = 1;
+			return '[';
+		}
+		return '?';
 	}
-	return '?';
+	return c;
 }
 
 @ Not every byte sequence is legal in a UTF-8 file: if we find a malformed
@@ -288,18 +302,13 @@ marks, and that will have to do.
 "The Z-Machine Standards Document". It offers a range of west European
 accented letters which almost, but not quite, matches those on offer in
 ISO Latin-1 -- it omits for example Icelandic lower case eth. (ZSCII was
-developed in the 1980s by Infocom, Imc., to encode their interactive
+developed in the 1980s by Infocom, Inc., to encode their interactive
 fiction offerings. Had they been collaborating with J. R. R. Tolkien
 rather than Douglas Adams, they might have filled this gap. As it was,
 "eth" never occurred in any of their works.)
 
-We let the multiplication sign |0xd7| through even though ZSCII doesn't
-support it, but convert it to an "x": this is so that we can parse numbers
-in scientific notation.
-
 @<Return non-ASCII codes in the intersection of ISO Latin-1 and ZSCII as literals@> =
 	if ((c == 0xa1) || (c == 0xa3) || (c == 0xbf)) return c; /* pound sign, inverted ! and ? */
-	if (c == 0xd7) return 'x'; /* convert multiplication sign to lower case "x" */
 	if ((c >= 0xc0) && (c <= 0xff)) { /* accented West European letters, but... */
 		if ((c != 0xd0) && (c != 0xf0) && /* not Icelandic eths */
 		    (c != 0xde) && (c != 0xfe) && /* nor Icelandic thorns */
@@ -312,9 +321,14 @@ where we would normally expect hyphens and ordinary spaces: this is intended
 for the benefit of users with helpful word-processors which autocorrect
 hyphens into em-rules when they are flanked by spaces, and so on.
 
+We let the multiplication sign |0xd7| through even though ZSCII doesn't
+support it, but convert it to an "x": this is so that we can parse numbers
+in scientific notation.
+
 @<Return Unicode fancy equivalents as simpler literals@> =
 	if (c == 0x85) return '\x0d'; /* NEL, or "next line" */
 	if (c == 0xa0) return ' '; /* non-breaking space */
+	if (c == 0xd7) return 'x'; /* convert multiplication sign to lower case "x" */
 	if ((c >= 0x2000) && (c <= 0x200a)) return ' '; /* space variants */
 	if ((c >= 0x2010) && (c <= 0x2014)) return '-'; /* rules and dashes */
 	if ((c >= 0x2018) && (c <= 0x2019)) return '\''; /* smart single quotes */

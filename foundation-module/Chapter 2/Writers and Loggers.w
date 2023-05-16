@@ -237,7 +237,12 @@ file encodings, but expanding |%s| does not.
 	#pragma clang diagnostic push
 	#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	switch (esc_number) {
-		case 'c': case 'd': case 'i': case 'x': { /* |char| is promoted to |int| in variable arguments */
+		case 'c': { /* |char| is promoted to |int| in variable arguments */
+			int ival = va_arg(ap, int);
+			Streams::putc(ival, stream);
+			break;
+		}
+		case 'd': case 'i': case 'x': {
 			int ival = va_arg(ap, int);
 			char temp[256];
 			if (snprintf(temp, 255, format_string, ival) >= 255) strcpy(temp, "?");
