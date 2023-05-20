@@ -2954,29 +2954,29 @@ void  Streams__flush(text_stream *stream) ;
 void  Streams__close(text_stream *stream) ;
 #line 688 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__putc(int c_int, text_stream *stream) ;
-#line 795 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 798 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__literal(text_stream *stream, char *p) ;
-#line 809 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 812 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__indent(text_stream *stream) ;
-#line 814 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 817 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__outdent(text_stream *stream) ;
-#line 823 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 826 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__set_indentation(text_stream *stream, int N) ;
-#line 830 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 833 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__get_indentation(text_stream *stream) ;
-#line 842 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 845 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__get_position(text_stream *stream) ;
-#line 856 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 859 "inweb/foundation-module/Chapter 2/Streams.w"
 int  Streams__latest(text_stream *stream) ;
-#line 872 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 875 "inweb/foundation-module/Chapter 2/Streams.w"
 wchar_t  Streams__get_char_at_index(text_stream *stream, int position) ;
-#line 884 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 887 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__put_char_at_index(text_stream *stream, int position, wchar_t C) ;
-#line 910 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 913 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__set_position(text_stream *stream, int position) ;
-#line 934 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 937 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__copy(text_stream *to, text_stream *from) ;
-#line 951 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 954 "inweb/foundation-module/Chapter 2/Streams.w"
 void  Streams__writer(OUTPUT_STREAM, char *format_string, void *vS) ;
 #line 51 "inweb/foundation-module/Chapter 2/Writers and Loggers.w"
 void  Writers__log_escape_usage(void) ;
@@ -3344,17 +3344,17 @@ int  Characters__is_space_or_tab(int c) ;
 int  Characters__is_whitespace(int c) ;
 #line 55 "inweb/foundation-module/Chapter 4/Characters.w"
 int  Characters__is_babel_whitespace(int c) ;
-#line 66 "inweb/foundation-module/Chapter 4/Characters.w"
+#line 68 "inweb/foundation-module/Chapter 4/Characters.w"
 int  Characters__combine_accent(int accent, int letter) ;
-#line 120 "inweb/foundation-module/Chapter 4/Characters.w"
+#line 122 "inweb/foundation-module/Chapter 4/Characters.w"
 int  Characters__make_filename_safe(int charcode) ;
-#line 126 "inweb/foundation-module/Chapter 4/Characters.w"
+#line 128 "inweb/foundation-module/Chapter 4/Characters.w"
 wchar_t  Characters__make_wchar_t_filename_safe(wchar_t charcode) ;
-#line 135 "inweb/foundation-module/Chapter 4/Characters.w"
+#line 137 "inweb/foundation-module/Chapter 4/Characters.w"
 int  Characters__remove_accent(int charcode) ;
-#line 162 "inweb/foundation-module/Chapter 4/Characters.w"
+#line 164 "inweb/foundation-module/Chapter 4/Characters.w"
 wchar_t  Characters__remove_wchar_t_accent(wchar_t charcode) ;
-#line 169 "inweb/foundation-module/Chapter 4/Characters.w"
+#line 171 "inweb/foundation-module/Chapter 4/Characters.w"
 int  Characters__isalphabetic(int letter) ;
 #line 25 "inweb/foundation-module/Chapter 4/C Strings.w"
 int  CStrings__strlen_unbounded(const char *p) ;
@@ -7511,7 +7511,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 	text_stream *first_stream = stream;
 	if (c != '\n') 
 {
-#line 748 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 751 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (first_stream->stream_flags & INDENT_PENDING_STRF) {
 		first_stream->stream_flags -= INDENT_PENDING_STRF;
 		int L = (first_stream->stream_flags & INDENTATION_MASK_STRF)/INDENTATION_BASE_STRF;
@@ -7536,7 +7536,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 	while (stream->stream_continues) stream = stream->stream_continues;
 	
 {
-#line 775 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 778 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (stream->chars_written + SPACE_AT_END_OF_STREAM >= stream->chars_capacity) {
 		if (stream->write_to_file) return; /* write nothing further */
 		if (stream->write_to_memory) {
@@ -7561,7 +7561,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 		if (stream->stream_flags & FILE_ENCODING_UTF8_STRF)
 			
 {
-#line 738 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 741 "inweb/foundation-module/Chapter 2/Streams.w"
 	if (c >= 0x800) {
 		fputc(0xE0 + (c >> 12), stream->write_to_file);
 		fputc(0x80 + ((c >> 6) & 0x3f), stream->write_to_file);
@@ -7591,9 +7591,12 @@ void Streams__putc(int c_int, text_stream *stream) {
 		}
 	} else if (stream->write_to_memory) {
 		if ((c >= 0x0300) && (c <= 0x036F) && (stream->chars_written > 0)) {
-			c = (unsigned int) Characters__combine_accent(
+			unsigned int newc = (unsigned int) Characters__combine_accent(
 				(int) c, (stream->write_to_memory)[stream->chars_written - 1]);
-			stream->chars_written--;
+			if (newc) {
+				c = newc;
+				stream->chars_written--;
+			}
 		}
 		(stream->write_to_memory)[stream->chars_written] = (wchar_t) c;
 	}
@@ -7601,7 +7604,7 @@ void Streams__putc(int c_int, text_stream *stream) {
 	stream->chars_written++;
 }
 
-#line 795 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 798 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__literal(text_stream *stream, char *p) {
 	if (stream == NULL) return;
 	int i, x = ((stream->stream_flags) & USES_XML_ESCAPES_STRF);
@@ -7610,7 +7613,7 @@ void Streams__literal(text_stream *stream, char *p) {
 	if (x) stream->stream_flags += USES_XML_ESCAPES_STRF;
 }
 
-#line 809 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 812 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__indent(text_stream *stream) {
 	if (stream == NULL) return;
 	stream->stream_flags += INDENTATION_BASE_STRF;
@@ -7637,7 +7640,7 @@ int Streams__get_indentation(text_stream *stream) {
 	return (stream->stream_flags & INDENTATION_MASK_STRF)/INDENTATION_BASE_STRF;
 }
 
-#line 842 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 845 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__get_position(text_stream *stream) {
 	int t = 0;
 	while (stream) {
@@ -7647,7 +7650,7 @@ int Streams__get_position(text_stream *stream) {
 	return t;
 }
 
-#line 856 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 859 "inweb/foundation-module/Chapter 2/Streams.w"
 int Streams__latest(text_stream *stream) {
 	if (stream == NULL) return 0;
 	if (stream->write_to_file) internal_error("stream_latest on file stream");
@@ -7660,7 +7663,7 @@ int Streams__latest(text_stream *stream) {
 	return 0;
 }
 
-#line 872 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 875 "inweb/foundation-module/Chapter 2/Streams.w"
 wchar_t Streams__get_char_at_index(text_stream *stream, int position) {
 	if (stream == NULL) internal_error("examining null stream");
 	if (stream->write_to_file) internal_error("examining file stream");
@@ -7692,7 +7695,7 @@ void Streams__put_char_at_index(text_stream *stream, int position, wchar_t C) {
 	}
 }
 
-#line 910 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 913 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__set_position(text_stream *stream, int position) {
 	if (stream == NULL) return;
 	if (position < 0) position = 0; /* to simplify the implementation of backspacing */
@@ -7713,7 +7716,7 @@ void Streams__set_position(text_stream *stream, int position) {
 	}
 }
 
-#line 934 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 937 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__copy(text_stream *to, text_stream *from) {
 	if ((from == NULL) || (to == NULL)) return;
 	if (from == to) internal_error("tried to copy a stream to itself");
@@ -7727,7 +7730,7 @@ void Streams__copy(text_stream *to, text_stream *from) {
 	}
 }
 
-#line 951 "inweb/foundation-module/Chapter 2/Streams.w"
+#line 954 "inweb/foundation-module/Chapter 2/Streams.w"
 void Streams__writer(OUTPUT_STREAM, char *format_string, void *vS) {
 	text_stream *S = (text_stream *) vS;
 	Streams__copy(OUT, S);
@@ -9082,11 +9085,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.2.1-beta+1B22";
+			char *svn = "7.2.1-beta+1B23";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "25 April 2023";
+			char *d = "16 May 2023";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -10615,7 +10618,7 @@ int Characters__is_babel_whitespace(int c) {
 	return FALSE;
 }
 
-#line 66 "inweb/foundation-module/Chapter 4/Characters.w"
+#line 68 "inweb/foundation-module/Chapter 4/Characters.w"
 int Characters__combine_accent(int accent, int letter) {
 	switch(accent) {
 		case 0x0300: /* Unicode combining grave */
@@ -10662,10 +10665,10 @@ int Characters__combine_accent(int accent, int letter) {
 			}
 			break;
 	}
-	return '?';
+	return 0;
 }
 
-#line 120 "inweb/foundation-module/Chapter 4/Characters.w"
+#line 122 "inweb/foundation-module/Chapter 4/Characters.w"
 int Characters__make_filename_safe(int charcode) {
 	charcode = Characters__remove_accent(charcode);
 	if (charcode >= 128) charcode = '-';
@@ -10678,7 +10681,7 @@ wchar_t Characters__make_wchar_t_filename_safe(wchar_t charcode) {
 	return charcode;
 }
 
-#line 135 "inweb/foundation-module/Chapter 4/Characters.w"
+#line 137 "inweb/foundation-module/Chapter 4/Characters.w"
 int Characters__remove_accent(int charcode) {
 	switch (charcode) {
 		case 0xC0: case 0xC1: case 0xC2: case 0xC3:
@@ -10710,7 +10713,7 @@ wchar_t Characters__remove_wchar_t_accent(wchar_t charcode) {
 	return (wchar_t) Characters__remove_accent((int) charcode);
 }
 
-#line 169 "inweb/foundation-module/Chapter 4/Characters.w"
+#line 171 "inweb/foundation-module/Chapter 4/Characters.w"
 int Characters__isalphabetic(int letter) {
 	return Characters__isalpha((wchar_t) Characters__remove_accent(letter));
 }
@@ -33493,7 +33496,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B22\t/built 25 April 2023/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B23\t/built 16 May 2023/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"

@@ -722,9 +722,12 @@ void Streams::putc(int c_int, text_stream *stream) {
 		}
 	} else if (stream->write_to_memory) {
 		if ((c >= 0x0300) && (c <= 0x036F) && (stream->chars_written > 0)) {
-			c = (unsigned int) Characters::combine_accent(
+			unsigned int newc = (unsigned int) Characters::combine_accent(
 				(int) c, (stream->write_to_memory)[stream->chars_written - 1]);
-			stream->chars_written--;
+			if (newc) {
+				c = newc;
+				stream->chars_written--;
+			}
 		}
 		(stream->write_to_memory)[stream->chars_written] = (wchar_t) c;
 	}
