@@ -61,6 +61,8 @@ int Characters::is_babel_whitespace(int c) {
 @h Unicode composition.
 A routine which converts the Unicode combining accents with letters,
 sufficient correctly to handle all characters in the ZSCII set.
+Returns a combined character code, or 0 if there is no combining
+to be done.
 
 =
 int Characters::combine_accent(int accent, int letter) {
@@ -109,7 +111,7 @@ int Characters::combine_accent(int accent, int letter) {
 			}
 			break;
 	}
-	return '?';
+	return 0;
 }
 
 @h Accent stripping.
