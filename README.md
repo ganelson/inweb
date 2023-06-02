@@ -1,13 +1,13 @@
 # Inweb 7.2.1
 
-[Version](notes/versioning.md): 7.2.1-beta+1B24 'Escape to Danger' (23 May 2023)
+[Version](notes/versioning.md): 7.2.1-beta+1B25 'Escape to Danger' (2 June 2023)
 
 ## About Inweb
 
-Inweb offers a modern approach to literate programming. Unlike the original
-LP tools of the late 1970s, led by Donald Knuth, or of the 1990s revival,
+Inweb offers a modern approach to literate programming (LP). Unlike the original
+LP tools of the late 1970s, led by [Donald Knuth](https://en.wikipedia.org/wiki/Donald_Knuth), or of the 1990s revival,
 Inweb aims to serve programmers in the Github age. It scales to much larger
-programs than CWEB, and since 2004 has been the tool used by the
+programs than  [CWEB](https://en.wikipedia.org/wiki/Web_(programming_system)#CWEB), and since 2004 has been the tool used by the
 [Inform programming language project](https://github.com/ganelson/inform),
 where it manages a 300,000-line code base.
 
@@ -21,11 +21,11 @@ For the Inweb manual, see [&#9733;&nbsp;inweb/Preliminaries](https://ganelson.gi
 ## Licence and copyright
 
 Except as noted, copyright in material in this repository (the "Package") is
-held by Graham Nelson (the "Author"), who retains copyright so that there is
+held by [Graham Nelson](https://en.wikipedia.org/wiki/Graham_Nelson) (the "Author"), who retains copyright so that there is
 a single point of reference. As from the first date of this repository
 becoming public, 28 April 2022, the Package is placed under the
 [Artistic License 2.0](https://opensource.org/licenses/Artistic-2.0).
-This is a highly permissive licence, used by Perl among other notable projects,
+This is a highly permissive licence, used by [Perl](https://en.wikipedia.org/wiki/Perl) among other notable projects,
 recognised by the Open Source Initiative as open and by the Free Software
 Foundation as free in both senses.
 
