@@ -4,7 +4,7 @@ To work through the program read in, assigning each line its category,
 and noting down other useful information as we go.
 
 @h Sequence of parsing.
-At this point, thw web has been read into memory. It's a linked list of
+At this point, the web has been read into memory. It's a linked list of
 chapters, each of which is a linked list of sections, each of which must
 be parsed in turn.
 
@@ -52,7 +52,7 @@ markup syntax, and trying to detect incorrect uses of one within the other.
 	@<If the section as a whole is tagged, apply that tag to each paragraph in it@>;
 	@<Work out footnote numbering for this section@>;
 
-@ In versiom 2 syntax, the notation for tags was clarified. The tag list
+@ In version 2 syntax, the notation for tags was clarified. The tag list
 for a paragraph is the run of |^"This"| and |^"That"| markers at the end of
 the line introducing that paragraph. They can only occur, therefore, on a
 line beginning with an |@|. We extract them into a string called |tag_list|.
@@ -145,7 +145,7 @@ reparsing from there.
 	Regexp::dispose_of(&mr);
 	continue;
 
-@h Categorisatiom.
+@h Categorisation.
 This is where the work is really done. We have a source line: is it comment,
 code, definition, what?
 
