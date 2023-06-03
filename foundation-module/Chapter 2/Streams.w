@@ -747,7 +747,12 @@ void Streams::putc(int c_int, text_stream *stream) {
 @ Where we pack large character values, up to 65535, as follows.
 
 @<Put a UTF8-encoded character into the underlying file@> =
-	if (c >= 0x800) {
+	if (c >= 0x10000) {
+		fputc(0xF0 + (c >> 18), stream->write_to_file);
+		fputc(0x80 + ((c >> 12) & 0x3f), stream->write_to_file);
+		fputc(0x80 + ((c >> 6) & 0x3f), stream->write_to_file);
+		fputc(0x80 + (c & 0x3f), stream->write_to_file);
+	} else if (c >= 0x800) {
 		fputc(0xE0 + (c >> 12), stream->write_to_file);
 		fputc(0x80 + ((c >> 6) & 0x3f), stream->write_to_file);
 		fputc(0x80 + (c & 0x3f), stream->write_to_file);
