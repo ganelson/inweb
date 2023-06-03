@@ -574,7 +574,16 @@ void Streams::write_as_UTF8_string(char *C_string, text_stream *stream, int buff
 	while (stream) {
 		for (int j=0; j<stream->chars_written; j++) {
 			unsigned int c = (unsigned int) stream->write_to_memory[j];
-			if (c >= 0x800) {
+			if (c >= 0x200000) { /* invalid Unicode */
+				if (i >= buffer_size-1) break;
+				to[i++] = '?';
+			} else if (c >= 0x10000) {
+				if (i >= buffer_size-4) break;
+				to[i++] = 0xF0 + (unsigned char) (c >> 18);
+				to[i++] = 0x80 + (unsigned char) ((c >> 12) & 0x3f);
+				to[i++] = 0x80 + (unsigned char) ((c >> 6) & 0x3f);
+				to[i++] = 0x80 + (unsigned char) (c & 0x3f);
+			} else if (c >= 0x800) {
 				if (i >= buffer_size-3) break;
 				to[i++] = 0xE0 + (unsigned char) (c >> 12);
 				to[i++] = 0x80 + (unsigned char) ((c >> 6) & 0x3f);
