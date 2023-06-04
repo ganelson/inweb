@@ -574,7 +574,16 @@ void Streams::write_as_UTF8_string(char *C_string, text_stream *stream, int buff
 	while (stream) {
 		for (int j=0; j<stream->chars_written; j++) {
 			unsigned int c = (unsigned int) stream->write_to_memory[j];
-			if (c >= 0x800) {
+			if (c >= 0x200000) { /* invalid Unicode */
+				if (i >= buffer_size-1) break;
+				to[i++] = '?';
+			} else if (c >= 0x10000) {
+				if (i >= buffer_size-4) break;
+				to[i++] = 0xF0 + (unsigned char) (c >> 18);
+				to[i++] = 0x80 + (unsigned char) ((c >> 12) & 0x3f);
+				to[i++] = 0x80 + (unsigned char) ((c >> 6) & 0x3f);
+				to[i++] = 0x80 + (unsigned char) (c & 0x3f);
+			} else if (c >= 0x800) {
 				if (i >= buffer_size-3) break;
 				to[i++] = 0xE0 + (unsigned char) (c >> 12);
 				to[i++] = 0x80 + (unsigned char) ((c >> 6) & 0x3f);
@@ -738,7 +747,14 @@ void Streams::putc(int c_int, text_stream *stream) {
 @ Where we pack large character values, up to 65535, as follows.
 
 @<Put a UTF8-encoded character into the underlying file@> =
-	if (c >= 0x800) {
+	if (c >= 0x200000) { /* invalid Unicode */
+		fputc('?', stream->write_to_file);
+	} else if (c >= 0x10000) {
+		fputc(0xF0 + (c >> 18), stream->write_to_file);
+		fputc(0x80 + ((c >> 12) & 0x3f), stream->write_to_file);
+		fputc(0x80 + ((c >> 6) & 0x3f), stream->write_to_file);
+		fputc(0x80 + (c & 0x3f), stream->write_to_file);
+	} else if (c >= 0x800) {
 		fputc(0xE0 + (c >> 12), stream->write_to_file);
 		fputc(0x80 + ((c >> 6) & 0x3f), stream->write_to_file);
 		fputc(0x80 + (c & 0x3f), stream->write_to_file);
