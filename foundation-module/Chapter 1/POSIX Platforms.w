@@ -249,7 +249,11 @@ int Platform::readdir(void *D, char *dir_name, char *leafname) {
 	int rv;
 	DIR *dirp = (DIR *) D;
 	struct dirent *dp;
-	if ((dp = readdir(dirp)) == NULL) return FALSE;
+	do {
+	  errno = 0;
+	  dp = readdir(dirp);
+	} while (errno);
+	if (dp == NULL) return FALSE;
 	sprintf(path_to, "%s%c%s", dir_name, FOLDER_SEPARATOR, dp->d_name);
 	rv = stat(path_to, &file_status);
 	if (rv != 0) return FALSE;
