@@ -112,21 +112,21 @@ void Platform__where_am_i(wchar_t *p, size_t length) {
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 388 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 392 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 typedef pthread_t foundation_thread;
 typedef pthread_attr_t foundation_thread_attributes;
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_LINUX
 #ifdef PLATFORM_POSIX
-#line 423 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 427 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 #include <sys/sysinfo.h>
 
 #endif /* PLATFORM_LINUX */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 437 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 441 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 #include <sys/sysctl.h>
 
 #endif /* PLATFORM_MACOS */
@@ -2621,88 +2621,88 @@ void * Platform__opendir(char *dir_name) ;
 int  Platform__readdir(void *D, char *dir_name, char *leafname) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 261 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 265 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__closedir(void *D) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 269 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 273 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__rename_file(char *old_transcoded_pathname, char *new_transcoded_pathname) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 275 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 279 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__rename_directory(char *old_transcoded_pathname, char *new_transcoded_pathname) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 289 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 293 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 293 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 297 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 299 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 303 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 313 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 317 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 322 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 326 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__quote_text(char *quoted, char *raw, int terminate) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 338 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 342 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__sleep(int seconds) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 354 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 358 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 367 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 371 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 380 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 384 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 392 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 396 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__create_thread(foundation_thread *pt, 	const foundation_thread_attributes *pa, void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 397 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 401 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 401 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 405 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__init_thread(foundation_thread_attributes *pa, size_t size) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 406 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 410 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes *pa) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_LINUX
 #ifdef PLATFORM_POSIX
-#line 427 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 431 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_LINUX */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 441 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 445 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_ANDROID
 #ifdef PLATFORM_POSIX
-#line 453 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 457 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_ANDROID */
 #endif /* PLATFORM_POSIX */
@@ -5883,9 +5883,13 @@ int Platform__readdir(void *D, char *dir_name, char *leafname) {
 	int rv;
 	DIR *dirp = (DIR *) D;
 	struct dirent *dp;
-	if ((dp = readdir(dirp)) == NULL) return FALSE;
-	sprintf(path_to, "%s%c%s", dir_name, FOLDER_SEPARATOR, dp->d_name);
-	rv = stat(path_to, &file_status);
+	do {
+	  dp = readdir(dirp);
+	  if (dp == NULL) return FALSE;
+	  sprintf(path_to, "%s%c%s", dir_name, FOLDER_SEPARATOR, dp->d_name);
+  	  errno = 0;
+	  rv = stat(path_to, &file_status);
+        } while (dp && (errno == ENOENT));
 	if (rv != 0) return FALSE;
 	if (S_ISDIR(file_status.st_mode)) sprintf(leafname, "%s/", dp->d_name);
 	else strcpy(leafname, dp->d_name);
@@ -5899,7 +5903,7 @@ void Platform__closedir(void *D) {
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 269 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 273 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__rename_file(char *old_transcoded_pathname, char *new_transcoded_pathname) {
 	if (rename(old_transcoded_pathname, new_transcoded_pathname) != 0)
 		return FALSE;
@@ -5914,7 +5918,7 @@ int Platform__rename_directory(char *old_transcoded_pathname, char *new_transcod
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 289 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 293 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
@@ -5933,7 +5937,7 @@ off_t Platform__size(char *transcoded_filename) {
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 313 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 317 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 	char rsync_command[10*MAX_FILENAME_LENGTH];
 	sprintf(rsync_command, "rsync -a --delete ");
@@ -5958,7 +5962,7 @@ void Platform__quote_text(char *quoted, char *raw, int terminate) {
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 338 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 342 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__sleep(int seconds) {
 	sleep((unsigned int) seconds);
 }
@@ -5966,7 +5970,7 @@ void Platform__sleep(int seconds) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 354 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 358 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__notification(text_stream *text, int happy) {
 	char *sound_name = "Bell.aiff";
 	if (happy == FALSE) sound_name = "Submarine.aiff";
@@ -5981,20 +5985,20 @@ void Platform__notification(text_stream *text, int happy) {
 #endif /* PLATFORM_POSIX */
 #ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 367 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 371 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__notification(text_stream *text, int happy) {
 }
 
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 380 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 384 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__configure_terminal(void) {
 }
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 392 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 396 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__create_thread(foundation_thread *pt,
 	const foundation_thread_attributes *pa, void *(*fn)(void *), void *arg) {
 	return pthread_create(pt, pa, fn, arg);
@@ -6018,7 +6022,7 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes *pa) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_LINUX
 #ifdef PLATFORM_POSIX
-#line 427 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 431 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__get_core_count(void) {
 	int N = get_nprocs();
 	if (N < 1) return 1;
@@ -6029,7 +6033,7 @@ int Platform__get_core_count(void) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 441 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 445 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__get_core_count(void) {
 	int N;
 	size_t N_size = sizeof(int);
@@ -6042,7 +6046,7 @@ int Platform__get_core_count(void) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_ANDROID
 #ifdef PLATFORM_POSIX
-#line 453 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 457 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__get_core_count(void) {
 	return 1;
 }
