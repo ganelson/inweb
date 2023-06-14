@@ -7200,7 +7200,7 @@ void Streams__log(OUTPUT_STREAM, void *vS) {
 	} else if (stream->write_to_file) {
 		WRITE("F'%f'(%d)", stream->file_written, stream->chars_written);
 	} else {
-		WRITE("S%x(", (long int) stream);
+		WRITE("S(");
 		while (stream) {
 			WRITE("%d/%d", stream->chars_written, stream->chars_capacity);
 			if (stream->stream_continues) WRITE("+");
