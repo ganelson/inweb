@@ -2560,7 +2560,7 @@ typedef struct breadcrumb_request {
 	struct text_stream *breadcrumb_link;
 	CLASS_DEFINITION
 } breadcrumb_request;
-typedef long int pointer_sized_int;
+typedef uintptr_t pointer_sized_int;
 typedef void (*writer_function)(text_stream *, char *, void *);
 typedef void (*writer_function_I)(text_stream *, char *, int);
 typedef void (*log_function)(text_stream *, void *);
@@ -9105,11 +9105,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.2.1-beta+1B25";
+			char *svn = "7.2.1-beta+1B26";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "2 June 2023";
+			char *d = "9 June 2023";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -33516,7 +33516,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B25\t/built 2 June 2023/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B26\t/built 9 June 2023/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
