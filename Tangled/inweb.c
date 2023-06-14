@@ -6309,7 +6309,7 @@ void Platform__init_thread(foundation_thread_attributes* pa, size_t size) {
 }
 
 size_t Platform__get_thread_stack_size(foundation_thread_attributes* pa) {
-	return 0;
+	return 1000000; /* 1Mb, the Windows default */
 }
 
 #endif /* PLATFORM_WINDOWS */

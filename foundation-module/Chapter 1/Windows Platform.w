@@ -426,7 +426,7 @@ void Platform::init_thread(foundation_thread_attributes* pa, size_t size) {
 }
 
 size_t Platform::get_thread_stack_size(foundation_thread_attributes* pa) {
-	return 0;
+	return 1000000; /* 1Mb, the Windows default */
 }
 
 @ This function returns the number of logical cores in the host computer --
