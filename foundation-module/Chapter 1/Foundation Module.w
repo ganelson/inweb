@@ -76,7 +76,7 @@ compromise in practice:
 @ Very occasionally we'll store a pointer as data:
 
 =
-typedef long int pointer_sized_int;
+typedef uintptr_t pointer_sized_int;
 
 @h The beginning and the end.
 As noted above, the client needs to call these when starting up and when
