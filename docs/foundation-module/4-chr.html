@@ -112,6 +112,8 @@ iFiction records.
 </pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Unicode composition. </b>A routine which converts the Unicode combining accents with letters,
 sufficient correctly to handle all characters in the ZSCII set.
+Returns a combined character code, or 0 if there is no combining
+to be done.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -161,7 +163,7 @@ sufficient correctly to handle all characters in the ZSCII set.
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="character-syntax">'?'</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Accent stripping. </b>It's occasionally useful to simplify text used as a filename by removing

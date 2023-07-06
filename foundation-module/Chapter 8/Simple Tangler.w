@@ -137,7 +137,7 @@ from a web |W|, we translate that into the path |W/Sections/Juggling.i6t|.
 	TEMPORARY_TEXT(command)
 	TEMPORARY_TEXT(argument)
 	int skip_part = FALSE, extract = FALSE;
-	int col = 1, cr, prev_cr = 0, line_count = 1, sfp = 0;
+	int col = 1, cr, prev_cr = 0, line_count = 1, sfp = 0, final_newline = FALSE;
 	do {
 		Str::clear(command);
 		Str::clear(argument);
@@ -162,8 +162,16 @@ trouble over |0a0d| or |0d0a| combinations except to make sure we don't doubly
 increment the line count in such cases.)
 
 @<Read next character@> =
-	if (Input_File) cr = fgetc(Input_File);
-	else if (text) {
+	if (Input_File) {
+		if (final_newline) {
+			cr = EOF;
+		} else {
+			cr = fgetc(Input_File);
+			if ((cr == EOF) && (prev_cr != 10) && (prev_cr != 13)) {
+				final_newline = TRUE; cr = '\n';
+			}
+		}
+	} else if (text) {
 		cr = Str::get_at(text, sfp); if (cr == 0) cr = EOF; else sfp++;
 	} else cr = EOF;
 	col++;
