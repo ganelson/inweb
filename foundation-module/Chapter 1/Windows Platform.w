@@ -39,7 +39,6 @@ we need to consider the prototype for |isdigit()|:
 So, when casting to int we get |-23|, not |233|. Unfortunately the return value
 from |isdigit()| is only defined by the C specification for values in the
 range 0 to 255 (and also EOF), so the return value for |-23| is undefined.
-And with Windows GCC, |isdigit(-23)| returns a non-zero value.
 
 @d isdigit(x) Platform::Windows_isdigit(x)
 
@@ -49,9 +48,9 @@ int Platform::Windows_isdigit(int c) {
 }
 
 @h Folder separator.
-When using a Unix-like system such as Cygwin on Windows, it's inevitable that
-paths will sometimes contain backslashes and sometimes forward slashes, meaning
-a folder (i.e. directory) divide in either case. So:
+When using a Unix-like system such as Cygwin or MSYS2 on Windows, it's
+inevitable that paths will sometimes contain backslashes and sometimes forward
+slashes, meaning a folder (i.e. directory) divide in either case. So:
 (a) When writing such a divider, always write |FOLDER_SEPARATOR|, a backslash;
 (b) When testing for such a divider, call the following.
 
@@ -165,7 +164,7 @@ int Platform::system(const char *cmd) {
 	PROCESS_INFORMATION process;
 	if (CreateProcessA(0, cmd_line, 0, 0, FALSE, CREATE_NO_WINDOW, 0, 0, &start, &process) == 0) {
 		if (unix)
-			fprintf(stderr, "A Unix-like shell \"sh\" (such as that from Cygwin) must be in the path.\n");
+			fprintf(stderr, "A Unix-like shell \"sh\" (such as that from MSYS2 or Cygwin) must be in the path.\n");
 		return -1;
 	}
 
