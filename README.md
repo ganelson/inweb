@@ -68,6 +68,15 @@ This will produce 32-bit x86 executables; we are no longer really supporting thi
 Macs, use macosuniv, but expect your compilation times to double, of course.
 * For a generic version of Unix where the Linux settings do not work, try using
 unix. (For Solaris, for example.)
+* For Windows, the mingw-w64 environment provided by the MSYS2 project is required.
+Download and install [MSYS2](https://www.msys2.org/). Start the MSYS2 MINGW64
+environment, then in the resulting shell window run the following to install
+everything needed:
+	* `pacman -Suy`
+	* `pacman -S git`
+	* `pacman -S make`
+	* `pacman -S zip`
+	* `pacman -S mingw-w64-x86_64-clang`
 * Android support has existed in the past, but the Android Inform community
 has not yet an opportunity to contribute build settings.
 

@@ -5,8 +5,6 @@ INWEBPLATFORM = windows
 
 INFORM6OS = PC_WIN32
 
-GLULXEOS = OS_WIN32
-
 EXEEXTENSION = .exe
 
 INTEST = intest/Tangled/intest
@@ -14,7 +12,7 @@ INWEB = inweb/Tangled/inweb
 
 CCOPTS = -DPLATFORM_WINDOWS=1 -D_WIN32_WINNT=0x0600 $(CFLAGS)
 
-MANYWARNINGS = -Weverything -Wno-unknown-warning-option -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return -Wno-unused-but-set-variable -Wno-declaration-after-statement -Wno-used-but-marked-unused -ferror-limit=1000
+MANYWARNINGS = -Weverything -Wno-unknown-warning-option -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return -Wno-unused-but-set-variable -Wno-declaration-after-statement -Wno-used-but-marked-unused -Wno-unsafe-buffer-usage -Wno-misleading-indentation -Wno-implicit-fallthrough -Wno-implicit-int-float-conversion -Wno-incompatible-function-pointer-types-strict -Wno-cast-function-type-strict -ferror-limit=1000
 
 FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return
 
@@ -69,8 +67,8 @@ safe:
 	$(call make-me-using-safety-copy)
 
 define make-me-once-tangled
-	x86_64-w64-mingw32-clang -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
-	x86_64-w64-mingw32-clang $(CCOPTS) -g -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o 
+	clang -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
+	clang $(CCOPTS) -g -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o 
 endef
 
 define make-me
