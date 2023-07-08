@@ -20,8 +20,6 @@ ARTOOL = libtool -o
 
 INFORM6OS = OSX
 
-GLULXEOS = OS_UNIX
-
 MYNAME = goldbach
 ME = inweb/Examples/goldbach
 

@@ -5,8 +5,6 @@ INWEBPLATFORM = macosarm
 
 INFORM6OS = MACOS
 
-GLULXEOS = OS_UNIX
-
 EXEEXTENSION = 
 
 INTEST = intest/Tangled/intest

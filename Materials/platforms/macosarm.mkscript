@@ -41,11 +41,6 @@ INWEBPLATFORM = macosarm
 
 INFORM6OS = MACOS
 
-# And similarly for glulxe, which is used as part of the dumb-glulx interpreter,
-# which is used in testing Inform on the command line:
-
-GLULXEOS = OS_UNIX
-
 # On some platforms, executables have a specific file extension, which we define here:
 
 EXEEXTENSION = 

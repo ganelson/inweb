@@ -43,11 +43,6 @@ INWEBPLATFORM = windows
 
 INFORM6OS = PC_WIN32
 
-# And similarly for glulxe, which is used as part of the dumb-glulx interpreter,
-# which is used in testing Inform on the command line:
-
-GLULXEOS = OS_WIN32
-
 # On some platforms, executables have a specific file extension, which we define here:
 
 EXEEXTENSION = .exe

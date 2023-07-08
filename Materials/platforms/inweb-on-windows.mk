@@ -5,8 +5,6 @@ INWEBPLATFORM = windows
 
 INFORM6OS = PC_WIN32
 
-GLULXEOS = OS_WIN32
-
 EXEEXTENSION = .exe
 
 INTEST = intest/Tangled/intest

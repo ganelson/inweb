@@ -5,8 +5,6 @@ INWEBPLATFORM = linux
 
 INFORM6OS = LINUX
 
-GLULXEOS = OS_UNIX
-
 EXEEXTENSION =
 
 INTEST = intest/Tangled/intest
